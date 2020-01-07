@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="IFP 2018 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2019">
+<Report name="IFP 2020 Review" reportType="RP_IFP_REVIEW" ajax="true" disabled="false" year="2020">
     <Permissions>
         <Role role="ETC">
             <SectionPermission id="materials" permissions="rw" />
@@ -34,18 +34,16 @@
             ]]>
         </Static>
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="IFP-ETC">
-            <If id="coi" if="{or({!=({$my_id},1596)},{!=({$user_id},389)})}"> 
-                <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
-                    <![CDATA[
-                        <tr>
-                            <td>{$user_name}</td>
-                            <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
-                            <td>{$item}</td>
-                            <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download</a></td>
-                        </tr>
-                    ]]>
-                </ReportItem>
-            </If>
+            <ReportItem id="pdf" type="PDFReportItem" reportType="IFPApplication" buttonName="Download">
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{getText(RP_IFP_APPLICATION,INTENT,NUMBER,0,{$user_id},0)}</td>
+                        <td>{$item}</td>
+                        <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_IFP_APPLICATION,DOCS,DOCS,0,{$user_id},0)}&mime=application/zip'>Download</a></td>
+                    </tr>
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <Static>
             <![CDATA[
@@ -97,7 +95,7 @@
                         </table>
                     ]]>
                 </Static>
-                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is inconsistent and outside of CFN's strategic priorities and goals of the Fellowship Program.|The candidate's personal research project aligns with CFN's strategic priorities but is not consistent with the goals of the Fellowship Program.|The candidate's personal research project somewhat aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program.|The candidate's personal research project greatly aligns with CFN's strategic priorities and is consistent with the goals of the Fellowship Program." orientation="horizontal" showScore="true">
+                <ReportItem id="relevance" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_RELEVANCE" blobSubItem="{$user_id}" options="0|1|3|4" labels="Unacceptable|Borderline|Good/Solid|Excellent" descriptions="The candidate's personal research project is not relevant to older adults living with frailty andtheir family and friend caregivers.|The candidate's personal research project is somewhat relevant to older adults living with frailty andj their family and friend caregivers.|The candidate's personal research project somewhat is very relevant to older adults living with frailty and their family and friend caregivers.|The candidate's personal research project is extremely relevant to older adults living with frailty and their family and friend caregivers." orientation="horizontal" showScore="true">
                     <![CDATA[
                         <h2>1. Relevance and alignment of applicant's personal research project <small>(see Application Section 2: Research Project)</small></h2>
                         {$item}
@@ -156,7 +154,7 @@
                 <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_REVIEW_COMMENTS" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Comments</h2>
-                        <p>Please provide comments here to justify your scores above</p>
+                        <p>Please provide comments here to justify your scores above: <i>1. xxxxxxx; 2. xxxxx; 3.xxxxx, etc.</i></p>
                         {$item}
                         </div><br />
                     ]]>

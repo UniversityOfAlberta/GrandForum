@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL CRP Catalyst Project Progress Report and Project Plan Update (2019-2020)" reportType="RP_CAT_REPORT" pdfType="RPTP_CAT_REPORT" pdfFiles="CatalystReportPDF" personId="0" ajax="true" disabled="false" year="2019" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30" orientation="landscape">
+<Report name="AGE-WELL Platform Project Progress Progress Report and Project Plan Update (2019-2020)" reportType="RP_PLAT_REPORT" pdfType="RPTP_PLAT_REPORT" pdfFiles="PlatformReportPDF" personId="0" ajax="true" disabled="false" year="2019" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30" orientation="landscape">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL CRP Catalyst Project<br />Progress Report and Project Plan Update (2019-2020)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Platform Project<br />Progress Report and Project Plan Update (2019-2020)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -40,19 +40,19 @@
             ]]>
         </Static>
         <!-- Scientific Excellence -->
-        <ReportItem id="sci_1" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="SCI_1" height="100%">
+        <ReportItem id="sci_1" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="SCI_1" height="100%">
             <![CDATA[
                 <tr>
                     <th>Scientific Excellence</th>
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="sci_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="SCI_2" height="100%">
+        <ReportItem id="sci_2" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="SCI_2" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="sci_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="SCI_3" height="100%">
+        <ReportItem id="sci_3" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="SCI_3" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
@@ -69,19 +69,19 @@
             ]]>
         </ReportItem>
         <!-- Networking and Partnerships -->
-        <ReportItem id="net_1" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="NET_1" height="100%">
+        <ReportItem id="net_1" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="NET_1" height="100%">
             <![CDATA[
                 <tr>
                     <th>Networking and Partnerships</th>
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="net_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="NET_2" height="100%">
+        <ReportItem id="net_2" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="NET_2" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="net_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="NET_3" height="100%">
+        <ReportItem id="net_3" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="NET_3" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
@@ -98,19 +98,19 @@
             ]]>
         </ReportItem>
         <!-- KTEE -->
-        <ReportItem id="ktee_1" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="KTEE_1" height="100%">
+        <ReportItem id="ktee_1" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="KTEE_1" height="100%">
             <![CDATA[
                 <tr>
                     <th>KTEE</th>
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ktee_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="KTEE_2" height="100%">
+        <ReportItem id="ktee_2" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="KTEE_2" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ktee_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="KTEE_3" height="100%">
+        <ReportItem id="ktee_3" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="KTEE_3" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
@@ -127,19 +127,19 @@
             ]]>
         </ReportItem>
         <!-- Training of HQP -->
-        <ReportItem id="hqp_1" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="HQP_1" height="100%">
+        <ReportItem id="hqp_1" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="HQP_1" height="100%">
             <![CDATA[
                 <tr>
                     <th>Training of HQP</th>
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="hqp_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="HQP_2" height="100%">
+        <ReportItem id="hqp_2" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="HQP_2" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="hqp_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="HQP_3" height="100%">
+        <ReportItem id="hqp_3" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="HQP_3" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
@@ -156,19 +156,19 @@
             ]]>
         </ReportItem>
         <!-- Team and Project Management -->
-        <ReportItem id="team_1" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="TEAM_1" height="100%">
+        <ReportItem id="team_1" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="TEAM_1" height="100%">
             <![CDATA[
                 <tr>
                     <th>Team and Project Management</th>
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="team_2" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="TEAM_2" height="100%">
+        <ReportItem id="team_2" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="TEAM_2" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="team_3" type="Textarea" blobReport="RP_CAT_SCORECARD" blobYear="2018" blobItem="TEAM_3" height="100%">
+        <ReportItem id="team_3" type="Textarea" blobReport="RP_PLAT_SCORECARD" blobYear="2018" blobItem="TEAM_3" height="100%">
             <![CDATA[
                     <td>{$value}</td>
             ]]>
@@ -189,15 +189,15 @@
                 </table><br />
             ]]>
         </Static>
-        <ReportItem id="expectations" type="Textarea" blobItem="EXPECTATIONS" rich="true" limit="500">
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="500">
             <![CDATA[
-                <h3>Keeping in mind the expectations of the CRP Catalyst phase, provide any additional updates on project progress beyond what is reflected in the scorecard.</h3>
+                <h3>Over the past year, please summarize efforts to align your project with the Network objectives for Platform Projects (i.e. the main “customer” for the Platform Projects is AGE-WELL itself)</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true" limit="500">
             <![CDATA[
-                <h3>Identify any project development challenges arising over the course of the Catalyst year (e.g. recruitment, ethics, securing partners, staffing).</h3>
+                <h3>Identify any project development challenges arising over the course of the seed-funding year (e.g. recruitment, ethics, securing partners, staffing)</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -217,127 +217,115 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="tables" type="EditableReportSection" blobSection="TABLES" tooltip="Tables" name="Tables" title="Tables" pagebreak="false">
-        <If if="{==({$project_name},AWCAT-2019-128)}">
-            <!-- Special Case for someone who submitted multiple applications -->
-            <![CDATA[
-                {set(projectId, 1)}
-            ]]>
-        </If>
-        <If if="{!=({$project_name},AWCAT-2019-128)}">
-            <![CDATA[
-                {set(projectId, 0)}
-            ]]>
-        </If>
-        
-        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" class="wikitable" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator, Community Stakeholder)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
+        <ReportItem id="team" type="MultiText" blobItem="TEAM" blobType="BLOB_ARRAY" class="wikitable" labels="Team Member Name|Role|Institution/Organization|Expertise|E-mail" types="Text|Select(PL, CI, Partner, HQP, Collaborator, Community Stakeholder)|Text|Text|Text" multiple="true" default="{getArray(RP_CRP,PART1,TEAM,0,{project_leader_ids(|)},0,,,2018)}">
             <![CDATA[
                 <h3>Team Members</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="partnerships" type="MultiText" class="wikitable" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS" default="{getArray(RP_CRP,PART3,PARTNERSHIPS,0,{project_leader_ids(|)},{get(projectId)},,,2018)}">
+        <ReportItem id="partnerships" type="MultiText" class="wikitable" labels="Partner Organization/Research Receptor|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CAD)|Confirmed or Proposed Partner" types="Text|Text|Select(In-Kind,Cash)|Integer|Select(Confirmed,Proposed)" sizes="200|200|100|100|110" multiple="true" blobType="BLOB_ARRAY" blobItem="PARTNERSHIPS" default="{getArray(RP_CRP,PART3,PARTNERSHIPS,0,{project_leader_ids(|)},0,,,2018)}">
             <![CDATA[
                 <h3>Partnerships and Letters of Support</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter1" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER1" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter1" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER1" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 <h3>Letters of Support</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter2" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER2" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter2" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER2" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter3" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER3" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter3" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER3" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter4" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER4" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter4" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER4" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter5" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER5" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter5" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER5" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter6" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER6" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter6" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER6" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter7" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER7" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter7" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER7" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter8" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER8" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter8" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER8" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter9" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER9" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter9" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER9" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter10" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER10" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter10" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER10" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter11" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER11" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter11" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER11" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter12" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER12" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter12" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER12" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter13" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER13" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter13" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER13" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter14" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER14" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter14" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER14" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter15" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER15" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter15" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER15" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter16" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER16" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter16" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER16" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter17" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER17" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter17" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER17" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter18" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER18" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter18" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER18" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter19" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER19" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter19" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER19" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter20" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="{get(projectId)}" blobItem="LETTER20" fileSize="2" optional="true" pdf="true">
+        <ReportItem id="letter20" type="Upload" blobReport="RP_CRP" blobSection="PART3" blobYear="2018" personId="{project_leader_ids(|)}" projectId="0" blobItem="LETTER20" fileSize="2" optional="true" pdf="true">
             <![CDATA[
                 {$item}
             ]]>

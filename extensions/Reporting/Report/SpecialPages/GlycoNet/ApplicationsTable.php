@@ -93,6 +93,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=exchange'>Exchange</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=hqpresearch'>Research & Travel</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cspc'>CSPC</a>";
@@ -138,6 +139,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "exchange" && $me->isRoleAtLeast(SD)){
             $this->generateExchange();
+        }
+        else if($program == "hqpresearch" && $me->isRoleAtLeast(SD)){
+            $this->generateHQPResearch();
         }
         else if($program == "summer" && $me->isRoleAtLeast(SD)){
             $this->generateSummer();
@@ -290,6 +294,13 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateHQPResearch(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH'), $this->hqps, 2020, "2020"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateExchange(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -303,6 +314,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2020, "2020", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2018, "2018", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2017, "2017", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2016, "2016"));
@@ -313,6 +325,7 @@ class ApplicationsTable extends SpecialPage{
     function generateATOP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2020, "2020", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2018, "2018", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2017, "2017", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "2016"));

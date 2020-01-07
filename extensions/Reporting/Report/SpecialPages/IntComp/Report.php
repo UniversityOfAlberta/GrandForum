@@ -48,6 +48,9 @@ class Report extends AbstractReport{
             if($person->isRole("UAHJIC")){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HuaweiReview")) ? "selected" : false;
                 $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("JIC Review", "{$url}HuaweiReview", $selected);
+                
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProgressReview")) ? "selected" : false;
+                $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Progress Review", "{$url}ProgressReview", $selected);
             }
             
             if(count($leadership) > 0){
