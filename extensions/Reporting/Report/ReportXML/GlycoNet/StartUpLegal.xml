@@ -185,7 +185,6 @@
         </If>
         <If id="if_not_eula" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},{$project_id})},Yes)}">
             <![CDATA[
-                {$project_id}
                 <p>You need to accept the Acknowledgment before you can submit your application.</p>
             ]]>
         </If>
