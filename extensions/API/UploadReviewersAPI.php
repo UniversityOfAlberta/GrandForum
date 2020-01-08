@@ -79,9 +79,20 @@ class UploadReviewersAPI extends API{
 		    DBFunctions::commit();
 		}
 	    }
-	    foreach($data as $student=>$reviewers){
-		$student_obj = Person::newFromNameLike($student);	
-		$student_id = $student_obj->getId();
+	    foreach($data as $student => $reviewers){
+	        $gsmsMatches = array();
+	        preg_match("/[0-9]+/", $student, $gsmsMatches);
+	        $student = preg_replace("/[0-9]+/", "", $student);
+	        $student_obj = null;
+	        if(isset($gsmsMatches[0])){
+	            $student_obj = Person::newFromGSMSId($gsmsMatches[0]);	
+		        $student_id = $student_obj->getId();
+	        }
+	        if($student_obj == null || $student_obj->getId() == 0){
+	            $student_obj = Person::newFromNameLike($student);	
+		        $student_id = $student_obj->getId();
+	        }
+
 		  //check if student exists
 		if($student_id != 0){
 			$error_count=0;
@@ -121,7 +132,7 @@ class UploadReviewersAPI extends API{
 				$error_count++;
 			    }
 			    if($error_count ==0){
-				$success[] = "<b>$student</b> successfully assigned to all listed reviewers."; 
+				$success[] = "<b>$student</b> successfully assigned to <b>{$reviewer_obj->getNameForForms()}</b>."; 
 			    }
 			}
 		}
