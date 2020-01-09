@@ -26,7 +26,8 @@
         <ReportItem id="gsmsIDCS" idLabel="Applicant ID" type="Text" blobType="BLOB_TEXT" blobItem="gsmsIDCS" limit="100" >
             <![CDATA[
                 <h3>Applicant ID</h3>
-                <p>Please enter your 8-digit Admissions Number (beginning with '16') from your FGSR application. This number is available once you have submitted your application to FGSR.  It can be found on the receipt you received from GSMS.</p>
+                <p>Please enter your 8-digit Admissions Number (beginning with '16') from your FGSR application. After you have submitted an <a href='https://www.ualberta.ca/graduate-studies/prospective-students/apply-for-admission' target='_blank'>FGSR application</a>, you can login to your <a href='https://graduate-studies-apply.ualberta.ca/urd/sits.urd/run/siw_lgn' target='_blank'>Applicant portal</a>, and you will see your application.  When you click on 'Show Details' it will display your 8-digit Admissions Number (GSMS ID).</p>
+                
                 {$item}
                 <div id='gsmsIdError1' class='error' style='display:none;'>An ID must be provided</div>
                 <div id='gsmsIdError2' class='error' style='display:none;'>The ID entered is not in the format 16XXXXXX</div>
@@ -286,7 +287,7 @@
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" idLabel="SoP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>Statement of Purpose (PhD Applicant Only)</h3>
+                <h3>(PhD Applicant Only)<br /><small>MSc Applicants may fill this out if they wish, but it is not required</small></h3>
                 <p>This statement should outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application</p>
                 {$item}
             ]]>
@@ -442,7 +443,14 @@
 
     <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step."/>
+            <ReportItemSet id="if_gpa" type="If" if="{!=({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
+                <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" />
+            </ReportItemSet>
+            <ReportItem id="if_not_gpa" type="If" if="{==({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
+                <![CDATA[
+                    <p>You must provide a GPA.</p>
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
