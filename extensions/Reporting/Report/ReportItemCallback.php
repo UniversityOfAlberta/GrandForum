@@ -139,6 +139,7 @@ class ReportItemCallback {
             "extraIndex" => "getExtraIndex",
             "getProjects" => "getProjects",
             "getProjectNames" => "getProjectNames",
+            "getProjectTitles" => "getProjectTitles",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
@@ -1223,6 +1224,19 @@ class ReportItemCallback {
         foreach(Project::getAllProjects() as $project){
             if(!$project->isSubProject()){
                 $projects[] = "{$project->getName()}";
+            }
+        }
+        if(count($projects) > 0){
+            return implode($delim, $projects);
+        }
+        return "N/A";
+    }
+    
+    function getProjectTitles($delim=", "){
+        $projects = array();
+        foreach(Project::getAllProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[] = "{$project->getFullName()}";
             }
         }
         if(count($projects) > 0){

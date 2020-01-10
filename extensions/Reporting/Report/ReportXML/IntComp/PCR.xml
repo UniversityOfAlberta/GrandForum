@@ -23,7 +23,7 @@
                     </tr>
             ]]>
         </Static>
-        <ReportItem id="title" type="Select" blobItem="TITLE" options="{getProjectNames(|)}">
+        <ReportItem id="title" type="Select" blobItem="TITLE" options="{getProjectTitles(|)}" width="300px">
             <![CDATA[
                     <tr>
                         <td class='label'>Project Title:</td>
