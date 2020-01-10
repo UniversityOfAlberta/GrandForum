@@ -288,8 +288,8 @@ class ApplicationsTable extends SpecialPage{
     function generateStartUp(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2019Applicants, 2019, "Legal2019"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_LEGAL'), $this->startUpLegal2018Applicants, 2018, "Legal2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2019Applicants, 2019, "Legal2019", array(), false, array(0,1,2)));
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

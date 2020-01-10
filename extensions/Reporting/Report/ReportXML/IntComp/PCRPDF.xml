@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Proposal Change Request" reportType="RP_PCR" pdfType="RPTP_PCR" pdfFiles="PCRPDF" allowIdProjects="true" ajax="true" disabled="false">
+    <ReportSection id="pcr" tooltip="PCR" name="PCR" title="Proposal Change Request" blobSection="PCR" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <!--img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' /-->
+                <h4 style='font-size:1.20em;'>Proposal Change Request</h4>
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="date" type="Calendar" blobItem="DATE" width="100px">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>Date:</td>
+                        <td>{$value}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Your Name:</td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Select" blobItem="TITLE" options="{getProjectNames(|)}">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Project Title:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="Text" blobItem="PI">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>UofA PI:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="items" type="MultiText" blobType="BLOB_ARRAY" blobItem="ITEMS" labels="Item" showHeader="false" multiple="true">
+            <![CDATA[
+                    <tr>
+                        <td class='label' valign='top'>Change Items:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="upload" type="Upload" blobType="BLOB_RAW" blobItem="UPLOAD" fileSize="10" mimeType=".pdf,.doc,.docx" optional="false">
+            <![CDATA[
+                <h3>Attachment Upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" multiple="true">
+            <![CDATA[
+                <h3>Comments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

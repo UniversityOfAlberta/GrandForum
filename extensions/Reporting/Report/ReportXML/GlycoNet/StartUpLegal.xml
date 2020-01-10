@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Start-Up Company Funding 2019-2020 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" ajax="true" disabled="false" year="2019">
+<Report name="Start-Up Company Funding 2019-2020 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" allowIdProjects="true" ajax="true" disabled="false" year="2019">
     <Permissions>
         <Role role="INACTIVE+" subRole="StartUpLegal2019">
             <SectionPermission id="information" permissions="rw" />
@@ -180,10 +180,10 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <If id="if_eula" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_eula" if="{==({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},{$project_id})},Yes)}">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca,glyconet@ualberta.ca" />
         </If>
-        <If id="if_not_eula" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},0)},Yes)}">
+        <If id="if_not_eula" if="{!=({getText(RP_START_UP_LEGAL,ACK,EULA,0,{$user_id},{$project_id})},Yes)}">
             <![CDATA[
                 <p>You need to accept the Acknowledgment before you can submit your application.</p>
             ]]>
