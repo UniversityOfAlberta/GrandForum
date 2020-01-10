@@ -68,7 +68,7 @@
             </If>
         </ReportItemSet>
     </ReportSection>
-    <ReportSection id="discussion" tooltip="Proposal Change Request Review Results" name="Results" title="Proposal Change Request Review Results" blobSection="DISCUSION" type="EditableReportSection">
+    <ReportSection id="discussion" tooltip="Proposal Change Request Review Results" name="Results" title="Proposal Change Request Review Results" blobSection="DISCUSION" type="ReportSection">
         <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PCR">
             <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} [{add({$project_id},1)}] - {getText(RP_PCR, PCR, TITLE, 0, {$user_id}, {$project_id})} - {getText(RP_PCR, PCR, DATE, 0, {$user_id}, {$project_id})}">
                 <Static>
