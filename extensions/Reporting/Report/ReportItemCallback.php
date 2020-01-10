@@ -138,6 +138,7 @@ class ReportItemCallback {
             "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
             "getProjects" => "getProjects",
+            "getProjectNames" => "getProjectNames",
             "getNProducts" => "getNProducts",
             "getBlobMD5" => "getBlobMD5",
             "getText" => "getText",
@@ -1213,6 +1214,19 @@ class ReportItemCallback {
         }
         if(count($projects) > 0){
             return implode(", ", $projects);
+        }
+        return "N/A";
+    }
+    
+    function getProjectNames($delim=", "){
+        $projects = array();
+        foreach(Project::getAllProjects() as $project){
+            if(!$project->isSubProject()){
+                $projects[] = "{$project->getName()}";
+            }
+        }
+        if(count($projects) > 0){
+            return implode($delim, $projects);
         }
         return "N/A";
     }

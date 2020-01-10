@@ -64,11 +64,11 @@
                                     </tr>
                                     <tr>
                                         <td class='label'>Date:</td>
-                                        <td>{getText(RP_PROGRESS_REPORT, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                        <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
                                     </tr>
                                     <tr>
                                         <td class='label'>Comments:</td>
-                                        <td>{getText(RP_PROGRESS_REPORT, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                        <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
                                     </tr>
                                 </table>
                                 <hr />

@@ -24,6 +24,11 @@ class PDFReportItem extends StaticReportItem {
         }
         $person = Person::newFromId($this->personId);
         $report = new DummyReport($reportType, $person, $project, $year, true);
+        if($report->allowIdProjects){
+            // Handle allowIdProjects
+            $report->project = new Project(array());
+            $report->project->id = $this->projectId;
+        }
         $tok = false;
         $tst = '';
         $len = 0;
