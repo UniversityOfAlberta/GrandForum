@@ -259,7 +259,7 @@ class MailingList extends BackboneModel {
                         $results['roleResult'] = $roleResult;
                         break;
                     case "SUB-ROLE":
-                        $subRoles = $config->getValue('subRoles');
+                        $subRoles = array_flip($config->getValue('subRoles'));
                         $subRole = @$subRoles[$value];
                         if($person->isSubRole($value) || $person->isSubRole($subRole)){
                             $subRoleResult = ($subRoleResult || true);
