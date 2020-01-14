@@ -187,6 +187,7 @@ class MailingList extends BackboneModel {
      * @return array Returns the array of mailing lists
      */
     static function getPersonListsByRules($person){
+        global $config;
         $lists = MailingList::getAllMailingLists();
         $personLists = array();
         foreach($lists as $list){
@@ -258,7 +259,9 @@ class MailingList extends BackboneModel {
                         $results['roleResult'] = $roleResult;
                         break;
                     case "SUB-ROLE":
-                        if($person->isSubRole($value)){
+                        $subRoles = $config->getValue('subRoles');
+                        $subRole = @$subRoles[$value];
+                        if($person->isSubRole($value) || $person->isSubRole($subRole)){
                             $subRoleResult = ($subRoleResult || true);
                         }
                         $results['subRoleResult'] = $subRoleResult;
