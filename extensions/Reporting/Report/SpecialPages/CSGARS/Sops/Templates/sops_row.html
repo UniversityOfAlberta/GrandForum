@@ -154,15 +154,17 @@
 
 <td id='notes' class="scrollableCell">
   <div class="scrollableCell" style="height:124px; max-height:124px;">
-      <% _.each(additional.notes, function(note, key) { %>
-        <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
-        <% if (key == lastname) { %>
-          <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
-        <% } else { %>
-          <font style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% _.each(additional.notes, function(note, key) { %>
+        <% if (note.trim() != ""){ %>
+            <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+            <% if (key == lastname) { %>
+              <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
+            <% } else { %>
+              <font style="font-weight:bold"><%= key %></font>: <%= note %>
+            <% } %>
+            <br />
         <% } %>
-        <br />
-      <% }); %>
+    <% }); %>
   </div>
   <% if(this.parent.model.year == ''){ %>
     <span class="assign_button" style="display:none" id="additionalNotes">
