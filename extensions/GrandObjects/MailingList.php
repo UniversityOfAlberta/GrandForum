@@ -193,6 +193,7 @@ class MailingList extends BackboneModel {
             $results = array();
             $subscribe = false;
             $roleResult = false;
+            $subRoleResult = false;
             $projResult = false;
             $locResult = false;
             $rules = $list->getRules();
@@ -255,6 +256,12 @@ class MailingList extends BackboneModel {
                             $roleResult = ($roleResult || $person->isRole($value));
                         }
                         $results['roleResult'] = $roleResult;
+                        break;
+                    case "SUB-ROLE":
+                        if($person->isSubRole($value)){
+                            $subRoleResult = ($subRoleResult || true);
+                        }
+                        $results['subRoleResult'] = $subRoleResult;
                         break;
                     case "PROJ":
                         $project = Project::newFromId($value);
