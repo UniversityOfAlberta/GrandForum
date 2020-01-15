@@ -203,7 +203,7 @@ CollaborationEditView = Backbone.View.extend({
             main.set('title', 'Edit ' + formType);
         }
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
-        this.$('[name=sector]').chosen({width: "400px"});
+        //this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
         return this.$el;
     },
