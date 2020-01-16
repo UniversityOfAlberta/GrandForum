@@ -56,7 +56,15 @@
 </td>
 
 <td style="white-space: nowrap;" id='epl'>
-    <%= epl_test %> <br /><%= epl_score %> <br /><%= epl_listen %> <br /><%= epl_write %> <br /><%= epl_read %> <br /><%= epl_speaking %>
+    <% if(epl_test.indexOf(",") == -1){ %>
+        <%= epl_test %> <br /><%= epl_score %> <br /><%= epl_listen %> <br /><%= epl_write %> <br /><%= epl_read %> <br /><%= epl_speaking %>
+    <% } else { %>
+        <div style='float:left;'>
+        <%= epl_test.split(",")[0] %> <br /><%= epl_score.split(",")[0] %> <br /><%= epl_listen.split(",")[0] %> <br /><%= epl_write.split(",")[0] %> <br /><%= epl_read.split(",")[0] %> <br /><%= epl_speaking.split(",")[0] %></div>
+        <div style='float:right;'>
+        <%= epl_test.split(",")[1] %> <br /><%= epl_score.split(",")[1] %> <br /><%= epl_listen.split(",")[1] %> <br /><%= epl_write.split(",")[1] %> <br /><%= epl_read.split(",")[1] %> <br /><%= epl_speaking.split(",")[1] %>
+        </div>
+    <% } %>
 </td>
 
 <!--  department specific -->
@@ -128,12 +136,11 @@
 <!-- faculty info -->
 <td style="white-space: nowrap;">
   <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if (other_reviewers[i].rank == "-1") { %>
+        <% if (other_reviewers[i].rank == "-1" || other_reviewers[i].rank == "--") { %>
             <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
-            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)<br />
         <% } %>
-  <br />
   <% } %>
 </td>
 
@@ -142,7 +149,7 @@
     <% var avg=0; %>
     <% var ignore=0; %>
     <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if (other_reviewers[i].rank != "-1") { %>
+        <% if (other_reviewers[i].rank != "-1" && other_reviewers[i].rank != "--") { %>
           <% avg += parseInt(other_reviewers[i].rank); %>
         <% } else { %>
           <% ignore += 1; %>
