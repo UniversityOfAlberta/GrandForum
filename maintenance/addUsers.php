@@ -6,8 +6,7 @@ global $wgUser;
 $wgUser = User::newFromId(1);
 
 // Staff
-$people = array(array("Vice.Dean","vicedsci@ualberta.ca"),
-                array("dscience", "dean.science@ualberta.ca"));
+$people = array(array("First.Last", "email@ualberta.ca"));
 
 foreach($people as $person){
     $name = $person[0];
@@ -19,12 +18,12 @@ foreach($people as $person){
                                  'email' => $email));
 }
 
-foreach($people as $person){
+/*foreach($people as $person){
     $p = Person::newFromName($person[0]);
     DBFunctions::insert('grand_roles',
                         array('user_id' => $p->getId(),
                               'role' => "Staff",
                               'start_date' => "2017-11-01 00:00:00"));
-}
+}*/
    
 ?>

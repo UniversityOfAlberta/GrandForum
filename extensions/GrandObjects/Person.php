@@ -804,7 +804,10 @@ class Person extends BackboneModel {
         if($this->isRetired($date)){
             return "";
         }
-        if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
+        if($this->isRoleOn("ATSEC", $date)){
+            return "T1";
+        }
+        else if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
                                    $this->isAssociateProfessor($date) ||
                                    $this->isProfessor($date))){
             return "N1";                          
