@@ -76,7 +76,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                             $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
                             for($i=0; $i < $nYears; $i++){
                                 $request  = $budget->copy()
-                                                   ->where(HEAD1_ROW, array('Request From Future Energy System'))
+                                                   ->where(HEAD1_ROW, array('Request From Future Energy Systems'))
                                                    ->select(HEAD_MONEY)
                                                    ->limitCols($i, 1);
                                 $other    = $budget->copy()
