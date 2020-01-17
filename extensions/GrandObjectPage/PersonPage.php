@@ -97,7 +97,7 @@ class PersonPage {
                     $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : date('Y-m-d');
                 }
                 
-                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person)){
+                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person) && !$person->isMe()){
                     $wgMessage->addInfo("You can edit this HQP because you co-supervise them or are on their examining committee. Please make sure that the information you are providing is correct.");
                 }
                 
