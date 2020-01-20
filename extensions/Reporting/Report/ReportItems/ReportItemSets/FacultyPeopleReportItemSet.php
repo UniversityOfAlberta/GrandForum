@@ -6,13 +6,20 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $data = array();
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
-        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
+        if($atsec){
+            $allPeople = Person::getAllPeopleDuring("ATSEC", $start, $end);
+        }
+        else {
+            $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        }
         $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
         $me = Person::newFromWgUser();
         
         $data = array();
         foreach($allPeople as $person){
-            if($person->getCaseNumber($this->getReport()->year) == ""){
+            $caseNumber = $person->getCaseNumber($this->getReport()->year);
+            if($caseNumber == ""){
                 continue;
                 // Don't show if no case number
             }
@@ -48,7 +55,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             $index = @$fec[$person->getId()];
             $tuple = self::createTuple();
             $tuple['person_id'] = $person->getId();
-            $tuple['extra'] = $person->getCaseNumber($this->getReport()->year);
+            $tuple['extra'] = $caseNumber;
             if(strstr($tuple['extra'], "N1") !== false){
                 // New people should show first
                 $tuple['extra'] = "<span style='display:none;'>0</span>".$tuple['extra'];

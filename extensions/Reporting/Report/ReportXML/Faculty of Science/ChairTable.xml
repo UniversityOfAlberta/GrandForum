@@ -8,6 +8,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="IAC">
@@ -17,6 +18,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="DEAN">
@@ -26,6 +28,7 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
@@ -35,94 +38,49 @@
             <SectionPermission id="deans_advice" permissions="rw" />
             <SectionPermission id="deans_decision" permissions="rw" />
             <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role-->
         <Role role="ISAC">
-            <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="rw" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
         <Role role="IAC">
-            <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="rw" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="r" />
-            <SectionPermission id="deans_decision" permissions="r" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="r" />
-            <SectionPermission id="recommendations" permissions="r" />
-            <SectionPermission id="deans_advice" permissions="r" />
-            <SectionPermission id="deans_decision" permissions="r" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
-        <!-- Sturdy (Psych) -->
-        <!--Person id="64">
-            <SectionPermission id="evaluations" permissions="rw" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Person-->
-        <!-- Chemistry -->
-        <!--Person id="352">
-            <SectionPermission id="evaluations" permissions="rw" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Person-->
-        <!-- Physics -->
-        <!--Person id="252">
-            <SectionPermission id="evaluations" permissions="rw" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Person-->
-        <!-- Math -->
-        <!--Person id="20">
-            <SectionPermission id="evaluations" permissions="rw" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Person-->
-        <!-- EAS -->
-        <!--Person id="423">
-            <SectionPermission id="evaluations" permissions="rw" />
-            <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="" />
-            <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Person-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <Static>
@@ -473,6 +431,148 @@
                         $('#averageFSO' + i).html((fso_sums[i]/Math.max(1, fso_counts[i])).toFixed(3));
                     });
                     $(".increment select").first().trigger('change');
+                </script>
+                <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <style>
+                    table#chairTable * {
+                        font-size:11px !important;
+                    }
+                </style>
+                <div style='float:right; margin-top: -45px;'><button id='generateAll' type='button'>Generate All Evaluations</button></div>
+                <script type='text/javascript'>
+                    $('#generateAll').click(function(){
+                        $('.generateButton').click();
+                    });
+                </script>
+                <table id='chairTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th width="1%">{$last_year} Report</th>
+                            <th width="1%">Annual Report</th>
+                            <th width="1%">Locked</th>
+                            <th>Evaluation</th>
+                            <th width="1%">Merit Increment</th>
+                            <th width="1%">Promotion</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" atsec="true" department="{$my_dept}" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta" excludeMe="true">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="download" type="PDFReportItem" reportType="FECpdf" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
+            <If id="if_lock" if="{==({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <ReportItem id="lock" type="Unlock" blobReport="RP_FEC" blobSection="FEC_SUBMIT" blobItem="LOCK" blobSubItem="0" personId="{$user_id}" blobType="BLOB_ARRAY" orientation="vertical" options="Lock">
+                    <![CDATA[
+                        <td style='white-space:nowrap;' align='center'>
+                            <div id='lockContainer_{$user_id}' style='display:none;'>{$item}</div>
+                            <button id='lock_{$user_id}' type="button" value="Save" name="submit">Unlock</button>
+                            <script type="text/javascript">
+                                $('#lock_{$user_id}').click(function(){
+                                    if(confirm('Are you sure you want to proceed?\n\nThis annual report will be unlocked and the faculty member will be able to edit their report again.')){
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
+                                        $('#lock_{$user_id}').prop('disabled', true);
+                                        $('#lock_{$user_id}').after("<span class='throbber'></span>");
+                                        saveAll(function(){$("#Evaluations").click();});
+                                    } else {
+                                        $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
+                                    }
+                                    return false;
+                                });
+                            </script>
+                        </td>
+                    ]]>
+                </ReportItem>
+            </If>
+            <If id="if_not_lock" if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$user_id},0,lock)},Lock)}">
+                <![CDATA[
+                    <td align='center'>Not Locked</td>
+                ]]>
+            </If>
+            <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                        {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <If id="if_chair" if="{and({!contains({$my_roles},EA)},{or({contains({$my_roles},Chair)},{contains({$user_sub_roles},Chair's Recommendation)})})}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
+                    <![CDATA[
+                            </td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </If>
+            <If id="if_ea" if="{contains({$my_roles},EA)}">
+                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="50px">
+                    <![CDATA[
+                            </td>
+                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$value}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="200px">
+                    <![CDATA[
+                            <td align='center' class='promotion'>{$value}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table><br />
+                
+                <script type='text/javascript'>
+                    $('#chairTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                    
+                    $(".viewEvaluation").click(function(){
+                        var href = $(this).attr('data-href');
+                        $("#Recommendations").attr('href', href);
+                        $("#Recommendations").trigger('click');
+                    });
                 </script>
                 <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
             ]]>
@@ -968,27 +1068,46 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
-                    <![CDATA[
-                        <h3>Recommendations</h3>
-                        <table id="chairTable" class="wikitable" width="100%">
-                        <thead>
+                <If if="{!contains({$user_case_number}, T)}">
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Tenure</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             <tr>
-                                <th>Increment</th>
-                                <th>Tenure</th>
-                                <th>Promotion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
-                    ]]>
-                </ReportItem>
-                <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
-                    <![CDATA[
-                            <td align='center' class='tenure'>{$item}</td>
-                    ]]>
-                </ReportItem>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="tenure" type="Tenure" blobItem="TENURE" blobSubItem="{$user_id}" width="100%">
+                        <![CDATA[
+                                <td align='center' class='tenure'>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </If>
+                <Else>
+                    <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
+                        <![CDATA[
+                            <h3>Recommendations</h3>
+                            <table id="chairTable" class="wikitable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Increment</th>
+                                    <th>Promotion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align='center' valign='middle' class='increment' style="white-space:nowrap;">{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </Else>
                 <ReportItem id="promotion" type="Promotion" blobItem="PROMOTION" blobSubItem="{$user_id}" width="100%">
                     <![CDATA[
                             <td align='center' class='promotion'>{$item}</td>
