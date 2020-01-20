@@ -39,13 +39,11 @@ class UserGsmsBulkUploadAPI extends API{
             foreach($data_array as $student){
                 if($student['gsms_id'] == $gsms_id){
                     $program_name = $data_array[$data_array_num]['program_name'];
-                    $data_array[$data_array_num]['program_name'] = $program_name.", ".$row[13];
-                    $in_data_array = true;
+                    if($program_name != "{$row['13']}"){
+                        $row[13] .= ", {$program_name}";
+                    }
                 }
                 $data_array_num = $data_array_num+1;
-            }
-            if($in_data_array){
-                continue;
             }
             foreach($row as $k => $cell){
                 $row[$k] = trim($cell);
@@ -130,7 +128,6 @@ class UserGsmsBulkUploadAPI extends API{
              || $xls['type'] == 'text/csv')&&
             $xls['size'] > 0 ){
             $error = "";
-            $success = array();
             $errors = array();
             $xls_cells = $this->readXLS($xls['tmp_name']);
             if($xls_cells === false){
@@ -160,7 +157,7 @@ class UserGsmsBulkUploadAPI extends API{
                         continue;
                     }
                     $found_gsms[] = "'{$student['gsms_id']}'";
-                    $alreadyProcessed = (isset($updated_students[$gsms_sheet->user_id])) ? true : false;
+                    $alreadyProcessed = (isset($updated_students[$gsms_sheet->user_id]));
 
                     $updated_students[$gsms_sheet->user_id] = "{$student['name']} ({$student['email']})";
                     $update = false;
@@ -182,6 +179,7 @@ class UserGsmsBulkUploadAPI extends API{
                         $gsms_sheet->epl_listen .= @",{$student['epl_listen']}";
                         $gsms_sheet->epl_write .= @",{$student['epl_write']}";
                         $gsms_sheet->epl_read .= @",{$student['epl_read']}";
+                        $gsms_sheet->epl_speaking .= @",{$student['epl_speaking']}";
                     }
                     else{
                         $gsms_sheet->epl_test = @$student['epl_test'];
@@ -189,13 +187,14 @@ class UserGsmsBulkUploadAPI extends API{
                         $gsms_sheet->epl_listen = @$student['epl_listen'];
                         $gsms_sheet->epl_write = @$student['epl_write'];
                         $gsms_sheet->epl_read = @$student['epl_read'];
+                        $gsms_sheet->epl_speaking = @$student['epl_speaking'];
                     }
-                    $gsms_sheet->epl_test = @$student['epl_test'];
+                    /*$gsms_sheet->epl_test = @$student['epl_test'];
                     $gsms_sheet->epl_score = @$student['epl_score'];
                     $gsms_sheet->epl_listen = @$student['epl_listen'];
                     $gsms_sheet->epl_write = @$student['epl_write'];
                     $gsms_sheet->epl_read = @$student['epl_read'];
-                    $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                    $gsms_sheet->epl_speaking = @$student['epl_speaking'];*/
                     $gsms_sheet->cs_app = @$student['cs_app'];
                     $gsms_sheet->academic_year = @$student['academic_year'];
                     $gsms_sheet->term = @$student['term'];
@@ -218,7 +217,6 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->general_notes = @$student['general_notes'];
                     $gsms_sheet->visible = 'true';
                     $gsms_sheet->update();
-                    $success[] = $student_name;
                 }
                 else{
                     $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";
