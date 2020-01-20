@@ -83,17 +83,18 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['fgsr_gpa'] = $row[25];
             $array_info['gpa_scale'] = $row[26];
             $array_info['normalized_gpa'] = $row[27];
-            $array_info['epl_test'] = $row[28];
-            $array_info['epl_score'] = $row[29];
-            $array_info['epl_listen'] = $row[30];
-            $array_info['epl_write'] = $row[31];
-            $array_info['epl_read'] = $row[32];
-            $array_info['epl_speaking'] = $row[33];
-            $array_info['funding_note'] = $row[34];
-            $array_info['department_decision'] = $row[35];
-            $array_info['fgsr_decision'] = $row[36];
-            $array_info['decision_response'] = $row[37];
-            $array_info['general_notes'] = $row[38];
+            // Extra columns?
+            $array_info['epl_test'] = $row[30];
+            $array_info['epl_score'] = $row[31];
+            $array_info['epl_listen'] = $row[32];
+            $array_info['epl_write'] = $row[33];
+            $array_info['epl_read'] = $row[34];
+            $array_info['epl_speaking'] = $row[35];
+            $array_info['funding_note'] = $row[36];
+            $array_info['department_decision'] = $row[37];
+            $array_info['fgsr_decision'] = $row[38];
+            $array_info['decision_response'] = $row[39];
+            $array_info['general_notes'] = $row[40];
             $data_array[] = $array_info;
         }
         return $data_array;
@@ -159,7 +160,9 @@ class UserGsmsBulkUploadAPI extends API{
                         continue;
                     }
                     $found_gsms[] = "'{$student['gsms_id']}'";
-                    $updated_students[] = "{$student['name']} ({$student['email']})";
+                    $alreadyProcessed = (isset($updated_students[$gsms_sheet->user_id])) ? true : false;
+
+                    $updated_students[$gsms_sheet->user_id] = "{$student['name']} ({$student['email']})";
                     $update = false;
                     //check if update or new
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
@@ -173,6 +176,20 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->applicant_type = @$student['applicant_type'];
                     $gsms_sheet->education_history = @$student['education_history'];
                     $gsms_sheet->department = @$student['department'];
+                    if($alreadyProcessed && $gsms_sheet->epl_test != "" && $gsms_sheet->epl_test != @$student['epl_test']){
+                        $gsms_sheet->epl_test .= @",{$student['epl_test']}";
+                        $gsms_sheet->epl_score .= @",{$student['epl_score']}";
+                        $gsms_sheet->epl_listen .= @",{$student['epl_listen']}";
+                        $gsms_sheet->epl_write .= @",{$student['epl_write']}";
+                        $gsms_sheet->epl_read .= @",{$student['epl_read']}";
+                    }
+                    else{
+                        $gsms_sheet->epl_test = @$student['epl_test'];
+                        $gsms_sheet->epl_score = @$student['epl_score'];
+                        $gsms_sheet->epl_listen = @$student['epl_listen'];
+                        $gsms_sheet->epl_write = @$student['epl_write'];
+                        $gsms_sheet->epl_read = @$student['epl_read'];
+                    }
                     $gsms_sheet->epl_test = @$student['epl_test'];
                     $gsms_sheet->epl_score = @$student['epl_score'];
                     $gsms_sheet->epl_listen = @$student['epl_listen'];
