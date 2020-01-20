@@ -501,7 +501,7 @@
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', false);
                                         $('#lock_{$user_id}').prop('disabled', true);
                                         $('#lock_{$user_id}').after("<span class='throbber'></span>");
-                                        saveAll(function(){$("#Evaluations").click();});
+                                        saveAll(function(){$("#ATSEC").click();});
                                     } else {
                                         $('#lockContainer_{$user_id} input[type=checkbox]').prop('checked', true);
                                     }
