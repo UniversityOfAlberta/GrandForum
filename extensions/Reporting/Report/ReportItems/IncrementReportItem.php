@@ -103,6 +103,9 @@ class IncrementReportItem extends SelectReportItem {
                     $options[] = $exactIncrement." (PTC)";
                 }
             }
+            else{
+                $options[] = "0.00 (PTC)";
+            }
         }
         usort($options, function($a, $b){
             $floatA = floatval($a);
