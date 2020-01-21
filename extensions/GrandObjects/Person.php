@@ -30,6 +30,10 @@ class Person extends BackboneModel {
     var $twitter;
     var $website;
     var $linkedin;
+    var $googleScholar;
+    var $orcid;
+    var $scopus;
+    var $researcherId;
     var $office;
     var $publicProfile;
     var $privateProfile;
@@ -310,6 +314,10 @@ class Person extends BackboneModel {
                                               'user_twitter',
                                               'user_website',
                                               'user_linkedin',
+                                              'user_google_scholar',
+                                              'user_orcid',
+                                              'user_scopus',
+                                              'user_researcherid',
                                               'user_office',
                                               'user_public_profile',
                                               'user_private_profile',
@@ -847,6 +855,10 @@ class Person extends BackboneModel {
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
             $this->linkedin = @$data[0]['user_linkedin'];
+            $this->googleScholar = @$data[0]['user_google_scholar'];
+            $this->orcid = @$data[0]['user_orcid'];
+            $this->scopus = @$data[0]['user_scopus'];
+            $this->researcherId = @$data[0]['user_researcherid'];
             $this->office = @$data[0]['user_office'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
@@ -922,6 +934,10 @@ class Person extends BackboneModel {
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'linkedin' => $this->getLinkedIn(),
+                      'googleScholar' => $this->getGoogleScholar(),
+                      'orcid' => $this->getOrcid(),
+                      'scopus' => $this->getScopus(),
+                      'researcherId' => $this->getResearcherId(),
                       'office' => $this->getOffice(),
                       'photo' => $this->getPhoto(),
                       'cachedPhoto' => $this->getPhoto(true),
@@ -984,6 +1000,10 @@ class Person extends BackboneModel {
                                     array('user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
+                                          'user_google_scholar' => $this->getGoogleScholar(),
+                                          'user_orcid' => $this->getOrcid(),
+                                          'user_scopus' => $this->getScopus(),
+                                          'user_researcherid' => $this->getResearcherId(),
                                           'user_office' => $this->getOffice(),
                                           'user_gender' => $this->getGender(),
                                           'user_nationality' => $this->getNationality(),
@@ -1045,6 +1065,10 @@ class Person extends BackboneModel {
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
+                                          'user_google_scholar' => $this->getGoogleScholar(),
+                                          'user_orcid' => $this->getOrcid(),
+                                          'user_scopus' => $this->getScopus(),
+                                          'user_researcherid' => $this->getResearcherId(),
                                           'user_office' => $this->getOffice(),
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
@@ -1579,6 +1603,29 @@ class Person extends BackboneModel {
             $this->linkedin = 'http://'.$this->linkedin;
         }
         return $this->linkedin;
+    }
+    
+    /**
+     * Returns the url of this Person's google scholar
+     * @return string The url of this Person's google scholar
+     */
+    function getGoogleScholar(){
+        if (preg_match("#https?://#", $this->googleScholar) === 0) {
+            $this->googleScholar = 'https://'.$this->googleScholar;
+        }
+        return $this->googleScholar;
+    }
+    
+    function getOrcid(){
+        return $this->orcid;
+    }
+    
+    function getScopus(){
+        return $this->scopus;
+    }
+    
+    function getResearcherId(){
+        return $this->researcherId;
     }
     
     function getOffice(){

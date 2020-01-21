@@ -190,6 +190,10 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->googleScholar = @$_POST['googleScholarUrl'];
+            $this->person->scopus = @$_POST['scopus'];
+            $this->person->orcid = @$_POST['orcid'];
+            $this->person->researcherId = @$_POST['researcherId'];
             $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
@@ -202,7 +206,6 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             $this->person->update();
-
             $api = new UserEmailAPI();
             $api->doAction(true);
         }
@@ -496,6 +499,22 @@ EOF;
         $this->html .= "    <tr>
                                 <td align='right'><b>Website Url:</b></td>
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Google Scholar URL:</b></td>
+                                <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Sciverse Id:</b></td>
+                                <td><input type='text' size='30' name='scopus' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getScopus())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>ORCID:</b></td>
+                                <td><input type='text' size='30' name='orcid' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcid())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>ResearcherID:</b></td>
+                                <td><input type='text' size='30' name='researcherId' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getResearcherId())."' /></td>
                             </tr>
                             <tr>
                                 <td align='right'><b>LinkedIn Url:</b></td>
