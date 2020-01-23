@@ -39,7 +39,7 @@
                                 $('#gsmsIdError1').show();
                                 $('#gsmsIdError2').hide();
                             }
-                            else if(el.val().length != 8 || el.val().indexOf('16') !== 0){
+                            else if(el.val().length != 8 || (el.val().indexOf('16') !== 0 && el.val().indexOf('17') !== 0)){
                                 $('#gsmsIdError1').hide();
                                 $('#gsmsIdError2').show();
                             }
