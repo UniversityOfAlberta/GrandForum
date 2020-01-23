@@ -32,18 +32,16 @@ class UserGsmsBulkUploadAPI extends API{
             if($application_year != YEAR+1){
                 continue;
             }
-            $data_array_num = 0;
             $in_data_array = false;
             $student_name = $row[2]." ".$row[1];
             $gsms_id = $row[3];
             foreach($data_array as $student){
                 if($student['gsms_id'] == $gsms_id){
-                    $program_name = $data_array[$data_array_num]['program_name'];
+                    $program_name = $data_array[$gsms_id]['program_name'];
                     if($program_name != "{$row['13']}"){
                         $row[13] .= ", {$program_name}";
                     }
                 }
-                $data_array_num = $data_array_num+1;
             }
             foreach($row as $k => $cell){
                 $row[$k] = trim($cell);
@@ -53,6 +51,13 @@ class UserGsmsBulkUploadAPI extends API{
             if($row[11] == "Multimedia"){
                 // Ignore Multimedia rows
                 continue;
+            }
+            if(strstr($data_array[$gsms_id]['folder'], "Evaluator") !== false ||
+               strstr($data_array[$gsms_id]['folder'], "Coder") !== false ||
+               strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
+               strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
+               strstr($data_array[$gsms_id]['folder'], "Incoming") !== false){
+                $row[20] = $data_array[$gsms_id]['folder'];
             }
             $array_info['name'] = $student_name;
             $array_info['department'] = $row[0];
@@ -93,7 +98,7 @@ class UserGsmsBulkUploadAPI extends API{
             $array_info['fgsr_decision'] = $row[38];
             $array_info['decision_response'] = $row[39];
             $array_info['general_notes'] = $row[40];
-            $data_array[] = $array_info;
+            $data_array[$gsms_id] = $array_info;
         }
         return $data_array;
     }
