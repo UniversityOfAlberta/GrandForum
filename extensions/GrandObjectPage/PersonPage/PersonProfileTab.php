@@ -255,7 +255,7 @@ EOF;
     function showEditProfile($person, $visibility){
         global $config;
         $this->html .= "
-                <h3>Keywords</h3>
+                <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />";
         if($config->getValue("publicProfileOnly")){
             $this->html .= "
