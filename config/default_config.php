@@ -112,6 +112,9 @@
     // Whether or not Canada Research Chair is enabled
     $config->setValue("crcEnabled", false);
     
+    // Whether to have only the public profile field (true) or both public & private (false)
+    $config->setValue("publicProfileOnly", false);
+    
     // Whether or not Project Technology Evaluation/Adoption is enabled
     $config->setValue("projectTechEnabled", false);
     

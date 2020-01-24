@@ -1911,11 +1911,18 @@ class Person extends BackboneModel {
      * @return string This Person's profile text
      */
     function getProfile($private=false){
-        if($private){
-            return $this->privateProfile;
+        global $config;
+        if($config->getValue("publicProfileOnly")){
+            // Disregard the $private parameter, always return publicProfile
+            return $this->publicProfile;
         }
         else{
-            return $this->publicProfile;
+            if($private){
+                return $this->privateProfile;
+            }
+            else{
+                return $this->publicProfile;
+            }
         }
     }
     

@@ -12,12 +12,12 @@ abstract class AbstractEditableTab extends AbstractTab {
     }
     
     function showSaveButton(){
-        $this->html .= "<br /><button type='submit' name='submit' value='Save {$this->name}'>Save {$this->name}</button>";
+        $this->html .= "<br /><button type='submit' name='submit' onclick='this.form.submitted=this.value;' value='Save {$this->name}'>Save {$this->name}</button>";
     }
     
     function showCancelButton(){
         $name = str_replace("'", "&#39;", $this->name);
-        $this->html .= "&nbsp;&nbsp;<input id='{$this->id}' type='submit' name='submit' value='Cancel' />";
+        $this->html .= "&nbsp;&nbsp;<input id='{$this->id}' type='submit' name='submit' onclick='this.form.submitted=this.value;' value='Cancel' />";
         $this->html .= "<script type='text/javascript'>
             $('input#{$this->id}').click(function(){
                 $(\"<input type='hidden' name='cancel' value='{$name}' />\").insertBefore($('input#{$this->id}'));

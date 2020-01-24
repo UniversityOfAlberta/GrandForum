@@ -91,8 +91,8 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->handleContactEdit();
         $_POST['user_name'] = $this->person->getName();
         
-        $this->person->publicProfile = $_POST['public_profile'];
-        $this->person->privateProfile = $_POST['private_profile'];
+        $this->person->publicProfile = @$_POST['public_profile'];
+        $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->update();
         $this->person->setKeywords(explode(",", $_POST['keywords']));
         
@@ -256,14 +256,21 @@ EOF;
         global $config;
         $this->html .= "
                 <h3>Keywords</h3>
-                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />
-                
+                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />";
+        if($config->getValue("publicProfileOnly")){
+            $this->html .= "
+                <h3>Profile:</h3>
+                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea>";
+        }
+        else{
+            $this->html .= "
                 <h3>Live on Website:</h3>
-                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
+                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br />
 
                 <h3>Live on Forum:</h3>
                 <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
-        ";
+             ";
+         }
          $this->html .= "<script type='text/javascript'>
             $('input.keywords').tagit({
                 allowSpaces: true
@@ -757,6 +764,9 @@ EOF;
                 view.addUniversity();
             });
             $('form').on('submit', function(e){
+                if(this.submitted == 'Cancel'){
+                    return true;
+                }
                 if($('button[value=\"Save {$this->name}\"]').is(':visible')){
                     var requests = view.saveAll();
                     e.preventDefault();
