@@ -179,6 +179,7 @@ Person = Backbone.Model.extend({
         position: '',
         roles: new Array(),
         department: '',
+        keywords: '',
         publicProfile: '',
         privateProfile: '',
         url: '',

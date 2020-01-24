@@ -17,8 +17,12 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile() != ""){
+        $keywords = $this->person->getKeywords(", ");
+        if($this->person->getProfile() != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
+            if($keywords != ""){
+                $this->html .= "<b>Keywords:</b> {$keywords}<br />";
+            }
             $this->showProfile($this->person, $this->visibility);
         }
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
@@ -90,6 +94,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->publicProfile = $_POST['public_profile'];
         $this->person->privateProfile = $_POST['private_profile'];
         $this->person->update();
+        $this->person->setKeywords(explode(",", $_POST['keywords']));
         
         // Update Role Titles
         if(isset($_POST['role_title'])){
@@ -250,6 +255,9 @@ EOF;
     function showEditProfile($person, $visibility){
         global $config;
         $this->html .= "
+                <h3>Keywords</h3>
+                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />
+                
                 <h3>Live on Website:</h3>
                 <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
 
@@ -257,6 +265,9 @@ EOF;
                 <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
         ";
          $this->html .= "<script type='text/javascript'>
+            $('input.keywords').tagit({
+                allowSpaces: true
+            });
             $('textarea.profile').tinymce({
                 theme: 'modern',
                 menubar: false,

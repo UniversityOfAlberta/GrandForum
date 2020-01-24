@@ -85,11 +85,15 @@ CarouselView = Backbone.View.extend({
         var model = this.model.at(this.index);
         this.card = new LargePersonCardView({el: this.$(".carouselContent"), model: model});
         this.card.render();
+        this.$(".carouselExtra").empty();
+        if(model.get('keywords').length > 0){
+            this.$(".carouselExtra").append("<b>Keywords:</b> " + model.get('keywords').join(', '));
+        }
         if(model.get('privateProfile').trim() != ""){
-            this.$(".carouselExtra").html(model.get('privateProfile'));
+            this.$(".carouselExtra").append(model.get('privateProfile'));
         }
         else {
-            this.$(".carouselExtra").html(model.get('publicProfile'));
+            this.$(".carouselExtra").append(model.get('publicProfile'));
         }
         this.card.$(".card_photo img").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
         this.card.$("h1").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
