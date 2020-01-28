@@ -413,7 +413,7 @@ class GsmsData extends BackboneModel{
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
         $supervisors = $this->getAssignedSupervisors();
-        $json['supervisor'] = implode(", ", $supervisors['q5']);
+        $json['supervisor'] = @implode(", ", $supervisors['q5']);
         $json['comments'] = $sop->getFinalComments();
         $json['area'] = "";
         $json['degree'] = $this->getFinalProgram();
