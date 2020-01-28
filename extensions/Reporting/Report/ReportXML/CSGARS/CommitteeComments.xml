@@ -61,7 +61,7 @@
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Chair)}, {contains({$user_full_roles}, Manager)},{contains({$user_full_roles}, Admin)})}">
 
             <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$finalDecision}, Admit)}">
-                <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://forum-fos.ualberta.ca/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
+                <ReportItem id="q5" personId="0" type="FacultyMembersReportItem" url='https://gars.ualberta.ca/CS/index.php?action=api.people/Faculty' blobType="BLOB_ARRAY" blobItem="Q14" limit="900" delimiter="; " max="3" width="300px">
                         <![CDATA[
                         <table style="margin-top:10px;">
                             <tr>
