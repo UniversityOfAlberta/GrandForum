@@ -184,16 +184,7 @@
 </td>
 
 <td>
-    <% for(var i=0; i < reviewers.length;i++){ %>
-        <% if(reviewers[i].willingToSupervise){ %>
-            <%= reviewers[i].name %><br />
-        <% } %>
-    <% } %>
-    <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if(other_reviewers[i].willingToSupervise){ %>
-            <%= other_reviewers[i].name %><br />
-        <% } %>
-    <% } %>
+    <%= _.pluck(_.where(reviewers.concat(other_reviewers), {willingToSupervise: true}), 'name').join(",<br />") %>
 </td>
 
 <td>
