@@ -18,17 +18,10 @@ class UploadReportItem extends AbstractReportItem {
         
         $report = $this->getReport();
         $section = $this->getSection();
+
+        $html = "<div>";
         
-        $html = "<script type='text/javascript'>
-                                function alertsize_{$this->getPostId()}(pixels){
-                                    $('#reportMain > div').stop();
-                                    $('#fileFrame{$this->getPostId()}').height(pixels);
-                                    $('#fileFrame{$this->getPostId()}').css('max-height', pixels);
-                                }
-                            </script>";
-        $html .= "<div>";
-        
-        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
+        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:88px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
         $html .= "</div>";
         
         $item = $this->processCData($html);
@@ -70,11 +63,7 @@ class UploadReportItem extends AbstractReportItem {
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/template.css' type='text/css' />
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/main.css' type='text/css' />
                     <link rel='stylesheet' href='$wgServer$wgScriptPath/skins/cavendish/cavendish.css' type='text/css' />
-                    <script type='text/javascript'>
-                        function load_page() {
-                            parent.alertsize_{$this->getPostId()}($(\"body > div\").height() + 10);
-                        }
-                    </script>
+
                     <style type='text/css'>
                         body {
                             background: none;
@@ -135,8 +124,6 @@ class UploadReportItem extends AbstractReportItem {
                 </body>
                 <script type='text/javascript'>
                     $(document).ready(function(){
-                        load_page();
-                        setTimeout(load_page, 200);
                         parent.uploadFramesSaving['fileFrame{$this->getPostId()}'] = false;
                     });
                 </script>

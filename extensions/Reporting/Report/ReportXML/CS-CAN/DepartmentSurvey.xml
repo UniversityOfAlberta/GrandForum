@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Department Survey" reportType="RP_DEPT_SURVEY" pdfType="DEPT_SURVEY" pdfFiles="DepartmentSurveyPDF" ajax="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="INACTIVE+">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="survey" tooltip="Department Survey" name="Survey" title="Department Survey" type="EditableReportSection">
+        <ReportItem id="1" type="Radio" blobItem="1" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                <ol>
+                    <li>
+                        <b>Do you respond to the taulbee survey?</b><br />
+                        {$item}
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2" type="Upload" blobItem="2" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                    <li>
+                        <b>Please attach your course-evaluation survey instruments</b><br />
+                        {$item}
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3" type="Radio" blobItem="3" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you survey incoming undergraduate students?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3a" type="Upload" blobItem="3a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="3_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="3b" type="Textarea" blobItem="3b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4" type="Radio" blobItem="4" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you survey incoming graduate students?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="4a" type="Upload" blobItem="4a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="4_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="4b" type="Textarea" blobItem="4b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5" type="Radio" blobItem="5" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you conduct a summative survey (upon graduation) of your undergraduate students for their learning experience through your program?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="5a" type="Upload" blobItem="5a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="5_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="5b" type="Textarea" blobItem="5b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6" type="Radio" blobItem="6" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you conduct a summative survey (upon graduation) of your graduate students for their learning experience through your program?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="6a" type="Upload" blobItem="6a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="6_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="6b" type="Textarea" blobItem="6b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7" type="Radio" blobItem="7" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you conduct a summative survey of your undergraduate students who drop out of your program?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="7a" type="Upload" blobItem="7a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="7_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="7b" type="Textarea" blobItem="7b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8" type="Radio" blobItem="8" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you conduct a summative survey of your graduate students who drop out of your program?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="8a" type="Upload" blobItem="8a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="8_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="8b" type="Textarea" blobItem="8b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9" type="Radio" blobItem="9" blobType="BLOB_TEXT" options="Yes|No">
+            <![CDATA[
+                    <li>
+                        <b>Do you administer a climate survey as a means to assess the inclusiveness of the learning environment?</b><br />
+                        {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="9a" type="Upload" blobItem="9a" blobType="BLOB_RAW" fileSize="10">
+            <![CDATA[
+                        <ol id="9_followup" style="display:none;">
+                            <li>
+                                <b>Attach the questionnaire</b><br />
+                                {$item}
+                            </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="9b" type="Textarea" blobItem="9b" blobType="BLOB_TEXT">
+            <![CDATA[
+                            <li>
+                                <b>Explain how you administer it (to which level of students, how often)</b><br />
+                                {$item}
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="scripts" type="Static">
+            <![CDATA[
+                <script type="text/javascript">
+                    $("[name=Survey_3]").change(function(e){
+                        if($("[name=Survey_3]:checked").val() == "Yes"){
+                            $("#3_followup").slideDown();
+                        }
+                        else{
+                            $("#3_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_4]").change(function(){
+                        if($("[name=Survey_4]:checked").val() == "Yes"){
+                            $("#4_followup").slideDown();
+                        }
+                        else{
+                            $("#4_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_5]").change(function(){
+                        if($("[name=Survey_5]:checked").val() == "Yes"){
+                            $("#5_followup").slideDown();
+                        }
+                        else{
+                            $("#5_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_6]").change(function(){
+                        if($("[name=Survey_6]:checked").val() == "Yes"){
+                            $("#6_followup").slideDown();
+                        }
+                        else{
+                            $("#6_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_7]").change(function(){
+                        if($("[name=Survey_7]:checked").val() == "Yes"){
+                            $("#7_followup").slideDown();
+                        }
+                        else{
+                            $("#7_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_8]").change(function(){
+                        if($("[name=Survey_8]:checked").val() == "Yes"){
+                            $("#8_followup").slideDown();
+                        }
+                        else{
+                            $("#8_followup").slideUp();
+                        }
+                    });
+                    
+                    $("[name=Survey_9]").change(function(){
+                        if($("[name=Survey_9]:checked").val() == "Yes"){
+                            $("#9_followup").slideDown();
+                        }
+                        else{
+                            $("#9_followup").slideUp();
+                        }
+                    });
+
+                    $("[name=Survey_3]").change();
+                    $("[name=Survey_4]").change();
+                    $("[name=Survey_5]").change();
+                    $("[name=Survey_6]").change();
+                    $("[name=Survey_7]").change();
+                    $("[name=Survey_8]").change();
+                    $("[name=Survey_9]").change();
+
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false"  disabled="true">
+        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
+        </ReportItemSet>
+        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you can submit your application.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
