@@ -388,7 +388,7 @@ class GsmsData extends BackboneModel{
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
                                  'decision' => $sop->getAdmitResult($reviewer->getId()),
-                                 'willingToSupervise' => $sop->getWillingToSupervise($other->getId()),
+                                 'willingToSupervise' => $sop->getWillingToSupervise($reviewer->getId()),
                                  'comments' => $sop->getReviewComments($reviewer->getId()),
                                  'rank' => $sop->getReviewRanking($reviewer->getId()),
                                  'hidden' => $sop->getHiddenStatus($reviewer->getId()));
