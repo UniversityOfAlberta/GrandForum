@@ -55,7 +55,8 @@ class Report extends AbstractReport{
                 
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PCRReview")) ? "selected" : false;
                 $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("PCR Review", "{$url}PCRReview", $selected);
-                
+            }
+            if($person->isRole("UAHJIC") || $person->isRole(PL)){
                 // PCR
                 $projectId = 0;
                 do{

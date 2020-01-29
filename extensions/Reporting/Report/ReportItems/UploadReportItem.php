@@ -5,6 +5,13 @@ class UploadReportItem extends AbstractReportItem {
     function render(){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         
+        if(isset($_GET['delete']) && 
+           $_GET['delete'] != "" &&
+            $this->getMD5() == $_GET['delete']){
+            $this->delete();
+            exit;
+        }
+        
         if(strtolower($this->getAttr("pdf")) == "true"){
             $this->renderForPDF();
             return;
@@ -42,14 +49,39 @@ class UploadReportItem extends AbstractReportItem {
     }
     
     function renderForPDF(){
-        global $wgOut;
+        global $wgOut, $wgServer, $wgScriptPath;
         $data = $this->getBlobValue();
         $link = $this->getDownloadLink();
         $html = "";
         if($data !== null && $data != ""){
             $json = json_decode($data);
             $name = $json->name;
-            $html = "<p><a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a></p>";
+            $deleteHTML = "";
+            if(!isset($_GET['generatePDF'])){
+                $projectGet = "";
+                if(isset($_GET['project'])){
+                    $projectGet = "&project={$_GET['project']}";
+                }
+                $year = "";
+                if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
+                    $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
+                }
+                
+                $report = $this->getReport();
+                $section = $this->getSection();
+                $deleteHTML = "&nbsp;<button id='delete{$this->getPostId()}' type='button' class='button'>Delete</button>";
+                $deleteHTML .= "<script type='text/javascript'>
+                    $('#delete{$this->getPostId()}').click(function(){
+                        if(confirm('Are you sure you want to delete this upload?')){
+                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}', function(){
+                                $('#upload{$this->getPostId()}').hide();
+                            });
+                        };
+                    });
+                </script>";
+                
+            }
+            $html = "<p id='upload{$this->getPostId()}'><a class='externalLink' href='{$link}'>Download&nbsp;<b>{$name}</b></a>{$deleteHTML}</p>";
             if(isset($_GET['generatePDF'])){
                 $html .= "<br />";
             }
@@ -135,7 +167,8 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data !== ""){
             $json = json_decode($data);
             $name = $json->name;
-            echo "<br /><a href='{$this->getDownloadLink()}'>Download <b>{$name}</b></a>";
+            echo "<br /><a href='{$this->getDownloadLink()}'>Download <b>{$name}</b></a>&nbsp;
+                        <button id='delete' type='button' class='button'>Delete</button>";
         }
         else{
             echo "<div>You have not uploaded a file yet</div>";
@@ -148,6 +181,15 @@ class UploadReportItem extends AbstractReportItem {
                         setTimeout(load_page, 200);
                         parent.uploadFramesSaving['fileFrame{$this->getPostId()}'] = false;
                     });
+                    
+                    $('#delete').click(function(){
+                        if(confirm('Are you sure you want to delete this upload?')){
+                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}', function(){
+                                window.location = window.location;
+                            });
+                        };
+                    });
+                    
                 </script>
                 
               </html>";

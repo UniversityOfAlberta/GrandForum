@@ -35,6 +35,9 @@ class PersonPage {
             // Namespace is not a role namespace
             return true;
         }
+        if($article == null){
+            return true;
+        }
         if(!$wgOut->isDisabled()){
             $role = $nsText;
             $name = $article->getTitle()->getText();

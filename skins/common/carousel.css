@@ -1,0 +1,75 @@
+.carouselContainer {
+    position: relative;
+    min-height: 200px;
+}
+
+.carouselPrev {
+    width: 50px;
+    min-width: 50px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transition: 0.2s;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #CCCCCC;
+    color: #FFFFFF;
+    z-index: 100;
+    user-select: none;
+}
+
+.carouselNext {
+    width: 50px;
+    min-width: 50px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    transition: 0.2s;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #CCCCCC;
+    color: #FFFFFF;
+    z-index: 100;
+    user-select: none;
+}
+
+.carouselPrev:hover, .carouselNext:hover {
+    background: #AAAAAA;
+}
+
+.carouselMain {
+    width: auto;
+    padding: 0 5px 0 5px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.carouselUrl:hover {
+    text-decoration: none;
+}
+
+.carouselExtra {
+    padding-bottom: 5px;
+}
+
+.carouselProgressBarContainer {
+    position: absolute;
+    height: 3px;
+    left: 50px;
+    right: 50px;
+    bottom: 0;
+}
+
+.carouselProgressBar {
+    background: #CCCCCC;
+    height: 100%;
+    width: 50%;
+}

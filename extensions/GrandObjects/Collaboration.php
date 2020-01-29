@@ -277,7 +277,9 @@ class Collaboration extends BackboneModel{
         foreach($projects as $project){
             if($me->leadershipOf($project) || 
                $me->isThemeLeaderOf($project) ||
-               $me->isThemeCoordinatorOf($project)){
+               $me->isThemeCoordinatorOf($project) ||
+               $me->isRole(PA, $project) ||
+               $me->isRole(PS, $project)){
                 return true;
             }
         }

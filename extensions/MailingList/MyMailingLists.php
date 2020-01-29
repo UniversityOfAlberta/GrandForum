@@ -14,8 +14,13 @@ function runMyMailingLists($par) {
 class MyMailingLists extends SpecialPage{
 
     function MyMailingLists() {
-        SpecialPage::__construct("MyMailingLists", HQP.'+', true, 'runMyMailingLists');
+        SpecialPage::__construct("MyMailingLists", null, true, 'runMyMailingLists');
     }
+    
+    function userCanExecute($user){
+	    $me = Person::newFromUser($user);
+	    return ($me->isLoggedIn() && !$me->isCandidate());
+	}
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
@@ -67,7 +72,7 @@ class MyMailingLists extends SpecialPage{
     static function createTab(&$tabs){
         global $wgUser, $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($wgUser->isLoggedIn() && $me->isRoleAtLeast(HQP)){
+        if($wgUser->isLoggedIn() && !$me->isCandidate()){
             $selected = "";
             if($wgTitle->getNSText() == "Mail" || 
                ($wgTitle->getNSText() == "Special" && $wgTitle->getText() == "MyMailingLists")){

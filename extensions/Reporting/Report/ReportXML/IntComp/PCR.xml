@@ -4,6 +4,9 @@
         <Role role="UAHJIC">
             <SectionPermission id="pcr" permissions="rw" />
         </Role>
+        <Role role="PL">
+            <SectionPermission id="pcr" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="pcr" tooltip="PCR" name="PCR" title="Proposal Change Request" blobSection="PCR" type="EditableReportSection">
         <ReportItem id="date" type="Calendar" blobItem="DATE" width="100px">
