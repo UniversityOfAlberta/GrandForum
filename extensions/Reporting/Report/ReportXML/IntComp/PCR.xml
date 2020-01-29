@@ -4,7 +4,7 @@
         <Role role="UAHJIC">
             <SectionPermission id="pcr" permissions="rw" />
         </Role>
-        <Role role="PL">
+        <Role role="NI">
             <SectionPermission id="pcr" permissions="rw" />
         </Role>
     </Permissions>
