@@ -186,6 +186,9 @@ class SOP extends AbstractSop{
         }
     }
 
+    function getWillingToSupervise($user){
+        return false;
+    }
 
     function getReviewComments($user){
         $year = ($this->year != "") ? $this->year : YEAR;

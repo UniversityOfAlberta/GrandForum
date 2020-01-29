@@ -184,6 +184,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
                                                         { 'width': '120px' }, // Notes
+                                                        { 'width': '85px' },  // Willing to Supervise
                                                         { 'width': '85px' },  // Supervisor
                                                         { 'width': '70px' },  // Comments
                                                         { 'width': '70px' },  // Decision

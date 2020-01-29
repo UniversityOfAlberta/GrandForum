@@ -184,6 +184,19 @@
 </td>
 
 <td>
+    <% for(var i=0; i < reviewers.length;i++){ %>
+        <% if(reviewers[i].willingToSupervise){ %>
+            <%= reviewers[i].name %>
+        <% } %>
+    <% } %>
+    <% for(var i=0; i < other_reviewers.length;i++){ %>
+        <% if(other_reviewers[i].willingToSupervise){ %>
+            <%= other_reviewers[i].name %>
+        <% } %>
+    <% } %>
+</td>
+
+<td>
     <%= supervisor %>
 </td>
 
