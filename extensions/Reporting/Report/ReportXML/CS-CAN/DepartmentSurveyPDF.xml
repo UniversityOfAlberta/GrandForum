@@ -1,172 +1,190 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Advanced Training Opportunity Program" reportType="RP_ATOP" pdfType="ATOP" ajax="true" disabled="false" year="2018">
-    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
-        <ReportItem id="report_info_head" type="StaticReportItem">
+<Report name="Department Survey" reportType="RP_DEPT_SURVEY" pdfType="DEPT_SURVEY" pdfFiles="DepartmentSurveyPDF" ajax="true" disabled="false" year="2020">
+    <ReportSection id="survey" tooltip="Department Survey" name="Survey" title="Department Survey" type="EditableReportSection" blobSection="SURVEY" pagebreak="false">
+        <ReportItem id="1" type="Radio" blobItem="1" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <span style='font-size: 1.5em;font-weight:bold'>Advanced Training Opportunity Program</span>
-                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
+                <ol>
+                    <li>
+                        <b>Do you respond to the Taulbee survey?</b><br />
+                        {$item}<br /><br />
+                    </li>
             ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
-        <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Program/Position|Department|Institution|City|Province|Phone|Email" types="Text|Select(MSc,PhD,PDF,Technician,RA)|Text|Text|Text|Text|Text|Text" class="wikitable">
+        <ReportItem id="2" type="Upload" blobItem="2" blobType="BLOB_RAW" fileSize="10">
             <![CDATA[
-                <h3>Applicant Profile</h3>
-                {$item}
+                    <li>
+                        <b>Please attach your course-evaluation survey instruments</b><br />
+                        {$item}<br />
+                    </li>
             ]]>
         </ReportItem>
-        <ReportItem id="supervisor" type="MultiText" blobType="BLOB_ARRAY" blobItem="SUPERVISOR" labels="Name|Department|Institution|City|Province|Phone|Email" class="wikitable">
+        <ReportItem id="3" type="Radio" blobItem="3" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h3>Current Supervisor</h3>
-                {$item}
+                    <li>
+                        <b>Do you survey incoming undergraduate students?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="contributions" type="Textarea" blobItem="CONTRIBUTIONS" rich="true" limit="500" recommended="true">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,3,0,{$user_id},0)},Yes)}">
+            <ReportItem id="3a" type="Upload" blobItem="3a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="3b" type="Textarea" blobItem="3b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="4" type="Radio" blobItem="4" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h3>Most Significant Contributions to Research</h3>
-                {$item}
+                    </li>
+                    <li>
+                        <b>Do you survey incoming graduate students?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="cv" type="Upload" blobType="BLOB_RAW" blobItem="CV" mimeType="application/pdf" fileSize="5">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,4,0,{$user_id},0)},Yes)}">
+            <ReportItem id="4a" type="Upload" blobItem="4a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="4b" type="Textarea" blobItem="4b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="5" type="Radio" blobItem="5" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h2>Uploads</h2>
-                <h3>CV</h3>
-                {$item}
-            ]]>  
+                    </li>
+                    <li>
+                        <b>Do you conduct a summative survey (upon graduation) of your undergraduate students for their learning experience through your program?</b><br />
+                        {$item}<br />
+            ]]>
         </ReportItem>
-        <ReportItem id="letter" type="Upload" blobType="BLOB_RAW" blobItem="LETTER" mimeType="application/pdf" fileSize="5">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,5,0,{$user_id},0)},Yes)}">
+            <ReportItem id="5a" type="Upload" blobItem="5a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="5b" type="Textarea" blobItem="5b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="6" type="Radio" blobItem="6" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <h3>Signed letter (1 page) of support from primary academic supervisor</h3>
-                {$item}
-            ]]>  
+                    </li>
+                    <li>
+                        <b>Do you conduct a summative survey (upon graduation) of your graduate students for their learning experience through your program?</b><br />
+                        {$item}<br />
+            ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="proposal" name="Proposal" tooltip="Application" type="EditableReportSection" blobSection="PROPOSAL" pagebreak="false">
-        <ReportItem id="title" type="Text" blobItem="TITLE" width="300px">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,6,0,{$user_id},0)},Yes)}">
+            <ReportItem id="6a" type="Upload" blobItem="6a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="6b" type="Textarea" blobItem="6b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="7" type="Radio" blobItem="7" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <table>
-                <tr>
-                    <td><b>Project&nbsp;Title:</b></td>
-                    <td>{$item}</td>
-                </tr>
+                    </li>
+                    <li>
+                        <b>Do you conduct a summative survey of your undergraduate students who drop out of your program?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="THEME" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,7,0,{$user_id},0)},Yes)}">
+            <ReportItem id="7a" type="Upload" blobItem="7a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="7b" type="Textarea" blobItem="7b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="8" type="Radio" blobItem="8" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <tr>
-                    <td valign='top'><b>Theme:</b></td>
-                    <td>{$item}</td>
-                </tr>
+                    </li>
+                    <li>
+                        <b>Do you conduct a summative survey of your graduate students who drop out of your program?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="start" type="Calendar" blobItem="START">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,8,0,{$user_id},0)},Yes)}">
+            <ReportItem id="8a" type="Upload" blobItem="8a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="8b" type="Textarea" blobItem="8b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it</b><br />
+                            {$item}<br />
+                        
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem id="9" type="Radio" blobItem="9" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
-                <tr>
-                    <td valign='top'><b>Start Date:</b></td>
-                    <td>{$item}</td>
-                </tr>
+                    </li>
+                    <li>
+                        <b>Do you administer a climate survey as a means to assess the inclusiveness of the learning environment?</b><br />
+                        {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="end" type="Calendar" blobItem="END">
+        <ReportItemSet type="If" if="{==({getText(RP_DEPT_SURVEY,SURVEY,9,0,{$user_id},0)},Yes)}">
+            <ReportItem id="9a" type="Upload" blobItem="9a" blobType="BLOB_RAW" fileSize="10">
+                <![CDATA[
+                            <br />
+                            <b>Attach the questionnaire</b><br />
+                            {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="9b" type="Textarea" blobItem="9b" blobType="BLOB_TEXT">
+                <![CDATA[
+                            <b>Explain how you administer it (to which level of students, how often)</b><br />
+                            {$item}<br />
+                        
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <ReportItem type="Static">
             <![CDATA[
-                <tr>
-                    <td valign='top'><b>End Date:</b></td>
-                    <td>{$item}</td>
-                </tr>
-                </table>
+                    </li>
+                </ol>
             ]]>
-        </ReportItem>
-        <ReportItem id="project" type="Radio" blobItem="PROJECT" options="Yes|No">
-            <![CDATA[
-                <h3>Is this project related to a currently funded GlycoNet Project?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="project_title" type="Text" blobItem="PROJECT_TITLE">
-            <![CDATA[
-                <p>If yes, please provide the title/acronym of the currently funded project:</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250" recommended="true">
-            <![CDATA[
-                <h3>Summary of Proposal</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="2000" recommended="true">
-            <![CDATA[
-                <h3>Research Proposal</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="500" recommended="true">
-            <![CDATA[
-                <h3>HQP Training Plan</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="stipend" type="Integer" blobItem="STIPEND" min="0" max="8000" size="4">
-            <![CDATA[
-                <h3>Requested Budget</h3>
-                <table class="wikitable" frame="box" rules="all">
-                    <tr>
-                        <td><b>UG/Co-op student stipend:</b></td>
-                        <td>${$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="supplies" type="Integer" blobItem="SUPPLIES" min="0" max="8000" size="4">
-            <![CDATA[<tr>
-                        <td><b>Supplies and consumables:</b></td>
-                        <td>${$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="other" type="Integer" blobItem="OTHER" min="0" max="8000" size="4">
-            <![CDATA[<tr>
-                        <td><b>Other:</b></td>
-                        <td>${$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="total" type="Integer" blobItem="TOTAL" min="0" max="8000" size="4">
-            <![CDATA[<tr>
-                        <td><b>TOTAL:</b></td>
-                        <td>${$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="match" type="Integer" blobItem="MATCH" min="0" max="8000" size="4">
-            <![CDATA[<tr>
-                        <td><b>Matching funds (if applicable):</b></td>
-                        <td>${$item}</td>
-                    </tr>
-                </table><br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true" limit="300" recommended="true">
-            <![CDATA[
-                <h3>Budget Justification</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="figures" type="Upload" blobType="BLOB_RAW" blobItem="FIGURES" mimeType="application/pdf" fileSize="5">
-            <![CDATA[
-                <h2>Uploads</h2>
-                <h3>Figures and schemes</h3>
-                {$item}
-            ]]>  
         </ReportItem>
     </ReportSection>
 </Report>

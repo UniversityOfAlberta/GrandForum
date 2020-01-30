@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Department Survey" reportType="RP_DEPT_SURVEY" pdfType="DEPT_SURVEY" pdfFiles="DepartmentSurveyPDF" ajax="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="INACTIVE+">
+        <Role role="PL">
             <SectionPermission id="survey" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="survey" tooltip="Department Survey" name="Survey" title="Department Survey" type="EditableReportSection">
+    <ReportSection id="survey" tooltip="Department Survey" name="Survey" title="Department Survey" type="EditableReportSection" blobSection="SURVEY">
         <ReportItem id="1" type="Radio" blobItem="1" blobType="BLOB_TEXT" options="Yes|No">
             <![CDATA[
                 <ol>
@@ -286,19 +286,12 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false"  disabled="true">
-        <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
-        </ReportItemSet>
-        <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_ATOP,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
-            <![CDATA[
-                <p>You need to accept the declaration before you can submit your application.</p>
-            ]]>
-        </ReportItem>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},snitynsk@ualberta.ca" />
     </ReportSection>
 </Report>

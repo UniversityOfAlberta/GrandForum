@@ -5,6 +5,8 @@ $wgSpecialPages['Report'] = 'Report'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
+require_once("ApplicationsTable.php");
+
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
@@ -24,7 +26,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
-        $tabs["Applications"] = TabUtils::createTab("HQP Application");
+        $tabs["Surveys"] = TabUtils::createTab("My Surveys");
         return true;
     }
     
@@ -33,9 +35,9 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        if($person->isRole(HQP."-Candidate")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("HQP Application", "{$url}HQPApplication", $selected);
+        if($person->isRole(PL)){
+            $selected = @($wgTitle->getText() == "Survey" && ($_GET['report'] == "DepartmentSurvey")) ? "selected" : false;
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Department Survey", "{$url}DepartmentSurvey", $selected);
         }
         return true;
     }
