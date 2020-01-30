@@ -12,7 +12,7 @@
             <![CDATA[
                 <ol>
                     <li>
-                        <b>Do you respond to the taulbee survey?</b><br />
+                        <b>Do you respond to the Taulbee survey?</b><br />
                         {$item}
                     </li>
             ]]>
