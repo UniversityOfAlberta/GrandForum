@@ -36,7 +36,7 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isRole(PL)){
-            $selected = @($wgTitle->getText() == "Survey" && ($_GET['report'] == "DepartmentSurvey")) ? "selected" : false;
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "DepartmentSurvey")) ? "selected" : false;
             $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Department Survey", "{$url}DepartmentSurvey", $selected);
         }
         return true;
