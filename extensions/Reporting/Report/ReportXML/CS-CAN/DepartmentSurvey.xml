@@ -6,6 +6,36 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Person id="734">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
+        <Person id="246">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
+        <Person id="1068">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
+        <Person id="250">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
+        <Person id="237">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
+        <Person id="261">
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="survey" tooltip="Department Survey" name="Survey" title="Department Survey" type="EditableReportSection" blobSection="SURVEY">
         <ReportItem id="1" type="Radio" blobItem="1" blobType="BLOB_TEXT" options="Yes|No">

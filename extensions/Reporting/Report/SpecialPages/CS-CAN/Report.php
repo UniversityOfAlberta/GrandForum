@@ -35,7 +35,13 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
-        if($person->isRole(PL)){
+        if($person->isRole(PL) ||
+           $person->getId() == 734 ||
+           $person->getId() == 246 ||
+           $person->getId() == 1068 ||
+           $person->getId() == 250 ||
+           $person->getId() == 237 ||
+           $person->getId() == 261){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "DepartmentSurvey")) ? "selected" : false;
             $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Department Survey", "{$url}DepartmentSurvey", $selected);
         }

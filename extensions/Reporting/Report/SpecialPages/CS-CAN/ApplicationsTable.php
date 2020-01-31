@@ -13,7 +13,7 @@ function runApplicationsTable($par) {
 
 class ApplicationsTable extends SpecialPage{
 
-    var $pls;
+    var $allPeople;
 
     function ApplicationsTable() {
         SpecialPage::__construct("ApplicationsTable", null, false, 'runApplicationsTable');
@@ -21,7 +21,13 @@ class ApplicationsTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return $person->isRoleAtLeast(STAFF);
+        return ($person->isRoleAtLeast(STAFF) ||
+                $person->getId() == 734 ||
+                $person->getId() == 246 ||
+                $person->getId() == 1068 ||
+                $person->getId() == 250 ||
+                $person->getId() == 237 ||
+                $person->getId() == 261);
     }
 
     function execute($par){
@@ -30,7 +36,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-        $this->pls = array_merge(Person::getAllPeople(PL));
+        $this->allPeople = array_merge(Person::getAllPeople());
     }
     
     function generateHTML($wgOut){
@@ -50,7 +56,13 @@ class ApplicationsTable extends SpecialPage{
             }
         </style>");
         
-        if($me->isRoleAtLeast(PL)){
+        if($me->isRoleAtLeast(STAFF) ||
+           $me->getId() == 734 ||
+           $me->getId() == 246 ||
+           $me->getId() == 1068 ||
+           $me->getId() == 250 ||
+           $me->getId() == 237 ||
+           $me->getId() == 261){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=survey'>Department Survey</a>";
         }
         
@@ -82,7 +94,7 @@ class ApplicationsTable extends SpecialPage{
             }
         }
         
-        $tabbedPage->addTab(new ApplicationTab('RP_DEPT_SURVEY', $this->pls, 2020, "2020", $q));
+        $tabbedPage->addTab(new ApplicationTab('RP_DEPT_SURVEY', $this->allPeople, 2020, "2020", $q));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
