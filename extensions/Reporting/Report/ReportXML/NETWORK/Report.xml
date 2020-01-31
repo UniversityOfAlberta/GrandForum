@@ -6,6 +6,8 @@
             <SectionPermission id="section2" permissions="rw" />
             <SectionPermission id="section3" permissions="rw" />
             <SectionPermission id="section4" permissions="rw" />
+            <SectionPermission id="section5" permissions="rw" />
+            <SectionPermission id="section6" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
@@ -108,6 +110,63 @@
                 ]]>
             </Static>
         </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="section6" type="EditableReportSection" blobSection="SEC6" name="Section 6" title="Section 6">
+        <Static>
+            <![CDATA[
+                {set(A, HELLO)}
+                
+                A: {get(A)}<br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                B: 
+            ]]>
+        </Static>
+        <For from="0" to="5">
+            <Static>
+                <![CDATA[
+                    {set(B, {$extraIndex})}
+                
+                    {get(B)}
+                ]]>
+            </Static>
+        </For>
+        <Static>
+            <![CDATA[
+                <br />
+                {set(C, 0)}
+                
+                C:&nbsp;
+            ]]>
+        </Static>
+        <For from="0" to="5">
+            <Static>
+                <![CDATA[
+                    {set(C, {$extraIndex})}
+                ]]>
+            </Static>
+            <For from="0" to="5">
+                <Static>
+                    <![CDATA[
+                        {get(C)}
+                    ]]>
+                </Static>
+            </For>
+        </For>
+        <Static>
+            <![CDATA[
+                <br />C After: {get(C)}<br />
+            ]]>
+        </Static>
+        <If if="{==({get(C)}, 5)}">
+            <Static>
+                <![CDATA[
+                    PASSED CONDITION<br />
+                ]]>
+            </Static>
+        </If>
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="ReviewSubmitReportItem" />

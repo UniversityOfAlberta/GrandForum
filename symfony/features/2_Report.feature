@@ -30,6 +30,15 @@ Feature: Reporting
         When I go to "index.php/Special:Report?report=Report&section=Section+5"
         Then I should see "Hello World"
         And I should not see "World World"
+        
+    Scenario: Testing setters/getters
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+6"
+        Then I should see "A: HELLO"
+        And I should see "B: 0 1 2 3 4 5"
+        And I should see "C: 000000111111222222333333444444555555"
+        And I should see "C After: 5"
+        And I should see "PASSED CONDITION"
 
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
