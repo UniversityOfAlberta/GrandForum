@@ -30,6 +30,7 @@ class Report extends AbstractReport{
         $tabs["Proposals"] = TabUtils::createTab("Huawei");
         $tabs["Awards"] = TabUtils::createTab("My Awards");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
+        $tabs["PCR"] = TabUtils::createTab("PCR");
         
         return true;
     }
@@ -51,6 +52,24 @@ class Report extends AbstractReport{
                 
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProgressReview")) ? "selected" : false;
                 $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Progress Review", "{$url}ProgressReview", $selected);
+                
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PCRReview")) ? "selected" : false;
+                $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("PCR Review", "{$url}PCRReview", $selected);
+            }
+            if($person->isRole("UAHJIC") || $person->isRole(PL)){
+                // PCR
+                $projectId = 0;
+                do{
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PCR") && ($_GET['project'] == $projectId || (!isset($_GET['project']) && $projectId == 0))) ? "selected" : false;
+                    $tabName = "[".($projectId+1)."]";
+                    $tabs["PCR"]['subtabs'][] = TabUtils::createSubTab($tabName, "{$url}PCR&project=$projectId", $selected);
+                    
+                    $report = new DummyReport("PCR", $person, ++$projectId, YEAR, true);
+                } while($report->hasStarted());
+
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PCR") && ($_GET['project'] == $projectId)) ? "selected" : false;
+                $tabs["PCR"]['subtabs'] = array_reverse($tabs["PCR"]['subtabs']);
+                $tabs["PCR"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}PCR&project=$projectId", $selected);
             }
             
             if(count($leadership) > 0){

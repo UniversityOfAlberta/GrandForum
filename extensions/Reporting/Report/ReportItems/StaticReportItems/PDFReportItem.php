@@ -24,6 +24,11 @@ class PDFReportItem extends StaticReportItem {
         }
         $person = Person::newFromId($this->personId);
         $report = new DummyReport($reportType, $person, $project, $year, true);
+        if($report->allowIdProjects){
+            // Handle allowIdProjects
+            $report->project = new Project(array());
+            $report->project->id = $this->projectId;
+        }
         $tok = false;
         $tst = '';
         $len = 0;
@@ -32,7 +37,7 @@ class PDFReportItem extends StaticReportItem {
     	$check = $report->getPDF();
     	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
     		$tok = $check[0]['token'];
-    		$sto->select_report($tok);    	
+    		$sto->select_report($tok);
     		$tst = $sto->metadata('timestamp');
     		$len = $sto->metadata('len_pdf');
     		$sub = $sto->metadata('submitted');

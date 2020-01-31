@@ -602,6 +602,9 @@ class MimeMagic {
 			// Multimedia...
 			'MThd'             => 'audio/midi',
 			'OggS'             => 'application/ogg',
+			
+			// Word
+			"\x50\x4b\x03\x04" => 'application/msword',
 
 			// Image formats...
 			// Note that WMF may have a bare header, no magic number.

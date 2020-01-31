@@ -1291,16 +1291,26 @@ abstract class AbstractReport extends SpecialPage {
             if($data != null){
                 $fileName = $_GET['id'];
                 $json = json_decode($data);
-                if(isset($_GET['mime'])){
-                    header("Content-Type: {$_GET['mime']}");
-                }
                 if($json != null){
+                    if(isset($_GET['mime']) && 
+                       strstr($_GET['mime'], ",") === false &&
+                       preg_match("/^\..*/", $_GET['mime']) == 0){
+                        // Only use $_GET['mime'] if it is a single type and not a file extension
+                        $mimeType = $_GET['mime'];
+                    }
+                    else{
+                        $mimeType = $json->type;
+                    }
                     $fileName = $json->name;
+                    header("Content-Type: {$mimeType}");
                     header("Content-disposition: attachment; filename=\"".addslashes($fileName)."\"");
                     echo base64_decode($json->file);
                     exit;
                 }
                 else{
+                    if(isset($_GET['mime'])){
+                        header("Content-Type: {$_GET['mime']}");
+                    }
                     if(isset($_GET['fileName'])){
                         $fileName = $_GET['fileName'];
                     }

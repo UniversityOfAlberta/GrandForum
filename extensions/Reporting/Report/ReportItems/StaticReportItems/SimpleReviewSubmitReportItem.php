@@ -34,26 +34,26 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		    $wgOut->addHTML("<script type='text/javascript'>
 		        $(document).ready(function(){
 		            $('#generateButton').click(function(){
-		                $('#generateButton').prop('disabled', true);
-		                $('#generate_success').html('');
+	                    $('#generateButton').prop('disabled', true);
+	                    $('#generate_success').html('');
                         $('#generate_success').css('display', 'none');
                         $('#generate_error').html('');
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
-		                $.ajax({
-		                        url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}', 
-		                        success : function(data){
-		                                        //var data = jQuery.parseJSON(response);
-		                                        for(index in data){
-		                                            val = data[index];
-		                                            if(typeof val.tok != 'undefined'){
-		                                                index = index.replace('/', '');
-		                                                var tok = val.tok;
-		                                                var time = val.time;
-		                                                var len = val.len;
-		                                                var name = val.name;
-		                                                
-		                                                $('#ex_token_' + index).html(tok);
+	                    $.ajax({
+	                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}', 
+	                            success : function(data){
+	                                            //var data = jQuery.parseJSON(response);
+	                                            for(index in data){
+	                                                val = data[index];
+	                                                if(typeof val.tok != 'undefined'){
+	                                                    index = index.replace('/', '');
+	                                                    var tok = val.tok;
+	                                                    var time = val.time;
+	                                                    var len = val.len;
+	                                                    var name = val.name;
+	                                                    
+	                                                    $('#ex_token_' + index).html(tok);
                                                         $('#ex_time_' + index).html(time);
                                                         $('#generate_button_' + index).attr('value', tok);
                                                         $('#download_button_' + index).removeAttr('disabled');
@@ -68,17 +68,17 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_error').css('display', 'block');
                                                     }
                                                 }
-		                                        $('#generate_throbber').css('display', 'none');
-		                                        $('#generateButton').removeAttr('disabled');
-		                                  },
-		                        error : function(response){
+	                                            $('#generate_throbber').css('display', 'none');
+	                                            $('#generateButton').removeAttr('disabled');
+	                                      },
+	                            error : function(response){
                                               // Error
                                               $('#generate_error').html('The PDF cannot be generated; please examine whether <ul><li>you have uploaded non PDF attachments in fields which require a PDF document.</li><li>Any PDF attachements are not encrypted/password protected</li></ul>  Try generating it again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
                                               $('#generate_error').css('display', 'block');
-		                                      $('#generateButton').removeAttr('disabled');
-		                                      $('#generate_throbber').css('display', 'none');
-		                                  }
-		                });
+	                                          $('#generateButton').removeAttr('disabled');
+	                                          $('#generate_throbber').css('display', 'none');
+	                                      }
+	                    });
 		            });
 		        });
 		    </script>");
@@ -157,7 +157,7 @@ EOF;
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>
-            	<button id='download_button_{$file}' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
             </td>
 EOF;
 

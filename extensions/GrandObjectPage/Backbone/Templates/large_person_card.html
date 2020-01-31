@@ -1,6 +1,26 @@
 <div class="large_card" style="margin-bottom:10px;">
     <div class="card_photo">
-        <img src="<%= photo %>" alt="" style="max-width:100px;max-height:132px;" />
+        <img src="<%= photo %>" alt="" style="max-width:100px;max-height:132px;margin-bottom:8px;" />
+        <div style="margin-left: 5px;">
+            <% if(website != "" && website != "http://"){ %>
+                <a href="<%= website %>" target="_blank">Website</a><br />
+            <% } %>
+            <% if(linkedin != "" && linkedin != "http://"){ %>
+                <a href="<%= linkedin %>" target="_blank">LinkedIn</a><br />
+            <% } %>
+            <% if(googleScholar != "" && googleScholar != "http://" && googleScholar != "https://"){ %>
+                <a href="<%= googleScholar %>" target="_blank">Google Scholar</a><br />
+            <% } %>
+            <% if(scopus != ""){ %>
+                <a href="https://www.scopus.com/authid/detail.uri?authorId=<%= scopus %>" target="_blank">Sciverse</a><br />
+            <% } %>
+            <% if(orcid != ""){ %>
+                <a href="https://orcid.org/<%= orcid %>" target="_blank">ORCID</a><br />
+            <% } %>
+            <% if(researcherId != ""){ %>
+                <a href="https://publons.com/researcher/<%= researcherId %>" target="_blank">ResearcherID</a><br />
+            <% } %>
+        </div>
     </div>
     <div class="card_description">
         <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
@@ -22,18 +42,6 @@
                 <tr>
                     <td width="100">Gender&nbsp;</td>
                     <td style="color:#333333;"><%= gender %></td>
-                </tr>
-            <% } %>
-            <% if(website != "" && website != "http://"){ %>
-                <tr>
-                    <td width="100">Website&nbsp;</td>
-                    <td style="color:#333333;"><a href="<%= website %>" target="_blank"><%= parseUrl(website).hostname %></a></td>
-                </tr>
-            <% } %>
-            <% if(linkedin != "" && linkedin != "http://"){ %>
-                <tr>
-                    <td width="100">LinkedIn&nbsp;</td>
-                    <td style="color:#333333;"><a href="<%= linkedin %>" target="_blank"><%= parseUrl(linkedin).hostname %></a></td>
                 </tr>
             <% } %>
             <% if(office != ""){ %>

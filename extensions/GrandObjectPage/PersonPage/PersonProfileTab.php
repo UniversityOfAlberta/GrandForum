@@ -17,8 +17,12 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile() != ""){
+        $keywords = $this->person->getKeywords(", ");
+        if($this->person->getProfile() != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
+            if($keywords != ""){
+                $this->html .= "<b>Keywords:</b> {$keywords}<br />";
+            }
             $this->showProfile($this->person, $this->visibility);
         }
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
@@ -87,9 +91,10 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->handleContactEdit();
         $_POST['user_name'] = $this->person->getName();
         
-        $this->person->publicProfile = $_POST['public_profile'];
-        $this->person->privateProfile = $_POST['private_profile'];
+        $this->person->publicProfile = @$_POST['public_profile'];
+        $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->update();
+        $this->person->setKeywords(explode(",", $_POST['keywords']));
         
         // Update Role Titles
         if(isset($_POST['role_title'])){
@@ -190,6 +195,10 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
             $this->person->linkedin = @$_POST['linkedin'];
+            $this->person->googleScholar = @$_POST['googleScholarUrl'];
+            $this->person->scopus = @$_POST['scopus'];
+            $this->person->orcid = @$_POST['orcid'];
+            $this->person->researcherId = @$_POST['researcherId'];
             $this->person->office = @$_POST['office'];
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
@@ -202,7 +211,6 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             $this->person->update();
-
             $api = new UserEmailAPI();
             $api->doAction(true);
         }
@@ -247,13 +255,26 @@ EOF;
     function showEditProfile($person, $visibility){
         global $config;
         $this->html .= "
+                <h3>Keywords:</h3>
+                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />";
+        if($config->getValue("publicProfileOnly")){
+            $this->html .= "
+                <h3>Profile:</h3>
+                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea>";
+        }
+        else{
+            $this->html .= "
                 <h3>Live on Website:</h3>
-                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br>
+                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br />
 
                 <h3>Live on Forum:</h3>
                 <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
-        ";
+             ";
+         }
          $this->html .= "<script type='text/javascript'>
+            $('input.keywords').tagit({
+                allowSpaces: true
+            });
             $('textarea.profile').tinymce({
                 theme: 'modern',
                 menubar: false,
@@ -498,6 +519,22 @@ EOF;
                                 <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
                             <tr>
+                                <td align='right'><b>Google Scholar URL:</b></td>
+                                <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>Sciverse Id:</b></td>
+                                <td><input type='text' size='30' name='scopus' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getScopus())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>ORCID:</b></td>
+                                <td><input type='text' size='30' name='orcid' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcid())."' /></td>
+                            </tr>
+                            <tr>
+                                <td align='right'><b>ResearcherID:</b></td>
+                                <td><input type='text' size='30' name='researcherId' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getResearcherId())."' /></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>LinkedIn Url:</b></td>
                                 <td><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
                             </tr>
@@ -727,6 +764,9 @@ EOF;
                 view.addUniversity();
             });
             $('form').on('submit', function(e){
+                if(this.submitted == 'Cancel'){
+                    return true;
+                }
                 if($('button[value=\"Save {$this->name}\"]').is(':visible')){
                     var requests = view.saveAll();
                     e.preventDefault();

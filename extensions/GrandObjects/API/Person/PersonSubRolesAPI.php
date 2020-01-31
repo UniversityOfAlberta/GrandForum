@@ -23,6 +23,7 @@ class PersonSubRolesAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->getParam('id'));
         if($me->isRoleAtLeast(STAFF) && $person->getId() != 0){
+            MailingList::unsubscribeAll($person);
             $subRoles = $this->POST('subroles');
             DBFunctions::begin();
             DBFunctions::delete('grand_role_subtype',
@@ -35,6 +36,7 @@ class PersonSubRolesAPI extends RESTAPI {
                 }
             }
             DBFunctions::commit();
+            MailingList::subscribeAll($person);
             return $this->doGET();
         }
         else{

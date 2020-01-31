@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Proposal Change Request" reportType="RP_PCR" pdfType="RPTP_PCR" pdfFiles="PCRPDF" allowIdProjects="true" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="UAHJIC">
+            <SectionPermission id="pcr" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="pcr" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="pcr" tooltip="PCR" name="PCR" title="Proposal Change Request" blobSection="PCR" type="EditableReportSection">
+        <ReportItem id="date" type="Calendar" blobItem="DATE" width="100px">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>Date:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Your Name:</td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Select" blobItem="TITLE" options="{getProjectTitles(|)}" width="300px">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Project Title:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="Text" blobItem="PI">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>UofA PI:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="items" type="MultiText" blobType="BLOB_ARRAY" blobItem="ITEMS" labels="Item" sizes="300" multiple="true">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Change Items:<br /><small>(e.g. Budget, schedule, etc.)</small></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="upload" type="Upload" blobType="BLOB_RAW" blobItem="UPLOAD" fileSize="10" mimeType=".pdf,.doc,.docx" optional="false">
+            <![CDATA[
+                <h3>Attachment Upload (optional)</h3>
+                <p>Submit Detailed PCR Here (in Word or PDF format)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" multiple="true">
+            <![CDATA[
+                <h3>Comments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="false" emails="{$my_email}" />
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+
+                    $(document).ready(function(){
+                        var oldHandler = $._data( $('#generateButton')[0] ).events.click[0].handler;
+                        $('#generateButton').unbind('click');
+                        $('#generateButton').click(function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            $('#generateButton').prop("disabled", true);
+                            $("[type=submit]").click();
+                            var interval = setInterval(function(){
+                                if($('#reportMain .autosaveSpan div').is(":visible")){
+                                    oldHandler();
+                                    clearInterval(interval);
+                                }
+                            }, 10);
+                        });
+                    
+                        $('hr').hide();
+                        $('button[name=submit]').hide();
+                    });
+                    
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

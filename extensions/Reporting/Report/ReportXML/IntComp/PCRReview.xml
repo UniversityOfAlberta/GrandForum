@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="PCR Review" reportType="RP_PCR_REVIEW" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="MANAGER">
+            <SectionPermission id="feedback" permissions="rw" />
+            <SectionPermission id="discussion" permissions="rw" />
+        </Role>
+        <Role role="UAHJIC">
+            <SectionPermission id="feedback" permissions="rw" />
+            <SectionPermission id="discussion" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="feedback" tooltip="Proposal Change Request Review" name="Review" title="Proposal Change Request Review" blobSection="FEEDBACK" type="EditableReportSection">
+        <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PCR">
+            <If if="{!=({$user_id},{$my_id})}">
+                <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} [{add({$project_id},1)}] - {getText(RP_PCR, PCR, TITLE, 0, {$user_id}, {$project_id})} - {getText(RP_PCR, PCR, DATE, 0, {$user_id}, {$project_id})}">
+                    <Static>
+                        <![CDATA[
+                            <table width='100%'>
+                            <tr>
+                                <td class='label' width='1%'>PCR:</td>
+                                <td><a class='button' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_PCR, PCR, UPLOAD, 0, {$user_id}, {$project_id})}'>Download</a></td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Date:</td>
+                                <td>{getText(RP_PCR, PCR, DATE, 0, {$user_id}, {$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Your Name:</td>
+                                <td>{$user_name}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>UofA PI:</td>
+                                <td>{getText(RP_PCR, PCR, PI, 0, {$user_id}, {$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>
+                                    <table class='wikitable'>
+                                        <tr>
+                                            <th width='100px'>Change Items</th>
+                                            <th width='100px'>Voting</th>
+                                        </tr>
+                        ]]>
+                    </Static>
+                    <ReportItemSet id="items" type="Array" array="{getArray(RP_PCR, PCR, ITEMS, 0, {$user_id}, {$project_id})}" index="items">
+                        <ReportItem id="decision" type="Select" blobItem="DECISION" blobSubItem="{$user_id}_{$extraIndex}" options="Proceed|Needs further discussion">
+                            <![CDATA[
+                                <tr>
+                                    <td>{getExtra(item)}</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
+                    <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                        <![CDATA[
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Comments:</td>
+                                <td>{$item}</td>
+                            </tr>
+                            </table>
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </If>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="discussion" tooltip="Proposal Change Request Review Results" name="Results" title="Proposal Change Request Review Results" blobSection="DISCUSION" type="ReportSection">
+        <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PCR">
+            <ReportItemSet id="toggle" type="ToggleHeader" title="{$user_name} [{add({$project_id},1)}] - {getText(RP_PCR, PCR, TITLE, 0, {$user_id}, {$project_id})} - {getText(RP_PCR, PCR, DATE, 0, {$user_id}, {$project_id})}">
+                <Static>
+                    <![CDATA[
+                        {set(reviewerId, 1)}
+                        {set(uahjicId, {$user_id}}
+                    ]]>
+                </Static>
+                <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
+                    <Static>
+                        <![CDATA[
+                            {set(reviewerId, {add({get(reviewerId)},1)}}
+                            <table width='100%'>
+                                <tr>
+                                    <td class='label' width='1%'>Reviewer:</td>
+                                    <td>Reviewer {get(reviewerId)}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan='2'>
+                                        <table class='wikitable'>
+                                            <tr>
+                                                <th width='100px'>Change Items</th>
+                                                <th width='100px'>Voting</th>
+                                            </tr>
+                        ]]>
+                    </Static>
+                    <ReportItemSet id="items" type="Array" array="{getArray(RP_PCR, PCR, ITEMS, 0, {$parent_id}, {$project_id})}" index="items">
+                        <Static>
+                            <![CDATA[
+                                <tr>
+                                    <td>{getExtra(item)}</td>
+                                    <td>{getText(RP_PCR_REVIEW, FEEDBACK, DECISION, {get(uahjicId)}_{$extraIndex}, {$user_id}, {$project_id})}</td>
+                                </tr>
+                            ]]>
+                        </Static>
+                    </ReportItemSet>
+                    <Static>
+                        <![CDATA[
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='label'>Comments:</td>
+                                    <td>{getText(RP_PCR_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                </tr>
+                            </table>
+                            <hr />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>

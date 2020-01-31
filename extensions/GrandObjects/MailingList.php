@@ -187,12 +187,14 @@ class MailingList extends BackboneModel {
      * @return array Returns the array of mailing lists
      */
     static function getPersonListsByRules($person){
+        global $config;
         $lists = MailingList::getAllMailingLists();
         $personLists = array();
         foreach($lists as $list){
             $results = array();
             $subscribe = false;
             $roleResult = false;
+            $subRoleResult = false;
             $projResult = false;
             $locResult = false;
             $rules = $list->getRules();
@@ -255,6 +257,14 @@ class MailingList extends BackboneModel {
                             $roleResult = ($roleResult || $person->isRole($value));
                         }
                         $results['roleResult'] = $roleResult;
+                        break;
+                    case "SUB-ROLE":
+                        $subRoles = array_flip($config->getValue('subRoles'));
+                        $subRole = @$subRoles[$value];
+                        if($person->isSubRole($value) || $person->isSubRole($subRole)){
+                            $subRoleResult = ($subRoleResult || true);
+                        }
+                        $results['subRoleResult'] = $subRoleResult;
                         break;
                     case "PROJ":
                         $project = Project::newFromId($value);
