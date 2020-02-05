@@ -1,45 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" disabled="true">
+<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2020" disabled="false">
     <Permissions>
-        <Role role="NI">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="letters" permissions="rw" />
-            <SectionPermission id="commercial" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+        <Role role="NI" subRole="Trans2020">
+
         </Role>
-        <Role role="NI-Candidate">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="letters" permissions="rw" />
-            <SectionPermission id="commercial" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+        <Role role="NI-Candidate" subRole="Trans2020">
+
         </Role>
-        <Role role="External">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="letters" permissions="rw" />
-            <SectionPermission id="commercial" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+        <Role role="External" subRole="Trans2020">
+
         </Role>
-        <Role role="External-Candidate">
-            <SectionPermission id="instructions" permissions="rw" />
-            <SectionPermission id="description" permissions="rw" />
-            <SectionPermission id="budget" permissions="rw" />
-            <SectionPermission id="milestones" permissions="rw" />
-            <SectionPermission id="letters" permissions="rw" />
-            <SectionPermission id="commercial" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+        <Role role="External-Candidate" subRole="Trans2020">
+
+        </Role>
+        <Role role="Staff">
+        
         </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
@@ -93,7 +68,7 @@
     </ReportSection>
     <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
         <!-- Theme -->
-        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Diabetes/Obesity|Therapeutic proteins/Vaccines|Chronic Disease|Antimicrobials|Rare Genetic diseases">
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
             <![CDATA[
                 <h3>Theme</h3>
                 {$item}
@@ -271,7 +246,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xls">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xlsx">
             <![CDATA[
                 {$item}
             ]]>
@@ -287,7 +262,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones for 1 year.xls">milestone template</a> and upload it below.
                 </p>
                 {$item}
             ]]>
