@@ -61,7 +61,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="THEME" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+        <ReportItem id="theme" type="Checkbox" blobType="BLOB_ARRAY" blobItem="THEME" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
             <![CDATA[
                 <tr>
                     <td valign='top'><b>Theme:</b></td>

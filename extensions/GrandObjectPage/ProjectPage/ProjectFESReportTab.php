@@ -22,7 +22,9 @@ class ProjectFESReportTab extends AbstractEditableTab {
     function userCanView(){
         $me = Person::newFromWgUser();
         // Check that they are leader
-        if($me->leadershipOf($this->project) || $me->isRoleAtLeast(STAFF)){
+        if($me->leadershipOf($this->project) || 
+           $me->isRoleAtLeast(STAFF) ||
+           $me->isRole(PA, $this->project)){
             return true;
         }
     }

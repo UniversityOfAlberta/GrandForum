@@ -907,7 +907,7 @@
             <![CDATA[
                 <h2>Budget <small>(from time of renewal to March 31, 2020)</small></h2>
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xls">budget template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx">budget template</a> and upload it below.
                 </p>
                 {$item}
             ]]>
