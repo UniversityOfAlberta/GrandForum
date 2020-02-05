@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Cycle II Clinical Partnerships RFP" reportType="RP_CLINICAL" pdfType="RPTP_CLINICAL" pdfFiles="ClinicalReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="NI" subRole="Clinical2020">
-
-        </Role>
-        <Role role="NI-Candidate" subRole="Clinical2020">
-
-        </Role>
-        <Role role="External" subRole="Clinical2020">
-
-        </Role>
-        <Role role="External-Candidate" subRole="Clinical2020">
+        <Role role="" subRole="Clinical2020">
 
         </Role>
         <Role role="Staff">

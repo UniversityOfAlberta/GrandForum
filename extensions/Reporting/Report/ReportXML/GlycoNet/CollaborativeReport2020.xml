@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeReport2020PDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="NI" subRole="Collab2020">
-
-        </Role>
-        <Role role="NI-Candidate" subRole="Collab2020">
-
-        </Role>
-        <Role role="External" subRole="Collab2020">
-
-        </Role>
-        <Role role="External-Candidate" subRole="Collab2020">
+        <Role role="" subRole="Collab2020">
 
         </Role>
         <Role role="Staff">

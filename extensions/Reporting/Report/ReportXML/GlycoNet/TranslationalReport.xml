@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2020" disabled="false">
     <Permissions>
-        <Role role="NI" subRole="Trans2020">
-
-        </Role>
-        <Role role="NI-Candidate" subRole="Trans2020">
-
-        </Role>
-        <Role role="External" subRole="Trans2020">
-
-        </Role>
-        <Role role="External-Candidate" subRole="Trans2020">
+        <Role role="" subRole="Trans2020">
 
         </Role>
         <Role role="Staff">
