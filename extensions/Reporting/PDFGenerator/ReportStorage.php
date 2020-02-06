@@ -271,7 +271,7 @@ class ReportStorage {
                 ORDER BY timestamp DESC
                 {$lim}";
         $res = DBFunctions::execSQL($sql);
-        if(($sub_id === 0 || $sub_id === "0") && count($res) == 0){
+        if(($proj_id === 0 || $proj_id === "0") && count($res) == 0){
             $sql = "SELECT r.user_id, generation_user_id, submission_user_id, r.report_id, r.submitted, r.auto, r.token, r.timestamp, r.year
                     FROM grand_pdf_report r
                     WHERE r.report_id NOT IN (SELECT report_id FROM grand_pdf_index)
