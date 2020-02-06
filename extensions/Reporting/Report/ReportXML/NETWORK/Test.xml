@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Test" reportType="RP_TEST" pdfType="RPTP_TEST" pdfFiles="Test" year="0" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+            <SectionPermission id="section1" permissions="rw" />
+            <SectionPermission id="section2" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="section1" type="EditableReportSection" blobSection="SEC1" name="Section 1" title="Section 1">
+
+    </ReportSection>
+    <ReportSection id="section2" type="EditableReportSection" blobSection="SEC2" name="Section 2" title="Section 2">
+        <For from="0" to="100">
+            <For from="0" to="100">
+                <ReportItem id="extra" type="Static">
+                    <![CDATA[
+                        {$extraIndex}<br />
+                    ]]>
+                </ReportItem>
+            </For>
+        </For>
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

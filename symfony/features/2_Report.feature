@@ -6,6 +6,40 @@ Feature: Reporting
     Scenario: Validate Report XML
         Given I validate report xml
 
+    Scenario: Checking Lazy ReportItemSet
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Test"
+        Then The load time should be no greater than "1000"
+        
+    Scenario: Testing If/IfElse/Else ReportItemSet
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+4"
+        Then I should see "A0"
+        And I should not see "B0"
+        And I should not see "A1"
+        And I should see "B1"
+        And I should not see "A2"
+        And I should see "B2"
+        And I should not see "C2"
+        And I should not see "A3"
+        And I should not see "B3"
+        And I should see "C3"
+        
+    Scenario: Testing ReportItemSets with the same id
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+5"
+        Then I should see "Hello World"
+        And I should not see "World World"
+        
+    Scenario: Testing setters/getters
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+6"
+        Then I should see "A: HELLO"
+        And I should see "B: 0 1 2 3 4 5"
+        And I should see "C: 000000111111222222333333444444555555"
+        And I should see "C After: 5"
+        And I should see "PASSED CONDITION"
+
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=Report"

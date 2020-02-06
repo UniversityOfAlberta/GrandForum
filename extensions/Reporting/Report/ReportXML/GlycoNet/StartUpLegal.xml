@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Start-Up Company Funding 2019-2020 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" allowIdProjects="true" ajax="true" disabled="false" year="2019">
+<Report name="Start-Up Company Funding 2020-2021 Legal and IP Costs" reportType="RP_START_UP_LEGAL" pdfType="RP_START_UP_LEGAL" pdfFiles="StartUpLegalPDF" allowIdProjects="true" ajax="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="INACTIVE+" subRole="StartUpLegal2019">
-            <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="opportunity" permissions="rw" />
-            <SectionPermission id="project" permissions="rw" />
-            <SectionPermission id="ack" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+        <Role role="INACTIVE+" subRole="StartUpLegal2020">
+
         </Role>
     </Permissions>
     <ReportSection id="information" name="A - Applicant Information" title="A. Applicant Information" tooltip="A. Applicant Information" type="EditableReportSection" blobSection="INFORMATION">

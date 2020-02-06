@@ -184,7 +184,6 @@ EOF;
             $tok = false;
             $tst = '';
             $sub = 0;
-            $sto = new ReportStorage($person);
             $project = null;
             if($this->getReport()->project instanceof Project){
                 $project = $this->getReport()->project;
@@ -268,7 +267,6 @@ EOF;
             $tok = false;
             $tst = '';
             $sub = 0;
-            $sto = new ReportStorage($person);
             $project = Project::newFromId($this->projectId);
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);

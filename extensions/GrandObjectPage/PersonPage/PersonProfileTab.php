@@ -647,12 +647,13 @@ EOF;
                 $crcOptions = array("No", 
                                     "Yes, I am a Tier 1 Canada Research Chair (CRC) or equivalent", 
                                     "Yes, I am a Tier 2 Canada Research Chair (CRC) or equivalent",
-                                    "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent");
+                                    "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent",
+                                    "Yes, I am a Canada 150 Research Chair (C150) or equivalent");
                 $blankSelected = ($crcObj['title'] == "") ? "selected='selected'" : "";
                 $crc = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend>Are you currently a CRC or CERC (or equivalent)?</legend>
+                                    <legend>Are you currently a CRC, CERC, C150 (or equivalent)?</legend>
                                     <select name='crc_rank'>
                                         <option value='' $blankSelected>---</option>";
                                         foreach($crcOptions as $option){

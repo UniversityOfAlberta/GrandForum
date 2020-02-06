@@ -4,6 +4,10 @@
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
             <SectionPermission id="section1" permissions="rw" />
             <SectionPermission id="section2" permissions="rw" />
+            <SectionPermission id="section3" permissions="rw" />
+            <SectionPermission id="section4" permissions="rw" />
+            <SectionPermission id="section5" permissions="rw" />
+            <SectionPermission id="section6" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
@@ -35,6 +39,134 @@
                 Value: {getText(RP_TEST,SEC3,TEXT2,0,{$user_id},0}<br />
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="section4" type="EditableReportSection" blobSection="SEC4" name="Section 4" title="Section 4">
+        <If if="{==(0,0)}">
+            <![CDATA[
+                A0<br />
+            ]]>
+        </If>
+        <Else>
+            <![CDATA[
+                B0<br />
+            ]]>
+        </Else>
+        
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A1<br />
+            ]]>
+        </If>
+        <Else id="else1" type="Else">
+            <![CDATA[
+                B1<br />
+            ]]>
+        </Else>
+        
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A2<br />
+            ]]>
+        </If>
+        <ElseIf if="{==(1,1)}">
+            <![CDATA[
+                B2<br />
+            ]]>
+        </ElseIf>
+        <Else>
+            <![CDATA[
+                C2<br />
+            ]]>
+        </Else>
+        
+        <If if="{==(1,0)}">
+            <![CDATA[
+                A3<br />
+            ]]>
+        </If>
+        <ElseIf if="{==(1,2)}">
+            <![CDATA[
+                B3<br />
+            ]]>
+        </ElseIf>
+        <Else id="else3" type="Else">
+            <![CDATA[
+                C3<br />
+            ]]>
+        </Else> 
+    </ReportSection>
+    <ReportSection id="section5" type="EditableReportSection" blobSection="SEC5" name="Section 5" title="Section 5">
+        <ReportItemSet id="set" type="For" from="0" to="0">
+            <Static>
+                <![CDATA[
+                    Hello
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <ReportItemSet id="set" type="For" from="0" to="0">
+            <Static>
+                <![CDATA[
+                    &nbsp;World
+                ]]>
+            </Static>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="section6" type="EditableReportSection" blobSection="SEC6" name="Section 6" title="Section 6">
+        <Static>
+            <![CDATA[
+                {set(A, HELLO)}
+                
+                A: {get(A)}<br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                B: 
+            ]]>
+        </Static>
+        <For from="0" to="5">
+            <Static>
+                <![CDATA[
+                    {set(B, {$extraIndex})}
+                
+                    {get(B)}
+                ]]>
+            </Static>
+        </For>
+        <Static>
+            <![CDATA[
+                <br />
+                {set(C, 0)}
+                
+                C:&nbsp;
+            ]]>
+        </Static>
+        <For from="0" to="5">
+            <Static>
+                <![CDATA[
+                    {set(C, {$extraIndex})}
+                ]]>
+            </Static>
+            <For from="0" to="5">
+                <Static>
+                    <![CDATA[
+                        {get(C)}
+                    ]]>
+                </Static>
+            </For>
+        </For>
+        <Static>
+            <![CDATA[
+                <br />C After: {get(C)}<br />
+            ]]>
+        </Static>
+        <If if="{==({get(C)}, 5)}">
+            <Static>
+                <![CDATA[
+                    PASSED CONDITION<br />
+                ]]>
+            </Static>
+        </If>
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="ReviewSubmitReportItem" />

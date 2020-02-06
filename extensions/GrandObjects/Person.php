@@ -4651,7 +4651,7 @@ class Person extends BackboneModel {
                 foreach($con_people as $con_pers){
                     if($con_pers instanceof Person){
                         $con_pers = $con_pers->getId();
-                        if ( $con_pers == $this->id ){
+                        if ($con_pers == $this->id){
                             $con_receiver =  true;
                             break;
                         }
@@ -4663,6 +4663,11 @@ class Person extends BackboneModel {
         else{
             return false;
         }
+    }
+    
+    function getMetrics(){
+        $metrics = PersonMetrics::getUserMetric($this->id);
+        return $metrics;
     }
     
     /**

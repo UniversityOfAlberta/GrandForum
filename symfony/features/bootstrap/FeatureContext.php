@@ -270,6 +270,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     /**
+     * @Then /^The load time should be no greater than "([^"]*)"$/
+     */
+    public function theLoadTimeShouldBeNoGreaterThan($maxTime)
+    {
+        $time = $this->getSession()->evaluateScript('return window.performance.timing.domContentLoadedEventEnd- window.performance.timing.navigationStart;');
+        assertFalse($time > $maxTime);
+    }
+    
+    /**
      * @Given /^I wait "([^"]*)"$/
      */
     public function iWait($ms){

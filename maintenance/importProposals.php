@@ -13,14 +13,10 @@
             $leader = array_values($project->getLeaders());
             if(isset($leader[0])){
                 $leader = $leader[0];
-                $sto = new ReportStorage($leader);
+                $sto = new ReportStorage($leader, $project);
                 $data = "";
                 $html = "";
                 $sto->store_report($data, $html, $contents, 0, 0, 'RPTP_PROJECT_PROPOSAL_ZIP', 2015);
-                
-                $ind = new ReportIndex($leader);
-                $rid = $sto->metadata('report_id');
-                $ind->insert_report($rid, $project);
             }
         }
     }

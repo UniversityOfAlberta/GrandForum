@@ -25,9 +25,9 @@ class PDF extends BackboneModel {
      */
     static function newFromId($id){
         $id = DBFunctions::escape($id);
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
-                                      FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
-                                      WHERE r.report_id = '{$id}'");
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+                                      FROM `grand_pdf_report`
+                                      WHERE report_id = '{$id}'");
         return new PDF($data);
     }
     
@@ -38,18 +38,16 @@ class PDF extends BackboneModel {
      */
     static function newFromToken($tok){
         $tok = DBFunctions::escape($tok);
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
-                                      FROM `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
-                                      WHERE r.token = '{$tok}'");
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+                                      FROM `grand_pdf_report`
+                                      WHERE token = '{$tok}'");
         return new PDF($data);
     }
     
     static function getAllPDFs(){
-        $data = DBFunctions::execSQL("SELECT r.report_id, r.user_id, r.generation_user_id, r.submission_user_id, r.year, r.type, r.submitted, r.timestamp, r.token, i.sub_id
-                                      FROM (SELECT MAX(r1.report_id) as report_id
-                                            FROM `grand_pdf_report` r1 LEFT JOIN `grand_pdf_index` i1 ON r1.report_id = i1.report_id
-                                            GROUP BY r1.user_id, r1.year, r1.type, i1.sub_id) t1, `grand_pdf_report` r LEFT JOIN `grand_pdf_index` i ON r.report_id = i.report_id
-                                      WHERE t1.report_id = r.report_id");
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+                                      FROM `grand_pdf_report`
+                                      GROUP BY user_id, proj_id, year, type");
         $pdfs = array();
         foreach($data as $row){
             $pdfs[] = new PDF(array($row));
@@ -62,13 +60,13 @@ class PDF extends BackboneModel {
             $this->id = $data[0]['token'];
             $this->reportId = $data[0]['report_id'];
             $this->userId = $data[0]['user_id'];
+            $this->projectId = $data[0]['proj_id'];
             $this->generationUserId = $data[0]['generation_user_id'];
             $this->submissionUserId = $data[0]['submission_user_id'];
             $this->year = $data[0]['year'];
             $this->type = $data[0]['type'];
             $this->submitted = $data[0]['submitted'];
             $this->timestamp = $data[0]['timestamp'];
-            $this->projectId = $data[0]['sub_id'];
         }
     }
     

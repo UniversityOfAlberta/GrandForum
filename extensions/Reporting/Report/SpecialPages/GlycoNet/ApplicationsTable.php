@@ -40,10 +40,14 @@ class ApplicationsTable extends SpecialPage{
         
         $this->startUpLegal2018Applicants = array();
         $this->startUpLegal2019Applicants = array();
+        $this->startUpLegal2020Applicants = array();
         $this->startUpDev2018Applicants = array();
         $this->cycleIILOIApplicants = array();
         $this->strat2017 = array();
         $this->strat2019 = array();
+        $this->strat2020 = array();
+        $this->collab2020 = array();
+        $this->clinical2020 = array();
         foreach(Person::getAllCandidates() as $person){
             if($person->isSubRole('Strat2017')){
                 $this->strat2017[] = $person;
@@ -51,11 +55,23 @@ class ApplicationsTable extends SpecialPage{
             if($person->isSubRole('Strat2019')){
                 $this->strat2019[] = $person;
             }
+            if($person->isSubRole('Strat2020')){
+                $this->strat2020[] = $person;
+            }
+            if($person->isSubRole('Collab2020')){
+                $this->collab2020[] = $person;
+            }
+            if($person->isSubRole('Clinical2020')){
+                $this->clinical2020[] = $person;
+            }
             if($person->isSubRole('StartUpLegal2018')){
                 $this->startUpLegal2018Applicants[] = $person;
             }
             if($person->isSubRole('StartUpLegal2019')){
                 $this->startUpLegal2019Applicants[] = $person;
+            }
+            if($person->isSubRole('StartUpLegal2020')){
+                $this->startUpLegal2020Applicants[] = $person;
             }
             if($person->isSubRole('StartUpDev2018')){
                 $this->startUpDev2018Applicants[] = $person;
@@ -88,6 +104,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=clinical'>Clinical</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
@@ -124,6 +141,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "clinical" && $me->isRoleAtLeast(SD)){
+            $this->generateClinical();
         }
         else if($program == "cycleiiloi" && $me->isRoleAtLeast(SD)){
             $this->generateCycleIILOI();
@@ -214,6 +234,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2016, "2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -240,11 +261,30 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->collab2020, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', $this->allNis, 2018, "LOI 2018", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_04_2017'), $this->allNis, 2017, "04-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateClinical(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2020, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -280,6 +320,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2020, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2019, 2019, "2019", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2017, 2017, "2017-18", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -288,6 +329,7 @@ class ApplicationsTable extends SpecialPage{
     function generateStartUp(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2020Applicants, 2020, "Legal2020", array(), false, array(0,1,2)));
         $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2019Applicants, 2019, "Legal2019", array(), false, array(0,1,2)));
         $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2018Applicants, 2018, "Legal2018"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));

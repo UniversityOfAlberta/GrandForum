@@ -1,4 +1,5 @@
 <?php
+
 $dir = dirname(__FILE__) . '/';
 
 $wgSpecialPages['ReportArchive'] = 'ReportArchive';
@@ -48,13 +49,12 @@ class ReportArchive extends SpecialPage {
             }
         }
 
-        $repi = new ReportIndex($person);
         // Check for a download.
         $action = @$_GET['getpdf'];
         if ($action !== "") {
             $tok = $action;
             
-            $sto = new ReportStorage($person);
+            $sto = new ReportStorage($person, null);
             if (! empty($tok)) {
                 $pdf = $sto->fetch_pdf($tok, false);
                 $len = $sto->metadata('len_pdf');
