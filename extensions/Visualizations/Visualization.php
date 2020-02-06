@@ -32,6 +32,10 @@ $visualizations = array('Doughnut' => array("name" => "Doughnut",
                         'VisTimeline' => array("name" => "VisTimeline",
                               "path" => "Vis/VisTimeline.php",
                               "enabled" => true,
+                              "initialized" => false),
+                        'Bar' => array("name" => "Bar",
+                              "path" => "Bar/Chart.php",
+                              "enabled" => true,
                               "initialized" => false)
                        );
       

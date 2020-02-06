@@ -145,6 +145,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                     $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 }
+                $tabbedPage->addTab(new PersonMetricsTab($person, $visibility));
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);
