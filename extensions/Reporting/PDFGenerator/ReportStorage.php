@@ -12,7 +12,7 @@ class ReportStorage {
     function __construct($person, $project){
         $this->_person = $person;
         $this->_project = $project;
-        if($person != null){
+        if($person != null && $person->getId() != null){
             $this->_uid = $person->getId();
         }
         if($project != null){
