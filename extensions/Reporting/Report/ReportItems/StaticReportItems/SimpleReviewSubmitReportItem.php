@@ -62,6 +62,8 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
+                                                        
+                                                        document.location = document.location.href
                                                     }
                                                     else{
                                                         $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
@@ -107,7 +109,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		                    {$text}<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3>Download the PDF</h3>");
+		/*$wgOut->addHTML("<h3>Download the PDF</h3>");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
@@ -175,6 +177,7 @@ EOF;
         }
         
         $wgOut->addHTML("</table></p>");
+        */
 	}
 	
 	function renderForPDF(){
