@@ -17,6 +17,19 @@ class ProductAPI extends RESTAPI {
                 echo $paper->toBibTeX();
                 exit;
             }
+            if($this->getParam('file') != ""){
+                $file = $paper->getData($this->getParam('file'));
+                if($file != null && isset($file->data)){
+                    header('Content-Type: '.$file->type);
+                    header('Content-Disposition: attachment; filename="'.$file->filename.'"');
+                    $exploded = explode(",", $file->data);
+                    echo base64_decode($exploded[1]);
+                }
+                else{
+                    $this->throwError("The product <i>{$paper->getTitle()}</i> could does not have a file by the id of {$this->getParam('file')}");
+                }
+                exit;
+            }
             return $paper->toJSON();
         }
         else if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) > 1){

@@ -488,6 +488,7 @@
                 <field bibtex="doi" label="DOI" type="DOI">doi</field>
                 <field ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" bibtex="url" label="URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="File" type="PPT">file</field>
             </data>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
