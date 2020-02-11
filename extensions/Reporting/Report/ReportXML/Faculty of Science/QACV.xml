@@ -6,6 +6,11 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="ATSEC">
+            <SectionPermission id="introduction" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="BLOB_NONE" type="ReportSection">
         <Static>
