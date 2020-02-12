@@ -31,8 +31,9 @@
                 <p>Each CC is asked to collect information and examples from across its constituent members/projects in order to complete a 2-3 page CC Report. Responses will be used to help the Network Management Office to construct the 2018/19 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. CCs are not individually evaluated on the content of these reports.</p>
 
                 <p>Note that the information requested in Sections 1 and 2 is drawn directly from the NCE Annual Report template. Section 3 enables CCs to highlight additional outcomes or benefits of network membership not captured elsewhere in the report. Given the brevity of the report, we are looking for concrete examples from across each CC as opposed to a full accounting of all CC activities. Should you have more to share with us than space limitations permit, please contact <a href='mailto:Jennifer@agewell-nce.ca'>Jennifer@agewell-nce.ca</a></p>
-                <h3>Executive Summary</h3>
-                <p>Describe the top three achievements, successes, contributions, success stories from your CC and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
+                
+                <h3>2019/20 Executive Summary</h3>
+                <p>Describe the top three achievements, successes, contributions, success stories from your WP from the past year and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -101,6 +102,22 @@
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
                 <p>NCEs ideally provide its members with benefits and opportunities that are realizable through a multisectoral networked approach. Please describe any benefits accrued by your team(s) resulting from your specific involvement in AGE-WELL (e.g. team cohesion, access to new partners etc.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="initiatives">
+        <ReportItem id="initiatives">
+            <![CDATA[
+                <b>*Note that this question pertains to all five years of CC funding.</b>
+                <p>An important part of AGE-WELL’s mandate is to promote and put into action key outputs from our first five years. To achieve this, we are developing a knowledge repository of ‘shareable’ outputs to support and educate project teams and trainees within the network, or make available outside the network, if appropriate and with permission.</p>
+                
+                <p>Note that we are not looking for academic journal publications, but rather best practice guidelines, manuals, scoping reviews, white papers, policy briefs, educational materials, data sets, frameworks, toolkits, video/films and/or websites etc.</p>
+                
+                <p>Since your team has been reporting outputs on Forum and/or to the NMO for five years now, we expect that these key outputs have already been reported—we are looking for you to help us understand which ones you consider appropriate and relevant to share in order to support continued growth of AGE-WELL and development of the sector as a whole.</p>
+                
+                <p>Please list what you consider the top 5 ‘shareable’ outputs of this CC. Please indicate whether the output should remain internal to AGE-WELL or whether you think it is ripe for broader dissemination (external). Please provide links and/or attachments of materials below.</p>
+                
                 {$item}
             ]]>
         </ReportItem>
