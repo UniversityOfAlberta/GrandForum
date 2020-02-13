@@ -179,25 +179,11 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true" optional="true">
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" height="300px">
             <![CDATA[
-                <script type="text/javascript">
-                    var resub = function(){
-                        var value = $("input[name=Description_resub]:checked").val();
-                        if(value == "Yes"){
-                            $("#response_div").show();
-                        }
-                        else{
-                            $("#response_div").hide();
-                        }
-                    }
-                    $("input[name=Description_resub]").change(resub);
-                    resub();
-                </script>
-                <div id="response_div">
-                    <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
-                    {$item}
-                </div>
+                <h2>Response to Reviewer's Comments</h2>
+                <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
+                {$item}
             ]]>
         </ReportItem>
         
@@ -233,9 +219,8 @@
         <!-- KTEE -->
         <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
             <![CDATA[
-                <h2>Knowledge and Technology Exchange and Exploitation</h2>
-                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders.<br />
-                <small><b>Knowledge Mobilization:</b> A continual strategy involving bi-directional learning with partners and end-users using communication and education events each year.</small></p>
+                <h2>Relevance and Impact</h2>
+                <p>Relevance and impact (including socio-economic) of the project, and identify the key deliverables.</p>
                 {$item}
             ]]>
         </ReportItem>

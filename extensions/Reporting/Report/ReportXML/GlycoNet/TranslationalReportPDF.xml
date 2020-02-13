@@ -144,17 +144,17 @@
             <![CDATA[
                 <br />
                 <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Translational grant</b></p>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
-        <If id="if" if="{==({getText(RP_TRANS,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
-            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
-                <![CDATA[
-                    <p><b>Please provide a response to the previous reviews</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
+        <!-- Response -->
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
+            <![CDATA[
+                <br />
+                <p><b>Response to Reviewer's Comments</b></p>
+                {$item}
+            ]]>
+        </ReportItem> 
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="500">
@@ -178,7 +178,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="description" name="Knowledge and Technology Exchange and Exploitation" blobSection="CAT_DESC" type="EditableReportSection">
+    <ReportSection id="description" name="Relevance and Impact" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" limit="500">
             <![CDATA[
                 {$item}
