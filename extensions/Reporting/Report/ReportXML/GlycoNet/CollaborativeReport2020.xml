@@ -13,21 +13,14 @@
             <![CDATA[
                 Please read the following instructions carefully. A complete application consists of:
                 <ol>
-                    <li>Project Title</li>
-                    <li>List of Investigators</li>
-                    <li>Demonstration of Equity, Diversity and Inclusion</li>
-                    <li>List of Partners and Matching Funds</li>
-                    <li>Project Summary</li>
-                    <li>Response to Reviewer’s Comments</li>
-                    <li>Project Proposal and References</li>
+                    <li>Project Description and References</li>
                     <li>Figures/Schemes (a single PDF file)</li>
-                    <li>Budget (a single Excel file in the correct format and with a budget for two years only)</li>
+                    <li>Budget (a single Excel file)</li>
                     <li>Budget Justification</li>
-                    <li>Milestones (a single Excel file)</li>
-                    <li>Partner Letters of Support (as separate PDF files)</li>
+                    <li>Proposed Milestones (a single Excel File)</li>
+                    <li>Letters of Support from Partners (as separate PDF Files)</li>
                     <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
                 </ol>
-                <p><b>Deadline: 23:59 PST on Friday, February 15, 2020</b></p>
             ]]>
         </Static>
     </ReportSection>
@@ -79,10 +72,10 @@
         </ReportItem>
         
         <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
                 <h2>Equity and Diversity</h2>
-                <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
+                <p>The summary on project fulfilling EDI requirements</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -107,6 +100,20 @@
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Partner Name|Contact Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
                 <h2>Partners involved (Companies, agencies etc)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Suggested reviewers -->
+        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
+            <![CDATA[
+                <h2>Suggested Reviewers</h2>
+                At least seven suggested reviewers for the application.  
+                <ul>
+                    <li>At least three of the five suggested reviewers must be working at locations outside of Canada.</li>
+                    <li>Suggested reviewers should not be members of the GlycoNet Scientific Advisory Board, Research Management Committee or Board of Directors.</li>
+                    <li>GlycoNet follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>.  Please consult the policy before suggesting reviewers.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
@@ -147,7 +154,7 @@
         </ReportItem>
 
         <!-- Proposal -->
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="5000">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="7000">
             <![CDATA[
                 <h2>Project Proposal</h2>
                 <p>A research proposal</p>
@@ -212,30 +219,21 @@
 
                 Budget Guidelines:
                 <ul>
-                    <li>Projects can request up to $200,000/year for <b><i>two years</i></b> from GlycoNet.
-                        <ul><li>The budget can be adjusted from the LOI; however, the matching level must be met and the maximum amount cannot exceed $200,000/year for two years from GlycoNet.</li></ul></li>
-                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds must be cash. Partner funding must be NCE eligible; several Canadian Federal funding sources (i.e. NCE, CIHR, NSERC, SSHRC and CFI) are ineligible for matching.
-                        <ul><li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li></ul></li>
-                    <li>The project budget should clearly show the co-contribution of partner funds in alignment with NCE and eligible project expenses.</li>
+                    <li>Projects can request up to $150,000 for 12 months.</li>
+                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds should be cash. Partner funding must be NCE eligible; other Canadian Federal funding is ineligible for matching.</li>
                     <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
                     <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
                     <li>Equipment is capped at $2,000/year/project.</li>
                     <li>Travel
                         <ul>
-                            <li>Conference travel is capped at $1,500/year/NI/project.</li>
-                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li> 
+                            <li>Conference travel is capped at $1,500/year/NI/project. This fund can be used for the annual Canadian Glycomics Symposium.</li>
+                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                             <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
                         </ul>
                     </li>
-                    <li>HTS Core
+                    <li>Chemical Synthesis and Glycan Structure Analysis Cores
                         <ul>
-                            <li>You should work with one of the Network screening partners (CDRD, McMaster HTS Lab, SPARC) to develop a budget and a plan of action (i.e. milestones). These costs should be incorporated into the project budget.</li>
-                            <li>Funding for the screen itself will go to the screening partner. The development of the assay can be done either at the screening partner, or in the lab of a NI (to be determined in your discussions with the screening partner), with the funding going to the location where the work will be carried out. Please note that all projects will need to develop not only a primary screening method but also a secondary screening method for hit validation.</li>
-                        </ul>
-                    </li>
-                    <li>Glycan Screening, Chemical Synthesis and Glycan Structure</li> Analysis Cores
-                        <ul>
-                            <li>If you have an anticipated need for these core services, contact Todd Lowary (tlowary@ualberta.ca). We will generate an estimate that can be incorporated into the budget.</li>
+                            <li>Those of you who have an anticipated need for these core services should contact Warren Wakarchuk (<a href='mailto:warren.wakarchuk@ualberta.ca'>warren.wakarchuk@ualberta.ca</a>).  We will generate an estimate that can be incorporated into the budget.</li>
                         </ul>
                     </li>
                     <li>All partner contributions need to be supported by a letter from the partner institution (see below)
@@ -249,7 +247,7 @@
         </Static>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>

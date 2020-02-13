@@ -261,12 +261,12 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->collab2020, 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->collab2020, 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->allNis, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', $this->allNis, 2018, "LOI 2018", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_08_2017'), $this->allNis, 2017, "08-2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB_04_2017'), $this->allNis, 2017, "04-2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_COLLAB'), $this->allNis, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_08_2017', $this->allNis, 2017, "08-2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_04_2017', $this->allNis, 2017, "04-2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->allNis, 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
