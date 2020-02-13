@@ -379,6 +379,7 @@ class ApplicationsTable extends SpecialPage{
             }
         }
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', $summerHQPs, 2016, "2017"));
@@ -410,6 +411,7 @@ class ApplicationsTable extends SpecialPage{
     function generateWP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2019, "2019-20"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->wps, 2016, "2016-17"));
@@ -420,6 +422,7 @@ class ApplicationsTable extends SpecialPage{
     function generateCC(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2019, "2019-20"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2017, "2017-18"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ccs, 2016, "2016-17"));
@@ -429,6 +432,7 @@ class ApplicationsTable extends SpecialPage{
     function generateIH(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2019, "2019-20"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2018, "2018-19"));
         $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -437,6 +441,8 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP_REPORT', $this->projects, 2019, "CRP End of Term"));
+        $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2019, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_PLAT_REPORT', $this->platform, 2019, "PLAT-2019 Report"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT_REPORT', $this->catalyst, 2019, "CAT-2019 Report"));
         $tabbedPage->addTab(new ApplicationTab('RP_PLAT_SCORECARD', $this->platform, 2018, "PLAT-2019 Scorecard"));

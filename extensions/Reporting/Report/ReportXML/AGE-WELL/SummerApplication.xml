@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2019 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2019" disabled="true">
+<Report name="AGE-WELL EPIC Summer Institute, 2020 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2020" disabled="false">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="description" permissions="rw" />
@@ -20,21 +20,27 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2019" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2019&lt;br /&gt;
-&lt;small>Co-Creating Possibilities: Staying Connected and Strengthening Social Networks&lt;/small>">
+    <ReportSection id="description" tooltip="AGE-WELL EPIC Summer Institute, 2020" name="Program Description" type="ReportSection" title="AGE-WELL EPIC Summer Institute, 2020&lt;br /&gt;
+&lt;small>Co-Creating Possibilities: Health Care &amp; Health Service Delivery&lt;/small>">
         <Static>
             <![CDATA[
-                <p>An engaged and connected population of older Canadians and caregivers has significant benefits for our economy and our communities. While studies show that participation in community activities positively influences health and socioeconomic outcomes for older adults, approximately 20% of seniors in Canada currently experience social isolation.</p>
+                <p>Older adults and caregivers want access to quality and equitable health care that is proactive in addressing their needs and enhances their ability to live an active and healthy life. However, Canada’s health-care system is complex, and older adults and caregivers often face challenges such as getting to doctor’s appointments, obtaining health records, navigating the system and affording new technologies that improve quality of care. These challenges are only compounded when faced in a remote or rural setting.</p>
 
-                <p>From teleconferencing applications that bring seniors and caregivers together with friends and relatives who live far away to digital storytelling tools that foster intergenerational dialogue, Canadians are looking to technology-based innovations to keep them connected to the people they love and engaged in their favourite activities.</p>
+                <p>From virtual care platforms to wearable health technologies, there is an unprecedented opportunity for disruptive technology to improve the health and quality of life of rural and remote seniors, create more sustainable or integrated health-care solutions, and open up new possibilities for businesses and government.</p>
 
-                <p>2019 AGE-WELL Summer Institute applicants will work directly with stakeholders to co-create innovative solutions – technologies, policies, and services – that will strengthen the social networks of older adults and/or caregivers and enhance their capacity to be active members of Canadian society.</p>
+                <p>2020 AGE-WELL Summer Institute applicants will work directly with stakeholders to co-create innovative solutions – technologies, policies, and services – that will empower older adults to play an active role in their own health management and provide caregivers with peace of mind.</p>
 
                 <p>Eligibility:</p>
+                <ul>
+                    <li>Applicants must be current network HQP in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute</li>
+                    <li>Preference will be given to HQP who have made measurable progress towards completing, or have completed, the EPIC (Early Professionals, Inspired Careers) training program</li>
+                </ul>
+                
+                <p>AGE-WELL will cover the cost of economy travel, accommodation, breakfasts and lunches for all Canadian-based applicants. Those requiring international flights will be asked to cover the cost of their travel to Erik Neilsen Whitehorse International Airport.</p>
+                
+                <p>Contact: <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a></p>
 
-                <p>Applicants must be current network HQP in good standing (e.g. have completed reporting requirements, returned all signed documents etc.) who have not attended a previous AGE-WELL Summer Institute Preference will be given to HQP who have made measurable progress towards completing, or have completed, the EPIC (Early Professionals, Inspired Careers) training program</p>
-
-                <p>Read more about previous AGE-WELL EPIC Summer Institutes <a href='https://agewell-nce.ca/archives/7551'>here</a>.</p>
+                <p>Read more about previous AGE-WELL EPIC Summer Institutes <a href='https://agewell-nce.ca/archives/8510'>here</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -117,13 +123,13 @@
         </Static>
         <ReportItem id="workpackages" type="TextareaReportItem" blobItem="WORKPACKAGES">
             <![CDATA[
-                <p><b>AGE-WELL consists of <a href='http://agewell-nce.ca/research' target='_blank'>eight core workpackages</a>. Please identify the workpackage to which you belong or the workpackage in which your work best fits.  How does your work support AGE-WELL’s goals and mission? (1/2 page)</b></p>
+                <p><b>Please identify the workpackage or challenge area to which you belong or the workpackage or challenge area in which your work best fits. How does your work support AGE-WELL’s goals and mission? (1/2 page)</b></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Staying Connected and Strengthening Social Networks” (1/2 page)</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Health Care & Health Service Delivery” in rural or remote populations. (1/2 page)</b></p>
                 {$item}
             ]]>
         </ReportItem>

@@ -76,6 +76,19 @@ ProductListView = Backbone.View.extend({
                 else{
                     row.push("");
                 }
+                if(typeof model.data.published_in != 'undefined'){
+                    row.push(model.data.published_in);
+                }
+                else{
+                    row.push("");
+                }
+                if(typeof model.data.impact_factor != 'undefined'){
+                    row.push(model.data.impact_factor);
+                }
+                else{
+                    row.push("");
+                }
+                
             }
             row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
             if(projectsEnabled){
@@ -127,7 +140,7 @@ ProductListView = Backbone.View.extend({
         var data = this.processData(0);
         var targets = [ 4, 5 ];
         if(networkName == "FES"){
-            targets = [4, 5, 6, 7, 8, 9];
+            targets = [4, 5, 6, 7, 8, 9, 10, 11];
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],

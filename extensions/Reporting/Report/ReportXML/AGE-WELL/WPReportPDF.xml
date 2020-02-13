@@ -17,6 +17,8 @@
                 <br />
                 <br />
                 <br />
+                <br />
+                <br />
             ]]>
         </Static>
     </ReportSection>
@@ -53,7 +55,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="additional" tooltip="Additional Information" name="Additional Information" title="3. Additional Information" blobSection="INFORMATION" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="additional" tooltip="Additional Information" name="Additional Information" title="3. Additional Information" blobSection="INFORMATION" type="EditableReportSection">
         <ReportItem id="outcomes" type="TextareaReportItem" blobItem="OUTCOMES">
             <![CDATA[
                 <h3>a) Other Outcomes</h3>
@@ -63,6 +65,38 @@
         <ReportItem id="benefits" type="TextareaReportItem" blobItem="BENEFITS">
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="initiatives" tooltip="4. Key Workpackage Outputs &amp; Initiatives (2015-2020)" name="Outputs &amp; Initiatives" title="4. Key Workpackage Outputs &amp; Initiatives (2015-2020)" blobSection="INITIATIVES" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="initiatives" type="TextareaReportItem" blobItem="INITIATIVES">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
                 {$item}
             ]]>
         </ReportItem>

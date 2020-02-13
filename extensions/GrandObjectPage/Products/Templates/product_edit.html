@@ -89,7 +89,9 @@
                     <% } else if(val.type == "Select"){ %>
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                     <% } else if(val.type == "File"){ %>
-                        <%= HTML.File(this, 'data.' + index, {size: 30, options: val.options}) %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30}) %>
+                    <% } else if(val.type == "PPT"){ %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30, accept: ".odt,.odp,.ods,.pdf"}) %>
                     <% } else if(val.type == "Date"){ %>
                         <%= HTML.DatePicker(this, 'data.' + index, {format: 'yy-mm-dd'}) %>
                     <% } else { %>

@@ -14,10 +14,10 @@
                 
                 Please read the following instructions carefully. A complete application consists of:
                 <ol>
-                    <li>Project Description and References (details below)</li>
+                    <li>Project Description and References</li>
                     <li>Figures/Schemes (a single PDF file)</li>
                     <li>Budget (a single Excel file)</li>
-                    <li>Budget Justification (details below)</li>
+                    <li>Budget Justification</li>
                     <li>Proposed Milestones (a single Excel File)</li>
                     <li>Letters of Support from Partners (as separate PDF Files)</li>
                     <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
@@ -75,7 +75,7 @@
         </ReportItem>
         
         <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
                 <h2>Equity and Diversity</h2>
                 <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
@@ -227,12 +227,12 @@
                 Budget Guidelines:
                 <ul>
                     <li><b><i>Projects can request up to $50,000 for 12 months; longer time periods will be considered on a case-by-case basis and only with sufficient justification.</i></b></li>
-                    <li>The maximum salary for Graduate Students is $24,000/year and for Postdoctoral Fellows is $45,000/year.</li>
+                    <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
                     <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
                     <li>Equipment is capped at $2,000/year/project.</li>
                     <li>Travel
                         <ul> 
-                            <li>Conference travel is capped at $1,500/year/NI/project.</li>
+                            <li>Conference travel is capped at $1,500/year/NI/project. This fund can be used for the annual Canadian Glycomics Symposium.</li>
                             <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
                             <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
                         </ul>
@@ -247,7 +247,7 @@
         </Static>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/Project Budget template - 2 years.xlsx"><b>Budget Template</b></a></p>
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>

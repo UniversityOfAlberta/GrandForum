@@ -18,6 +18,7 @@
                 <br />
                 <br />
                 <br />
+                <br />
             ]]>
         </ReportItem>
     </ReportSection>
@@ -64,6 +65,12 @@
         <ReportItem id="benefits">
             <![CDATA[
                 <h3>b) Benefits of Network Involvement</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="priorities" type="TextareaReportItem" blobItem="PRIORITIES">
+            <![CDATA[
+                <h3>c) Innovation Hub Objectives and Priorities</h3>
                 {$item}
             ]]>
         </ReportItem>

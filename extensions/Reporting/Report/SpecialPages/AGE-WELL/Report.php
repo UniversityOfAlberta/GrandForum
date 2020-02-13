@@ -78,10 +78,10 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ACCESS Application", "{$url}AccessApplication012020", $selected);
         }
         
-        /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
+        if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SummerApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Application", "{$url}SummerApplication", $selected);
-        }*/
+        }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FellowshipApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Policy Challenge Application", "{$url}FellowshipApplication", $selected);
@@ -154,6 +154,9 @@ class Report extends AbstractReport {
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}PlatformReport&project={$project->getName()}", $selected);
                     }
                     else{
+                        $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CRPReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (End-of-Term)", "{$url}CRPReport&project={$project->getName()}", $selected);
+                    
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectEvaluation&project={$project->getName()}", $selected);
                     }

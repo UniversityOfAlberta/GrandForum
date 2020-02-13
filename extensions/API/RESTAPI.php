@@ -53,7 +53,7 @@ abstract class RESTAPI extends API {
     function doAction(){
         global $wgUser;
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method == "GET"){
+        if($method == "GET" || $method == "HEAD"){
             $json = $this->doGET();
         }
         else if($method == "PUT" || ($method == "POST" && @$_POST['_method'] == "PUT")){
