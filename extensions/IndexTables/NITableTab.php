@@ -9,58 +9,24 @@ class NITableTab extends PeopleTableTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
         $me = Person::newFromId($wgUser->getId());
-        $start = "";
-        $end = "";
-        if($this->table == "Candidate"){
-            $data = Person::getAllCandidates();
-            foreach($data as $key => $row){
-                if(!$row->isCandidate()){
-                    unset($data[$key]);
-                }
-            }
-            $start = "0000-00-00";
-            $end = date('Y-m-d');
-        }
-        else if(!$this->past){
-            $data = Person::getAllPeople($this->table);
-            $start = "0000-00-00";
-            $end = date('Y-m-d');
-        }
-        else if(is_numeric($this->past)){
-            $data = Person::getAllPeopleDuring($this->table, $this->past."-04-01", ($this->past+1)."-03-31");
-            $start = $this->past."-04-01";
-            $end = ($this->past+1)."-03-31";
-        }
-        else{
-            $data = Person::getAllPeopleDuring($this->table, "0000-00-00", date('Y-m-d'));
-            $start = "0000-00-00";
-            $end = date('Y-m-d');
-        }
+        
+        $start = "0000-00-00";
+        $end = date('Y-m-d');
+        
+        $data = array_merge(Person::getAllPeople(CI), 
+                            Person::getAllPeople(AR),
+                            Person::getAllPeople(PL));
         $emailHeader = "";
         $idHeader = "";
         $epicHeader = "";
-        $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
         $committees = $config->getValue('committees');
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
         }
-        if($me->isLoggedIn() && $this->table != "Candidate" &&
-           ($this->table == TL || $this->table == TC || $wgRoleValues[$this->table] >= $wgRoleValues[SD])){
-            $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
-        }
-        else if($me->isLoggedIn()){
+        if($me->isLoggedIn()){
             $emailHeader = "<th style='white-space: nowrap;'>Email</th><th>".AR."</th><th>".CI."</th><th>".PL."</th>";
-        }
-        if($this->table == HQP){
-            $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
-            if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
-                $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>
-                               <th style='white-space: nowrap;'>Appendix A</th>
-                               <th style='white-space: nowrap;'>COI</th>
-                               <th style='white-space: nowrap;'>NDA</th>";
-            }
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -99,8 +65,6 @@ class NITableTab extends PeopleTableTab {
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$statusHeader}
-                                    {$epicHeader}
-                                    {$contactHeader}
                                     {$emailHeader}
                                     {$idHeader}
                                 </tr>
@@ -197,26 +161,6 @@ class NITableTab extends PeopleTableTab {
                 }
                 $this->html .= "<td align='left'>{$person->getNationality()}</td>";
                 $this->html .= "<td align='left'>{$status}</td>";
-            }
-            if($epicHeader != ''){
-                $hqpTab = new HQPEpicTab($person, array());
-                $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
-                $this->html .= "<td align='left'>{$date}</td>";
-                $doc1 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_A');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
-                $doc2 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_COI');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
-                $doc3 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_NDA');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
-            }
-            if($contactHeader != ''){
-                if($person->getEmail() == ""){
-                    $this->html .= "<td></td>";
-                }
-                else {
-                    $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                }
-                $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
                 if($person->getEmail() == ""){
