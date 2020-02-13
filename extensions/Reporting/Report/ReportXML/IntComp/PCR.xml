@@ -21,7 +21,7 @@
         <Static>
             <![CDATA[
                     <tr>
-                        <td class='label'>Your Name:</td>
+                        <td class='label'>Applicant:</td>
                         <td>{$user_name}</td>
                     </tr>
             ]]>

@@ -84,7 +84,7 @@
                             <table width='100%'>
                                 <tr>
                                     <td class='label' width='1%'>Reviewer:</td>
-                                    <td>Reviewer {get(reviewerId)}</td>
+                                    <td>{$user_name}</td>
                                 </tr>
                                 <tr>
                                     <td colspan='2'>
