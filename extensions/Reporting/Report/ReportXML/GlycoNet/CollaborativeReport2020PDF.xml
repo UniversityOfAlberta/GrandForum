@@ -126,7 +126,7 @@
         </ReportItem>        
         
         <!-- Proposal -->
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" limit="5000">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" limit="7000">
             <![CDATA[
                 <h2>Project Proposal</h2>
                 {$item}
