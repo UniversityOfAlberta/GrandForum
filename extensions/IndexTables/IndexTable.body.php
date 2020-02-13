@@ -103,6 +103,8 @@ class IndexTable {
                 $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
             }
+            $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
         }
         
         if($config->getValue('projectsEnabled')){
@@ -209,6 +211,10 @@ class IndexTable {
                             self::generatePersonTable($role);
                             break;
                         }
+                    }
+                    if($wgTitle->getText() == "ALL Manager ".NI){
+                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+                        self::generateNITable();
                     }
                     if($wgTitle->getText() == "ALL ".NI){
                         $wgOut->setPageTitle($config->getValue('roleDefs', NI));
@@ -408,9 +414,7 @@ class IndexTable {
     /**
      * Generates the Table for the Network Investigators, Collaborating
      * Researchers, or Highly-Qualified People, depending on parameter
-     * #table.
-     * Consists of the following columns
-     * User Page | Projects | Twitter
+     * table.
      */
     private function generatePersonTable($table){
         global $config;
@@ -430,6 +434,19 @@ class IndexTable {
                 $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
             }
         }
+        $tabbedPage->showPage();
+        return true;
+    }
+    
+    /**
+     * Generates the Table for the Network Investigators
+     */
+    private function generateNITable(){
+        global $config;
+        $me = Person::newFromWgUser();
+        $tabbedPage = new TabbedPage("people");
+        $visibility = true;
+        $tabbedPage->addTab(new NITableTab($visibility, false));
         $tabbedPage->showPage();
         return true;
     }

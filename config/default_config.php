@@ -183,7 +183,6 @@
         'Reporting',
         //'DiversitySurvey',
         'NCETable',
-        'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
