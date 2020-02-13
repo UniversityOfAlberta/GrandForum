@@ -13,9 +13,12 @@ class NITableTab extends PeopleTableTab {
         $start = "0000-00-00";
         $end = date('Y-m-d');
         
-        $data = array_merge(Person::getAllPeople(CI), 
-                            Person::getAllPeople(AR),
+        $data = array_merge(Person::getAllPeople(NI),
                             Person::getAllPeople(PL));
+        $people = array();
+        foreach($data as $person){
+            $people[$person->getId()] = $person;
+        }
         $emailHeader = "";
         $idHeader = "";
         $epicHeader = "";
@@ -72,7 +75,7 @@ class NITableTab extends PeopleTableTab {
                             <tbody>
 ";
         $count = 0;
-        foreach($data as $person){
+        foreach($people as $person){
             if($this->past === true && $person->isRole($this->table) ){
                 // Person is still the specified role, don't show on the 'former' table
                 continue;
