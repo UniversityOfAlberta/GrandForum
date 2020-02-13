@@ -212,7 +212,7 @@ class IndexTable {
                             break;
                         }
                     }
-                    if($wgTitle->getText() == "ALL Manager ".NI){
+                    if($wgTitle->getText() == "ALL Manager ".NI && $me->isRoleAtLeast(STAFF)){
                         $wgOut->setPageTitle($config->getValue('roleDefs', NI));
                         self::generateNITable();
                     }
