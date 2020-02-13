@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Core Research Program 2015-2020 End-of-Term Project Report" reportType="RP_CRP_REPORT" pdfType="RPTP_CRP_REPORT" pdfFiles="CRPReportPDF" personId="0" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static id="report_info_head">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Core Research Program 2015-2020<br />End-of-Term Project Report</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="part1" tooltip="Impact Case Study" name="Impact Case Study" title="Part 1: Impact Case Study" blobSection="PART1" type="EditableReportSection">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <b>i. Summary of the impact</b>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="research" type="TextareaReportItem" blobItem="RESEARCH" rich="true" limit="500">
+            <![CDATA[
+                <b>ii. Underpinning research</b>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="details" type="TextareaReportItem" blobItem="DETAILS" rich="true" limit="500">
+            <![CDATA[
+                <b>iii. Details of the impact</b>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="TextareaReportItem" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <b>iv. References to the research (indicative maximum of six references)</b>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="TextareaReportItem" blobItem="OTHER" rich="true">
+            <![CDATA[
+                <b>v. Other sources to corroborate the impact</b>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part2" tooltip="Future Impact" name="Future Impact" title="Part 2: Future Impact" blobSection="PART2" type="EditableReportSection">
+        <ReportItem id="future_impact" type="TextareaReportItem" blobItem="FUTURE_IMPACT" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part3" tooltip="Leveraged Funding" name="Leveraged Funding" title="Part 3: Leveraged Funding" blobSection="PART3" type="EditableReportSection">
+        <ReportItem id="funding" type="MultiText" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Granting Organization|Award Program|Fiscall Year / Term|Amount ($)" class="wikitable" multiple="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="part4" tooltip="Key Outputs" name="Key Outputs" title="Part 4: Key Outputs" blobSection="PART4" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="outputs" type="TextareaReportItem" blobItem="OUTPUTS" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload Attachments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2019 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2019" disabled="false">
+<Report name="AGE-WELL EPIC Summer Institute, 2020 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2020" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                 <div style="float:left;">
-                    <h4 style='font-size:1.5em;'>AGE-WELL EPIC Summer Institute, 2019</h4>
-                    <h4>Co-Creating Possibilities: Staying Connected and <br />Strengthening Social Networks</h4>
+                    <h4 style='font-size:1.5em;'>AGE-WELL EPIC Summer Institute, 2020</h4>
+                    <h4>Co-Creating Possibilities: Health Care & Health Service</h4>
                 </div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
@@ -100,19 +100,19 @@
         </Static>
         <ReportItem id="workpackages" type="TextareaReportItem" blobItem="WORKPACKAGES">
             <![CDATA[
-                <p><b>Please identify the workpackage to which you belong or the workpackage in which your work best fits.  How does your work support AGE-WELL’s goals and mission?</b></p>
+                <p><b>Please identify the workpackage or challenge area to which you belong or the workpackage or challenge area in which your work best fits. How does your work support AGE-WELL’s goals and mission?</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="capacity" type="TextareaReportItem" blobItem="CAPACITY">
             <![CDATA[
-                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Staying Connected and Strengthening Social Networks”</b></p>
+                <p><b>Describe why you would like to participate in the summer institute as it relates to the theme “Co-Creating Possibilities: Health Care & Health Service Delivery” in rural or remote populations.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="career" type="TextareaReportItem" blobItem="CAREER">
             <![CDATA[
-                <p><b>Provide an overview of your proposed career path. How would attending the summer institute help you build capacity? </b></p>
+                <p><b>Provide an overview of your proposed career path. How would attending the summer institute help you build capacity?</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
