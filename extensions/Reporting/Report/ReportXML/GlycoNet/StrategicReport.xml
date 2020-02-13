@@ -12,28 +12,29 @@
         <Static>
             <![CDATA[
                 <h3>Background and Description of Opportunity</h3>
-                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health.  Areas of focus are therapeutic proteins & vaccines, antimicrobials and chronic disease, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer.  Additional information about Network research can be found at www.glyconet.ca.</p>
-                <p>A key goal of GlycoNet is the translation of research advances into novel products for treating disease.  Accordingly, this Invitation for Proposals seeks to fund more mature projects needing Network support to de-risk and advance them to a state at which translation and commercialization is possible.</p>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health. Areas of focus are neurodegenerative diseases, infectious diseases, chronic diseases, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
+
+                <p>A key goal of GlycoNet is the translation and commercialization of research advances. Accordingly, this Request for Proposals seeks to fund partner-led projects that address needs of the pharmaceutical or biotechnology industry.</p>
                 
                 <h3>Requirements</h3>
                 <p>Projects should:</p>
                 <ul>
                     <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca).</li>
                     <li>Must have an articulated IP and patentability strategy.</li>
-                    <li>Must have an articulated IP and patentability strategy.</li>
                     <li>Be accompanied by a commercialization plan provided by the Technology Transfer Office of the project leader’s institution or the project’s industrial partner</li>
-                    <li>Have a clear endpoint, successful completion of which would attract a potential partner.</li>
-                    <li>Ability to demonstrate partner support is preferred. Partner matching of 1:1 (or greater) will be viewed more favorably by the committee. Partner funding must be NCE eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
+                    <li>Must address partner’s research needs or challenges.</li>
+                    <li>Have an identified partner that could take over the outcomes of the research</li>
+                    <li>Partner matching of 1:1 is required, greater matching will be viewed more favorably by the committee. 50% of matching must be cash (for a $150,000 request, matching should be at least $75,000 cash and $75,000 in-kind). Partner funding must be NCE eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
                 </ul>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside up to $750,000 for strategic initiatives in 2020–2021. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee.</p>
                 
                 <h3>Eligibility</h3>
                 <p>This opportunity is open only to individuals eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
                 
                 <h3>Application Form and Submission</h3>
-                <p>Potential applicants must register by email to Karli Buckle (kbuckle@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
-                
-                <h3>Technology Review Scorecard</h3>
-                <p>Applications will be reviews based on the criteria in the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Technology Scorecard.pdf'>Technology Review Scorecard</a></h3>
+                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
@@ -82,6 +83,15 @@
                                sizes="0|150|125|150">
             <![CDATA[
                 <h2>Other Investigators</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
+            <![CDATA[
+                <h2>Equity and Diversity</h2>
+                <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -185,7 +195,7 @@
                     resub();
                 </script>
                 <div id="response_div">
-                    <p>Please provide a response to the previous reviews</p>
+                    <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
                     {$item}
                 </div>
             ]]>
@@ -212,6 +222,25 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <h3>References</h3>
+                <p>Use the following format for references (Journal of Biological Chemistry style): Stover, C. K., de la Cruz, V. F., Fuerst, T. R., Burlein, J. E., Benson, L. A., Bennett, L. T., Bansal, G. P., Young, J. F., Lee, M. H., Hatfull, G. F., Snapper, S. B., Barletta, R. G., Jacobs, W. R., Jr., and Bloom, B. R. (1991) New use of BCG for recombinant vaccines. Nature <b>351</b>, 456–460</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- KTEE -->
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
+            <![CDATA[
+                <h2>Knowledge and Technology Exchange and Exploitation</h2>
+                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders.<br />
+                <small><b>Knowledge Mobilization:</b> A continual strategy involving bi-directional learning with partners and end-users using communication and education events each year.</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Training -->
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" recommended="true">
             <![CDATA[
                 <h2>Training Potential</h2>
@@ -222,12 +251,43 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template 2019.xls">
             <![CDATA[
+                Budget Guidelines:
+
+                <ul>
+                    <li>Projects can request up to $150,000 for 12 months.</li>
+                    <li>Projects require a minimum 1:1 match with Partner funding; at least 50% of the matching funds should be cash.  Partner funding must be NCE eligible; other Canadian Federal funding is ineligible for matching.</li>
+                    <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
+                    <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
+                    <li>Equipment is capped at $2,000</li>
+                    <li>Travel
+                        <ul>
+                            <li>Conference travel is capped at $1,500/NI. This fund can be used for the annual Canadian Glycomics Symposium.</li>
+                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
+                            <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
+                        </ul>
+                    </li>
+                    <li>Chemical Synthesis and Glycan Structure Analysis Cores
+                        <ul>
+                            <li>Those of you who have an anticipated need for these core services should contact Warren Wakarchuk (<a href='mailto:warren.wakarchuk@ualberta.ca'>warren.wakarchuk@ualberta.ca</a>).  We will generate an estimate that can be incorporated into the budget.</li>
+                        </ul>
+                    </li>
+                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
+                        <ul>
+                            <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                        </ul>
+                    </li> 
+                    <li>Up to $5,000 of the requested budget can be used to reimburse expenses associated with development of a commercialization plan. These expenses should be budgeted under “Animal Work or Other Services”.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUSTIF">
             <![CDATA[
                 <h3>Budget Justification</h3>
+                <ul>
+                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
+                    <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
+                </ul>
                 {$item}
             ]]>
         </ReportItem>
@@ -236,7 +296,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones for 1 year.xls">milestone template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls">milestone template</a> and upload it below.
                 </p>
                 {$item}
             ]]>

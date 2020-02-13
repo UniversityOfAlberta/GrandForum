@@ -56,6 +56,14 @@
             ]]>
         </ReportItem>
         
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
+            <![CDATA[
+                <p><b><u>Equity and Diversity</u></b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
         <!-- Key Words -->
         <ReportItem id="keywords" type="MultiTextReportItem" 
                                   blobType="BLOB_ARRAY" 
@@ -159,6 +167,19 @@
     </ReportSection>
     <ReportSection id="description" name="Project Proposal" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <b>References</b>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="description" name="Knowledge and Technology Exchange and Exploitation" blobSection="CAT_DESC" type="EditableReportSection">
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" limit="500">
             <![CDATA[
                 {$item}
             ]]>

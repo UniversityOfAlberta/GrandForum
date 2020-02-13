@@ -253,7 +253,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>
-                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones for 1 year.xls">milestone template</a> and upload it below.
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls">milestone template</a> and upload it below.
                 </p>
                 {$item}
             ]]>
