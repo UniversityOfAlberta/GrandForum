@@ -56,11 +56,12 @@ class UserGsmsBulkUploadAPI extends API{
                 // Ignore Multimedia rows
                 continue;
             }
-            if(strstr($data_array[$gsms_id]['folder'], "Evaluator") !== false ||
-               strstr($data_array[$gsms_id]['folder'], "Coder") !== false ||
-               strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
-               strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
-               strstr($data_array[$gsms_id]['folder'], "Incoming") !== false){
+            if(isset($data_array[$gsms_id]) &&
+               (strstr($data_array[$gsms_id]['folder'], "Evaluator") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Coder") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Incoming") !== false)){
                 $row[20] = $data_array[$gsms_id]['folder'];
             }
             
