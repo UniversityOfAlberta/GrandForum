@@ -41,10 +41,6 @@ class UserGsmsBulkUploadAPI extends API{
                     if($program_name != "{$row['13']}"){
                         $row[13] .= ", {$program_name}";
                     }
-                    $admission_program_name = $data_array[$gsms_id]['admission_program_name'];
-                    if($admission_program_name != "{$row['14']}"){
-                        $row[14] .= ", {$admission_program_name}";
-                    }
                 }
             }
             foreach($row as $k => $cell){
@@ -62,6 +58,7 @@ class UserGsmsBulkUploadAPI extends API{
                 strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Incoming") !== false)){
+                $row[14] = $data_array[$gsms_id]['admission_program_name'];
                 $row[20] = $data_array[$gsms_id]['folder'];
             }
             
