@@ -183,6 +183,14 @@
   <% } %>
 </td>
 
+<td>
+    <%= _.pluck(_.where(reviewers.concat(other_reviewers), {willingToSupervise: true}), 'name').join(",<br />") %>
+</td>
+
+<td>
+    <%= supervisor %>
+</td>
+
 <td style="width:200px" class="scrollableCell">
     <div class="scrollableCell"><span id="span<%= sop_id %>"><%= comments %></span></div>
 </td>

@@ -1,7 +1,11 @@
 <table id="profile1" style="width: 100%">
     <tr>
         <td>
-            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %></a></h1>
+            <h1 style="margin-bottom: 0px; margin-top: 0px;"><a href='<%=author.url%>'><%= author.name %></a>
+                <% if(this.gsmsdata.get('ois_id') != ""){%>
+                    <a href="<%=ios_url %>" target="_blank"><span class="video_gif"></span></a>
+                <%}%>
+            </h1>
         </td>
         <td>
             <a id="link_to_table" class="button" style="float:right;">Show in Overview Table</a>
@@ -49,6 +53,7 @@
 
 
                 </div>
+                <% if(!hiddenEnabled){%>
                 <div class="flex-item" style="width:24%;">
                     <b>GPA (over last 60 credits):</b> <%= additional.gpa60 %><br /><br />
                     <div style="display:inline-block;">
@@ -142,7 +147,7 @@
                     <% } %>
                     <br/>
                 </div>
-
+               <%}%>
             </div>
 
         </div>
