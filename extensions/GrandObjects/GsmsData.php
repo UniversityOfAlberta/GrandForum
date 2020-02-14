@@ -132,11 +132,15 @@ class GsmsData extends BackboneModel{
     }
 
     static function getAllVisibleGsms($year=""){
-        global $wgRoleValues;
+        global $wgRoleValues, $config;
         $dbyear = ($year != "" && $year != YEAR) ? "_$year" : "";
         $gsms_array = array();
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(EVALUATOR)){
+        if($config->getValue('studyEnabled')){
+            $sql = "SELECT user_id, id, max(submitted_date) as date FROM grand_gsms{$dbyear} WHERE ois_id <> '' AND ois_id IS NOT NULL GROUP BY user_id ORDER BY submitted_date";
+            $data = DBFunctions::execSQL($sql);
+        }
+        elseif($me->isRoleAtLeast(EVALUATOR)){
             $sql = "SELECT user_id, id, max(submitted_date) as date FROM grand_gsms{$dbyear} WHERE visible = 'true' GROUP BY user_id ORDER BY submitted_date";
             $data = DBFunctions::execSQL($sql);
         }

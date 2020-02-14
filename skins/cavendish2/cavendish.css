@@ -1960,3 +1960,11 @@ a.buttons-html5::before {
     from {opacity: 0;}
     to {opacity:1 ;}
 }
+
+.video_gif {
+    width: 14px;
+    height:11px;
+    background: url('../video.gif');
+    display: inline-block;
+    vertical-align: middle;
+}
