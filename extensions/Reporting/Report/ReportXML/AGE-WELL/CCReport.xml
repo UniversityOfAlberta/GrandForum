@@ -28,7 +28,7 @@
         <ReportItem id="summary">
             <![CDATA[
                 <h3>Report Description</h3>
-                <p>Each CC is asked to collect information and examples from across its constituent members/projects in order to complete a 2-3 page CC Report. Responses will be used to help the Network Management Office to construct the 2018/19 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. CCs are not individually evaluated on the content of these reports.</p>
+                <p>Each CC is asked to collect information and examples from across its constituent members/projects in order to complete a 2-3 page CC Report. Responses will be used to help the Network Management Office to construct the 2019/20 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. CCs are not individually evaluated on the content of these reports.</p>
 
                 <p>Note that the information requested in Sections 1 and 2 is drawn directly from the NCE Annual Report template. Section 3 enables CCs to highlight additional outcomes or benefits of network membership not captured elsewhere in the report. Given the brevity of the report, we are looking for concrete examples from across each CC as opposed to a full accounting of all CC activities. Should you have more to share with us than space limitations permit, please contact <a href='mailto:Jennifer@agewell-nce.ca'>Jennifer@agewell-nce.ca</a></p>
                 
@@ -106,7 +106,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="initiatives">
+    <ReportSection id="initiatives" tooltip="4. Key Crosscutting Activity Outputs &amp; Initiatives (2015-2020)" name="Outputs &amp; Initiatives" title="4. Key Crosscutting Activity Outputs &amp; Initiatives (2015-2020)">
         <ReportItem id="initiatives">
             <![CDATA[
                 <b>*Note that this question pertains to all five years of CC funding.</b>

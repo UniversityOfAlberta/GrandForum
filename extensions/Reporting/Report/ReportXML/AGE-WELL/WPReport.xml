@@ -20,12 +20,12 @@
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY">
             <![CDATA[
                 <h3>Report Description</h3>
-                <p>Each WP is asked to collect information and examples from across its constituent members/projects in order to complete a 4-5 page WP Report. Responses will be used to help the Network Management Office to construct the 2018/19 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. WPs are not individually evaluated on the content of these reports.</p>
+                <p>Each WP is asked to collect information and examples from across its constituent members/projects in order to complete a 4-5 page WP Report. Responses will be used to help the Network Management Office to construct the 2019/20 AGE-WELL Annual Report which NCE will use to evaluate AGE-WELL this spring. WPs are not individually evaluated on the content of these reports.</p>
 
                 <p>Note that the information requested in Sections 1 and 2 is drawn directly from the NCE Annual Report template. Section 3 enables WPs to highlight additional outcomes or benefits of network membership not captured elsewhere in the report. Given the brevity of the report, we are looking for concrete examples from across each WP as opposed to a full accounting of all WP activities. Should you have more to share with us than space limitations permit, please contact <a href='mailto:Jennifer@agewell-nce.ca'>Jennifer@agewell-nce.ca</a></p>
                 
                 <h3>2019/20 Executive Summary</h3>
-                <p>Describe the top three achievements, successes, contributions, success stories from your WP from the past year and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
+                <p>Describe the top three achievements, successes, contributions, success stories from your WP <u>from the past year</u> and their impacts as they relate to the realization of AGE-WELL goals and objectives.</p>
                 {$item}
             ]]>
         </ReportItem>
