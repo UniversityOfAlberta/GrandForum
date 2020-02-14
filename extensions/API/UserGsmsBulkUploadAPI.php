@@ -42,8 +42,8 @@ class UserGsmsBulkUploadAPI extends API{
                         $row[13] .= ", {$program_name}";
                     }
                     $admission_program_name = $data_array[$gsms_id]['admission_program_name'];
-                    if($program_name != "{$row['14']}"){
-                        $row[14] .= ", {$program_name}";
+                    if($admission_program_name != "{$row['14']}"){
+                        $row[14] .= ", {$admission_program_name}";
                     }
                 }
             }
