@@ -162,7 +162,7 @@ SopsView = Backbone.View.extend({
                                                       ],
                                                      'columns': [
                                                         { 'width': '250px' }, // User email gender
-                                                        { 'width': '115px' },  // GSMS ID
+                                                        { 'width': '115px' }, // GSMS ID
                                                         { 'width': '30px' },  // GSMS PDF
                                                         { 'width': '55px' },  // Folder
                                                         { 'width': '70px' },  // DoB
@@ -184,8 +184,10 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
                                                         { 'width': '120px' }, // Notes
+                                                        { 'width': '85px' },  // Willing to Supervise
+                                                        { 'width': '85px' },  // Supervisor
                                                         { 'width': '70px' },  // Comments
-                                                        { 'width': '70px' }   // Decision
+                                                        { 'width': '70px' },  // Decision
                                                       ],
                                                      'buttons': [
                                                         {

@@ -392,6 +392,7 @@ class GsmsData extends BackboneModel{
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
                                  'decision' => $sop->getAdmitResult($reviewer->getId()),
+                                 'willingToSupervise' => $sop->getWillingToSupervise($reviewer->getId()),
                                  'comments' => $sop->getReviewComments($reviewer->getId()),
                                  'rank' => $sop->getReviewRanking($reviewer->getId()),
                                  'hidden' => $sop->getHiddenStatus($reviewer->getId()));
@@ -407,6 +408,7 @@ class GsmsData extends BackboneModel{
                                       'name' => $other->getNameForForms(),
                                       'url' => $other->getUrl(),
                                       'decision' => $sop->getAdmitResult($other->getId()),
+                                      'willingToSupervise' => $sop->getWillingToSupervise($other->getId()),
                                       'rank' => $sop->getReviewRanking($other->getId()),
                                       'hidden' => $sop->getHiddenStatus($other->getId()));
         }
@@ -416,6 +418,8 @@ class GsmsData extends BackboneModel{
 
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();
+        $supervisors = $this->getAssignedSupervisors();
+        $json['supervisor'] = @implode(", ", $supervisors['q5']);
         $json['comments'] = $sop->getFinalComments();
         $json['area'] = "";
         $json['degree'] = $this->getFinalProgram();
@@ -581,12 +585,12 @@ class GsmsData extends BackboneModel{
     }
 
     function getAssignedSupervisors() {
-        $year = ($this->year != "") ? $year : YEAR;
-        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getSOP()->id);
+        $year = ($this->year != "") ? $this->year : YEAR;
+        return $this->getBlobValue(BLOB_ARRAY, $year, "RP_COM", "OT_COM", "Q14", 0, $this->getId());
     }
 
     function getFunding() {
-        $year = ($this->year != "") ? $year : YEAR;
+        $year = ($this->year != "") ? $this->year : YEAR;
         return $this->getBlobValue(BLOB_TEXT, $year, "RP_COM", "OT_COM", "Q4", 0, $this->getSOP()->id, $this->getSOP()->id);
     }
 }

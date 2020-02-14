@@ -229,6 +229,8 @@ SopsEditView = Backbone.View.extend({
     },
 
     render: function(){
+      $("#pageTitle").hide();
+      main.set('title', this.model.get('author').name + " (" + this.gsmsdata.get('folder') + ")");
       var self = this;
       var moveAnnotatorFilter = setInterval(function(){
           if(($('.annotator-filter').length)>0){

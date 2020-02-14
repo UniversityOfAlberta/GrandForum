@@ -62,6 +62,8 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                                                         $('#generate_success').css('display', 'block');
                                                         $('#download_button_' + index).attr('name', tok);
                                                         $('#download_button_' + index).text(name + ' PDF');
+                                                        
+                                                        document.location = document.location.href
                                                     }
                                                     else{
                                                         $('#generate_error').html('There was an error generating the PDF.  Please try again, and if it still fails, contact <a href=\"mailto:{$config->getValue('supportEmail')}\">{$config->getValue('supportEmail')}</a>');
@@ -100,14 +102,14 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		        $section = $item->getSection();
 		        $incomplete[] = "<li>{$section->name}: {$item->getAttr('idLabel', $item->id)}</li>";
 		    }
-		    $wgOut->addHTML("<div class='warning'>The following fields are incomplete: <ul>".implode("\n", $incomplete)."</ul> If they are NOT required for the program to which you are applying, you can go ahead and submit. Note that you cannot make any changes to your file after you have submitted.</div>");
+		    $wgOut->addHTML("<div class='warning'>The following fields are incomplete: <ul>".implode("\n", $incomplete)."</ul> If they are NOT required for the program to which you are applying, you can go ahead and submit. <b>Note that you cannot make any changes to your file after you have submitted</b>.</div>");
 		}
 		$wgOut->addHTML("<h3>Generate a new PDF</h3>");
 		$wgOut->addHTML("<p><button id='generateButton' $disabled>Submit</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    {$text}<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3>Download the PDF</h3>");
+		/*$wgOut->addHTML("<h3>Download the PDF</h3>");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
@@ -175,6 +177,7 @@ EOF;
         }
         
         $wgOut->addHTML("</table></p>");
+        */
 	}
 	
 	function renderForPDF(){

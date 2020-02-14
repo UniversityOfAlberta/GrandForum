@@ -4,17 +4,18 @@ class FacultyMembersReportItem extends MultipleSelectReportItem {
 
 	function render(){
 		global $wgOut;
-		$facultyUrl = $this->getAttr('url');
+		/*$facultyUrl = $this->getAttr('url');
 		if ($facultyUrl == "") {
 			$json = array();
 		} else {
         	$json = json_decode(file_get_contents($facultyUrl));
-        }
+        }*/
+        $json = Person::getAllPeople("Faculty");
         $options = array();
         foreach($json as $prof) {
-        	if ($prof->department == "Computing Science") {
-        		$options[] = $prof->realName;
-        	}
+        	//if ($prof->department == "Computing Science") {
+        		$options[] = $prof->getNameForForms();
+        	//}
         }
 
         $value = $this->getBlobValue();

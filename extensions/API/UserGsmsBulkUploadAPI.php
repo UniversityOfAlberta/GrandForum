@@ -32,20 +32,16 @@ class UserGsmsBulkUploadAPI extends API{
             if($application_year != YEAR+1){
                 continue;
             }
-            $data_array_num = 0;
             $in_data_array = false;
             $student_name = $row[2]." ".$row[1];
             $gsms_id = $row[3];
             foreach($data_array as $student){
                 if($student['gsms_id'] == $gsms_id){
-                    $program_name = $data_array[$data_array_num]['program_name'];
-                    $data_array[$data_array_num]['program_name'] = $program_name.", ".$row[13];
-                    $in_data_array = true;
+                    $program_name = $data_array[$gsms_id]['program_name'];
+                    if($program_name != "{$row['13']}"){
+                        $row[13] .= ", {$program_name}";
+                    }
                 }
-                $data_array_num = $data_array_num+1;
-            }
-            if($in_data_array){
-                continue;
             }
             foreach($row as $k => $cell){
                 $row[$k] = trim($cell);
@@ -56,45 +52,61 @@ class UserGsmsBulkUploadAPI extends API{
                 // Ignore Multimedia rows
                 continue;
             }
+            if(isset($data_array[$gsms_id]) &&
+               (strstr($data_array[$gsms_id]['folder'], "Evaluator") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Coder") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Incoming") !== false)){
+                $row[14] = $data_array[$gsms_id]['admission_program_name'];
+                $row[20] = $data_array[$gsms_id]['folder'];
+            }
+            
+            $offset = 0;
+            
             $array_info['name'] = $student_name;
-            $array_info['department'] = $row[0];
-            $array_info['gsms_id'] = $row[3];
-            $array_info['student_id'] = "{$row[4]}";
-            $array_info['cs_app'] = $row[5];
-            $array_info['date_of_birth'] = $row[6]." 00:00:00";
-            $array_info['email'] = $row[7];
-            $array_info['academic_year'] = $row[8];
-            $array_info['term'] = $row[9];
-            $array_info['program'] = $row[10];
-            $array_info['subplan_name'] = $row[11];
-            $array_info['degree'] = $row[12];
-            $array_info['program_name'] = $row[13];
-            $array_info['admission_program_name'] = $row[14];
-            $array_info['submitted_date'] = $row[15];
-            $array_info['gender'] = $row[16];
-            $array_info['country_of_birth'] = $row[17];
-            $array_info['country_of_citizenship'] = $row[18];
-            $array_info['applicant_type'] = $row[19];
-            $array_info['folder'] = $row[20];
-            $array_info['education_history'] = $row[21];
-            $array_info['department_gpa'] = $row[22];
-            $array_info['gpa_scale'] = $row[23];
-            $array_info['normalized_gpa'] = $row[24];
-            $array_info['fgsr_gpa'] = $row[25];
-            $array_info['gpa_scale'] = $row[26];
-            $array_info['normalized_gpa'] = $row[27];
-            $array_info['epl_test'] = $row[28];
-            $array_info['epl_score'] = $row[29];
-            $array_info['epl_listen'] = $row[30];
-            $array_info['epl_write'] = $row[31];
-            $array_info['epl_read'] = $row[32];
-            $array_info['epl_speaking'] = $row[33];
-            $array_info['funding_note'] = $row[34];
-            $array_info['department_decision'] = $row[35];
-            $array_info['fgsr_decision'] = $row[36];
-            $array_info['decision_response'] = $row[37];
-            $array_info['general_notes'] = $row[38];
-            $data_array[] = $array_info;
+            $array_info['department'] = $row[0+$offset];
+            $array_info['gsms_id'] = $row[3+$offset];
+            $array_info['student_id'] = "{$row[4+$offset]}";
+            $array_info['cs_app'] = $row[5+$offset];
+            $array_info['date_of_birth'] = $row[6+$offset]." 00:00:00";
+            $array_info['email'] = $row[7+$offset];
+            $array_info['academic_year'] = $row[8+$offset];
+            $array_info['term'] = $row[9+$offset];
+            $array_info['program'] = $row[10+$offset];
+            $array_info['subplan_name'] = $row[11+$offset];
+            $array_info['degree'] = $row[12+$offset];
+            $array_info['program_name'] = $row[13+$offset];
+            $array_info['admission_program_name'] = $row[14+$offset];
+            $array_info['submitted_date'] = $row[15+$offset];
+            $array_info['gender'] = $row[16+$offset];
+            $array_info['country_of_birth'] = $row[17+$offset];
+            $array_info['country_of_citizenship'] = $row[18+$offset];
+            $array_info['applicant_type'] = $row[19+$offset];
+            $array_info['folder'] = $row[20+$offset];
+            $array_info['education_history'] = $row[21+$offset];
+            if(trim($array_info['education_history']) == ""){
+                $offset--;
+            }
+            $array_info['department_gpa'] = $row[22+$offset];
+            $array_info['gpa_scale'] = $row[23+$offset];
+            $array_info['normalized_gpa'] = $row[24+$offset];
+            $array_info['fgsr_gpa'] = $row[25+$offset];
+            $array_info['gpa_scale'] = $row[26+$offset];
+            $array_info['normalized_gpa'] = $row[27+$offset];
+            // Extra columns?
+            $array_info['epl_test'] = $row[30+$offset];
+            $array_info['epl_score'] = $row[31+$offset];
+            $array_info['epl_listen'] = $row[32+$offset];
+            $array_info['epl_write'] = $row[33+$offset];
+            $array_info['epl_read'] = $row[34+$offset];
+            $array_info['epl_speaking'] = $row[35+$offset];
+            $array_info['funding_note'] = $row[36+$offset];
+            $array_info['department_decision'] = $row[37+$offset];
+            $array_info['fgsr_decision'] = $row[38+$offset];
+            $array_info['decision_response'] = $row[39+$offset];
+            $array_info['general_notes'] = $row[40+$offset];
+            $data_array[$gsms_id] = $array_info;
         }
         return $data_array;
     }
@@ -129,7 +141,6 @@ class UserGsmsBulkUploadAPI extends API{
              || $xls['type'] == 'text/csv')&&
             $xls['size'] > 0 ){
             $error = "";
-            $success = array();
             $errors = array();
             $xls_cells = $this->readXLS($xls['tmp_name']);
             if($xls_cells === false){
@@ -159,7 +170,9 @@ class UserGsmsBulkUploadAPI extends API{
                         continue;
                     }
                     $found_gsms[] = "'{$student['gsms_id']}'";
-                    $updated_students[] = "{$student['name']} ({$student['email']})";
+                    $alreadyProcessed = (isset($updated_students[$gsms_sheet->user_id]));
+
+                    $updated_students[$gsms_sheet->user_id] = "{$student['name']} ({$student['email']})";
                     $update = false;
                     //check if update or new
                     $gsms_sheet = GsmsData::newFromUserId($student_id);
@@ -173,12 +186,28 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->applicant_type = @$student['applicant_type'];
                     $gsms_sheet->education_history = @$student['education_history'];
                     $gsms_sheet->department = @$student['department'];
-                    $gsms_sheet->epl_test = @$student['epl_test'];
+                    if($alreadyProcessed && $gsms_sheet->epl_test != "" && $gsms_sheet->epl_test != @$student['epl_test']){
+                        $gsms_sheet->epl_test .= @",{$student['epl_test']}";
+                        $gsms_sheet->epl_score .= @",{$student['epl_score']}";
+                        $gsms_sheet->epl_listen .= @",{$student['epl_listen']}";
+                        $gsms_sheet->epl_write .= @",{$student['epl_write']}";
+                        $gsms_sheet->epl_read .= @",{$student['epl_read']}";
+                        $gsms_sheet->epl_speaking .= @",{$student['epl_speaking']}";
+                    }
+                    else{
+                        $gsms_sheet->epl_test = @$student['epl_test'];
+                        $gsms_sheet->epl_score = @$student['epl_score'];
+                        $gsms_sheet->epl_listen = @$student['epl_listen'];
+                        $gsms_sheet->epl_write = @$student['epl_write'];
+                        $gsms_sheet->epl_read = @$student['epl_read'];
+                        $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                    }
+                    /*$gsms_sheet->epl_test = @$student['epl_test'];
                     $gsms_sheet->epl_score = @$student['epl_score'];
                     $gsms_sheet->epl_listen = @$student['epl_listen'];
                     $gsms_sheet->epl_write = @$student['epl_write'];
                     $gsms_sheet->epl_read = @$student['epl_read'];
-                    $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                    $gsms_sheet->epl_speaking = @$student['epl_speaking'];*/
                     $gsms_sheet->cs_app = @$student['cs_app'];
                     $gsms_sheet->academic_year = @$student['academic_year'];
                     $gsms_sheet->term = @$student['term'];
@@ -201,7 +230,6 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->general_notes = @$student['general_notes'];
                     $gsms_sheet->visible = 'true';
                     $gsms_sheet->update();
-                    $success[] = $student_name;
                 }
                 else{
                     $notfound[] = "{$student['gsms_id']},{$student['name']},{$student['email']},{$student['folder']}";

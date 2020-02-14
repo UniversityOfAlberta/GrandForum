@@ -56,7 +56,15 @@
 </td>
 
 <td style="white-space: nowrap;" id='epl'>
-    <%= epl_test %> <br /><%= epl_score %> <br /><%= epl_listen %> <br /><%= epl_write %> <br /><%= epl_read %> <br /><%= epl_speaking %>
+    <% if(epl_test.indexOf(",") == -1){ %>
+        <%= epl_test %> <br /><%= epl_score %> <br /><%= epl_listen %> <br /><%= epl_write %> <br /><%= epl_read %> <br /><%= epl_speaking %>
+    <% } else { %>
+        <div style='float:left;'>
+        <%= epl_test.split(",")[0] %> <br /><%= epl_score.split(",")[0] %> <br /><%= epl_listen.split(",")[0] %> <br /><%= epl_write.split(",")[0] %> <br /><%= epl_read.split(",")[0] %> <br /><%= epl_speaking.split(",")[0] %></div>
+        <div style='float:right;'>
+        <%= epl_test.split(",")[1] %> <br /><%= epl_score.split(",")[1] %> <br /><%= epl_listen.split(",")[1] %> <br /><%= epl_write.split(",")[1] %> <br /><%= epl_read.split(",")[1] %> <br /><%= epl_speaking.split(",")[1] %>
+        </div>
+    <% } %>
 </td>
 
 <!--  department specific -->
@@ -128,12 +136,11 @@
 <!-- faculty info -->
 <td style="white-space: nowrap;">
   <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if (other_reviewers[i].rank == "-1") { %>
+        <% if (other_reviewers[i].rank == "-1" || other_reviewers[i].rank == "--") { %>
             <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
-            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)
+            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)<br />
         <% } %>
-  <br />
   <% } %>
 </td>
 
@@ -142,7 +149,7 @@
     <% var avg=0; %>
     <% var ignore=0; %>
     <% for(var i=0; i < other_reviewers.length;i++){ %>
-        <% if (other_reviewers[i].rank != "-1") { %>
+        <% if (other_reviewers[i].rank != "-1" && other_reviewers[i].rank != "--") { %>
           <% avg += parseInt(other_reviewers[i].rank); %>
         <% } else { %>
           <% ignore += 1; %>
@@ -154,15 +161,17 @@
 
 <td id='notes' class="scrollableCell">
   <div class="scrollableCell" style="height:124px; max-height:124px;">
-      <% _.each(additional.notes, function(note, key) { %>
-        <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
-        <% if (key == lastname) { %>
-          <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
-        <% } else { %>
-          <font style="font-weight:bold"><%= key %></font>: <%= note %>
+    <% _.each(additional.notes, function(note, key) { %>
+        <% if (note.trim() != ""){ %>
+            <% var lastname = me.get('lastname').replace(/[^\wA-zÀ-ÿ]/gi, '') %>
+            <% if (key == lastname) { %>
+              <font color="#007239" style="font-weight:bold"><%= key %></font>: <%= note %>
+            <% } else { %>
+              <font style="font-weight:bold"><%= key %></font>: <%= note %>
+            <% } %>
+            <br />
         <% } %>
-        <br />
-      <% }); %>
+    <% }); %>
   </div>
   <% if(this.parent.model.year == ''){ %>
     <span class="assign_button" style="display:none" id="additionalNotes">
@@ -172,6 +181,14 @@
     <% var additionalNotesDialogId = 'additionalNotes_' + id; %>
     <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;"></div>
   <% } %>
+</td>
+
+<td>
+    <%= _.pluck(_.where(reviewers.concat(other_reviewers), {willingToSupervise: true}), 'name').join(",<br />") %>
+</td>
+
+<td>
+    <%= supervisor %>
 </td>
 
 <td style="width:200px" class="scrollableCell">
