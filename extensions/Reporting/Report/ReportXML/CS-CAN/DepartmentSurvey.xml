@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Department Survey" reportType="RP_DEPT_SURVEY" pdfType="DEPT_SURVEY" pdfFiles="DepartmentSurveyPDF" ajax="true" disabled="false" year="2020">
     <Permissions>
-        <Role role="PL">
+        <Role role="PL"> <!-- Chair -->
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="ACHAIR"> <!-- Acting Chair -->
+            <SectionPermission id="survey" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="PA"> <!-- Admin Support -->
             <SectionPermission id="survey" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />

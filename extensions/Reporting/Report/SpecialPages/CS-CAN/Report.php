@@ -36,6 +36,8 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isRole(PL) ||
+           $person->isRole(PA) ||
+           $person->isRole(ACHAIR) ||
            $person->getId() == 734 ||
            $person->getId() == 246 ||
            $person->getId() == 1068 ||
