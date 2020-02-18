@@ -161,16 +161,14 @@ class PeopleTableTab extends AbstractTab {
                 }
                 $this->html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
             }
-
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                $history = ($config->getValue('networkName') == "GlycoNet");
                 $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
                         $project->getPhase() == PROJECT_PHASE &&
                         $project->getStatus() != "Proposed" &&
-                        $person->isRole($this->table, $project)){
+                        ($person->isRole($this->table, $project) || ($this->past !== false && $person->isRoleDuring($this->table, $start, $end, $project)))){
                         $subprojs = array();
                         foreach($project->getSubProjects() as $subproject){
                             if($person->isMemberOf($subproject)){
