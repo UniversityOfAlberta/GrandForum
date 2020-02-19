@@ -17,7 +17,13 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             return $data;
         }
         
-        $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
+        if($atsec){
+            $allPeople = Person::getAllPeopleDuring("ATSEC", $start, $end);
+        }
+        else {
+            $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
+        }
         foreach($allPeople as $person){
             if($person->getCaseNumber($this->getReport()->year) == ""){
                 continue;

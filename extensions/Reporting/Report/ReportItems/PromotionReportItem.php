@@ -39,6 +39,25 @@ class PromotionReportItem extends SelectReportItem {
                     $options = array("n/a");
                 }
                 break;
+            case "T1": // Assistant Lecturer
+                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'atsec2') - Person::getSalaryIncrement($this->getReport()->year, 'atsec1')){
+                    $options = array("n/a", 
+                                     "i recommend promotion to associate lecturer");
+                }
+                else {
+                    $options = array("n/a");
+                }
+                break;
+            case "T2": // Associate Lecturer
+                if($person->getSalary($this->getReport()->year) >= Person::getMinSalary($this->getReport()->year, 'atsec3') - Person::getSalaryIncrement($this->getReport()->year, 'atsec2')){
+                    $options = array("n/a", 
+                                     "i recommend promotion to full lecturer");
+                }
+                else {
+                    $options = array("n/a");
+                }
+                break;
+            case "T3":
             case "C1":
             case "F1":
             case "M1":

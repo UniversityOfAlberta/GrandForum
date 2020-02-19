@@ -122,6 +122,9 @@ class Person extends BackboneModel {
     var $dateFso2;
     var $dateFso3;
     var $dateFso4;
+    var $dateAtsec1;
+    var $dateAtsec2;
+    var $dateAtsec3;
     
     /**
      * Returns a new Person from the given id
@@ -597,7 +600,10 @@ class Person extends BackboneModel {
                                               //'publication_history_patents',
                                               'date_fso2',
                                               'date_fso3',
-                                              'date_fso4'),
+                                              'date_fso4',
+                                              'date_atsec1',
+                                              'date_atsec2',
+                                              'date_atsec3'),
                                         array('user_id' => EQ($this->getId())));
             self::$fecInfoCache[$this->getId()] = $data;
             if(count($data) >0){
@@ -620,6 +626,9 @@ class Person extends BackboneModel {
                 $this->dateFso2 = $row['date_fso2'];
                 $this->dateFso3 = $row['date_fso3'];
                 $this->dateFso4 = $row['date_fso4'];
+                $this->dateAtsec1 = $row['date_atsec1'];
+                $this->dateAtsec2 = $row['date_atsec2'];
+                $this->dateAtsec3 = $row['date_atsec3'];
             }
         }
         return $this;
@@ -650,7 +659,10 @@ class Person extends BackboneModel {
                                               //'publication_history_patents' => $this->publicationHistoryPatents,
                                               'date_fso2' => $this->dateFso2,
                                               'date_fso3' => $this->dateFso3,
-                                              'date_fso4' => $this->dateFso4),
+                                              'date_fso4' => $this->dateFso4,
+                                              'date_atsec1' => $this->dateAtsec1,
+                                              'date_atsec2' => $this->dateAtsec2,
+                                              'date_atsec3' => $this->dateAtsec3),
                                         array('user_id' => EQ($this->getId())));
                 if($status){
                     DBFunctions::commit();
@@ -674,7 +686,10 @@ class Person extends BackboneModel {
                                           //'publication_history_patents' => $this->publicationHistoryPatents,
                                           'date_fso2' => $this->dateFso2,
                                           'date_fso3' => $this->dateFso3,
-                                          'date_fso4' => $this->dateFso4),
+                                          'date_fso4' => $this->dateFso4,
+                                          'date_atsec1' => $this->dateAtsec1,
+                                          'date_atsec2' => $this->dateAtsec2,
+                                          'date_atsec3' => $this->dateAtsec3),
                                            true);
                if($status){
                     DBFunctions::commit();
@@ -758,10 +773,44 @@ class Person extends BackboneModel {
             $date = date('Y-m-d');
         }
         $date = substr($date, 0, 10);
-        if($this->dateFso2 == null){
+        if($this->dateFso4 == null){
             $this->getFecPersonalInfo();
         }
         return ($this->dateFso4 != "" && $date >= substr($this->dateFso4, 0, 10));
+    }
+    
+    function isATSEC1($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec1 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec1 != "" && $date >= substr($this->dateAtsec1, 0, 10) && !$this->isATSEC2($date) &&
+                                                                                        !$this->isATSEC3($date));
+    }
+    
+    function isATSEC2($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec2 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec2 != "" && $date >= substr($this->dateAtsec2, 0, 10) && !$this->isATSEC3($date));
+    }
+    
+    function isATSEC3($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        if($this->dateAtsec3 == null){
+            $this->getFecPersonalInfo();
+        }
+        return ($this->dateAtsec3 != "" && $date >= substr($this->dateAtsec3, 0, 10));
     }
     
     function isNew($date=null){
@@ -787,15 +836,18 @@ class Person extends BackboneModel {
     }
     
     /**
-     * N1XX - New assistant professor, associate professor, or professor.
-     * M1XX - New FSO2, FSO3, or FSO4.
-     * A1XX - Assistant professor.
-     * B1XX - Untenured associate professor.
-     * B2XX - Tenured associate professor.
-     * C1XX - Professor.
-     * D1XX - FSO2.
-     * E1XX - FSO3.
-     * F1XX - FSO4.
+     * N1XXX - New assistant professor, associate professor, or professor.
+     * M1XXX - New FSO2, FSO3, or FSO4.
+     * A1XXX - Assistant professor.
+     * B1XXX - Untenured associate professor.
+     * B2XXX - Tenured associate professor.
+     * C1XXX - Professor.
+     * D1XXX - FSO2.
+     * E1XXX - FSO3.
+     * F1XXX - FSO4.
+     * T1XXX - Assistant Lecturer
+     * T2XXX - Associate Lecturer
+     * T3XXX - Full Lecturer
      */
     function getFECType($date=null){
         if($date == null){
@@ -804,9 +856,18 @@ class Person extends BackboneModel {
         if($this->isRetired($date)){
             return "";
         }
-        if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
-                                   $this->isAssociateProfessor($date) ||
-                                   $this->isProfessor($date))){
+        if($this->isRoleOn("ATSEC", $date) && $this->isATSEC1($date)){
+            return "T1";
+        }
+        else if($this->isRoleOn("ATSEC", $date) && $this->isATSEC2($date)){
+            return "T2";
+        }
+        else if($this->isRoleOn("ATSEC", $date) && $this->isATSEC3($date)){
+            return "T3";
+        }
+        else if($this->isNew($date) && ($this->isAssistantProfessor($date) ||
+                                        $this->isAssociateProfessor($date) ||
+                                        $this->isProfessor($date))){
             return "N1";                          
         }
         else if($this->isNew($date) && ($this->isFSO2($date) ||

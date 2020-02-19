@@ -97,23 +97,23 @@ class PersonPage {
                     $endRange   = (isset($_GET['endRange']))   ? $_GET['endRange']   : date('Y-m-d');
                 }
                 
-                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person)){
+                if($person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00') && $me->isAllowedToEdit($person) && !$person->isMe()){
                     $wgMessage->addInfo("You can edit this HQP because you co-supervise them or are on their examining committee. Please make sure that the information you are providing is correct.");
                 }
                 
                 $tabbedPage = new TabbedPage("person");
                 
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
-                if($person->isRole(NI)){
+                if($person->isRole(NI) || $person->isRole("ATSEC")){
                     $tabbedPage->addTab(new PersonFECTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonEmploymentTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP))){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC") || $person->isRole(HQP) || $person->wasLastRole(HQP))){
                     if($visibility['isMe']){
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Award', $startRange, $endRange));
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Publication', $startRange, $endRange));
@@ -121,25 +121,25 @@ class PersonPage {
                         $tabbedPage->addTab(new PersonPublicationsTypesTab($person,$visibility, 'Activity', $startRange, $endRange));
                     }
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGrantsTab($person, $visibility, $startRange, $endRange));
                     //$tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCoursesTab($person,$visibility, $startRange, $endRange));
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGradStudentsTab($person, $visibility, $startRange, $endRange));
                 }
                 if($visibility['isMe'] && ($person->isRole(HQP) || $person->wasLastRole(HQP))){
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 }
-                if(($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole(HQP) || $person->wasLastRole(HQP)) && $visibility['isMe'])){
-                    if($visibility['isMe'] || $person->isRole(NI)){
+                if(($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC") || $person->isRole(HQP) || $person->wasLastRole(HQP)) && $visibility['isMe'])){
+                    if($visibility['isMe'] || $person->isRole(NI) || $person->isRole("ATSEC")){
                         $tabbedPage->addTab(new PersonPublicationsTab($person,$visibility, 'Patent/Spin-Off', $startRange, $endRange));
                     }
                 }
-                if($wgUser->isLoggedIn() && $person->isRole(NI) && $visibility['isMe']){
+                if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATSEC")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));

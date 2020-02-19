@@ -680,12 +680,21 @@ class ReportItemCallback {
         $deptPeople->setAttribute('department', '{$my_dept}');
         $deptPeople->setAttribute('excludeMe', 'true');
         
+        $atsecPeople = new DepartmentPeopleReportItemSet();
+        $atsecPeople->setParent($this->reportItem->getSection());
+        $atsecPeople->setAttribute('atsec', 'true');
+        $atsecPeople->setAttribute('start', '{$last_year}-07-01');
+        $atsecPeople->setAttribute('end', '{$this_year}-07-01');
+        $atsecPeople->setAttribute('university', 'University of Alberta');
+        $atsecPeople->setAttribute('department', '{$my_dept}');
+        $atsecPeople->setAttribute('excludeMe', 'true');
+        
         $deanPeople = new DeansPeopleReportItemset();
         $deanPeople->setParent($this->reportItem->getSection());
         $deanPeople->setAttribute('start', '{$last_year}-07-01');
         $deanPeople->setAttribute('end', '{$this_year}-07-01');
         
-        $data = array_merge($deptPeople->getData(), $deanPeople->getData());        
+        $data = array_merge($deptPeople->getData(), $atsecPeople->getData(), $deanPeople->getData());        
         foreach($data as $tuple){
             if($tuple['person_id'] == $this->reportItem->personId){
                 return true;
