@@ -11,6 +11,7 @@ class GlobalSearchAPI extends RESTAPI {
                        'group' => $group);
         $ids = array();
         $origSearch = $search;
+        $escapedSearch = str_replace("%", "\%", DBFunctions::escape(trim($origSearch)));
         $search = "*".str_replace(" ", "*", $search)."*";
         $searchNames = array_filter(explode("*", str_replace(".", "*", unaccentChars($search))));
         switch($group){
@@ -20,7 +21,8 @@ class GlobalSearchAPI extends RESTAPI {
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
                 $peopleFullText = DBFunctions::execSQL("SELECT user_id FROM mw_user
-                                                        WHERE MATCH(user_public_profile) AGAINST ('".str_replace(" ", "* ", DBFunctions::escape(trim($origSearch)))."*')
+                                                        WHERE (MATCH(user_public_profile) AGAINST ('".str_replace(" ", "* ", $escapedSearch)."*')
+                                                        OR user_id IN (SELECT user_id FROM grand_person_keywords WHERE keyword LIKE '%{$escapedSearch}%'))
                                                         AND deleted = 0");
                 foreach($people as $pRow){
                     $person = new Person(array());
