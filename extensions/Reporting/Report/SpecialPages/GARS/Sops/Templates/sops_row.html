@@ -1,3 +1,4 @@
+<% if(!hiddenEnabled){%>
 <td align="center" style="width:30px">
     <% if(this.parent.model.year == ''){ %>
         <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.lname %></a></b></span>
@@ -40,7 +41,6 @@
 <td style="white-space: nowrap;" id='nationality_notes'>
     <%= nationality_note %>
 </td>
-
 <!--  department specific -->
 <td align="right" style="white-space: nowrap;" id='GPA60'>
     <%= additional.gpa60 %>
@@ -65,8 +65,6 @@
 <td>
     <%= additional.casper %>
 </td>
-
-<!-- reviewer info -->
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
         <%= reviewers[i].name %>
@@ -92,10 +90,84 @@
 <td style="width:300px" id='notes'>
     <%= additional.notes %>
 </td>
-
-<!--td style="width:200px">
-</td-->
-
 <td>
     <%= admit %>
 </td>
+<% }else{ %>
+<!--------------HiddenEnabled--->
+<td align="center" style="width:30px">
+    <% if(this.parent.model.year == ''){ %>
+        <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.lname %></a></b></span>
+    <% } else { %>
+        <b><span><%= student_data.lname %></b></span>
+    <% } %>
+</td>
+<td align="center" style="width:30px">
+    <% if(this.parent.model.year == ''){ %>
+        <b><span><a href="<%= sop_url %>" id="sop<%= sop_id %>" target="_blank"><%= student_data.fname %></a></b></span>
+    <% } else { %>
+        <b><span><%= student_data.fname %></b></span>
+    <% } %>
+</td>
+<td align="center" style="width:30px">
+  <% if(sop_pdf != "") { %>
+      <a href="<%= sop_pdf %>" target="_blank"><span class="pdf_gif"></span></a>
+  <% } %>
+  <%= student_data.email %>
+</td>
+<td align="center" style="width:30px">
+  <%= gsms_id %>
+</td>
+<td style="white-space: nowrap;" id='nationality_notes'>
+  <% if(student_id != 0){ %>
+    <%= student_id %>
+  <% } %>
+</td>
+<td align="center" style="display:none">
+  <%= student_data.id %>
+</td>
+<td style="white-space: nowrap;" id='nationality_notes'>
+    <%= country_of_citizenship %>
+</td>
+<td id='degree' style="width:30px">
+    <% if(additional.degree_text != ''){%>
+        <%= additional.degree_text %>
+    <% }%>
+</td>
+<td style="white-space: nowrap;" id='nationality_notes'>
+    --
+</td>
+<!--  department specific -->
+<td align="right" style="white-space: nowrap;" id='GPA60'>
+    --
+</td>
+
+<td align="right" style="white-space: nowrap;" id='GPABest'>
+--
+</td>
+<td align="right" style="white-space: nowrap;" id='GPABest2'>
+ --
+</td>
+<td id='anatomy' style="white-space: nowrap;">
+--
+</td>
+<td id='stats' style="white-space: nowrap;">
+--
+</td>
+<td>
+--
+</td>
+<td style="white-space: nowrap;">
+--
+</td>
+<td style="white-space: nowrap;">
+--
+</td>
+<td style="width:300px" id='notes'>
+--
+</td>
+<td>
+--
+</td>
+
+<% } %>

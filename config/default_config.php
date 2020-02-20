@@ -103,6 +103,10 @@
     
     // Whether or not to use the OIS system
     $config->setValue("oisEnabled", false);
+    
+    // Whether or not the system is being tested and GPA etc. needs to be hidden
+    $config->setValue("studyEnabled", false);
+    $config->setValue("hiddenEnabled", false);
 
     // Whether or not to enable projects
     $config->setValue("projectsEnabled", true);

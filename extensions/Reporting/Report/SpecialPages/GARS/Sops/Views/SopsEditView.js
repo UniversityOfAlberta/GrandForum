@@ -365,6 +365,7 @@ SopsEditView = Backbone.View.extend({
       
       var mod = _.extend(this.model.toJSON(), this.gsmsdata.toJSON());
       mod.sop_url = this.model.get("sop_url");
+      mod.ios_url = "http://gars.ualberta.ca/ois/landingpage/"+this.gsmsdata.get('ois_id');
       this.el.innerHTML = this.template(mod);
       this.set_link_to_table();
       this.$('#review_iframe').on('load', function(){

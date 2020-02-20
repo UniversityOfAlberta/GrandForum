@@ -226,6 +226,9 @@ class CavendishTemplate2 extends QuickTemplate {
             var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
             var wgUserName = "<?php echo $wgUser->getName(); ?>";
             var wgLang = "<?php echo $wgLang->getCode(); ?>";
+            var studyEnabled = "<?php echo $config->getValue("studyEnabled"); ?>";
+            var hiddenEnabled = "<?php echo $config->getValue("hiddenEnabled"); ?>";
+
         </script>
         <?php echo $wgOut->getScript(); ?>
         <!-- site js -->
