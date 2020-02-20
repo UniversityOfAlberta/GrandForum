@@ -18,84 +18,72 @@ class PersonMetricsTab extends AbstractTab {
             return "";
         }
         $wgOut->addScript(
-                "<script type='text/javascript'>
-                    $(document).ready(function(){
-                        $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
-                    });
-                </script>"
-            );
-
-        $gs_stats = $this->getGsStats();
-        $this->html .= $gs_stats;
-        /*$this->html ="
+            "<script type='text/javascript'>
+                $(document).ready(function(){
+                    $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
+                });
+                $.post('index.php?action=api.importMetrics&getGS&getScopus', {id:{$this->person->getId()}});
+            </script>"
+        );
+        $metric = $this->person->getMetrics();
+        $this->html = "
             <div class='citationAccordion'>
-                <h3><a href='#'>ACM Statistics</a></h3>
-                <div>
-                {$acm_stats}
+                <h3><a href='#'>Google Scholar Statistics</a></h3>
+                <div id='gs_stats'>
+                    {$this->getGsStats($metric)}
                 </div>
-        </div>
-        <div class='citationAccordion'>
+            </div>
+            <div class='citationAccordion'>
                 <h3><a href='#'>Scopus Statistics</a></h3>
                 <div>
-                    {$scopus_stats}
+                    {$this->getScopusStats($metric)}
                 </div>
-            </div>
-            <div class='citationAccordion'>
-            <h3><a href='#'>Google Scholar Statistics</a></h3>
-            <div id='gs_stats'>
-                {$gs_stats}
-            </div>
-        </div>";*/
+            </div>";
+        if($metric->change_date != ""){
+            $this->html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
+        }
+        if($this->person->isMe()){
+            $this->html .= "<br />
+                <br />
+                <input type='button' id='updateBibliometrics' value='Update Bibliometrics'></input>
+                <p class='small'>These metrics are updated automatically at most once per week, but can be manually updated by clicking the above button.</p>
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('#updateBibliometrics').click(function(e){
+                            e.preventDefault();
+                            $.post('index.php?action=api.importMetrics&getGS&getScopus&forceUpdate', {id:{$this->person->getId()}}, function(result){
+                                document.location = '{$this->person->getUrl()}?tab=bibliometrics';
+                            }).fail(function(){
+                                addError('There was an error updating Bibliometrics');
+                            });
+                        });
+                    });
+                </script>";
+        }
         return $this->html;
-    }
-
-
-    function getAcmStats($metric){
-        $html = "";
-        if($metric != "" && $metric->acm_publication_count != 0){
-            $html .= "<ul>";
-            $html .= "<li><strong>Start Date:</strong> ".time2date($metric->acm_start_date)."</li>";  
-            $html .= "<li><strong>End Date:</strong> ".time2date($metric->acm_end_date)."</li>";
-            $html .= "<li><strong>Publication Count:</strong> {$metric->acm_publication_count}</li>";
-            $html .= "<li><strong>Average Citation Per Article:</strong> {$metric->acm_avg_citations_per_article}</li>";
-            $html .= "<li><strong>Total Citation Count:</strong> {$metric->acm_citation_count}</li>";
-            $html .= "<li><strong>Average Downloads Per article:</strong> {$metric->acm_avg_download_per_article}</li>";
-            $html .= "<li><strong>Available Downloads:</strong> {$metric->acm_available_download}</li>";
-            $html .= "<li><strong>Cumulative Downloads Count:</strong> {$metric->acm_download_cumulative}</li>";
-            $html .= "<li><strong>Downloads in Past 6 weeks:</strong> {$metric->acm_download_6_weeks}</li>";
-            $html .= "<li><strong>Downloads in Past Year:</strong> {$metric->acm_download_1_year}</li>";
-            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
-            $html .= "</ul>";
-        }
-        else{
-            $html .= "<strong>No ACM Statistics Available</strong>";
-        }
-        return $html;
     }
 
     function getScopusStats($metric){
         $html = "";
-        if($metric != "" && $metric->sciverse_doc_count != 0){
+        if($metric->scopus_document_count != 0){
             $html .= "<ul>";
-            $html .= "<li><strong>Publication Count:</strong> {$metric->sciverse_doc_count}</li>";
-            $html .= "<li><strong>H-Index:</strong> {$metric->sciverse_hindex}</li>";
-            $html .= "<li><strong>Total Citation Count:</strong> {$metric->sciverse_citation_count}</li>";
-            $html .= "<li><strong>Cited By Count:</strong> {$metric->sciverse_cited_by_count}</li>";
-            $html .= "<li><strong>Coauthor Count:</strong> {$metric->sciverse_coauthor_count}</li>";
-            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
+            $html .= "<li><strong>Publication Count:</strong> {$metric->scopus_document_count}</li>";
+            $html .= "<li><strong>H-Index:</strong> {$metric->scopus_h_index}</li>";
+            $html .= "<li><strong>Total Citation Count:</strong> {$metric->scopus_citation_count}</li>";
+            $html .= "<li><strong>Cited By Count:</strong> {$metric->scopus_cited_by_count}</li>";
+            $html .= "<li><strong>Coauthor Count:</strong> {$metric->scopus_coauthor_count}</li>";
             $html .= "</ul>";
         }
         else{
-            $html .= "<strong>No Scopus Statistics Available</strong>";
+            $html .= "<strong>No Scopus Metrics Available</strong>";
         }
         return $html;
     }
 
-    function getGsStats(){
+    function getGsStats($metric){
         global $wgServer, $wgScriptPath, $wgTitle;
-        $metric = $this->person->getMetrics();
         $html = "";
-        if($metric != ""){
+        if($metric->gs_citation_count != 0){
             $array = $metric->getGsCitations();
             $html .= "<ul>";
             $html .= "<li><strong>H-Index (All Time):</strong> {$metric->gs_hindex}</li>";
@@ -107,27 +95,9 @@ class PersonMetricsTab extends AbstractTab {
             $html .= "</ul>";
             $bar = new Bar($array);
             $html .= $bar->show();
-            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
         }
         else{
-            $html .= "<strong>No Google Scholar Statistics Available</strong>";
-        }
-        $_POST['id'] = $this->person->getId();
-        if($this->person->isMe()){
-            $html .= "<br /><br /><input type='button' id='GsUpdate' value='Update GS Stats'></input>
-                <script>
-                    $(document).ready(function(){ 
-                    $('#GsUpdate').click(function(e){
-                    e.preventDefault();
-                    $.ajax({type:'POST',
-                            url: 'index.php?action=api.importMetrics',
-                            data: {id:".$this->person->getId()."},
-                            success:function(result){
-                                document.location = '{$this->person->getUrl()}?tab=bibliometrics';
-                            }});
-                        });
-                    });
-                </script>";
+            $html .= "<strong>No Google Scholar Metrics Available</strong>";
         }
         return $html;
     }

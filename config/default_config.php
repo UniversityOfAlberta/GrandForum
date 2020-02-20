@@ -40,6 +40,9 @@
     // ORCID Secret Key
     $config->setValue("orcidSecret", "");
     
+    // Scopus Api Id
+    $config->setValue("scopusApi", "");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     
