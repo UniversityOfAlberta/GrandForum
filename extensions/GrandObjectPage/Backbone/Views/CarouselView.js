@@ -32,7 +32,7 @@ CarouselView = Backbone.View.extend({
         this.$(".carouselMain").hide("slide", {
             direction: "right",
             complete: function(){
-                this.renderPerson();
+                this.renderItem();
                 this.$(".carouselMain").show("slide", {
                     direction: "left",
                     complete: function(){
@@ -54,7 +54,7 @@ CarouselView = Backbone.View.extend({
         this.$(".carouselMain").hide("slide", {
             direction: "left",
             complete: function(){
-                this.renderPerson();
+                this.renderItem();
                 this.$(".carouselMain").show("slide", {
                     direction: "right",
                     complete: function(){
@@ -77,7 +77,7 @@ CarouselView = Backbone.View.extend({
         }
     },
     
-    renderPerson: function(){
+    renderItem: function(){
         if(this.card != null){
             this.card.undelegateEvents();
             this.card.stopListening();
@@ -102,7 +102,7 @@ CarouselView = Backbone.View.extend({
     render: function(){ 
         this.$el.empty();
         this.$el.html(this.template());
-        this.renderPerson();
+        this.renderItem();
         return this.el;
     }
 

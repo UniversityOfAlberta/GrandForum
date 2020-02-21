@@ -433,6 +433,7 @@ HTML.MiscAutoComplete = function(view, attr, options){
             }
         });
     };
+    console.log(options.misc);
     var events = view.events;
     events['change input[name=' + HTML.Name(attr) + '_misc]'] = evt;
     _.defer(function(){
