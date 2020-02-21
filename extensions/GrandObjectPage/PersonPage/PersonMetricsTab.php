@@ -20,25 +20,26 @@ class PersonMetricsTab extends AbstractTab {
         $wgOut->addScript(
             "<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
+                    $('#citationAccordion').accordion();
                 });
                 $.post('index.php?action=api.importMetrics&getGS&getScopus', {id:{$this->person->getId()}});
             </script>"
         );
         $metric = $this->person->getMetrics();
-        $this->html = "
-            <div class='citationAccordion'>
+        $this->html = "<div id='citationAccordion'>";
+        $this->html .= "
                 <h3><a href='#'>Google Scholar Statistics</a></h3>
                 <div id='gs_stats'>
                     {$this->getGsStats($metric)}
-                </div>
-            </div>
-            <div class='citationAccordion'>
+                </div>";
+        if($config->getValue("scopusApi") != ""){
+            $this->html .= "
                 <h3><a href='#'>Scopus Statistics</a></h3>
-                <div>
+                <div id='scopus_stats'>
                     {$this->getScopusStats($metric)}
-                </div>
-            </div>";
+                </div>";
+        }
+        $this->html .= "</div>";
         if($metric->change_date != ""){
             $this->html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
         }
