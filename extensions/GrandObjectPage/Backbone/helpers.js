@@ -416,7 +416,7 @@ HTML.File = function(view, attr, options){
 
 HTML.MiscAutoComplete = function(view, attr, options){
     var el = HTML.Element("input", "text", options);
-    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('name', HTML.Name(attr) + '_misc');
     el.setAttribute('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
     $(el).wrap('div');
     
@@ -434,13 +434,15 @@ HTML.MiscAutoComplete = function(view, attr, options){
         });
     };
     var events = view.events;
-    events['change input[name=' + HTML.Name(attr) + ']'] = evt;
+    events['change input[name=' + HTML.Name(attr) + '_misc]'] = evt;
     _.defer(function(){
-        view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
+        view.$('input[name=' + HTML.Name(attr) + '_misc]').autocomplete({
             source: options.misc,
             select: evt
         });
     });
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '_misc]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '_misc]', view.events['change input[name=' + HTML.Name(attr) + '_misc]']);
     return $(el).parent().html();
 }
 
