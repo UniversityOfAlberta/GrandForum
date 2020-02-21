@@ -20,7 +20,12 @@ class PersonMetricsTab extends AbstractTab {
         $wgOut->addScript(
             "<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#citationAccordion').accordion();
+                    var bibInterval = setInterval(function(){
+                        if($('#citationAccordion').is(':visible')){
+                            $('#citationAccordion').accordion();
+                            clearInterval(bibInterval);
+                        }
+                    }, 100);
                 });
                 $.post('index.php?action=api.importMetrics&getGS&getScopus', {id:{$this->person->getId()}});
             </script>"
