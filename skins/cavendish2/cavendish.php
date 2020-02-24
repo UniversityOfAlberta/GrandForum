@@ -552,7 +552,7 @@ class CavendishTemplate2 extends QuickTemplate {
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
                         $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").load(function(){
+                        $("#logoutFrame").on('load', function(){
                             document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
                         });
                     });

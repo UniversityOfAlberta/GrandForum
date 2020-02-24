@@ -552,7 +552,7 @@ class CavendishTemplate extends QuickTemplate {
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
                         $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").load(function(){
+                        $("#logoutFrame").on('load', function(){
                             document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
                         });
                     });
@@ -731,7 +731,7 @@ class CavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
 	            }
 	        }
 	        echo "</div>";
