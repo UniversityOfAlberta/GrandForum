@@ -101,6 +101,8 @@ function saveAll(fn, failFn){
     return true;
 }
 
+saveAll = _.throttle(saveAll, 1000);
+
 function saveAllAutosaves(fn, failFn){
     var count = 0;
     for(i in autosaves){

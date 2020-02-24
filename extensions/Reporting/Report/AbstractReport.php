@@ -1010,12 +1010,7 @@ abstract class AbstractReport extends SpecialPage {
                                 <div id='reportTabs'>\n");
         $this->renderTabs();
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
-                            <div id='optionsDiv'>");
-        $this->renderOptions();
-        if($this->extends == "" && !$this->hasSubReport()){
-            //$this->renderBackup();  
-        }
-        $wgOut->addHTML("</div></div>
+                            </div>
                             </div>");
         
         $wgOut->addHTML("   <div id='reportMain' class='displayTableCell'><div>");

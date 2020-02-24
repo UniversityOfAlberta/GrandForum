@@ -105,7 +105,10 @@ class TextareaReportItem extends AbstractReportItem {
                                 };
                                 ed.on('keydown', updateCount);
                                 ed.on('keyup', updateCount);
-                                ed.on('change', updateCount);
+                                ed.on('change', function(e){
+                                    updateCount(e);
+                                    saveAll();
+                                });
                                 ed.on('init', updateCount);
                                 ed.on('paste', updateCount);
                             }

@@ -265,6 +265,10 @@ $(document).ready(function(){
         }
     });
     
+    $('#reportMain').on('change', 'input, select, textarea, button', function() {
+        saveAll();
+    });
+    
     $('.hiddenFile').change(function(evt){
         var fileName = $('.hiddenFile').val().split('\\');
         $("#fileName").html(fileName[fileName.length-1]);
