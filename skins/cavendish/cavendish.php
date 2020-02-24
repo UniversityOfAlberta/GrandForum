@@ -548,6 +548,26 @@ class CavendishTemplate extends QuickTemplate {
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth')){ ?>
 		    <script type="text/javascript">
+                var logoutFn = function(redirect){
+                    $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                        $("#logoutFrame").on('load', function(){
+                            $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                                if(redirect){
+                                    document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                                }
+                            });
+                        });
+                    });
+                }
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').click(function(){
+                        logoutFn(true);
+                    });
+                });
+            </script>
+		    <!--script type="text/javascript">
                 $(document).ready(function(){
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
@@ -557,7 +577,7 @@ class CavendishTemplate extends QuickTemplate {
                         });
                     });
                 });
-	        </script>
+	        </script-->
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
@@ -1134,8 +1154,8 @@ If you have forgotten your password please enter your login and ID and request a
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);
-		    echo "<span class='highlights-text'>Login</span>
-			<ul class='pBody'>";
+		    echo "<span class='highlights-text pBodyLogin'>Login</span>
+			<ul class='pBody pBodyLogin'>";
 		    echo <<< EOF
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
@@ -1176,6 +1196,14 @@ If you have forgotten your password please enter your login and ID and request a
 $emailPassword
 </li>
 EOF;
+            if(isExtensionEnabled("Shibboleth")){
+                echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').detach();
+                    $('#nav').append(\"<li style='font-weight:bold;font-size:1.25em;text-align:center;'><a id='ssoLogin' class='highlights-text highlights-background-hover' style='margin-top:62px;' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></li>\");
+                </script>
+                ";
+            }
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
