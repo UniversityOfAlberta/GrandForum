@@ -22,7 +22,9 @@ class PersonMitacs extends AbstractMigration
      */
     public function up()
     {
-    
+        $table = $this->table('mw_user', array('id' => 'id'));
+        $table->addColumn('user_mitacs', 'string', array('after' => 'user_ecr', 'limit' => 128))
+              ->save();
     }
 
     /**

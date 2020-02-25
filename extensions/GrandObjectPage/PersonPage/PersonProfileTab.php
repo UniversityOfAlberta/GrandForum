@@ -65,6 +65,9 @@ class PersonProfileTab extends AbstractEditableTab {
                     table.column(3).visible(true);
                 }
             }, 33);
+            $(document).ready(function(){
+                $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+            });
         </script>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
@@ -230,7 +233,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<div style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
+        $this->html .= "<div id='profileText' style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
     }
     
     /**
