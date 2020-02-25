@@ -115,6 +115,9 @@
     // Whether or not Canada Research Chair is enabled
     $config->setValue("crcEnabled", false);
     
+    // Whether or not MITACS is enabled
+    $config->setValue("mitacsEnabled", false);
+    
     // Whether to have only the public profile field (true) or both public & private (false)
     $config->setValue("publicProfileOnly", false);
     

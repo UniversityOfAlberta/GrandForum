@@ -24,6 +24,7 @@ class Person extends BackboneModel {
     var $nationality;
     var $stakeholder;
     var $earlyCareerResearcher;
+    var $mitacs;
     var $canadaResearchChair;
     var $gender;
     var $photo;
@@ -324,6 +325,7 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_stakeholder',
                                               'user_ecr',
+                                              'user_mitacs',
                                               'user_crc',
                                               'user_gender',
                                               'user_birth_date',
@@ -850,6 +852,7 @@ class Person extends BackboneModel {
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->earlyCareerResearcher = @$data[0]['user_ecr'];
+            $this->mitacs = @$data[0]['user_mitacs'];
             $this->canadaResearchChair = @json_decode($data[0]['user_crc'], true);
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
@@ -930,6 +933,7 @@ class Person extends BackboneModel {
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
                       'earlyCareerResearcher' => $this->getEarlyCareerResearcher(),
+                      'mitacs' => $this->getMitacs(),
                       'canadaResearchChair' => $this->getCanadaResearchChair(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
@@ -1010,6 +1014,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -1074,6 +1079,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -1560,6 +1566,18 @@ class Person extends BackboneModel {
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             return $this->earlyCareerResearcher;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the MITACS status of this Person
+     * @return string The MITACS status of this Person
+     */
+    function getMitacs(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->mitacs;
         }
         return "";
     }
