@@ -28,12 +28,12 @@ echo <<<EOF
 
 .highlights-background {
     background: $hl !important;
-    font-color: #FFFFFF !important;
+    color: #FFFFFF !important;
 }
 
 .highlights-background-hover:hover {
     background: $hl !important;
-    font-color: #FFFFFF !important;
+    color: #FFFFFF !important;
 }
 
 h1, h2, h3, h4, h5, h6, h7 {
