@@ -189,9 +189,9 @@ class Report extends AbstractReport{
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("RMC Review", "{$url}RMCProjectReview", $selected);
         }*/
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
-            if($person->isSubRole("Research Exchange HQP")){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ResearchExchangeReport")) ? "selected" : false;
-                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Research Exchange Report", "{$url}HQPApplications/ResearchExchangeReport", $selected);
+            if($person->isSubRole("Research Travel HQP")){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/ResearchTravelReport")) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Research Travel Report", "{$url}HQPApplications/ResearchTravelReport", $selected);
             }
             if($person->isSubRole("Summer Award HQP")){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/SummerAwardReport")) ? "selected" : false;

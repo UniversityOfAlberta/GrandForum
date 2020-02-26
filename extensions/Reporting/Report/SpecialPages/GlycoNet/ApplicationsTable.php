@@ -339,13 +339,14 @@ class ApplicationsTable extends SpecialPage{
     function generateHQPResearch(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH'), $this->hqps, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), $this->hqps, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateExchange(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2018, "2018", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2018, "2018", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2017, "2017", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2016, "2016"));
