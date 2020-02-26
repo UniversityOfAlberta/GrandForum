@@ -244,7 +244,7 @@
                 <table>
                     <tr>
                         <td valign='top' style='font-weight: bold; white-space: nowrap;'>
-                            The site of proposed exchange or conference/workshop is:
+                            The site of proposed exchange:
                         </td>
                         <td valign='top' style='white-space: nowrap;'>
                             {$item}
@@ -403,19 +403,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="lodging_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
-            <![CDATA[
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="meals" type="Integer" blobItem="MEALS" min="0" max="10000000" width="70px">
-            <![CDATA[
-                    <tr>
-                        <td>Meals</td>
-                        <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="meals_desc" type="Textarea" blobItem="MEALS_DESC" height="50px" width="300px">
             <![CDATA[
                         <td>{$item}</td>
                     </tr>
