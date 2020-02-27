@@ -31,7 +31,6 @@ class EmailList extends SpecialPage{
                     <th>Certified</th>
                     <th>Specialty</th>
                     <th>Years in<br />Practice</th>
-                    <th>Prior Abortion<br />Service</th>
                     <th>Accept Referrals</th>
                     <th>Collect Demographics</th>
                     <th>Collect Comments</th>
@@ -40,7 +39,6 @@ class EmailList extends SpecialPage{
             <tbody>");
         foreach($people as $person){
             $certified = (!$person->isCandidate()) ? "Yes" : "No";
-            $priorService = ($person->getPriorAbortionService()) ? "Yes" : "No";
             $collectDemo = ($person->collectDemo) ? "Yes" : "No";
             $collectComments = ($person->collectComments) ? "Yes" : "No";
             $subRoles = $person->getSubRoles();
@@ -56,7 +54,6 @@ class EmailList extends SpecialPage{
                     <td>{$certified}</td>
                     <td>{$person->getSpecialty()}</td>
                     <td>{$person->getYearsInPractice()}</td>
-                    <td>{$priorService}</td>
                     <td>{$person->getAcceptReferrals()}</td>
                     <td>{$collectDemo}</td>
                     <td>{$collectComments}</td>
