@@ -1,6 +1,9 @@
 <?php
 
 require_once("InactiveUsers.php");
+if($config->getValue("networkName") == "FES"){
+    require_once("FESPeopleTable.php");
+}
 autoload_register('IndexTables');
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
@@ -301,7 +304,7 @@ class IndexTable {
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Acronym</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ");
-        $themes = Theme::getAllThemes(PROJECT_PHASE);
+        $themes = Theme::getAllThemes();
         foreach($themes as $theme){
             $leaders = array();
             $coordinators = array();
