@@ -362,51 +362,49 @@ EOF;
                             </thead>
                             <tbody>";
         foreach($projects as $project){
-            //if($project->getPhase() == 1){
-                $contributions = $project->getContributionsDuring($this->from, $this->to);
-                foreach($contributions as $contribution){
-                    $partners = $contribution->getPartners();
-                    $nRows = max(1, count($partners));
-                    $start = substr($contribution->getStartDate(), 0, 10);
-                    $end = substr($contribution->getEndDate(), 0, 10);
-                    $date = substr($contribution->getDate(), 0, 10);
-                    $this->html .= "<tr>
-                                        <td rowspan='$nRows'>{$project->getName()}</td>
-                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>
-                                        <td rowspan='$nRows'><div style='max-height:60px;overflow-y:auto;'>".nl2br($contribution->getDescription())."</div></td>
-                                        <td rowspan='$nRows' align='center'>$start</td>
-                                        <td rowspan='$nRows' align='center'>$end</th>
-                                        <td rowspan='$nRows' align='center'>$date</td>";
-                    if(count($partners) > 0){
-                        foreach($partners as $i => $partner){
-                            $this->html .= "<td>{$partner->organization}</td>
-                                            <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
-                                            <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
-                                            <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
-                                            <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
-                            if($i == 0){
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
-                            }
-                            $this->html .= "</tr>";
-                            if($i < $nRows-1){
-                                $this->html .= "<tr>";
-                            }
+            $contributions = $project->getContributionsDuring($this->from, $this->to);
+            foreach($contributions as $contribution){
+                $partners = $contribution->getPartners();
+                $nRows = max(1, count($partners));
+                $start = substr($contribution->getStartDate(), 0, 10);
+                $end = substr($contribution->getEndDate(), 0, 10);
+                $date = substr($contribution->getDate(), 0, 10);
+                $this->html .= "<tr>
+                                    <td rowspan='$nRows'>{$project->getName()}</td>
+                                    <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>
+                                    <td rowspan='$nRows'><div style='max-height:60px;overflow-y:auto;'>".nl2br($contribution->getDescription())."</div></td>
+                                    <td rowspan='$nRows' align='center'>$start</td>
+                                    <td rowspan='$nRows' align='center'>$end</th>
+                                    <td rowspan='$nRows' align='center'>$date</td>";
+                if(count($partners) > 0){
+                    foreach($partners as $i => $partner){
+                        $this->html .= "<td>{$partner->organization}</td>
+                                        <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
+                                        <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
+                        if($i == 0){
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
+                        }
+                        $this->html .= "</tr>";
+                        if($i < $nRows-1){
+                            $this->html .= "<tr>";
                         }
                     }
-                    else{
-                        $this->html .= "<td></td>
-                                        <td></td>
-                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
-                    }
                 }
-            //}
+                else{
+                    $this->html .= "<td></td>
+                                    <td></td>
+                                    <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
+                }
+            }
         }
         $this->html .= "</tbody></table>";
     }
@@ -897,13 +895,11 @@ EOF;
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             
             foreach($projs as $project){
-                //if($project->getPhase() == 1){
-                    if(!isset($projects[$project->getName()])){
-                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                                             "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
-                    }
-                    $projects[$project->getName()][$pos][] = $hqp;
-                //}
+                if(!isset($projects[$project->getName()])){
+                    $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                                         "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+                }
+                $projects[$project->getName()][$pos][] = $hqp;
             }
         }
 

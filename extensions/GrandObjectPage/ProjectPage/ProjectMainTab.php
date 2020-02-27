@@ -39,13 +39,13 @@ class ProjectMainTab extends AbstractEditableTab {
         if($project->getType() != "Administrative"){
             $this->showChallenge();
         }
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectTypes")){
+        if($config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
         if($config->getValue("bigBetProjects") && !$this->project->isSubProject()){
             $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
         }
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectStatus")){
+        if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
                 $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
             }

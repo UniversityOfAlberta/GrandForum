@@ -143,7 +143,7 @@ EOF;
         $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
        
         $challengeNames = array();
-        $challenges = Theme::getAllThemes(PROJECT_PHASE);
+        $challenges = Theme::getAllThemes();
         foreach($challenges as $challenge){
             $challengeNames[$challenge->getId()] = $challenge->getAcronym();
         }

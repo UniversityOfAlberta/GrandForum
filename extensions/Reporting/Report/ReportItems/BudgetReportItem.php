@@ -308,28 +308,6 @@ class BudgetReportItem extends AbstractReportItem {
 	static function checkDeletedProjects($budget, $person, $year){
 	    global $config;
 	    $errors = array();
-	    if($config->getValue('networkName') == 'GRAND'){
-            $projects = $budget->copy()->select(V_PROJ, array())->where(V_PROJ)->xls;
-            foreach($projects as $rowN => $row){
-                foreach($row as $colN => $proj){
-                    $project = Project::newFromName($proj->getValue());
-                    if($project != null && $project->getName() != null){
-                        if($project->deleted && substr($project->getEffectiveDate(), 0, 4) == REPORTING_YEAR){
-                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not continuing next year";
-                        }
-                        if($project->getPhase() != PROJECT_PHASE){
-                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a phase ".PROJECT_PHASE." project";
-                        }
-                        if($project->isSubProject()){
-                            $budget->xls[$rowN][$colN]->error = "'{$project->getName()}' is not a primary project";
-                        }
-                        if(!$person->isMemberOfDuring($project, ($year+1).REPORTING_NCE_START_MONTH, ($year+2).REPORTING_NCE_END_MONTH)){
-                            $budget->xls[$rowN][$colN]->error = "You are not a member of '{$project->getName()}' between ".($year+1).REPORTING_NCE_START_MONTH." and ".($year+2).REPORTING_NCE_END_MONTH;
-                        }
-                    }
-                }
-            }
-        }
         return $errors;
 	}
 	
