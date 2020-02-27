@@ -1200,7 +1200,7 @@ EOF;
                 echo "
                 <script type='text/javascript'>
                     $('.pBodyLogin').detach();
-                    $('#nav').append(\"<li style='font-weight:bold;font-size:1.25em;text-align:center;'><a id='ssoLogin' class='highlights-text highlights-background-hover' style='margin-top:62px;' href='{$config->getValue('shibLoginUrl')}'>Single Sign On</a></li>\");
+                    $('#nav').append(\"<li style='font-weight:bold;font-size:1.25em;text-align:center;'><a id='ssoLogin' class='highlights-text highlights-background-hover' style='margin-top:62px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></li>\");
                 </script>
                 ";
             }
