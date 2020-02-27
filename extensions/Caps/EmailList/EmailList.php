@@ -30,8 +30,6 @@ class EmailList extends SpecialPage{
                     <th>Sub-Roles</th>
                     <th>Certified</th>
                     <th>Specialty</th>
-                    <th>Years in<br />Practice</th>
-                    <th>Accept Referrals</th>
                     <th>Collect Demographics</th>
                     <th>Collect Comments</th>
                 </tr>
@@ -53,8 +51,6 @@ class EmailList extends SpecialPage{
                     <td>".implode(", ", $subRoles)."</td>
                     <td>{$certified}</td>
                     <td>{$person->getSpecialty()}</td>
-                    <td>{$person->getYearsInPractice()}</td>
-                    <td>{$person->getAcceptReferrals()}</td>
                     <td>{$collectDemo}</td>
                     <td>{$collectComments}</td>
                 </tr>");
