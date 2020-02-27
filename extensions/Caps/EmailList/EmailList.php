@@ -29,11 +29,20 @@ class EmailList extends SpecialPage{
                     <th>Role</th>
                     <th>Sub-Roles</th>
                     <th>Certified</th>
+                    <th>Specialty</th>
+                    <th>Years in<br />Practice</th>
+                    <th>Prior Abortion<br />Service</th>
+                    <th>Accept Referrals</th>
+                    <th>Collect Demographics</th>
+                    <th>Collect Comments</th>
                 </tr>
             </thead>
             <tbody>");
         foreach($people as $person){
             $certified = (!$person->isCandidate()) ? "Yes" : "No";
+            $priorService = ($person->getPriorAbortionService()) ? "Yes" : "No";
+            $collectDemo = ($person->collectDemo) ? "Yes" : "No";
+            $collectComments = ($person->collectComments) ? "Yes" : "No";
             $subRoles = $person->getSubRoles();
             $wgOut->addHTML("<tr>
                     <td>".time2date($person->getRegistration(), "Y-m-d H:i:s")."</td>
@@ -45,6 +54,12 @@ class EmailList extends SpecialPage{
                     <td>{$person->getType()}</td>
                     <td>".implode(", ", $subRoles)."</td>
                     <td>{$certified}</td>
+                    <td>{$person->getSpecialty()}</td>
+                    <td>{$person->getYearsInPractice()}</td>
+                    <td>{$priorService}</td>
+                    <td>{$person->getAcceptReferrals()}</td>
+                    <td>{$collectDemo}</td>
+                    <td>{$collectComments}</td>
                 </tr>");
         }
         $wgOut->addHTML("</tbody></table>");
