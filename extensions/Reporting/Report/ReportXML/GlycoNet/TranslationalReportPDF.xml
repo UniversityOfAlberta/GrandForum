@@ -212,6 +212,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="commercial" name="Commercialization Plan" blobSection="CAT_COMM" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
         <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
@@ -245,10 +249,6 @@
         <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD9" mimeType="application/pdf">
         </ReportItem>
         <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf">
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="commercial" name="Commercialization Plan" blobSection="CAT_COMM" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
         </ReportItem>
     </ReportSection>
 </Report>
