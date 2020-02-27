@@ -8,7 +8,7 @@
 
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Strategic" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Strategic Initiatives" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
                 <h3>Background and Description of Opportunity</h3>
