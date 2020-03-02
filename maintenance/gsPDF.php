@@ -15,7 +15,7 @@ foreach($sops as $sop){
         $pdf = gzinflate($data['pdf_contents']);
         file_put_contents("input.pdf", $pdf);
         
-        system("../extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -sOutputFile=output.pdf input.pdf &> /dev/null");
+        system("../extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dCompatibilityLevel=1.4 -sOutputFile=output.pdf input.pdf &> /dev/null");
         
         if(file_exists("output.pdf")){
             $contents = file_get_contents("output.pdf");

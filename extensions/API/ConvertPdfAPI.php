@@ -157,7 +157,7 @@ class ConvertPdfAPI extends API{
         $errors = array();
         $num_file = 0;
         foreach($tmpfiles as $tmpfile){
-            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output);
+            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output);
             $contents = file_get_contents("{$tmpfile}.out");
             unlink("{$tmpfile}.out");
             $data = $this->extract_pdf_data($contents);

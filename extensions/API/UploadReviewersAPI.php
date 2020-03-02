@@ -85,8 +85,10 @@ class UploadReviewersAPI extends API{
 	        $student = preg_replace("/[0-9]+/", "", $student);
 	        $student_obj = null;
 	        if(isset($gsmsMatches[0])){
-	            $student_obj = Person::newFromGSMSId($gsmsMatches[0]);	
-		        $student_id = $student_obj->getId();
+	            $student_obj = Person::newFromGSMSId($gsmsMatches[0]);
+	            if($student_obj != null){
+		            $student_id = $student_obj->getId();
+		        }
 	        }
 	        if($student_obj == null || $student_obj->getId() == 0){
 	            $student_obj = Person::newFromNameLike($student);	

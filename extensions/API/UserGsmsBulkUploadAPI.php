@@ -134,7 +134,8 @@ class UserGsmsBulkUploadAPI extends API{
         $updated_students = array();
         if(!$user->isRoleAtLeast(MANAGER)){
             return;
-        }   
+        }
+        ini_set('max_execution_time', 300);
         $xls = $_FILES['gsms_outcome'];
         if(isset($xls['type']) &&
             ($xls['type'] == "application/vnd.ms-excel" || $xls['type'] == "application/octet-stream" || $xls['type'] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
