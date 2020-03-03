@@ -8,7 +8,7 @@ CarouselView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", function(){
-            this.model.set(this.model.filter(function(person){ return (person.get('publicProfile') != ""); }));
+            this.model.set(this.model.filter(function(person){ return (!_.isEmpty(person.get('publicProfile')) || !_.isEmpty(person.get('privateProfile'))); }));
             this.model.set(this.model.shuffle());
             this.render();
             setInterval(this.renderProgress.bind(this), 15);
@@ -95,7 +95,7 @@ CarouselView = Backbone.View.extend({
         if(model.get('keywords').length > 0){
             this.$(".carouselExtra").append("<b>Keywords:</b> " + model.get('keywords').join(', '));
         }
-        if(model.get('privateProfile').trim() != ""){
+        if(model.get('privateProfile') != null && model.get('privateProfile').trim() != ""){
             this.$(".carouselExtra").append(model.get('privateProfile'));
         }
         else {
