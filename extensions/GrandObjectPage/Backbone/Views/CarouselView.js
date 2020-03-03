@@ -91,6 +91,7 @@ CarouselView = Backbone.View.extend({
                              .css("margin-top", 13)
                              .css("margin-left", 30)
                              .css("vertical-align", "text-top");
+        this.card.$(".card_photo").css('height', 140);
         this.$(".carouselExtra").empty();
         if(model.get('keywords').length > 0){
             this.$(".carouselExtra").append("<b>Keywords:</b> " + model.get('keywords').join(', '));
