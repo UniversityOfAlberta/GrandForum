@@ -157,9 +157,16 @@ class ConvertPdfAPI extends API{
         $errors = array();
         $num_file = 0;
         foreach($tmpfiles as $tmpfile){
-            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output);
-            $contents = file_get_contents("{$tmpfile}.out");
-            unlink("{$tmpfile}.out");
+            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output, $ret);
+            if($ret === 0){
+                // Ghostscript conversion worked
+                $contents = file_get_contents("{$tmpfile}.out");
+                unlink("{$tmpfile}.out");
+            }
+            else{
+                // Ghostscript conversion failed
+                $contents = file_get_contents("{$tmpfile}");
+            }
             $data = $this->extract_pdf_data($contents);
             if(isset($_POST['id'])){
                 $userId = $_POST['id'];
