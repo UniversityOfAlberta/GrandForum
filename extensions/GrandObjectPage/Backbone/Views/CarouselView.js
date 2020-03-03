@@ -103,6 +103,7 @@ CarouselView = Backbone.View.extend({
         }
         this.card.$(".card_photo img").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
         this.card.$("h1").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
+        this.$(".carouselContent").css("height", 175);
         this.$(".carouselExtra").css('max-height', 150)
                                 .css('height', 150)
                                 .css('overflow-y', 'auto');
