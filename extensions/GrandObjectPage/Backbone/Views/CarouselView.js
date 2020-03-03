@@ -8,6 +8,7 @@ CarouselView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", function(){
+            this.model.set(this.model.filter(function(person){ return (person.get('publicProfile') != ""); }));
             this.model.set(this.model.shuffle());
             this.render();
             setInterval(this.renderProgress.bind(this), 15);
