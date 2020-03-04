@@ -28,6 +28,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Roles</th>
+                    <th>Projects</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Recruited</th>
@@ -50,10 +51,20 @@ class FESPeopleTable extends SpecialPage {
             $earliestDate = substr($earliestDate, 0, 10);
             $latestDate = str_replace("9999-99-99", "Current", substr($latestDate, 0, 10));
             $alumni = Alumni::newFromUserId($person->getId());
+            $projects = array_merge($person->leadership(), $person->getProjects());
+            $projs = array();
+            foreach($projects as $project){
+                if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
+                    $project->getStatus() != "Proposed"){
+                    $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
+                }
+            }
+            $projectsRow = implode("<br />", $projs);
             $wgOut->addHTML("<tr>
                              <td>{$person->getReversedName()}</td>
                              <td>{$person->getEmail()}</td>
                              <td>{$person->getRoleString()}</td>
+                             <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
                              <td>{$earliestDate}</td>
                              <td>{$latestDate}</td>
                              <td>{$alumni->recruited}</td>
