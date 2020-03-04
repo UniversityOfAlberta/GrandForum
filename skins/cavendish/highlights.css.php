@@ -10,6 +10,7 @@ else{
 require_once("../../config/Config.php");
 
 $hl = $config->getValue("highlightColor");
+$th = $config->getValue("topHeaderColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
@@ -38,6 +39,20 @@ echo <<<EOF
 
 h1, h2, h3, h4, h5, h6, h7 {
     color: $hc !important;
+}
+
+/* Layout */
+
+#topheader {
+    background: $th;
+}
+
+#sideToggle {
+    border-left: 3px solid $th;
+}
+
+#bodyContent {
+    border-color: $th;
 }
 
 /* Input */

@@ -29,10 +29,6 @@ body {
 	font-size: 8pt;
 }
 
-#bodyContent {
-	margin-bottom: 1em;
-}
-
 .nomenu #bodyContent {
 	float: none;
 	width: 100%;

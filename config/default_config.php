@@ -76,9 +76,13 @@
     // Icon path (highlighted)
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
+    // Top Header color for skin
+    $config->setValue("topHeaderColor", "#777777");
+    
     // Highlight color for skin
     $config->setValue("highlightColor", "#555555");
     
+    // Highlight color for fonts
     $config->setValue("highlightFontColor", "#FFFFFF");
     
     // Highlight color for headers

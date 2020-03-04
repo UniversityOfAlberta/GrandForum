@@ -12,12 +12,6 @@
 	#ignored {}
 	
 	#topheader {
-	    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #F0F0F0) ) !important;
-        background:-moz-linear-gradient( center top, #f8f8f8 5%, #F0F0F0 100% ) !important;
-        background: -o-linear-gradient(top, #f8f8f8, #F0F0F0) !important;
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#F0F0F0');
-        background: -ms-linear-gradient(top, #f8f8f8 0%, #F0F0F0 100%);
-        background-color:#f8f8f8 !important;
 	    position: absolute;
 	    top:0;
 	    left:0;
@@ -25,9 +19,7 @@
 	    height: 35px;
 	    padding: 5px 25px 5px 25px;
 	    z-index: 1001;
-	    border-bottom: 1px solid #E0E0E0;
-	    color: #333333;
-	    text-shadow: 1px 1px 0 #FFFFFF;
+	    color: #FFFFFF;
 	    font-size: 12px;
 	    font-weight: bold;
 	}
@@ -69,7 +61,7 @@
 	}
 	
 	#topheader a {
-	    color: #333333;
+	    color: #FFFFFF;
 	    text-decoration: none;
 	}
 	
@@ -83,13 +75,13 @@
 	}
 	
 	#outerHeader.menu-in {
-	    left: 0;
+	    left: -3px;
 	}
 	
 	#header {
 		background: #FFFFFF;
 		position: relative;
-		margin-top: 46px;
+		margin-top: 45px;
 		height: 40px;
 		padding: 0;
 		padding: 5px 30px 0 0;

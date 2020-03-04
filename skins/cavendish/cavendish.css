@@ -66,10 +66,6 @@ body {
 	background: #fff;
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
 	color: #333333;
-	
-	box-shadow: 0 0 3px #D8D8D8;
-    -moz-box-shadow: 0 0 3px #D8D8D8;
-    -webkit-box-shadow: 0 0 3px #D8D8D8;
 }
 
 #side {
@@ -100,7 +96,7 @@ body {
     width: 30px;
     height: 71px;
     line-height: 65px;
-    top: 46px;
+    top: 45px;
     bottom: 0;
     left: 0;
     position: absolute;
@@ -133,21 +129,35 @@ body {
 }
 
 #bodyContent {
-    left: 230px;
-    right: 30px;
-    top: 145px;
+    left: 200px;
+    right: 0;
+    top: 116px;
+    bottom: 0;
     position:absolute;
-    padding: 10px;
-
-    border: 1px solid #E0E0E0;
+    padding: 10px 30px;
+    overflow-y: auto;
+    border-width: 3px 0 0 3px;
+    border-style: solid;
 }
 
 #bodyContent.menu-in {
-    left: 30px;
+    left: -3px;
 }
 
 .deepLevel #bodyContent {
 	line-height: 1.4em;
+}
+
+@keyframes shake {
+  0% { transform: rotate(-5deg); }
+  5% { transform: rotate(5deg); }
+  10% { transform: rotate(5deg); }
+  15% { transform: rotate(-5deg); }
+  20% { transform: rotate(-5deg); }
+  25% { transform: rotate(5deg); }
+  30% { transform: rotate(5deg); }
+  35% { transform: rotate(-5deg); }
+  40% { transform: rotate(0); }
 }
 
 #nav {
@@ -1424,31 +1434,28 @@ select span.noshow {
     font-size: 12px !important;
     padding: 6px;
     margin: 0;
-    width: 250px;
+    width: 100px;
+	transition: width 0.25s;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     -moz-border-radius: 5px 0 0 5px;
 	-webkit-border-radius: 5px 0 0 5px;
-	border-radius: 5px 0 0 5px;
-	border-width: 1px 0 1px 1px;
-	border-style: solid;
-	border-color: #E0E0E0;
+	border: none;
 	height:16px;
 	color: #555555;
 	font-weight: bold;
+	text-overflow: ellipsis;
 }
 
 #globalSearchInput:focus {
-    border-width: 1px 0 1px 1px !important;
-	border-style: solid !important;
-	border-color: #E0E0E0 !important;
+    border: none !important;
+    width: 250px;
+	transition: width 0.25s;
 }
 
 #globalSearchThrobber {
-	border-width: 1px 0 1px 0;
-	border-style: solid;
-	border-color: #E0E0E0;
+	border: none;
 	display: inline-block;
 	width: 22px;
 	height:22px;
@@ -1462,9 +1469,7 @@ select span.noshow {
     filter: none;
     background: #fff !important;
     margin: 0;
-    border-width: 1px 1px 1px 0;
-	border-style: solid;
-	border-color: #E0E0E0;
+    border: none;
     font-size: 12px;
     padding: 4px;
     -moz-box-shadow: none;

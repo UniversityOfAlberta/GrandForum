@@ -517,10 +517,10 @@ class CavendishTemplate extends QuickTemplate {
 		                    'left': '-200px'
 		                }, 200, 'swing');
 		                $("#outerHeader").animate({
-		                    'left': '0'
+		                    'left': '-3px'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '30px'
+		                    'left': '-3px'
 		                }, 200, 'swing', function(){
 		                    jsPlumb.repaintEverything();
 		                });
@@ -536,7 +536,7 @@ class CavendishTemplate extends QuickTemplate {
 		                    'left': '200px'
 		                }, 200, 'swing');
 		                $("#bodyContent").animate({
-		                    'left': '230px'
+		                    'left': '200px'
 		                }, 200, 'swing', function(){
 		                    jsPlumb.repaintEverything();
 		                });
@@ -567,17 +567,6 @@ class CavendishTemplate extends QuickTemplate {
                     });
                 });
             </script>
-		    <!--script type="text/javascript">
-                $(document).ready(function(){
-                    $('#status_logout').removeAttr('href');
-                    $('#status_logout').click(function(){
-                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").on('load', function(){
-                            document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
-                        });
-                    });
-                });
-	        </script-->
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
@@ -721,21 +710,21 @@ class CavendishTemplate extends QuickTemplate {
 	                  </a>";
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip changeImg highlights-text-hover' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}question_mark_8x16.png' />&nbsp;&nbsp;Help/FAQ</a>";
+            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_8x16.png' />&nbsp;&nbsp;Help/FAQ</a>";
             if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML changeImg highlights-text-hover'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}share_16x16.png' />&nbsp;▼</a>";
+	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_16x16.png' />&nbsp;▼</a>";
 	        }
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
 		        
-		        $smallNotificationText = "";
+		        $notificationAnimation = "";
 		        if(count($notifications) > 0){
+		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
-		            $smallNotificationText = "<img class='overlay' style='margin-left:-16px;' src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12_red.png' />*";
 		        }
-		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip changeImg highlights-text-hover' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' style='color:#EE0000;'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}mail_16x12.png' />$smallNotificationText</a>";
-		        echo "<a id='status_profile' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
-		        echo "<a id='status_profile_photo' class='menuTooltip highlights-text-hover' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
+		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_16x12.png' style='$notificationAnimation' /></a>";
+		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
+		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logout = $this->data['personal_urls']['logout'];
 	                $getStr = "";
@@ -751,7 +740,7 @@ class CavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_16x16.png' /></a>";
 	            }
 	        }
 	        echo "</div>";
@@ -905,7 +894,7 @@ class CavendishTemplate extends QuickTemplate {
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
-				<div id="footer"><table><tr><td align="left" width="1%" nowrap="nowrap">
+				<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
 		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
@@ -932,7 +921,7 @@ class CavendishTemplate extends QuickTemplate {
 	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
     </ul>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN
-    <!-- Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.--></td><td align="right" width="1%" nowrap="nowrap"><?php if($this->data['poweredbyico']) { ?><div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div><?php } ?></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
+    <!-- Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.--></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
