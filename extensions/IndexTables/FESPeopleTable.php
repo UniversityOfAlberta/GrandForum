@@ -51,10 +51,10 @@ class FESPeopleTable extends SpecialPage {
             $earliestDate = substr($earliestDate, 0, 10);
             $latestDate = str_replace("9999-99-99", "Current", substr($latestDate, 0, 10));
             $alumni = Alumni::newFromUserId($person->getId());
-            $projects = array_merge($person->leadership(), $person->getProjects());
+            $projects = array_merge($person->leadership(true), $person->getProjects(true));
             $projs = array();
             foreach($projects as $project){
-                if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
+                if(!isset($projs[$project->getId()]) &&
                     $project->getStatus() != "Proposed"){
                     $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
                 }
