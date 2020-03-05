@@ -661,6 +661,66 @@ class CavendishTemplate extends QuickTemplate {
 <div id="internal"></div>
 <div id="container">
 	<div id="topheader">
+	    <div id="header">
+	        <ul class="top-nav">
+                <?php 
+		            global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
+                    $GLOBALS['tabs'] = array();
+                    
+                    $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
+                    $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
+                    $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+                    $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+                    
+	                wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
+	                wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+                ?>
+		        <?php 
+			        global $wgUser, $wgScriptPath, $tabs;
+			        $selectedFound = false;
+			        foreach($tabs as $key => $tab){
+			            ksort($tab['subtabs']);
+			            if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
+			                $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
+			            }
+			            if(strstr($tab['selected'], "selected") !== false){
+			                $selectedFound = true;
+			            }
+	               	    foreach($tab['subtabs'] as $subtab){
+	               	        if(strstr($subtab['selected'], "selected") !== false){
+	               	            $tabs[$key]['selected'] = "selected";
+	               	            $selectedFound = true;
+	               	            if($tabs[$key]['text'] == ""){
+	               	                $tabs['Main']['selected'] = "selected";
+	               	            }
+	               	        }
+	               	        if(count($subtab['dropdown']) > 0){
+	               	            foreach($subtab['dropdown'] as $dropdown){
+	               	                if(strstr($dropdown['selected'], "selected") !== false){
+	                       	            $tabs[$key]['selected'] = "selected";
+	                       	            $selectedFound = true;
+	                       	            if($tabs[$key]['text'] == ""){
+	                       	                $tabs['Main']['selected'] = "selected";
+	                       	            }
+	                       	        }
+	               	            }
+	               	        }
+	               	    }
+	               	}
+	               	if(!$selectedFound){
+	               	    // If a selected tab wasn't found, just default to the Main Tab
+	               	    $tabs['Main']['selected'] = "selected";
+	               	}
+			        foreach($tabs as $key => $tab){
+			            if($tab['href'] != "" && $tab['text'] != ""){
+			                echo "<li class='top-nav-element {$tab['selected']}'>\n";
+                            echo "<a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
+                            echo "</li>";
+                        }
+			        }
+		        ?>
+		        </ul>
+		    </div>
         <?php
             global $wgSitename, $notifications, $notificationFunctions, $config;
             if(count($notifications) == 0){
@@ -752,15 +812,10 @@ class CavendishTemplate extends QuickTemplate {
                 $revIdFull = "<a title='{$output[0]}' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/commit/{$output[0]}'>$revId</a>";
                 $branchFull = "<a title='$branch' target='_blank' href='https://github.com/UniversityOfAlberta/GrandForum/tree/$branch'>$branch</a>";
                 $docs = "<a title='docs' target='_blank' href='https://grand-forum.readthedocs.io/en/latest/'>Docs</a>";
-                
-                if(strstr($wgScriptPath, "staging") !== false){
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
-                            STAGING ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
-                }
-                else{
-                    echo "<div style='position:absolute;top:15px;left:525px;'>
-                            DEVELOPMENT ($branchFull, $revIdFull), $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a></div>";
-                }
+
+                echo "<div style='position:absolute;top:15px;left:525px;'>
+                         $branchFull, $revIdFull, $docs&nbsp;&nbsp;<a target='_blank' href='https://grand.cs.ualberta.ca/~dwt/behat_test/symfony/output/output.html'><img src='https://grand.cs.ualberta.ca/~dwt/behat_test/testSuiteStatus.php' /></a>
+                      </div>";
             }
             if($config->getValue('globalMessage') != ""){
                 $wgMessage->addInfo($config->getValue('globalMessage'));
@@ -774,64 +829,6 @@ class CavendishTemplate extends QuickTemplate {
 	    <div id="header">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger.png" /></a>
 		    <a name="top" id="contentTop"></a>
-            <ul class="top-nav">
-            <?php 
-		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
-                $GLOBALS['tabs'] = array();
-                
-                $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
-                $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-                $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-                
-	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
-            ?>
-		    <?php 
-			    global $wgUser, $wgScriptPath, $tabs;
-			    $selectedFound = false;
-			    foreach($tabs as $key => $tab){
-			        ksort($tab['subtabs']);
-			        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
-			            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
-			        }
-			        if(strstr($tab['selected'], "selected") !== false){
-			            $selectedFound = true;
-			        }
-	           	    foreach($tab['subtabs'] as $subtab){
-	           	        if(strstr($subtab['selected'], "selected") !== false){
-	           	            $tabs[$key]['selected'] = "selected";
-	           	            $selectedFound = true;
-	           	            if($tabs[$key]['text'] == ""){
-	           	                $tabs['Main']['selected'] = "selected";
-	           	            }
-	           	        }
-	           	        if(count($subtab['dropdown']) > 0){
-	           	            foreach($subtab['dropdown'] as $dropdown){
-	           	                if(strstr($dropdown['selected'], "selected") !== false){
-	                   	            $tabs[$key]['selected'] = "selected";
-	                   	            $selectedFound = true;
-	                   	            if($tabs[$key]['text'] == ""){
-	                   	                $tabs['Main']['selected'] = "selected";
-	                   	            }
-	                   	        }
-	           	            }
-	           	        }
-	           	    }
-	           	}
-	           	if(!$selectedFound){
-	           	    // If a selected tab wasn't found, just default to the Main Tab
-	           	    $tabs['Main']['selected'] = "selected";
-	           	}
-			    foreach($tabs as $key => $tab){
-			        if($tab['href'] != "" && $tab['text'] != ""){
-			            echo "<li class='top-nav-element {$tab['selected']}'>\n";
-                        echo "<a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
-                        echo "</li>";
-                    }
-			    }
-		    ?>
-		    </ul>
 	    </div>
 	    <div id='submenu'>
             <ul>
