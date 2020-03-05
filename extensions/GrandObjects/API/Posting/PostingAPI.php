@@ -28,12 +28,20 @@ abstract class PostingAPI extends RESTAPI {
             return $posting->toJSON();
         }
         else{
+            $start = 0;
+            $count = 999999999;
+            if($this->getParam('start') != "" &&
+               $this->getParam('count') != ""){
+                $start = $this->getParam('start');
+                $count = $this->getParam('count');
+            }
             if($current){
                 $postings = new Collection($className::getCurrentPostings());
             }
             else {
                 $postings = new Collection($className::getAllPostings());
             }
+            $postings = $postings->paginate($start, $count);
             return $postings->toJSON();
         }
     }

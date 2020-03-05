@@ -160,14 +160,20 @@ $apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
 
 //Postings
 $apiRequest->addAction('Hidden','jobposting', 'JobPostingAPI');
+$apiRequest->addAction('Hidden','jobposting/:start/:count', 'JobPostingAPI');
 $apiRequest->addAction('Hidden','jobposting/current', 'JobPostingAPI');
+$apiRequest->addAction('Hidden','jobposting/current/:start/:count', 'JobPostingAPI');
 $apiRequest->addAction('Hidden','jobposting/:id', 'JobPostingAPI');
 $apiRequest->addAction('Hidden','newsposting', 'NewsPostingAPI');
+$apiRequest->addAction('Hidden','newsposting/:start/:count', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/current', 'NewsPostingAPI');
+$apiRequest->addAction('Hidden','newsposting/current/:start/:count', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:id', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:id/image', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','eventposting', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/current', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/current/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
 

@@ -18,12 +18,20 @@ class JobPostingAPI extends RESTAPI {
             return $job->toJSON();
         }
         else{
+            $start = 0;
+            $count = 999999999;
+            if($this->getParam('start') != "" &&
+               $this->getParam('count') != ""){
+                $start = $this->getParam('start');
+                $count = $this->getParam('count');
+            }
             if($current){
                 $jobs = new Collection(JobPosting::getCurrentJobPostings());
             }
             else {
                 $jobs = new Collection(JobPosting::getAllJobPostings());
             }
+            $jobs = $jobs->paginate($start, $count);
             return $jobs->toJSON();
         }
         return $page->toJSON();
