@@ -1435,8 +1435,7 @@ select span.noshow {
     padding: 6px;
     margin: 0;
     margin-left: 2px;
-    width: 100px;
-	transition: width 0.25s;
+    width: 250px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -1451,8 +1450,6 @@ select span.noshow {
 
 #globalSearchInput:focus {
     border: none !important;
-    width: 250px;
-	transition: width 0.25s;
 }
 
 #globalSearchThrobber {

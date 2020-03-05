@@ -63,8 +63,6 @@ h1, h2, h3, h4, h5, h6, h7 {
     color: $hl !important;
 }
 
-/* Input */
-
 .selected .highlights-tab, .highlights-tab:hover {
     border-width: 3px 0 0 0;
     border-style: solid;
@@ -72,22 +70,24 @@ h1, h2, h3, h4, h5, h6, h7 {
     color: $hl !important;
 }
 
+/* Input */
+
 input:focus, textarea:focus {
     outline: none;
-    border: 1px solid $hl !important;
-	box-shadow: inset 0 0 2px $hl;
-    -moz-box-shadow: inset 0 0 2px $hl;
-    -webkit-box-shadow: inset 0 0 2px $hl;
+    border: 1px solid $th !important;
+	box-shadow: inset 0 0 2px $th;
+    -moz-box-shadow: inset 0 0 2px $th;
+    -webkit-box-shadow: inset 0 0 2px $th;
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: $hl !important;
-    fill: $hl !important;
+    color: $th !important;
+    fill: $th !important;
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    color: $hl !important;
-    fill: $hl !important;
+    color: $th !important;
+    fill: $th !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
@@ -165,7 +165,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 }
 
 .ui-widget-content a {
-    color: $hl;
+    color: $th;
 }
 
 .ui-dialog .ui-dialog-titlebar {
@@ -173,7 +173,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 }
 
 li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
-    background: $hl !important;
+    background: $th !important;
 }
 
 /* Other */
@@ -188,22 +188,22 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }
 
 .qtip-light .qtip-content a:hover {
-    color: $hl;
+    color: $th;
     text-decoration: none;
 }
 
 ul.tagit li.tagit-choice {
     background: white !important;
-    color: $hl !important;
-    border-color: $hl !important;
+    color: $th !important;
+    border-color: $th !important;
 }
 
 ul.tagit li.tagit-choice .tagit-label:not(a) {
-    color: $hl;
+    color: $th;
 }
 
 ul.tagit li.tagit-choice .tagit-close .text-icon {
-    color: $hl;
+    color: $th;
 }
 
 ul.tagit li.tagit-choice.remove {
@@ -211,29 +211,29 @@ ul.tagit li.tagit-choice.remove {
 }
 
 #bodyContent a.extiw,#bodyContent a.extiw:active {
-    color: $hl;
+    color: $th;
     background: none;
     padding: 0;
 }
 
 #bodyContent a.external {
-    color: $hl;
+    color: $th;
 }
 
 a {
-    color: $hl;
+    color: $th;
 }
 
 a:hover {
-    color: $hl;
+    color: $th;
 }
 
 a:visited {
-    color: $hl;
+    color: $th;
 }
 
 a:active {
-    color: $hl;
+    color: $th;
 }
 
 EOF;
