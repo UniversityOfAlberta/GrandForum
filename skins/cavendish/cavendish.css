@@ -94,8 +94,8 @@ body {
 
 #sideToggle {
     width: 30px;
-    height: 71px;
-    line-height: 65px;
+    height: 68px;
+    line-height: 62px;
     top: 45px;
     bottom: 0;
     left: 0;
@@ -167,7 +167,7 @@ body {
 #nav hr {
     margin-top: 0;
     margin-bottom: 8px;
-    background-color: #E0E0E0;
+    background-color: rgba(255,255,255,0.25);
 }
 
 /* Random HTML Styles */

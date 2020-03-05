@@ -879,10 +879,10 @@ class CavendishTemplate extends QuickTemplate {
 	        ?>
 		    </ul>
 		<?php
-		    echo "<div class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0; background: #FFFFFF;'>
+		    echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>
                     <a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />
-                    <p style='text-align:left; color: #888888;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
+                    <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
                   </div>";
         ?>
 		</div><!-- end of SIDE div -->

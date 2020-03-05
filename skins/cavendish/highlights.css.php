@@ -47,12 +47,51 @@ h1, h2, h3, h4, h5, h6, h7 {
     background: $th;
 }
 
-#sideToggle {
-    border-left: 3px solid $th;
+#header {
+    background: $th;
+}
+
+#submenu, #submenu li:not(.action) {
+    background: $th !important;
+}
+
+#submenu ul a, #header ul a {
+    color: #FFFFFF;
+}
+
+#submenu li.action a {
+    color: $th !important;
+}
+
+#submenu li.action a:hover {
+    color: #FFFFFF !important;
+    background: $th;
+}
+
+#sideToggle, #allTabs {
+    background: $th;
+    border:none;
+    color: #FFFFFF;
+    border-top: 3px solid $th;
+}
+
+#sideToggle:hover, #allTabs:hover {
+    color: $hl;
+    background: $th;
+    border-top: 3px solid $hl;
+}
+
+#side, #nav, #sideFooter {
+    background: $th;
+    color: #ccc;
+}
+
+#sideFooter a {
+    color: $hl;
 }
 
 #bodyContent {
-    border-color: $th;
+    border-color: $hl;
 }
 
 #globalSearchResults {
@@ -68,6 +107,10 @@ h1, h2, h3, h4, h5, h6, h7 {
     border-style: solid;
     border-color: $hl;
     color: $hl !important;
+}
+
+#allTabsDropdown a:hover {
+    color: $th !important;
 }
 
 /* Input */
@@ -149,19 +192,19 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 /* JQuery UI */
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
-	color: $hl;
+	color: $th;
 }
 
 .ui-datepicker {
-    border: 1px solid $hl !important;
+    border: 1px solid $th !important;
 }
 
 .ui-progressbar .ui-progressbar-value {
-    background: $hl;
+    background: $th;
 }
 
 .ui-tabs .ui-tabs-nav li:hover:not(.ui-state-disabled) a{
-    color: $hl;
+    color: $th;
 }
 
 .ui-widget-content a {
@@ -169,7 +212,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 }
 
 .ui-dialog .ui-dialog-titlebar {
-	background: $hl;
+	background: $th;
 }
 
 li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
