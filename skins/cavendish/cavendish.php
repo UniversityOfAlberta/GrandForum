@@ -874,7 +874,14 @@ class CavendishTemplate extends QuickTemplate {
 		    <?php
 		        $this->toolbox();
 	        ?>
-		    </ul>  
+		    </ul>
+		<?php
+		    echo "<div class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0; background: #FFFFFF;'>
+                    <a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />
+                    <p style='text-align:left; color: #888888;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
+                  </div>";
+        ?>
 		</div><!-- end of SIDE div -->
 		<div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
@@ -891,7 +898,7 @@ class CavendishTemplate extends QuickTemplate {
 			<?php if($this->data['catlinks']) { ?><div id="catlinks"><?php       $this->html('catlinks') ?></div><?php } ?>
 			<!-- end content -->
 			<?php if($this->data['dataAfterContent']) { $this->html ('dataAfterContent'); } ?>
-				<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
+			<div id="footer"><table style="width:100%"><tr><td align="left" width="1%" nowrap="nowrap">
 		    <?php if($this->data['copyrightico']) { ?><div id="f-copyrightico"><?php $this->html('copyrightico') ?></div><?php } ?></td><td align="center">
     <?php	// Generate additional footer links
 		    $footerlinks = array(
@@ -914,11 +921,9 @@ class CavendishTemplate extends QuickTemplate {
     <?php 			}
 			    }
 		    }
-		echo "<li id='f-disclaimer'><a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a></li>\n";
-	    echo "<li id='f-disclaimer'><a href='mailto:{$config->getValue('supportEmail')}'>Support</a></li>\n";
     ?>
-    </ul>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN
-    <!-- Icons by <a href="http://somerandomdude.com/work/iconic/" target='_blank'>Iconic</a> & <a href="http://glyphicons.com/" target='_blank'>Glyphicons</a>.--></td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
+    </ul>
+    </td></tr></table><img style='display:none;' src='<?php echo "$wgServer$wgScriptPath"; ?>/skins/Throbber.gif' alt='Throbber' />
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
@@ -1196,6 +1201,7 @@ EOF;
 ?>
 	</li>
 <?php
+        
 	}
-
+    
 } // end of class
