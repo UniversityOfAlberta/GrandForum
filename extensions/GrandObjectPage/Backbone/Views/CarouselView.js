@@ -86,11 +86,6 @@ CarouselView = Backbone.View.extend({
         var model = this.model.at(this.index);
         this.card = new LargePersonCardView({el: this.$(".carouselContent"), model: model});
         this.card.render();
-        this.card.$(".links").appendTo(this.card.$(".large_card"));
-        this.card.$(".links").css("display", "inline-block")
-                             .css("margin-top", 13)
-                             .css("margin-left", 30)
-                             .css("vertical-align", "text-top");
         this.card.$(".card_photo").css('height', 140);
         this.$(".carouselExtra").empty();
         if(model.get('keywords').length > 0){
