@@ -1434,7 +1434,6 @@ select span.noshow {
     font-size: 12px !important;
     padding: 6px;
     margin: 0;
-    margin-left: 2px;
     width: 100px;
 	transition: width 0.25s;
     -moz-box-shadow: none;
@@ -1485,7 +1484,8 @@ select span.noshow {
 }
 
 #globalSearchResults {
-    border: 3px solid #D8D8D8;
+    border: 1px solid #D8D8D8;
+    border-bottom: 0;
     background: #FFFFFF;
     width: 428px;
     z-index: 1000;
@@ -1494,15 +1494,14 @@ select span.noshow {
     font-size: 10px;
     overflow-y: auto;
     overflow-x: hidden;
+    
+    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
+    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
 }
 
 #globalSearchResults > div > div {
     border-bottom: 1px #D8D8D8 solid;
-}
-
-
-#showMoreResults{
-    color: #333333 !important;
 }
 
 .globalSearchResultsGroup {

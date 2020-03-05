@@ -128,7 +128,7 @@ GlobalSearchResultsView = Backbone.View.extend({
                 this.$("#globalSearchResults").css('border-top-width', '0');
             }
             else{
-                this.$("#globalSearchResults").css('border-top-width', '3px');
+                this.$("#globalSearchResults").css('border-top-width', '1px');
             }
         }
         $("#globalSearchThrobber > .throbber").css('display', 'none');
