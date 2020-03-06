@@ -705,7 +705,7 @@ class CavendishTemplate extends QuickTemplate {
                         $text = "Intranet";
                         break;
                 }
-                echo "<a class='changeImg highlights-text-hover' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
+                echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
 	                        <img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}$img.png' />&nbsp;$text
 	                  </a>";
 	        }

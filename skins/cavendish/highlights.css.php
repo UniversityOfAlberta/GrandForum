@@ -9,11 +9,14 @@ else{
 }
 require_once("../../config/Config.php");
 
-$hl = $config->getValue("highlightColor");
 $th = $config->getValue("topHeaderColor");
+$hl = $config->getValue("highlightColor");
+$hlFontColor = $config->getValue("highlightFontColor");
+$hlc = $config->getValue("hyperlinkColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
+
 
 echo <<<EOF
 
@@ -29,12 +32,12 @@ echo <<<EOF
 
 .highlights-background {
     background: $hl !important;
-    color: #FFFFFF !important;
+    color: $hlFontColor !important;
 }
 
 .highlights-background-hover:hover {
     background: $hl !important;
-    color: #FFFFFF !important;
+    color: $hlFontColor !important;
 }
 
 h1, h2, h3, h4, h5, h6, h7 {
@@ -70,7 +73,6 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 #sideToggle, #allTabs {
     background: $th;
-    border:none;
     color: #FFFFFF;
     border-top: 3px solid $th;
 }
@@ -99,7 +101,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 #showMoreResults:hover {
-    color: $hl !important;
+    color: $hlc !important;
 }
 
 .selected .highlights-tab, .highlights-tab:hover {
@@ -117,20 +119,20 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 input:focus:not(.dark), textarea:focus {
     outline: none;
-    border: 1px solid $th !important;
-	box-shadow: inset 0 0 2px $th;
-    -moz-box-shadow: inset 0 0 2px $th;
-    -webkit-box-shadow: inset 0 0 2px $th;
+    border: 1px solid $hlc !important;
+	box-shadow: inset 0 0 2px $hlc;
+    -moz-box-shadow: inset 0 0 2px $hlc;
+    -webkit-box-shadow: inset 0 0 2px $hlc;
 }
 
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: $th !important;
-    fill: $th !important;
+    color: $hlc !important;
+    fill: $hlc !important;
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
-    color: $th !important;
-    fill: $th !important;
+    color: $hlc !important;
+    fill: $hlc !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
@@ -192,7 +194,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 /* JQuery UI */
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a{
-	color: $th;
+	color: $hlc;
 }
 
 .ui-datepicker {
@@ -204,11 +206,11 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 }
 
 .ui-tabs .ui-tabs-nav li:hover:not(.ui-state-disabled) a{
-    color: $th;
+    color: $hlc;
 }
 
 .ui-widget-content a {
-    color: $th;
+    color: $hlc;
 }
 
 .ui-dialog .ui-dialog-titlebar {
@@ -216,7 +218,7 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
 }
 
 li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-item > a.ui-state-focus {
-    background: $th !important;
+    background: $hlc !important;
 }
 
 /* Other */
@@ -226,27 +228,27 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }
 
 .small_card:hover, .small_card_hover {
-    background: $hl !important;
-    color: #ffffff !important;
+    background: $hlc !important;
+    color: #FFFFFF !important;
 }
 
 .qtip-light .qtip-content a:hover {
-    color: $th;
+    color: $hlc;
     text-decoration: none;
 }
 
 ul.tagit li.tagit-choice {
     background: white !important;
-    color: $th !important;
-    border-color: $th !important;
+    color: $hlc !important;
+    border-color: $hlc !important;
 }
 
 ul.tagit li.tagit-choice .tagit-label:not(a) {
-    color: $th;
+    color: $hlc;
 }
 
 ul.tagit li.tagit-choice .tagit-close .text-icon {
-    color: $th;
+    color: $hlc;
 }
 
 ul.tagit li.tagit-choice.remove {
@@ -254,29 +256,29 @@ ul.tagit li.tagit-choice.remove {
 }
 
 #bodyContent a.extiw,#bodyContent a.extiw:active {
-    color: $th;
+    color: $hlc;
     background: none;
     padding: 0;
 }
 
 #bodyContent a.external {
-    color: $th;
+    color: $hlc;
 }
 
 a {
-    color: $th;
+    color: $hlc;
 }
 
 a:hover {
-    color: $th;
+    color: $hlc;
 }
 
 a:visited {
-    color: $th;
+    color: $hlc;
 }
 
 a:active {
-    color: $th;
+    color: $hlc;
 }
 
 EOF;

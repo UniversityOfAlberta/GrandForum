@@ -94,9 +94,9 @@ body {
 
 #sideToggle {
     width: 30px;
-    height: 68px;
+    height: 67px;
     line-height: 62px;
-    top: 45px;
+    top: 46px;
     bottom: 0;
     left: 0;
     position: absolute;
@@ -106,9 +106,6 @@ body {
     color: #888888;
     z-index: 100;
     background: #FFFFFF;
-    border-width: 0 1px 0 1px;
-    border-style: solid;
-    border-color: #E0E0E0;
     z-index: 1000;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -116,6 +113,8 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border-left: 1px solid rgba(0,0,0,0.10);
+    border-right: 1px solid rgba(0,0,0,0.10);
 }
 
 #sideToggle:hover {
@@ -167,7 +166,7 @@ body {
 #nav hr {
     margin-top: 0;
     margin-bottom: 8px;
-    background-color: rgba(255,255,255,0.25);
+    background-color: rgba(0,0,0,0.10);
 }
 
 /* Random HTML Styles */
@@ -1492,11 +1491,6 @@ select span.noshow {
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-#globalSearchResults > div > div {
-    border-bottom: 1px #D8D8D8 solid;
-}
-
 
 #showMoreResults{
     color: #333333 !important;

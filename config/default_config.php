@@ -82,6 +82,9 @@
     // Highlight color for skin
     $config->setValue("highlightColor", "#555555");
     
+    // Highlight color for skin
+    $config->setValue("hyperlinkColor", "#555555");
+    
     // Highlight color for fonts
     $config->setValue("highlightFontColor", "#FFFFFF");
     
