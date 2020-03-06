@@ -116,6 +116,7 @@ class PeopleTableTab extends AbstractTab {
                                     <th style='white-space: nowrap;'>Institution</th>
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
+                                    <th style='white-space: nowrap;'>Keywords</th>
                                     {$statusHeader}
                                     {$epicHeader}
                                     {$contactHeader}
@@ -149,6 +150,7 @@ class PeopleTableTab extends AbstractTab {
             $this->html .= "
                 <tr>
                     <td align='left' style='white-space: nowrap;'>
+                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='width:100px;max-height:132px; border-radius: 5px;' /></a>
                         <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
                     </td>
                     <td align='left' style='white-space: nowrap;display:none;'>
@@ -190,6 +192,7 @@ class PeopleTableTab extends AbstractTab {
             $this->html .= "<td align='left'>{$university['university']}</td>";
             $this->html .= "<td align='left'>{$university['department']}</td>";
             $this->html .= "<td align='left'>{$university['position']}</td>";
+            $this->html .= "<td align='left'>{$person->getKeywords(', ')}</td>";
             if($statusHeader != ''){
                 if($person->isRole($this->table)){
                     $status = "Active";

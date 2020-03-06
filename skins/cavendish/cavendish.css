@@ -1111,7 +1111,7 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }*/
 
 h1.custom-title{
-    padding: 0.8em 0.8em 0 0.8em;
+    padding: 0.8em 0 0 0;
     border: none;
 }
 
