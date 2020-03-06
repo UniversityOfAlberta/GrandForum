@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 /* Input */
 
-input:focus, textarea:focus {
+input:focus:not(.dark), textarea:focus {
     outline: none;
     border: 1px solid $th !important;
 	box-shadow: inset 0 0 2px $th;

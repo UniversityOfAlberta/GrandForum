@@ -878,13 +878,13 @@ class CavendishTemplate extends QuickTemplate {
 		        $this->toolbox();
 	        ?>
 		    </ul>
-		<?php
-		    echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>
-                    <a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />
-                    <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
-                  </div>";
-        ?>
+		    <?php
+		        echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>
+                        <a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />
+                        <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
+                      </div>";
+            ?>
 		</div><!-- end of SIDE div -->
 		<div id="allTabsDropdown" style="display:none;"></div>
 	<div id="mBody">
@@ -1160,17 +1160,15 @@ If you have forgotten your password please enter your login and ID and request a
 	    </tr>
 	    $message
 		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td valign='middle' align='right' style='width:1%;'>Username:</td>
-			<td class="mw-input">
+			<td class="mw-input" colspan="2">
 				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
-					tabindex="1" size='20' placeholder='First.Last' />
+					tabindex="1" size='20' placeholder='Username (First.Last)' />
 			</td>
 		</tr>
 		<tr>
-			<td valign='middle' align='right' style='width:1%;'><label for='wpPassword1'>Password:</label></td>
-			<td class="mw-input">
+			<td class="mw-input" colspan="2">
 				<input type='password' class='loginPassword dark' style='width:97%' name="wpPassword" id="wpPassword1"
-					tabindex="2" size='20' />
+					tabindex="2" size='20' placeholder='Password' />
 			</td>
 		<tr>
 			<td colspan="2" class="mw-input">
@@ -1188,7 +1186,7 @@ If you have forgotten your password please enter your login and ID and request a
 	</table>
 <input type="hidden" name="wpLoginToken" value="$token" /></form>
 $emailPassword
-</li>
+</li></ul>
 EOF;
             if(isExtensionEnabled("Shibboleth")){
                 echo "
