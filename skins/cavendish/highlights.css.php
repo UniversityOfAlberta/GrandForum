@@ -120,7 +120,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 /* Input */
 
-input:focus:not(.dark), textarea:focus {
+input:focus:not(.dark):not(#tagit_tags), textarea:focus {
     outline: none;
     border: 1px solid $hlc !important;
 	box-shadow: inset 0 0 2px $hlc;
@@ -128,9 +128,9 @@ input:focus:not(.dark), textarea:focus {
     -webkit-box-shadow: inset 0 0 2px $hlc;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
-    color: $hlc !important;
-    fill: $hlc !important;
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+    color:#606060 !important;
+    fill:#606060 !important;
 }
 
 input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
@@ -138,9 +138,9 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:h
     fill: $hlc !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
-    color:#606060 !important;
-    fill:#606060 !important;
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+    color: $hlc !important;
+    fill: $hlc !important;
 }
 
 input[disabled] , input[disabled]:hover , input[disabled]:active, select[disabled], button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:active {
