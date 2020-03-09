@@ -91,6 +91,9 @@
     // Highlight color for fonts
     $config->setValue("highlightFontColor", "#FFFFFF");
     
+    // Border color for the #bodyContent div
+    $config->setValue("mainBorderColor", "#555555");
+    
     // Highlight color for headers
     $config->setValue("headerColor", "#333333");
     

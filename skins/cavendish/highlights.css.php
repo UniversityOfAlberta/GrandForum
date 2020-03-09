@@ -14,6 +14,7 @@ $sc = $config->getValue("sideColor");
 $hl = $config->getValue("highlightColor");
 $hlFontColor = $config->getValue("highlightFontColor");
 $hlc = $config->getValue("hyperlinkColor");
+$bc = $config->getValue("mainBorderColor");
 $hc = $config->getValue("headerColor");
 $iconPath = $config->getValue("iconPath");
 $iconPathHighlighted = $config->getValue("iconPathHighlighted");
@@ -49,6 +50,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 #topheader {
     background: $th;
+    border-bottom: 1px solid $th;
 }
 
 #header {
@@ -94,7 +96,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 #bodyContent {
-    border-color: $hl;
+    border-color: $bc;
 }
 
 #globalSearchResults {

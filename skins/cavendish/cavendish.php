@@ -59,6 +59,7 @@ class CavendishTemplate extends QuickTemplate {
         <?php } ?>
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
+		<link rel='stylesheet' id='roboto-css'  href='//fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C500%2C500i%2C700%2C700i&#038;ver=4.9.13' type='text/css' media='all' />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/autocomplete.css" type="text/css" />
