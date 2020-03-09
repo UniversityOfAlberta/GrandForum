@@ -79,6 +79,9 @@
     // Top Header color for skin
     $config->setValue("topHeaderColor", "#777777");
     
+    // Sidebar color for skin
+    $config->setValue("sideColor", "#999999");
+    
     // Highlight color for skin
     $config->setValue("highlightColor", "#555555");
     

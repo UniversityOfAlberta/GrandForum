@@ -10,6 +10,7 @@ else{
 require_once("../../config/Config.php");
 
 $th = $config->getValue("topHeaderColor");
+$sc = $config->getValue("sideColor");
 $hl = $config->getValue("highlightColor");
 $hlFontColor = $config->getValue("highlightFontColor");
 $hlc = $config->getValue("hyperlinkColor");
@@ -51,11 +52,11 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 #header {
-    background: $th;
+    background: $sc;
 }
 
 #submenu, #submenu li:not(.action) {
-    background: $th !important;
+    background: $sc !important;
 }
 
 #submenu ul a, #header ul a {
@@ -63,28 +64,28 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 #submenu li.action a {
-    color: $th !important;
+    color: $sc !important;
 }
 
 #submenu li.action a:hover {
     color: #FFFFFF !important;
-    background: $th;
+    background: $sc;
 }
 
 #sideToggle, #allTabs {
-    background: $th;
+    background: $sc;
     color: #FFFFFF;
-    border-top: 3px solid $th;
+    border-top: 3px solid $sc;
 }
 
 #sideToggle:hover, #allTabs:hover {
     color: $hl;
-    background: $th;
+    background: $sc;
     border-top: 3px solid $hl;
 }
 
 #side, #nav, #sideFooter {
-    background: $th;
+    background: $sc;
     color: #ccc;
 }
 
