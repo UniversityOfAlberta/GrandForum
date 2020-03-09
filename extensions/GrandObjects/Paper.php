@@ -279,16 +279,22 @@ class Paper extends BackboneModel{
      * @return integer The number of Products there are of the specified type
      */
     static function countByCategory($category='all'){
+        $me = Person::newFromWgUser();
+        $where = array('access_id' => EQ(0),
+                       'deleted' => EQ(0));
+        if(!$me->isLoggedIn()){
+            $where['access'] = "Public";
+        }
         if($category != 'all'){
+            $where['category'] = EQ($category);
             $data = DBFunctions::select(array('grand_products'),
                                         array('COUNT(id)' => 'count'),
-                                        array('category' => EQ($category),
-                                              'deleted' => EQ(0)));
+                                        $where);
         }
         else{
             $data = DBFunctions::select(array('grand_products'),
                                         array('COUNT(id)' => 'count'),
-                                        array('deleted' => EQ(0)));
+                                        $where);
         }
         return $data[0]['count'];
     }
