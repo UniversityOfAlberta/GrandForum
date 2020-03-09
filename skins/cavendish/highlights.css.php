@@ -120,7 +120,7 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 /* Input */
 
-input:focus:not(.dark):not(#tagit_tags), textarea:focus {
+input:focus:not(.dark):not(#tagit_tags):not(#globalSearchInput), textarea:focus {
     outline: none;
     border: 1px solid $hlc !important;
 	box-shadow: inset 0 0 2px $hlc;

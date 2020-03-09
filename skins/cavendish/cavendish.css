@@ -1434,7 +1434,7 @@ select span.noshow {
 
 /* Global Search */
 #globalSearchInput {
-    font-size: 12px !important;
+    font-size: 14px !important;
     padding: 6px;
     margin: 0;
     margin-left: 2px;
@@ -1491,7 +1491,7 @@ select span.noshow {
     z-index: 1000;
     position:relative;
     color: #555;
-    font-size: 10px;
+    font-size: 12px;
     overflow-y: auto;
     overflow-x: hidden;
 }
