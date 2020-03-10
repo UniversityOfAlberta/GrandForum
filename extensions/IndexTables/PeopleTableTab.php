@@ -118,7 +118,7 @@ class PeopleTableTab extends AbstractTab {
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
-                                    <th style='white-space: nowrap;'>Name</th>
+                                    <th style='white-space: nowrap; width:1%;'>Name</th>
                                     <th style='display:none;'>First Name</th>
                                     <th style='display:none;'>Last Name</th>
                                     {$subRoleHeader}
@@ -126,7 +126,7 @@ class PeopleTableTab extends AbstractTab {
                                     {$uniHeader}
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
-                                    <th style='white-space: nowrap; max-width:15%;'>Keywords</th>
+                                    <th style='white-space: nowrap; width:15%;'>Keywords</th>
                                     {$statusHeader}
                                     {$epicHeader}
                                     {$contactHeader}
