@@ -39,7 +39,7 @@
     </td>
 <% } %>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
-    <td style="border-left: 2px solid #AAAAAA;" align="center">
+    <td style="border-left: 2px solid #CCCCCC;" align="center">
         <% if(me.get('id') != id){ %>
             <div style="position: relative; width:100%;">
                 <span style="display:none;"><%= candidate %></span><%= HTML.CheckBox(this, 'candidate', {value: 1, style: "margin: 0;vertical-align:middle;"}) %>
@@ -54,6 +54,6 @@
         <span id="editThemeLeadership" class="edit-icon" title="Edit Theme Leadership"></span>
     </td>
 <% } %>
-<td style="border-left: 2px solid #AAAAAA;" align="left">
+<td style="border-left: 2px solid #CCCCCC;" align="left">
     <a href="<%= url %>"><%= fullName %></a>
 </td>
