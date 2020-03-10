@@ -213,6 +213,7 @@
         'CCVExport',
         //'CrossForumExport',
         'ReportIssue',
+        //'ContactUs',
         'MyThreads',
         'Freeze'
     ));
