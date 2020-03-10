@@ -210,21 +210,18 @@ class IndexTable {
                 default:
                     foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){//Here we can get role
-                            $wgOut->setPageTitle(str_replace("Member", "Members", $config->getValue('roleDefs', $role)));
                             self::generatePersonTable($role);
                             break;
                         }
                     }
                     if($wgTitle->getText() == "ALL Manager ".NI && $me->isRoleAtLeast(STAFF)){
-                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
                         self::generateNITable();
                     }
                     if($wgTitle->getText() == "ALL ".NI){
-                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+                        $wgOut->setPageTitle("");
                         self::generatePersonTable(NI);
                     }
                     if($wgTitle->getText() == "ALL Candidates" && $me->isRoleAtLeast(STAFF)){
-                        $wgOut->setPageTitle("Candidates");
                         self::generatePersonTable("Candidate");
                     }
                     break;
@@ -420,7 +417,7 @@ class IndexTable {
      * table.
      */
     private function generatePersonTable($table){
-        global $config;
+        global $config, $wgOut;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
@@ -438,6 +435,7 @@ class IndexTable {
             }
         }
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>$('.custom-title').hide();</script>");
         return true;
     }
     

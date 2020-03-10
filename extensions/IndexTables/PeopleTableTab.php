@@ -7,8 +7,15 @@ class PeopleTableTab extends AbstractTab {
     var $past;
 
     function PeopleTableTab($table, $visibility, $past=false){
+        global $config;
+        if($table != "Candidate"){
+            $tabTitle = str_replace("Member", "Members", Inflect::pluralize($config->getValue('roleDefs', $table)));
+        }
+        else{
+            $tabTitle = Inflect::pluralize($table);
+        }
         if(!$past){
-            parent::AbstractTab("Current");
+            parent::AbstractTab($tabTitle);
         } 
         else if(is_numeric($past)){
             parent::AbstractTab("$past-".($past+1));
