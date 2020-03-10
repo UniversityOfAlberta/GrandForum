@@ -64,6 +64,7 @@ class PeopleTableTab extends AbstractTab {
         $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
+        $uniHeader = "";
         $committees = $config->getValue('committees');
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
@@ -111,6 +112,9 @@ class PeopleTableTab extends AbstractTab {
         if($this->table == "Member"){
             $role = "Members";
         }
+        if(!isExtensionEnabled("Shibboleth")){
+            $uniHeader = "<th style='white-space: nowrap;'>Institution</th>";
+        }
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
@@ -119,7 +123,7 @@ class PeopleTableTab extends AbstractTab {
                                     <th style='display:none;'>Last Name</th>
                                     {$subRoleHeader}
                                     {$projectsHeader}
-                                    <th style='white-space: nowrap;'>Institution</th>
+                                    {$uniHeader}
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     <th style='white-space: nowrap;'>Keywords</th>
@@ -195,7 +199,9 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             $university = $person->getUniversity();
-            $this->html .= "<td align='left'>{$university['university']}</td>";
+            if($uniHeader != ''){
+                $this->html .= "<td align='left'>{$university['university']}</td>";
+            }
             $this->html .= "<td align='left'>{$university['department']}</td>";
             $this->html .= "<td align='left'>{$university['position']}</td>";
             $this->html .= "<td align='left'>{$person->getKeywords(', ')}</td>";
