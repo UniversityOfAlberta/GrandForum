@@ -9,7 +9,7 @@ class PeopleTableTab extends AbstractTab {
     function PeopleTableTab($table, $visibility, $past=false){
         global $config;
         if($table != "Candidate"){
-            $tabTitle = str_replace("Member", "Members", Inflect::pluralize($config->getValue('roleDefs', $table)));
+            $tabTitle = Inflect::pluralize($config->getValue('roleDefs', $table));
         }
         else{
             $tabTitle = Inflect::pluralize($table);
