@@ -126,7 +126,7 @@ class PeopleTableTab extends AbstractTab {
                                     {$uniHeader}
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
-                                    <th style='white-space: nowrap;'>Keywords</th>
+                                    <th style='white-space: nowrap; max-width:15%;'>Keywords</th>
                                     {$statusHeader}
                                     {$epicHeader}
                                     {$contactHeader}
