@@ -1121,8 +1121,8 @@ If you have forgotten your password please enter your login and ID and request a
 		        }
 		    }
 		    $emailPassword = "
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
-		            <div style='width:190px;'>
+		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:10px;'>
+		            <div style='width:180px;'>
                         <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
                         <input type='hidden' name='wpEmail' value='' />
                         <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
@@ -1156,19 +1156,19 @@ If you have forgotten your password please enter your login and ID and request a
 		    echo "<span class='highlights-text pBodyLogin'>Login</span>
 			<ul class='pBody pBodyLogin'>";
 		    echo <<< EOF
-<form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-    <div style="width:190px;">
+<form style='position:relative;left:10px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
+    <div style="width:180px;">
         <div style="display:none;">
             <div style='display:inline-block;width:100%;font-size:12px;' id='failMessage'>$failMessage</div>
         </div>
         $message
         <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:5px;' name="wpName" value="$name" id="wpName1" tabindex="1" size='20' placeholder='Username (First.Last)' /><br />
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpName" value="$name" id="wpName1" tabindex="1" size='20' placeholder='Username (First.Last)' /><br />
         <input type='password' class='loginPassword dark' 
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:5px;' name="wpPassword" id="wpPassword1" tabindex="2" size='20' placeholder='Password' /><br />
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpPassword" id="wpPassword1" tabindex="2" size='20' placeholder='Password' /><br />
         <input type='checkbox' name="wpRemember"
                tabindex="4" value="1" id="wpRemember" /> <label for="wpRemember">Remember my login on this computer</label><br />
-        <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:5px;" value="Log in" />
+        <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:10px;" value="Log in" />
         <input type="hidden" name="wpLoginToken" value="$token" />
     </div>
 </form>
