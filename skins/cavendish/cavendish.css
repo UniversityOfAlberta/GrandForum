@@ -163,6 +163,7 @@ body {
 #nav {
 	top: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: calc(100% - 240px);
 }
 

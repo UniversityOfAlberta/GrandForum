@@ -270,7 +270,7 @@ class PeopleTableTab extends AbstractTab {
             'iDisplayLength': 100, 
             'autoWidth':false,
             'columnDefs': [
-                {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))}
+                ($('.indexTable.{$this->id} th').index($('#epicHeader')) != -1) ? {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))} : {}
             ],
             'dom': 'Blfrtip',
             'buttons': [
