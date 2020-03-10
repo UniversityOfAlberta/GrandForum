@@ -104,7 +104,6 @@ class PeopleTableTab extends AbstractTab {
         if($this->table == "Member"){
             $role = "Members";
         }
-        $this->html .= "Below are all of the ".strtolower($this->id)." {$role} in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
@@ -149,8 +148,8 @@ class PeopleTableTab extends AbstractTab {
             $count++;
             $this->html .= "
                 <tr>
-                    <td align='left' style='white-space: nowrap;'>
-                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='width:100px;max-height:132px; border-radius: 5px;' /></a>
+                    <td align='center' style='white-space: nowrap;'>
+                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='width:100px;max-height:132px; border-radius: 5px;' /></a><br />
                         <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
                     </td>
                     <td align='left' style='white-space: nowrap;display:none;'>

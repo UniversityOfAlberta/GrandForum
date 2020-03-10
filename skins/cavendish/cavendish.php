@@ -884,10 +884,12 @@ class CavendishTemplate extends QuickTemplate {
 	        ?>
 		    </ul>
 		    <?php
-		        echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>
-                        <a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />
-                        <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
+		        echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>";
+		        if($config->getValue('networkSite') != ""){
+                    echo "<a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a href='mailto:{$config->getValue('supportEmail')}'>Support</a><br />";
+                }
+                echo "    <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
                       </div>";
             ?>
 		</div><!-- end of SIDE div -->
@@ -1197,7 +1199,7 @@ EOF;
                 echo "
                 <script type='text/javascript'>
                     $('.pBodyLogin').detach();
-                    $('#side').append(\"<div style='text-align: center'><a id='ssoLogin' class='button' style='margin-top:5px; margin-bottom:15px; width: 68px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
+                    $('#side').append(\"<div style='text-align: center'><a id='ssoLogin' class='button' style='margin-top:5px; margin-bottom:15px; width: 70px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
                 </script>
                 ";
             }

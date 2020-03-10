@@ -123,9 +123,6 @@ h1, h2, h3, h4, h5, h6, h7 {
 input:focus:not(.dark):not(#tagit_tags):not(#globalSearchInput), textarea:focus {
     outline: none;
     border: 1px solid $hlc !important;
-	box-shadow: inset 0 0 2px $hlc;
-    -moz-box-shadow: inset 0 0 2px $hlc;
-    -webkit-box-shadow: inset 0 0 2px $hlc;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
