@@ -10,6 +10,12 @@
     top: 6px;
 }
 
+#reportIssue button {
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 #reportIssue button, #contactUs button {
     width: 112px;
 }

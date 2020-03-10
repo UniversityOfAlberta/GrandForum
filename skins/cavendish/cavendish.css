@@ -161,7 +161,9 @@ body {
 }
 
 #nav {
-	
+	top: 0;
+    overflow-y: auto;
+    max-height: calc(100% - 240px);
 }
 
 #nav hr {
