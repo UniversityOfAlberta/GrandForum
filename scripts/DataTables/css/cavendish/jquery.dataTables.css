@@ -79,7 +79,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F8F8F8; }
  */
 .dataTables_length {
 	padding: 5px;
-	height: 30px;
+	height: 31px;
 	background: #E2E2E2;
     -moz-border-radius-topright: 4px;
     -moz-border-radius-topleft: 4px;
