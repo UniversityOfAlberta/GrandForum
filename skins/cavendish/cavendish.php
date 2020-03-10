@@ -1056,13 +1056,13 @@ class CavendishTemplate extends QuickTemplate {
                         </ul>
                     </li>
                 </ol>");
-		        $message = "<tr><td colspan='2'>
+		        $message = "
 <p>
 You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
 </p>
 <p>
 Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p></td></tr>";
+If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p>";
 		    }
 		    if($_SESSION == null || 
 		       $wgRequest->getSessionData('wsLoginToken') == "" ||
@@ -1122,15 +1122,11 @@ If you have forgotten your password please enter your login and ID and request a
 		    }
 		    $emailPassword = "
 		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:5px;'>
-		        <table>
-		            <tr>
-		                <td>
-		                    <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-		                    <input type='hidden' name='wpEmail' value='' />
-		                    <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-		                </td>
-		            </tr>
-		        </table>
+		            <div style='width:190px;'>
+                        <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
+                        <input type='hidden' name='wpEmail' value='' />
+                        <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
+                    </div>
 		        </form>
 		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
 		        <script type='text/javascript'>
@@ -1161,39 +1157,21 @@ If you have forgotten your password please enter your login and ID and request a
 			<ul class='pBody pBodyLogin'>";
 		    echo <<< EOF
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-	<table style='width:185px;'>
-	    <tr>
-	        <td colspan='2' style='display:none;'>
-	            <div style='display:inline-block;width:103%;font-size:11px;' id='failMessage'>$failMessage</div>
-	        </td>
-	    </tr>
-	    $message
-		<tr class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)">
-			<td class="mw-input" colspan="2">
-				<input type='text' class='loginText dark' style='width:97%;' name="wpName" value="$name" id="wpName1"
-					tabindex="1" size='20' placeholder='Username (First.Last)' />
-			</td>
-		</tr>
-		<tr>
-			<td class="mw-input" colspan="2">
-				<input type='password' class='loginPassword dark' style='width:97%' name="wpPassword" id="wpPassword1"
-					tabindex="2" size='20' placeholder='Password' />
-			</td>
-		<tr>
-			<td colspan="2" class="mw-input">
-				<input type='checkbox' name="wpRemember"
-					tabindex="4"
-					value="1" id="wpRemember"
-										/> <label for="wpRemember">Remember my login on this computer</label>
-			</td>
-		</tr>
-	    <tr>
-			<td colspan="2" class="mw-submit">
-				<input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" value="Log in" />
-			</td>
-		</tr>
-	</table>
-<input type="hidden" name="wpLoginToken" value="$token" /></form>
+    <div style="width:190px;">
+        <div style="display:none;">
+            <div style='display:inline-block;width:100%;font-size:12px;' id='failMessage'>$failMessage</div>
+        </div>
+        $message
+        <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:5px;' name="wpName" value="$name" id="wpName1" tabindex="1" size='20' placeholder='Username (First.Last)' /><br />
+        <input type='password' class='loginPassword dark' 
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:5px;' name="wpPassword" id="wpPassword1" tabindex="2" size='20' placeholder='Password' /><br />
+        <input type='checkbox' name="wpRemember"
+               tabindex="4" value="1" id="wpRemember" /> <label for="wpRemember">Remember my login on this computer</label><br />
+        <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:5px;" value="Log in" />
+        <input type="hidden" name="wpLoginToken" value="$token" />
+    </div>
+</form>
 $emailPassword
 </li></ul>
 EOF;

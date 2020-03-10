@@ -434,14 +434,9 @@ input {
 	border-radius:4px;
 	display:inline-block;
 	font-family: "Roboto", Verdana, Arial, sans-serif;
-	font-size: 10pt;
-	line-height: 15px;
-	padding: 4px 3px 3px 3px;
+	font-size: 14px;
+	padding: 3px 5px 3px 5px;
 	margin:2px;
-}
-
-input[type=text] {
-    height: 16px;
 }
 
 input[type=checkbox], 
@@ -490,7 +485,7 @@ input[type=radio][disabled]:hover {
     padding-left: 10px !important;
     padding-right: 10px !important;
     
-    line-height: 16px !important;
+    line-height: 15px !important;
     vertical-align: top;
 }
 
@@ -502,7 +497,6 @@ input.dark {
 	border-radius:5px;
 	display:inline-block;
 	font-family: "Roboto", Verdana, Arial, sans-serif;
-	padding:3px 3px;
 }
 
 select {

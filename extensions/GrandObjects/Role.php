@@ -281,7 +281,10 @@ class Role extends BackboneModel {
 	        $this->projects = array();
 	        if(isset(self::$projectCache[$this->getId()])){
 	            foreach(self::$projectCache[$this->getId()] as $project){
-	                $this->projects[] = Project::newFromId($project);
+	                $p = Project::newFromId($project);
+	                if($p != null){
+	                    $this->projects[] = $p;
+	                }
 	            }
 	        }
 	    }
