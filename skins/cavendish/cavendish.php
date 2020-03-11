@@ -288,7 +288,12 @@ class CavendishTemplate extends QuickTemplate {
 		    iconPath = "<?php echo $config->getValue('iconPath'); ?>";
 		    iconPathHighlighted = "<?php echo $config->getValue('iconPathHighlighted'); ?>";
 		    highlightColor = "<?php echo $config->getValue('highlightColor'); ?>";
+		    highlightFontColor = "<?php echo $config->getValue('highlightFontColor'); ?>";
 		    headerColor = "<?php echo $config->getValue('headerColor'); ?>";
+		    topHeaderColor = "<?php echo $config->getValue('topHeaderColor'); ?>";
+		    sideColor = "<?php echo $config->getValue('sideColor'); ?>";
+		    hyperlinkColor = "<?php echo $config->getValue('hyperlinkColor'); ?>";
+		    mainBorderColor = "<?php echo $config->getValue('mainBorderColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
 		    productVisibility = "<?php echo $config->getValue('productVisibility'); ?>";
 		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
