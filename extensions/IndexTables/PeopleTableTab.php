@@ -113,7 +113,7 @@ class PeopleTableTab extends AbstractTab {
             $role = "Members";
         }
         if(!isExtensionEnabled("Shibboleth")){
-            $uniHeader = "<th style='white-space: nowrap;'>Institution</th>";
+            $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
         }
         $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
@@ -125,8 +125,8 @@ class PeopleTableTab extends AbstractTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     {$uniHeader}
-                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
-                                    <th style='white-space: nowrap;'>Title</th>
+                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    <th style='white-space: nowrap; width:20%;'>Title</th>
                                     <th style='white-space: nowrap; width:15%;'>Keywords</th>
                                     {$statusHeader}
                                     {$epicHeader}
