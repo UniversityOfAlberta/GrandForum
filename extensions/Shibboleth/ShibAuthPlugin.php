@@ -101,7 +101,6 @@ class ShibAuthPlugin extends AuthPlugin {
 	 */
 	function updateUser( &$user ) {
 		wfRunHooks('ShibUpdateUser', array($this->existingUser, $user));
- 
 		//For security, set password to a non-existant hash.
 		if ($user->mPassword != "nologin"){
 			$user->mPassword = "nologin";
@@ -112,7 +111,6 @@ class ShibAuthPlugin extends AuthPlugin {
 		DBFunctions::commit();
 		return true;
 	}
- 
  
 	/**
 	 * Return true if the wiki should create a new local account automatically
@@ -191,7 +189,7 @@ class ShibAuthPlugin extends AuthPlugin {
 	 * @access public
 	 */
 	function addUser( $user, $password, $email = '', $realname = '' ) {
-		return false;
+		return true;
 	}
  
  
@@ -243,8 +241,7 @@ function ShibGetAuthHook() {
 /*
  * End of AuthPlugin Code, beginning of hook code and auth functions
  */
- 
-$wgExtensionFunctions[] = 'SetupShibAuth';
+
 $wgExtensionCredits['other'][] = array(
 			'name' => 'Shibboleth Authentication',
 			'version' => '1.2.4',
@@ -259,7 +256,7 @@ function SetupShibAuth()
 	global $wgHooks;
 	global $wgAuth;
 	global $wgCookieExpiration;
- 
+	
 	if($shib_UN != null){
 		$wgCookieExpiration = -3600;
 		$wgHooks[ShibGetAuthHook()][] = "Shib".ShibGetAuthHook();
@@ -340,6 +337,7 @@ function ShibAutoAuthenticate(&$user) {
 /* Tries to be magical about when to log in users and when not to. */
 function ShibUserLoadFromSession($user, &$result)
 {
+    global $wgUser;
 	global $wgContLang;
 	global $wgAuth;
 	global $shib_UN;
@@ -365,26 +363,17 @@ function ShibUserLoadFromSession($user, &$result)
 		return true;
 	}
  
-	    $sql = "SELECT user_id
-                FROM mw_user
-                WHERE LOWER(CONVERT(user_name USING latin1)) = LOWER('".DBFunctions::escape($shib_UN)."')
-                AND deleted != 1";
-
-        $data = DBFunctions::execSQL($sql); 
 	//Is the user already in the database?
-	if(count($data) == 0){
-	    $sql = "SELECT user_id
-		    FROM mw_user
-		    WHERE user_email LIKE LOWER('".DBFunctions::escape($shib_email)."')
-		    AND deleted != 1";
-	    $data = DBFunctions::execSQL($sql);
-
+	$person = new Person(array());
+	//$person = Person::newFromEmployeeId($shib_employeeId);
+	if($person->getId() == 0){
+	    $person = Person::newFromEmail($shib_email);
 	}
-	if (count($data) > 0)
-	{
-		$user_id = $data[0]['user_id'];
-		$user = User::newFromId($user_id);
-		//$user = User::newFromName($shib_UN);
+	if($person->getId() == 0){
+	    $person = Person::newFromName($shib_UN);
+	}
+	if($person->getId() != 0){
+		$user = $person->getUser();
 		$user->load();
 		$wgAuth->existingUser = true;
 		$wgAuth->updateUser($user); //Make sure password is nologin
@@ -392,9 +381,10 @@ function ShibUserLoadFromSession($user, &$result)
 		$user->setCookies();
 		ShibAddGroups($user);
 		$wgUser = $user;
-		wfRunHooks('AuthPluginSetup', array());
+		impersonate();
 		return true;
 	}
+	$user = $person->getUser();
  
 	//Place the hook back (Not strictly necessarily MW Ver >= 1.9)
 	ShibBringBackAA();
@@ -458,15 +448,19 @@ function ShibUserLoadFromSession($user, &$result)
 	$user->setCookies();
 	ShibAddGroups($user);
 	DBFunctions::update('mw_user',
-                        array('user_email' => $shib_email),
+                        array('user_email' => $shib_email,
+                              //'employee_id' => $shib_employeeId
+                              ),
                         array('user_id' => EQ($user->getId())));
-    Cache::delete("idsCache_{$user->getId()}");
+    Cache::delete("mw_user_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
 	                              'role'       => $config->getValue('shibDefaultRole'),
 	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 	}
+	$person = Person::newFromId($user->getId());
+	$person->updateNamesCache();
 	return true;
 }
 function ShibAddGroups($user) {

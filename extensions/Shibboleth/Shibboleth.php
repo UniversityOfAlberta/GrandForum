@@ -1,10 +1,9 @@
 <?php
 
 // Shibboleth Authentication Stuff
-// Load ShibAuthPlugin
-require_once('ShibAuthPlugin.php');
-
-if(isset($_SERVER['uid'])){
+if(php_sapi_name() != 'cli' && isset($_SERVER['uid'])){
+    // Load ShibAuthPlugin
+    require_once('ShibAuthPlugin.php');
  
     // Last portion of the shibboleth WAYF url for lazy sessions.
     // This value is found in your shibboleth.xml file on the setup for your SP
