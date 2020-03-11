@@ -115,6 +115,7 @@ class PeopleTableTab extends AbstractTab {
         if(!isExtensionEnabled("Shibboleth")){
             $uniHeader = "<th style='white-space: nowrap;'>Institution</th>";
         }
+        $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
@@ -124,7 +125,7 @@ class PeopleTableTab extends AbstractTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     {$uniHeader}
-                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
+                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     <th style='white-space: nowrap; width:15%;'>Keywords</th>
                                     {$statusHeader}
@@ -202,7 +203,12 @@ class PeopleTableTab extends AbstractTab {
             if($uniHeader != ''){
                 $this->html .= "<td align='left'>{$university['university']}</td>";
             }
-            $this->html .= "<td align='left'>{$university['department']}</td>";
+            if($person->getFaculty() != ""){
+                $this->html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
+            }
+            else{
+                $this->html .= "<td align='left'>{$person->getDepartment()}</td>";
+            }
             $this->html .= "<td align='left'>{$university['position']}</td>";
             $this->html .= "<td align='left'>{$person->getKeywords(', ')}</td>";
             if($statusHeader != ''){

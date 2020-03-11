@@ -3,6 +3,14 @@
 /**
  * @package GrandObjects
  */
+ 
+/* Faculty map isn't required but can be used to map Department -> Faculty if needed
+ *
+ * should set a variable $facultyMap that equals:
+ * $facultyMap = array('faculty' => array('dept1', 'dept2', 'dept3'));
+ */
+
+@include_once("facultyMap.php");
 
 class Person extends BackboneModel {
 
@@ -16,6 +24,7 @@ class Person extends BackboneModel {
     static $namesCache = array();
     static $idsCache = array();
     static $allPeopleCache = array();
+    static $facultyMap = array();
 
     var $user = null;
     var $name;
@@ -947,6 +956,7 @@ class Person extends BackboneModel {
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
+                      'faculty' => $this->getFaculty(),
                       'position' => $this->getPosition(),
                       'roles' => $roles,
                       'keywords' => $this->getKeywords(),
@@ -2111,6 +2121,18 @@ class Person extends BackboneModel {
     function getUni(){
         $university = $this->getUniversity();
         return (isset($university['university'])) ? $university['university'] : "Unknown";
+    }
+    
+    /**
+     * Tries to map the department to a faculty
+     * @return string The name of the faculty
+     */
+    function getFaculty(){
+        $department = $this->getDepartment();
+        if(isset(Person::$facultyMap[$department])){
+            return Person::$facultyMap[$department];
+        }
+        return "";
     }
     
     /**
@@ -4735,5 +4757,25 @@ class Person extends BackboneModel {
         }
         return "";
     }    
+}
+if(isset($facultyMap)){
+    // https://arjunphp.com/flatten-nested-arrays-using-php/
+    function array_flatten($array, $prefix = '') {     
+        $result = array();     
+        foreach($array as $key=>$value) {
+            if(is_array($value)) {
+                $result = $result + array_flatten($value, $prefix . $key . '.');
+            }
+            else {
+                $result[$prefix.$key] = $value;
+            }
+        }
+        return $result;
+    }
+    Person::$facultyMap = array_flip(array_flatten($facultyMap));
+    foreach(Person::$facultyMap as $key => $val){
+        $exploded = explode(".", $val);
+        Person::$facultyMap[$key] = $exploded[0];
+    }
 }
 ?>
