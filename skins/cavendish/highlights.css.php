@@ -120,9 +120,13 @@ h1, h2, h3, h4, h5, h6, h7 {
 
 /* Input */
 
-input:focus:not(.dark):not(#tagit_tags):not(#globalSearchInput), textarea:focus {
+input:focus, textarea:focus {
     outline: none;
     border: 1px solid $hlc !important;
+}
+
+.tagit-new input:focus, input.dark:focus, input#globalSearchInput:focus {
+    border: none !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {

@@ -260,7 +260,7 @@ EOF;
         global $config;
         $this->html .= "
                 <h3>Keywords:</h3>
-                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />";
+                <input class='keywords' type='text' name='keywords' value='' />";
         if($config->getValue("publicProfileOnly")){
             $this->html .= "
                 <h3>Profile:</h3>
@@ -276,6 +276,7 @@ EOF;
              ";
          }
          $this->html .= "<script type='text/javascript'>
+            $('input.keywords').val('".addslashes($person->getKeywords(","))."');
             $('input.keywords').tagit({
                 allowSpaces: true
             });
