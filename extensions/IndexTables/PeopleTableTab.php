@@ -90,7 +90,9 @@ class PeopleTableTab extends AbstractTab {
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
-            $statusHeader .= "<th>Gender</th>";
+            if($config->getValue("genderEnabled")){
+                $statusHeader .= "<th>Gender</th>";
+            }
             if($config->getValue('crcEnabled')){
                 $statusHeader .= "<th>CRC</th>";
             }
@@ -105,8 +107,10 @@ class PeopleTableTab extends AbstractTab {
                                   <th style='display:none;'>Disability</th>
                                   <th style='display:none;'>Minority</th>";
             }
-            $statusHeader .= "<th>Nationality</th>
-                              <th>Status</th>";
+            if($config->getValue("nationalityEnabled")){
+                $statusHeader .= "<th>Nationality</th>";
+            }
+            $statusHeader .= "<th>Status</th>";
         }
         $role = "{$this->table} members";
         if($this->table == "Member"){
@@ -218,7 +222,9 @@ class PeopleTableTab extends AbstractTab {
                 else{
                     $status = "Inactive";                
                 }
-                $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                if($config->getValue("genderEnabled")){
+                    $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                }
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
                     $this->html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
@@ -234,7 +240,9 @@ class PeopleTableTab extends AbstractTab {
                     $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
                     $this->html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
                 }
-                $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                if($config->getValue("nationalityEnabled")){
+                    $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                }
                 $this->html .= "<td align='left'>{$status}</td>";
             }
             if($epicHeader != ''){

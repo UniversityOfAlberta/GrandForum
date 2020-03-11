@@ -579,26 +579,29 @@ EOF;
         $nationality = "";
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-            $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-            $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-            $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-            $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
-            $nationality = "<tr>
-                <td align='right'><b>Nationality:</b></td>
-                <td>
-                    <select name='nationality'>
-                        <option value=''>---</option>
-                        <option value='Canadian' $canSelected>Canadian</option>
-                        <option value='American' $amerSelected>American</option>
-                        <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                        <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                        <option value='International' $interSelected>International</option>
-                    </select>
-                </td>
-            </tr>";
+            $nationality = "";
+            if($config->getValue("nationalityEnabled")){
+                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
+                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
+                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+                $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
+                $nationality = "<tr>
+                    <td align='right'><b>Nationality:</b></td>
+                    <td>
+                        <select name='nationality'>
+                            <option value=''>---</option>
+                            <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='American' $amerSelected>American</option>
+                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
+                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                            <option value='International' $interSelected>International</option>
+                        </select>
+                    </td>
+                </tr>";
+            }
             $gender = "";
-            if($person->isMe() || $me->isRoleAtLeast(STAFF)){
+            if($config->getValue("genderEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
                 $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
                 $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
                 $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";

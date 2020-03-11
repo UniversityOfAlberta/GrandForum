@@ -122,6 +122,12 @@
     // Whether or not to show outputs unrelated to projects or not.
     $config->setValue("showNonNetwork", true);
     
+    // Whether or not the gender field is enabled
+    $config->setValue("genderEnabled", true);
+    
+    // Whether or not the Nationality field is enabled
+    $config->setValue("nationalityEnabled", true);
+    
     // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
     

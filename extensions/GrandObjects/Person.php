@@ -1521,6 +1521,10 @@ class Person extends BackboneModel {
      * @return string The gender of this Person
      */
     function getGender(){
+        global $config;
+        if(!$config->getValue("genderEnabled")){
+            return "";
+        }
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
@@ -1541,6 +1545,10 @@ class Person extends BackboneModel {
      * @return string The nationality of this Person
      */
     function getNationality(){
+        global $config;
+        if(!$config->getValue("nationalityEnabled")){
+            return "";
+        }
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             return $this->nationality;
