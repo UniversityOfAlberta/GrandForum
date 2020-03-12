@@ -349,6 +349,11 @@ class CavendishTemplate extends QuickTemplate {
                     return dict[char] || char;
                 }).toLowerCase();
 		    }
+		    
+		    function setBodyContentTop(){
+		        $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
+		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
+		    }
 
 		    function setMinWidth(){
 	            $("body").css('min-width', '0');
@@ -444,7 +449,7 @@ class CavendishTemplate extends QuickTemplate {
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
-
+                setInterval(setBodyContentTop, 100);
 		        setMinWidth();
 		        $('.tooltip').qtip({
 		            position: {
