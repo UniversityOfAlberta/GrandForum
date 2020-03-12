@@ -166,7 +166,7 @@ class PeopleTableTab extends AbstractTab {
             $this->html .= "
                 <tr>
                     <td align='center' style='white-space: nowrap;'>
-                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='width:100px;max-height:132px; border-radius: 5px;' /></a><br />
+                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='max-width:100px;max-height:132px; border-radius: 5px;' /></a><br />
                         <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
                     </td>
                     <td align='left' style='white-space: nowrap;display:none;'>
