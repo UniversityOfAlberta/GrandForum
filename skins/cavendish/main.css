@@ -66,7 +66,7 @@ img.ui-datepicker-trigger{
 }
 
 #submenu li {
-    font-size: 12px;
+    font-size: 13px;
     margin: 0 0 0 6px;
     float: left;
     
@@ -93,6 +93,11 @@ img.ui-datepicker-trigger{
 
 #submenu li.selected {
 
+}
+
+#submenu li span.dropdown {
+    font-size: 10px;
+    vertical-align: top;
 }
 
 #submenu ul li:hover.selected{

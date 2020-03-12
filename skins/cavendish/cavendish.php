@@ -894,7 +894,7 @@ class CavendishTemplate extends QuickTemplate {
 	        ?>
 		    </ul>
 		    <?php
-		        echo "<div id='sideFooter' class='smallest' style='text-align:center; padding:5px; position:absolute; bottom:0;'>";
+		        echo "<div id='sideFooter' style='font-size: 0.80em; text-align:center; padding:5px; position:absolute; bottom:0;'>";
 		        if($config->getValue('networkSite') != ""){
                     echo "&nbsp;&nbsp;<a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;";
                 }
