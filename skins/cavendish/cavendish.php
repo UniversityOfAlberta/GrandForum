@@ -351,6 +351,10 @@ class CavendishTemplate extends QuickTemplate {
 		    }
 		    
 		    function setBodyContentTop(){
+		        if(!$("#header").is(":visible")){
+		            $("#submenu").css("margin-top", "-45px");
+		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
+		        }
 		        $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
 		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
 		    }
@@ -406,51 +410,12 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 	        
 		    $(document).ready(function(){
-		        /*
-		        var ajax = null;
-		        $(document).ajaxComplete(function(e, xhr, settings) {
-		            if(settings.url.indexOf("action=getUserMode") == -1){
-		                if(ajax != null){
-		                    ajax.abort();
-		                }
-		                ajax = $.get("<?php echo $wgServer.$wgScriptPath; ?>/index.php?action=getUserMode&user=" + wgUserName, function(response){
-		                    if(response.mode == 'loggedOut'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'frozen'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'impersonating'){
-		                        if($('#wgMessages .info').text() != response.message){
-		                            clearInfo();
-		                        }
-		                        addInfo(response.message);
-		                    }
-		                    else if(response.mode == 'differentUser'){
-		                        if($('#wgMessages .warning').text() != response.message){
-		                            clearWarning();
-		                        }
-		                        addWarning(response.message);
-		                    }
-		                    else{
-		                        clearInfo();
-		                        clearWarning();
-		                    }
-		                });
-		            }
-                });*/
-                
+		        setBodyContentTop();
+                setInterval(setBodyContentTop, 100);
+		        setMinWidth();
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
-                setInterval(setBodyContentTop, 100);
-		        setMinWidth();
 		        $('.tooltip').qtip({
 		            position: {
 		                adjust: {
@@ -786,66 +751,72 @@ class CavendishTemplate extends QuickTemplate {
         <div id="sideToggle">
             <?php if(isset($_COOKIE['sideToggled']) && $_COOKIE['sideToggled'] == 'in') { echo "&gt;"; } else { echo "&lt;";}?>
         </div>
-	    <div id="header">
+        <?php 
+	        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
+            $GLOBALS['tabs'] = array();
+            
+            $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
+            $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
+            $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
+            $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
+            
+            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
+            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+        ?>
+	    <?php 
+		    global $wgUser, $wgScriptPath, $tabs;
+		    $selectedFound = false;
+		    foreach($tabs as $key => $tab){
+		        ksort($tab['subtabs']);
+		        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
+		            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
+		        }
+		        if(strstr($tab['selected'], "selected") !== false){
+		            $selectedFound = true;
+		        }
+           	    foreach($tab['subtabs'] as $subtab){
+           	        if(strstr($subtab['selected'], "selected") !== false){
+           	            $tabs[$key]['selected'] = "selected";
+           	            $selectedFound = true;
+           	            if($tabs[$key]['text'] == ""){
+           	                $tabs['Main']['selected'] = "selected";
+           	            }
+           	        }
+           	        if(count($subtab['dropdown']) > 0){
+           	            foreach($subtab['dropdown'] as $dropdown){
+           	                if(strstr($dropdown['selected'], "selected") !== false){
+                   	            $tabs[$key]['selected'] = "selected";
+                   	            $selectedFound = true;
+                   	            if($tabs[$key]['text'] == ""){
+                   	                $tabs['Main']['selected'] = "selected";
+                   	            }
+                   	        }
+           	            }
+           	        }
+           	    }
+           	}
+           	if(!$selectedFound){
+           	    // If a selected tab wasn't found, just default to the Main Tab
+           	    $tabs['Main']['selected'] = "selected";
+           	}
+           	
+           	$headerTabs = array();
+           	foreach($tabs as $key => $tab){
+		        if($key == "Main"){
+		            continue;
+		        }
+		        if($tab['href'] != "" && $tab['text'] != ""){
+		            $headerTabs[] = "<li class='top-nav-element {$tab['selected']}'>
+                                        <a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>
+                                     </li>";
+                }
+		    }
+        ?>
+	    <div id="header" style="<?php if(count($headerTabs) == 0){ echo 'display:none;'; } ?>">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger.png" /></a>
 		    <a name="top" id="contentTop"></a>
-            <ul class="top-nav">
-            <?php 
-		        global $notifications, $notificationFunctions, $wgUser, $wgScriptPath, $wgMessage, $config;
-                $GLOBALS['tabs'] = array();
-                
-                $GLOBALS['tabs']['Other'] = TabUtils::createTab("", "");
-                $GLOBALS['tabs']['Main'] = TabUtils::createTab($config->getValue("networkName"), "$wgServer$wgScriptPath/index.php/Main_Page");
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
-                $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
-                
-	            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-	            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
-            ?>
-		    <?php 
-			    global $wgUser, $wgScriptPath, $tabs;
-			    $selectedFound = false;
-			    foreach($tabs as $key => $tab){
-			        ksort($tab['subtabs']);
-			        if($tabs[$key]['href'] == "" && isset($tabs[$key]['subtabs'][0])){
-			            $tabs[$key]['href'] = $tab['subtabs'][0]['href'];
-			        }
-			        if(strstr($tab['selected'], "selected") !== false){
-			            $selectedFound = true;
-			        }
-	           	    foreach($tab['subtabs'] as $subtab){
-	           	        if(strstr($subtab['selected'], "selected") !== false){
-	           	            $tabs[$key]['selected'] = "selected";
-	           	            $selectedFound = true;
-	           	            if($tabs[$key]['text'] == ""){
-	           	                $tabs['Main']['selected'] = "selected";
-	           	            }
-	           	        }
-	           	        if(count($subtab['dropdown']) > 0){
-	           	            foreach($subtab['dropdown'] as $dropdown){
-	           	                if(strstr($dropdown['selected'], "selected") !== false){
-	                   	            $tabs[$key]['selected'] = "selected";
-	                   	            $selectedFound = true;
-	                   	            if($tabs[$key]['text'] == ""){
-	                   	                $tabs['Main']['selected'] = "selected";
-	                   	            }
-	                   	        }
-	           	            }
-	           	        }
-	           	    }
-	           	}
-	           	if(!$selectedFound){
-	           	    // If a selected tab wasn't found, just default to the Main Tab
-	           	    $tabs['Main']['selected'] = "selected";
-	           	}
-			    foreach($tabs as $key => $tab){
-			        if($tab['href'] != "" && $tab['text'] != ""){
-			            echo "<li class='top-nav-element {$tab['selected']}'>\n";
-                        echo "<a id='{$tab['id']}' class='top-nav-mid highlights-tab' href='{$tab['href']}'>{$tab['text']}</a>\n";
-                        echo "</li>";
-                    }
-			    }
-		    ?>
+	        <ul class="top-nav">
+	            <?php echo implode("\n", $headerTabs); ?>
 		    </ul>
 	    </div>
 	    <div id='submenu'>
