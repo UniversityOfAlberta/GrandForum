@@ -350,6 +350,14 @@ class CavendishTemplate extends QuickTemplate {
                 }).toLowerCase();
 		    }
 		    
+		    function setNavHeight(){
+		        var negHeight = 46;
+		        $("#side div").each(function(i, el){
+                    negHeight += $(el).outerHeight(true);
+                })
+		        $("#nav").css("max-height", "calc(100% - " + negHeight + "px)");
+		    }
+		    
 		    function setBodyContentTop(){
 		        if(!$("#header").is(":visible")){
 		            $("#submenu").css("margin-top", "-45px");
@@ -411,7 +419,9 @@ class CavendishTemplate extends QuickTemplate {
 	        
 		    $(document).ready(function(){
 		        setBodyContentTop();
+		        setNavHeight();
                 setInterval(setBodyContentTop, 100);
+                setInterval(setNavHeight, 1000);
 		        setMinWidth();
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
@@ -1160,7 +1170,7 @@ EOF;
                 echo "
                 <script type='text/javascript'>
                     $('.pBodyLogin').detach();
-                    $('#side').append(\"<div style='text-align: center'><a id='ssoLogin' class='button' style='margin-top:5px; margin-bottom:15px; width: 70px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='ssoLogin' class='button' style='width: 70px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
                 </script>
                 ";
             }
