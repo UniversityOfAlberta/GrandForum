@@ -45,15 +45,22 @@ class IndexTable {
             }
         }
         $tabs['Main']['subtabs'][] = $hubsSubTab;
-        
         if(count($themes) > 0){
-            $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                         ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
-                         array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
-            
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$selected");
+            $selected = (($wgTitle->getNSText() == $config->getValue('networkName') && 
+                         (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes'))) !== false)) ||
+                         (array_search($wgTitle->getNSText(), $themeAcronyms) !== false)) ? "selected" : "";
+            $themeTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                  "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                  "$selected");
+            if(PROJECT_PHASE > 1){
+                for($phase = 1; $phase <= PROJECT_PHASE; $phase++){
+                    $rome = rome($phase);
+                    $themeTab['dropdown'][] = TabUtils::createSubTab("Cycle {$rome}", 
+                                                                     "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", 
+                                                                     "$selected");
+                }
+            }
+            $tabs['Main']['subtabs'][] = $themeTab;
         }
         
         if($config->getValue('projectsEnabled') && Project::areThereNonAdminProjects()){
@@ -204,8 +211,20 @@ class IndexTable {
                     self::generateAdminTable();
                     break;
                 case Inflect::pluralize($config->getValue('projectThemes')):
+                case Inflect::pluralize($config->getValue('projectThemes'))." I":
+                    // Phase 1
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
-                    self::generateThemesTable();
+                    self::generateThemesTable(1);
+                    break;
+                case Inflect::pluralize($config->getValue('projectThemes'))." II":
+                    // Phase 2
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    self::generateThemesTable(2);
+                    break;
+                case Inflect::pluralize($config->getValue('projectThemes'))." III":
+                    // Phase 3 (unlikly to have more than that)
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    self::generateThemesTable(3);
                     break;
                 default:
                     foreach($wgAllRoles as $role){
@@ -298,13 +317,13 @@ class IndexTable {
      * Consists of the following columns
      * Theme | Name 
      */
-    private function generateThemesTable(){
+    private function generateThemesTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Acronym</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ");
-        $themes = Theme::getAllThemes();
+        $themes = Theme::getAllThemes($phase);
         foreach($themes as $theme){
             $leaders = array();
             $coordinators = array();
