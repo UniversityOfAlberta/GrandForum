@@ -557,6 +557,14 @@ input[type=button], input[type=submit], .button, .button:visited, .dt-button, .u
     user-select: none;
 }
 
+input[type=button].dark, input[type=submit].dark, button.dark {
+    border:1px solid #CCC !important;
+}
+
+input[type=button].dark:focus, input[type=submit].dark:focus, button.dark:focus {
+    border:1px solid #CCC !important;
+}
+
 :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     font-family: "Roboto", Arial, Verdana, sans-serif !important;
     font-size:14px !important;
@@ -589,9 +597,13 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
 	white-space:nowrap;
 }
 
+input[type=button]:active, input[type=submit]:active, button:active, a.button:active {
+    position: relative;
+    top: 1px;
+}
+
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
     position:relative;
-    top:1px;
     text-decoration:none;
     border-color:#888888;
     font-family: "Roboto", Arial, Verdana, sans-serif;

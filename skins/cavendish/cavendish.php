@@ -1140,7 +1140,7 @@ If you have forgotten your password please enter your login and ID and request a
 <form style='position:relative;left:10px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
     <div style="width:180px;">
         <div style="display:none;">
-            <div style='display:inline-block;width:100%;font-size:12px;' id='failMessage'>$failMessage</div>
+            <div style='display:inline-block;width:100%;font-size:12px;margin-bottom:10px;' id='failMessage'>$failMessage</div>
         </div>
         $message
         <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
