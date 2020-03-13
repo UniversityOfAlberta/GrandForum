@@ -157,6 +157,9 @@ class Bibliography extends BackboneModel{
         if(($this->getTitle() == null) || ($this->getTitle() == "")) {
             return false;
         }
+        if(count($this->products) == 0){
+            return false;
+        }
 
         foreach($this->editors as $key => $editor){
             if(is_object($editor)){
@@ -190,6 +193,9 @@ class Bibliography extends BackboneModel{
     
     function update(){
         if(($this->getTitle() == null) || ($this->getTitle() == "")) {
+            return false;
+        }
+        if(count($this->products) == 0){
             return false;
         }
         
