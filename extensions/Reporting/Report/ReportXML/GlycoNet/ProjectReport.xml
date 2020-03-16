@@ -352,7 +352,7 @@
                 ]]>
             </Static>
             <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <Static>
+                <Static id="setters">
                     <![CDATA[
                         {set(achievements,{concat({get(achievements)}, 
                             {concat(<h3>{$user_name}</h3>,
