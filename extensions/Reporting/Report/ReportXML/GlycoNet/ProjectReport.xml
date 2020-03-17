@@ -352,7 +352,7 @@
                 ]]>
             </Static>
             <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
-                <Static>
+                <Static id="setters">
                     <![CDATA[
                         {set(achievements,{concat({get(achievements)}, 
                             {concat(<h3>{$user_name}</h3>,
@@ -497,7 +497,7 @@
                 ]]>
             </ReportItem>
         </If>
-        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_PUBLIC_STRUCTURE" table="false" details="true" totalOnly="true">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Outcomes</h2>
                 <p><b>List abstracts and publications (peer-reviewed or not) that resulted from the outcomes of work during the funding period.</b></p>

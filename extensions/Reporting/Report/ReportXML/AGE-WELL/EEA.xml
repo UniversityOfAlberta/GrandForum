@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Emerging Entrepreneur Award (2019)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2019" ajax="true" disabled="true">
+<Report name="AGE-WELL Emerging Entrepreneur Award (2020)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2020" ajax="true" disabled="false">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -23,7 +23,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="AGE-WELL Emerging Entrepreneur Award (2019)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2019)">
+    <ReportSection id="description" tooltip="AGE-WELL Emerging Entrepreneur Award (2020)" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2020)">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -56,12 +56,11 @@
                 Recipients will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
 
                 <p><i>Mentorship</i><br />
-                Award recipients are expected to hold regular meetings with their assigned mentors to ensure ongoing progress towards project goals.</p>
+                Award recipients are expected to hold, at minimum, quarterly  meetings with their assigned mentors to ensure ongoing progress towards project goals.</p>
 
                 <i>Reporting</i><br />
                     <ol>
-                        <li>Recipients are required to complete a mid-term progress report in October 2019 and</li>
-                        <li>complete a final report on outcomes and impact in April 2020.</li>
+                        <li>Recipients are required to complete a final report on outcomes and impact in April 2020 June 2021.</li>
                     </ol>
                 </p>
 
@@ -86,10 +85,10 @@
                 </ol>
                 
                 <h3>Important Dates </h3>
-                Applications Open: 1 February, 2019<br />
-                Completed Applications Due:  8 March, 2019<br />
-                Results Available: 27 March, 2019<br />
-                Funding Commences: April 2019<br />
+                Applications Open: 1 April, 2020<br />
+                Completed Applications Due:  30 April, 2020<br />
+                Results Available: 25 May, 2020<br />
+                Funding Commences: June 2020
             ]]>
         </Static>
     </ReportSection>
@@ -152,6 +151,14 @@
             <![CDATA[
                 <tr>
                     <td colspan='2'><b>Are you applying to launch a start up or support an existing company?</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="cofounder" type="Radio" blobItem="COFOUNDER" options="Yes|No">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><b>If you selected Support above, are you listed as a co-founder of the company?</b></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
@@ -279,7 +286,7 @@
                 </tr>
                 <tr>
                     <td colspan='2' valign='top'>
-                        <b>What motivated you to want to be an entrepreneur? (100 words max)</b>
+                        <b>How long have you been committed to this venture? Please provide some indication of your level of commitment going forward (100 words max)</b>
                     </td>
                     <td>{$item}</td>
                 </tr>
