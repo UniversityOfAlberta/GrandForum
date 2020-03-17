@@ -216,12 +216,12 @@ class PeopleTableTab extends AbstractTab {
             }
             $this->html .= "<td align='left'>{$university['position']}</td>";
             $keywords = $person->getKeywords(', ');
-            $bio = trim(substr($person->getProfile(), 0, 300));
-            if($bio != trim($person->getProfile())){
-                $bio .= "...";
+            $bio = strip_tags(trim($person->getProfile()));
+            if($bio != ""){
+                $bio = "<div style='display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;'>{$bio}</div>";
             }
             if($keywords != "" && $bio != ""){
-                $keywords .= "<br />";
+                $keywords .= "<br /><br />";
             }
             $this->html .= "<td align='left'>{$keywords}{$bio}</td>";
             if($statusHeader != ''){
