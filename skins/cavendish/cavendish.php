@@ -853,15 +853,17 @@ class CavendishTemplate extends QuickTemplate {
 		           	    break;
 		       	    }
 		       	 }
-		       	 foreach($this->data['content_actions'] as $key => $action) {
-		       	    if($key == "nstab-special" || 
-		       	       $key == "varlang-watch"){
-		       	        continue;
-		       	    }
-		           ?><li
-		           <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
-		           ><a class='highlights-tab' href="<?php echo htmlspecialchars($action['href']) ?>"><?php
-		           echo htmlspecialchars($action['text']) ?></a></li><?php
+		       	 if($wgUser->isLoggedIn()){
+		           	 foreach($this->data['content_actions'] as $key => $action) {
+		           	    if($key == "nstab-special" || 
+		           	       $key == "varlang-watch"){
+		           	        continue;
+		           	    }
+		               ?><li
+		               <?php if($action['class']) { ?>class="<?php echo htmlspecialchars($action['class']) ?>"<?php } ?>
+		               ><a class='highlights-tab' href="<?php echo htmlspecialchars($action['href']) ?>"><?php
+		               echo htmlspecialchars($action['text']) ?></a></li><?php
+		             }
 		         } ?>
 		    </ul>
         </div>
