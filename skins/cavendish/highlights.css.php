@@ -296,7 +296,7 @@ a:active {
 }
 
 .carouselPrev:hover, .carouselNext:hover {
-    background: $hlc;
+    background: $th;
 }
 
 EOF;
