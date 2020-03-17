@@ -289,6 +289,16 @@ a:active {
     color: $hlc;
 }
 
+/* Carousel */
+
+.carouselPrev, .carouselNext {
+    background: $sc;
+}
+
+.carouselPrev:hover, .carouselNext:hover {
+    background: $hlc;
+}
+
 EOF;
 
 ?>

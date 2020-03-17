@@ -1,6 +1,7 @@
 .carouselContainer {
     position: relative;
     min-height: 200px;
+    background: #FFFFFF;
 }
 
 .carouselPrev {
