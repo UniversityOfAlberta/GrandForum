@@ -146,6 +146,9 @@
     // Whether or not Project Technology Evaluation/Adoption is enabled
     $config->setValue("alumniEnabled", false);
     
+    // Whether or not wiki features are enabled
+    $config->setValue("wikiEnabled", true);
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     

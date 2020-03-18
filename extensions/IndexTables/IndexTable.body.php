@@ -449,7 +449,7 @@ class IndexTable {
                     $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                 }
             }
-            if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
+            if($config->getValue('wikiEnabled') && ($me->isRole($table) || $me->isRoleAtLeast(ADMIN))){
                 $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
             }
         }

@@ -7,7 +7,7 @@ $wgHooks['ArticleViewHeader'][] = 'ThemePage::processPage';
 class ThemePage {
 
     function processPage($article, $outputDone, $pcache){
-        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
@@ -83,7 +83,10 @@ class ThemePage {
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));*/
+                if($config->getValue('wikiEnabled')){
+                    $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                }
+                */
                 $tabbedPage->showPage();
                 
                 $wgOut->output();

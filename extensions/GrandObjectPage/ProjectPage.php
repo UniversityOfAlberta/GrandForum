@@ -117,7 +117,9 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if($config->getValue('wikiEnabled')){
+                    $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                }
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }

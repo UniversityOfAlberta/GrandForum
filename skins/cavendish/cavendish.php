@@ -853,7 +853,7 @@ class CavendishTemplate extends QuickTemplate {
 		           	    break;
 		       	    }
 		       	 }
-		       	 if($wgUser->isLoggedIn()){
+		       	 if($config->getValue('wikiEnabled')){
 		           	 foreach($this->data['content_actions'] as $key => $action) {
 		           	    if($key == "nstab-special" || 
 		           	       $key == "varlang-watch"){
