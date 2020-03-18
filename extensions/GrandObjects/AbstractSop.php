@@ -508,12 +508,13 @@ abstract class AbstractSop extends BackboneModel{
            strstr($dec, "Coder") !== false ||
            strstr($dec, "Offer Accepted") !== false ||
            strstr($dec, "Waiting for Response") !== false ||
+           strstr($dec, "Ready for Decision") !== false ||
            strstr($dec, "Incoming") !== false){
             $dec = "Admit";   
         }
-        if(strstr($dec, "Ready for Decision") !== false){ // Need to handle some extra folders from FGSR (gross!)
-            $dec = "Reject";   
-        }
+        //if(strstr($dec, "Ready for Decision") !== false){ // Need to handle some extra folders from FGSR (gross!)
+        //    $dec = "Reject";   
+        //}
         if ((strtolower($dec) == "admit") || (strtolower($dec) == "reject") || (strtolower($dec) == "waitlist")) {
             return $dec;
         } else {

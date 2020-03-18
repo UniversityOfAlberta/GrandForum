@@ -2,8 +2,8 @@
     <a href="#/reviewInProgress<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Review in Progress" class="button" <% if(this.model.folder == "Review in Progress"){ %> style="text-decoration:underline;" <% } %>>Review in Progress</a>&nbsp;
     <a href="#/inProgress<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="In Progress" class="button" <% if(this.model.folder == "In Progress"){ %> style="text-decoration:underline;" <% } %>>In Progress</a>&nbsp;
     <a href="#/newApplications<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="New Applications" class="button" <% if(this.model.folder == "New Applications,"){ %> style="text-decoration:underline;" <% } %>>New Applications</a>&nbsp;
-    <a href="#/admitted<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
-    <a href="#/rejected<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Rejected Apps&#10;Ready for Decision" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
+    <a href="#/admitted<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Ready for Decision&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
+    <a href="#/rejected<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Rejected Apps" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
     <div style="position: absolute; right: 30px; display: inline-block;">
         <a href="#/hidden<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button"  <% if(this.hidden == false){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
