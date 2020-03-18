@@ -148,7 +148,7 @@ class Posting extends BackboneModel {
         if($image != ""){
             $md5 = md5($this->getImage());
             $class = strtolower(get_class($this));
-            return "{$wgServer}{$wgScriptPath}/index.php?action=api.{$class}/{$this->getId()}/image&$md5";
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.{$class}/{$this->getId()}/image/$md5";
         }
         return "";
     }
