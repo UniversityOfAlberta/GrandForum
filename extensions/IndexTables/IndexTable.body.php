@@ -113,8 +113,10 @@ class IndexTable {
                 $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
             }
-            $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
+            if(NI != null){
+                $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
+                $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
+            }
         }
         
         if($config->getValue('projectsEnabled')){
