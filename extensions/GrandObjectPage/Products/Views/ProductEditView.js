@@ -158,8 +158,12 @@ ProductEditView = Backbone.View.extend({
                     journals.search = request.term;
                     journals.fetch({success: function(collection){
                         var data = _.map(collection.toJSON(), function(journal){
+                            var label = journal.title;
+                            if(journal.description != null){
+                                label += " (" + journal.description + ")";
+                            }
                             return {id: journal.id, 
-                                    label: journal.title + " (" + journal.description + ")", 
+                                    label: label, 
                                     value: journal.title,
                                     journal: journal.title,
                                     impact_factor: journal.impact_factor,
@@ -204,6 +208,17 @@ ProductEditView = Backbone.View.extend({
         }
         this.renderAuthors();
         this.renderJournalsAutocomplete();
+        
+        this.$("input[name=data_category_ranking]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_impact_factor]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_eigen_factor]").prop('disabled', true).css('width', '94px');
+        this.$("input[name=data_category_ranking_override]").css('width', '94px').attr('placeholder', 'Override...');;
+        this.$("input[name=data_impact_factor_override]").css('width', '94px').attr('placeholder', 'Override...');
+        this.$("input[name=data_category_ranking]").after(this.$("input[name=data_category_ranking_override]"));
+        this.$("input[name=data_impact_factor]").after(this.$("input[name=data_impact_factor_override]"));
+        this.$("input[name=data_category_ranking]").parents("tr").next().remove();
+        this.$("input[name=data_impact_factor]").parents("tr").next().remove();
+        
         this.renderTagsWidget();
         this.updateProjectWarning();
         this.$(".integer").forceNumeric({min: 0, max: 99999999999});

@@ -1150,6 +1150,28 @@ class Paper extends BackboneModel{
     }
     
     /**
+     * Returns the journal entry in the db that matches up with this Product
+     * @return array The journal entry in the db that matches up with this Product
+     */
+    function getJournal(){
+        $journal_title = DBFunctions::escape($this->getVenue());
+        $issn = DBFunctions::escape($this->getData('issn'));
+        if($journal_title == "" && $issn == ""){
+            return array();
+        }
+        $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
+                                      WHERE (`title` = '{$journal_title}' 
+                                             AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      OR ((`issn` = '{$issn}' OR `eissn` = '{$issn}')
+                                          AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      LIMIT 1");
+        if(count($data) > 0){
+            return $data[0];
+        }
+        return array();
+    }
+    
+    /**
      * Returns the Universities which are associated with this Paper
      * @return array The Universities which are associated with this Paper
      */
