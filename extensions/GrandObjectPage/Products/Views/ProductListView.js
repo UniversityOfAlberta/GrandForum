@@ -47,7 +47,7 @@ ProductListView = Backbone.View.extend({
                     topProjects.push(project.name);
                 }
             });
-            console.log(data);
+            
             var ifranking = [];
             var impactFactor = (model.data["impact_factor_override"] != undefined && model.data["impact_factor_override"] != "") ? model.data["impact_factor_override"] : model.data["impact_factor"];
             var ranking = (model.data["category_ranking_override"] != undefined && model.data["category_ranking_override"] != "") ? model.data["category_ranking_override"] : model.data["category_ranking"];
