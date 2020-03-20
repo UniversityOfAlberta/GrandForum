@@ -101,9 +101,12 @@ class Journal extends BackboneModel {
     static function getAllJournalsBySearch($string){
         $journals = array();
         $strings = explode(" ", unaccentChars($string));
-        
         $data = DBFunctions::select(array('grand_journals'),
-                                    array('*'));
+                                    array('MAX(year)'));
+        $year = $data[0]['MAX(year)'];
+        $data = DBFunctions::select(array('grand_journals'),
+                                    array('*'),
+                                    array('year' => EQ($year)));
         
         foreach($data as $row){
             $found = true;
@@ -116,7 +119,7 @@ class Journal extends BackboneModel {
                 $issn = $row['issn'];
                 $eissn = $row['eissn'];
                 $results = preg_grep("/".preg_quote($string)."/", array($title, $year, $description, $short_title, $iso_abbrev, $issn, $eissn));
-                if(count($results) == 0){ // everything must match
+                if(empty($results)){ // everything must match
                     $found = false;
                     break;
                 }
