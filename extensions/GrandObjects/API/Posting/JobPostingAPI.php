@@ -5,6 +5,7 @@ class JobPostingAPI extends RESTAPI {
     function doGET(){
         $id = $this->getParam('id');
         $current = ($this->getParam('current') != "");
+        $new = ($this->getParam('new') != "");
         if($id != ""){
             $previewCode = explode("-", $id);
             $previewCode = @$previewCode[1];
@@ -25,7 +26,11 @@ class JobPostingAPI extends RESTAPI {
                 $start = $this->getParam('start');
                 $count = $this->getParam('count');
             }
-            if($current){
+            if($new && $this->getParam('date') != ""){
+                $date = $this->getParam('date');
+                $jobs = new Collection(JobPosting::getNewPostings($date));
+            }
+            else if($current){
                 $jobs = new Collection(JobPosting::getCurrentJobPostings());
             }
             else {

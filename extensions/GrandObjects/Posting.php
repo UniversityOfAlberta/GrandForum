@@ -24,6 +24,7 @@ class Posting extends BackboneModel {
     var $imageCaptionFr;
     var $previewCode;
     var $created;
+    var $modified;
     var $deleted;
     
     static function newFromId($id){
@@ -67,6 +68,20 @@ class Posting extends BackboneModel {
         return static::getAllPostings();
     }
     
+    /**
+     * Returns an array of Postings that have been modified since the specified date
+     */
+    static function getNewPostings($date){
+        $postings = static::getAllPostings();
+        $return = array();
+        foreach($postings as $posting){
+            if($posting->modified >= $date){
+                $return[] = $posting;
+            }
+        }
+        return $return;
+    }
+    
     function Posting($data){
         if(count($data) > 0){
             $row = $data[0];
@@ -86,6 +101,7 @@ class Posting extends BackboneModel {
             $this->imageCaptionFr = $row['image_caption_fr'];
             $this->previewCode = $row['preview_code'];
             $this->created = $row['created'];
+            $this->modified = $row['modified'];
             $this->deleted = $row['deleted'];
         }
     }
@@ -257,6 +273,7 @@ class Posting extends BackboneModel {
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
+                                                'modified' => EQ(COL('CURRENT_TIMESTAMP')),
                                                 'deleted' => $this->deleted));
             if($status){
                 $this->id = DBFunctions::insertId();
@@ -283,6 +300,7 @@ class Posting extends BackboneModel {
                                                 'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
+                                                'modified' => EQ(COL('CURRENT_TIMESTAMP')),
                                                 'deleted' => $this->deleted),
                                           array('id' => $this->id));
             $this->generatePreviewCode();

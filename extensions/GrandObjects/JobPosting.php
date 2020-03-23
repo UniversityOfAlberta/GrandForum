@@ -32,6 +32,7 @@ class JobPosting extends BackboneModel {
     var $summaryFr;
     var $previewCode;
     var $created;
+    var $modified;
     var $deleted;
     
     static function newFromId($id){
@@ -86,6 +87,20 @@ class JobPosting extends BackboneModel {
         return $newJobs;
     }
     
+    /**
+     * Returns an array of Postings that have been modified since the specified date
+     */
+    static function getNewPostings($date){
+        $postings = static::getAllJobPostings();
+        $return = array();
+        foreach($postings as $posting){
+            if($posting->modified >= $date){
+                $return[] = $posting;
+            }
+        }
+        return $return;
+    }
+    
     function JobPosting($data){
         if(count($data) > 0){
             $row = $data[0];
@@ -115,6 +130,7 @@ class JobPosting extends BackboneModel {
             $this->summaryFr = $row['summary_fr'];
             $this->previewCode = $row['preview_code'];
             $this->created = $row['created'];
+            $this->modified = $row['modified'];
             $this->deleted = $row['deleted'];
         }
     }
@@ -396,7 +412,8 @@ class JobPosting extends BackboneModel {
                                                 'contact' => $this->contact,
                                                 'source_link' => $this->sourceLink,
                                                 'summary' => $this->summary,
-                                                'summary_fr' => $this->summaryFr));
+                                                'summary_fr' => $this->summaryFr,
+                                                'modified' => EQ(COL('CURRENT_TIMESTAMP'))));
             if($status){
                 $this->id = DBFunctions::insertId();
                 $this->generatePreviewCode();
@@ -430,7 +447,8 @@ class JobPosting extends BackboneModel {
                                                 'contact' => $this->contact,
                                                 'source_link' => $this->sourceLink,
                                                 'summary' => $this->summary,
-                                                'summary_fr' => $this->summaryFr),
+                                                'summary_fr' => $this->summaryFr,
+                                                'modified' => EQ(COL('CURRENT_TIMESTAMP'))),
                                           array('id' => $this->id));
             $this->generatePreviewCode();
             $this->sendEmail();
