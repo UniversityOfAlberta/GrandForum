@@ -60,7 +60,7 @@ ProductListView = Backbone.View.extend({
 
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<a href='" + model.url + "'>" + model.title + "</a><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", authors.join(', '),
+                                "<span class='productTitle' data-id='" + model.id + "'><a href='" + model.url + "'>" + model.title + "</a></span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", "<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>",
                                 model.status);
             if(networkName == "FES"){
                 if(typeof model.data.collaboration != 'undefined'){
@@ -99,7 +99,6 @@ ProductListView = Backbone.View.extend({
                 else{
                     row.push("");
                 }
-                
             }
             row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
             if(projectsEnabled){
@@ -116,6 +115,15 @@ ProductListView = Backbone.View.extend({
     
     removeThrobber: function(){
         this.$(".throbber").hide();
+    },
+    
+    renderProductLinks: function(){
+        $(".productTitle").each(function(i, el){
+            var id = $(el).attr("data-id");
+            var model = this.model.get(id);
+            pLinkView = new ProductLinkView({model: model.getLink(), el: el});
+            pLinkView.render();
+        }.bind(this));
     },
     
     renderPartial: function(start){
@@ -160,6 +168,7 @@ ProductListView = Backbone.View.extend({
 	                                    'deferRender': true,
 	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
 	                                    'dom': 'Blfrtip',
+	                                    'drawCallback': this.renderProductLinks.bind(this),
 	                                    "columnDefs": [
                                             {
                                                 "targets": targets,

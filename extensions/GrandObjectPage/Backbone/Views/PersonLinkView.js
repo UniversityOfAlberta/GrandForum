@@ -21,8 +21,8 @@ PersonLinkView = Backbone.View.extend({
             $(".card").hide();
             this.$(".card").show();
             this.$(".card").css("position", "absolute")
-                           .css("top", -this.$(".card").height())
-                           .css("left", -(25 + 6 + 1));
+                           .css("top", -this.$(".card").height() -1)
+                           .css("left", 0);
             this.$(".card").offset({left: Math.max(30, this.$(".card").offset().left)});
             this.$(".card").offset({left: Math.min($(window).width() - this.$(".card").width() - 32, this.$(".card").offset().left)});
         }.bind(this), 300);
@@ -43,7 +43,7 @@ PersonLinkView = Backbone.View.extend({
             this.$("a#personLink").attr("href", this.model.get('url'))
                        .attr("target", this.model.get('target'))
                        .attr("title", this.model.get('title'));
-            this.$el.append("<div class='card' style='display:none;position:absolute;border:1px solid #AAAAAA;box-shadow: 0 0 3px #d8d8d8;height:39px;width:317px;background:#FFFFFF;' />");
+            this.$el.append("<div class='card' style='display:none;position:absolute;border:1px solid #CCCCCC;height:51px;width:317px;background:#FFFFFF;' />");
             this.$(".card").mouseover(function(){
                 clearTimeout(this.timeout);
             }.bind(this));

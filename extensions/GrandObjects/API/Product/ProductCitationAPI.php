@@ -7,7 +7,7 @@ class ProductCitationAPI extends RESTAPI {
         if($paper == null || $paper->getTitle() == ""){
             $this->throwError("This product does not exist");
         }
-        return json_encode($paper->getCitation());
+        return json_encode($paper->getCitation(true, true, true, true));
     }
     
     function doPOST(){
