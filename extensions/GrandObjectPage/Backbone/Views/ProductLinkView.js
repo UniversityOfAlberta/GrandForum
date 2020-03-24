@@ -19,12 +19,17 @@ ProductLinkView = Backbone.View.extend({
         }
         this.timeout = setTimeout(function(){
             $(".card").hide();
-            this.$(".card").show();
-            this.$(".card").css("position", "absolute")
-                           .css("top", -this.$(".card").height() -1)
-                           .css("left", 0);
-            this.$(".card").offset({left: Math.max(30, this.$(".card").offset().left)});
-            this.$(".card").offset({left: Math.min($(window).width() - this.$(".card").width() - 32, this.$(".card").offset().left)});
+            var int = setInterval(function(){ // Might not be rendered yet, keep checking
+                if(this.$(".card").height() > 0){
+                    this.$(".card").show();
+                    this.$(".card").css("position", "absolute")
+                                   .css("top", -this.$(".card").height() -1)
+                                   .css("left", 0);
+                    this.$(".card").offset({left: Math.max(30, this.$(".card").offset().left)});
+                    this.$(".card").offset({left: Math.min($(window).width() - this.$(".card").width() - 32, this.$(".card").offset().left)});
+                    clearInterval(int);
+                }
+            }.bind(this), 15);
         }.bind(this), 300);
     },
     
