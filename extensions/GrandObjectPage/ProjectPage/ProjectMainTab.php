@@ -307,7 +307,10 @@ EOF;
             $string .= "<table id='projectProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -324,7 +327,7 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()} ".implode(", ", $paper->getUniversities())."</span></td>";
+                $string .= "<td><span class='productTitle' data-id='{$paper->getId()}' data-href='{$paper->getUrl()}'>{$paper->getTitle()}</span><span style='display:none'>{$paper->getDescription()} ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td>{$paper->getCategory()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
@@ -335,8 +338,9 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     var projectProducts = $('#projectProducts').dataTable({
-                        'order': [[ 2, 'desc' ]],
-                        'autoWidth': false
+                        order: [[ 2, 'desc' ]],
+                        autoWidth: false,
+                        drawCallback: renderProductLinks
                     });
                 </script>
             </div>";

@@ -60,7 +60,7 @@ ProductListView = Backbone.View.extend({
 
             var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<span class='productTitle' data-id='" + model.id + "'><a href='" + model.url + "'>" + model.title + "</a></span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", "<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>",
+                                "<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", "<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>",
                                 model.status);
             if(networkName == "FES"){
                 if(typeof model.data.collaboration != 'undefined'){
@@ -117,15 +117,6 @@ ProductListView = Backbone.View.extend({
         this.$(".throbber").hide();
     },
     
-    renderProductLinks: function(){
-        $(".productTitle").each(function(i, el){
-            var id = $(el).attr("data-id");
-            var model = this.model.get(id);
-            pLinkView = new ProductLinkView({model: model.getLink(), el: el});
-            pLinkView.render();
-        }.bind(this));
-    },
-    
     renderPartial: function(start){
         if(start == undefined){
             start = 0;
@@ -168,7 +159,7 @@ ProductListView = Backbone.View.extend({
 	                                    'deferRender': true,
 	                                    'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
 	                                    'dom': 'Blfrtip',
-	                                    'drawCallback': this.renderProductLinks.bind(this),
+	                                    'drawCallback': renderProductLinks,
 	                                    "columnDefs": [
                                             {
                                                 "targets": targets,

@@ -207,6 +207,7 @@ ManageProductsView = Backbone.View.extend({
                                                      'preDrawCallback': function(){
                                                         return !creating;
                                                      },
+                                                     'drawCallback': renderProductLinks,
                                                      'aoColumnDefs': [
                                                         {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
                                                      ],

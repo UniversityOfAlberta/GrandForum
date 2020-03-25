@@ -411,6 +411,20 @@ class CavendishTemplate extends QuickTemplate {
                     $('ul.' + name).imgDown();
                 }
             }
+            
+            function renderProductLinks(){
+                $('.productTitle').each(function(i, el){
+                    if(_.isEmpty($(el).attr('data-title'))){
+                        $(el).attr('data-title', $(el).html());
+                    }
+                    var id = $(el).attr('data-id');
+                    var url = $(el).attr('data-href');
+                    var title = $(el).attr('data-title');
+                    var model = new Product({id: id, url: url, title: title});
+                    pLinkView = new ProductLinkView({model: model.getLink(), el: el});
+                    pLinkView.render();
+                });
+            }
 	        
 	        var sideToggled = $.cookie('sideToggled');
 	        if(sideToggled == undefined){
@@ -418,11 +432,13 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 	        
 		    $(document).ready(function(){
+		        renderProductLinks();
 		        setBodyContentTop();
 		        setNavHeight();
                 setInterval(setBodyContentTop, 100);
                 setInterval(setNavHeight, 1000);
 		        setMinWidth();
+		        
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
