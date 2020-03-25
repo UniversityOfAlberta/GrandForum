@@ -18,7 +18,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     
     function getArray(){
         $me = Person::newFromWgUser();
-        $papers = $me->getPapers($this->type, false, 'both');
+        $papers = $me->getPapers($this->type, false, 'both', true, 'Public');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[$paper->getId()] = $paper;
@@ -27,7 +27,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray2(){
-        $papers = Paper::getAllPapers('all', $this->type, 'both');
+        $papers = Paper::getAllPapers('all', $this->type, 'both', true, 'Public');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[$paper->getId()] = $paper;
