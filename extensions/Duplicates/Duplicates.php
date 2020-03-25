@@ -77,6 +77,7 @@ class Duplicates extends SpecialPage{
         }
         $tabbedPage->addTab(new DuplicatesTab("People", $handlers['people']));
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>$('.custom-title').hide();</script>");
 	}
 	
 	static function createSubTabs(&$tabs){

@@ -34,6 +34,7 @@ class MyDuplicateProducts extends SpecialPage{
         }
         $wgOut->setPageTitle("My Duplicate ".Inflect::pluralize($config->getValue('productsTerm')));
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>$('.custom-title').hide();</script>");
 	}
 	
 	static function createToolboxLinks(&$toolbox){
