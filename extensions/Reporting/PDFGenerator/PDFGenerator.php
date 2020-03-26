@@ -704,7 +704,7 @@ EOF;
             }
             
             #pdfBody .externalLink {
-                color: ".$config->getValue("highlightColor").";
+                color: ".$config->getValue("hyperlinkColor").";
                 text-decoration: none;
             }
             
