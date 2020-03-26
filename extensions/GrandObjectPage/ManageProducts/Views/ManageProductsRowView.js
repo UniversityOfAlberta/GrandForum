@@ -129,6 +129,7 @@ ManageProductsViewRow = Backbone.View.extend({
                 $(val).addClass(classes[i]);
             });
         }
+        renderProductLinks(this.$el);
         return this.$el;
     }
     

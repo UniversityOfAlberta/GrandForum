@@ -412,8 +412,11 @@ class CavendishTemplate extends QuickTemplate {
                 }
             }
             
-            function renderProductLinks(){
-                $('.productTitle').each(function(i, el){
+            function renderProductLinks(container){
+                if(!(container instanceof jQuery)){
+                    container = $("body");
+                }
+                $('.productTitle', $(container)).each(function(i, el){
                     if(_.isEmpty($(el).attr('data-title'))){
                         $(el).attr('data-title', $(el).html());
                     }
