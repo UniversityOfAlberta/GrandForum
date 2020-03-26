@@ -11,7 +11,7 @@ CarouselView = Backbone.View.extend({
             this.model.set(this.model.filter(function(person){ return (!_.isEmpty(person.get('publicProfile')) || !_.isEmpty(person.get('privateProfile'))); }));
             this.model.set(this.model.shuffle());
             this.render();
-            setInterval(this.renderProgress.bind(this), 15);
+            setInterval(this.renderProgress.bind(this), 33);
         }.bind(this));
         this.template = _.template($('#carousel_template').html());
     },
@@ -69,7 +69,7 @@ CarouselView = Backbone.View.extend({
     
     renderProgress: function(){
         if(!this.progressPaused){
-            this.progress += 0.1;
+            this.progress += 0.2;
         }
         this.$(".carouselProgressBar").css("width", this.progress + "%");
         if(this.progress >= 100){

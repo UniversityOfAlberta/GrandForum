@@ -505,19 +505,6 @@ class CavendishTemplate extends QuickTemplate {
 		            }
 		        });
 		        
-		        if($("img.overlay")[0] != undefined){
-		            var notificationOverlay = $("img.overlay")[0];
-		            var delta = 0.05;
-		            var opacity = 1;
-		            setInterval(function(){
-		                if(opacity <= 0 || opacity >= 1){
-		                    delta = -delta;
-		                }
-		                opacity += delta;
-		                notificationOverlay.style.opacity = opacity;
-		            }, 100);
-		        }
-		        
 		        $("#sideToggle").click(function(e, force){
 		            $("#sideToggle").stop();
 		            if((sideToggled == 'out' && force == null) || force == 'in'){
