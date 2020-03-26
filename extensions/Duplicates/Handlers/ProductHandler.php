@@ -56,8 +56,7 @@ class ProductHandler extends AbstractDuplicatesHandler {
             else if(substr($title1, 0, 1) != substr($title2, 0, 1) && 
                     substr($title1, -1) != substr($title2, -1)){
                 // If both the first and last character are differen then the two papers are probably different
-                $percent = 0;       
-                echo "HELLO"; 
+                $percent = 0;
             }
             else{
                 similar_text($title1, $title2, $percent);
