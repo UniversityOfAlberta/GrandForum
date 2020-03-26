@@ -1404,8 +1404,7 @@ select span.noshow {
     vertical-align:top;
     overflow: hidden;
     text-overflow: ellipsis;
-    /*min-width: 285px;*/
-    max-width: 325px;
+    max-width: 275px;
 }
 
 .small_card .card_description {
