@@ -119,6 +119,7 @@ class PersonPage {
                 self::showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
+                $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 if($config->getValue('networkName') != 'AI4Society'){
                     if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){

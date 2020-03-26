@@ -8,6 +8,7 @@ class TabbedPage {
 
     var $id;
     var $tabs;
+    var $singleHeader;
 
     // Constructs the tabbed page, using the given id
     function TabbedPage($id="tabs"){
@@ -22,7 +23,7 @@ class TabbedPage {
             }
         </style>");
         $this->id = $id;
-        
+        $this->singleHeader = true;
         $this->tabs = array();
     }
     
@@ -189,6 +190,15 @@ class TabbedPage {
                 </script>");
             }
         }
+        $wgOut->addHTML("<script type='text/javascript'>
+            if($('#{$this->id} > ul li').length == 1){
+                $('#{$this->id} > ul').hide();
+                if(".json_encode($this->singleHeader)."){
+                    $('#{$this->id}').prepend('<h1 style=\"margin-top: 0;\">' + $('#{$this->id} > ul li').text() + '</h1>');
+                    $('#{$this->id} div.ui-tabs-panel').css('padding-top', 0);
+                }
+            }
+        </script>");
     }
 
 }

@@ -90,6 +90,7 @@ class ProjectPage {
                 }
                 
                 $tabbedPage = new TabbedPage("project");
+                $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
                 if($config->getValue('projectLongDescription')){
                     if($config->getValue('networkName') == "FES"){
