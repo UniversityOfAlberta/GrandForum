@@ -42,8 +42,12 @@ echo <<<EOF
     color: $hlFontColor !important;
 }
 
-h1, h2, h3, h4, h5, h6, h7 {
+h2, h3, h4, h5, h6, h7 {
     color: $hc !important;
+}
+
+h1 {
+    color: $th !important;
 }
 
 /* Layout */
