@@ -628,7 +628,7 @@ abstract class QueryableTable {
                 $sort = "class='sortable'";
             }
             if(is_array($this->xls)){
-                $ret[] = "<table id='{$this->id}' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
+                $ret[] = "<table id='{$this->id}' class='dashboard' style='background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
                 foreach($this->xls as $rowN => $row){
                     $ret[] = "<tr>\n";
                     $i = 0;

@@ -1736,7 +1736,13 @@ input.popupBlockSearch {
 /* Dashboard */
 
 table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
+    border-color: #CCCCCC;
+    color: #555555;
+}
+
+table.milestones, table.milestones tr, table.milestones tr td, table.milestones tr th {
     border-color: #555555;
+    color: #555555;
 }
 
 /* TinyMCE */

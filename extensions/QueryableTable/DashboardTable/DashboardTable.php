@@ -152,7 +152,7 @@ class DashboardTable extends QueryableTable{
 			    });
 			});
         </script>";
-        $ret[] = "<div style='max-width:900px;'><table class='dashboard' id='{$this->id}' style='width:100%;background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
+        $ret[] = "<div style='max-width:900px;'><table class='dashboard wikitable' id='{$this->id}' style='width:100%;background:#ffffff;border-style:solid;' cellspacing='1' cellpadding='3' frame='box' rules='all' $sort>\n";
         foreach($this->xls as $rowN => $row){
             $ret[] = "<tr>\n";
             $i = 0;
