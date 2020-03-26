@@ -123,13 +123,11 @@ GlobalSearchResultsView = Backbone.View.extend({
                 break;
             }
         }
-        if(skin == 'cavendish'){
-            if(noResults){
-                this.$("#globalSearchResults").css('border-top-width', '0');
-            }
-            else{
-                this.$("#globalSearchResults").css('border-top-width', '3px');
-            }
+        if(noResults){
+            this.$("#globalSearchResults").css('border-top-width', '0');
+        }
+        else{
+            this.$("#globalSearchResults").css('border-top-width', '3px');
         }
         $("#globalSearchThrobber > .throbber").css('display', 'none');
     },
@@ -209,28 +207,19 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.$el.html(this.template());
         this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
         this.$el.css('display', 'none');
-        if(skin == 'cavendish2'){
-            if($("#globalSearchInput").is(":visible")){
-                setInterval(function(){
-                    if(!$("#globalSearchResults").is(":animated")){
-                        if($("#globalSearchResults").height() > 0){
-                            $("#globalSearchInput").animate({borderBottomLeftRadius: 0}, 50);
-                        }
-                        else{
-                            $("#globalSearchInput").animate({borderBottomLeftRadius: 10}, 50);
-                        }
+        if($("#globalSearchInput").is(":visible")){
+            setInterval(function(){
+                if(!$("#globalSearchResults").is(":animated")){
+                    if($("#globalSearchResults").height() > 0){
+                        $("#globalSearchInput").animate({borderBottomLeftRadius: 0}, 50);
+                        $("#globalSearchButton").animate({borderBottomRightRadius: 0}, 50);
                     }
-                    var length = $("#globalSearchResults > div:visible > div").length;
-                    $("#globalSearchResults > div:visible > div").each(function(i, el){
-                        if(i == length - 1){
-                            $(el).css('border-bottom-width', 0);
-                        }
-                        else{
-                            $(el).css('border-bottom-width', 1);
-                        }
-                    });
-                }, 100);
-            }
+                    else{
+                        $("#globalSearchInput").animate({borderBottomLeftRadius: 5}, 50);
+                        $("#globalSearchButton").animate({borderBottomRightRadius: 5}, 50);
+                    }
+                }
+            }, 100);
         }
         $(document).click(function(e){
             if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){
