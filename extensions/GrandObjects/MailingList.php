@@ -217,7 +217,7 @@ class MailingList extends BackboneModel {
                 $value = $rule->getValue();
                 switch($rule->getType()){
                     case "ROLE":
-                        if($value == CHAMP && $person->isRole($value)){
+                        if($value == CHAMP && $person->isRoleOn($value, "9999-99-99")){
                             foreach($person->getProjects() as $proj){
                                 if(count($phaseRules) > 0){
                                     $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules) !== false));
@@ -227,7 +227,7 @@ class MailingList extends BackboneModel {
                                 }
                             }
                         }
-                        else if($value == PL && $person->isProjectLeader()){
+                        else if($value == PL && $person->isProjectLeaderDuring("9999-99-99", "9999-99-99"))){
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
                                 if(count($projRules) > 0){
@@ -241,7 +241,7 @@ class MailingList extends BackboneModel {
                                 }
                             }
                         }
-                        else if($value == TL && $person->isThemeLeader()){
+                        else if($value == TL && $person->isThemeLeaderDuring("9999-99-99", "9999-99-99")){
                             $roleResult = ($roleResult || true);
                         }
                         else if($value == EVALUATOR && $person->isEvaluator()){
@@ -254,7 +254,7 @@ class MailingList extends BackboneModel {
                             $roleResult = ($roleResult || true);
                         }
                         else {
-                            $roleResult = ($roleResult || $person->isRole($value));
+                            $roleResult = ($roleResult || $person->isRoleOn($value, "9999-99-99"));
                         }
                         $results['roleResult'] = $roleResult;
                         break;
@@ -268,7 +268,7 @@ class MailingList extends BackboneModel {
                         break;
                     case "PROJ":
                         $project = Project::newFromId($value);
-                        $projResult = ($projResult || $person->isMemberOf($project));
+                        $projResult = ($projResult || $person->isMemberOfDuring($project, "9999-99-99", "9999-99-99"));
                         $results['projResult'] = $projResult;
                         break;
                     case "LOC":
