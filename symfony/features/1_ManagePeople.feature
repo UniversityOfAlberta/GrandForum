@@ -182,7 +182,7 @@ Feature: Manage People
         And I select "Theme1" from "name"
         And I press "Save"
         And I wait "1000"
-        And I follow "Themes"
+        And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User3"
         
     Scenario: Admin Adding TC
@@ -195,7 +195,7 @@ Feature: Manage People
         And I click by css "input[name=coordinator]"
         And I press "Save"
         And I wait "1000"
-        And I follow "Themes"
+        And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User4"
         
     Scenario: Adding Supervises relations
