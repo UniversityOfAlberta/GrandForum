@@ -227,7 +227,7 @@ class MailingList extends BackboneModel {
                                 }
                             }
                         }
-                        else if($value == PL && $person->isProjectLeaderDuring("9999-99-99", "9999-99-99"))){
+                        else if($value == PL && $person->isProjectLeaderDuring("9999-99-99", "9999-99-99")){
                             $leadership = $person->leadership();
                             foreach($leadership as $proj){
                                 if(count($projRules) > 0){
