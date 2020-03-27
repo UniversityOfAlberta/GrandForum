@@ -16,6 +16,16 @@ Feature: Bibliographies
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Add Bibliography"
         And I fill in "title" with "New Bibliography 1"
+        And I fill in "description" with "This is a description 1"
+        When I drag an element from "products" with id "1" from "sortable2" to "sortable1"
+        And I press "Create Bibliography"
+        And I wait "1000"
+        Then I should see "Product 1."
+    
+    Scenario: Adding a Product in a 2nd new Bibliography
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I follow "Add Bibliography"
+        And I fill in "title" with "New Bibliography 2"
         And I fill in "description" with "This is a description 2"
         When I drag an element from "products" with id "1" from "sortable2" to "sortable1"
         And I press "Create Bibliography"
