@@ -217,7 +217,7 @@ class MailingList extends BackboneModel {
                 $value = $rule->getValue();
                 switch($rule->getType()){
                     case "ROLE":
-                        if($value == CHAMP && $person->isRoleOn($value, "9999-99-99")){
+                        if($value == CHAMP && $person->isRoleDuring($value, "9999-99-99", "9999-99-99")){
                             foreach($person->getProjects() as $proj){
                                 if(count($phaseRules) > 0){
                                     $roleResult = ($roleResult || (array_search($proj->getPhase(), $phaseRules) !== false));
@@ -254,7 +254,7 @@ class MailingList extends BackboneModel {
                             $roleResult = ($roleResult || true);
                         }
                         else {
-                            $roleResult = ($roleResult || $person->isRoleOn($value, "9999-99-99"));
+                            $roleResult = ($roleResult || $person->isRoleDuring($value, "9999-99-99", "9999-99-99"));
                         }
                         $results['roleResult'] = $roleResult;
                         break;
