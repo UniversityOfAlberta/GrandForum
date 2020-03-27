@@ -87,9 +87,7 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.searchIndex = -1;
         this.fetchPromises = Array();
         Backbone.Subviews.add(this);
-        $(window).resize(function(){
-            this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
-        });
+        $(window).resize(this.resultsHeight.bind(this));
     },
     
     events: {
@@ -114,6 +112,21 @@ GlobalSearchResultsView = Backbone.View.extend({
         }
     },
     
+    resultsHeight: function(){
+        this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
+    },
+    
+    searchBoxCorners: function(){
+        if($("#globalSearchResults").height() > 0){
+            $("#globalSearchInput").animate({borderBottomLeftRadius: 0}, 50);
+            $("#globalSearchButton").animate({borderBottomRightRadius: 0}, 50);
+        }
+        else{
+            $("#globalSearchInput").animate({borderBottomLeftRadius: 5}, 50);
+            $("#globalSearchButton").animate({borderBottomRightRadius: 5}, 50);
+        }
+    },
+    
     allResultsDone: function(){
         var noResults = true;
         for(sId in this.subviews){
@@ -130,6 +143,7 @@ GlobalSearchResultsView = Backbone.View.extend({
             this.$("#globalSearchResults").css('border-top-width', '3px');
         }
         $("#globalSearchThrobber > .throbber").css('display', 'none');
+        this.searchBoxCorners();
     },
     
     click: function(){
@@ -193,13 +207,15 @@ GlobalSearchResultsView = Backbone.View.extend({
                 this.fetchPromises.push(subview.model.fetch());
             }
             this.shift();
-            var that = this;
+            this.searchBoxCorners();
+            this.$("#globalSearchResults").css('border-top-width', '3px');
             $.when.apply($, this.fetchPromises).then(function(){
-                that.$el.trigger('resultsLoaded');
-            });
+                this.$el.trigger('resultsLoaded');
+            }.bind(this));
         }
         else{
             this.$el.css('display', 'none');
+            this.searchBoxCorners();
         }
     },
     
@@ -207,23 +223,10 @@ GlobalSearchResultsView = Backbone.View.extend({
         this.$el.html(this.template());
         this.$("#globalSearchResults").css("max-height", ($(window).height() - this.$("#globalSearchResults").offset().top - 25) + "px");
         this.$el.css('display', 'none');
-        if($("#globalSearchInput").is(":visible")){
-            setInterval(function(){
-                if(!$("#globalSearchResults").is(":animated")){
-                    if($("#globalSearchResults").height() > 0){
-                        $("#globalSearchInput").animate({borderBottomLeftRadius: 0}, 50);
-                        $("#globalSearchButton").animate({borderBottomRightRadius: 0}, 50);
-                    }
-                    else{
-                        $("#globalSearchInput").animate({borderBottomLeftRadius: 5}, 50);
-                        $("#globalSearchButton").animate({borderBottomRightRadius: 5}, 50);
-                    }
-                }
-            }, 100);
-        }
         $(document).click(function(e){
             if($("#globalSearchResults").has($(e.target)).length == 0 && $(e.target).attr('id') != "globalSearchInput"){
                 this.$el.css('display', 'none');
+                this.searchBoxCorners();
             }
         }.bind(this));
         if(typeof pageRouter != 'undefined'){
@@ -233,6 +236,7 @@ GlobalSearchResultsView = Backbone.View.extend({
                 $("#globalSearchInput").val("");
             }.bind(this));
         }
+        this.resultsHeight();
         return this.$el;
     }
     

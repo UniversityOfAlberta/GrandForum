@@ -438,8 +438,8 @@ class CavendishTemplate extends QuickTemplate {
 		        renderProductLinks();
 		        setBodyContentTop();
 		        setNavHeight();
-                setInterval(setBodyContentTop, 100);
-                setInterval(setNavHeight, 1000);
+                $(window).resize(setBodyContentTop);
+                $(window).resize(setNavHeight);
 		        setMinWidth();
 		        
 		        $('a.disabledButton').click(function(e){
