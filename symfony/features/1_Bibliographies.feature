@@ -44,7 +44,7 @@ Feature: Bibliographies
         And I press "Save Bibliography"
         And I wait "1000"
         Then I should not see "Product 1."
-        And I should see "Project 2."
+        And I should see "Product 2."
 
     Scenario: Adding multiple Products in an existing Bibliography
         Given I am logged in as "NI.User1" using password "NI.Pass1"
