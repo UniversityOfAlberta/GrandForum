@@ -740,9 +740,14 @@ EOF;
                                 <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Email:</b></td>
-                                <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
-                            </tr>
+                                <td align='right'><b>Email:</b></td>";
+        if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
+            $this->html .= "<td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
+        }
+        else{
+            $this->html .= "<td>{$person->getEmail()}</td>";
+        }
+        $this->html .= "</tr>
                             {$nationality}
                             {$gender}
                             {$stakeholder}
