@@ -55,11 +55,11 @@ class ReportStatusTable extends SpecialPage{
                 $ifp2018 = false;
                 $ifp2019 = false;
                 foreach($hqp->leadershipDuring("0000-00-00", "2100-00-00") as $project){
-                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && strstr($project->getName(), "IFP") !== false));
-                    $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false);
-                    $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false);
-                    $ifp2018 = ($ifp2018 || strstr($project->getName(), "IFP2018") !== false);
-                    $ifp2019 = ($ifp2019 || strstr($project->getName(), "IFP2019") !== false);
+                    $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && (strstr($project->getName(), "IFP") !== false || strstr($project->getName(), "IFA") !== false)));
+                    $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false || strstr($project->getName(), "IFA2016") !== false);
+                    $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false || strstr($project->getName(), "IFA2017") !== false);
+                    $ifp2018 = ($ifp2018 || strstr($project->getName(), "IFP2018") !== false || strstr($project->getName(), "IFA2018") !== false);
+                    $ifp2019 = ($ifp2019 || strstr($project->getName(), "IFP2019") !== false || strstr($project->getName(), "IFA2019") !== false);
                 }
                 if($ifp2019){
                     $ifp2019HQP[] = $hqp;

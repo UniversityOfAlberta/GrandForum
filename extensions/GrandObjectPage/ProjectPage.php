@@ -100,9 +100,9 @@ class ProjectPage {
                         $tabbedPage->addTab(new ProjectDescriptionTab($project, $visibility));
                     }
                 }
-                if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
+                /*if(!$project->isSubProject() && $project->getPhase() > 1 && $project->getStatus() != 'Proposed'){
                     $tabbedPage->addTab(new ProjectSubprojectsTab($project, $visibility));
-                }
+                }*/
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESMilestonesTab($project, $visibility));
                 }
