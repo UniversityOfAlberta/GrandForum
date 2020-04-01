@@ -397,6 +397,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEEA(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
