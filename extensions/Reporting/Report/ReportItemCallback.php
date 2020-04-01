@@ -76,9 +76,11 @@ class ReportItemCallback {
             "user_roles" => "getUserRoles",
             "user_full_roles" => "getUserFullRoles",
             "user_sub_roles" => "getUserSubRoles",
+            "user_uni_start" => "getUserUniStart",
             "user_level" => "getUserLevel",
             "user_dept" => "getUserDept",
             "user_uni" => "getUserUni",
+            "user_research_area" => "getUserResearchArea",
             "user_fec" => "getUserFEC",
             "user_case_number" => "getUserCaseNumber",
             "user_nationality" => "getUserNationality",
@@ -535,6 +537,13 @@ class ReportItemCallback {
         return implode(", ", $roles);
     }
     
+    function getUserUniStart(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        $date = new DateTime($university['start']);
+        return date_format($date, 'F Y');
+    }
+    
     function getUserLevel(){
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
@@ -551,6 +560,12 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $university = $person->getUniversity();
         return $university['university'];
+    }
+    
+    function getUserResearchArea(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $university = $person->getUniversity();
+        return $university['research_area'];
     }
     
     function getUserFEC(){
@@ -572,22 +587,13 @@ class ReportItemCallback {
     function getUserSupervisors(){
         $supervisors = array();
         $person = Person::newFromId($this->reportItem->personId);
-        $me = $person;
-        foreach(Person::getAllPeople('all') as $person){
-            foreach($person->getRelations(SUPERVISES, true) as $rel){
-                $start = $rel->getStartDate();
-                $end = $rel->getEndDate();
-                if($rel->getUser2()->getId() == $me->getId()){
-                    if((strcmp($start, REPORTING_CYCLE_START."00:00:00") <= 0 && (strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0 || strcmp($end, "0000-00-00") == 0)) ||
-                       (strcmp($start, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($start, REPORTING_CYCLE_START."00:00:00") >= 0) ||
-                       (strcmp($end, REPORTING_CYCLE_END."00:00:00") <= 0 && strcmp($end, REPORTING_CYCLE_START."00:00:00") >= 0)){
-                        $sup = $rel->getUser1();
-                        $supervisors[$sup->getId()] = "<a target='_blank' href='{$sup->getUrl()}'>{$sup->getNameForForms()}</a>";
-                    }
-                }
-            }
+        $university = $person->getUniversity();
+        $supervisors = $person->getSupervisorsDuring($university['start'], $university['start']);
+        $sups = array();
+        foreach($supervisors as $supervisor){
+            $sups[] = $supervisor->getNameForForms();
         }
-        return implode("; ", $supervisors);
+        return implode("; ", $sups);
     }
 
     function getUserPublicationCount($start_date,$end_date,$case='Publication'){

@@ -237,6 +237,7 @@
     $config->setConst("HQP",        "HQP");
     $config->setConst("PS",         "PS");
     $config->setConst("EXTERNAL",   "External");
+    $config->setConst("ACHAIR",     "AssocChair");
     $config->setConst("ISAC",       "ISAC");
     $config->setConst("ADEAN",      "AssocDean");
     $config->setConst("VDEAN",      "ViceDean");
@@ -263,6 +264,7 @@
         $config->getConst('HQP')            => "Highly Qualified Person",
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
+        $config->getConst('ACHAIR')         => "Associate Chair",
         $config->getConst('ISAC')           => "International Scientific Advisory Committee",
         $config->getConst('SRC')            => "Scientific Research Committee",
         $config->getConst('IAC')            => "Industry Advisory Committee",

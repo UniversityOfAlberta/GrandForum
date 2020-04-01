@@ -73,12 +73,22 @@
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
+            <SectionPermission id="dean_evaluations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="" />
+            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="dept_hqp" permissions="" />
+        </Role>
+        <Role role="ACHAIR">
+            <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
     </Permissions>
