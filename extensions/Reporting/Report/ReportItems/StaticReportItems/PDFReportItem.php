@@ -15,6 +15,7 @@ class PDFReportItem extends StaticReportItem {
         $section = $this->getAttr("section", "");
         $width = $this->getAttr("width", 'auto');
         $height = $this->getAttr("height", "700px");
+        $useHTML = (strtolower($this->getAttr("useHTML", "false")) == "true");
         $embed = (strtolower($this->getAttr("embed", "false")) == "true");
         if(strstr($width, "%") !== false){
             $width = $width.";-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box";
@@ -32,6 +33,9 @@ class PDFReportItem extends StaticReportItem {
             $tok = $check[0]['token'];
             if($embed){
                 $item = "<iframe src='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}' width='100%' height='{$height}' frameborder='0'></iframe>";
+            }
+            else if($useHTML){
+                $item = "<iframe src='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}&html' width='100%' height='{$height}' frameborder='0'></iframe>";
             }
             else {
                 $item = "<a class='$class' style='width:{$width};' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";

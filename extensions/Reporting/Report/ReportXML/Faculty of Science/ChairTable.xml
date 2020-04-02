@@ -1161,7 +1161,7 @@
                     ]]>
                 </Static>
                 <ReportItemSet id="header" type="ToggleHeader" title="Annual Report">
-                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf" >
+                    <ReportItem id="sticky" type="StickyNotes" blobType="BLOB_ARRAY" blobItem="STICKY" blobSubItem="{$user_id}" reportType="FECpdf">
                         <![CDATA[
                             Instructions:
                             <ul>

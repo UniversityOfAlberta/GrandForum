@@ -3,17 +3,21 @@
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="student" permissions="rw" />
+            <SectionPermission id="supervisor_comments" permissions="rw" />
             <SectionPermission id="supervisor" permissions="--" />
+            <SectionPermission id="review" permissions="rw" />
         </Role>
         <Role role="Faculty">
-            <SectionPermission id="student" permissions="rw" />
+            <SectionPermission id="student" permissions="--" />
+            <SectionPermission id="supervisor_comments" permissions="--" />
             <SectionPermission id="supervisor" permissions="rw" />
+            <SectionPermission id="review" permissions="--" />
         </Role>
     </Permissions>
     <ReportSection id="student" tooltip="Student Report" name="Student Report" title="{$user_name}: {$this_year} Student Report" blobSection="STUDENT" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <style >
+                <style>
                     td.label {
                         width: 175px;
                         font-weight: bold;
@@ -132,8 +136,100 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="supervisor_comments" tooltip="Supervisor Comments" name="Supervisor Comments" title="Supervisor Comments" type="ReportSection">
+        <ReportItemSet type="PersonSupervisors">
+            <ReportItemSet type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <Static>
+                    <![CDATA[
+                        <style>
+                            td.label {
+                                width: 175px;
+                                font-weight: bold;
+                                text-align: left;
+                            }
+                        </style>
+                        <table width='100%'>
+                            <tr>
+                                <td class='label'>Overall Evaluation:</td>
+                                <td>{getText(RP_STUDENT,SUPERVISOR,OVERALL,{$my_id},{$user_id},0)}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Comments on progress to date:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{getText(RP_STUDENT,SUPERVISOR,COMMENTS,{$my_id},{$user_id},0)}</td>
+                            </tr>
+                            <tr>
+                                <td class='label'>Future Plans:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan='2'>{getText(RP_STUDENT,SUPERVISOR,FUTURE,{$my_id},{$user_id},0)}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
     <ReportSection id="supervisor" tooltip="Supervisor Report" name="Supervisor Report" title="Supervisor Report" blobSection="SUPERVISOR" type="EditableReportSection">
-        
+        <ReportItemSet type="PersonSupervises">
+            <ReportItemSet type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <Static>
+                    <![CDATA[
+                        <style>
+                            td.label {
+                                width: 175px;
+                                font-weight: bold;
+                                text-align: left;
+                            }
+                        </style>
+                        <table width='100%'>
+                    ]]>
+                </Static>
+                <ReportItem id="overall" type="Select" blobItem="OVERALL" blobSubItem="{$user_id}" options="---|Excellent|Satisfactory|Needs Improvement|Serious Problems">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Overall Evaluation:</td>
+                            <td>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Comments on progress to date:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="future" type="Textarea" blobItem="FUTURE" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <tr>
+                            <td class='label'>Future Plans:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'>{$item}</td>
+                        </tr>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </table>
+                    ]]>
+                </Static>
+                <ReportItem id="pdf" type="PDFReportItem" reportType="StudentReport" useHTML="true">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
