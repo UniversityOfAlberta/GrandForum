@@ -1198,7 +1198,7 @@ class Person extends BackboneModel {
     
     static function getAllPeopleInDepartment($department, $start, $end){
         $department = DBFunctions::escape($department);
-        $sql = "SELECT uu.user_id FROM grand_user_university uu, mw_user u
+        $sql = "SELECT DISTINCT uu.user_id FROM grand_user_university uu, mw_user u
                 WHERE department = '$department'
                 AND (
                     ( (end_date != '0000-00-00 00:00:00') AND
