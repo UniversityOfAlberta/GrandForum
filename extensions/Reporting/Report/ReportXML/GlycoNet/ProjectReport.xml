@@ -119,7 +119,7 @@
         <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <![CDATA[
-                <p><b>Deadline: April 2</b></p>
+                <p><b>Deadline: May 5, 2020</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
