@@ -1196,6 +1196,27 @@ class Person extends BackboneModel {
         return $people;
     }
     
+    static function getAllPeopleInDepartment($department, $start, $end){
+        $department = DBFunctions::escape($department);
+        $sql = "SELECT uu.user_id FROM grand_user_university uu, mw_user u
+                WHERE department = '$department'
+                AND (
+                    ( (end_date != '0000-00-00 00:00:00') AND
+                    (( start_date BETWEEN '$start' AND '$end' ) || ( end_date BETWEEN '$start' AND '$end' ) || (start_date <= '$start' AND end_date >= '$end') ))
+                    OR
+                    ( (end_date = '0000-00-00 00:00:00') AND
+                    ((start_date <= '$end')))
+                )
+                AND uu.user_id = u.user_id
+                AND u.deleted != 1";
+        $data = DBFunctions::execSQL($sql);
+        $people = array();
+        foreach($data as $row){
+            $people[] = Person::newFromId($row['user_id']);
+        }
+        return $people;
+    }
+    
     /**
      * Returns an array of People of the type $filter
      * @param string $filter The role to get ('all' if including everyone, even if on no project)

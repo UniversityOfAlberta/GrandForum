@@ -1093,15 +1093,18 @@ class ReportItemCallback {
         }
     }
     
-    function getText($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        if($year == null){
+            $year = $this->reportItem->getReport()->year;
+        }
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
         return nl2br($blb->getData());
     }
     
-    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId){
-        return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId);
+    function getNumber($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year);
     }
     
     function count($val){

@@ -19,7 +19,7 @@
             <![CDATA[
                 <style>
                     td.label {
-                        width: 175px;
+                        width: 14em;
                         font-weight: bold;
                         text-align: left;
                     }
@@ -66,6 +66,25 @@
         </ReportItem>
         <Static>
             <![CDATA[
+                </table>
+                <h2>Program Requirements</h2>
+                <table>
+                    <tr>
+                        <td class='label'>Background:</td>
+                        <td>{getText(RP_GRAD_CHAIR, CHAIR, BACKGROUND, {$user_id}, 0, 0, 0)}</td>
+                    </tr>
+                    <tr>
+                        <td class='label'>Supervisory Committee Meetings:</td>
+                        <td>{getText(RP_GRAD_CHAIR, CHAIR, MEETINGS, {$user_id}, 0, 0, 0)}</td>
+                    </tr>
+                    <tr>
+                        <td class='label'>Breadth:</td>
+                        <td>{getText(RP_GRAD_CHAIR, CHAIR, BREADTH, {$user_id}, 0, 0, 0)}</td>
+                    </tr>
+                    <tr>
+                        <td class='label'>Ethics and FGSR Teaching Sessions:</td>
+                        <td>{getText(RP_GRAD_CHAIR, CHAIR, ETHICS, {$user_id}, 0, 0, 0)}</td>
+                    </tr>
                 </table>
                 <h2>Achievements in the past year</h2>
             ]]>

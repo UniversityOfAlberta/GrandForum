@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Grad Chair Table" reportType="RP_GRAD_CHAIR" ajax="true" personId="0" year="0">
+    <Permissions>
+        
+    </Permissions>
+    <ReportSection id="chair" type="EditableReportSection" tooltip="Grad Chair Table" name="Grad Chair Table" title="Grad Chair Table" blobSection="CHAIR">
+        <Static>
+            <![CDATA[
+                <table id='chair_table' class='wikitable'>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Program</th>
+                            <th>Supervisor(s)</th>
+                            <th>Background</th>
+                            <th>Supervisory Committee Meetings</th>
+                            <th>Breadth</th>
+                            <th>Ethics and FGSR Teaching Sessions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet type="DepartmentStudents" department="{$my_dept}" university="University of Alberta">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_email}</td>
+                        <td>{$user_level}</td>
+                        <td>{$user_supervisors}</td>
+                ]]>
+            </Static>
+            <ReportItem id="background" type="Select" options="---|Completed|None held" blobItem="BACKGROUND" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="meetings" type="Select" options="---|Completed|None held" blobItem="MEETINGS" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="breadth" type="Select" options="---|Completed|None held" blobItem="BREADTH" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethics" type="Select" options="---|Completed|None held" blobItem="ETHICS" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#chair_table').DataTable({
+                        aLengthMenu: [
+                            [100, -1],
+                            [100, "All"]
+                        ],
+                        iDisplayLength: -1
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>
