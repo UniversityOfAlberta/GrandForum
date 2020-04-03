@@ -11,12 +11,12 @@ If you would like to manage additional people who already exist on the Forum, th
 <% } %>
 <br />
 <i>Candidate</i> users may also appear in the list, however editing capabilities may be limited.
-<% if(isExtensionEnabled('AddMember')){ %>
-    <p>
+<p>
+    <% if(isExtensionEnabled('AddMember')){ %>
         <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
-        <button id="addExistingMember" title="Adds an existing member to the list below">Edit Existing Member</button>
-    </p>
-<% } %>
+    <% } %>
+    <button id="addExistingMember" title="Adds an existing member to the list below">Edit Existing Member</button>
+</p>
 <div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Edit Existing Member">
     <p>Select the person you would like to show up in your table and then press "Add".</p>
     <p><select id="selectExistingMember" name="select"></select></p>
