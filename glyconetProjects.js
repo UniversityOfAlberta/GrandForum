@@ -60,10 +60,10 @@ else{
             if(project.status == "Proposed"){
                 return;
             }
-            if(themes[project.theme] == undefined){
-                themes[project.theme] = new Array();
+            if(themes[project.themeName] == undefined){
+                themes[project.themeName] = new Array();
             }
-            themes[project.theme].push(project);
+            themes[project.themeName].push(project);
         });
         $.each(themes, function(theme, projects){
             $("#project-list").append("<h4>" + theme + "</h4>");

@@ -492,6 +492,7 @@ class Project extends BackboneModel {
         }
         $challenge = $this->getChallenge();
         $theme = $challenge->getAcronym();
+        $themeName = $challenge->getName();
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -502,6 +503,7 @@ class Project extends BackboneModel {
                        'type' => $this->getType(),
                        'private' => $this->isPrivate(),
                        'theme' => $theme,
+                       'themeName' => $themeName,
                        'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
