@@ -136,6 +136,7 @@ class ShibAuthPlugin extends AuthPlugin {
 	 * @return bool
 	 */
 	function allowPasswordChange() {
+	    return true;
 		global $shib_pretend;
  
 		return $shib_pretend;
@@ -151,6 +152,7 @@ class ShibAuthPlugin extends AuthPlugin {
 	 * @access public
 	 */
 	function setPassword( $user, $password ) {
+	    return true;
 		global $shib_pretend;
  
 		return $shib_pretend;
