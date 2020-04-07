@@ -50,6 +50,7 @@ JobPosting = Backbone.Model.extend({
         summaryFr: "",
         previewCode: "",
         created: "",
+        modified: "",
         deleted: false,
         department: "",
         university: "",

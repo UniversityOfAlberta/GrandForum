@@ -32,6 +32,7 @@ Posting = Backbone.Model.extend({
         imageCaptionFr: "",
         previewCode: "",
         created: "",
+        modified: "",
         deleted: false,
         isAllowedToEdit: true,
         url: ""

@@ -185,6 +185,10 @@ class Posting extends BackboneModel {
         return $this->created;
     }
     
+    function getModified(){
+        return $this->modified;
+    }
+    
     function isDeleted(){
         return $this->deleted;
     }
@@ -250,6 +254,7 @@ class Posting extends BackboneModel {
                       'imageCaption' => $this->getImageCaption(),
                       'imageCaptionFr' => $this->getImageCaptionFr(),
                       'created' => $this->getCreated(),
+                      'modified' => $this->getModified(),
                       'deleted' => $this->isDeleted(),
                       'previewCode' => $this->getPreviewCode(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),

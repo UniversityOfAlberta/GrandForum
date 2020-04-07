@@ -243,6 +243,10 @@ class JobPosting extends BackboneModel {
         return $this->created;
     }
     
+    function getModified(){
+        return $this->modified;
+    }
+    
     function isDeleted(){
         return $this->deleted;
     }
@@ -382,6 +386,7 @@ class JobPosting extends BackboneModel {
                       'summaryFr' => $this->getSummaryFr(),
                       'previewCode' => $this->getPreviewCode(),
                       'created' => $this->getCreated(),
+                      'modified' => $this->getModified(),
                       'deleted' => $this->isDeleted(),
                       'isAllowedToEdit' => $this->isAllowedToEdit(),
                       'url' => $this->getUrl());
