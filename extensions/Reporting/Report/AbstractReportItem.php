@@ -369,8 +369,6 @@ abstract class AbstractReportItem {
         
         $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
-	    $blob->load($blob_address);
-	    $blob_data = $blob->getData();
 	    $this->extraIndex = $this->getExtraIndex();
 	    switch($this->blobType){
             default:
@@ -383,6 +381,8 @@ abstract class AbstractReportItem {
                 }
                 break;
             case BLOB_ARRAY:
+                $blob->load($blob_address);
+	            $blob_data = $blob->getData();
                 $parent = $this->getParent();
                 $accessStr = "";
                 if($this->id != ""){
@@ -417,7 +417,6 @@ abstract class AbstractReportItem {
 	            $blob->load($blob_address);
 	            break;
         }
-	    
     }
     
     function getAttr($attr, $default="", $varSubstitute=true){

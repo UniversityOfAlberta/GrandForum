@@ -188,18 +188,24 @@ $(document).ready(function(){
                     lastSaveString = $("form[name=report]").serialize();
                 });
             }
-            ajaxInstructions = $.get(href + '&showInstructions', function(response){
-                if(response.trim() == ""){
-                    $("#instructionsToggle").hide();
-                    $("#reportInstructions").hide();
-                }
-                else{
-                    $("#instructionsToggle").show();
-                    $("#reportInstructions").show();
-                }
-                $("#reportInstructions > div > div").html("<span id='instructionsHeader'>Instructions</span>" + response);
-                $("#reportInstructions").animate({'opacity' : 1}, animationTime);
-            });
+            if($(this).attr("data-has-instructions") == "true"){
+                ajaxInstructions = $.get(href + '&showInstructions', function(response){
+                    if(response.trim() == ""){
+                        $("#instructionsToggle").hide();
+                        $("#reportInstructions").hide();
+                    }
+                    else{
+                        $("#instructionsToggle").show();
+                        $("#reportInstructions").show();
+                    }
+                    $("#reportInstructions > div > div").html("<span id='instructionsHeader'>Instructions</span>" + response);
+                    $("#reportInstructions").animate({'opacity' : 1}, animationTime);
+                });
+            }
+            else{
+                $("#instructionsToggle").hide();
+                $("#reportInstructions").hide();
+            }
         });
     });
     

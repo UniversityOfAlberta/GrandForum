@@ -6,6 +6,14 @@
     <ReportSection id="chair" type="EditableReportSection" tooltip="Grad Chair Table" name="Grad Chair Table" title="Grad Chair Table" blobSection="CHAIR">
         <Static>
             <![CDATA[
+                <style>
+                    div.noedit {
+                        max-height: 100px;
+                        overflow-y: auto;
+                        display: inline-block;
+                        text-align: left;
+                    }
+                </style>
                 <table id='chair_table' class='wikitable'>
                     <thead>
                         <tr>
@@ -15,8 +23,9 @@
                             <th>Supervisor(s)</th>
                             <th>Background</th>
                             <th>Supervisory Committee Meetings</th>
-                            <th>Breadth</th>
                             <th>Ethics and FGSR Teaching Sessions</th>
+                            <th>Required Courses</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,26 +43,65 @@
             </Static>
             <ReportItem id="background" type="Select" options="---|Completed|None held" blobItem="BACKGROUND" blobSubItem="{$user_id}">
                 <![CDATA[
-                    <td align='center'>{$item}</td>
+                    <td align='center'>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="background_notes" type="Textarea" blobItem="BACKGROUND_NOTES" height="100px" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                    </td>
                 ]]>
             </ReportItem>
             <ReportItem id="meetings" type="Select" options="---|Completed|None held" blobItem="MEETINGS" blobSubItem="{$user_id}">
                 <![CDATA[
-                    <td align='center'>{$item}</td>
+                    <td align='center'>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
                 ]]>
             </ReportItem>
-            <ReportItem id="breadth" type="Select" options="---|Completed|None held" blobItem="BREADTH" blobSubItem="{$user_id}">
+            <ReportItem id="meetings_notes" type="Textarea" blobItem="MEETINGS_NOTES" height="100px" blobSubItem="{$user_id}">
                 <![CDATA[
-                    <td align='center'>{$item}</td>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                    </td>
                 ]]>
             </ReportItem>
             <ReportItem id="ethics" type="Select" options="---|Completed|None held" blobItem="ETHICS" blobSubItem="{$user_id}">
                 <![CDATA[
-                    <td align='center'>{$item}</td>
+                    <td align='center'>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ethics_notes" type="Textarea" blobItem="ETHICS_NOTES" height="100px" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                    </td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="courses" type="Select" options="---|Completed|None held" blobItem="COURSES" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                ]]>
+            </ReportItem>
+            <ReportItem id="courses_notes" type="Textarea" blobItem="COURSES_NOTES" height="100px" blobSubItem="{$user_id}">
+                <![CDATA[
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                    </td>
                 ]]>
             </ReportItem>
             <Static>
                 <![CDATA[
+                        <td>
+                            <button class='editRow' type="button">Edit Row</button>
+                        </td>
                     </tr>
                 ]]>
             </Static>
@@ -69,6 +117,11 @@
                             [100, "All"]
                         ],
                         iDisplayLength: -1
+                    });
+                    $('button.editRow').click(function(){
+                        $('div.edit', $(this).closest('tr')).show();
+                        $('div.noedit', $(this).closest('tr')).hide();
+                        $(this).hide();
                     });
                 </script>
             ]]>

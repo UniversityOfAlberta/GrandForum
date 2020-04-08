@@ -193,8 +193,10 @@ class ReportBlob {
 	    $impersonateId = $this->_owner_id;
 		if (count($res) > 0) {
 			// Update query.
+			if($res[0]['data'] == $this->_data_transformed){
+			    return true;
+			}
 			$this->_blob_id = $res[0]['blob_id'];
-			
 			$status = DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
 				"blob_type = {$this->_type} ," .
 				"edited_by = {$impersonateId} " .

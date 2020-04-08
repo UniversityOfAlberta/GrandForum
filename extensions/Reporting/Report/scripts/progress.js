@@ -6,6 +6,7 @@ function setProgress(id, percent){
 }
 
 function updateProgress(responseStr){
+    return; // disabled
     if(responseStr != undefined && responseStr.length > 0){
         // There could be an error with the save ajax request
         showConflictError(responseStr);

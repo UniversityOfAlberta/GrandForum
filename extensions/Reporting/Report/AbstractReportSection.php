@@ -357,13 +357,14 @@ abstract class AbstractReportSection {
         if($this->disabled){
             $disabled = "disabled_lnk";
         }
-	$get_array=array();
-	foreach($_GET as $key=>$get){
-	    if($key != 'section' && $key != 'reportingYear' && $key != 'ticket' && $key != 'report' && $key != 'project'){
-		$get_array[] = "&$key=".urlencode($get);
-	    }
-	}
-        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace(" ", "", $this->name))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}".implode("",$get_array)."'>{$this->name}</a>\n");
+        $get_array=array();
+        foreach($_GET as $key=>$get){
+            if($key != 'section' && $key != 'reportingYear' && $key != 'ticket' && $key != 'report' && $key != 'project'){
+            $get_array[] = "&$key=".urlencode($get);
+            }
+        }
+        $hasInstructions = ($this->getInstructions() != "") ? "true" : "false";
+        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace(" ", "", $this->name))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}&section=".urlencode($this->name)."{$year}".implode("",$get_array)."' data-has-instructions='{$hasInstructions}'>{$this->name}</a>\n");
     }
     
     function render(){
