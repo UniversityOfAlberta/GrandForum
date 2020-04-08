@@ -2,6 +2,18 @@
 
 class ReportItemCallback {
     
+    static $reportCallback;
+    
+    static function call($reportItem, $func, $args=null){
+        self::$reportCallback->reportItem = $reportItem;
+        if($args == null){
+            return call_user_func(array(self::$reportCallback, self::$callbacks[$func]));
+        }
+        else{
+            return call_user_func_array(array(self::$reportCallback, self::$callbacks[$func]), $args);
+        }
+    }
+    
     static $callbacks = 
         array(
             // Dates
@@ -1425,5 +1437,7 @@ class ReportItemCallback {
         return substr($fecInfo->dateOfAppointment, 0, 10);
     }
 }
+
+ReportItemCallback::$reportCallback = new ReportItemCallback(null);
 
 ?>
