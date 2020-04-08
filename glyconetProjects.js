@@ -57,7 +57,7 @@ else{
     $.get('https://forum.glyconet.ca/index.php?action=api.project', function(response){
         var themes = {}
         $.each(response, function(i, project){
-            if(project.status == "Proposed"){
+            if(project.status != "Active" || project.name == "SD-1"){
                 return;
             }
             if(themes[project.themeName] == undefined){
