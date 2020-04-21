@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Translational Review" reportType="RP_SAB_TRANS_REVIEW" ajax="true" disabled="false" year="2020">
+<Report name="SAB Collaborative Review" reportType="RP_SAB_COLLAB_2020_REVIEW" ajax="true" disabled="false" year="2020">
     <Permissions>
         <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -28,9 +28,9 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="TranslationalReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2020">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2020" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -40,8 +40,8 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2020">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
@@ -69,7 +69,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_TRANS_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <If if="{==({getText(RP_SAB_COLLAB_2020_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
             <![CDATA[
                 <div class="success">Your review(s) have been submitted.</div>
             ]]>
