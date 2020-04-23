@@ -19,7 +19,7 @@ class AnnualReportTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR));
     }
 
     function execute($par){
