@@ -44,19 +44,25 @@ class AnnualReportTable extends SpecialPage{
                         <th>Case#</th>
                         <th>Name</th>
                         <th>Report</th>
+                        <th>Recommendation</th>
                     </thead>
                     <tbody>");
-            $report = new DummyReport("FEC", $me, null, $y);
+            $ar = new DummyReport("FEC", $me, null, $y);
+            $rec = new DummyReport("ChairTable", $me, null, $y);
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
                 if($case != ""){
-                    $report->person = $person;
-                    $pdf = $report->getPDF();
+                    $ar->person = $person;
+                    $rec->person = $person;
+                    $pdf = $ar->getPDF();
+                    $recPdf = $rec->getPDF(false, "Recommendations");
                     $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
+                    $recButton = (count($recPdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$recPdf[0]['token']}'>Download</a>" : "";
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                         <td>{$pdfButton}</td>
+                        <td>{$recButton}</td>
                     </tr>");
                 }
             }
