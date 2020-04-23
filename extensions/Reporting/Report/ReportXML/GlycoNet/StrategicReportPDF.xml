@@ -152,7 +152,7 @@
         <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
             <![CDATA[
                 <br />
-                <p><b>Response to Reviewer's Comments</b></p>
+                <p><b>Response to Reviewer's Comments (if applicable)</b></p>
                 {$item}
             ]]>
         </ReportItem>  
