@@ -56,13 +56,13 @@ class AnnualReportTable extends SpecialPage{
                     $rec->person = $person;
                     $pdf = $ar->getPDF();
                     $recPdf = $rec->getPDF(false, "Recommendations");
-                    $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Download</a>" : "";
-                    $recButton = (count($recPdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$recPdf[0]['token']}'>Download</a>" : "";
+                    $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}' target='_blank'>Download</a>" : "";
+                    $recButton = (count($recPdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$recPdf[0]['token']}' target='_blank'>Download</a>" : "";
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
-                        <td>{$pdfButton}</td>
-                        <td>{$recButton}</td>
+                        <td align='middle'>{$pdfButton}</td>
+                        <td align='middle'>{$recButton}</td>
                     </tr>");
                 }
             }
