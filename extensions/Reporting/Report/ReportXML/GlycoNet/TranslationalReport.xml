@@ -187,7 +187,7 @@
         
         <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" height="300px">
             <![CDATA[
-                <h2>Response to Reviewer's Comments</h2>
+                <h2>Response to Reviewer's Comments (if applicable)</h2>
                 <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
                 {$item}
             ]]>

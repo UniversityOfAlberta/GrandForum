@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Alberta Review" reportType="RP_SAB_ALBERTA_REVIEW" ajax="true" disabled="false" year="2019">
+<Report name="SAB Collaborative Review" reportType="RP_SAB_COLLAB_2020_REVIEW" ajax="true" disabled="false" year="2020">
     <Permissions>
         <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -28,9 +28,9 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Alberta">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="AlbertaReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_ALBERTA,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2020">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2020" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -46,8 +46,8 @@
                 <p>For details of what EDI considerations could be included see the following link: <a href='https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf' target='_blank'>https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf</a></p>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Alberta">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_ALBERTA,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2020">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
@@ -75,7 +75,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_ALBERTA_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <If if="{==({getText(RP_SAB_COLLAB_2020_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
             <![CDATA[
                 <div class="success">Your review(s) have been submitted.</div>
             ]]>
