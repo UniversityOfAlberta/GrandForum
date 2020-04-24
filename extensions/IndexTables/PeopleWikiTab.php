@@ -451,7 +451,7 @@ class PeopleWikiTab extends AbstractTab {
                 $('#projectWikiPages').dataTable({'iDisplayLength': 100, 'autoWidth': false});
             </script>";
             $this->html .= "<script type='text/javascript'>
-                $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false});
+                $('#projectFiles').dataTable({'iDisplayLength': 100, 'autoWidth': false, order: [[2, 'desc']]});
             </script>";
         }
         return $this->html;
