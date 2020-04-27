@@ -942,12 +942,12 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOf($this)){
+                    if($person->leadershipOfOn($this, $date)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOf($this))) && 
+                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOfOn($this))) && 
                         ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                     $people[$person->getId()] = $person;
                 }
