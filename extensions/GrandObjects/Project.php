@@ -947,7 +947,7 @@ EOF;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOfOn($this))) && 
+                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOfOn($this, $date))) && 
                         ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                     $people[$person->getId()] = $person;
                 }
