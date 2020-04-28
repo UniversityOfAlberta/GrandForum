@@ -220,7 +220,7 @@ Applicants are asked to review eligibility and program information for each of t
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
         <Static>
             <![CDATA[
-                <table>
+                <table style='width: 100%;'>
                     <tr>
                         <td colspan='2'><h3>BACKGROUND INFORMATION</h3></td>
                     </tr>
@@ -291,33 +291,41 @@ Applicants are asked to review eligibility and program information for each of t
             ]]>
         </ReportItem>
         
+        <ReportItem id="ELIGIBILITY" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="ELIGIBILITY" rich="true" limit="750" optional="true">
+            <![CDATA[
+                <tr>
+                    <td colspan='2' style='padding-top:15px;'><b>AGE-WELL Co-Funded Awards: Please indicate your eligibility and desire to be considered for these awards.</b><br />{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-NBHRF Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($18,000)|Postdoctoral ($50,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-MIRA Awards</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-MIRA Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="UOFT" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UOFT" orientation="vertical" options="Master's ($10,000)|PhD ($15,000)|Postdoctoral ($20,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UofT FASE Award</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UofT FASE Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="SFU" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SFU" orientation="vertical" options="Master's ($10,000)|PhD ($15,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-SFU BPK Award</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-SFU BPK Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="SHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SHRF" orientation="vertical" options="Postdoctoral ($45,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-SHRF</b><br /><i>Please indicate your eligibility and desire to be considered for this award</i></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-SHRF</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
