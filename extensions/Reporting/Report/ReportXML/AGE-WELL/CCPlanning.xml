@@ -945,6 +945,6 @@ our trainees moving into receptor industries and government agencies represent a
                 </ol>
             ]]>
         </Instructions>
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="jennifer@agewell-nce.ca" />
     </ReportSection>
 </Report>

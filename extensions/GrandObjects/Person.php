@@ -4365,6 +4365,22 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns whether this Person was a leader of the given project on the specified date
+     * @param mixed $project The Project object (or name)
+     * @param string $date The date this Person was a leader of
+     * @return boolean Whether or not this Person is a leader of a given Project
+     */
+    function leadershipOfOn($project, $date){
+        $projects = $this->leadershipOn($date);
+        foreach($projects as $p){
+            if($p->getName() == $project->getName()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Returns whether or not this Person is a leader of at least one Project
      * @return boolean Whether or not this Person is a leader
      */
