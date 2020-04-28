@@ -291,13 +291,13 @@ Applicants are asked to review eligibility and program information for each of t
             ]]>
         </ReportItem>
         
-        <ReportItem id="ELIGIBILITY" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="ELIGIBILITY" rich="true" limit="750" optional="true">
+        <Static>
             <![CDATA[
                 <tr>
-                    <td colspan='2' style='padding-top:15px;'><b>AGE-WELL Co-Funded Awards: Please indicate your eligibility and desire to be considered for these awards.</b><br />{$item}</td>
+                    <td colspan='2' style='padding-top:15px;'><b>AGE-WELL Co-Funded Awards: Please indicate your eligibility and interest in being considered for the awards below by checking the appropriate boxes.</b></td>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[
