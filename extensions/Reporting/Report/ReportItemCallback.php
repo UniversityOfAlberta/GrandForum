@@ -95,6 +95,7 @@ class ReportItemCallback {
             "user_email" => "getUserEmail",
             "user_phone" => "getUserPhone",
             "user_gender" => "getUserGender",
+            "user_twitter" => "getUserTwitter",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
@@ -1037,6 +1038,11 @@ class ReportItemCallback {
     function getUserGender(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getGender();
+    }
+    
+    function getUserTwitter(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getTwitter();
     }
     
     function getParentId(){
