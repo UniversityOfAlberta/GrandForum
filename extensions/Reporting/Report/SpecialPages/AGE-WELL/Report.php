@@ -49,17 +49,17 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Emerging Entrepreneur", "{$url}EEA", $selected);
         }
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICConference")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC Conference", "{$url}EPICConference", $selected);
-        }
-        if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Edge")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Edge", "{$url}Edge", $selected);
         }
-        if($person->isRoleAtLeast(HQP)){
+        if($person->isRole(HQP)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICConference")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC Conference", "{$url}EPICConference", $selected);
+        }
+        /*if($person->isRoleAtLeast(HQP)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Conference Application", "{$url}ConferenceApplication", $selected);
-        }
+        }*/
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ConferenceApplicationSummary")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Conference Application Summary", "{$url}ConferenceApplicationSummary", $selected);
