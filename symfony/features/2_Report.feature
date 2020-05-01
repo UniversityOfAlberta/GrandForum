@@ -50,6 +50,15 @@ Feature: Reporting
         When I go to "index.php/Special:Report?report=Report"
         Then I should see "Permission error"
         
+    Scenario: Guest tries to access report
+        Given I am on "index.php/Special:Report?report=LoggedIn"
+        Then I should see "Permission Error"
+        
+    Scenario: HQP tries to access report
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I go to "index.php/Special:Report?report=LoggedIn"
+        Then I should see "Section 1"
+        
     Scenario: NI edits a field in the report
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Report?report=Report"
