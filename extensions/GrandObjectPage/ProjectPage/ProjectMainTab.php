@@ -52,7 +52,8 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $dateField = new CalendarField("effective_date", "Effective Date", substr($this->project->getEffectiveDate(), 0, 10));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()} {$dateField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
@@ -61,7 +62,18 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>";
+        $this->html .= "</table>
+            <script type='text/javascript'>
+                $('[name=status]').change(function(){
+                    if($('[name=status]').val() == 'Ended'){
+                        $('[name=effective_date]').show();
+                    }
+                    else{
+                        $('[name=effective_date]').hide();
+                    }
+                });
+                $('[name=status]').change();
+            </script>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -99,22 +111,19 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
-            if($_POST['status'] != $this->project->getStatus()){
-                if($_POST['status'] == "Ended"){
-                    $_POST['project'] = $this->project->getName();
-                    $_POST['effective_date'] = date('Y-m-d');
-                    APIRequest::doAction('DeleteProject', true);
-                    Project::$cache = array();
-                    $this->project = Project::newFromId($this->project->getId());
-                }
-                else{
-                    DBFunctions::update('grand_project_status',
-                                        array('status' => $_POST['status']),
-                                        array('evolution_id' => EQ($this->project->getEvolutionId()),
-                                              'project_id' => EQ($this->project->getId())));
-                    Project::$cache = array();
-                    $this->project = Project::newFromId($this->project->getId());
-                }
+            if($_POST['status'] == "Ended"){
+                $_POST['project'] = $this->project->getName();
+                APIRequest::doAction('DeleteProject', true);
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
+            }
+            else{
+                DBFunctions::update('grand_project_status',
+                                    array('status' => $_POST['status']),
+                                    array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                          'project_id' => EQ($this->project->getId())));
+                Project::$cache = array();
+                $this->project = Project::newFromId($this->project->getId());
             }
         }
         
