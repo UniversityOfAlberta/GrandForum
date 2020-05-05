@@ -47,7 +47,8 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+                $endedhtml = ($this->project->getStatus() == "Ended") ? "(".substr($this->project->getEffectiveDate(), 0, 10).")" : "";
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()} {$endedhtml}</td></tr>";
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
@@ -98,20 +99,22 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
-            if($_POST['status'] == "Ended"){
-                $_POST['project'] = $this->project->getName();
-                $_POST['effective_date'] = date('Y-m-d');
-                APIRequest::doAction('DeleteProject', true);
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
-            }
-            else{
-                DBFunctions::update('grand_project_status',
-                                    array('status' => $_POST['status']),
-                                    array('evolution_id' => EQ($this->project->getEvolutionId()),
-                                          'project_id' => EQ($this->project->getId())));
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
+            if($_POST['status'] != $this->project->getStatus()){
+                if($_POST['status'] == "Ended"){
+                    $_POST['project'] = $this->project->getName();
+                    $_POST['effective_date'] = date('Y-m-d');
+                    APIRequest::doAction('DeleteProject', true);
+                    Project::$cache = array();
+                    $this->project = Project::newFromId($this->project->getId());
+                }
+                else{
+                    DBFunctions::update('grand_project_status',
+                                        array('status' => $_POST['status']),
+                                        array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                              'project_id' => EQ($this->project->getId())));
+                    Project::$cache = array();
+                    $this->project = Project::newFromId($this->project->getId());
+                }
             }
         }
         
