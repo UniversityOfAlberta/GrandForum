@@ -277,7 +277,7 @@
                 ]]>
             </Static>
             <If if="{contains({$my_roles},ViceDean)}">
-                <ReportItemSet id="fec_comments" type="FECReportItemSet">
+                <ReportItemSet id="fec_comments" type="ATSECReportItemSet">
                     <Static>
                         <![CDATA[
                             {set(comment, {getText(RP_FEC_TABLE, TABLE, COMMENTS, {$parent_id}, {$user_id}, 0)})}
