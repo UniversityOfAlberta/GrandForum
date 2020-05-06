@@ -291,7 +291,7 @@
                     </If>
                 </ReportItemSet>
             </If>
-            <ElseIf if="{contains({$my_sub_roles},Faculty Evaluation Committee)}">
+            <ElseIf if="{contains({$my_sub_roles},Academic Teaching Staff Evaluation Committee)}">
                 <ReportItem id="comments" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMENTS" blobSubItem="{$user_id}" height="75px">
                     <![CDATA[
                         {$item}
