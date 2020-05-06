@@ -639,14 +639,18 @@ abstract class AbstractReport extends SpecialPage {
             $roles[] = $role->getRole();
         }
         $permissions = array();
-        
         foreach($roles as $role){
-            if(isset($this->sectionPermissions[$role][$section->id])){
-                $found = true;
-                foreach($this->sectionPermissions[$role][$section->id] as $key => $perm){
-                    $permissions[$key] = $perm;
-                    if($key == "-"){
-                        return array();
+            $subRoles = array("");
+            $subRoles = array_merge($subRoles, $me->getSubRoles());
+            foreach($subRoles as $subRole){
+                $index = ($subRole != "") ? "{$role}_{$subRole}" : $role;
+                if(isset($this->sectionPermissions[$index][$section->id])){
+                    $found = true;
+                    foreach($this->sectionPermissions[$index][$section->id] as $key => $perm){
+                        $permissions[$key] = $perm;
+                        if($key == "-"){
+                            return array();
+                        }
                     }
                 }
             }
