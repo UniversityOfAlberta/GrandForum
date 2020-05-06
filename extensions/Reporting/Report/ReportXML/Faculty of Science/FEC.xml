@@ -15,7 +15,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role role="ATSEC">
+        <Role role="ATS">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="courses" permissions="rw" />
             <SectionPermission id="students" permissions="rw" />
