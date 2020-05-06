@@ -1039,7 +1039,8 @@ EOF;
          <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
          <tr>
          <th>University</th>
-         <th>Researchers</th>";
+         <th>Researchers</th>
+         <th>Names</th>";
         $html .= "</tr>";
 
         foreach ($universities as $uni=>$data){
@@ -1059,6 +1060,11 @@ EOF;
             $num_students = count($hqpa);   
             $student_details = Dashboard::niDetails($hqpa, $this->to);
             if($num_students > 0){
+                $names = array();
+                foreach($hqpa as $hqp){
+                    $names[] = $hqp->getNameForForms();
+                }
+                $names = implode(", ", $names);
                 $html .=<<<EOF
                     <td>
                     <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
@@ -1070,10 +1076,14 @@ EOF;
                         <ul>$student_details</ul>
                     </div>
                     </td>
+                    <td>
+                        {$names}
+                    </td>
 EOF;
             }
             else{
-                $html .= "<td>0</td>";
+                $html .= "<td>0</td>
+                          <td></td>";
             }
 
             //}
