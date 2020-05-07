@@ -44,6 +44,7 @@ class PublicChordTab extends AbstractTab {
             $projects = Project::getAllProjectsEver();
             foreach($projects as $key => $project){
                 if($project->getChallenge()->getName() == "Not Specified" || 
+                   $project->getChallenge()->getName() == "" ||
                    $project->getType() == "Administrative"){
                     unset($projects[$key]);
                 }
