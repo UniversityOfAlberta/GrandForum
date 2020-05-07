@@ -201,7 +201,8 @@
         //'CrossForumExport',
         'ReportIssue',
         'MyThreads',
-        'Freeze'
+        'Freeze',
+        //'Postings'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
