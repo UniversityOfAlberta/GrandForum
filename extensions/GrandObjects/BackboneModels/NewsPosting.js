@@ -19,7 +19,7 @@ NewsPosting = Posting.extend({
     urlRoot: 'index.php?action=api.newsposting',
 
     defaults: _.extend(Object.assign({}, Posting.prototype.defaults), {
-        author: "CS-Can/Info-Can",
+        author: "",
         sourceName: "",
         sourceLink: ""
     })
