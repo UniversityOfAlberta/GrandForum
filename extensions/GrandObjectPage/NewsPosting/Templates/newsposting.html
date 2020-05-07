@@ -5,19 +5,9 @@
             <td class="label">Visibility:</td>
             <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
         </tr>
-        <% if(articleLink != ""){ %>
-            <tr>
-                <td class="label">Article Link:</td>
-                <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
-            </tr>
-        <% } %>
         <tr>
             <td class="label">Posted:</td>
             <td><%= startDate %></td>
-        </tr>
-        <tr>
-            <td class="label">Author:</td>
-            <td><%= author %></td>
         </tr>
         <% if(sourceLink != "" && sourceName != ""){ %>
             <tr>
@@ -25,13 +15,11 @@
                 <td><a href="<%= sourceLink %>" target="_blank"><%= sourceName %></a></td>
             </tr>
         <% } %>
-        <% if(image != ""){ %>
-            <tr>
-                <td class="label">Image:</td>
-                <td align="center"><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-height: 200px; max-width: 300px;" /></a><br /><%= showLanguage(language, imageCaption, imageCaptionFr) %></td>
-            </tr>
-        <% } %>
+        
     </table>
+    <% if(image != ""){ %>
+        <h3><a href="<%= image %>" target="_blank">Attachment</a></h3>
+    <% } %>
     <h3>Summary</h3>
     <%= showLanguage(language, nl2br(summary), nl2br(summaryFr), "<br /><br />") %>
 </div>

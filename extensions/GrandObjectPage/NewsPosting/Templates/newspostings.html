@@ -6,7 +6,6 @@
         <tr>
             <th width="25%" style="white-space: nowrap;">News Date</th>
             <th width="5%" style="white-space: nowrap;">Language</th>
-            <th width="15%">Author</th>
             <th width="54%">Posting</th>
             <% if(isAllowedToCreateNewsPostings){ %>
                 <th width="1%">Delete?</th>
@@ -23,9 +22,6 @@
                 </td>
                 <td align="center">
                     <%= news.getLanguage() %>
-                </td>
-                <td>
-                    <%= news.get('author') %>
                 </td>
                 <td>
                     <a href="<%= news.get('url') %>" ><%= showLanguage(news.get('language'), news.get('title'), news.get('titleFr')) %></a>
