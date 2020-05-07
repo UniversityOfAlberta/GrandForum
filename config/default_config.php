@@ -224,7 +224,8 @@
         'ReportIssue',
         //'ContactUs',
         'MyThreads',
-        'Freeze'
+        'Freeze',
+        //'Postings'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,

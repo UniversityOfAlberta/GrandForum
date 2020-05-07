@@ -1,0 +1,44 @@
+<% if(isAllowedToCreateNewsPostings){ %>
+    <a href="#/new" class="button" id="add">Create a News Item</a><br /><br />
+<% } %>
+<table id="postings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="25%" style="white-space: nowrap;">News Date</th>
+            <th width="5%" style="white-space: nowrap;">Language</th>
+            <th width="15%">Author</th>
+            <th width="54%">Posting</th>
+            <% if(isAllowedToCreateNewsPostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(news){ %>
+            <tr>
+                <td>
+                    <span style="display:none;"><%= news.get('startDate') %></span>
+                    <%= dateTimeHelpers.formatDate(news.get('startDate')) %><br />
+                    (Posted: <%= dateTimeHelpers.formatDate(news.get('created')) %> by <a href="<%= news.get('user').url %>"><%= news.get('user').fullName %></a>)
+                </td>
+                <td align="center">
+                    <%= news.getLanguage() %>
+                </td>
+                <td>
+                    <%= news.get('author') %>
+                </td>
+                <td>
+                    <a href="<%= news.get('url') %>" ><%= showLanguage(news.get('language'), news.get('title'), news.get('titleFr')) %></a>
+                </td>
+                <% if(isAllowedToCreateNewsPostings){ %>
+                    <td align="center">
+                        <% if(news.get('isAllowedToEdit')){ %>
+                            <span id="<%= news.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New News Posting"></div>
