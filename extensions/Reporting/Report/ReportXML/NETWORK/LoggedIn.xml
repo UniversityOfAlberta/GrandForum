@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Test" reportType="RP_TEST" pdfType="RPTP_TEST" pdfFiles="Test" year="0" ajax="true">
+    <Permissions>
+        <Role role="INACTIVE+">
+            <SectionPermission id="section1" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="INACTIVE-Candidate+">
+            <SectionPermission id="section1" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="section1" type="EditableReportSection" blobSection="SEC1" name="Section 1" title="Section 1">
+        
+    </ReportSection>
+    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="ReviewSubmitReportItem" />
+    </ReportSection>
+</Report>

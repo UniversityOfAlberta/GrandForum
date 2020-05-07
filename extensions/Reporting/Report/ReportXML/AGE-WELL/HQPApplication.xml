@@ -54,7 +54,7 @@
     <li>Applicants for doctoral awards are restricted to those entering the first, second, or third year of their program.</li>
 </ol>
 
-<p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact or Catalyst programs would be ineligible.</p>
+<p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition. For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, or Catalyst programs would be ineligible.</p>
 
 <h3>The Awards</h3>
 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees must demonstrate that they receive funding from a source other than AGE-WELL.</p>
@@ -124,9 +124,9 @@ Award term: 1 September 2020 - 31 August 2021<br />
 
 <p>Complete an application to the AGE-WELL Graduate Student and Postdoctoral Awards program as per established requirements. Applicants wishing to be considered for the Michael F. Harcourt Policy Fellowship will be required to submit a maximum ½ page statement that outlines their interest in policy and the potential policy implications of their work.</p>
 
-<h3>2. AGE-WELL Indigenous Graduate Student and Postdoctoral Awards </h3>
+<h3>2. AGE-WELL Indigenous Graduate Student and Postdoctoral Awards</h3>
 
-<p>AGE-WELL is pleased to launch the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified status and non-status First Nations, Métis, and Inuit trainees researching in AgeTech-related fields.</p>
+<p>AGE-WELL is pleased to launch the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified Indigenous trainees researching in AgeTech-related fields. Recipients will be matched with network mentors during their award term.</p>
 
 <p>We expect to offer the following awards in this 2020 call:</p>
 <ul>
@@ -141,18 +141,7 @@ Award term: 1 September 2020 - 31 August 2021<br />
 
 <p><b>APPLICATION AND SUBMISSION INFORMATION</b></p>
 
-<p>Complete an application to the AGE-WELL Graduate Student and Postdoctoral Awards program as per established requirements. Applicants wishing to be considered for the Indigenous Graduate Student and Postdoctoral Fellowships are asked to indicate their interest on the application form.</p>
-
-<p>Successful applicants will be asked to provide proof of indigenous ancestry in form of a:</p>
-<ul>
-    <li>Certificate of Indian Status, a status card or a valid band membership card</li>
-    <li>Letter from their band verifying their status</li>
-    <li>Métis membership card or letter issued by the Métis Nation student is registered with</li>
-    <li>Letter or membership card from the Métis Settlements General Council</li>
-    <li>A certified copy of a Nunavut Trust Certificate card or Inuit beneficiary card</li>
-    <li>For a non-status person, a letter of support from a First Nation, Métis and Inuit (FNMI) organization</li>
-</ul>
- 
+<p>Complete an application to the AGE-WELL Graduate Student and Postdoctoral Awards program as per established requirements. Applicants wishing to be considered for the Indigenous Graduate Student and Postdoctoral Fellowships are asked to indicate their interest and eligibility on the application form.</p>
 
 <h3>3. AGE-WELL Co-funded Awards </h3>
 
@@ -274,7 +263,7 @@ Applicants are asked to review eligibility and program information for each of t
         
         <ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master’s ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Indigenous Graduate Student or Postdoctoral Award</b><br /><i>Please indicate your eligibility and desire to be considered for these awards and confirm that you self-identify as First Nations status/non-status, Inuit or Métis.</i></td><td id='indigenous' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Please indicate your eligibility and desire to be considered for these awards and confirm that you self-identify as an Indigenous trainee.</i></td><td id='indigenous' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
@@ -291,13 +280,13 @@ Applicants are asked to review eligibility and program information for each of t
             ]]>
         </ReportItem>
         
-        <ReportItem id="ELIGIBILITY" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="ELIGIBILITY" rich="true" limit="750" optional="true">
+        <Static>
             <![CDATA[
                 <tr>
-                    <td colspan='2' style='padding-top:15px;'><b>AGE-WELL Co-Funded Awards: Please indicate your eligibility and desire to be considered for these awards.</b><br />{$item}</td>
+                    <td colspan='2' style='padding-top:15px;'><b>AGE-WELL Co-Funded Awards: Please indicate your eligibility and interest in being considered for the awards below by checking the appropriate boxes.</b></td>
                 </tr>
             ]]>
-        </ReportItem>
+        </Static>
         
         <ReportItem id="NBHRF" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_NBHRF" orientation="vertical" options="Master's ($17,500)|PhD ($25,000)|Postdoctoral, PhD ($40,000)|Postdoctoral, MD or Pharm. D ($56,500)" optional="true">
             <![CDATA[
@@ -587,8 +576,9 @@ Applicants are asked to review eligibility and program information for each of t
         </ReportItem>
         <ReportItem id="michael" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2" optional="true">
             <![CDATA[
-                <h2>Michael F. Harcourt Policy Fellowship Policy Engagement Plan (maximum 1 page, for Harcourt applicants only)</h2>
-                <p>Please prepare the document and submit as a PDF.</p>
+                <h2>Michael F. Harcourt Policy Fellowship - Personal Statement (maximum 1/2 page, for Harcourt applicants only)</h2>
+                <p>Please outline your interest in policy and the potential policy implications of your work.<br />
+                Please prepare the document and submit as a PDF.</p>
                 {$item}
             ]]>
         </ReportItem>

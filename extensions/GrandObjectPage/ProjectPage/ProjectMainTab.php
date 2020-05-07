@@ -47,11 +47,13 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+                $endedhtml = ($this->project->getStatus() == "Ended") ? "(".substr($this->project->getEffectiveDate(), 0, 10).")" : "";
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()} {$endedhtml}</td></tr>";
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $dateField = new CalendarField("effective_date", "Effective Date", substr($this->project->getEffectiveDate(), 0, 10));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()} {$dateField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
@@ -60,7 +62,18 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>";
+        $this->html .= "</table>
+            <script type='text/javascript'>
+                $('[name=status]').change(function(){
+                    if($('[name=status]').val() == 'Ended'){
+                        $('[name=effective_date]').show();
+                    }
+                    else{
+                        $('[name=effective_date]').hide();
+                    }
+                });
+                $('[name=status]').change();
+            </script>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -100,7 +113,6 @@ class ProjectMainTab extends AbstractEditableTab {
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
             if($_POST['status'] == "Ended"){
                 $_POST['project'] = $this->project->getName();
-                $_POST['effective_date'] = date('Y-m-d');
                 APIRequest::doAction('DeleteProject', true);
                 Project::$cache = array();
                 $this->project = Project::newFromId($this->project->getId());

@@ -655,6 +655,9 @@ abstract class AbstractReport extends SpecialPage {
         $rResult = $me->isRoleAtLeast(MANAGER);
         $pResult = false;
         $nProjectTags = 0;
+        if(!$me->isLoggedIn()){
+            return false;
+        }
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
