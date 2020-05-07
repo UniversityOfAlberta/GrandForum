@@ -234,7 +234,7 @@ class Posting extends BackboneModel {
     
     static function isAllowedToCreate(){
         $me = Person::newFromWgUser();
-        return ($me->isLoggedIn() && ($me->isRoleAtLeast(MANAGER) || $me->isRole(PL) || $me->isRole(PA)));
+        return ($me->isLoggedIn() && ($me->isRoleAtLeast(STAFF)));
     }
     
     function toArray(){
