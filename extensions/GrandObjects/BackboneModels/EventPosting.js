@@ -19,7 +19,7 @@ EventPosting = Posting.extend({
     urlRoot: 'index.php?action=api.eventposting',
 
     defaults: _.extend(Object.assign({}, Posting.prototype.defaults), {
-        address: "CS-Can/Info-Can",
+        address: "",
         city: "",
         province: "",
         country: "Canada"
