@@ -22,38 +22,20 @@
                                                              {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
         </tr>
         <tr>
-            <td class="label">Article Link:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
-        </tr>
-        <tr>
             <td class="label">Posted Date:</td>
             <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
         </tr>
         <tr>
-            <td class="label">Author:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'author', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Source Name:</td>
+            <td class="label">External URL Name:</td>
             <td valign="top"><%= HTML.TextBox(this, 'sourceName', {}) %></td>
         </tr>
         <tr>
-            <td class="label">Source Link:</td>
+            <td class="label">External URL:</td>
             <td valign="top"><%= HTML.TextBox(this, 'sourceLink', {}) %></td>
         </tr>
         <tr>
             <td class="label">Image:</td>
             <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Image Caption:</td>
-            <td style="vertical-align: baseline;">
-                <u><b>English</b></u><br />
-                <%= HTML.TextBox(this, 'imageCaption', {}) %>
-                <br />
-                <u><b>French</b></u><br />
-                <%= HTML.TextBox(this, 'imageCaptionFr', {}) %>
-            </td>
         </tr>
     </table>
     <h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>

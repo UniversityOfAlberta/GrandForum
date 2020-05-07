@@ -21,8 +21,8 @@ abstract class PostingAPI extends RESTAPI {
                 $posting->generatePreviewCode();  
             }
             if($image){
-                header('Content-Type: image/png;base64');
                 $exploded = explode("base64,", $posting->getImage());
+                header('Content-Type: '.str_replace("data:", "", $exploded[0]).'base64');
                 echo base64_decode($exploded[1]);
                 exit;
             }

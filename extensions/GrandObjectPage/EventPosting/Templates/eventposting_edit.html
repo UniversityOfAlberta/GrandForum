@@ -64,18 +64,8 @@
             <td valign="top"><%= HTML.TextBox(this, 'country', {}) %></td>
         </tr>
         <tr>
-            <td class="label">Image:</td>
+            <td class="label">Attachment:</td>
             <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Image Caption:</td>
-            <td style="vertical-align: baseline;">
-                <u><b>English</b></u><br />
-                <%= HTML.TextBox(this, 'imageCaption', {}) %>
-                <br />
-                <u><b>French</b></u><br />
-                <%= HTML.TextBox(this, 'imageCaptionFr', {}) %>
-            </td>
         </tr>
     </table>
     <h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>
