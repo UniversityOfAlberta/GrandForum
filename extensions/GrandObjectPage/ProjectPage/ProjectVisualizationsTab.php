@@ -189,7 +189,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     $start = $end;
                 }
                 if($person->isRoleDuring(NI, $start, $end, $project) || $person->leadershipOf($project)){
-                    $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
+                    $content = "<a href='{$person->getUrl()}' style='color: white;' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
                                                             'text' => $content),
@@ -198,7 +198,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                                      'end' => $end);
                 }
                 else {
-                    $content = "<a href='{$person->getUrl()}' target='_blank'>View Member's Page</a>";
+                    $content = "<a href='{$person->getUrl()}' style='color: white;' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
                                                             'text' => $content),
@@ -214,7 +214,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                     continue;
                 }
                 $start = $paper->getDate();
-                $content = "<a href='{$paper->getUrl()}' target='_blank'>View ".$config->getValue('productsTerm')."'s Page</a>";
+                $content = "<a href='{$paper->getUrl()}' target='_blank' style='color: white;'>View ".$config->getValue('productsTerm')."'s Page</a>";
                 $items[] = array('content' => $paper->getTitle(),
                                  'description' => array('title' => $paper->getTitle(),
                                                         'text' => $content),
