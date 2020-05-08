@@ -1,8 +1,8 @@
-.vis.timeline .center {
+.vis-timeline .center {
     text-align: left;
 }
 
-.vis.timeline .currenttime {
+.currenttime {
     width: 1px;
 }
 
@@ -19,13 +19,13 @@
     font-weight: normal;
 }
 
-.vis.timeline .item {
+.vis-item {
     cursor: pointer;
     position: absolute;
     z-index: 2;
     padding: 0;
-    font-size: 11px;
-    line-height: 11px;
+    font-size: 12px;
+    line-height: 12px;
     font-weight: bold;
     border-width: 0 0 2px 0;
     border-style: solid;
@@ -33,15 +33,19 @@
     background: none;
 }
 
-.vis.timeline .item.selected {
+.vis-item-content {
+    padding: 0 !important;
+}
+
+.vis-item.vis-selected {
     background: none !important;
 }
 
-.vis.timeline .item.dot {
+.vis-item.vis-dot {
     border-radius: 4px !important;
 }
 
-.vis.timeline .item.point {
+.vis-item.vis-point {
     border: none;
 }
 
@@ -75,37 +79,37 @@
     font-weight: bold;
 }
 
-.vis.timeline .visRed .item {
+.visRed .vis-item {
     color: #EC2528;
     font-weight: bold;
     border-color: #EC2528;
 }
 
-.vis.timeline .visBlue .item {
+.visBlue .vis-item {
     color: #21A3DC;
     font-weight: bold;
     border-color: #21A3DC;
 }
 
-.vis.timeline .visGreen .item {
+.visGreen .vis-item {
     color: #12A551;
     font-weight: bold;
     border-color: #12A551;
 }
 
-.vis.timeline .visOrange .item {
+.visOrange .vis-item {
     color: #F47F20;
     font-weight: bold;
     border-color: #F47F20;
 }
 
-.vis.timeline .visPurple .item {
+.visPurple .vis-item {
     color: #723C96;
     font-weight: bold;
     border-color: #723C96;
 }
 
-.vis.timeline .visYellow .item {
+.visYellow .vis-item {
     color: #FCB722;
     font-weight: bold;
     border-color: #FCB722;
