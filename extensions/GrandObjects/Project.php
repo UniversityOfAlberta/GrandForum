@@ -1097,50 +1097,15 @@ EOF;
     /// resulting array contains instances of Person.  If #onlyid is set to
     /// true, then the resulting array contains only numerical user IDs.
     function getLeaders($onlyid = false) {
-        $onlyIdStr = ($onlyid) ? 'true' : 'false';
-        if(isset($this->leaderCache['leaders'.$onlyIdStr])){
-            return $this->leaderCache['leaders'.$onlyIdStr];
-        }
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getLeaders($onlyid) as $leader){
-                    if($onlyid){
-                        $person = Person::newFromId($leader);
-                        $ret[$person->getReversedName()] = $leader;
-                    }
-                    else{
-                        $ret[$leader->getReversedName()] = $leader;
-                    }
-                }
+        $leaders = $this->getAllPeople(PL);
+        if($onlyIdStr){
+            $ids = array();
+            foreach($leaders as $leader){
+                $ids[] = $leader->getId();
             }
+            return $ids;
         }
-        $sql = "SELECT r.user_id
-                FROM grand_roles r, grand_role_projects rp, mw_user u
-                WHERE r.id = rp.role_id
-                AND rp.project_id = '{$this->id}'
-                AND r.role = '".PL."'
-                AND u.user_id = r.user_id
-                AND u.deleted != '1'
-                AND (r.end_date = '0000-00-00 00:00:00'
-                     OR r.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if ($onlyid) {
-            foreach ($data as &$row){
-                $person = Person::newFromId($row['user_id']);
-                $ret[$person->getReversedName()] = $row['user_id'];
-            }
-        }
-        else {
-            foreach($data as &$row){
-                $person = Person::newFromId($row['user_id']);
-                $ret[$person->getReversedName()] = $person;
-            }
-        }
-        ksort($ret);
-        $this->leaderCache['leaders'.$onlyIdStr] = $ret;
-        return $ret;
+        return $leaders;
     }
     
     /**
