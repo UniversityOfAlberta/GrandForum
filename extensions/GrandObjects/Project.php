@@ -1098,7 +1098,7 @@ EOF;
     /// true, then the resulting array contains only numerical user IDs.
     function getLeaders($onlyid = false) {
         $leaders = $this->getAllPeople(PL);
-        if($onlyIdStr){
+        if($onlyid){
             $ids = array();
             foreach($leaders as $leader){
                 $ids[] = $leader->getId();
