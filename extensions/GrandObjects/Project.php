@@ -237,7 +237,9 @@ class Project extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1))){
             $project = new Project($data);
-            $project->evolutionId = $evolutionId;
+            if($evolutionId != null){
+                $project->evolutionId = $evolutionId;
+            }
             self::$cache[$id.'_'.$evolutionId] = $project;
             return $project;
         }
@@ -447,7 +449,6 @@ class Project extends BackboneModel {
             $this->succ = false;
             $this->preds = false;
             $this->clear = ($data[0]['clear'] == 1);
-            
             if($this->status == "Ended"){
                 $this->deleted = true;
             }
@@ -677,6 +678,7 @@ EOF;
                     AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE' OR e.action = 'EVOLVE')
                     AND '{$this->evolutionId}' > e.last_id
                     ORDER BY e.id DESC";
+            
             $data = DBFunctions::execSQL($sql);
             $this->preds = array();
             foreach($data as $row){
@@ -813,9 +815,6 @@ EOF;
     // The researchers who are in this project.
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
-        $currentDate = date('Y-m-d H:i:s');
-        $year = date('Y');
-        $created = $this->getCreated();
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -867,7 +866,6 @@ EOF;
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
-        $year = substr($endRange, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -921,7 +919,6 @@ EOF;
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
-        $year = substr($date, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
