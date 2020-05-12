@@ -124,6 +124,9 @@ class GlobalSearchAPI extends RESTAPI {
                 $data = array();
                 $projects = Project::getAllProjectsDuring('0000','9999', true);
                 foreach($projects as $project){
+                    if(count($project->getSuccs()) > 0){
+                        continue;
+                    }
                     if($project->getStatus() == "Proposed" && !$me->isRoleAtLeast(STAFF)){
                         continue;
                     }
