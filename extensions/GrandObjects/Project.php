@@ -128,16 +128,11 @@ class Project extends BackboneModel {
                                     array('e.id' => 'DESC'),
                                     array(1));
         if (count($data) > 0){
-            $data1 = DBFunctions::select(array('grand_project_evolution'),
-                                         array('new_id',
-                                               'project_id'),
-                                         array('project_id' => $data[0]['id'],
-                                               'new_id' => $data[0]['id']),
-                                         array('date' => 'DESC'),
-                                         array(1));
-            if(count($data1) > 0){
-                $project = Project::newFromId($data1[0]['new_id']);
-                self::$cache[$data1[0]['project_id']] = &$project;
+            $project = new Project($data);
+            $succs = $project->getAllSuccs();
+            if(count($succs) > 0){
+                $project = $succs[count($succs)-1];
+                self::$cache[$project->getId()] = &$project;
                 self::$cache[$name] = &$project;
                 return $project;
             }
@@ -194,16 +189,11 @@ class Project extends BackboneModel {
                                     array('e.id' => 'DESC'),
                                     array(1));
         if (count($data) > 0){
-            $data1 = DBFunctions::select(array('grand_project_evolution'),
-                                         array('new_id',
-                                               'project_id'),
-                                         array('project_id' => $data[0]['id'],
-                                               'new_id' => $data[0]['id']),
-                                         array('date' => 'DESC'),
-                                         array(1));
-            if(count($data1) > 0){
-                $project = Project::newFromId($data1[0]['new_id']);
-                self::$cache[$data1[0]['project_id']] = &$project;
+            $project = new Project($data);
+            $succs = $project->getAllSuccs();
+            if(count($succs) > 0){
+                $project = $succs[count($succs)-1];
+                self::$cache[$project->getId()] = &$project;
                 self::$cache[$name] = &$project;
                 return $project;
             }
@@ -740,6 +730,18 @@ EOF;
         }
         return $this->succ;
     }
+    
+    // Returns the full Successors history of this Project
+    // NOTE: this is not cached, so don't call it too much
+    function getAllSuccs(){
+        $succs = array();
+        foreach($this->getSuccs() as $succ){
+            if($succ->getId() != $this->getId()){
+                $succs = array_merge($succs, array_merge(array($succ), $succ->getAllSuccs()));
+            }
+        }
+        return $succs;
+    }  
     
     // Returns the url of this Project's profile page
     function getUrl(){

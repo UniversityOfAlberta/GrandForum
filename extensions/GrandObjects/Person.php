@@ -2910,7 +2910,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
-                $project = Project::newFromHistoricName($row['name']);
+                $project = Project::newFromName($row['name']);
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
                         // Make sure that the project is not being added twice
