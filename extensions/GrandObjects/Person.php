@@ -4445,7 +4445,9 @@ class Person extends BackboneModel {
                                         array('challenge_id' => IN($themeIds)));
             foreach($data as $row){
                 $project = Project::newFromId($row['project_id']);
-                $projects[$project->getName()] = $project;
+                if($project != null){
+                    $projects[$project->getName()] = $project;
+                }
             }
             ksort($projects);
         }
