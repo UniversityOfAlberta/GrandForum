@@ -3307,6 +3307,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 if(!$skip){
@@ -3364,6 +3370,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
@@ -3438,6 +3450,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 else if($project != null && count($r->getProjects()) == 0){
@@ -3447,6 +3465,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
