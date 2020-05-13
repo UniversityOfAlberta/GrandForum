@@ -148,7 +148,7 @@ EOF;
             $challengeNames[$challenge->getId()] = $challenge->getAcronym();
         }
 
-        $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challengeNames, VALIDATE_NOTHING);
+        $challengeRadioBox = new VerticalCheckBox2("{$pre}_challenge", "", array(), $challengeNames, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
 
         if(!$config->getValue("projectTypes")){

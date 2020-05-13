@@ -104,10 +104,13 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->project = Project::newFromId($this->project->getId());
             $wgOut->setPageTitle($this->project->getFullName());
         }
-
-        if(isset($_POST['challenge_id'])){
-            $theme = Theme::newFromId($_POST['challenge_id']);
-            $this->project->theme = $theme;
+        
+        $this->project->themes = array();
+        if(isset($_POST['challenge']) && is_array($_POST['challenge'])){
+            foreach($_POST['challenge'] as $themeId){
+                $theme = Theme::newFromId($themeId);
+                $this->project->themes[] = $theme;
+            }
         }
         $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
@@ -166,25 +169,25 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
-        $challenge = $this->project->getChallenge();
+        $challenges = $this->project->getChallenges();
         
-        $challenges = Theme::getAllThemes();
-        $chlg_opts = "<option value='0'>Not Specified</option>";
-        foreach ($challenges as $chlg){
-            $cid = $chlg->getId();
-            $cname = $chlg->getAcronym();
-            if($cname != "Not Specified"){
-                $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
-                $chlg_opts .= "<option value='{$cid}' {$selected}>{$chlg->getAcronym()}</option>";
-            }
-        }
         if($edit){
-            $this->html .=<<<EOF
-            <select name="challenge_id">{$chlg_opts}</select>
-EOF;
+            $challengeNames = array();
+            $themes = Theme::getAllThemes($this->project->getPhase());
+            foreach($themes as $challenge){
+                $challengeNames[$challenge->getId()] = $challenge->getAcronym();
+            }
+            $collection = new Collection($challenges);
+            $challengeCheckBox = new VerticalCheckBox2("challenge", "", $collection->pluck('getId()'), $challengeNames, VALIDATE_NOTHING);
+            
+            $this->html .= $challengeCheckBox->render();
         }
         else{
-            $this->html .= "{$challenge->getName()} ({$challenge->getAcronym()})";
+            $text = array();
+            foreach($challenges as $challenge){
+                $text[] = "{$challenge->getName()} ({$challenge->getAcronym()})";
+            }
+            $this->html .= implode(", ", $text);
         }
         $this->html .= "</td></tr>";
     }

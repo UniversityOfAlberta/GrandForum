@@ -1390,7 +1390,13 @@ class Person extends BackboneModel {
             $challenge = $project;
         }
         else {
-            $challenge = $project->getChallenge();
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
+            }
         }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){
@@ -1414,7 +1420,13 @@ class Person extends BackboneModel {
             $challenge = $project;
         }
         else {
-            $challenge = $project->getChallenge();
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
+            }
         }
         foreach($themes as $theme){
             if($challenge->getId() == $theme->getId()){

@@ -29,7 +29,7 @@ class Project extends BackboneModel {
     var $budgets;
     var $deleted;
     var $effectiveDate;
-    var $theme;
+    var $themes;
     var $subProjects;
     private $succ;
     private $preds;
@@ -481,9 +481,9 @@ class Project extends BackboneModel {
                             'name' => $sub->getName(),
                             'url' => $sub->getUrl());
         }
-        $challenge = $this->getChallenge();
-        $theme = $challenge->getAcronym();
-        $themeName = $challenge->getName();
+        $challenges = new Collection($this->getChallenges());
+        $theme = implode(", ", $challenges->pluck('getAcronym()'));
+        $themeName = implode(", ", $challenges->pluck('getName()'));
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -533,21 +533,15 @@ class Project extends BackboneModel {
                 }
             }
             // Updating Theme
-            $theme = $this->getChallenge();
-            if(count(DBFunctions::select(array('grand_project_challenges'),
-                                         array('id', 'challenge_id'),
-                                         array('project_id' => EQ($this->getId())))) == 0){
-                // Theme hasen't been added yet
+            $themes = $this->getChallenges();
+            DBFunctions::delete('grand_project_challenges',
+                                array('project_id' => EQ($this->getId())));
+            foreach($themes as $theme){
                 DBFunctions::insert('grand_project_challenges',
                                     array('project_id' => $this->getId(),
                                           'challenge_id' => $theme->getId()));
             }
-            else{
-                // Update the Theme
-                DBFunctions::update('grand_project_challenges',
-                                    array('challenge_id' => $theme->getId()),
-                                    array('project_id' => $this->getId()));
-            }
+            DBFunctions::commit();
             Project::$cache = array();
             Project::$projectCache = array();
         }
@@ -1138,24 +1132,34 @@ EOF;
         return true;
     }
 
-    //get the project challenge
+    /**
+     * Returns the first Challenge for this Project
+     */
     function getChallenge(){
-        if($this->theme == null){
+        $challenges = $this->getChallenges();
+        return $challenges[0];
+    }
+
+    //get the project challenge
+    function getChallenges(){
+        if($this->themes === null){
+            $this->themes = array();
             $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
                                               'grand_themes' => 't'),
                                         array('t.id'),
                                         array('t.id' => EQ(COL('pc.challenge_id')),
                                               'pc.project_id' => EQ($this->id)),
-                                        array('pc.id' => 'DESC'),
-                                        array(1));
+                                        array('pc.id' => 'DESC'));
             if(count($data) > 0){
-                $this->theme = Theme::newFromId($data[0]['id']);
+                foreach($data as $row){
+                    $this->themes[$row['id']] = Theme::newFromId($row['id']);
+                }
             }
             else{
-                $this->theme = Theme::newFromName("Not Specified");
+                $this->themes[] = Theme::newFromName("Not Specified");
             }
         }
-        return $this->theme;
+        return $this->themes;
     } 
     
     // Returns the description of the Project
