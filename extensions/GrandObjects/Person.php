@@ -1251,9 +1251,11 @@ class Person extends BackboneModel {
         if($project == null){
             return false;
         }
-        foreach($project->getPreds() as $pred){
-            if($this->isMemberOf($pred)){
-                return true;
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOf($pred)){
+                    return true;
+                }
             }
         }
         $projects = $this->getProjects(false, true);
@@ -1278,9 +1280,11 @@ class Person extends BackboneModel {
         if($project == null){
             return false;
         }
-        foreach($project->getPreds() as $pred){
-            if($this->isMemberOfDuring($pred, $start, $end)){
-                return true;
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOfDuring($pred, $start, $end)){
+                    return true;
+                }
             }
         }
         $projects = $this->getProjectsDuring($start, $end);
