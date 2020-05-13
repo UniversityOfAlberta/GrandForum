@@ -43,10 +43,11 @@ class Posting extends BackboneModel {
     /**
      * Returns an array of all Postings which this user is able to view
      */
-    static function getAllPostings(){
+    static function getAllPostings($incluedeDeleted=false){
+        $where = ($incluedeDeleted) ? array() : array('deleted' => EQ(0));
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
-                                    array('deleted' => EQ(0)));
+                                    $where);
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
@@ -72,7 +73,7 @@ class Posting extends BackboneModel {
      * Returns an array of Postings that have been modified since the specified date
      */
     static function getNewPostings($date){
-        $postings = static::getAllPostings();
+        $postings = static::getAllPostings(true);
         $return = array();
         foreach($postings as $posting){
             if($posting->modified >= $date){
@@ -317,7 +318,8 @@ class Posting extends BackboneModel {
     function delete(){
         if($this->isAllowedToEdit()){
             $status = DBFunctions::update(static::$dbTable,
-                                          array('deleted' => 1),
+                                          array('modified' => EQ(COL('CURRENT_TIMESTAMP')),
+                                                'deleted' => 1),
                                           array('id' => $this->id));
             if($status){
                 $this->deleted = true;

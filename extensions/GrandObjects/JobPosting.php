@@ -51,10 +51,11 @@ class JobPosting extends BackboneModel {
     /**
      * Returns an array of all Job Postings which this user is able to view
      */
-    static function getAllJobPostings(){
+    static function getAllJobPostings($incluedeDeleted=false){
+        $where = ($incluedeDeleted) ? array() : array('deleted' => EQ(0));
         $data = DBFunctions::select(array('grand_job_postings'),
                                     array('*'),
-                                    array('deleted' => EQ(0)));
+                                    $where);
         $jobs = array();
         foreach($data as $row){
             $job = new JobPosting(array($row));
@@ -91,7 +92,7 @@ class JobPosting extends BackboneModel {
      * Returns an array of Postings that have been modified since the specified date
      */
     static function getNewPostings($date){
-        $postings = static::getAllJobPostings();
+        $postings = static::getAllJobPostings(true);
         $return = array();
         foreach($postings as $posting){
             if($posting->modified >= $date){
@@ -465,7 +466,8 @@ class JobPosting extends BackboneModel {
     function delete(){
         if($this->isAllowedToEdit()){
             $status = DBFunctions::update('grand_job_postings',
-                                array('deleted' => 1),
+                                array('modified' => EQ(COL('CURRENT_TIMESTAMP')),
+                                      'deleted' => 1),
                                 array('id' => $this->id));
             if($status){
                 $this->deleted = true;
