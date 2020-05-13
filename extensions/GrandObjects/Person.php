@@ -1248,8 +1248,16 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is currently a member of the given Project
      */
     function isMemberOf($project){
+        if($project == null){
+            return false;
+        }
+        foreach($project->getPreds() as $pred){
+            if($this->isMemberOf($pred)){
+                return true;
+            }
+        }
         $projects = $this->getProjects(false, true);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
@@ -1267,8 +1275,16 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a member of the given Project
      */
     function isMemberOfDuring($project, $start, $end){
+        if($project == null){
+            return false;
+        }
+        foreach($project->getPreds() as $pred){
+            if($this->isMemberOfDuring($pred, $start, $end)){
+                return true;
+            }
+        }
         $projects = $this->getProjectsDuring($start, $end);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
