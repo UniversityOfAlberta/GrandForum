@@ -27,10 +27,19 @@ class IndexTable {
         
         if(Project::areThereAdminProjects()){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
-            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
+            $selected = ((($project != null && $project->getType() == 'Administrative') || strstr($wgTitle->getText(), "AdminProjects") !== false)) ? "selected" : "";
+            $adminTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
                                                                 "$selected");
+            if(PROJECT_PHASE > 1){
+                $phaseDates = $config->getValue('projectPhaseDates');
+                for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+                    $rome = rome($phase);
+                    $adminTab['dropdown'][] = TabUtils::createSubTab(substr($phaseDates[$phase], 0, 4)."-".substr($phaseDates[$phase+1], 0, 4), 
+                                                                     "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects {$rome}", "$selected");
+                }
+            }
+            $tabs['Main']['subtabs'][] = $adminTab;
         }
         
         if(Project::areThereInnovationHubs()){
@@ -212,6 +221,18 @@ class IndexTable {
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
                     self::generateAdminTable();
                     break;
+                case 'AdminProjects I':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(1);
+                    break;
+                case 'AdminProjects II':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(2);
+                    break;
+                case 'AdminProjects III':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(3);
+                    break;
                 case Inflect::pluralize($config->getValue('projectThemes')):
                 case Inflect::pluralize($config->getValue('projectThemes'))." I":
                     // Phase 1
@@ -367,7 +388,7 @@ class IndexTable {
     /**
      * Generates the Table of Admin Projects
      */
-    private function generateAdminTable(){
+    private function generateAdminTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
@@ -378,7 +399,7 @@ class IndexTable {
                             <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
-            if($project->getType() == 'Administrative'){
+            if($project->getType() == 'Administrative' && $project->getPhase() == $phase){
                 $leaders = array();
                 foreach($project->getLeaders() as $lead){
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
