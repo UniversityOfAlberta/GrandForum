@@ -1159,7 +1159,7 @@ EOF;
                 $this->themes[] = Theme::newFromName("Not Specified");
             }
         }
-        return $this->themes;
+        return array_values($this->themes);
     } 
     
     // Returns the description of the Project

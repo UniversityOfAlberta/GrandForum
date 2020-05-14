@@ -17,11 +17,13 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         $themes = array();
         $otherThemes = array();
         foreach($projects as $project){
-            $theme = $project->getChallenge();
-            if($theme->getAcronym() == "Not Specified" || $theme->getAcronym() == ""){
-                $otherThemes[] = $project;
-            } else {
-                $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
+            $challenges = $project->getChallenges();
+            foreach($challenges as $theme){
+                if($theme->getAcronym() == "Not Specified" || $theme->getAcronym() == ""){
+                    $otherThemes[] = $project;
+                } else {
+                    $themes["{$theme->getName()} ({$theme->getAcronym()})"][] = $project;
+                }
             }
         }
         if(count($otherThemes) > 0){
