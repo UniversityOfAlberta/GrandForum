@@ -460,7 +460,7 @@ class Paper extends BackboneModel{
             $sql = "SELECT *
                     FROM `grand_products` p";
             if($project != "all"){
-                $p = Project::newFromName($project);
+                $p = Project::newFromHistoricName($project);
                 $sql .= ", `grand_product_projects` pp
                          WHERE pp.`project_id` = '{$p->getId()}'
                          AND pp.`product_id` = p.`id`";

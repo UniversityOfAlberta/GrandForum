@@ -289,7 +289,8 @@ class ReportItemCallback {
         $project_theme = "";
         if($this->reportItem->projectId != 0){
             $project = Project::newFromId($this->reportItem->projectId);
-            $project_theme = $project->getChallenge()->getAcronym();
+            $challenges = new Collection($project->getChallenges());
+            $project_theme = $challenges->pluck('getAcronym()');
         }
         return $project_theme;
     }

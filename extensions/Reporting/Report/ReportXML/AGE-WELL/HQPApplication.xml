@@ -361,13 +361,13 @@ Applicants are asked to review eligibility and program information for each of t
             <![CDATA[
                 <b>Statement of research focus (1/2 page)</b>
                     <div style="font-size:smaller;">
-                        <p>AGE-WELL is inviting proposals in the broad area of technology and aging. The research project may be linked to one of AGE-WELL’s eight <a href='http://www.agewell-nce.ca/research' target='_blank'>Research Workpackages</a>, but does not need to limited to these.  Research should address at least one of our key research questions:</p>
+                        <p>AGE-WELL is inviting proposals in the broad area of technology and aging. The research project may be linked to one of AGE-WELL’s eight <a href='http://agewell-nce.ca/research/research-themes-and-projects' target='_blank'>Research Workpackages</a> (WP) 2015-2020 OR one of AGE-WELL's eight <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>Challenge Areas</a>, but does not need to limited to these. Research should address at least one of our key research questions:</p>
                         <ol>
                             <li>What are the needs of older adults and caregivers?</li>
                             <li>What technology-based systems and services should be used to meet those needs?</li>
                             <li>How can we foster innovation in the technology and aging sector? </li>
                         </ol>
-                        <p>The project may also support one of AGE-WELL’s four <a href='http://www.agewell-nce.ca/research' target='_blank'>Crosscutting (CC) Activity areas</a> - Knowledge Mobilization, Commercialization, Transdisciplinarity and Training and Mentorship.</p>
+                        <p>The project may also support one of AGE-WELL’s <a href='http://agewell-nce.ca/research/crosscutting-activities' target='_blank'>Crosscutting (CC) Activity</a> areas.</p>
                         <p>In this section, applicants should describe:</p>
                         <ol>
                             <li>How does your research connect to research foci of the AGE-WELL NCE?</li>
@@ -427,8 +427,7 @@ Applicants are asked to review eligibility and program information for each of t
             <![CDATA[
                 <b>Alignment to the mission and goals of AGE-WELL (1/2 page)</b>
                     <div style="font-size:smaller;">
-                        <p>Successful applications will need to be aligned with the key strategic goals of AGE-WELL. Applicants are strongly encouraged to familiarize themselves with the document entitled AGE-WELL Network Goals available on the <a href='http://www.agewell-nce.ca'>AGE-WELL website</a></p>
-                        <p>As well as scientific excellence, applicants will need to demonstrate that their research has potential for real world impact.  In this section, describe how your research fits with AGE-WELL’s vision and strategic goals.</p>
+                        <p>Successful applications will need to be aligned with the key strategic goals of AGE-WELL. Applicants are strongly encouraged to familiarize themselves with the <a href='https://agewell-nce.ca/about-age-well' target='_blank'>network</a>. As well as scientific excellence, applicants will need to demonstrate that their research has potential for real world impact. In this section, describe how  your research fits with AGE-WELL’s vision and strategic goals.</p>
                     </div>
                 {$item}<br /><br />
             ]]>

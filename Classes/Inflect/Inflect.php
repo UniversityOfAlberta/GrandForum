@@ -116,7 +116,9 @@ class Inflect
         'ktee - knowledge mobilization',
         'ktee - commercialization',
         'hqp training',
-        'staff'
+        'staff',
+        'cycle i',
+        'cycle ii'
     );
 
 	/**

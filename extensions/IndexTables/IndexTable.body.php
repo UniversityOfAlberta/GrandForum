@@ -54,8 +54,9 @@ class IndexTable {
                                                                   "$selected");
             if(PROJECT_PHASE > 1){
                 for($phase = 1; $phase <= PROJECT_PHASE; $phase++){
+                    $phaseNames = $config->getValue("projectPhaseNames");
                     $rome = rome($phase);
-                    $themeTab['dropdown'][] = TabUtils::createSubTab("Cycle {$rome}", 
+                    $themeTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($phaseNames[$phase]), 
                                                                      "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", 
                                                                      "$selected");
                 }
@@ -185,6 +186,7 @@ class IndexTable {
                     $('.dataTables_filter input').css('width', 250);
                 });
             </script>");
+            $phaseNames = $config->getValue("projectPhaseNames");
             switch ($wgTitle->getText()) {
                 case 'Multimedia':
                     $wgOut->setPageTitle("Multimedia");
@@ -215,17 +217,17 @@ class IndexTable {
                 case Inflect::pluralize($config->getValue('projectThemes')):
                 case Inflect::pluralize($config->getValue('projectThemes'))." I":
                     // Phase 1
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[1]));
                     self::generateThemesTable(1);
                     break;
                 case Inflect::pluralize($config->getValue('projectThemes'))." II":
                     // Phase 2
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[2]));
                     self::generateThemesTable(2);
                     break;
                 case Inflect::pluralize($config->getValue('projectThemes'))." III":
                     // Phase 3 (unlikly to have more than that)
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[3]));
                     self::generateThemesTable(3);
                     break;
                 default:
@@ -287,8 +289,12 @@ class IndexTable {
                 }
                 $wgOut->addHTML("<td>".implode(", ", $leaders)."</td>");
                 if($type != "Administrative"){
-                    $text = ($proj->getChallenge()->getAcronym() != "") ? "<a href='{$proj->getChallenge()->getUrl()}'>{$proj->getChallenge()->getName()} ({$proj->getChallenge()->getAcronym()})</a>" : "";
-                    $wgOut->addHTML("<td align='left'>{$text}</td>");
+                    $challenges = $proj->getChallenges();
+                    $text = array();
+                    foreach($challenges as $challenge){
+                        $text[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()} ({$challenge->getAcronym()})</a>" : "";
+                    }
+                    $wgOut->addHTML("<td align='left'>".implode(", ", $text)."</td>");
                 }
                 if($idHeader){
                     $wgOut->addHTML("<td>{$proj->getId()}</td>\n");

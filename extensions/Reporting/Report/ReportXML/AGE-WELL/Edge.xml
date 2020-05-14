@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EdgePDF" year="2019" ajax="true" disabled="false">
+<Report name="AGE-WELL Edge Award (2019)" reportType="RP_EDGE" pdfType="RPTP_EDGE" pdfFiles="EdgePDF" year="2019" ajax="true" disabled="true">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />

@@ -29,7 +29,7 @@ class Project extends BackboneModel {
     var $budgets;
     var $deleted;
     var $effectiveDate;
-    var $theme;
+    var $themes;
     var $subProjects;
     private $succ;
     private $preds;
@@ -128,16 +128,11 @@ class Project extends BackboneModel {
                                     array('e.id' => 'DESC'),
                                     array(1));
         if (count($data) > 0){
-            $data1 = DBFunctions::select(array('grand_project_evolution'),
-                                         array('new_id',
-                                               'project_id'),
-                                         array('project_id' => $data[0]['id'],
-                                               'new_id' => $data[0]['id']),
-                                         array('date' => 'DESC'),
-                                         array(1));
-            if(count($data1) > 0){
-                $project = Project::newFromId($data1[0]['new_id']);
-                self::$cache[$data1[0]['project_id']] = &$project;
+            $project = new Project($data);
+            $succs = $project->getAllSuccs();
+            if(count($succs) > 0){
+                $project = $succs[count($succs)-1];
+                self::$cache[$project->getId()] = &$project;
                 self::$cache[$name] = &$project;
                 return $project;
             }
@@ -194,16 +189,11 @@ class Project extends BackboneModel {
                                     array('e.id' => 'DESC'),
                                     array(1));
         if (count($data) > 0){
-            $data1 = DBFunctions::select(array('grand_project_evolution'),
-                                         array('new_id',
-                                               'project_id'),
-                                         array('project_id' => $data[0]['id'],
-                                               'new_id' => $data[0]['id']),
-                                         array('date' => 'DESC'),
-                                         array(1));
-            if(count($data1) > 0){
-                $project = Project::newFromId($data1[0]['new_id']);
-                self::$cache[$data1[0]['project_id']] = &$project;
+            $project = new Project($data);
+            $succs = $project->getAllSuccs();
+            if(count($succs) > 0){
+                $project = $succs[count($succs)-1];
+                self::$cache[$project->getId()] = &$project;
                 self::$cache[$name] = &$project;
                 return $project;
             }
@@ -247,7 +237,9 @@ class Project extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         if (DBFunctions::getNRows() > 0 && (($me->isLoggedIn() && !$me->isCandidate()) || ($data[0]['status'] != 'Proposed' && $data[0]['private'] != 1))){
             $project = new Project($data);
-            $project->evolutionId = $evolutionId;
+            if($evolutionId != null){
+                $project->evolutionId = $evolutionId;
+            }
             self::$cache[$id.'_'.$evolutionId] = $project;
             return $project;
         }
@@ -457,7 +449,6 @@ class Project extends BackboneModel {
             $this->succ = false;
             $this->preds = false;
             $this->clear = ($data[0]['clear'] == 1);
-            
             if($this->status == "Ended"){
                 $this->deleted = true;
             }
@@ -490,9 +481,9 @@ class Project extends BackboneModel {
                             'name' => $sub->getName(),
                             'url' => $sub->getUrl());
         }
-        $challenge = $this->getChallenge();
-        $theme = $challenge->getAcronym();
-        $themeName = $challenge->getName();
+        $challenges = new Collection($this->getChallenges());
+        $theme = implode(", ", $challenges->pluck('getAcronym()'));
+        $themeName = implode(", ", $challenges->pluck('getName()'));
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -542,21 +533,15 @@ class Project extends BackboneModel {
                 }
             }
             // Updating Theme
-            $theme = $this->getChallenge();
-            if(count(DBFunctions::select(array('grand_project_challenges'),
-                                         array('id', 'challenge_id'),
-                                         array('project_id' => EQ($this->getId())))) == 0){
-                // Theme hasen't been added yet
+            $themes = $this->getChallenges();
+            DBFunctions::delete('grand_project_challenges',
+                                array('project_id' => EQ($this->getId())));
+            foreach($themes as $theme){
                 DBFunctions::insert('grand_project_challenges',
                                     array('project_id' => $this->getId(),
                                           'challenge_id' => $theme->getId()));
             }
-            else{
-                // Update the Theme
-                DBFunctions::update('grand_project_challenges',
-                                    array('challenge_id' => $theme->getId()),
-                                    array('project_id' => $this->getId()));
-            }
+            DBFunctions::commit();
             Project::$cache = array();
             Project::$projectCache = array();
         }
@@ -687,6 +672,7 @@ EOF;
                     AND (e.id = '{$this->evolutionId}' OR e.action = 'MERGE' OR e.action = 'EVOLVE')
                     AND '{$this->evolutionId}' > e.last_id
                     ORDER BY e.id DESC";
+            
             $data = DBFunctions::execSQL($sql);
             $this->preds = array();
             foreach($data as $row){
@@ -740,6 +726,18 @@ EOF;
         }
         return $this->succ;
     }
+    
+    // Returns the full Successors history of this Project
+    // NOTE: this is not cached, so don't call it too much
+    function getAllSuccs(){
+        $succs = array();
+        foreach($this->getSuccs() as $succ){
+            if($succ->getId() != $this->getId()){
+                $succs = array_merge($succs, array_merge(array($succ), $succ->getAllSuccs()));
+            }
+        }
+        return $succs;
+    }  
     
     // Returns the url of this Project's profile page
     function getUrl(){
@@ -811,9 +809,6 @@ EOF;
     // The researchers who are in this project.
     // If $filter is included, only users of that type will be selected
     function getAllPeople($filter = null){
-        $currentDate = date('Y-m-d H:i:s');
-        $year = date('Y');
-        $created = $this->getCreated();
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -865,7 +860,6 @@ EOF;
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
-        $year = substr($endRange, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -919,7 +913,6 @@ EOF;
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
-        $year = substr($date, 0, 4);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -1095,50 +1088,15 @@ EOF;
     /// resulting array contains instances of Person.  If #onlyid is set to
     /// true, then the resulting array contains only numerical user IDs.
     function getLeaders($onlyid = false) {
-        $onlyIdStr = ($onlyid) ? 'true' : 'false';
-        if(isset($this->leaderCache['leaders'.$onlyIdStr])){
-            return $this->leaderCache['leaders'.$onlyIdStr];
-        }
-        $ret = array();
-        if(!$this->clear){
-            $preds = $this->getPreds();
-            foreach($preds as $pred){
-                foreach($pred->getLeaders($onlyid) as $leader){
-                    if($onlyid){
-                        $person = Person::newFromId($leader);
-                        $ret[$person->getReversedName()] = $leader;
-                    }
-                    else{
-                        $ret[$leader->getReversedName()] = $leader;
-                    }
-                }
+        $leaders = $this->getAllPeople(PL);
+        if($onlyid){
+            $ids = array();
+            foreach($leaders as $leader){
+                $ids[] = $leader->getId();
             }
+            return $ids;
         }
-        $sql = "SELECT r.user_id
-                FROM grand_roles r, grand_role_projects rp, mw_user u
-                WHERE r.id = rp.role_id
-                AND rp.project_id = '{$this->id}'
-                AND r.role = '".PL."'
-                AND u.user_id = r.user_id
-                AND u.deleted != '1'
-                AND (r.end_date = '0000-00-00 00:00:00'
-                     OR r.end_date > CURRENT_TIMESTAMP)";
-        $data = DBFunctions::execSQL($sql);
-        if ($onlyid) {
-            foreach ($data as &$row){
-                $person = Person::newFromId($row['user_id']);
-                $ret[$person->getReversedName()] = $row['user_id'];
-            }
-        }
-        else {
-            foreach($data as &$row){
-                $person = Person::newFromId($row['user_id']);
-                $ret[$person->getReversedName()] = $person;
-            }
-        }
-        ksort($ret);
-        $this->leaderCache['leaders'.$onlyIdStr] = $ret;
-        return $ret;
+        return $leaders;
     }
     
     /**
@@ -1174,24 +1132,34 @@ EOF;
         return true;
     }
 
-    //get the project challenge
+    /**
+     * Returns the first Challenge for this Project
+     */
     function getChallenge(){
-        if($this->theme == null){
+        $challenges = $this->getChallenges();
+        return $challenges[0];
+    }
+
+    //get the project challenge
+    function getChallenges(){
+        if($this->themes === null){
+            $this->themes = array();
             $data = DBFunctions::select(array('grand_project_challenges' => 'pc',
                                               'grand_themes' => 't'),
                                         array('t.id'),
                                         array('t.id' => EQ(COL('pc.challenge_id')),
                                               'pc.project_id' => EQ($this->id)),
-                                        array('pc.id' => 'DESC'),
-                                        array(1));
+                                        array('pc.id' => 'DESC'));
             if(count($data) > 0){
-                $this->theme = Theme::newFromId($data[0]['id']);
+                foreach($data as $row){
+                    $this->themes[$row['id']] = Theme::newFromId($row['id']);
+                }
             }
             else{
-                $this->theme = Theme::newFromName("Not Specified");
+                $this->themes[] = Theme::newFromName("Not Specified");
             }
         }
-        return $this->theme;
+        return array_values($this->themes);
     } 
     
     // Returns the description of the Project

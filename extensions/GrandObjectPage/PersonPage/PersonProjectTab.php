@@ -89,9 +89,10 @@ class PersonProjectTab extends AbstractTab {
             if($project->getType() == "Administrative"){
                 continue;
             }
-            $theme = $project->getChallenge();
-            if($theme->getAcronym() != ""){
-                $themes[$theme->getAcronym()] = $theme;
+            foreach($project->getChallenges() as $theme){
+                if($theme->getAcronym() != ""){
+                    $themes[$theme->getAcronym()] = $theme;
+                }
             }
         }
         foreach($leadThemes as $theme){

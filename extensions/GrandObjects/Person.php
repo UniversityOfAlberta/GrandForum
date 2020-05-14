@@ -1258,8 +1258,18 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is currently a member of the given Project
      */
     function isMemberOf($project){
+        if($project == null){
+            return false;
+        }
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOf($pred)){
+                    return true;
+                }
+            }
+        }
         $projects = $this->getProjects(false, true);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
@@ -1277,8 +1287,18 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a member of the given Project
      */
     function isMemberOfDuring($project, $start, $end){
+        if($project == null){
+            return false;
+        }
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOfDuring($pred, $start, $end)){
+                    return true;
+                }
+            }
+        }
         $projects = $this->getProjectsDuring($start, $end);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
@@ -1378,13 +1398,19 @@ class Person extends BackboneModel {
         $themes = $this->getLeadThemes();
         if($project instanceof Theme){
             $challenge = $project;
+            foreach($themes as $theme){
+                if($challenge->getId() == $theme->getId()){
+                    return true;
+                }
+            }
         }
         else {
-            $challenge = $project->getChallenge();
-        }
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -1402,13 +1428,19 @@ class Person extends BackboneModel {
         $themes = $this->getCoordThemes();
         if($project instanceof Theme){
             $challenge = $project;
+            foreach($themes as $theme){
+                if($challenge->getId() == $theme->getId()){
+                    return true;
+                }
+            }
         }
         else {
-            $challenge = $project->getChallenge();
-        }
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -2940,7 +2972,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
-                $project = Project::newFromHistoricName($row['name']);
+                $project = Project::newFromName($row['name']);
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
                         // Make sure that the project is not being added twice
@@ -3337,6 +3369,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 if(!$skip){
@@ -3394,6 +3432,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
@@ -3468,6 +3512,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 else if($project != null && count($r->getProjects()) == 0){
@@ -3477,6 +3527,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
@@ -4475,7 +4531,9 @@ class Person extends BackboneModel {
                                         array('challenge_id' => IN($themeIds)));
             foreach($data as $row){
                 $project = Project::newFromId($row['project_id']);
-                $projects[$project->getName()] = $project;
+                if($project != null){
+                    $projects[$project->getName()] = $project;
+                }
             }
             ksort($projects);
         }
@@ -4567,7 +4625,10 @@ class Person extends BackboneModel {
         $subs = array();
         foreach($data as $row){
             if($row['type'] == "Project" || $row['type'] == "SAB"){
-                $subs[] = Project::newFromId($row['sub_id']);
+                $project = Project::newFromId($row['sub_id']);
+                if($project != null){
+                    $subs[] = $project;
+                }
             }
             else if($row['type'] == "Researcher" || $row['type'] == "NI"){
                 $subs[] = Person::newFromId($row['sub_id']);
