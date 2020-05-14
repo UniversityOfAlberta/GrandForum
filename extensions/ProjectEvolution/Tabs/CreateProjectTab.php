@@ -140,7 +140,7 @@ EOF;
         $longDescRow->append(new TextareaField("{$pre}_long_description", "Description", "", VALIDATE_NOTHING));
               
         //Challenges
-        $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
+        $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Theme");
        
         $challengeNames = array();
         $challenges = Theme::getAllThemes();
