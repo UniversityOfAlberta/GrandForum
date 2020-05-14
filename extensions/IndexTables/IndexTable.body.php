@@ -56,10 +56,10 @@ class IndexTable {
                 for($phase = 1; $phase <= PROJECT_PHASE; $phase++){
                     $phaseNames = $config->getValue("projectPhaseNames");
                     $rome = rome($phase);
-                    $themeTab['dropdown'][] = TabUtils::createSubTab(Inflect::pluralize($phaseNames[$phase]), 
-                                                                     "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", 
-                                                                     "$selected");
+                    $themeTab['dropdown'][$phaseNames[$phase]] = TabUtils::createSubTab(Inflect::pluralize($phaseNames[$phase]), 
+                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", "$selected");
                 }
+                ksort($themeTab['dropdown']);
             }
             $tabs['Main']['subtabs'][] = $themeTab;
         }
