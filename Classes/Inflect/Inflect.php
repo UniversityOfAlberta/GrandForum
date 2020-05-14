@@ -115,7 +115,9 @@ class Inflect
         'networking and partnerships',
         'ktee - knowledge mobilization',
         'ktee - commercialization',
-        'hqp training'
+        'hqp training',
+        'cycle i',
+        'cycle ii'
     );
 
 	/**
