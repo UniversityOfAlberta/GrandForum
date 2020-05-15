@@ -17,7 +17,14 @@ class ProjectMainTab extends AbstractEditableTab {
         $project = $this->project;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        
+        $preds = $this->project->getPreds();
+        if(count($preds) > 0){
+            $predLinks = array();
+            foreach($preds as $pred){
+                $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+            }
+            $this->html .= "<div style='margin-left: 5px; margin-top: -10px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
+        }
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
