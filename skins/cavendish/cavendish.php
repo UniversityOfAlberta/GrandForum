@@ -80,7 +80,11 @@ class CavendishTemplate extends QuickTemplate {
 		<link type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/DataTables/css/cavendish/jquery.dataTables.css" rel="Stylesheet" />
 		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/simplePagination/simplePagination.css" />
 		
-		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css?<?php echo filemtime('skins/cavendish/main.css'); ?>"; /*]]>*/</style>
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/content.css?<?php echo filemtime('skins/cavendish/content.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/template.css?<?php echo filemtime('skins/cavendish/template.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/basetemplate.css?<?php echo filemtime('skins/cavendish/basetemplate.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/cavendish.css?<?php echo filemtime('skins/cavendish/cavendish.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/<?php $this->text('stylename') ?>/main.css?<?php echo filemtime('skins/cavendish/main.css'); ?>" />
 		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/extensions.css"; /*]]>*/</style>
 		<style <?php if(empty($this->data['printable']) ) { ?>media="print"<?php } ?> type="text/css">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/print.css"; /*]]>*/</style>
 		

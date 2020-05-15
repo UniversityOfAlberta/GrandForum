@@ -5,13 +5,6 @@
  **
  ** Loosely based on the monobook style by Gabriel Wicke
  */
-@import url("content.css");
-
-@import url("template.css");
-
-@import url("basetemplate.css");
-
-@import url("cavendish.css");
 
 body {
     margin-top: 0;
