@@ -62,7 +62,7 @@ class ReportArchive extends SpecialPage {
                 $project_id = $sto->get_report_project_id();
                 $type = $sto->metadata('type');
                 $pdf_owner = Person::newFromId($user_id);
-                $pdf_project = Project::newFromId($project_id);
+                $pdf_project = Project::newFromHistoricId($project_id);
                 $pdf_owner_name = $pdf_owner->getName();
                 if ($pdf == false || $len == 0) {
                     $wgOut->addHTML("<h4>Warning</h4><p>Could not retrieve PDF for report ID<tt>{$tok}</tt>.  Please contact <a href='mailto:support@forum.grand-nce.ca'>support@forum.grand-nce.ca</a>, and include the report ID in your request.</p>");

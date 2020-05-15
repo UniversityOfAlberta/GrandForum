@@ -19,7 +19,7 @@ class NIReviewReportItemSet extends ReportItemSet {
             $header = $person->getReversedName();
             $id = $this->personId;
         }else if($type == "Project"){
-            $project = Project::newFromId($this->projectId);
+            $project = Project::newFromHistoricId($this->projectId);
             $header = $project->getName();
             $id = $this->projectId;
 

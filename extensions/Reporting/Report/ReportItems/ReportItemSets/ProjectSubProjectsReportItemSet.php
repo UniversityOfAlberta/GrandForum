@@ -4,7 +4,7 @@ class ProjectSubProjectsReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         //$projects = $project->getSubProjectsDuring(REPORTING_CYCLE_START, REPORTING_CYCLE_END);
         if($project != null){
             $projects = $project->getSubProjects();

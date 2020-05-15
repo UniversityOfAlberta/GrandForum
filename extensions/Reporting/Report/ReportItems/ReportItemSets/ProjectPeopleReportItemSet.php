@@ -4,7 +4,7 @@ class ProjectPeopleReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
+        $proj = Project::newFromHistoricId($this->projectId);
         $proj_id = $this->projectId;
         $role = $this->getAttr("role", NI);
         $roles = explode(",", $role);

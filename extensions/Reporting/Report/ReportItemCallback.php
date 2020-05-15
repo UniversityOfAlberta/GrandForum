@@ -229,7 +229,7 @@ class ReportItemCallback {
     function getProjectName(){
         $project_name = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_name = $project->getName();
         }
         $project_name = str_replace("<", "&lt;", $project_name);
@@ -240,7 +240,7 @@ class ReportItemCallback {
     function getProjectFullName(){
         $project_name = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_name = $project->getFullName();
         }
         return $project_name;
@@ -249,7 +249,7 @@ class ReportItemCallback {
     function getProjectUrl(){
         $project_url = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_url = $project->getUrl();
         }
         return $project_url;
@@ -258,7 +258,7 @@ class ReportItemCallback {
     function getProjectWebsite(){
         $website = "";
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $websiteUrl = $project->getWebsite();
             if($websiteUrl != "" && $websiteUrl != "http://" && $websiteUrl != "https://"){
                 $website = "<a href='$websiteUrl' class='externalLink' target='_blank'>Website</a>";
@@ -270,7 +270,7 @@ class ReportItemCallback {
     function getProjectStatus(){
         $project_stat = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_stat = $project->getStatus();
         }
         return $project_stat;
@@ -279,7 +279,7 @@ class ReportItemCallback {
     function getProjectDescription(){
         $project_desc = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_desc = $project->getDescription();
         }
         return $project_desc;
@@ -288,7 +288,7 @@ class ReportItemCallback {
     function getProjectTheme(){
         $project_theme = "";
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $challenges = new Collection($project->getChallenges());
             $project_theme = $challenges->pluck('getAcronym()');
         }
@@ -298,7 +298,7 @@ class ReportItemCallback {
     function getProjectLeaders(){
         $leads = array();
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $leaders = $project->getLeaders();
             foreach($leaders as $lead){
                 $leads[$lead->getReversedName()] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
@@ -313,7 +313,7 @@ class ReportItemCallback {
     function getProjectLeaderIds($delim=", "){
         $leads = array();
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $leaders = $project->getLeaders();
             foreach($leaders as $lead){
                 $leads[$lead->getReversedName()] = $lead->getId();
@@ -325,7 +325,7 @@ class ReportItemCallback {
     function getProjectProblem(){
         $project_prob = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_prob = $project->getProblem();
         }
         return $project_prob;
@@ -334,7 +334,7 @@ class ReportItemCallback {
     function getProjectSolution(){
         $project_sol = "";
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $project_sol = $project->getSolution();
         }
         return $project_sol;
@@ -343,7 +343,7 @@ class ReportItemCallback {
     function getProjectNIs(){
         $nis = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $year = $this->reportItem->getReport()->year;
             foreach($project->getAllPeopleDuring(null, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59") as $ni){
                 if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
@@ -360,7 +360,7 @@ class ReportItemCallback {
     function getProjectChampions(){
         $champions = array();
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $champs = $project->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
             foreach($champs as $champ){
                 $champions[] = "<a href='{$champ['user']->getUrl()}' target='_blank'>{$champ['user']->getNameForForms()}</a>";
@@ -375,7 +375,7 @@ class ReportItemCallback {
     function getProjectEvolvedInto(){
         $projects = array();
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $succs = $project->getSuccs();
             $people = $project->getAllPeople();
             foreach($people as $key => $person){
@@ -407,7 +407,7 @@ class ReportItemCallback {
     function getProjectEvolvedFrom(){
         $projects = array();
         if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $preds = $project->getPreds();
             $people = $project->getAllPeople();
             foreach($people as $key => $person){
@@ -439,7 +439,7 @@ class ReportItemCallback {
     function getNFaceWithStakeholder($startDate = false, $endDate = false){
         $faces = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $faceTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($faceTmp as $face){
                 if($face->getType() == "Project Meeting" || 
@@ -464,7 +464,7 @@ class ReportItemCallback {
     function getNCollaborators($startDate = false, $endDate = false){
         $collaborators = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $collaborators = $project->getAllPeopleDuring(CHAMP, $startDate, $endDate);
             foreach($project->getContributionsDuring($startDate, $endDate) as $c){
                 foreach($c->getPartners() as $p){
@@ -479,7 +479,7 @@ class ReportItemCallback {
         $stakeholders = array();
         $role = ($role == "" || $role == "null") ? null : $role;
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $people = $project->getAllPeopleDuring($role, $startDate, $endDate);
             foreach($people as $key => $person){
                 if($person->isStakeHolder() && $person->getStakeholder() == $stakeholderCategory){
@@ -493,7 +493,7 @@ class ReportItemCallback {
     function getNStakeholderProducts($startDate = false, $endDate = false, $stakeholderCategory="", $category="all", $type="all"){
         $products = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers($category, $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
@@ -522,7 +522,7 @@ class ReportItemCallback {
         
         $collaborators = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $c){
                 foreach($c->getPartners() as $p){
                     if(($industry == null || $p->getIndustry() == $industry) &&
@@ -538,7 +538,7 @@ class ReportItemCallback {
     function getNProductsWithOther($startDate = false, $endDate = false){
         $products = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers('Scientific Excellence - Advancing Knowledge', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
@@ -557,7 +557,7 @@ class ReportItemCallback {
     function getNHQPLeadAuthor($startDate = false, $endDate = false){
         $hqps = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $author){
@@ -574,7 +574,7 @@ class ReportItemCallback {
     function getNHQPCoAuthor($startDate = false, $endDate = false){
         $hqps = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 foreach($product->getAuthors() as $key => $author){
@@ -592,7 +592,7 @@ class ReportItemCallback {
     function getNHQPCoPresenter($startDate = false, $endDate = false){
         $hqps = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 if(strstr($product->getType(), 'Presentation') !== false){
@@ -610,7 +610,7 @@ class ReportItemCallback {
     function getNProductsWithHQPInterns($startDate = false, $endDate = false){
         $products = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $productTmp = $project->getPapers('all', $startDate, $endDate);
             foreach($productTmp as $product){
                 if($product->getType() == "Internship"){
@@ -629,7 +629,7 @@ class ReportItemCallback {
     function getProjectContributions($startDate = false, $endDate = false){
         $contributions = 0;
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
                 $contributions += $contribution->getTotal();
             }
@@ -640,7 +640,7 @@ class ReportItemCallback {
     function getProjectContributionsCash($startDate = false, $endDate = false){
         $contributions = 0;
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
                 $contributions += $contribution->getCash();
             }
@@ -651,7 +651,7 @@ class ReportItemCallback {
     function getProjectContributionsInKind($startDate = false, $endDate = false){
         $contributions = 0;
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             foreach($project->getContributionsDuring($startDate, $endDate) as $contribution){
                 $contributions += $contribution->getKind();
             }
@@ -662,7 +662,7 @@ class ReportItemCallback {
     function getNConnectedProjects($startDate = false, $endDate = false){
         $connectedProjects = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             foreach($project->getPapers("all", $startDate, $endDate) as $product){
                 foreach($product->getProjects() as $proj){
                     if($proj->getId() != $project->getId()){
@@ -678,7 +678,7 @@ class ReportItemCallback {
         $products = array();
         if($this->reportItem->projectId != 0){
             // Project Products
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $products = $project->getPapers($category, $startDate, $endDate);
         }
         else if($this->reportItem->personId != 0){
@@ -718,7 +718,7 @@ class ReportItemCallback {
     
     function getNHQP($startDate = false, $endDate = false){
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             return count($project->getAllPeopleDuring(HQP, $startDate, $endDate));
         }
         return 0;
@@ -727,7 +727,7 @@ class ReportItemCallback {
     function getNEpic($startDate = false, $endDate = false){
         $epics = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
             foreach($people as $person){
                 if($person->isEPIC()){
@@ -741,7 +741,7 @@ class ReportItemCallback {
     function getNMovedOn($startDate = false, $endDate = false){
         $movedOns = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
             foreach($people as $person){
                 $movedOn = $person->getAllMovedOn($startDate, $endDate);
@@ -756,7 +756,7 @@ class ReportItemCallback {
     function getNProgressed($startDate = false, $endDate = false){
         $progressed = array();
         if($this->reportItem->projectId != 0){
-            $project = Project::newFromId($this->reportItem->projectId);
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
             $people = $project->getAllPeopleDuring(HQP, $startDate, $endDate);
             foreach($people as $person){
                 $positions = array();
@@ -973,7 +973,7 @@ class ReportItemCallback {
     
     function getMyRoles(){
         $person = Person::newFromWgUser();
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $person->getRoles();
         $roleNames = array();
         if(is_array($roles)){
@@ -998,7 +998,7 @@ class ReportItemCallback {
     
     function getMyFullRoles(){
         $person = Person::newFromWgUser();
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getMyRoles();
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
@@ -1086,7 +1086,7 @@ class ReportItemCallback {
     
     function getUserRoles($start=null, $end=null){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         if($start != null && $end != null){
             $roles = $person->getRolesDuring($start, $end);
         }
@@ -1112,7 +1112,7 @@ class ReportItemCallback {
     
     function getUserFullRoles($start=null, $end=null){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getUserRoles($start, $end);
         if($project != null && $project->getId() != 0){
             if($person->leadershipOf($project)){
@@ -1266,7 +1266,7 @@ class ReportItemCallback {
     
     function getUserProjectEndDate(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         $date = $project->getEndDate($person);
         if($date != "0000-00-00 00:00:00"){
             return time2date($project->getEndDate($person));
@@ -1337,7 +1337,7 @@ class ReportItemCallback {
     }
     
     function getUserSubProjectChamps(){
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
         $item = $report->getSectionById("report")->getReportItemById("sub_project_champs");
@@ -1346,7 +1346,7 @@ class ReportItemCallback {
     }
     
     function getUserSubProjectComments(){
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
         $item = $report->getSectionById("report")->getReportItemById("sub_project_comments");
@@ -1380,7 +1380,7 @@ class ReportItemCallback {
     
     function getChampSubProjects(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $subs = array();
         foreach($project->getSubProjects() as $sub){
@@ -1395,7 +1395,7 @@ class ReportItemCallback {
     
     function getChampFullProject(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         foreach($project->getSubProjects() as $sub){
             foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
@@ -1409,7 +1409,7 @@ class ReportItemCallback {
     
     function getChampIsStillChampion(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $result = $person->isChampionOfOn($project, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59');
         if(!$result && !$project->isSubProject()){
@@ -1422,7 +1422,7 @@ class ReportItemCallback {
     
     function getSPLSubProjects(){
         $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromId($this->reportItem->projectId);
+        $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $subs = array();
         foreach($project->getSubProjects() as $sub){
@@ -1609,7 +1609,7 @@ class ReportItemCallback {
             return $person->getNameForForms();
         }
         else if($projectId != 0){
-            $project = Project::newFromId($projectId);
+            $project = Project::newFromHistoricId($projectId);
             return $project->getName();
         }
         else if($productId != 0){

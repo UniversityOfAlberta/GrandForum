@@ -279,7 +279,7 @@ class BudgetReportItem extends AbstractReportItem {
         $i = 0;
         if(count($projects) > 0){
             foreach($projects as $proj){
-                $project = Project::newFromName($proj->toString());
+                $project = Project::newFromHistoricName($proj->toString());
                 if(isset($alreadyUsed[$proj->toString()])){
                     $budget->xls[1][1+$i]->error = "'{$proj->toString()}' has already been used in another column";
                 }
