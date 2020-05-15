@@ -4,7 +4,7 @@ class ProjectMilestoneTableReportItem extends StaticReportItem {
 
     function render(){
         global $wgOut;
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $date = $this->getAttr("date", false);
         $date = ($date == "") ? false : $date;
         if($project != null){
@@ -18,7 +18,7 @@ class ProjectMilestoneTableReportItem extends StaticReportItem {
     
     function renderForPDF(){
         global $wgOut;
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $date = $this->getAttr("date", "");
         $date = ($date == "") ? false : $date;
         if($project != null){

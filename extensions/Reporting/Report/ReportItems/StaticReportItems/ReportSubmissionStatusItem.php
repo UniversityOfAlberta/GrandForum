@@ -24,7 +24,7 @@ class ReportSubmissionStatusItem extends StaticReportItem {
         $useProject = $this->getAttr("project", "true");
         $project = null;
         if($useProject == "true"){
-            $project = Project::newFromId($this->projectId);
+            $project = Project::newFromHistoricId($this->projectId);
         }
         $report = new DummyReport($reportType, $person, $project);
         $check = $report->getPDF();

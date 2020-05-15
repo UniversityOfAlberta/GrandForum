@@ -4,7 +4,7 @@ class ProjectLeadersReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
+        $proj = Project::newFromHistoricId($this->projectId);
         if($proj != null){
             $leaders = $proj->getLeaders();
             $alreadySeen = array();

@@ -1527,6 +1527,14 @@ EOF;
     
     function getActivities(){
         $activities = array();
+        if(!$this->clear){
+            $preds = $this->getPreds();
+            foreach($preds as $pred){
+                foreach($pred->getActivities() as $activity){
+                    $activities[] = $activity;
+                }
+            }
+        }
         $data = DBFunctions::select(array('grand_activities'),
                                     array('id'),
                                     array('project_id' => $this->getId(),

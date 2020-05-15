@@ -75,7 +75,7 @@ abstract class AbstractReport extends SpecialPage {
             $type = $sto->metadata('type');
             $type = ReportXMLParser::findPDFReport($type, true);
         }
-        $proj = Project::newFromId($sto->get_report_project_id());
+        $proj = Project::newFromHistoricId($sto->get_report_project_id());
         return new DummyReport($type, $pers, $proj, $year);
     }
     
@@ -124,7 +124,7 @@ abstract class AbstractReport extends SpecialPage {
                 $this->project->id = $projectName;
             }
             else{
-                $this->project = Project::newFromName($projectName);
+                $this->project = Project::newFromHistoricName($projectName);
                 if($this->project == null ||
                    $this->project->getId() == 0){
                     // Try themes

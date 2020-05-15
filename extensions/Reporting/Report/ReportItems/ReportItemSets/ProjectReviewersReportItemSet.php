@@ -4,7 +4,7 @@ class ProjectReviewersReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         if($project == null){
             return $data;
         }

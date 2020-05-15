@@ -74,7 +74,7 @@ class DashboardReportItem extends StaticReportItem {
 	
 	function createDashboard(){
 	    $person = Person::newFromId($this->personId);
-	    $project = Project::newFromId($this->projectId);
+	    $project = Project::newFromHistoricId($this->projectId);
 	    $struct = constant($this->getAttr("structure", "NI_REPORT_STRUCTURE"));
 	    $tableType = strtolower($this->getAttr("tableType", ""));
 	    $start = $this->getAttr("start");

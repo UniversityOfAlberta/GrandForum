@@ -14,7 +14,7 @@ class SeeReportReportItem extends StaticReportItem {
             $url = str_replace("&project={$project->getName()}", "", $url);
         }
         if($useProject == "true"){
-            $project = Project::newFromId($this->projectId);
+            $project = Project::newFromHistoricId($this->projectId);
             if($project != null){
                 $url = $url."&project={$project->getName()}";
             }
