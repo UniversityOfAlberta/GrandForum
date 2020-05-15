@@ -1531,7 +1531,7 @@ EOF;
             $preds = $this->getPreds();
             foreach($preds as $pred){
                 foreach($pred->getActivities() as $activity){
-                    $activites[] = $activity;
+                    $activities[] = $activity;
                 }
             }
         }
