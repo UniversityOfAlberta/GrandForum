@@ -23,7 +23,7 @@ class ProjectMainTab extends AbstractEditableTab {
             foreach($preds as $pred){
                 $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
             }
-            $this->html .= "<div style='margin-left: 5px; margin-top: -10px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
+            $this->html .= "<div style='margin-left: 5px; margin-top: -20px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
         }
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
