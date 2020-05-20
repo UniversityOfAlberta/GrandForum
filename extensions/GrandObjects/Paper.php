@@ -1374,7 +1374,10 @@ class Paper extends BackboneModel{
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                     }
                     else{
-                        $authors[] = "<b>{$name}</b>";
+                        if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
+                            $name = "<b>{$name}</b>";
+                        }
+                        $authors[] = "{$name}";
                     }
                 } else {
                     $authors[] = $a->getNameForProduct();
