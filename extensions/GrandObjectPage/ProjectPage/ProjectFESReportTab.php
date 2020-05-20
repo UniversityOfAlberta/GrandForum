@@ -45,7 +45,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
         if(isset($_GET['generatePDF'])){
             // Only show the last year in the PDF
-            $today = $today-1;
+            $today = $today;
             $year = $today;
         }
         $phaseDate = $config->getValue('projectPhaseDates');
