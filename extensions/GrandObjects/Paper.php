@@ -1370,13 +1370,14 @@ class Paper extends BackboneModel{
                             (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
                         $name = "<i>{$a->getNameForProduct()}</i>";
                     }
+                    if($a->isRoleOn(NI, $this->getDate())){
+                        // Overwrite previous formatting if they are an NI
+                        $name = "<b>{$a->getNameForProduct()}</b>";
+                    }
                     if($hyperlink){
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                     }
                     else{
-                        if($a->isRoleOn(NI, $this->getDate()) || $a->wasLastRole(NI)){
-                            $name = "<b>{$name}</b>";
-                        }
                         $authors[] = "{$name}";
                     }
                 } else {
