@@ -1362,19 +1362,19 @@ class Paper extends BackboneModel{
             $authors = array();
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
+                    $name = $a->getNameForProduct();
+                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                        $name = "<u>{$a->getNameForProduct()}</u>";
+                    }
+                    else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
+                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
+                        $name = "<i>{$a->getNameForProduct()}</i>";
+                    }
                     if($hyperlink){
-                        $name = $a->getNameForProduct();
-                        if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                            $name = "<u>{$a->getNameForProduct()}</u>";
-                        }
-                        else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                                (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                            $name = "<i>{$a->getNameForProduct()}</i>";
-                        }
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                     }
                     else{
-                        $authors[] = "<b>". $a->getNameForProduct() ."</b>";
+                        $authors[] = "<b>{$name}</b>";
                     }
                 } else {
                     $authors[] = $a->getNameForProduct();
