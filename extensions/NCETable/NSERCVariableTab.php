@@ -1398,6 +1398,8 @@ EOF;
                 case 'Review Article':
                 case 'Invited Presentation':
                 default:
+                    /*
+                        AGE-WELL doesn't want this
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                             if($pub->getCategory() == "Publication" ||
                                $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
@@ -1405,6 +1407,7 @@ EOF;
                             $dissem["b".$key][] = $pub;
                         }
                     }
+                    */
                     break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
@@ -1823,13 +1826,15 @@ EOF;
                 case 'Review Article':
                 case 'Invited Presentation':
                 default:
+                    /*
+                        AGE-WELL doesn't want this
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                         if($pub->getCategory() == "Publication" ||
                            $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
                            ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
                             $pub_count["b"][] = $pub;
                         }
-                    }
+                    }*/
                     break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
