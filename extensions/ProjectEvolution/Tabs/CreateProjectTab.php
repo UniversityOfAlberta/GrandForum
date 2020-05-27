@@ -26,7 +26,7 @@ class CreateProjectTab extends ProjectTab {
         $subprojectRow = new FormTableRow("{$pre}_subproject_row");
 
         //Sub-project radio button + parent project drop-down
-        $projectOptions = "<option></option>\n";
+        $projectOptions = "<option value='0'></option>\n";
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
