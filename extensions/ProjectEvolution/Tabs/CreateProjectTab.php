@@ -26,7 +26,7 @@ class CreateProjectTab extends ProjectTab {
         $subprojectRow = new FormTableRow("{$pre}_subproject_row");
 
         //Sub-project radio button + parent project drop-down
-        $projectOptions = "<option value='0'>Choose Parent</option>\n";
+        $projectOptions = "<option></option>\n";
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
@@ -42,37 +42,23 @@ EOF;
 
         $subprojectDDRow = new FormTableRow("{$pre}_subprojectdd_row");
         $subp_dd =<<<EOF
-        <select id='{$pre}_subproject_parent_dd' name='new_parent_id' style='display:none;'>
+        <select id='{$pre}_subproject_parent_dd' name='new_parent_id' data-placeholder='Choose a Parent...'>
         {$projectOptions}
         </select>
         <script type='text/javascript'>
             var options = Array();
         
             $(document).ready(function(){
-                oldOptions = $("#new_subproject_parent_dd option");
-                updateParents();
-                $("[name=new_phase]").change(updateParents);
-                $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+                $("#new_subproject_parent_dd").chosen();
+                $("#new_subproject_parent_dd_chosen").hide();
             });
-            
-            function updateParents(){
-                $("#new_subproject_parent_dd").empty();
-                var phase = $("[name=new_phase]").val();
-                $("#new_subproject_parent_dd").append(oldOptions);
-                $('#new_subproject_parent_dd').val(0);
-                $("#new_subproject_parent_dd option").not("[value=0]").not("[phase=" + phase + "]").remove();
-                $("#new_subproject_parent_dd").combobox();
-                $(".custom-combobox input", $("#new_subproject_parent_dd").parent()).val("Choose Parent");
-            }
         
             function subReaction(){
-                updateParents();
                 if($('#new_subproject_y').is(':checked')) { 
-                     $(".custom-combobox", $("#new_subproject_parent_dd").parent()).show();
+                     $("#new_subproject_parent_dd_chosen").show();
                 }
                 else{
-                    $('#new_subproject_parent_dd').val(0);
-                    $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+                    $("#new_subproject_parent_dd_chosen").hide();
                 }
             }
         </script>

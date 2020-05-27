@@ -301,9 +301,14 @@ class IndexTable {
             <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
+                $subProjects = array();
+                foreach($proj->getSubProjects() as $sub){
+                    $subProjects[] = "<a href='{$sub->getUrl()}'>{$sub->getName()}</a>";
+                }
+                $subProjects = (count($subProjects) > 0) ? " (".implode(", ", $subProjects).")" : "";
                 $wgOut->addHTML("
                     <tr>
-                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 $leaders = array();
                 foreach($proj->getLeaders() as $leader){
