@@ -2423,8 +2423,8 @@ class Person extends BackboneModel {
      * @param string $role The name of the role
      * @return Role The role of this Person
      */
-    function getRole($role){
-        foreach($this->getRoles() as $r){
+    function getRole($role, $history=false){
+        foreach($this->getRoles($history) as $r){
             if($r->getRole() == $role){
                 return $r;
             }
