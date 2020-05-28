@@ -480,7 +480,7 @@ class IndexTable {
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
             if($me->isRoleAtLeast(STAFF)){
                 $phaseDates = $config->getValue('projectPhaseDates');
-                for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
+                for($y=YEAR; $y>=substr($phaseDates[1],0,4); $y--){
                     $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                 }
             }
