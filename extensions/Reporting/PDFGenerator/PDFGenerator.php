@@ -218,8 +218,8 @@ abstract class PDFGenerator {
     static function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false, $orientation='portrait'){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
-        ini_set("max_execution_time","600");
-        ini_set("memory_limit","1024M");
+        ini_set("max_execution_time","1600");
+        ini_set("memory_limit","2024M");
         
         if(self::$preview){
             $preview = true;
