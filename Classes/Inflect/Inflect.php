@@ -109,6 +109,7 @@ class Inflect
         'intellectual property',
         'dean',
         'vicedean',
+        'ats'
     );
 
 	/**

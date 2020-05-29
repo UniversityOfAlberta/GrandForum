@@ -20,12 +20,12 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
         
         if($me->isRole(ACHAIR)){
-            // Associate Chair should only see ATSEC
+            // Associate Chair should only see ATS
             $atsec = true;
         }
         
         if($atsec){
-            $allPeople = Person::getAllPeopleDuring("ATSEC", $start, $end);
+            $allPeople = Person::getAllPeopleDuring("ATS", $start, $end);
         }
         else {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);

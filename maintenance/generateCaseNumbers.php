@@ -9,7 +9,7 @@
     $end = (YEAR)."-07-01";
     
     $allPeople = array_merge(Person::getAllPeopleDuring(NI, $start, $end), 
-                             Person::getAllPeopleDuring("ATSEC", $start, $end));
+                             Person::getAllPeopleDuring("ATS", $start, $end));
     
     /*DBFunctions::delete('grand_case_numbers',
                         array('year' => 2019));*/
@@ -30,7 +30,7 @@
     foreach($data as $row){
         // Ordered by PhD Date
         $person = Person::newFromId($row['user_id']);
-        if($person == null || $person->getId() == 0 || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATSEC", $start, $end))){
+        if($person == null || $person->getId() == 0 || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATS", $start, $end))){
             // Check to make sure the person exists, and is an Faculty
             continue;
         }
@@ -49,7 +49,7 @@
     foreach($data2 as $row){
         // Ordered by Appointment Date
         $person = Person::newFromId($row['user_id']);
-        if($person == null || $person->getId() == 0 || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATSEC", $start, $end))){
+        if($person == null || $person->getId() == 0 || (!$person->isRoleDuring(NI, $start, $end) && !$person->isRoleDuring("ATS", $start, $end))){
             // Check to make sure the person exists, and is an Faculty
             continue;
         }

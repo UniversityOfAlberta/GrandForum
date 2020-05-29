@@ -28,6 +28,7 @@ class Report extends AbstractReport{
             $tabs["Chair"] = TabUtils::createTab("Chair");
             $tabs["Dean"] = TabUtils::createTab("Dean");
             $tabs["FEC"] = TabUtils::createTab("FEC");
+            $tabs["ATSEC"] = TabUtils::createTab("ATSEC");
             $tabs["CV"] = TabUtils::createTab("My QA CV");
         }
         return true;
@@ -37,7 +38,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if($person->isRole(NI) || $person->isRole("ATSEC")){
+        if($person->isRole(NI) || $person->isRole("ATS")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Annual Report", "{$url}FEC", $selected);
             
@@ -56,7 +57,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
             $tabs["FEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
         }
-        
+        if($person->isSubRole("ATSEC")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FECTable")) ? "selected" : false;
+            $tabs["ATSEC"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}FECTable", $selected);
+        }
         if($person->isRole(ISAC) || $person->isRole(IAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "DepartmentPublications")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Publications", "{$url}DepartmentPublications", $selected);

@@ -383,6 +383,14 @@ class ReportXMLParser {
     // Parses the <SectionPermission> elements of a <Role> element
     function parseRoleSectionPermissions($node, $role){
         $children = $node->children();
+        $subType = (isset($node->attributes()->subType)) ? $node->attributes()->subType : "";
+        $subType = (isset($node->attributes()->subRole)) ? $node->attributes()->subRole : $subType;
+        if($subType != ""){
+            if(strstr($role, "+") !== false){
+                $role = constant(str_replace("+", "", $role))."+";
+            }
+            $role .= "_{$subType}";
+        }
         foreach($children as $key => $child){
             $attributes = $child->attributes();
             $permissions = (isset($attributes->permissions)) ? "{$attributes->permissions}" : "r";

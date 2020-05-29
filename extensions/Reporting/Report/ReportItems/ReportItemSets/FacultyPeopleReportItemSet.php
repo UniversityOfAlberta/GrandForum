@@ -8,7 +8,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
         if($atsec){
-            $allPeople = Person::getAllPeopleDuring("ATSEC", $start, $end);
+            $allPeople = Person::getAllPeopleDuring("ATS", $start, $end);
         }
         else {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
