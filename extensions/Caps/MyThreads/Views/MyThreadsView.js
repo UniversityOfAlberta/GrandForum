@@ -50,6 +50,7 @@ MyThreadsView = Backbone.View.extend({
     createDataTable: function(order, searchStr){
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
+                                                     'order': [[ 5, 'desc' ]],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    this.table.draw();
 	    this.table.order(order);
