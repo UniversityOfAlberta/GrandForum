@@ -7,7 +7,7 @@ class ReportItemCallback {
     static function call($reportItem, $func, $args=null){
         self::$reportCallback->reportItem = $reportItem;
         if($args == null){
-            return call_user_func(array(self::$reportCallback, self::$callbacks[$func]));
+            return self::$reportCallback->{self::$callbacks[$func]}();
         }
         else{
             return call_user_func_array(array(self::$reportCallback, self::$callbacks[$func]), $args);

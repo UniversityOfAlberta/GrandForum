@@ -6,6 +6,7 @@ class ReportXMLParser {
     var $errors;
     var $parser;
     var $report;
+    static $classCache = array();
     static $parserCache = array();
     static $files = array();
     static $pdfFiles = array();
@@ -99,6 +100,13 @@ class ReportXMLParser {
             return self::$pdfRpMap[$rptp];
         }
         return "";
+    }
+    
+    static function class_exists($class){
+        if(!isset(self::$classCache[$class])){
+            self::$classCache[$class] = class_exists($class);
+        }
+        return self::$classCache[$class];
     }
     
     // Creates a new ReportXMLParser.  $xml should be a string containing the contents of an xml file, 
@@ -430,10 +438,10 @@ class ReportXMLParser {
             if(isset($attributes->type) || $section != null){
                 if(isset($attributes->type)){
                     $type = "{$attributes->type}";
-                    if(!class_exists($type) && class_exists($type."ReportSection")){
+                    if(!self::class_exists($type) && self::class_exists($type."ReportSection")){
                         $type = $type."ReportSection";
                     }
-                    if(!class_exists($type)){
+                    if(!self::class_exists($type)){
                         $this->errors[] = "ReportSection '{$type}' does not exists";
                         continue;
                     }
@@ -558,10 +566,10 @@ class ReportXMLParser {
         }*/
         if(isset($attributes->type)){
             $type = "{$attributes->type}";
-            if(class_exists($type)){
+            if(self::class_exists($type)){
                 $itemset = new $type();
             }
-            else if(class_exists($type."ReportItemSet")){
+            else if(self::class_exists($type."ReportItemSet")){
                 $type = $type."ReportItemSet";
                 $itemset = new $type();
             }
@@ -660,7 +668,6 @@ class ReportXMLParser {
                 $itemset->iteration++;
             }
         }
-        
         $itemset->setValue("{$node}");
         return $itemset;
     }
@@ -678,10 +685,10 @@ class ReportXMLParser {
         if(isset($attributes->type) || $item != null){
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";
-                if(!class_exists($type) && class_exists($type."ReportItem")){
+                if(!self::class_exists($type) && self::class_exists($type."ReportItem")){
                     $type = $type."ReportItem";
                 }
-                if(!class_exists($type)){
+                if(!self::class_exists($type)){
                     $this->errors[] = "ReportItem '{$type}' does not exists";
                     $item = "StaticReportItem";
                 }
