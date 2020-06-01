@@ -2598,25 +2598,17 @@ class Person extends BackboneModel {
     function getAllowedProjects(){
         $projects = array();
         foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->getThemeProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         if($this->isRoleAtLeast(STAFF)){
             foreach(Project::getAllProjectsEver() as $project){
-                if(!$project->isSubProject()){
-                    $projects[$project->getId()] = $project->getName();
-                }
+                $projects[$project->getId()] = $project->getName();
             }
         }
         natsort($projects);
