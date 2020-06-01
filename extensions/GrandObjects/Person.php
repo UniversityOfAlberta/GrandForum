@@ -2607,7 +2607,7 @@ class Person extends BackboneModel {
             $projects[$project->getId()] = $project->getName();
         }
         if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjectsEver() as $project){
+            foreach(Project::getAllProjectsEver(true) as $project){
                 $projects[$project->getId()] = $project->getName();
             }
         }
