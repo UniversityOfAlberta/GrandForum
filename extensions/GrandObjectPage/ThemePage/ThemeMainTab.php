@@ -87,11 +87,14 @@ class ThemeMainTab extends AbstractEditableTab {
             $this->html .= "<h2>Projects</h2><ul>";
             foreach($projects as $project){
                 $this->html .= "<li><a href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>";
-                $this->html .= "<ul>";
-                foreach($project->getSubProjects() as $sub){
-                    $this->html .= "<li><a href='{$sub->getUrl()}'>{$sub->getFullName()} ({$sub->getName()})</a></li>";
+                $subprojects = $project->getSubProjects();
+                if(count($subprojects) > 0){
+                    $this->html .= "<ul>";
+                    foreach($subprojects as $sub){
+                        $this->html .= "<li><a href='{$sub->getUrl()}'>{$sub->getFullName()} ({$sub->getName()})</a></li>";
+                    }
+                    $this->html .= "</ul>";
                 }
-                $this->html .= "</ul>";
                 $this->html .= "</li>";
             }
             $this->html .= "</ul>";
