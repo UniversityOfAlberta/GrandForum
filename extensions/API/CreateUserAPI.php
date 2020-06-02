@@ -13,6 +13,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
         $this->addPOST("candidate",false,"Whether or not to make this user a candidate", "1");
+        $this->addPOST("userType",false,"The type of user (Student or Faculty)","Student");
         $this->addPOST("id",false,"The id of the creation request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");
     }
 
@@ -123,7 +124,8 @@ class CreateUserAPI extends API{
                     
                     DBFunctions::update('mw_user',
                                         array('first_name' => @$_POST['wpFirstName'],
-                                              'last_name' => @$_POST['wpLastName']),
+                                              'last_name' => @$_POST['wpLastName'],
+                                              'type' => @$_POST['userType']),
                                         array('user_id' => $person->getId()));
                 
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
