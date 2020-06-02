@@ -106,7 +106,7 @@ class HQPRegister extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config, $wgUser;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -140,7 +140,9 @@ class HQPRegister extends SpecialPage{
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;
                 GrandAccess::$alreadyDone = array();
+                $wgUser = User::newFromId(1);
                 $result = APIRequest::doAction('CreateUser', false);
+                $wgUser = User::newFromId(0);
                 $wgGroupPermissions['*']['createaccount'] = false;
                 GrandAccess::$alreadyDone = array();
                 if($result){
@@ -157,7 +159,7 @@ class HQPRegister extends SpecialPage{
     <b>Type:</b> {$_POST['userType']}
     ";
 
-                        $to = "dwt@ualberta.ca";
+                        $to = "adele_newton@cscan-infocan.ca";
                         $subject = "[{$config->getValue('networkName')}] User Registration";
                         $headers = array();
                         $headers[] = 'MIME-Version: 1.0';
