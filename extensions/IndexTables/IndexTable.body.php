@@ -294,7 +294,7 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th>Project Id</th>";
         }
-        $data = Project::getAllProjectsEver();
+        $data = Project::getAllProjectsEver(($status != "Active"));
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
@@ -302,13 +302,16 @@ class IndexTable {
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $subProjects = array();
-                foreach($proj->getSubProjects() as $sub){
-                    $subProjects[] = "<a href='{$sub->getUrl()}'>{$sub->getName()}</a>";
+                if($status == "Active"){
+                    // Only show sub-projects after the main when on the 'Current' tab
+                    foreach($proj->getSubProjects() as $sub){
+                        $subProjects[] = "<a href='{$sub->getUrl()}'>{$sub->getName()}</a>";
+                    }
                 }
                 $subProjects = (count($subProjects) > 0) ? " (".implode(", ", $subProjects).")" : "";
                 $wgOut->addHTML("
                     <tr>
-                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
+                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 $leaders = array();
                 foreach($proj->getLeaders() as $leader){
