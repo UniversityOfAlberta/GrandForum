@@ -328,6 +328,12 @@ class ApplicationsTable extends SpecialPage{
         $dept->setBlobSection(HQP_APPLICATION_FORM);
         $dept->setId("status");
         
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem(HQP_APPLICATION_PROJ);
+        $title->setBlobSection(HQP_APPLICATION_FORM);
+        $title->setId("project");
+        
         $keywords = new MultiTextReportItem();
         $keywords->setBlobType(BLOB_ARRAY);
         $keywords->setBlobItem(HQP_APPLICATION_KEYWORDS);
@@ -412,7 +418,8 @@ class ApplicationsTable extends SpecialPage{
                                                                                                                                    "Supervisor" => $sup,
                                                                                                                                    "Institution" => $uni,
                                                                                                                                    "Status/Department" => $dept,
-                                                                                                                                   "Keywords" => $keywords)));
+                                                                                                                                   "Project Title" => $title,
+                                                                                                                                   "Keywords" => $keywords,)));
         
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2019, "2019", array("Level" => $level,
                                                                                                                                    "Michael F. Harcourt" => $michael,
