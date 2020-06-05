@@ -23,7 +23,7 @@ class UserType extends AbstractMigration
     public function up()
     {
         $table = $this->table("mw_user");
-        $table->addColumn('type', 'string', array('after' => 'language', 'limit' => 32))
+        $table->addColumn('user_type', 'string', array('after' => 'language', 'limit' => 32))
               ->update();
     }
 

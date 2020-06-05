@@ -125,7 +125,7 @@ class CreateUserAPI extends API{
                     DBFunctions::update('mw_user',
                                         array('first_name' => @$_POST['wpFirstName'],
                                               'last_name' => @$_POST['wpLastName'],
-                                              'type' => @$_POST['userType']),
+                                              'user_type' => @$_POST['userType']),
                                         array('user_id' => $person->getId()));
                 
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
