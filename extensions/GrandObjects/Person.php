@@ -975,6 +975,28 @@ class Person extends BackboneModel {
         }
         return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
+    
+    function isTAEligible($date=null){
+        if($date == null){
+            $date = date('Y-m-d');
+        }
+        $date = substr($date, 0, 10);
+        
+        $universities = $this->getUniversitiesDuring($date, $date);
+        
+        foreach($universities as $university){
+            $uniStart = new DateTime(substr($university['start'], 0, 10));
+            $datetime = new DateTime($date);
+            $interval = intval($uniStart->diff($datetime)->format('%a')); // Difference in days
+            if(in_array(strtolower($university['position']), Person::$studentPositions['phd']) && $interval <= 365*3){
+                return true;
+            }
+            else if(in_array(strtolower($university['position']), Person::$studentPositions['msc']) && $interval <= 365*2){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns an array of all University names
@@ -990,6 +1012,7 @@ class Person extends BackboneModel {
         $universities = array();
         foreach($data as $row){
             $universities[$row['university_id']] = $row['university_name'];
+            
         }
         return $universities;
     }
@@ -1816,6 +1839,10 @@ class Person extends BackboneModel {
         }
         $splitName = $this->splitName();
         return $splitName['last'];
+    }
+    
+    function getFullName(){
+        return "{$this->getFirstName()} {$this->getLastName()}";
     }
     
     /**

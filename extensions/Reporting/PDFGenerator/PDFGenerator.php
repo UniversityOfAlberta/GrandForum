@@ -228,7 +228,8 @@ abstract class PDFGenerator {
      */
     function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false, $return=false){
         global $wgServer, $wgScriptPath, $wgUser, $config, $DPI, $DPI_CONSTANT;
-        
+        $dir = dirname(__FILE__);
+        require_once($dir . '/../../../Classes/SmartDomDocument/SmartDomDocument.php');
         if(self::$preview){
             $preview = true;
         }
@@ -791,7 +792,12 @@ EOF;
         
         $headerName = html_entity_decode($headerName);
         
-        $headerLines = explode("<br />", $report->name);
+        if($report != null){
+            $headerLines = explode("<br />", $report->name);
+        }
+        else{
+            $headerLines = array();
+        }
         $nHeaderLines = count($headerLines);
         
         $pages = '

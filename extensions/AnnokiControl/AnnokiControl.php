@@ -28,6 +28,7 @@ function autoload_register($directory){
 }
 
 function redirect($url){
+    DBFunctions::commit();
     session_write_close();
     header("Location: $url");
     exit;
@@ -85,6 +86,9 @@ $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
 
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
+
+$egAnnokiExtensions['GradDB'] = array('name' => 'GradDB',
+                                      'path' => "$IP/extensions/GradDB/GradDB.php");
 
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");

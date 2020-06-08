@@ -413,6 +413,11 @@ function time2date($time, $format='F j, Y'){
     return date($format, $strtime);
 }
 
+function currentTimeStamp(){
+    $data = DBFunctions::execSQL("SELECT CURRENT_TIMESTAMP as timestamp");
+    return $data[0]['timestamp'];
+}
+
 /**
  * Returns a HTML comment with the elapsed time since request.
  * This method has no side effects.
