@@ -12,7 +12,7 @@ class GradDBFinancial extends BackboneModel{
     var $md5;
     var $account;
     var $type;
-    var $hours;
+    var $hours = 12;
     var $start;
     var $end;
     var $hqpAccepted = 0;

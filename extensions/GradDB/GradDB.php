@@ -173,7 +173,8 @@ class GradDB extends SpecialPage{
                                                                                  "GRA" => "GRA", 
                                                                                  "GRAF" => "GRAF"));
         $hours = new SelectBox("hours", "Hours per week", $gradDBFinancial->getHours(), array("12" => "12", 
-                                                                                              "6" => "6"));
+                                                                                              "6" => "6",
+                                                                                              "N/A" => "N/A"));
         $startDate = new CalendarField("start", "Start Date", $gradDBFinancial->getStart());
         $endDate = new CalendarField("end", "End Date", $gradDBFinancial->getEnd());
         $wgOut->addHTML("<form method='POST'>
@@ -211,7 +212,24 @@ class GradDB extends SpecialPage{
                 <tr>
                     <td></td><td><input type='submit' name='submit' value='Submit' /></td>
                 </tr>
-            </table></form>");
+            </table></form>
+            <script type='text/javascript'>
+                $('select[name=type]').change(function(){
+                    if($('select[name=type]').val() == 'GRAF'){
+                        $(\"select[name=hours] option[value='12']\").hide();
+                        $(\"select[name=hours] option[value='6']\").hide();
+                        $(\"select[name=hours] option[value='N/A']\").show();
+                        $('select[name=hours]').val('N/A');
+                    }
+                    else{
+                        $(\"select[name=hours] option[value='12']\").show()
+                        $(\"select[name=hours] option[value='6']\").show();
+                        $(\"select[name=hours] option[value='N/A']\").hide();
+                        $('select[name=hours]').val('{$gradDBFinancial->getHours()}');
+                    }
+                });
+                $('select[name=type]').change();
+            </script>");
     }
     
     function downloadPDF(){
