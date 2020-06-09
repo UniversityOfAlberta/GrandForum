@@ -13,6 +13,7 @@ class GradDBFinancial extends BackboneModel{
     var $account;
     var $type;
     var $hours = 12;
+    var $percent = 100;
     var $start;
     var $end;
     var $hqpAccepted = 0;
@@ -30,6 +31,7 @@ class GradDBFinancial extends BackboneModel{
                                           'account',
                                           'type',
                                           'hours',
+                                          'percent',
                                           'start',
                                           'end',
                                           'hqpAccepted',
@@ -48,6 +50,7 @@ class GradDBFinancial extends BackboneModel{
                                           'account',
                                           'type',
                                           'hours',
+                                          'percent',
                                           'start',
                                           'end',
                                           'hqpAccepted',
@@ -66,6 +69,7 @@ class GradDBFinancial extends BackboneModel{
                                           'account',
                                           'type',
                                           'hours',
+                                          'percent',
                                           'start',
                                           'end',
                                           'hqpAccepted',
@@ -121,6 +125,7 @@ class GradDBFinancial extends BackboneModel{
             $this->account = $data[0]['account'];
             $this->type = $data[0]['type'];
             $this->hours = $data[0]['hours'];
+            $this->percent = $data[0]['percent'];
             $this->hqpAccepted = $data[0]['hqpAccepted'];
             $this->supervisorAccepted = $data[0]['supervisorAccepted'];
         }
@@ -150,6 +155,7 @@ class GradDBFinancial extends BackboneModel{
                                       'account' => $this->account,
                                       'type' => $this->type,
                                       'hours' => $this->hours,
+                                      'percent' => $this->percent,
                                       'start' => $this->start,
                                       'end' => $this->end,
                                       'supervisorAccepted' => $this->supervisorAccepted,
@@ -170,6 +176,7 @@ class GradDBFinancial extends BackboneModel{
                                       'account' => $this->account,
                                       'type' => $this->type,
                                       'hours' => $this->hours,
+                                      'percent' => $this->percent,
                                       'start' => $this->start,
                                       'end' => $this->end,
                                       'supervisorAccepted' => $this->supervisorAccepted,
@@ -228,6 +235,10 @@ class GradDBFinancial extends BackboneModel{
     
     function getHours(){
         return $this->hours;
+    }
+    
+    function getPercent(){
+        return $this->percent;
     }
     
     function getStart(){

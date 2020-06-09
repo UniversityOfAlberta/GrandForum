@@ -43,6 +43,7 @@ class GradDb extends AbstractMigration
               ->addColumn('account', 'string', array('limit' => 128))
               ->addColumn('type', 'string', array('limit' => 16))
               ->addColumn('hours', 'string', array('limit' => 16))
+              ->addColumn('percent', 'string', array('limit' => 3))
               ->addColumn('start', 'datetime')
               ->addColumn('end', 'datetime')
               ->addColumn('supervisorAccepted', 'datetime')

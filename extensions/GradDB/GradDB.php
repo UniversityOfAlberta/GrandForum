@@ -151,6 +151,7 @@ class GradDB extends SpecialPage{
             $gradDBFinancial->account = $_POST['account'];
             $gradDBFinancial->type = $_POST['type'];
             $gradDBFinancial->hours = $_POST['hours'];
+            $gradDBFinancial->percent = $_POST['percent'];
             $gradDBFinancial->supervisorAccepted = currentTimeStamp();
             if(!$gradDBFinancial->exists()){
                 $gradDBFinancial->create();
@@ -163,7 +164,7 @@ class GradDB extends SpecialPage{
             
             $message = "<p>{$gradDBFinancial->getSupervisor()->getFullName()} has filled out a funding appointment for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
                         <p> - {$config->getValue('networkName')}</p>";
-            self::mail("dwt@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()}", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
+            self::mail("dwt@ualberta.ca,stroulia@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()}", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
 
             redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?term={$term}");
         }
@@ -172,6 +173,16 @@ class GradDB extends SpecialPage{
         $type = new SelectBox("type", "Type", $gradDBFinancial->getType(), array("GTA" => "GTA", 
                                                                                  "GRA" => "GRA", 
                                                                                  "GRAF" => "GRAF"));
+        $percent = new SelectBox("percent", "% Funding", $gradDBFinancial->getPercent(), array("100" => "100",
+                                                                                               "90" => "90",
+                                                                                               "80" => "80",
+                                                                                               "70" => "70",
+                                                                                               "60" => "60",
+                                                                                               "50" => "50",
+                                                                                               "40" => "40",
+                                                                                               "30" => "30",
+                                                                                               "20" => "20",
+                                                                                               "10" => "10"));
         $hours = new SelectBox("hours", "Hours per week", $gradDBFinancial->getHours(), array("12" => "12", 
                                                                                               "6" => "6",
                                                                                               "N/A" => "N/A"));
@@ -203,6 +214,12 @@ class GradDB extends SpecialPage{
                     <td><b>Type:</b></td>
                     <td>
                         {$type->render()}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>% Funding:</b></td>
+                    <td>
+                        {$percent->render()}
                     </td>
                 </tr>
                 <tr>
@@ -260,7 +277,7 @@ class GradDB extends SpecialPage{
                 $gradDBFinancial->generatePDF();
                 $message = "<p>{$gradDBFinancial->getHQP()->getFullName()} has accepted the funding appointment for {$gradDBFinancial->getTerm()}.
                             <p> - {$config->getValue('networkName')}</p>";
-                self::mail("dwt@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()} Accepted", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
+                self::mail("dwt@ualberta.ca,stroulia@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()} Accepted", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
                 $wgMessage->addSuccess("Thank you for accepting this Funding.");
             }
             else{
