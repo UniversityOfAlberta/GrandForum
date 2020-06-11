@@ -42,14 +42,14 @@ class FESPeopleTable extends SpecialPage {
         
         foreach($people as $person){
             $roles = $person->getRoles(true);
-            $earliestDate = "9999-99-99";
+            $earliestDate = EOT;
             $latestDate = "0000-00-00";
             foreach($roles as $role){
                 $earliestDate = min($earliestDate, $role->getStartDate());
-                $latestDate = max($latestDate, str_replace("0000-00-00", "9999-99-99", $role->getEndDate()));
+                $latestDate = max($latestDate, str_replace("0000-00-00", EOT, $role->getEndDate()));
             }
             $earliestDate = substr($earliestDate, 0, 10);
-            $latestDate = str_replace("9999-99-99", "Current", substr($latestDate, 0, 10));
+            $latestDate = str_replace(EOT, "Current", substr($latestDate, 0, 10));
             $alumni = Alumni::newFromUserId($person->getId());
             $projects = array_merge($person->leadership(true), $person->getProjects(true));
             $projs = array();
