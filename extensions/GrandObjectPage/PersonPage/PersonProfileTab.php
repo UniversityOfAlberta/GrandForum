@@ -214,7 +214,7 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             $this->person->update();
-            if($_POST['email']){
+            if(isset($_POST['email'])){
                 $api = new UserEmailAPI();
                 $api->doAction(true);
             }
