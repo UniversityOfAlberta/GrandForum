@@ -186,7 +186,6 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['phone'] = @$_POST['phone'];
-            $_POST['email'] = @$_POST['email'];
 
             $api = new UserPhoneAPI();
             $api->doAction(true);
@@ -215,8 +214,10 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             $this->person->update();
-            $api = new UserEmailAPI();
-            $api->doAction(true);
+            if($_POST['email']){
+                $api = new UserEmailAPI();
+                $api->doAction(true);
+            }
         }
         
         //Reset the cache to use the changed data
