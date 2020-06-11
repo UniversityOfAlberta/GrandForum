@@ -71,6 +71,7 @@ $apiRequest->addAction('Hidden','theme', 'ThemeAPI');
 $apiRequest->addAction('Hidden','theme/:id', 'ThemeAPI');
 $apiRequest->addAction('Hidden','theme/:id/projects', 'ThemeProjectsAPI');
 $apiRequest->addAction('Hidden','project', 'ProjectAPI');
+$apiRequest->addAction('Hidden','project/new/:date', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/image', 'ProjectAPI');
 $apiRequest->addAction('Hidden','project/:id/logo', 'ProjectAPI');

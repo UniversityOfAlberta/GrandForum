@@ -116,7 +116,7 @@ class ProjectDescriptionAPI extends API{
                                   'admin_use_generic' => @$_POST['admin_use_generic'],
                                   'tech_email' => @$_POST['tech_email'],
                                   'tech_use_generic' => @$_POST['tech_use_generic'],
-                                  'start_date' => 'CURRENT_TIMESTAMP'),
+                                  'start_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                             true);
         DBFunctions::commit();
         if(!$noEcho){

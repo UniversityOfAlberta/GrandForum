@@ -5,6 +5,7 @@ class ProjectAPI extends RESTAPI {
     function doGET(){
         $image = ($this->getParam('image') != "");
         $logo = ($this->getParam('logo') != "");
+        $new = ($this->getParam('new') != "");
         if($this->getParam('id') != ""){
             $project = Project::newFromId($this->getParam('id'));
             if($this->getParam('id') == "-1"){
@@ -33,7 +34,13 @@ class ProjectAPI extends RESTAPI {
             return $project->toJSON();
         }
         else{
-            $projects = new Collection(Project::getAllProjectsEver());
+            if($new && $this->getParam('date') != ""){
+                $date = $this->getParam('date');
+                $projects = new Collection(Project::getNewProjects($date));
+            }
+            else{
+                $projects = new Collection(Project::getAllProjectsEver());
+            }
             return $projects->toJSON();
         }
     }

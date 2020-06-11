@@ -376,6 +376,21 @@ class Project extends BackboneModel {
         return $projects;
     }
     
+    /**
+     * Returns all of the current Projects from the database that have been modified since the specified date
+     * @return array An array of Projects
+     */
+    static function getNewProjects($date){
+        $projects = self::getAllProjects();
+        $return = array();
+        foreach($projects as $project){
+            if($project->getModifiedDate() >= $date){
+                $return[] = $project;
+            }
+        }
+        return $return;
+    }
+    
     static function areThereDeletedProjects(){
         $data = $data = DBFunctions::select(array('grand_project_status'),
                                             array('id'),
@@ -841,6 +856,17 @@ EOF;
     // Returns when the evolution state took place
     function getEffectiveDate(){
         return $this->effectiveDate;
+    }
+    
+    function getModifiedDate(){
+        $data = DBFunctions::select(array('grand_project_descriptions'),
+                                    array('start_date'),
+                                    array('project_id' => EQ($this->getId()),
+                                          'id' => EQ($this->getLastHistoryId())));
+        if(count($data) > 0){
+            return $data[0]['start_date'];
+        }
+        return "0000-00-00 00:00:00";
     }
     
     // Returns an array of Person objects which represent
