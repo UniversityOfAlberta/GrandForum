@@ -2453,8 +2453,8 @@ class Person extends BackboneModel {
      * @param string $role The name of the role
      * @return Role The role of this Person
      */
-    function getRole($role){
-        foreach($this->getRoles() as $r){
+    function getRole($role, $history=false){
+        foreach($this->getRoles($history) as $r){
             if($r->getRole() == $role){
                 return $r;
             }
@@ -2628,25 +2628,17 @@ class Person extends BackboneModel {
     function getAllowedProjects(){
         $projects = array();
         foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->getThemeProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjectsEver() as $project){
-                if(!$project->isSubProject()){
-                    $projects[$project->getId()] = $project->getName();
-                }
+            foreach(Project::getAllProjectsEver(true) as $project){
+                $projects[$project->getId()] = $project->getName();
             }
         }
         natsort($projects);

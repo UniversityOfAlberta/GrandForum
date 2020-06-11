@@ -293,16 +293,24 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th>Project Id</th>";
         }
-        $data = Project::getAllProjectsEver();
+        $data = Project::getAllProjectsEver(($status != "Active"));
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
             <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
+                $subProjects = array();
+                if($status == "Active"){
+                    // Only show sub-projects after the main when on the 'Current' tab
+                    foreach($proj->getSubProjects() as $sub){
+                        $subProjects[] = "<a href='{$sub->getUrl()}'>{$sub->getName()}</a>";
+                    }
+                }
+                $subProjects = (count($subProjects) > 0) ? " (".implode(", ", $subProjects).")" : "";
                 $wgOut->addHTML("
                     <tr>
-                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 $leaders = array();
                 foreach($proj->getLeaders() as $leader){
@@ -474,7 +482,7 @@ class IndexTable {
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
             if($me->isRoleAtLeast(STAFF)){
                 $phaseDates = $config->getValue('projectPhaseDates');
-                for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
+                for($y=YEAR; $y>=substr($phaseDates[1],0,4); $y--){
                     $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                 }
             }

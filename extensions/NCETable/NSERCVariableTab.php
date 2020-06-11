@@ -1392,12 +1392,12 @@ EOF;
                     }
                     break;
                 // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
+                //case 'Misc':
+                //case 'Poster':
+                //case 'Book Review':
                 case 'Review Article':
-                case 'Invited Presentation':
-                default:
+                //case 'Invited Presentation':
+                //default:
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                             if($pub->getCategory() == "Publication" ||
                                $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
@@ -1817,12 +1817,12 @@ EOF;
                     }
                     break;
                 // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
+                //case 'Misc':
+                //case 'Poster':
+                //case 'Book Review':
                 case 'Review Article':
-                case 'Invited Presentation':
-                default:
+                //case 'Invited Presentation':
+                //default:
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                         if($pub->getCategory() == "Publication" ||
                            $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||

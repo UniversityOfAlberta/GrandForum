@@ -310,6 +310,37 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         
+        $sup = new TextReportItem();
+        $sup->setBlobType(BLOB_TEXT);
+        $sup->setBlobItem(HQP_APPLICATION_SUP);
+        $sup->setBlobSection(HQP_APPLICATION_FORM);
+        $sup->setId("supervisor");
+        
+        $uni = new TextReportItem();
+        $uni->setBlobType(BLOB_TEXT);
+        $uni->setBlobItem(HQP_APPLICATION_UNI);
+        $uni->setBlobSection(HQP_APPLICATION_FORM);
+        $uni->setId("uni");
+        
+        $dept = new TextReportItem();
+        $dept->setBlobType(BLOB_TEXT);
+        $dept->setBlobItem("HQP_APPLICATION_STAT");
+        $dept->setBlobSection(HQP_APPLICATION_FORM);
+        $dept->setId("status");
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem(HQP_APPLICATION_PROJ);
+        $title->setBlobSection(HQP_APPLICATION_FORM);
+        $title->setId("project");
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem(HQP_APPLICATION_KEYWORDS);
+        $keywords->setBlobSection(HQP_APPLICATION_FORM);
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
         $level = new CheckboxReportItem();
         $level->setBlobType(BLOB_ARRAY);
         $level->setBlobItem(HQP_APPLICATION_LVL);
@@ -383,7 +414,12 @@ class ApplicationsTable extends SpecialPage{
                                                                                                                                    "UofT" => $uoft,
                                                                                                                                    "SFU" => $sfu,
                                                                                                                                    "NBHRF" => $nbhrf,
-                                                                                                                                   "SHRF" => $shrf)));
+                                                                                                                                   "SHRF" => $shrf,
+                                                                                                                                   "Supervisor" => $sup,
+                                                                                                                                   "Institution" => $uni,
+                                                                                                                                   "Status/Department" => $dept,
+                                                                                                                                   "Project Title" => $title,
+                                                                                                                                   "Keywords" => $keywords,)));
         
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2019, "2019", array("Level" => $level,
                                                                                                                                    "Michael F. Harcourt" => $michael,

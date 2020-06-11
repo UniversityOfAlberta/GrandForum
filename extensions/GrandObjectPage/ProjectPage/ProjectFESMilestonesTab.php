@@ -441,6 +441,15 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         <tbody>";
         
         foreach($milestones as $key => $milestone){
+            if($key % 100 == 0 && $key != 0 && $pdf){
+                // Every 100 rows start a new table
+                $this->html .= "
+                        </tbody>
+                    </table>
+                    <table id='milestones_table_fes' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
+                        <thead>{$header}</thead>
+                        <tbody>";
+            }
             $activityId = 0;
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 // Editing

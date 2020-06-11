@@ -229,7 +229,8 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Active";
                 }
                 else{
-                    $status = "Inactive";                
+                    $lastRole = $person->getRole(HQP, true);
+                    $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
                 if($config->getValue("genderEnabled")){
                     $this->html .= "<td align='left'>{$person->getGender()}</td>";

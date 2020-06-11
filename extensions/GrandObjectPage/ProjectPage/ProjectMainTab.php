@@ -18,7 +18,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $preds = $this->project->getPreds();
-        if(count($preds) > 0){
+        if(count($preds) > 0 && !isset($_GET['generatePDF'])){
             $predLinks = array();
             foreach($preds as $pred){
                 $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
