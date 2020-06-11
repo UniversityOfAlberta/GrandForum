@@ -19,7 +19,7 @@ class PersonUniversitiesAPI extends RESTAPI {
             foreach($universities as $uni){
                 if($uni['endDate'] == '0000-00-00 00:00:00'){
                     // Till the end of time
-                    $newUniversities['9999-99-99 99:99:99_'.$uni['startDate'].'_'.$uni['id']] = $uni;
+                    $newUniversities[EOT.' 00:00:00_'.$uni['startDate'].'_'.$uni['id']] = $uni;
                 }
                 else{
                     $newUniversities[$uni['endDate'].'_'.$uni['startDate'].'_'.$uni['id']] = $uni;

@@ -44,6 +44,8 @@ if(!defined('TESTING')){
     }
 }
 
+define("EOT", "9999-01-01"); // End of Time
+
 $path = array( $IP, "$IP/includes", "$IP/languages" );
 set_include_path( implode( PATH_SEPARATOR, $path ) . PATH_SEPARATOR . get_include_path() );
 
