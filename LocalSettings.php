@@ -441,3 +441,13 @@ function wfReportTimeOld() {
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );
 }
+
+function sanitizeInput($str){
+    $str = str_replace("&", "&amp;", $str);
+    $str = str_replace("<", "&lt;", $str);
+    $str = str_replace(">", "&gt;", $str);
+    $str = str_replace("\"", "&quot;", $str);
+    $str = str_replace("'", "&#x27;", $str);
+    $str = str_replace("/", "&#x2F;", $str);
+    return $str;
+}

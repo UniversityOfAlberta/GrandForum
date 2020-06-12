@@ -3,6 +3,7 @@
 class SelectBox extends UIElement {
 
     var $options = array();
+    var $forceKey = false;
     
     function SelectBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
@@ -10,22 +11,24 @@ class SelectBox extends UIElement {
     }
     
     function renderSelect(){
-        $html = "<select {$this->renderAttr()} name='{$this->id}'>";
+        $html = "<select {$this->renderAttr()} name='{$this->id}' id='{$this->id}'>";
         $selectedFound = false;
         foreach($this->options as $key => $option){
             $selected = "";
-            if($this->value == str_replace("'", "&#39;", $key)){
+            if($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option)){
                 $selected = " selected";
                 $selectedFound = true;
             }
             $value = $option;
-            if(is_string($key)){
+            if(is_string($key) || $this->forceKey){
                 $value = $key;
             }
+            $value = sanitizeInput($value);
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
-        if(!$selectedFound && $this->value != "" && !is_array($this->value)){
-            $html .= "<option value='".str_replace("'", "&#39;", $this->value)."' selected>{$this->value}</option>";
+        if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
+            $value = sanitizeInput($this->value);
+            $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
         }
         $html .= "</select>";
         return $html;

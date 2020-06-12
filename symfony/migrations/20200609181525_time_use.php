@@ -3,7 +3,7 @@
 use Phinx\Migration\AbstractMigration;
 use Phinx\Db\Adapter\MysqlAdapter;
 
-class GradDb extends AbstractMigration
+class TimeUse extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,19 +28,19 @@ class GradDb extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('grand_graddb_eligible', array("id"=>"id"));
-        $table->addColumn('user_id', 'integer')
-              ->addColumn('term', 'string')
-              ->addColumn('eligible', 'boolean', array('null' => true))
-              ->addIndex('user_id')
-              ->create();
-              
-        $table = $this->table('grand_graddb', array("id"=>"id"));
+        $table = $this->table('grand_graddb_timeuse', array("id"=>"id"));
         $table->addColumn('user_id', 'integer')
               ->addColumn('term', 'string')
               ->addColumn('md5', 'string', array('limit' => 32))
-              ->addColumn('supervisors', 'text')
+              ->addColumn('hours', 'string', array('limit' => 16))
+              ->addColumn('start', 'datetime')
+              ->addColumn('end', 'datetime')
+              ->addColumn('gta', 'text')
+              ->addColumn('gra', 'text')
+              ->addColumn('graf', 'text')
+              ->addColumn('vacation', 'text')
               ->addColumn('hqpAccepted', 'datetime')
+              ->addColumn('supervisorsAccepted', 'text')
               ->addColumn('pdf', 'blob', array('limit' => MysqlAdapter::BLOB_LONG))
               ->addIndex('user_id')
               ->addIndex('md5')
