@@ -267,7 +267,7 @@ class GradDBFinancial extends BackboneModel{
         $awardFor12Hours = 900;
         $nMonths = count($this->getTerms())*4;
         $hours = 0;
-        foreach($this->getSupervisors(true) as $sup){
+        foreach($this->getSupervisors() as $sup){
             if($sup['hours'] != "N/A"){
                 $hours = max($hours, $sup['hours']);
             }
