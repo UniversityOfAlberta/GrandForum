@@ -107,6 +107,7 @@ class CreateUserAPI extends API{
                 $person->updateNamesCache();
                 if($person != null && $person->getName() != null){
                     // Adding University
+                    $uniId = 0;
                     if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
                         $api = new PersonUniversitiesAPI();
                         $api->params['id'] = $person->getId();
@@ -141,12 +142,14 @@ class CreateUserAPI extends API{
                     
                     // Adding Relationship
                     if(isset($_POST['relationship']) && $_POST['relationship'] != ""){
+                        $university = $person->getUniversity();
                         $relation = new Relationship(array());
                         $relation->user1 = $creator->getId();
                         $relation->user2 = $person->getId();
                         $relation->type = $_POST['relationship'];
                         $relation->startDate = @$_POST['startDate'];
                         $relation->endDate = @$_POST['endDate'];
+                        $relation->university = $university['id'];
                         $relation->create();
                     }
                     
