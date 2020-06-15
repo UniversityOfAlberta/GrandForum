@@ -11,11 +11,13 @@
             <th class="deleteCell">Delete?</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <td class="orphansLabel tooltip" title="Orphaned Relationships are relationships which no longer belong to a specific university.  You can assign the relationship to a university by dragging it up to one of the existing universities or you can leave it here.  If the relationship is left orphaned it may have unintended results in the Annual Report.">Orphaned Relationships:</td>
-            <td id="orphans" class="relations" colspan="4"></td>
-        </tr>
-    </tfoot>
+    <% if(this.person.get('id') != me.get('id')){ %>
+        <tfoot>
+            <tr>
+                <td class="orphansLabel tooltip" title="Orphaned Relationships are relationships which no longer belong to a specific university.  You can assign the relationship to a university by dragging it up to one of the existing universities or you can leave it here.  If the relationship is left orphaned it may have unintended results in the Annual Report.">Orphaned Relationships:</td>
+                <td id="orphans" class="relations" colspan="4"></td>
+            </tr>
+        </tfoot>
+    <% } %>
 </table>
 </div>

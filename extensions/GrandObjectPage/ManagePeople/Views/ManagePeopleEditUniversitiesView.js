@@ -89,17 +89,20 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
+        console.log(requests);
         $.when.apply($, requests).then(function(){
-            // Save Relations
-            _.each(this.universityViews, function(view){
-                view.editRelations.saveAll();
-            });
-            this.editRelations.saveAll();
-            
-            // After saving, disassociate relations
-            _.each(this.universityViews, function(view){
-                view.editRelations.disassociate();
-            });
+            if(this.person.get('id') != me.get('id')){
+                // Save Relations
+                _.each(this.universityViews, function(view){
+                    view.editRelations.saveAll();
+                });
+                this.editRelations.saveAll();
+                
+                // After saving, disassociate relations
+                _.each(this.universityViews, function(view){
+                    view.editRelations.disassociate();
+                });
+            }
             addSuccess("Universities saved");
             if(refresh){
                 this.person.fetch();
