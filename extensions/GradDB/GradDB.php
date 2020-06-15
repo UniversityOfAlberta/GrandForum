@@ -113,7 +113,7 @@ class GradDB extends SpecialPage{
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
                     $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $term);
-                    $button = ($hqp->isTAEligible($date) && !$gradDBFinancial->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Edit</a>" : "";
+                    $button = ($hqp->isTAEligible($date) && !$gradDBFinancial->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "";
                     $button = ($gradDBFinancial->exists()) ? "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$gradDBFinancial->getMD5()}'>PDF</a>" : $button;
                     $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $hqpAccepted = ($gradDBFinancial->hasHQPAccepted()) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
@@ -127,7 +127,7 @@ class GradDB extends SpecialPage{
                             $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: &#10003;";
                         }
                         else{
-                            $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: __";
+                            $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: _";
                         }
                     }
                     $wgOut->addHTML("<tr>
@@ -135,7 +135,7 @@ class GradDB extends SpecialPage{
                         <td>{$university['position']}</td>
                         <td align='center'>{$eligible}</td>
                         <td align='center'>{$hqpAccepted}</td>
-                        <td align='center' style='white-space: nowrap;'>".implode("<br />", $hasSupervisorAccepted)."</td>
+                        <td align='right' style='white-space: nowrap;'>".implode("<br />", $hasSupervisorAccepted)."</td>
                         <td align='center'>{$button}</td>
                     </tr>");
                     break;
@@ -175,8 +175,7 @@ class GradDB extends SpecialPage{
             foreach($_POST['sup'] as $key => $sup){
                 $gradDBFinancial->supervisors[] = $gradDBFinancial->emptySupervisor($_POST['sup'][$key], 
                                                                                     $_POST['type'][$key], 
-                                                                                    $_POST['account'][$key], 
-                                                                                    $_POST['hours'][$key], 
+                                                                                    $_POST['account'][$key],
                                                                                     $_POST['percent'][$key]);
             }
 
@@ -231,9 +230,6 @@ class GradDB extends SpecialPage{
                                                                                              "30" => "30",
                                                                                              "20" => "20",
                                                                                              "10" => "10"));
-            $hours = new SelectBox("hours[]", "Hours per week", $supervisor['hours'], array("12" => "12", 
-                                                                                            "6" => "6",
-                                                                                            "N/A" => "N/A"));
             
             $wgOut->addHTML("
                 <fieldset>
@@ -256,10 +252,6 @@ class GradDB extends SpecialPage{
                             {$percent->render()}
                         </td>
                     </tr>
-                    <tr>
-                        <td><b>Hours/Week:</b></td>
-                        <td>{$hours->render()}</td>
-                    </tr>
                 </table>
                 </fieldset>");
             }
@@ -270,20 +262,6 @@ class GradDB extends SpecialPage{
                 
                 function initSupervisors(){
                     var parent = $('#supervisors fieldset').last();
-                    $('select[name=\"type[]\"]', parent).change(function(){
-                        if($('select[name=\"type[]\"]', parent).val() == 'GRAF'){
-                            $(\"select[name='hours[]'] option[value='12']\", parent).hide();
-                            $(\"select[name='hours[]'] option[value='6']\", parent).hide();
-                            $(\"select[name='hours[]'] option[value='N/A']\", parent).show();
-                            $(\"select[name='hours[]']\", parent).val('N/A');
-                        }
-                        else{
-                            $(\"select[name='hours[]'] option[value='12']\", parent).show()
-                            $(\"select[name='hours[]'] option[value='6']\", parent).show();
-                            $(\"select[name='hours[]'] option[value='N/A']\", parent).hide();
-                            $(\"select[name='hours[]']\", parent).val('12');
-                        }
-                    });
                     
                     $('select[name=\"type[]\"]', parent).change();
                     $('select[name=\"sup[]\"]', parent).chosen();

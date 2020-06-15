@@ -13,6 +13,9 @@ class GradDBFinancial extends BackboneModel{
     var $supervisors = array();
     var $pdf;
     var $html;
+    
+    static $AWARD = 3600;
+    static $HOURS = 12;
 
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_graddb'),
@@ -124,7 +127,7 @@ class GradDBFinancial extends BackboneModel{
         foreach($data as $row){
             $hqp = Person::newFromId($row['user_id']);
             if($hqp != null && $hqp->getId() != 0){
-                $hqps[$hqp->getName()] = $hqp;
+                $hqps[strtolower($hqp->getName())] = $hqp;
             }
         }
         return $hqps;
@@ -188,11 +191,10 @@ class GradDBFinancial extends BackboneModel{
         }
     }
     
-    function emptySupervisor($supId=0, $type="GTA", $account="", $hours=12, $percent=100, $acceptedDate=null){
+    function emptySupervisor($supId=0, $type="GTA", $account="", $percent=100, $acceptedDate=null){
         return array("supervisor" => $supId,
                      "type" => $type,
                      "account" => $account,
-                     "hours" => $hours,
                      "percent" => $percent,
                      "accepted" => $acceptedDate);
     }
@@ -264,15 +266,23 @@ class GradDBFinancial extends BackboneModel{
     }
     
     function getAward(){
-        $awardFor12Hours = 900;
-        $nMonths = count($this->getTerms())*4;
-        $hours = 0;
+        $percent = 0;
         foreach($this->getSupervisors() as $sup){
-            if($sup['hours'] != "N/A"){
-                $hours = max($hours, $sup['hours']);
+            if($sup['percent'] != "N/A"){
+                $percent += $percent/100;
             }
         }
-        return $awardFor12Hours*($hours/12)*$nMonths;
+        return self::$AWARD*$percent;
+    }
+    
+    function getHours(){
+        $percent = 0;
+        foreach($this->getSupervisors() as $sup){
+            if($sup['percent'] != "N/A"){
+                $percent += $percent/100;
+            }
+        }
+        return self::$HOURS*$percent;
     }
     
     function getStart(){
@@ -323,27 +333,16 @@ class GradDBFinancial extends BackboneModel{
         $date = date('d F Y');
         $start = date('d F Y', strtotime($this->getStart()));
         $end = date('d F Y', strtotime($this->getEnd()));
-        
-        $names = array();
-        $types = array();
+
         $accepted = array();
-        $hours = 0;
         foreach($this->getSupervisors(true) as $sup){
             $supervisor = $sup['supervisor'];
-            $names[] = "{$supervisor->getFullName()} ({$sup['percent']}%)";
-            $types[$sup['type']] = $sup['type'];
-            if($sup['hours'] != "N/A"){
-                $hours = max($hours, $sup['hours']);
-            }
             if($sup['accepted'] != null){
                 $accepted[$supervisor->getId()] = "<p>Accepted by {$supervisor->getFullName()}: <b>{$sup['accepted']}</b></p>";
             }
             else{
                 $accepted[$supervisor->getId()] = "<p>Not yet accepted by {$supervisor->getFullName()}</p>";
             }
-        }
-        if($hours == 0){
-            $hours = "N/A";
         }
 
         if($this->hasHQPAccepted()){
@@ -373,13 +372,23 @@ class GradDBFinancial extends BackboneModel{
                 <p>Dear {$this->getHQP()->getFullName()},<br />
                 <br />
                 We are pleased to offer you an appointment as a graduate assistant at the University of Alberta in accordance with the terms set out below. Should you accept this offer, your appointment will be governed by the Collective Agreement Governing Graduate Assistantships. The Agreement may be amended in accordance with terms of the Collective Agreement and such amendments are binding upon the University and the graduate assistant.</p>
-                <br />
-                <ul type='a' style='margin-left: 1em;' >
-                    <li>Type of Appointment: <b>".implode(", ", $types)."</b></li>
-                    <li>Period of Appointment: <b>{$start}</b> to <b>{$end}</b></li>
-                    <li>Maximum Hours Assigned Per Week: <b>{$hours}</b></li>
-                    <li>Stipend Per Term: Award: <b>\${$this->getAward()}</b> Salary: <b>\$YYYY</b> Total Stipend: <b>\$ZZZZ</b></li>
-                    <li>Graduate Assistantship Supervisor(s): <b>".implode(", ", $names)."</b></li>
+                <br />";
+        foreach($this->getSupervisors(true) as $sup){
+            $supervisor = $sup['supervisor'];
+            $award = self::$AWARD*$sup['percent']/100;
+            $hours = self::$HOURS*$sup['percent']/100;
+            if($hours == 0){
+                $hours = "N/A";
+            }
+            $html .= "<div>
+                Graduate Assistantship Supervisor: <b>{$supervisor->getFullName()}</b><br />
+                Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
+                Type of Appointment: <b>{$sup['type']}</b><br />
+                Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
+                Stipend Per Term: Award: <b>\${$award}</b> Salary: <b>\$YYYY</b> Total Stipend: <b>\$ZZZZ</b>
+            </div><br />";
+        }
+        $html .= "<ul type='a' style='margin-left: 1em;' >
                     <li>At the beginning of the term, the Graduate Assistantship Supervisor will meet with you to complete the Assistantship Time Use Guidelines Form (refer to Appendix C of the Graduate Student Assistantship Collective Agreement), which will form part of the graduate assistantship appointment. Note: the nature of your duties may vary from term to term depending on the needs of the department, available graduate assistantships and external factors.</li>
                     <li>The graduate assistantship offer is subject to the maintenance of satisfactory academic standing in the graduate program, as defined in the Faculty of Graduate Studies & Research Graduate Policy Manual, the Department's Graduate Studies Manual, and on satisfactory completion of the assigned duties of the graduate assistantship.</li>
                     <li>If you are not a Canadian citizen, this appointment is expressly contingent upon you meeting and continuing to meet eligibility requirements for employment, as set out in the Immigration and Refugee Protection Act and Regulations. It is further contingent upon the University of Alberta receiving regular \"confirmation,\" if required by Service Canada. Should you be ineligible for employment at any time, or should the University of Alberta be unable to obtain \"confirmation\" if required, this appointment shall be rendered null and void effective immediately.</li>
