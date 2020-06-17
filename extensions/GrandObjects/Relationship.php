@@ -50,6 +50,16 @@ class Relationship extends BackboneModel {
         return new Relationship(array());
     }
 
+    static function newFromUserUniversity($uuId){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('*'),
+                                    array('university' => EQ($uuId)));
+        $rels = array();
+        foreach($data as $row){
+            $rels[] = new Relationship(array($row));
+        }
+        return $rels;
+    }
     
     // Constructor
     function Relationship($data){

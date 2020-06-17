@@ -10,7 +10,6 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         $endDate = $this->getAttr("end", REPORTING_CYCLE_END);
         
         $hqpType = $this->getAttr('hqpType', 'grad');
-        
         $hqps = $person->getStudentInfo(Person::$studentPositions[$hqpType], $startDate, $endDate);
         foreach($hqps as $row){
             $tuple = self::createTuple();

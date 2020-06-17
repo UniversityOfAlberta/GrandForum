@@ -1,4 +1,7 @@
 <?php
+
+require_once("GradChairTable/GradChairTable.php");
+
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['GradDB'] = 'GradDB'; # Let MediaWiki know about the special page.
 $wgExtensionMessagesFiles['GradDB'] = $dir . 'GradDB.i18n.php';
@@ -96,12 +99,13 @@ class GradDB extends SpecialPage{
         
         $termSelect = new SelectBox("term", "Term", $term, $terms);
         $wgOut->addHTML("<div><span class='label'>Term:</span> {$termSelect->render()}</div><br />
+            <p>If the HQP not in the table you can <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp=0&term={$term}'>Make a Contract</a> for any eligible HQP.</p>
             <table id='hqpTable' class='wikitable' frame='box' rules='all'>
                 <thead>
                     <tr>
                         <th>HQP</th>
                         <th>Program</th>
-                        <th style='width:1%;'>Eligible</th>
+                        <th style='width:1%;'>TA Eligible</th>
                         <th style='width:1%;'>HQP Accepted</th>
                         <th style='width:1%;'>Supervisor Accepted</th>
                         <th>Financial Form</th>
@@ -113,21 +117,22 @@ class GradDB extends SpecialPage{
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
                     $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $term);
-                    $button = ($hqp->isTAEligible($date) && !$gradDBFinancial->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "";
-                    $button = ($gradDBFinancial->exists()) ? "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$gradDBFinancial->getMD5()}'>PDF</a>" : $button;
+                    $button = (!$gradDBFinancial->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$gradDBFinancial->getMD5()}'>View Contract</a>";
                     $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $hqpAccepted = ($gradDBFinancial->hasHQPAccepted()) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $hasSupervisorAccepted = array();
-                    foreach($gradDBFinancial->getSupervisors(true) as $sup){
-                        $supervisor = $sup['supervisor'];
-                        if($supervisor->getId() == 0){
-                            continue;
-                        }
-                        if($gradDBFinancial->hasSupervisorAccepted($supervisor->getId())){
-                            $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: &#10003;";
-                        }
-                        else{
-                            $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: _";
+                    if($gradDBFinancial->exists()){
+                        foreach($gradDBFinancial->getSupervisors(true) as $sup){
+                            $supervisor = $sup['supervisor'];
+                            if($supervisor->getId() == 0){
+                                continue;
+                            }
+                            if($gradDBFinancial->hasSupervisorAccepted($supervisor->getId())){
+                                $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: &#10003;";
+                            }
+                            else{
+                                $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: _";
+                            }
                         }
                     }
                     $wgOut->addHTML("<tr>
@@ -159,15 +164,23 @@ class GradDB extends SpecialPage{
     function supervisorForm($hqpId, $term){
         global $wgOut, $wgServer, $wgScriptPath, $wgMessage, $config;
         $me = Person::newFromWgUser();
-        $hqp = Person::newFromId($hqpId);
-        
-        $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $term);
-        if($gradDBFinancial->exists()){
-            $wgOut->addHTML("This entry already exists and cannot be edited");
-            return;
+        if(isset($_POST['hqp'])){
+            $hqp = Person::newFromId($_POST['hqp']);
+        }
+        else{
+            $hqp = Person::newFromId($hqpId);
+        }
+        $terms = (isset($_POST['terms'])) ? $_POST['terms'] : array($term);
+        foreach($terms as $t){
+            $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $t);
+            if($gradDBFinancial->exists()){
+                $wgOut->addHTML("This entry already exists and cannot be edited");
+                return;
+            }
         }
         if(isset($_POST['submit'])){
             // Handle Form Submit
+            $error = "";
             $gradDBFinancial->userId = $hqp->getId();
             $gradDBFinancial->term = implode(",", $_POST['terms']);
             
@@ -182,25 +195,39 @@ class GradDB extends SpecialPage{
             if(!$gradDBFinancial->exists()){
                 $gradDBFinancial->create();
             }
-            else{
-                $gradDBFinancial->update();
-            }
-            $gradDBFinancial->generatePDF();
-            $wgMessage->addSuccess("Financial Information updated");
             
-            $message = "<p>{$me->getFullName()} has filled out a funding appointment for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
-                        <p> - {$config->getValue('networkName')}</p>";
-            self::mail("dwt@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()}", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
+            if($error == ""){
+                $gradDBFinancial->generatePDF();
+                $wgMessage->addSuccess("Financial Information updated");
+                
+                $message = "<p>{$me->getFullName()} has filled out a contract for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
+                            <p> - {$config->getValue('networkName')}</p>";
+                self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()}", $message, $gradDBFinancial->getPDF(), "Contract.pdf");
 
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?term={$term}");
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?term={$term}");
+            }
         }
-
+        
+        // Form
+        $date = GradDBFinancial::term2Date($term);
+        $hqps = Person::getAllPeople(HQP);
+        $hqpNames = array("");
+        foreach($hqps as $hqp){
+            $email = str_replace("@ualberta.ca", "", $hqp->getEmail());
+            if($email != ""){
+                $email = "($email)";
+            }
+            $hqpNames[$hqp->getId()] = "{$hqp->getNameForForms()} {$email}";
+        }
+        $students = new SelectBox("hqp", "Student", $gradDBFinancial->userId, $hqpNames);
+        $students->forceKey = true;
+        $students->attr("data-placeholder", "Choose a student...");
         $terms = new VerticalCheckBox("terms", "Terms", $gradDBFinancial->getTerms(), GradDBFinancial::yearTerms($term));
         $wgOut->addHTML("<form method='POST'>
                             <table>
                                 <tr>
                                     <td><b>Student:</b></td>
-                                    <td>{$hqp->getReversedName()}</td>
+                                    <td>{$students->render()}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Term(s):</b></td>
@@ -237,20 +264,24 @@ class GradDB extends SpecialPage{
                 
                 <table>
                     <tr>
-                        <td><b>Account:</b></td>
+                        <td class='label'>Account:</td>
                         <td>{$account->render()}</td>
                     </tr>
                     <tr>
-                        <td><b>Type:</b></td>
+                        <td class='label'>Type:</td>
                         <td>
                             {$type->render()}
                         </td>
                     </tr>
                     <tr>
-                        <td><b>% Funding:</b></td>
+                        <td class='label'>% Funding:</td>
                         <td>
                             {$percent->render()}
                         </td>
+                    </tr>
+                    <tr>
+                        <td class='label'>Award:</td>
+                        <td><span class='award'></span></td>
                     </tr>
                 </table>
                 </fieldset>");
@@ -263,9 +294,13 @@ class GradDB extends SpecialPage{
                 function initSupervisors(){
                     var parent = $('#supervisors fieldset').last();
                     
-                    $('select[name=\"type[]\"]', parent).change();
                     $('select[name=\"sup[]\"]', parent).chosen();
-                
+                    
+                    $('select[name=\"percent[]\"]', parent).change(function(){
+                        var percent = parseInt($(this).val())/100;
+                        $('span.award', parent).text('$' + (900*percent*4));
+                    }).change();
+                    
                     $('.removeSupervisor', parent).click(function(){
                         $(this).closest('fieldset').remove();
                     });
@@ -277,6 +312,8 @@ class GradDB extends SpecialPage{
                 });
                 
                 initSupervisors();
+                
+                $('select[name=\"hqp\"]').chosen();
                 
             </script>");
     }
@@ -324,19 +361,19 @@ class GradDB extends SpecialPage{
                 $gradDBFinancial->setSupervisorField($me->getId(), 'accepted', currentTimeStamp());
             }
             else{
-                $wgMessage->addError("You have already accepted this Funding.");
+                $wgMessage->addError("You have already accepted this contract.");
                 return;
             }
             
             $gradDBFinancial->update();
             $gradDBFinancial->generatePDF();
-            $message = "<p>{$me->getFullName()} has accepted the funding appointment for {$gradDBFinancial->getTerm()}.
+            $message = "<p>{$me->getFullName()} has accepted the contract appointment for {$gradDBFinancial->getTerm()}.
                         <p> - {$config->getValue('networkName')}</p>";
-            self::mail("dwt@ualberta.ca", "Supervisor Funding for {$gradDBFinancial->getTerm()} Accepted", $message, $gradDBFinancial->getPDF(), "Funding.pdf");
-            $wgMessage->addSuccess("Thank you for accepting this Funding.");
+            self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()} Accepted", $message, $gradDBFinancial->getPDF(), "Contract.pdf");
+            $wgMessage->addSuccess("Thank you for accepting this contract.");
         }
         else{
-            $wgMessage->addError("This funding doesn't exist.");
+            $wgMessage->addError("This contract doesn't exist.");
         }
     }
 

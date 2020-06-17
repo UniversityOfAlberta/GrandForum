@@ -1,0 +1,60 @@
+<td><a href="<%= hqp.url %>" target="_blank"><%= hqp.name %></a></td>
+<td><%= hqp.email %></td>
+<td><%= program.replace("Graduate Student - ", "") %></td>
+<td><%= supervisors.join("; ") %></td>
+<td align="center">
+    <div class="edit">
+        <% if(!this.edit){ %>
+            <%= background %><br /><%= background_notes %>
+        <% } else { %>
+            <%= HTML.Select(this, 'background', {options: ["---","Completed","None held"]}) %>
+            <%= HTML.TextArea(this, 'background_notes') %>
+        <% } %>
+    </div>
+</td>
+<td align="center">
+    <div class="edit">
+        <% if(!this.edit){ %>
+            <%= meetings %><br /><%= meetings_notes %>
+        <% } else { %>
+            <%= HTML.Select(this, 'meetings', {options: ["---","Completed","None held"]}) %><br />
+            <%= HTML.TextArea(this, 'meetings_notes') %>
+        <% } %>
+    </div>
+</td>
+<td align="center">
+    <div class="edit">
+        <% if(!this.edit){ %>
+            <%= ethics %><br /><%= ethics_notes %>
+        <% } else { %>
+            <%= HTML.Select(this, 'ethics', {options: ["---","Completed","None held"]}) %><br />
+            <%= HTML.TextArea(this, 'ethics_notes') %>
+        <% } %>
+    </div>
+</td>
+<td align="center">
+    <div class="edit">
+        <% if(!this.edit){ %>
+            <%= courses %><br /><%= courses_notes %>
+        <% } else { %>
+            <%= HTML.Select(this, 'courses', {options: ["---","Completed","None held"]}) %><br />
+            <%= HTML.TextArea(this, 'courses_notes') %>
+        <% } %>
+    </div>
+</td>
+<td align="center">
+    <div class="edit">
+        <% if(!this.edit){ %>
+            <%= notes %>
+        <% } else { %>
+            <%= HTML.TextArea(this, 'notes') %>
+        <% } %>
+    </div>
+</td>
+<td align="center">
+    <% if(!this.edit){ %>
+        <button id="edit" type="button">Edit</button>
+    <% } else { %>
+        <span style="display:none;" class="throbber"></span><button id="save" type="button">Save</button>
+    <% } %>
+</td>

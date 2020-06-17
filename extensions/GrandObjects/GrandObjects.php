@@ -21,6 +21,7 @@ autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Grant');
 autoload_register('GrandObjects/API/PDF');
 autoload_register('GrandObjects/API/Journal');
+autoload_register('GrandObjects/API/GradDB');
 
 global $apiRequest;
 // Person
@@ -77,6 +78,9 @@ $apiRequest->addAction('Hidden','globalSearch/:group/:search', 'GlobalSearchAPI'
 $apiRequest->addAction('Hidden','journal', 'JournalAPI');
 $apiRequest->addAction('Hidden','journal/:id', 'JournalAPI');
 $apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
+//GradDB
+$apiRequest->addAction('Hidden','gradchair', 'GradChairAPI');
+$apiRequest->addAction('Hidden','gradchair/:hqpId', 'GradChairAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
@@ -95,6 +99,7 @@ function createModels(){
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Journal.js?".filemtime("extensions/GrandObjects/BackboneModels/Journal.js")."'></script>\n";
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/GradChair.js?".filemtime("extensions/GrandObjects/BackboneModels/GradChair.js")."'></script>\n";
     return true;
 }
 ?>

@@ -13,6 +13,10 @@
                         display: inline-block;
                         text-align: left;
                     }
+                    
+                    div.edit {
+                        min-width: 150px;
+                    }
                 </style>
                 <table id='chair_table' class='wikitable'>
                     <thead>
@@ -25,6 +29,7 @@
                             <th>Supervisory Committee Meetings</th>
                             <th>Ethics and FGSR Teaching Sessions</th>
                             <th>Required Courses</th>
+                            <th>Notes</th>
                             <th>Edit</th>
                         </tr>
                     </thead>
@@ -97,6 +102,14 @@
                     </td>
                 ]]>
             </ReportItem>
+            <ReportItem id="notes" type="Textarea" blobItem="NOTES" height="100px" blobSubItem="{$user_id}">
+                <![CDATA[
+                    <td align='center'>
+                        <div class='noedit'>{$value}</div>
+                        <div class='edit' style='display:none;'>{$item}</div>
+                    </td>
+                ]]>
+            </ReportItem>
             <Static>
                 <![CDATA[
                         <td>
@@ -116,6 +129,7 @@
                             [100, -1],
                             [100, "All"]
                         ],
+                        scrollX: true,
                         iDisplayLength: -1
                     });
                     $('button.editRow').click(function(){

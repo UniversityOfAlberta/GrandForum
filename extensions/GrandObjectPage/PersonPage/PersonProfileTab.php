@@ -20,6 +20,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
+        $this->showHQPHistory();
         if($this->person->getProfile() != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
@@ -184,6 +185,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->middleName = @$_POST['middle_name'];
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
+            $this->person->gender = @$_POST['gender'];
             $this->person->employeeId = @$_POST['employeeId'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
@@ -493,6 +495,26 @@ EOF;
                 </tr>";
             }
         }
+        $gender = "";
+        if($me->isAllowedToEdit($person)){
+            $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
+            $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
+            $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
+            $otherSelected = ($person->getGender() == "Gender Diverse") ? "selected='selected'" : "";
+            $noSelected = ($person->getGender() == "Prefer not to answer") ? "selected='selected'" : "";
+            $gender = "<tr>
+                <td align='right'><b>Gender:</b></td>
+                <td>
+                    <select name='gender'>
+                        <option value='' $blankSelected>---</option>
+                        <option value='Male' $maleSelected>Male</option>
+                        <option value='Female' $femaleSelected>Female</option>
+                        <option value='Gender Diverse' $otherSelected>Gender Diverse</option>
+                        <option value='Prefer not to answer' $noSelected>Prefer not to answer</option>
+                    </select>
+                </td>
+            </tr>";
+        }
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>First Name:</b></td>
@@ -515,6 +537,7 @@ EOF;
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
                             {$nationality}
+                            {$gender}
                         </table>";
         
         $this->html .= "<script type='text/javascript'>
@@ -524,5 +547,75 @@ EOF;
         $this->html .= "</td></tr>";
     }
     
+    function showHQPHistory(){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        $hqp = $this->person;
+        if($hqp->isRole(HQP) && $me->isAllowedToEdit($hqp)){
+            $universities = $hqp->getUniversities();
+            $unis = array();
+            foreach($universities as $uni){
+                if($uni['university'] == "University of Alberta" &&
+                   in_array(strtolower($uni['position']), Person::$studentPositions['grad'])){
+                    $unis[] = $uni;
+                }
+            }
+            
+            if(count($unis) > 0){
+                $currentTimeStamp = currentTimeStamp();
+                $this->html .= "<p style='font-size: 1.5em;'>HQP History</p>
+                                <table style='border-collapse: collapse;'>
+                                    <tr>
+                                        <td><b>Gender:</b></td>
+                                        <td>{$hqp->getGender()}</td>
+                                    </tr>";
+                foreach($unis as $uni){
+                    $relations = Relationship::newFromUserUniversity($uni['id']);
+                    $supervisors = array();
+                    $committee = array();
+                    foreach($relations as $relation){
+                        $person = $relation->getUser1();
+                        if($relation->getType() == SUPERVISES || 
+                           $relation->getType() == CO_SUPERVISES){
+                            $supervisors[$person->getId()] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
+                        }
+                        else{
+                            $committee[$person->getId()] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
+                        }
+                    }
+                    $expected = ($uni['end'] > $currentTimeStamp) ? " (Expected)" : "";
+                    $start = ($uni['start'] != "0000-00-00 00:00:00") ? time2date($uni['start']) : "";
+                    $end = ($uni['end'] != "0000-00-00 00:00:00") ? time2date($uni['end']) : "Not Specified";
+                    $this->html .= "
+                        <tr style='border-top: 1px solid #d3d3d3;'>
+                            <td><b>Program:</b></td>
+                            <td>{$uni['position']}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Research Area:</b></td>
+                            <td>{$uni['researchArea']}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Start Date:</b></td>
+                            <td>{$start}</td>
+                        </tr>
+                        <tr>
+                            <td><b>End Date:</b></td>
+                            <td>{$end}{$expected}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Supervisor(s):</b></td>
+                            <td>".implode("; ", $supervisors)."</td>
+                        </tr>
+                        <tr>
+                            <td><b>Committe Members:</b></td>
+                            <td>".implode("; ", $committee)."</td>
+                        </tr>";
+                }
+                $this->html .= "</table>
+                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage HQP</a>";
+            }
+        }
+    }
 }
 ?>

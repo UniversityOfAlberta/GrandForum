@@ -1290,6 +1290,24 @@ class Person extends BackboneModel {
         return $people;
     }
     
+    static function getAllTAEligible($date){
+        $date = DBFunctions::escape($date);
+        $data = DBFunctions::execSQL("SELECT DISTINCT u.user_id 
+                                      FROM mw_user u, grand_user_university uu, grand_positions p
+                                      WHERE u.user_id = uu.user_id
+                                      AND uu.position_id = p.position_id
+                                      AND ((LOWER(p.position) IN (\"".implode("\",\"", Person::$studentPositions['msc'])."\") AND DATEDIFF(uu.start_date, '{$date}') < 365*2) OR
+                                           (LOWER(p.position) IN (\"".implode("\",\"", Person::$studentPositions['phd'])."\") AND DATEDIFF(uu.start_date, '{$date}') < 365*3))
+                                      AND u.deleted != 1
+                                      AND u.candidate != 1");
+        $hqps = array();
+        foreach($data as $row){
+            $hqp = Person::newFromId($row['user_id']);
+            $hqps[strtolower($hqp->getName())] = $hqp;
+        }
+        return $hqps;
+    }
+    
     /**
      * Merges two People
      * @param Person $personToKeep The Person object to keep

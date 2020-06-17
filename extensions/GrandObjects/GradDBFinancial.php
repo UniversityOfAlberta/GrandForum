@@ -144,7 +144,8 @@ class GradDBFinancial extends BackboneModel{
             $this->supervisors = json_decode($data[0]['supervisors'], true);
         }
         if(count($this->supervisors) == 0){
-            $this->supervisors[] = $this->emptySupervisor();
+            $me = Person::newFromWgUser();
+            $this->supervisors[] = $this->emptySupervisor($me->getId());
         }
     }
     
