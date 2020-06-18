@@ -98,6 +98,13 @@ class PersonUniversitiesAPI extends RESTAPI {
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
+
+        // Send out Notifications to the supervisors
+        $supervisors = $person->getSupervisors();
+        foreach($supervisors as $supervisor){
+            Notification::addNotification($me, $supervisor, "Basic Info Added", "{$person->getNameForForms()} has been added to '{$this->POST('department')}' as a '{$this->POST('position')}'", "{$person->getUrl()}");
+        }
+        
         return $this->doGET();
     }
     
@@ -156,6 +163,24 @@ class PersonUniversitiesAPI extends RESTAPI {
             }
         }
         
+        // Check if the data is actually changing
+        $hasChanged = false;
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('*'),
+                                    array('id' => EQ($personUniversityId)));
+        if(count($data) > 0){
+            $row = $data[0];
+            if($university_id != $row['university_id'] ||
+               $department != $row['department'] ||
+               $researchArea != $row['research_area'] ||
+               $position_id != $row['position_id'] ||
+               $primary != $row['primary'] ||
+               substr($start_date, 0, 10) != str_replace("0000-00-00", "", substr($row['start_date'], 0, 10)) ||
+               substr($end_date, 10) != str_replace("0000-00-00", "", substr($row['end_date'], 0, 10))){
+                $hasChanged = true;  
+            }
+        }
+        
         DBFunctions::update('grand_user_university',
                             array('user_id' => $person->getId(),
                                   'university_id' => $university_id,
@@ -170,23 +195,46 @@ class PersonUniversitiesAPI extends RESTAPI {
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
+        
+        if($hasChanged){
+            // Send out Notifications to the supervisors
+            $supervisors = $person->getSupervisors();
+            foreach($supervisors as $supervisor){
+                Notification::addNotification($me, $supervisor, "Basic Info Changed", "{$person->getNameForForms()} has had their Basic Info changed", "{$person->getUrl()}");
+            }
+        }
+        
         return $this->doGET();
     }
     
     function doDELETE(){
-        $personUniversityId = $this->getParam('personUniversityId');
+        $personUniversityId = DBFunctions::escape($this->getParam('personUniversityId'));
         $person = Person::newFromId($this->getParam('id'));
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
+        $data = DBFunctions::execSQL("SELECT *
+                                      FROM `grand_user_university` u, `grand_positions` p
+                                      WHERE id = '$personUniversityId'
+                                      AND u.position_id = p.position_id");
         DBFunctions::delete('grand_user_university',
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
         Cache::delete("user_university_{$person->id}");
         Cache::delete("user_university_{$person->id}", true);
+        
+        // Send out Notifications to the supervisors
+        if(count($data) > 0){
+            $row = $data[0];
+            $supervisors = $person->getSupervisors();
+            foreach($supervisors as $supervisor){
+                Notification::addNotification($me, $supervisor, "Basic Info Deleted", "{$person->getNameForForms()} is no longer in '{$row['department']}' as a '{$row['position']}'", "{$person->getUrl()}");
+            }
+        }
         return json_encode(array());
     }
+
 }
 
 ?>

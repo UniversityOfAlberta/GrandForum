@@ -13,9 +13,7 @@ class Relationship extends BackboneModel {
     var $university;
     var $type;
     var $status;
-    var $projects;
     var $thesis;
-    var $projectsWaiting;
     var $startDate;
     var $endDate;
     var $comment;
@@ -70,8 +68,6 @@ class Relationship extends BackboneModel {
             $this->university = $data[0]['university'];
             $this->type = $data[0]['type'];
             $this->status = $data[0]['status'];
-            $this->projects = $data[0]['projects'];
-            $this->projectsWaiting = true;
             $this->thesis = $data[0]['thesis'];
             $this->startDate = $data[0]['start_date'];
             $this->endDate = $data[0]['end_date'];
@@ -114,23 +110,6 @@ class Relationship extends BackboneModel {
         return $this->status;
     }
     
-    // Returns an array of Project objects for this Relationship
-    function getProjects(){
-        if($this->projectsWaiting){
-            $projects = $this->projects;
-            $this->projects = array();
-            if($projects != ""){
-                $projects = unserialize($projects);
-                foreach($projects as $project){
-                    $proj = Project::newFromId($project);
-                    $this->projects[] = $proj;
-                }
-            }
-            $this->projectsWaiting = false;
-        }
-        return $this->projects;
-    }
-    
     function getThesis(){
         return $this->thesis;
     }
@@ -148,6 +127,29 @@ class Relationship extends BackboneModel {
     // Returns the comment for this Relationship
     function getComment(){
         return $this->comment;
+    }
+    
+    // Returns if any of the attributes have changed
+    function hasChanged(){
+        $data = DBFunctions::select(array('grand_relations'),
+                                    array('*'),
+                                    array('id' => EQ($this->getId())));
+        if(count($data) > 0){
+            $row = $data[0];
+            if($this->user1 != $row['user1'] ||
+               $this->user2 != $row['user2'] ||
+               $this->university != $row['university'] ||
+               $this->type != $row['type'] ||
+               $this->status != $row['status'] ||
+               $this->thesis != $row['thesis'] ||
+               substr($this->startDate, 0, 10) != str_replace("0000-00-00", "", substr($row['start_date'], 0, 10)) ||
+               substr($this->endDate, 10) != str_replace("0000-00-00", "", substr($row['end_date'], 0, 10)) ||
+               $this->comment != $row['comment']){
+                return true;  
+            }
+            return false;
+        }
+        return true;
     }
     
     function create(){
@@ -187,8 +189,18 @@ class Relationship extends BackboneModel {
                 if(count($data) > 0){
                     $this->id = $data[0]['id'];
                     Relationship::$cache = array();
+                    
+                    // Notifications between User1 & User2
                     Notification::addNotification($me, $this->getUser1(), "Relation Added", "You and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
                     Notification::addNotification($me, $this->getUser2(), "Relation Added", "You and {$this->getUser1()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
+
+                    // Send out Notifications to the supervisors of User2
+                    $supervisors = $this->getUser2()->getSupervisors();
+                    foreach($supervisors as $supervisor){
+                        if($supervisor->getId() != $me->getId()){
+                            Notification::addNotification($me, $supervisor, "Relation Added", "{$this->getUser1()->getNameForForms()} and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                        }
+                    }
                     return true;
                 }
             }
@@ -198,7 +210,7 @@ class Relationship extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if(($me->getId() == $this->user1 || $me->isRole(ADMIN)) && $this->hasChanged()){
             $status = DBFunctions::update('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
@@ -212,6 +224,18 @@ class Relationship extends BackboneModel {
                                           array('id' => EQ($this->id)));
             if($status){
                 Relationship::$cache = array();
+                
+                // Notifications between User1 & User2
+                Notification::addNotification($me, $this->getUser1(), "Relation Changed", "The '{$this->getType()}' relation between you and {$this->getUser2()->getNameForForms()} was changed", "{$this->getUser2()->getUrl()}");
+                Notification::addNotification($me, $this->getUser2(), "Relation Changed", "The '{$this->getType()}' relation between you and {$this->getUser1()->getNameForForms()} was changed", "{$this->getUser1()->getUrl()}");
+                
+                // Send out Notifications to the supervisors of User2
+                $supervisors = $this->getUser2()->getSupervisors();
+                foreach($supervisors as $supervisor){
+                    if($supervisor->getId() != $me->getId()){
+                        Notification::addNotification($me, $supervisor, "Relation Changed", "The '{$this->getType()}' relation between {$this->getUser1()->getNameForForms()} and {$this->getUser2()->getNameForForms()} was changed", "{$this->getUser2()->getUrl()}");
+                    }
+                }
                 return true;
             }
         }
@@ -225,9 +249,19 @@ class Relationship extends BackboneModel {
                                           array('id' => EQ($this->id)));
             $this->id = "";
             if($status){
+                Relationship::$cache = array();
+                
+                // Notifications between User1 & User2
                 Notification::addNotification($me, $this->getUser1(), "Relation Deleted", "You and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
                 Notification::addNotification($me, $this->getUser2(), "Relation Deleted", "You and {$this->getUser1()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser1()->getUrl()}");
-                Relationship::$cache = array();
+                
+                // Send out Notifications to the supervisors of User2
+                $supervisors = $this->getUser2()->getSupervisors();
+                foreach($supervisors as $supervisor){
+                    if($supervisor->getId() != $me->getId()){
+                        Notification::addNotification($me, $supervisor, "Relation Deleted", "{$this->getUser1()->getNameForForms()} and {$this->getUser2()->getNameForForms()} are no longer related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                    }
+                }
                 return true;
             }
         }

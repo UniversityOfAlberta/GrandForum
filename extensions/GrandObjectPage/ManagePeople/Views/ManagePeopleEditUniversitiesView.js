@@ -89,7 +89,6 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
                 }
             }
         }.bind(this));
-        console.log(requests);
         $.when.apply($, requests).then(function(){
             if(this.person.get('id') != me.get('id')){
                 // Save Relations
