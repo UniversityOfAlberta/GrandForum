@@ -15,6 +15,8 @@ class GradDBFinancial extends BackboneModel{
     var $html;
     
     static $AWARD = 3600;
+    static $SALARY = 5038;
+    static $GRAF_STIPEND = 8891;
     static $HOURS = 12;
 
     static function newFromId($id){
@@ -377,17 +379,25 @@ class GradDBFinancial extends BackboneModel{
         foreach($this->getSupervisors(true) as $sup){
             $supervisor = $sup['supervisor'];
             $award = self::$AWARD*$sup['percent']/100;
-            $hours = self::$HOURS*$sup['percent']/100;
+            $salary = self::$SALARY*$sup['percent']/100;
+            $stipend = $award + $salary;
+            $hours = number_format(self::$HOURS*$sup['percent']/100, 1);
             if($hours == 0){
                 $hours = "N/A";
             }
             $html .= "<div>
                 Graduate Assistantship Supervisor: <b>{$supervisor->getFullName()}</b><br />
                 Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
-                Type of Appointment: <b>{$sup['type']}</b><br />
-                Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
-                Stipend Per Term: Award: <b>\${$award}</b> Salary: <b>\$YYYY</b> Total Stipend: <b>\$ZZZZ</b>
-            </div><br />";
+                Type of Appointment: <b>{$sup['type']}</b><br />";
+            if($sup['type'] == "GTA" || $sup['type'] == "GRA"){
+                $html .= "Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
+                          Stipend Per Term: Award: <b>\$".number_format($award, 0)."</b> Salary: <b>\$".number_format($salary, 0)."</b> Total Stipend: <b>\$".number_format($stipend, 0)."</b>";
+            }
+            else if($sup['type'] == "GRAF" || $sup['type'] == "Fee Differential"){
+                $html .= "Maximum Hours Assigned Per Week: <b>N/A</b><br />
+                          Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$sup['percent']/100, 0)."</b>";
+            }
+            $html .="</div><br />";
         }
         $html .= "<ul type='a' style='margin-left: 1em;' >
                     <li>At the beginning of the term, the Graduate Assistantship Supervisor will meet with you to complete the Assistantship Time Use Guidelines Form (refer to Appendix C of the Graduate Student Assistantship Collective Agreement), which will form part of the graduate assistantship appointment. Note: the nature of your duties may vary from term to term depending on the needs of the department, available graduate assistantships and external factors.</li>
