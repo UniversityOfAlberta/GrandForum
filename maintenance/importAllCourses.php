@@ -56,8 +56,8 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 15347", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 15348", true);  
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 16878", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 16879", true);  
     
     $dataDir = "csv_old/";
     $courseDescrFile = "allCoursesDescription.csv";
@@ -128,7 +128,7 @@
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
                 $person = Person::newFromEmployeeId($employeeID);
                 
-                if($person == null || !$person->isRole("Faculty of Arts")){
+                if($person == null || !$person->isRole("ATSEC")){
                     continue;
                 }
  
