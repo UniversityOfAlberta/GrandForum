@@ -39,6 +39,9 @@ class PersonProductsReportItemSet extends ReportItemSet {
                     }
                 }
             }
+            if($onlyHQP){
+                $start_date = strtotime("{$start_date} -2 year"); // Extend the year to 2 years ago so that publications after graduation are still counted
+            }
             $products = array_merge($products, $person->getPapersAuthored($cat, $start_date, $end_date, $includeHQP, true, false, $onlyUseStartDate));
             if($onlyHQP){
                 foreach($products as $key => $product){
@@ -46,8 +49,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
                         unset($products[$key]);
                     }
                 }
-                $yearAgo = strtotime("{$start_date} -2 year"); // Extend the year to 2 years ago so that publications after graduation are still counted
-                $hqps = $person->getHQPDuring($yearAgo, $end_date);
+                $hqps = $person->getHQPDuring($start_date, $end_date);
                 foreach($products as $key => $product){
                     $found = false;
                     foreach($hqps as $hqp){
