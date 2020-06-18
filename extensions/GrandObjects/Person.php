@@ -3673,7 +3673,9 @@ class Person extends BackboneModel {
         $papersArray = array();
         $papers = array();
         if($includeHQP){
-            foreach($this->getHQPDuring($startRange, $endRange) as $hqp){
+            $yearAgo = strtotime("{$startRange} -2 year"); // Extend the year to 2 years ago so that publications after graduation are still counted
+            $yearAgo = date('Y-m-d', $yearAgo);
+            foreach($this->getHQPDuring($yearAgo, $endRange) as $hqp){
                 $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false, $networkRelated, $useReported, $onlyUseStartDate);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
