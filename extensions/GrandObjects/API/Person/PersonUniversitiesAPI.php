@@ -102,7 +102,7 @@ class PersonUniversitiesAPI extends RESTAPI {
         // Send out Notifications to the supervisors
         $supervisors = $person->getSupervisors();
         foreach($supervisors as $supervisor){
-            Notification::addNotification($me, $supervisor, "Basic Info Added", "{$person->getNameForForms()} has been added to '{$this->POST('department')}' as a '{$this->POST('position')}'", "{$person->getUrl()}");
+            Notification::addNotification($me, $supervisor, "Basic Info Added", "{$person->getNameForForms()} has been added to '{$this->POST('department')}' as a '{$this->POST('position')}'", "{$person->getUrl()}", !($supervisor->isMe()));
         }
         
         return $this->doGET();
@@ -200,7 +200,7 @@ class PersonUniversitiesAPI extends RESTAPI {
             // Send out Notifications to the supervisors
             $supervisors = $person->getSupervisors();
             foreach($supervisors as $supervisor){
-                Notification::addNotification($me, $supervisor, "Basic Info Changed", "{$person->getNameForForms()} has had their Basic Info changed", "{$person->getUrl()}");
+                Notification::addNotification($me, $supervisor, "Basic Info Changed", "{$person->getNameForForms()} has had their Basic Info changed", "{$person->getUrl()}", !($supervisor->isMe()));
             }
         }
         
@@ -229,7 +229,7 @@ class PersonUniversitiesAPI extends RESTAPI {
             $row = $data[0];
             $supervisors = $person->getSupervisors();
             foreach($supervisors as $supervisor){
-                Notification::addNotification($me, $supervisor, "Basic Info Deleted", "{$person->getNameForForms()} is no longer in '{$row['department']}' as a '{$row['position']}'", "{$person->getUrl()}");
+                Notification::addNotification($me, $supervisor, "Basic Info Deleted", "{$person->getNameForForms()} is no longer in '{$row['department']}' as a '{$row['position']}'", "{$person->getUrl()}", !($supervisor->isMe()));
             }
         }
         return json_encode(array());

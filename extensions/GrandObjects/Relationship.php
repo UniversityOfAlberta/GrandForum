@@ -198,7 +198,7 @@ class Relationship extends BackboneModel {
                     $supervisors = $this->getUser2()->getSupervisors();
                     foreach($supervisors as $supervisor){
                         if($supervisor->getId() != $me->getId()){
-                            Notification::addNotification($me, $supervisor, "Relation Added", "{$this->getUser1()->getNameForForms()} and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}");
+                            Notification::addNotification($me, $supervisor, "Relation Added", "{$this->getUser1()->getNameForForms()} and {$this->getUser2()->getNameForForms()} are related through the '{$this->getType()}' relation", "{$this->getUser2()->getUrl()}", true);
                         }
                     }
                     return true;
