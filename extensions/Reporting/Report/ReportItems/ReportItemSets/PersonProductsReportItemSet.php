@@ -46,7 +46,9 @@ class PersonProductsReportItemSet extends ReportItemSet {
                         unset($products[$key]);
                     }
                 }
-                $hqps = $person->getHQPDuring($start_date, $end_date);
+                $yearAgo = strtotime("{$start_date} -2 year"); // Extend the year to 2 years ago so that publications after graduation are still counted
+                $yearAgo = date('Y-m-d', $yearAgo);
+                $hqps = $person->getHQPDuring($yearAgo, $end_date);
                 foreach($products as $key => $product){
                     $found = false;
                     foreach($hqps as $hqp){
