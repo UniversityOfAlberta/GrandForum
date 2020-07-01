@@ -149,7 +149,13 @@ class GradDB extends SpecialPage{
         }
         $wgOut->addHTML("</tbody></table>
         <script type='text/javascript'>
-            $('#hqpTable').DataTable();
+            $('#hqpTable').DataTable({
+                aLengthMenu: [
+                    [25, 50, 100, 200, -1],
+                    [25, 50, 100, 200, 'All']
+                ],
+                iDisplayLength: -1
+            });
             $('select[name=term]').change(function(){
                 document.location = wgServer + wgScriptPath + '/index.php/Special:GradDB?term=' + $('select[name=term]').val();
             });
