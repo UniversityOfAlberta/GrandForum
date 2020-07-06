@@ -180,6 +180,13 @@ class PersonUniversitiesAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in");
         }
+        DBFunctions::select(array('grand_relations'),
+                            array('id'),
+                            array('university' => EQ($personUniversityId),
+                                  'user1' => NEQ($me->getId())));
+        if(DBFunctions::getNRows() > 0){
+            $this->throwError("This University cannot be deleted, there are still relations linked to it (possibly by someone else)");
+        }
         DBFunctions::delete('grand_user_university',
                             array('id' => $personUniversityId));
         $person->universityDuring = array();
