@@ -55,16 +55,33 @@ class ProjectFESReportTab extends AbstractEditableTab {
             $q2 = $this->getBlobData("Q2", $y);
             $q3 = $this->getBlobData("Q3", $y);
             
+            $q4 = $this->getBlobData("Q4", $y);
+            $q5 = $this->getBlobData("Q5", $y);
+            $q6 = $this->getBlobData("Q6", $y);
+            $q7 = $this->getBlobData("Q7", $y);
+            
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)."</h3>
+            $this->html .= "<h3>Explain the research progress made during the past fiscal year towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring).</h3>
                             {$q1}
                             
-                            <h3>Did you change your milestones for this year and moving forward? If so, why?</h3>
+                            <h3>What challenges did you face over the past fiscal year in addressing your research objectives, and what measures did you adopt in response to these challenges?</h3>
+                            {$q4}
+                            
+                            <h3>What specific research objectives do you plan to complete during the current fiscal year, and how will these help you advance in achieving your overarching objectives?</h3>
+                            {$q5}
+                            
+                            <h3>Did you modify your project milestones for the current fiscal year and any future years? If so, provide a rationale that supports the changes made.</h3>
                             {$q2}
                             
-                            <h3>What steps did you take to ensure equity, diversity and inclusion (EDI) within your team?</h3>
+                            <h3>Explain how equity, diversity, and inclusivity have been considered in the design of your research, composition of the project team, and/or formation of the training plan. Mention specific issues in your research field if applicable.</h3>
                             {$q3}
+                            
+                            <h3>Have you or your team attended any EDI events this year? If so, list them and indicate who attended from your team.</h3>
+                            {$q6}
+                            
+                            <h3>Are there any resources or opportunities that would help to better support EDI within your team?</h3>
+                            {$q7}
             ";
             $this->html .= "</div>";
         }
@@ -92,24 +109,33 @@ class ProjectFESReportTab extends AbstractEditableTab {
             $q2 = $this->getBlobData("Q2", $y);
             $q3 = $this->getBlobData("Q3", $y);
             
+            $q4 = $this->getBlobData("Q4", $y);
+            $q5 = $this->getBlobData("Q5", $y);
+            $q6 = $this->getBlobData("Q6", $y);
+            $q7 = $this->getBlobData("Q7", $y);
+            
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>Provide a brief description of your research progress during FY".($y - $phaseYear + 2)." <small>(300 words)</small></h3>
-                            Please focus on scholarly and not administrative activities
+            $this->html .= "<h3>Explain the research progress made during the past fiscal year towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring). <small>(300 words)</small></h3>
                             <textarea name='report_q1[$y]' style='height:200px;resize: vertical;'>{$q1}</textarea>
                             
-                            <h3>Did you change your milestones for this year and moving forward? If so, why? <small>(300 words)</small></h3>
+                            <h3>What challenges did you face over the past fiscal year in addressing your research objectives, and what measures did you adopt in response to these challenges? <small>(250 words)</small></h3>
+                            <textarea name='report_q4[$y]' style='height:200px;resize: vertical;'>{$q4}</textarea>
+                            
+                            <h3>What specific research objectives do you plan to complete during the current fiscal year, and how will these help you advance in achieving your overarching objectives? <small>(250 words)</small></h3>
+                            <textarea name='report_q5[$y]' style='height:200px;resize: vertical;'>{$q5}</textarea>
+                            
+                            <h3>Did you modify your project milestones for the current fiscal year and any future years? If so, provide a rationale that supports the changes made. <small>(250 words)</small></h3>
                             <textarea name='report_q2[$y]' style='height:200px;resize: vertical;'>{$q2}</textarea>
                             
-                            <h3>What steps did you take to ensure equity, diversity and inclusion (EDI) within your team?</h3>
-                            <small>Suggested topics to address<br />
-                                <ul>
-                                   <li>What are the EDI issues in your field?</li>
-                                   <li>How are you using this project to address them?</li>
-                                   <li>Have you or any of your team members attended EDI related events/workshops during the past year?  If yes, please provide the event title(s).</li>
-                                </ul>
-                            </small>
+                            <h3>Explain how equity, diversity, and inclusivity have been considered in the design of your research, composition of the project team, and/or formation of the training plan. Mention specific issues in your research field if applicable.</h3>
                             <textarea name='report_q3[$y]' style='height:200px;resize: vertical;'>{$q3}</textarea>
+                            
+                            <h3>Have you or your team attended any EDI events this year? If so, list them and indicate who attended from your team.</h3>
+                            <textarea name='report_q6[$y]' style='height:200px;resize: vertical;'>{$q6}</textarea>
+                            
+                            <h3>Are there any resources or opportunities that would help to better support EDI within your team?</h3>
+                            <textarea name='report_q7[$y]' style='height:200px;resize: vertical;'>{$q7}</textarea>
             ";
             $this->html .= "</div>";
         }
@@ -118,19 +144,11 @@ class ProjectFESReportTab extends AbstractEditableTab {
     
     function handleEdit(){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
-        if(isset($_POST['report_q1'])){
-            foreach($_POST['report_q1'] as $year => $q){
-                $this->saveBlobData("Q1", $year, $q);
-            }
-        }
-        if(isset($_POST['report_q2'])){
-            foreach($_POST['report_q2'] as $year => $q){
-                $this->saveBlobData("Q2", $year, $q);
-            }
-        }
-        if(isset($_POST['report_q3'])){
-            foreach($_POST['report_q3'] as $year => $q){
-                $this->saveBlobData("Q3", $year, $q);
+        for($i = 1; $i <= 7; $i++){
+            if(isset($_POST["report_q$i"])){
+                foreach($_POST["report_q$i"] as $year => $q){
+                    $this->saveBlobData("Q$i", $year, $q);
+                }
             }
         }
         header("Location: {$this->project->getUrl()}?tab=reporting");
