@@ -106,9 +106,24 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
             if(refresh){
                 this.person.fetch();
             }
-        }.bind(this)).fail(function(){
-            addError("Universities could not be saved");
-        });
+        }.bind(this)).fail(function(e){
+            // Save Relations
+            _.each(this.universityViews, function(view){
+                view.editRelations.saveAll();
+            });
+            this.editRelations.saveAll();
+            
+            // After saving, disassociate relations
+            _.each(this.universityViews, function(view){
+                view.editRelations.disassociate();
+            });
+            
+            addError(e.responseText);
+            
+            if(refresh){
+                this.person.fetch();
+            }
+        }.bind(this));
         return requests;
     },
     

@@ -390,12 +390,15 @@ HTML.MiscAutoComplete = function(view, attr, options){
         });
     };
     view.events['change input[name=' + HTML.Name(attr) + ']'] = evt;
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
             source: options.misc,
             select: evt
         });
     });
+    
     return $(el).parent().html();
 }
 
