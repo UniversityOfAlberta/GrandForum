@@ -6,7 +6,7 @@ class PeopleManagedAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             $people = array();
-            if($me->isRoleAtLeast(ADMIN)){
+            if($me->isRoleAtLeast(ADMIN) || $me->isRole(HQP)){
                 $people[$me->getReversedName()] = $me;
             }
             foreach($me->getRelations('all', true) as $type){

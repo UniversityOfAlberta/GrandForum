@@ -1,5 +1,5 @@
 <tr style="height: 58px;">
-    <td class="institutionCell" <% if(this.person.get('id') != me.get('id')){ %>rowspan="2" style="border-bottom:3px solid #007d43; vertical-align: top;" <% } %>>
+    <td class="institutionCell" <% if(this.person.get('id') != me.get('id') || this.hqpView){ %>rowspan="2" style="border-bottom:3px solid #007d43; vertical-align: top;" <% } %>>
         <table>
             <tr><td align="right"><b>Institution:</b></td><td><%= HTML.Select(this, "university", {options: allUniversities}) %></td></tr>
             <tr><td align="right"><b>Department:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
@@ -27,14 +27,14 @@
             <tr><td align="right"><b title="Primary means this institution has priority over other overlapping institutions." class="tooltip">Primary?</b></td><td><%= HTML.CheckBox(this, 'primary', {value: 1, default: 0}) %></td></tr>
         </table>
     </td>
-    <% if(this.person.get('id') != me.get('id')){ %>
+    <% if(this.person.get('id') != me.get('id') || this.hqpView){ %>
         <td align="center"><button id="addRelation" type="button">Add Relationship</button></td>
     <% } %>
     <td style="white-space: nowrap;" align="center" id="uniStart"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
     <td style="white-space: nowrap;" align="center" id="uniEnd"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
     <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: "true", default: "false"}) %></td>
 </tr>
-<% if(this.person.get('id') != me.get('id')){ %>
+<% if(this.person.get('id') != me.get('id') || this.hqpView){ %>
 <tr>
     <td colspan="4" class="relations" style="border-bottom:3px solid #007d43;"></td>
 </tr>

@@ -116,11 +116,17 @@ class Relationship extends BackboneModel {
     
     // Returns the startDate for this Relationship
     function getStartDate(){
+        if($this->startDate == ""){
+            return "0000-00-00";
+        }
         return substr($this->startDate, 0, 10);
     }
     
     // Returns the endDate for this Relationship
     function getEndDate(){
+        if($this->endDate == ""){
+            return "0000-00-00";
+        }
         return substr($this->endDate, 0, 10);
     }
     
@@ -143,7 +149,7 @@ class Relationship extends BackboneModel {
                $this->status != $row['status'] ||
                $this->thesis != $row['thesis'] ||
                substr($this->startDate, 0, 10) != str_replace("0000-00-00", "", substr($row['start_date'], 0, 10)) ||
-               substr($this->endDate, 10) != str_replace("0000-00-00", "", substr($row['end_date'], 0, 10)) ||
+               substr($this->endDate, 0, 10) != str_replace("0000-00-00", "", substr($row['end_date'], 0, 10)) ||
                $this->comment != $row['comment']){
                 return true;  
             }
@@ -154,7 +160,7 @@ class Relationship extends BackboneModel {
     
     function create(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if($me->getId() == $this->user1 || $me->getId() == $this->user2 || $me->isRole(ADMIN)){
             DBFunctions::begin();
             $status = DBFunctions::insert('grand_relations',
                                           array('user1' => $this->user1,
@@ -210,7 +216,7 @@ class Relationship extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if(($me->getId() == $this->user1 || $me->isRole(ADMIN)) && $this->hasChanged()){
+        if(($me->getId() == $this->user1 || $me->getId() == $this->user2 || $me->isRole(ADMIN)) && $this->hasChanged()){
             $status = DBFunctions::update('grand_relations',
                                           array('user1' => $this->user1,
                                                 'user2' => $this->user2,
@@ -244,7 +250,7 @@ class Relationship extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if($me->getId() == $this->user1 || $me->getId() == $this->user2 || $me->isRole(ADMIN)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
             $this->id = "";

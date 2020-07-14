@@ -30,6 +30,7 @@ $apiRequest->addAction('Hidden','person/:id/universities', 'PersonUniversitiesAP
 $apiRequest->addAction('Hidden','person/:id/universities/:personUniversityId', 'PersonUniversitiesAPI');
 $apiRequest->addAction('Hidden','person/:id/roles', 'PersonRolesAPI');
 $apiRequest->addAction('Hidden','person/:id/relations', 'PersonRelationsAPI');
+$apiRequest->addAction('Hidden','person/:id/relations/inverse', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/:relId', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/bibtex', 'PersonProductAPI');

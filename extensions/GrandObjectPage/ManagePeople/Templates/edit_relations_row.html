@@ -1,7 +1,7 @@
 <td align="right" class="relationCell">
     <table cellspacing="0" style="width:100%;display:inline-block;vertical-align:middle;">
         <tr>
-            <td rowspan="4" class="dots">
+            <td rowspan="5" class="dots">
                 &middot;&middot;<br />
                 &middot;&middot;<br />
                 &middot;&middot;<br />
@@ -15,6 +15,14 @@
                 &middot;&middot;<br />
                 &middot;&middot;<br />
             </td>
+            <% if(this.hqpView){ %>
+                <td align="right"><b>Supervisor:</b></td>
+                <td align="left"><%= HTML.Select(this, 'user1', {options: [""].concat(this.allPeople.map(function(person){ return {option: person.get('fullName'), value: person.get('id')}; }))}) %></td>
+            <% } else { %>
+                <td colspan="2"></td>
+            <% } %>
+        </tr>
+        <tr>
             <td colspan="2">
                 <%= HTML.Select(this, 'type', {options: ['Supervises', 'Co-Supervises', 'Supervisory-Committee member', 'Examining-Committee member', 'Examining-Committee chair'], sorted: false}) %>
             </td>

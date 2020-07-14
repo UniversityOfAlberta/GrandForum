@@ -2785,13 +2785,15 @@ class Person extends BackboneModel {
      * Returns the Relationships this Person has
      * @param string $type The type of Relationship
      * @param boolean $history Whether or not to include the full history of Relationships
+     * @param boolean $inverse Whether or not to query by user1 (false) or user2 (true)
      * @return array The Relationships this Person has
      */
-    function getRelations($type='all', $history=false){
+    function getRelations($type='all', $history=false, $inverse=false){
+        $col = ($inverse) ? "user1" : "user2";
         if($type == "all"){
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
+                    WHERE `{$col}` = '{$this->id}'
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'
@@ -2803,7 +2805,8 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
-                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                if($relation->getUser1() != null && $relation->getUser1()->getId() > 0 &&
+                   $relation->getUser2() != null && $relation->getUser2()->getId() > 0){
                     $this->relations[$row['type']][$row['id']] = $relation;
                 }
             }
@@ -2812,7 +2815,7 @@ class Person extends BackboneModel {
         else if($type == "public"){
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
+                    WHERE `{$col}` = '{$this->id}'
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'
@@ -2824,7 +2827,8 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
                 $relation = Relationship::newFromId($row['id']);
-                if($relation->getUser2() != null && $relation->getUser2()->getId() > 0){
+                if($relation->getUser1() != null && $relation->getUser1()->getId() > 0 &&
+                   $relation->getUser2() != null && $relation->getUser2()->getId() > 0){
                     $this->relations[$row['type']][$row['id']] = $relation;
                 }
             }
@@ -2834,7 +2838,7 @@ class Person extends BackboneModel {
             $this->relations[$type] = array();
             $sql = "SELECT id, type
                     FROM grand_relations, mw_user u1, mw_user u2
-                    WHERE user1 = '{$this->id}'
+                    WHERE `{$col}` = '{$this->id}'
                     AND u1.user_id = user1
                     AND u2.user_id = user2
                     AND u1.deleted != '1'

@@ -27,12 +27,29 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:defaultRoute', function (actions) {
-    main.set('title', 'HQP Management');
-    this.closeCurrentView();
-    var people = new People();
-    people.roles = ['managed'];
-    people.fetch({reset: true});
-    this.currentView = new ManagePeopleView({el: $("#currentView"), model: people});
+    if(_.where(me.get('roles'), {role: HQP}).length > 0){
+        main.set('title', 'Supervisor Management');
+        this.closeCurrentView();
+        $("#currentView").css("border", "1px solid #AAAAAA");
+        this.currentView = new ManagePeopleEditUniversitiesView({el: $("#currentView"), model: me.universities, 
+                                                                                        person: me,
+                                                                                        hqpView: true});
+        $("#currentView").after("<input type='button' id='addUniversity' value='Add Institution' /><br /><input type='button' id='save' value='Save' />");
+        $('#addUniversity').click(function(){
+            this.currentView.addUniversity();
+        }.bind(this));
+        $('#save').click(function(){
+            this.currentView.saveAll();
+        }.bind(this));
+    }
+    else{
+        main.set('title', 'HQP Management');
+        this.closeCurrentView();
+        var people = new People();
+        people.roles = ['managed'];
+        people.fetch({reset: true});
+        this.currentView = new ManagePeopleView({el: $("#currentView"), model: people});
+    }
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

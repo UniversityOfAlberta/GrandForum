@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <th class="institutionCell">Institution</th>
-            <% if(this.person.get('id') != me.get('id')){ %>
+            <% if(this.person.get('id') != me.get('id') || this.hqpView){ %>
                 <th class="relationCell">Relationships</th>
             <% } %>
             <th class="startDateCell" style="white-space: nowrap;">Start Date</th>
@@ -11,7 +11,7 @@
             <th class="deleteCell">Delete?</th>
         </tr>
     </thead>
-    <% if(this.person.get('id') != me.get('id')){ %>
+    <% if(this.person.get('id') != me.get('id') || this.hqpView){ %>
         <tfoot>
             <tr>
                 <td class="orphansLabel tooltip" title="Orphaned Relationships are relationships which no longer belong to a specific university.  You can assign the relationship to a university by dragging it up to one of the existing universities or you can leave it here.  If the relationship is left orphaned it may have unintended results in the Annual Report.">Orphaned Relationships:</td>

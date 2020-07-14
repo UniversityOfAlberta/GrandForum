@@ -4,10 +4,15 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     person: null,
     university: null,
     relationViews: null,
+    hqpView: false,
+    allPeople: new Array(),
 
     initialize: function(options){
         this.person = options.person;
         this.university = options.university;
+        if(typeof options.hqpView != 'undefined'){
+            this.hqpView = options.hqpView;
+        }
         this.relationViews = new Array();
         this.template = _.template($('#edit_relations_template').html());
         this.model.ready().then(function(){
@@ -110,8 +115,8 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     addRelation: function(){
         this.relations.add(new PersonRelation({type: 'Supervises', 
-                                               user1: me.get('id'), 
-                                               user2: this.person.get('id'),
+                                               user1: (this.hqpView) ? "" : me.get('id'), 
+                                               user2: (this.hqpView) ? me.get('id') : this.person.get('id'),
                                                startDate: this.university.get('startDate'),
                                                endDate: this.university.get('endDate'),
                                                university: this.university.get('id'),
@@ -127,7 +132,8 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         var relations = this.getRelations();
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
-                var view = new ManagePeopleEditRelationsRowView({model: relation});
+                var view = new ManagePeopleEditRelationsRowView({model: relation, hqpView: this.hqpView});
+                view.allPeople = this.allPeople;
                 this.$("#relation_rows").append(view.render());
                 this.relationViews[i] = view;
             }
@@ -178,9 +184,30 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     tagName: 'tr',
+    hqpView: false,
+    owner: null,
+    target: null,
+    allPeople: new Array(),
     
-    initialize: function(){
+    initialize: function(options){
+        this.owner = this.model.getOwner();
+        this.target = this.model.getTarget();
+        if(typeof options.hqpView != 'undefined'){
+            this.hqpView = options.hqpView;
+        }
+        
         this.listenTo(this.model, "change", this.update);
+        this.listenTo(this.model, "change:user1", function(){
+            this.owner = this.allPeople.get(this.model.get('user1'));
+            this.render();
+        }.bind(this));
+        
+        this.listenTo(this.owner, "sync", this.render);
+        this.listenTo(this.target, "sync", this.render);
+        
+        this.owner.fetch();
+        this.target.fetch();
+        
         this.template = _.template($('#edit_relations_row_template').html());
     },
     
@@ -263,6 +290,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.update();
         this.$("[name=status]").css('max-width', '228px').css('width', '228px');
+        this.$("[name=user1]").chosen();
         _.defer(function(){
             this.$("[name=startDate]").change();
             this.$("[name=endDate]").change();

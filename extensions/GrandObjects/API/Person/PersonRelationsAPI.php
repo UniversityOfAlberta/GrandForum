@@ -4,9 +4,11 @@ class PersonRelationsAPI extends RESTAPI {
 
     function doGET(){
         $person = Person::newFromId($this->getParam('id'));
-        $relations = $person->getRelations('all', true);
+        $inverse = ($this->getParam('inverse') == "");
+        $relations = $person->getRelations('all', true, $inverse);
         if($this->getParam('relId') != ""){
             // Single Relation
+            $relations = array_merge($relations, $person->getRelations('all', true, !$inverse));
             foreach($relations as $type){
                 foreach($type as $id => $relation){
                     if($id == $this->getParam('relId')){

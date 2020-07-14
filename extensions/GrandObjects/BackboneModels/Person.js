@@ -10,6 +10,9 @@ Person = Backbone.Model.extend({
         this.relations = new PersonRelations();
         this.relations.url = this.urlRoot + '/' + this.get('id') + '/relations';
         
+        this.inverseRelations = new PersonRelations();
+        this.inverseRelations.url = this.urlRoot + '/' + this.get('id') + '/relations/inverse';
+        
         this.products = new PersonProducts();
         this.products.url = this.urlRoot + '/' + this.get('id') + '/products';
         

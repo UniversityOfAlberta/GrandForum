@@ -10,7 +10,7 @@ class ManagePeople extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromWgUser();
-        return $me->isRoleAtLeast(NI);
+        return $me->isRoleAtLeast(HQP);
     }
     
     function getTemplates(){
@@ -58,6 +58,9 @@ class ManagePeople extends BackbonePage {
             $title = "Manage HQP";
             if($me->isRoleAtLeast(STAFF)){
                 $title = "Manage People";
+            }
+            else if($me->isRole(HQP)) {
+                $title = "Manage Supervisors";
             }
             $toolbox['People']['links'][] = TabUtils::createToolboxLink($title, "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
         }

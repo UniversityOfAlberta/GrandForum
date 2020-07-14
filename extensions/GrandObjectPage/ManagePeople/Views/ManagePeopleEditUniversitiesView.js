@@ -5,11 +5,26 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     universityViews: null,
     editRelations: null,
     interval: null,
+    hqpView: false,
+    allPeople: null,
 
     initialize: function(options){
+        this.allPeople = new People();
+        this.allPeople.roles = [CI];
+        this.allPeople.simple = true;
+        this.allPeople.fetch();
+        
         this.person = options.person;
+        if(typeof options.hqpView != 'undefined'){
+            this.hqpView = options.hqpView;
+        }
         this.model.fetch();
-        me.relations.fetch();
+        if(this.hqpView){
+            me.inverseRelations.fetch();
+        }
+        else{
+            me.relations.fetch();
+        }
         this.template = _.template($('#edit_universities_template').html());
         this.universityViews = new Array();
         
@@ -90,7 +105,7 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
             }
         }.bind(this));
         $.when.apply($, requests).then(function(){
-            if(this.person.get('id') != me.get('id')){
+            if(this.person.get('id') != me.get('id') || this.hqpView){
                 // Save Relations
                 _.each(this.universityViews, function(view){
                     view.editRelations.saveAll();
@@ -141,7 +156,10 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
     addRows: function(){
         this.universities.each(function(university, i){
             if(this.universityViews[i] == null){
-                var view = new ManagePeopleEditUniversitiesRowView({model: university, person: this.person});
+                var view = new ManagePeopleEditUniversitiesRowView({model: university, 
+                                                                    person: this.person, 
+                                                                    hqpView: this.hqpView,
+                                                                    parent: this});
                 this.$("#university_table").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -158,10 +176,11 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
         this.$el.empty();
         this.$el.html(this.template());
         this.addRows();
-        if(this.person.get('id') != me.get('id')){
-            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+        if(this.person.get('id') != me.get('id') || this.hqpView){
+            this.editRelations = new ManagePeopleEditRelationsView({model: (this.hqpView) ? me.inverseRelations : me.relations, 
                                                                     person: this.person, 
                                                                     university: null,
+                                                                    hqpView: this.hqpView,
                                                                     el: this.$("#orphans")});
         }
         return this.$el;
@@ -174,9 +193,15 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
     tagName: 'tbody',
     person: null,
     editRelations: null,
+    parent: null,
+    hqpView: false,
     
     initialize: function(options){
         this.person = options.person;
+        if(typeof options.hqpView != 'undefined'){
+            this.hqpView = options.hqpView;
+        }
+        this.parent = options.parent;
         this.listenTo(this.model, "change", this.update);
         this.template = _.template($('#edit_universities_row_template').html());
     },
@@ -257,11 +282,13 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
             this.$("#uniStart [name=startDate]").change();
             this.$("#uniEnd [name=endDate]").change();
         }.bind(this));
-        if(this.person.get('id') != me.get('id')){
-            this.editRelations = new ManagePeopleEditRelationsView({model: me.relations, 
+        if(this.person.get('id') != me.get('id') || this.hqpView){
+            this.editRelations = new ManagePeopleEditRelationsView({model: (this.hqpView) ? me.inverseRelations : me.relations, 
                                                                     person: this.person, 
                                                                     university: this.model,
+                                                                    hqpView: this.hqpView,
                                                                     el: this.$(".relations")});
+            this.editRelations.allPeople = this.parent.allPeople;
         }
         return this.$el;
     }, 
