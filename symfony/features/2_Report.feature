@@ -39,11 +39,25 @@ Feature: Reporting
         And I should see "C: 000000111111222222333333444444555555"
         And I should see "C After: 5"
         And I should see "PASSED CONDITION"
+        
+    Scenario: Testing setters/getters 2
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report&section=Section+7"
+        Then I should see "012345"
 
     Scenario: HQP attempts to view an NI-only report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=Report"
         Then I should see "Permission error"
+        
+    Scenario: Guest tries to access report
+        Given I am on "index.php/Special:Report?report=LoggedIn"
+        Then I should see "Permission Error"
+        
+    Scenario: HQP tries to access report
+        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        When I go to "index.php/Special:Report?report=LoggedIn"
+        Then I should see "Section 1"
         
     Scenario: NI edits a field in the report
         Given I am logged in as "NI.User1" using password "NI.Pass1"

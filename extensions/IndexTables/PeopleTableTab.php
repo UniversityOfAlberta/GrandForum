@@ -89,6 +89,9 @@ class PeopleTableTab extends AbstractTab {
             if($config->getValue('ecrEnabled')){
                 $statusHeader .= "<th>ECR</th>";
             }
+            if($config->getValue('mitacsEnabled')){
+                $statusHeader .= "<th>MITACS</th>";
+            }
             if($me->isRoleAtLeast(MANAGER)){
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
@@ -161,16 +164,13 @@ class PeopleTableTab extends AbstractTab {
                 }
                 $this->html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
             }
-
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
-                $history = ($config->getValue('networkName') == "GlycoNet");
                 $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
-                        $project->getPhase() == PROJECT_PHASE &&
                         $project->getStatus() != "Proposed" &&
-                        $person->isRole($this->table, $project)){
+                        ($person->isRole($this->table, $project) || ($this->past !== false && $person->isRoleDuring($this->table, $start, $end, $project)))){
                         $subprojs = array();
                         foreach($project->getSubProjects() as $subproject){
                             if($person->isMemberOf($subproject)){
@@ -195,7 +195,8 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Active";
                 }
                 else{
-                    $status = "Inactive";                
+                    $lastRole = $person->getRole(HQP, true);
+                    $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
                 $this->html .= "<td align='left'>{$person->getGender()}</td>";
                 if($config->getValue('crcEnabled')){
@@ -204,6 +205,9 @@ class PeopleTableTab extends AbstractTab {
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
+                if($config->getValue('mitacsEnabled')){
+                    $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
                 if($me->isRoleAtLeast(MANAGER)){
                     $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";

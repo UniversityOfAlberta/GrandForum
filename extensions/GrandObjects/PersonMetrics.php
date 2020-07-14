@@ -13,6 +13,11 @@ class PersonMetrics {
     var $gs_hindex;
     var $gs_i10_index;
     var $gs_citations = array();
+    var $scopus_document_count;
+    var $scopus_cited_by_count;
+    var $scopus_citation_count;
+    var $scopus_h_index;
+    var $scopus_coauthor_count;
     var $change_date;
 
     // constructor
@@ -25,6 +30,11 @@ class PersonMetrics {
             $this->gs_i10_index_5_years = $data[0]['gs_i10_index_5_years'];
             $this->gs_hindex = $data[0]['gs_hindex'];
             $this->gs_i10_index = $data[0]['gs_i10_index'];
+            $this->scopus_document_count = $data[0]['scopus_document_count'];
+            $this->scopus_cited_by_count = $data[0]['scopus_cited_by_count'];
+            $this->scopus_citation_count = $data[0]['scopus_citation_count'];
+            $this->scopus_h_index = $data[0]['scopus_h_index'];
+            $this->scopus_coauthor_count = $data[0]['scopus_coauthor_count'];
             $this->change_date = $data[0]['change_date'];
             $this->gs_citations = $this->getGsCitations();
         }
@@ -75,7 +85,7 @@ class PersonMetrics {
                                            FROM grand_user_metrics v2
                                            WHERE v1.user_id = v2.user_id)";
             $data = DBFunctions::execSQL($sql);
-            $metric = "";
+            $metric = new PersonMetrics(array());
             if(count($data)>0){
                 $metric = PersonMetrics::newFromId($data[0]['id']);
             }
@@ -102,7 +112,7 @@ class PersonMetrics {
      * return Array An array with a key-value pair of [year] => citation count
     */
     function getGsCitations(){
-        if(count($this->gs_citations) == 0){
+        if(count($this->gs_citations) == 0 && $this->user_id != ""){
             $sql = "SELECT *
                     FROM grand_gs_citations
                     WHERE user_id = {$this->user_id}";
@@ -122,37 +132,74 @@ class PersonMetrics {
      * @return boolean True if database accepted new PersonMetrics
     */
     function create(){
-        $me = Person::newFromWGUser();
-        if($me->isLoggedIn()){
+        DBFunctions::begin();
+        $status = DBFunctions::insert('grand_user_metrics',
+                                      array('user_id' => $this->user_id,
+                                            'gs_citation_count' => $this->gs_citation_count,
+                                            'gs_hindex_5_years' => $this->gs_hindex_5_years,
+                                            'gs_i10_index_5_years' => $this->gs_i10_index_5_years,
+                                            'gs_hindex' => $this->gs_hindex,
+                                            'gs_i10_index' => $this->gs_i10_index,
+                                            'scopus_document_count' => $this->scopus_document_count,
+                                            'scopus_cited_by_count' => $this->scopus_cited_by_count,
+                                            'scopus_citation_count' => $this->scopus_citation_count,
+                                            'scopus_h_index' => $this->scopus_h_index,
+                                            'scopus_coauthor_count' => $this->scopus_coauthor_count,
+                                            'change_date' => COL('CURRENT_TIMESTAMP')),
+                                      true);
+        if($status){
+            $this->id = DBFunctions::insertId();
+            $status = DBFunctions::delete('grand_gs_citations',
+                                          array('user_id' => $this->user_id),
+                                          true);
+
+            foreach($this->gs_citations as $key => $val){
+                DBFunctions::insert('grand_gs_citations',
+                                    array('user_id' => $this->user_id,
+                                          'year' => $key,
+                                          'count' => $val),
+                                    true);
+            }
+            DBFunctions::commit();
+            return $status;
+        }
+        return false;
+    }
+    
+    function update(){
+        if($this->id == 0 || $this->id == null){
+            return $this->create();
+        }
+        else{
             DBFunctions::begin();
-            $status = DBFunctions::insert('grand_user_metrics',
-                                          array('user_id' => $this->user_id,
-                                                'gs_citation_count' => $this->gs_citation_count,
+            $status = DBFunctions::update('grand_user_metrics',
+                                          array('gs_citation_count' => $this->gs_citation_count,
                                                 'gs_hindex_5_years' => $this->gs_hindex_5_years,
                                                 'gs_i10_index_5_years' => $this->gs_i10_index_5_years,
                                                 'gs_hindex' => $this->gs_hindex,
-                                                'gs_i10_index' => $this->gs_i10_index),
-                                          true);
+                                                'gs_i10_index' => $this->gs_i10_index,
+                                                'scopus_document_count' => $this->scopus_document_count,
+                                                'scopus_cited_by_count' => $this->scopus_cited_by_count,
+                                                'scopus_citation_count' => $this->scopus_citation_count,
+                                                'scopus_h_index' => $this->scopus_h_index,
+                                                'scopus_coauthor_count' => $this->scopus_coauthor_count),
+                                          array('id' => $this->id));
             if($status){
                 $status = DBFunctions::delete('grand_gs_citations',
-                            array('user_id' => $this->user_id),
-                            true);
-
-                while($status && list($key, $val) = each($this->gs_citations)){
-                    $status = DBFunctions::insert('grand_gs_citations',
-                                      array('user_id' => $this->user_id,
-                                            'year' => $key,
-                                            'count' => $val),
-                                      true);
-                    if(!$status){
-                        return false;
-                    }
+                                              array('user_id' => $this->user_id),
+                                              true);
+                foreach($this->gs_citations as $key => $val){
+                    DBFunctions::insert('grand_gs_citations',
+                                        array('user_id' => $this->user_id,
+                                              'year' => $key,
+                                              'count' => $val),
+                                        true);
                 }
                 DBFunctions::commit();
                 return $status;
             }
+            return false;
         }
-        return false;
     }
 }
 ?>

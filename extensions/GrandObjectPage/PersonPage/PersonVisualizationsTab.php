@@ -191,7 +191,7 @@ class PersonVisualizationsTab extends AbstractTab {
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                $content = "<a href='{$project->getUrl()}' target='_blank'>View Project's Page</a>";
+                $content = "<a href='{$project->getUrl()}' style='color: white;' target='_blank'>View Project's Page</a>";
                 $items[] = array('content' => $project->getName(),
                                  'description' => array('title' => $project->getName(),
                                                         'text' => $content),
@@ -224,7 +224,7 @@ class PersonVisualizationsTab extends AbstractTab {
             
             foreach($person->getPapers('all') as $paper){
                 $start = $paper->getDate();
-                $content = "<a href='{$paper->getUrl()}' target='_blank'>View Product's Page</a>";
+                $content = "<a href='{$paper->getUrl()}' target='_blank' style='color: white;'>View Product's Page</a>";
                 $items[] = array('content' => str_replace("&#39;", "'", $paper->getTitle()),
                                  'description' => array('title' => str_replace("&#39;", "'", $paper->getTitle()),
                                                         'text' => $content),

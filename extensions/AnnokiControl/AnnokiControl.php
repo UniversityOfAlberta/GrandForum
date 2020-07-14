@@ -97,9 +97,6 @@ $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
 $egAnnokiExtensions['DiversitySurvey'] = array('name' => 'DiversitySurvey',
                                          'path' => "$IP/extensions/DiversitySurvey/DiversitySurvey.php");
 
-$egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
-                                              'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
-
 $egAnnokiExtensions['GlobalSearch'] = array('name' => 'Global Search',
                                             'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php");
 

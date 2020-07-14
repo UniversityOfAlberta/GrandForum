@@ -1,6 +1,9 @@
 <?php
 
 require_once("InactiveUsers.php");
+if($config->getValue("networkName") == "FES"){
+    require_once("FESPeopleTable.php");
+}
 autoload_register('IndexTables');
 
 $wgHooks['OutputPageParserOutput'][] = 'IndexTable::generateTable';
@@ -24,10 +27,19 @@ class IndexTable {
         
         if(Project::areThereAdminProjects()){
             $project = Project::newFromHistoricName($wgTitle->getNSText());
-            $selected = ((($project != null && $project->getType() == 'Administrative') || $wgTitle->getText() == "AdminProjects")) ? "selected" : "";
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
+            $selected = ((($project != null && $project->getType() == 'Administrative') || strstr($wgTitle->getText(), "AdminProjects") !== false)) ? "selected" : "";
+            $adminTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('adminProjects')), 
                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects", 
                                                                 "$selected");
+            if(PROJECT_PHASE > 1){
+                $phaseDates = $config->getValue('projectPhaseDates');
+                for($phase = PROJECT_PHASE; $phase > 0; $phase--){
+                    $rome = rome($phase);
+                    $adminTab['dropdown'][] = TabUtils::createSubTab(substr($phaseDates[$phase], 0, 4)."-".substr($phaseDates[$phase+1], 0, 4), 
+                                                                     "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:AdminProjects {$rome}", "$selected");
+                }
+            }
+            $tabs['Main']['subtabs'][] = $adminTab;
         }
         
         if(Project::areThereInnovationHubs()){
@@ -42,15 +54,23 @@ class IndexTable {
             }
         }
         $tabs['Main']['subtabs'][] = $hubsSubTab;
-        
         if(count($themes) > 0){
-            $selected = ($wgTitle->getNSText() == $config->getValue('networkName') && 
-                         ($wgTitle->getText() == Inflect::pluralize($config->getValue('projectThemes')) || 
-                         array_search($wgTitle->getText(), $themes) !== false)) ? "selected" : "";
-            
-            $tabs['Main']['subtabs'][] = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
-                                                                "$selected");
+            $selected = (($wgTitle->getNSText() == $config->getValue('networkName') && 
+                         (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes'))) !== false)) ||
+                         (array_search($wgTitle->getNSText(), $themeAcronyms) !== false)) ? "selected" : "";
+            $themeTab = TabUtils::createSubTab(Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                  "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes')), 
+                                                                  "$selected");
+            if(PROJECT_PHASE > 1){
+                for($phase = 1; $phase <= PROJECT_PHASE; $phase++){
+                    $phaseNames = $config->getValue("projectPhaseNames");
+                    $rome = rome($phase);
+                    $themeTab['dropdown'][$phaseNames[$phase]] = TabUtils::createSubTab(Inflect::pluralize($phaseNames[$phase]), 
+                                                                 "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:".Inflect::pluralize($config->getValue('projectThemes'))." {$rome}", "$selected");
+                }
+                ksort($themeTab['dropdown']);
+            }
+            $tabs['Main']['subtabs'][] = $themeTab;
         }
         
         if($config->getValue('projectsEnabled') && Project::areThereNonAdminProjects()){
@@ -103,6 +123,8 @@ class IndexTable {
                 $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
             }
+            $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
         }
         
         if($config->getValue('projectsEnabled')){
@@ -171,6 +193,7 @@ class IndexTable {
                     $('.dataTables_filter input').css('width', 250);
                 });
             </script>");
+            $phaseNames = $config->getValue("projectPhaseNames");
             switch ($wgTitle->getText()) {
                 case 'Multimedia':
                     $wgOut->setPageTitle("Multimedia");
@@ -198,9 +221,33 @@ class IndexTable {
                     $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
                     self::generateAdminTable();
                     break;
+                case 'AdminProjects I':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(1);
+                    break;
+                case 'AdminProjects II':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(2);
+                    break;
+                case 'AdminProjects III':
+                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('adminProjects')));
+                    self::generateAdminTable(3);
+                    break;
                 case Inflect::pluralize($config->getValue('projectThemes')):
-                    $wgOut->setPageTitle(Inflect::pluralize($config->getValue('projectThemes')));
-                    self::generateThemesTable();
+                case Inflect::pluralize($config->getValue('projectThemes'))." I":
+                    // Phase 1
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[1]));
+                    self::generateThemesTable(1);
+                    break;
+                case Inflect::pluralize($config->getValue('projectThemes'))." II":
+                    // Phase 2
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[2]));
+                    self::generateThemesTable(2);
+                    break;
+                case Inflect::pluralize($config->getValue('projectThemes'))." III":
+                    // Phase 3 (unlikly to have more than that)
+                    $wgOut->setPageTitle(Inflect::pluralize($phaseNames[3]));
+                    self::generateThemesTable(3);
                     break;
                 default:
                     foreach($wgAllRoles as $role){
@@ -209,6 +256,10 @@ class IndexTable {
                             self::generatePersonTable($role);
                             break;
                         }
+                    }
+                    if($wgTitle->getText() == "ALL Manager ".NI && $me->isRoleAtLeast(STAFF)){
+                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+                        self::generateNITable();
                     }
                     if($wgTitle->getText() == "ALL ".NI){
                         $wgOut->setPageTitle($config->getValue('roleDefs', NI));
@@ -243,16 +294,24 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th>Project Id</th>";
         }
-        $data = Project::getAllProjectsEver();
+        $data = Project::getAllProjectsEver(($status != "Active"));
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
             <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
+                $subProjects = array();
+                if($status == "Active"){
+                    // Only show sub-projects after the main when on the 'Current' tab
+                    foreach($proj->getSubProjects() as $sub){
+                        $subProjects[] = "<a href='{$sub->getUrl()}'>{$sub->getName()}</a>";
+                    }
+                }
+                $subProjects = (count($subProjects) > 0) ? " (".implode(", ", $subProjects).")" : "";
                 $wgOut->addHTML("
                     <tr>
-                    <td align='left' style='white-space: nowrap;'><a href='{$proj->getUrl()}'>{$proj->getName()}</a></td>
+                    <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 $leaders = array();
                 foreach($proj->getLeaders() as $leader){
@@ -260,8 +319,12 @@ class IndexTable {
                 }
                 $wgOut->addHTML("<td>".implode(", ", $leaders)."</td>");
                 if($type != "Administrative"){
-                    $text = ($proj->getChallenge()->getAcronym() != "") ? "<a href='{$proj->getChallenge()->getUrl()}'>{$proj->getChallenge()->getName()} ({$proj->getChallenge()->getAcronym()})</a>" : "";
-                    $wgOut->addHTML("<td align='left'>{$text}</td>");
+                    $challenges = $proj->getChallenges();
+                    $text = array();
+                    foreach($challenges as $challenge){
+                        $text[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()} ({$challenge->getAcronym()})</a>" : "";
+                    }
+                    $wgOut->addHTML("<td align='left'>".implode(", ", $text)."</td>");
                 }
                 if($idHeader){
                     $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
@@ -289,13 +352,13 @@ class IndexTable {
      * Consists of the following columns
      * Theme | Name 
      */
-    private function generateThemesTable(){
+    private function generateThemesTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Acronym</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ");
-        $themes = Theme::getAllThemes(PROJECT_PHASE);
+        $themes = Theme::getAllThemes($phase);
         foreach($themes as $theme){
             $leaders = array();
             $coordinators = array();
@@ -333,7 +396,7 @@ class IndexTable {
     /**
      * Generates the Table of Admin Projects
      */
-    private function generateAdminTable(){
+    private function generateAdminTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
@@ -344,7 +407,7 @@ class IndexTable {
                             <thead><tr><th>{$config->getValue('adminProjects')}</th><th>Name</th><th>Leaders</th>{$activityPlans}</tr></thead><tbody>");
         $adminProjects = Project::getAllProjects();
         foreach($adminProjects as $project){
-            if($project->getType() == 'Administrative'){
+            if($project->getType() == 'Administrative' && $project->getPhase() == $phase){
                 $leaders = array();
                 foreach($project->getLeaders() as $lead){
                     $leaders[] = "<a href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
@@ -408,9 +471,7 @@ class IndexTable {
     /**
      * Generates the Table for the Network Investigators, Collaborating
      * Researchers, or Highly-Qualified People, depending on parameter
-     * #table.
-     * Consists of the following columns
-     * User Page | Projects | Twitter
+     * table.
      */
     private function generatePersonTable($table){
         global $config;
@@ -422,7 +483,7 @@ class IndexTable {
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
             if($me->isRoleAtLeast(STAFF)){
                 $phaseDates = $config->getValue('projectPhaseDates');
-                for($y=YEAR; $y>=substr($phaseDates[PROJECT_PHASE],0,4); $y--){
+                for($y=YEAR; $y>=substr($phaseDates[1],0,4); $y--){
                     $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                 }
             }
@@ -430,6 +491,19 @@ class IndexTable {
                 $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
             }
         }
+        $tabbedPage->showPage();
+        return true;
+    }
+    
+    /**
+     * Generates the Table for the Network Investigators
+     */
+    private function generateNITable(){
+        global $config;
+        $me = Person::newFromWgUser();
+        $tabbedPage = new TabbedPage("people");
+        $visibility = true;
+        $tabbedPage->addTab(new NITableTab($visibility, false));
         $tabbedPage->showPage();
         return true;
     }

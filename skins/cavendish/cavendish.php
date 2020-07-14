@@ -53,6 +53,10 @@ class CavendishTemplate extends QuickTemplate {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
+        <?php if(!TESTING && $wgScriptPath != "" && !DEMO){ ?>
+            <meta name="robots" content="noindex, nofollow" />
+            <meta name="googlebot" content="noindex, nofollow" />
+        <?php } ?>
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
@@ -262,6 +266,8 @@ class CavendishTemplate extends QuickTemplate {
 		    allowedRoles = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedRoles()); ?>;
 		    allowedProjects = <?php $me = Person::newFromWGUser(); echo json_encode($me->getAllowedProjects()); ?>;
 		    allowedThemes = <?php echo json_encode(Theme::getAllowedThemes()); ?>;
+		    isAllowedToCreateNewsPostings = <?php echo json_encode(NewsPosting::isAllowedToCreate()); ?>;
+		    isAllowedToCreateEventPostings = <?php echo json_encode(EventPosting::isAllowedToCreate()); ?>;
 		    wgRoles = <?php global $wgAllRoles; echo json_encode($wgAllRoles); ?>;
 		    roleDefs = <?php echo json_encode($config->getValue('roleDefs')); ?>;
 		    subRoles = <?php $subRoles = $config->getValue('subRoles'); asort($subRoles); echo json_encode($subRoles); ?>;
@@ -548,16 +554,36 @@ class CavendishTemplate extends QuickTemplate {
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth')){ ?>
 		    <script type="text/javascript">
+                var logoutFn = function(redirect){
+                    $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                        $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
+                        $("#logoutFrame").on('load', function(){
+                            $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
+                                if(redirect){
+                                    document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
+                                }
+                            });
+                        });
+                    });
+                }
+                $(document).ready(function(){
+                    $('#status_logout').removeAttr('href');
+                    $('#status_logout').click(function(){
+                        logoutFn(true);
+                    });
+                });
+            </script>
+		    <!--script type="text/javascript">
                 $(document).ready(function(){
                     $('#status_logout').removeAttr('href');
                     $('#status_logout').click(function(){
                         $("#logoutFrame").attr('src', "<?php echo $config->getValue('shibLogoutUrl'); ?>");
-                        $("#logoutFrame").load(function(){
+                        $("#logoutFrame").on('load', function(){
                             document.location = '<?php echo $wgServer.$wgScriptPath; ?>';
                         });
                     });
                 });
-	        </script>
+	        </script-->
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
@@ -731,7 +757,7 @@ class CavendishTemplate extends QuickTemplate {
                         }
                     }
 	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip changeImg highlights-text-hover' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/{$config->getValue('iconPath')}arrow_right_16x16.png' /></a>";
 	            }
 	        }
 	        echo "</div>";
@@ -933,6 +959,7 @@ class CavendishTemplate extends QuickTemplate {
         
         $GLOBALS['toolbox']['People'] = TabUtils::createToolboxHeader("People");
         $GLOBALS['toolbox']['Products'] = TabUtils::createToolboxHeader("Outputs");
+        $GLOBALS['toolbox']['Postings'] = TabUtils::createToolboxHeader("Postings");
         $GLOBALS['toolbox']['Other'] = TabUtils::createToolboxHeader("Other");
         
 		if($wgUser->isLoggedIn()){
@@ -1134,8 +1161,8 @@ If you have forgotten your password please enter your login and ID and request a
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);
-		    echo "<span class='highlights-text'>Login</span>
-			<ul class='pBody'>";
+		    echo "<span class='highlights-text pBodyLogin'>Login</span>
+			<ul class='pBody pBodyLogin'>";
 		    echo <<< EOF
 <form style='position:relative;left:5px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
 	<table style='width:185px;'>
@@ -1176,6 +1203,14 @@ If you have forgotten your password please enter your login and ID and request a
 $emailPassword
 </li>
 EOF;
+            if(isExtensionEnabled("Shibboleth")){
+                echo "
+                <script type='text/javascript'>
+                    $('.pBodyLogin').detach();
+                    $('#side').append(\"<div style='text-align: center'><a id='ssoLogin' class='button' style='margin-top:5px; margin-bottom:15px; width: 68px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
+                </script>
+                ";
+            }
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
 		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );

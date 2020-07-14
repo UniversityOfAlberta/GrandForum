@@ -168,6 +168,27 @@
             </Static>
         </If>
     </ReportSection>
+    <ReportSection id="section7" type="EditableReportSection" blobSection="SEC7" name="Section 7" title="Section 7">
+        <If if="{==(0,0)}">
+            <Static>
+                <![CDATA[
+                    {set(text,)}
+                ]]>
+            </Static>
+            <For from="0" to="5">
+                <Static>
+                    <![CDATA[
+                        {set(text,{concat({get(text)}, {$extraIndex})})}
+                    ]]>
+                </Static>
+            </For>
+            <Static>
+                <![CDATA[
+                    {get(text)}
+                ]]>
+            </Static>
+        </If>
+    </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="ReviewSubmitReportItem" />
     </ReportSection>

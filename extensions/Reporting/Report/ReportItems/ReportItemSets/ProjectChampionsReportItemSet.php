@@ -4,7 +4,7 @@ class ProjectChampionsReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $projects = array();
         if($project != null){
             $projects[] = $project;

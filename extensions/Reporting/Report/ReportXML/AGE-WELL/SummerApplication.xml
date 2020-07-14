@@ -176,6 +176,6 @@
                 By submitting an application, you agree that if accepted, you will attend the entire summer institute and commit to work actively with your teammates for the duration.<br />
             ]]>
         </Static>
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
     </ReportSection>
 </Report>

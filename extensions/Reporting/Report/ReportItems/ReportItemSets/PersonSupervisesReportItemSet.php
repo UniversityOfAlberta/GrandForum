@@ -7,7 +7,7 @@ class PersonSupervisesReportItemSet extends ReportItemSet {
         $person = Person::newFromId($this->getAttr("personId", $this->personId));
         $positions = array_filter(explode("|", $this->getAttr('pos', "")));
         $subType = $this->getAttr('subType', $this->getAttr('subRole', ""));
-        $project = Project::newFromName($this->getAttr('project', ""));
+        $project = Project::newFromHistoricName($this->getAttr('project', ""));
         $start = $this->getAttr("startDate", $this->getReport()->year."-04-01 00:00:00");
         $end = $this->getAttr("endDate", ($this->getReport()->year+1)."-03-31 23:59:59");
         foreach($person->getHQPDuring($start, $end) as $hqp){

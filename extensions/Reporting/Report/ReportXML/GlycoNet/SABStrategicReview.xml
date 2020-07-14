@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2019">
+<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2020">
     <Permissions>
         <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -40,6 +40,12 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <p>In Cycle II we have an enhanced requirement for Equity, Diversity and Inclusion (EDI) at all levels of the network. For these applications we require a specific comment about the EDI section (like you would give for knowledge translation or training). Please comment if this section conveys to the reviewer that the team has considered how EDI is incorporated into the project (not just the team composition).</p>
+                <p>For details of what EDI considerations could be included see the following link: <a href='https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf' target='_blank'>https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf</a></p>
+            ]]>
+        </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">

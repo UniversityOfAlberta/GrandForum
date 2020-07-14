@@ -39,11 +39,13 @@ class AdminProjTreeTab extends AbstractTab {
             $projects = Project::getAllProjectsDuring($year."-01-01", $year."-12-31");
             $people = Person::getAllPeopleDuring(null, $year."-01-01", $year."-12-31");
             foreach($projects as $project){
-                $challenge = $project->getChallenge();
-                $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
-                foreach($project->getAllPeopleDuring(null, $year."-01-01", $year."-12-31") as $person){
-                    $total = $person->getAllocatedAmount($year, $project);
-                    @$projs[$theme][$project->getName()][$person->getNameForForms()] = $total;
+                $challenges = $project->getChallenges();
+                foreach($challenges as $challenge){
+                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+                    foreach($project->getAllPeopleDuring(null, $year."-01-01", $year."-12-31") as $person){
+                        $total = $person->getAllocatedAmount($year, $project);
+                        @$projs[$theme][$project->getName()][$person->getNameForForms()] = $total;
+                    }
                 }
             }
             foreach($projs as $theme => $projs2){
@@ -54,8 +56,6 @@ class AdminProjTreeTab extends AbstractTab {
                                    "children" => array());
                 foreach($projs2 as $proj => $person){
                     $project = Project::newFromName($proj);
-                    $challenge = $project->getChallenge();
-                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
                     
                     $projData = array("name" => $proj,
                                       "color" => $color,

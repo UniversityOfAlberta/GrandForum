@@ -279,16 +279,22 @@ class Paper extends BackboneModel{
      * @return integer The number of Products there are of the specified type
      */
     static function countByCategory($category='all'){
+        $me = Person::newFromWgUser();
+        $where = array('access_id' => EQ(0),
+                       'deleted' => EQ(0));
+        if(!$me->isLoggedIn()){
+            $where['access'] = "Public";
+        }
         if($category != 'all'){
+            $where['category'] = EQ($category);
             $data = DBFunctions::select(array('grand_products'),
                                         array('COUNT(id)' => 'count'),
-                                        array('category' => EQ($category),
-                                              'deleted' => EQ(0)));
+                                        $where);
         }
         else{
             $data = DBFunctions::select(array('grand_products'),
                                         array('COUNT(id)' => 'count'),
-                                        array('deleted' => EQ(0)));
+                                        $where);
         }
         return $data[0]['count'];
     }
@@ -454,7 +460,7 @@ class Paper extends BackboneModel{
             $sql = "SELECT *
                     FROM `grand_products` p";
             if($project != "all"){
-                $p = Project::newFromName($project);
+                $p = Project::newFromHistoricName($project);
                 $sql .= ", `grand_product_projects` pp
                          WHERE pp.`project_id` = '{$p->getId()}'
                          AND pp.`product_id` = p.`id`";
@@ -1356,19 +1362,23 @@ class Paper extends BackboneModel{
             $authors = array();
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
+                    $name = $a->getNameForProduct();
+                    if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
+                        $name = "<u>{$a->getNameForProduct()}</u>";
+                    }
+                    else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
+                            (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
+                        $name = "<i>{$a->getNameForProduct()}</i>";
+                    }
+                    if($a->isRoleOn(NI, $this->getDate())){
+                        // Overwrite previous formatting if they are an NI
+                        $name = "<b>{$a->getNameForProduct()}</b>";
+                    }
                     if($hyperlink){
-                        $name = $a->getNameForProduct();
-                        if($a->isRoleOn(HQP, $this->getDate()) || $a->wasLastRole(HQP)){
-                            $name = "<u>{$a->getNameForProduct()}</u>";
-                        }
-                        else if((!$a->isRoleOn(HQP, $this->getDate()) && !$a->wasLastRole(HQP)) &&
-                                (!$a->isRoleOn(NI, $this->getDate()) && !$a->wasLastRole(NI))){
-                            $name = "<i>{$a->getNameForProduct()}</i>";
-                        }
                         $authors[] = "<a target='_blank' href='{$a->getUrl()}'><b>{$name}</b></a>";
                     }
                     else{
-                        $authors[] = "<b>". $a->getNameForProduct() ."</b>";
+                        $authors[] = "{$name}";
                     }
                 } else {
                     $authors[] = $a->getNameForProduct();

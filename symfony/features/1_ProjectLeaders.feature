@@ -7,7 +7,6 @@ Feature: Project/Theme Leaders
         Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project3:Main"
         Then I should see "Main"
-        And I should see "Sub-Projects"
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should see "Wiki"
@@ -23,7 +22,6 @@ Feature: Project/Theme Leaders
         Given I am logged in as <user> using password <pass>
         And I go to "index.php/Phase2Project1:Main"
         Then I should see "Main"
-        And I should not see "Sub-Projects"
         And I should see "Dashboard"
         And I should see "Visualizations"
         And I should not see "Wiki"

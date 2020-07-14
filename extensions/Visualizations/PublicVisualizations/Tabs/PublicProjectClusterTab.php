@@ -34,10 +34,10 @@ class PublicProjectClusterTab extends AbstractTab {
 	        $themes = array();
 	        $projects = Project::getAllProjectsEver();
 	        foreach($projects as $project){
-	            if($project->getPhase() == PROJECT_PHASE){
-	                $theme = $project->getChallenge();
-	                @$themes[$theme->getAcronym()][$project->getId()] = $project;
-	            }
+                $challenges = $project->getChallenges();
+                foreach($challenges as $theme){
+                    @$themes[$theme->getAcronym()][$project->getId()] = $project;
+                }
 	        }
 	        
 	        foreach($themes as $name => $projs){

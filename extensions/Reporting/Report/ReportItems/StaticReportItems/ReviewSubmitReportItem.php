@@ -267,7 +267,7 @@ EOF;
             $tok = false;
             $tst = '';
             $sub = 0;
-            $project = Project::newFromId($this->projectId);
+            $project = Project::newFromHistoricId($this->projectId);
             if($file != $this->getReport()->xmlName){
                 $report = new DummyReport($file, $person, $project);
             }

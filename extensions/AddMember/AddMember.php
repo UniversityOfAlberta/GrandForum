@@ -57,7 +57,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
-                    $nss = implode(", ", $_POST['wpNS']);
+                    $nss = implode(", ", array_unique($_POST['wpNS']));
                 }
                 else{
                     $nss = "";

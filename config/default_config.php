@@ -40,6 +40,9 @@
     // ORCID Secret Key
     $config->setValue("orcidSecret", "");
     
+    // Scopus Api Id
+    $config->setValue("scopusApi", "");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     
@@ -112,6 +115,9 @@
     // Whether or not Canada Research Chair is enabled
     $config->setValue("crcEnabled", false);
     
+    // Whether or not MITACS is enabled
+    $config->setValue("mitacsEnabled", false);
+    
     // Whether to have only the public profile field (true) or both public & private (false)
     $config->setValue("publicProfileOnly", false);
     
@@ -183,7 +189,6 @@
         'Reporting',
         //'DiversitySurvey',
         'NCETable',
-        'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
@@ -196,7 +201,8 @@
         //'CrossForumExport',
         'ReportIssue',
         'MyThreads',
-        'Freeze'
+        'Freeze',
+        //'Postings'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
@@ -219,6 +225,9 @@
 
     $config->setValue("projectPhaseDates", array(1 => "2015-03-31 00:00:00",
                                                  2 => "2015-04-01 00:00:00"));
+                                                 
+    $config->setValue("projectPhaseNames", array(1 => "Theme",
+                                                 2 => "Theme"));
     
     // The types of relations which are enabld (Supervises/Mentors/Works With)    
     $config->setValue("relationTypes", array("Supervises",

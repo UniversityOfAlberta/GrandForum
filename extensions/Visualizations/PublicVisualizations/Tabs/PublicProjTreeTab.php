@@ -36,11 +36,13 @@ class PublicProjTreeTab extends AbstractTab {
                     continue;
                 }
                 $people = $project->getAllPeople();
-                $challenge = $project->getChallenge();
-                $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
-                foreach($people as $person){
-                    if($person->isRole(NI)){
-                        @$projs[$theme][$project->getName()][$person->getReversedName()] = 1;
+                $challenges = $project->getChallenges();
+                foreach($challenges as $challenge){
+                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
+                    foreach($people as $person){
+                        if($person->isRole(NI)){
+                            @$projs[$theme][$project->getName()][$person->getReversedName()] = 1;
+                        }
                     }
                 }
             }
@@ -52,8 +54,6 @@ class PublicProjTreeTab extends AbstractTab {
                                    "children" => array());
                 foreach($projs2 as $proj => $person){
                     $project = Project::newFromName($proj);
-                    $challenge = $project->getChallenge();
-                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
                     
                     $projData = array("name" => $proj,
                                       "color" => $color,

@@ -4,7 +4,7 @@ class ProjectAllPeopleReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
+        $proj = Project::newFromHistoricId($this->projectId);
         $role = $this->getAttr("role", null);
         $start = $this->getAttr("startDate", REPORTING_YEAR."-04-01 00:00:00");
         $end = $this->getAttr("endDate", (REPORTING_YEAR+1)."-03-31 23:59:59");

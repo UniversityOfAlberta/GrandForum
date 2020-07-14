@@ -4,7 +4,7 @@ class ProjectRosterReportItem extends StaticReportItem {
 
     function render(){
         global $wgOut;
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $subs = $project->getSubProjects();
 
         $item = "";
@@ -39,7 +39,7 @@ class ProjectRosterReportItem extends StaticReportItem {
     
     function renderForPDF(){
         global $wgOut;
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $subs = $project->getSubProjects();
 
         $item = "";

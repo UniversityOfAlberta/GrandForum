@@ -89,7 +89,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="part3" tooltip="Leveraged Funding" name="Leveraged Funding" title="Part 3: Leveraged Funding" blobSection="PART3" type="EditableReportSection">
-        <ReportItem id="funding" type="MultiText" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Granting Organization|Award Program|Fiscall Year / Term|Amount ($)" sizes="100|150|100|100" multiple="true">
+        <ReportItem id="funding" type="MultiText" blobItem="FUNDING" blobType="BLOB_ARRAY" labels="Granting Organization|Award Program|Fiscal Year / Term|Amount ($)" sizes="100|150|100|100" multiple="true">
             <![CDATA[
                 <p>It is important that we understand and report on how the AGE-WELL investment has been leveraged to secure additional grant funding connected to this program of research.</p>
 
@@ -111,28 +111,28 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h3>Upload Attachments</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf">
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf">
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf">
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf">
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
@@ -144,6 +144,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="jennifer@agewell-nce.ca,info@agewell-nce.ca" />
     </ReportSection>
 </Report>

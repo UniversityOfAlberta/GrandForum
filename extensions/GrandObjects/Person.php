@@ -24,6 +24,7 @@ class Person extends BackboneModel {
     var $nationality;
     var $stakeholder;
     var $earlyCareerResearcher;
+    var $mitacs;
     var $canadaResearchChair;
     var $gender;
     var $photo;
@@ -324,6 +325,7 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_stakeholder',
                                               'user_ecr',
+                                              'user_mitacs',
                                               'user_crc',
                                               'user_gender',
                                               'user_birth_date',
@@ -850,6 +852,7 @@ class Person extends BackboneModel {
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->earlyCareerResearcher = @$data[0]['user_ecr'];
+            $this->mitacs = @$data[0]['user_mitacs'];
             $this->canadaResearchChair = @json_decode($data[0]['user_crc'], true);
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
@@ -930,6 +933,7 @@ class Person extends BackboneModel {
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
                       'earlyCareerResearcher' => $this->getEarlyCareerResearcher(),
+                      'mitacs' => $this->getMitacs(),
                       'canadaResearchChair' => $this->getCanadaResearchChair(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
@@ -1010,6 +1014,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -1074,6 +1079,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
@@ -1242,8 +1248,18 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is currently a member of the given Project
      */
     function isMemberOf($project){
+        if($project == null){
+            return false;
+        }
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOf($pred)){
+                    return true;
+                }
+            }
+        }
         $projects = $this->getProjects(false, true);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
@@ -1261,8 +1277,18 @@ class Person extends BackboneModel {
      * @return boolean Whether or not this Person is a member of the given Project
      */
     function isMemberOfDuring($project, $start, $end){
+        if($project == null){
+            return false;
+        }
+        if(!$project->clear){
+            foreach($project->getPreds() as $pred){
+                if($this->isMemberOfDuring($pred, $start, $end)){
+                    return true;
+                }
+            }
+        }
         $projects = $this->getProjectsDuring($start, $end);
-        if(count($projects) > 0 && $project != null){
+        if(count($projects) > 0){
             foreach($projects as $project1){
                 if($project1 != null && $project->getName() == $project1->getName()){
                     return true;
@@ -1362,13 +1388,19 @@ class Person extends BackboneModel {
         $themes = $this->getLeadThemes();
         if($project instanceof Theme){
             $challenge = $project;
+            foreach($themes as $theme){
+                if($challenge->getId() == $theme->getId()){
+                    return true;
+                }
+            }
         }
         else {
-            $challenge = $project->getChallenge();
-        }
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -1386,13 +1418,19 @@ class Person extends BackboneModel {
         $themes = $this->getCoordThemes();
         if($project instanceof Theme){
             $challenge = $project;
+            foreach($themes as $theme){
+                if($challenge->getId() == $theme->getId()){
+                    return true;
+                }
+            }
         }
         else {
-            $challenge = $project->getChallenge();
-        }
-        foreach($themes as $theme){
-            if($challenge->getId() == $theme->getId()){
-                return true;
+            foreach($project->getChallenges() as $challenge){
+                foreach($themes as $theme){
+                    if($challenge->getId() == $theme->getId()){
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -1560,6 +1598,18 @@ class Person extends BackboneModel {
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             return $this->earlyCareerResearcher;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns the MITACS status of this Person
+     * @return string The MITACS status of this Person
+     */
+    function getMitacs(){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            return $this->mitacs;
         }
         return "";
     }
@@ -2373,8 +2423,8 @@ class Person extends BackboneModel {
      * @param string $role The name of the role
      * @return Role The role of this Person
      */
-    function getRole($role){
-        foreach($this->getRoles() as $r){
+    function getRole($role, $history=false){
+        foreach($this->getRoles($history) as $r){
             if($r->getRole() == $role){
                 return $r;
             }
@@ -2548,25 +2598,17 @@ class Person extends BackboneModel {
     function getAllowedProjects(){
         $projects = array();
         foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         foreach($this->getThemeProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
+            $projects[$project->getId()] = $project->getName();
         }
         if($this->isRoleAtLeast(STAFF)){
-            foreach(Project::getAllProjectsEver() as $project){
-                if(!$project->isSubProject()){
-                    $projects[$project->getId()] = $project->getName();
-                }
+            foreach(Project::getAllProjectsEver(true) as $project){
+                $projects[$project->getId()] = $project->getName();
             }
         }
         natsort($projects);
@@ -2892,7 +2934,7 @@ class Person extends BackboneModel {
             $data = DBFunctions::execSQL($sql);
             $projectNames = array();
             foreach($data as $row){
-                $project = Project::newFromHistoricName($row['name']);
+                $project = Project::newFromName($row['name']);
                 if($project != null && $project->getName() != ""){
                     if(!isset($projectNames[$project->getName()])){
                         // Make sure that the project is not being added twice
@@ -3289,6 +3331,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 if(!$skip){
@@ -3346,6 +3394,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
@@ -3420,6 +3474,12 @@ class Person extends BackboneModel {
                             $skip = false;
                             break;
                         }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
+                        }
                     }
                 }
                 else if($project != null && count($r->getProjects()) == 0){
@@ -3429,6 +3489,12 @@ class Person extends BackboneModel {
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
+                        }
+                        foreach($p->getAllPreds() as $pred){
+                            if($pred->getId() == $project->getId()){
+                                $skip = false;
+                                break 2;
+                            }
                         }
                     }
                 }
@@ -4317,6 +4383,22 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns whether this Person was a leader of the given project on the specified date
+     * @param mixed $project The Project object (or name)
+     * @param string $date The date this Person was a leader of
+     * @return boolean Whether or not this Person is a leader of a given Project
+     */
+    function leadershipOfOn($project, $date){
+        $projects = $this->leadershipOn($date);
+        foreach($projects as $p){
+            if($p->getName() == $project->getName()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Returns whether or not this Person is a leader of at least one Project
      * @return boolean Whether or not this Person is a leader
      */
@@ -4411,7 +4493,9 @@ class Person extends BackboneModel {
                                         array('challenge_id' => IN($themeIds)));
             foreach($data as $row){
                 $project = Project::newFromId($row['project_id']);
-                $projects[$project->getName()] = $project;
+                if($project != null){
+                    $projects[$project->getName()] = $project;
+                }
             }
             ksort($projects);
         }
@@ -4503,7 +4587,10 @@ class Person extends BackboneModel {
         $subs = array();
         foreach($data as $row){
             if($row['type'] == "Project" || $row['type'] == "SAB"){
-                $subs[] = Project::newFromId($row['sub_id']);
+                $project = Project::newFromId($row['sub_id']);
+                if($project != null){
+                    $subs[] = $project;
+                }
             }
             else if($row['type'] == "Researcher" || $row['type'] == "NI"){
                 $subs[] = Person::newFromId($row['sub_id']);

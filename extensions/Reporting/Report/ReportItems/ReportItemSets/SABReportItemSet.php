@@ -7,7 +7,7 @@ class SABReportItemSet extends ReportItemSet {
         // Returns the array of SAB for that year
         $data = array();
         if($this->projectId != 0){
-            $sub = Project::newFromId($this->projectId);
+            $sub = Project::newFromHistoricId($this->projectId);
             if($sub == null){
                 // Probably a multiple submission
                 $sub = Person::newFromId($this->personId);

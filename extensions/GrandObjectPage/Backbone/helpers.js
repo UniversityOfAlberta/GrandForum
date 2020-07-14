@@ -63,6 +63,30 @@ function abbr(str, nChars){
     return $(abbr).parent().html();
 }
 
+function showLanguage(language, textEn, textFr, delimiter){
+    if(delimiter == undefined){
+        delimiter = ' / ';
+    }
+    if(language == "English" || language == "en"){
+        return textEn;
+    }
+    else if(language == "French" || language == "fr"){
+        return textFr;
+    }
+    else if(language == "Bilingual" || language == "bi"){
+        if(textEn != "" && textFr != ""){
+            return textEn + delimiter + textFr;
+        }
+        else if(textEn != ""){
+            return textEn;
+        }
+        else if(textFr != ""){
+            return textFr;
+        }
+    }
+    return "";
+}
+
 function subview(subviewName){
     return "<div data-subview='" + subviewName + "'></div>";
 }
@@ -416,7 +440,7 @@ HTML.File = function(view, attr, options){
 
 HTML.MiscAutoComplete = function(view, attr, options){
     var el = HTML.Element("input", "text", options);
-    el.setAttribute('name', HTML.Name(attr));
+    el.setAttribute('name', HTML.Name(attr) + '_misc');
     el.setAttribute('value', HTML.Value(view, attr).replace("Misc: ", "").replace("Misc", ""));
     $(el).wrap('div');
     
@@ -433,14 +457,17 @@ HTML.MiscAutoComplete = function(view, attr, options){
             }
         });
     };
+    console.log(options.misc);
     var events = view.events;
-    events['change input[name=' + HTML.Name(attr) + ']'] = evt;
+    events['change input[name=' + HTML.Name(attr) + '_misc]'] = evt;
     _.defer(function(){
-        view.$('input[name=' + HTML.Name(attr) + ']').autocomplete({
+        view.$('input[name=' + HTML.Name(attr) + '_misc]').autocomplete({
             source: options.misc,
             select: evt
         });
     });
+    view.undelegate('change', 'input[name=' + HTML.Name(attr) + '_misc]');
+    view.delegate('change', 'input[name=' + HTML.Name(attr) + '_misc]', view.events['change input[name=' + HTML.Name(attr) + '_misc]']);
     return $(el).parent().html();
 }
 

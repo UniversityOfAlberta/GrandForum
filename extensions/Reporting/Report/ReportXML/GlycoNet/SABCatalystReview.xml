@@ -40,6 +40,12 @@
         </Static>
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <p>In Cycle II we have an enhanced requirement for Equity, Diversity and Inclusion (EDI) at all levels of the network. For these applications we require a specific comment about the EDI section (like you would give for knowledge translation or training). Please comment if this section conveys to the reviewer that the team has considered how EDI is incorporated into the project (not just the team composition).</p>
+                <p>For details of what EDI considerations could be included see the following link: <a href='https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf' target='_blank'>https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf</a></p>
+            ]]>
+        </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Catalyst">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_CATALYST,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">

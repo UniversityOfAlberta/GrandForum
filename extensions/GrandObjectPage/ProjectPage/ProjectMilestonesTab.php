@@ -31,7 +31,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
-        //$startYear = @substr($config->getValue('projectPhaseDates', PROJECT_PHASE), 0, 4);
         $me = Person::newFromWgUser();
         
         $_POST['user_name'] = $me->getName();
@@ -229,7 +228,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
-        //$startYear = @substr($config->getValue('projectPhaseDates', $project->getPhase()), 0, 4);
         
         $activities = array();
         $activityNames = array();

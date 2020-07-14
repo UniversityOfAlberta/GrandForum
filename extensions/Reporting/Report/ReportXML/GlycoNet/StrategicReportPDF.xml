@@ -56,6 +56,14 @@
             ]]>
         </ReportItem>
         
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
+            <![CDATA[
+                <p><b><u>Equity and Diversity</u></b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
         <!-- Key Words -->
         <ReportItem id="keywords" type="MultiTextReportItem" 
                                   blobType="BLOB_ARRAY" 
@@ -136,17 +144,18 @@
             <![CDATA[
                 <br />
                 <p><b>Is this application a resubmission of a previously unsuccessful GlycoNet Strategic Initiatives grant</b></p>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
-        <If id="if" if="{==({getText(RP_STRAT,CAT_DESC,CAT_DESC_RESUB,0,{$user_id},0)},Yes)}">
-            <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" limit="2000" recommended="true">
-                <![CDATA[
-                    <p><b>Please provide a response to the previous reviews</b></p>
-                    {$item}
-                ]]>
-            </ReportItem>
-        </If>
+        
+        <!-- Response -->
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
+            <![CDATA[
+                <br />
+                <p><b>Response to Reviewer's Comments (if applicable)</b></p>
+                {$item}
+            ]]>
+        </ReportItem>  
     </ReportSection>
     <ReportSection id="description" name="Project Summary" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">
@@ -159,6 +168,19 @@
     </ReportSection>
     <ReportSection id="description" name="Project Proposal" blobSection="CAT_DESC" type="EditableReportSection">
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <b>References</b>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="description" name="Relevance and Impact" blobSection="CAT_DESC" type="EditableReportSection">
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" limit="500">
             <![CDATA[
                 {$item}
             ]]>
@@ -189,6 +211,10 @@
             <![CDATA[
                 {$item}
             ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="commercial" name="Commercialization Plan" blobSection="CAT_COMM" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
         </ReportItem>
     </ReportSection>
     <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
@@ -224,10 +250,6 @@
         <ReportItem id="upload9" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD9" mimeType="application/pdf">
         </ReportItem>
         <ReportItem id="upload10" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf">
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="commercial" name="Commercialization Plan" blobSection="CAT_COMM" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
-        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
         </ReportItem>
     </ReportSection>
 </Report>

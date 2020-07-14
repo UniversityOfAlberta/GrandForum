@@ -268,8 +268,13 @@ class Theme {
         $return = array();
         $projects = Project::getAllProjects();
         foreach($projects as $project){
-            if($project->getStatus() == "Active" && $project->getChallenge()->getAcronym() == $this->getAcronym()){
-                $return[$project->getName()] = $project;
+            if($project->getStatus() == "Active"){
+                foreach($project->getChallenges() as $challenge){
+                    if($challenge->getAcronym() == $this->getAcronym()){
+                        $return[$project->getName()] = $project;
+                        break;
+                    }
+                }
             }
         }
         knatsort($projects);

@@ -32,7 +32,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
         $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
         if(isset($_GET['generatePDF'])){
             // Only show the last year in the PDF
-            $today = $today-1;
+            $today = date('Y') - 1;
             $year = $today;
         }
         $phaseDate = $config->getValue('projectPhaseDates');

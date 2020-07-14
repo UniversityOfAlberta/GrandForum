@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Stakeholder Panel (Virtual) Meeting: 
+Nutrition and Physical Activity 
+Clinical Practice Guidelines for Older Adults Living with Frailty " reportType="RP_VIRTUAL_MEETING" ajax="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="eula" permissions="rw" />
+            <SectionPermission id="meeting" permissions="rw" />
+        </Role>
+        <Role role="Virtual">
+            <SectionPermission id="eula" permissions="rw" />
+            <SectionPermission id="meeting" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="eula" name="Agreement" title="Stakeholder Panel (Virtual) Meeting: Nutrition and Physical Activity Clinical Practice Guidelines for Older Adults Living with Frailty " tooltip="Confidentiality Agreement" blobSection="EULA" type="EULA">
+        <Static>
+            <![CDATA[
+                <p><b>Thank you for your participation on the Stakeholder Panel for the Nutrition and Physical Activity Clinical Practice Guidelines for Older Adults Living with Frailty!</b></p>
+                
+                <p>In this portal, you will find confidential materials for review ahead of the virtual meetings on June 29th. <b>If you agree with the terms below, please click “agree” to proceed to viewing the Nutrition and Physical Activity Clinical Practice Guidelines for Older Adults Living with Frailty materials.</b></p>
+            ]]>
+        </Static>
+        <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to abide by the confidentiality agreement" 
+                                                          no="&lt;b&gt;No&lt;/b&gt;, I do not agree to abide by the confidentiality agreement">
+            <![CDATA[
+                <p><b>CONFIDENTIALITY:</b> By downloading the materials (“Confidential Information”) on this secure portal, you acknowledge that the information provided is strictly confidential and is not to be distributed and/or shared with any other parties.</p>
+                <ol>
+                    <li>You acknowledge that you shall procure that all persons associated with yourself, (whether as directors, employees or otherwise):
+                        <ol type="a">
+                            <li>keep all the documents and information that you may receive from the Canadian Frailty Network (“CFN”) in the course of carrying out your responsibilities, or that the McMaster Evidence Review and Synthesis Team (“MERST”) may develop while performing its mandate, strictly confidential;</li>
+                            <li>not use Confidential Information for any purpose other than those indicated by CFN or MERST;</li>
+                            <li>not disclose any Confidential Information to any third party without the prior written consent of CFN or MERST, and in the event that such disclosure is permitted, you shall procure that said third party is fully aware of and agrees to be bound by these undertakings.</li>
+                        </ol>
+                    </li>
+                    <li>No Waiver of Privilege – You acknowledge that the Confidential Information is the property of CFN and MERST (and as some cases may allow, a third party), and that none of the latter intend to and do not waive, any rights, title or privilege they may have in respect of any of the Confidential Information.</li>
+                    <li>Specific Exclusions – Your obligation to protect Confidential Information hereunder does not apply to Confidential Information which, even if it may be marked “confidential”, in the following circumstances:
+                        <ol type="a">
+                            <li>IN PUBLIC DOMAIN – the information was legally and legitimately published, or otherwise part of the public domain (unless due to the disclosure or other violation of this Confidentiality Agreement by yourself);</li>
+                            <li>ALREADY KNOWN TO yourself – the information was already in your possession of at the time of its disclosure and was not acquired by yourself, directly or indirectly, from CFN;</li>
+                            <li>THIRD PARTY DISCLOSES – the information becomes available from an outside source who has a lawful and legitimate right to disclose the information to others;</li>
+                            <li>INDEPENDENTLY DEVELOPED – the information was independently developed by yourself without any of the Confidential Information being reviewed or accessed by yourself.</li>
+                        </ol>
+                    </li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br />
+                <p><b>Thank you for your participation on the Stakeholder Panel for the Nutrition and Physical Activity Clinical Practice Guidelines for Older Adults Living with Frailty!</b></p>
+                
+                <p>In this portal, you will find materials for review ahead of the virtual meetings on June 29th. We ask that you <u>please review these materials and complete the survey below by <b>June 22nd</b></u>.  This will allow us to review your feedback and use it to help guide discussions during our virtual meetings.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="meeting" name="Meeting Materials" title="Meeting Materials" tooltip="Meeting" blobSection="MEETING" type="ReportSection">
+        <If if="{==({getText(RP_VIRTUAL_MEETING,EULA,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <h2>Systematic Review Presentations:</h2>
+                <p>The recorded PowerPoint presentations with narration will provide an overview of the systematic review evidence which supports the recommendations developed by CFN, MERST and the Steering Committee. Please view the narrated slides in slideshow mode. The slides will automatically advance with the voiceover, but you can pause it at any point to view the information in closer detail by pressing the letter <b>S</b> on your keyboard.</p>
+
+                <p><a href="https://forum.cfn-nce.ca/AnnokiUploadAuth.php/d/d9/Nutrition_and_Combined_CFN_Frailty_CPG_Stakeholder_Engagement_Meeting_w_narration.pptx">Nutrition and Combined Interventions PowerPoint Presentation</a></p>
+                <p><a href="https://forum.cfn-nce.ca/AnnokiUploadAuth.php/3/32/Physical_Activity_CFN_Frailty_CPG_Stakeholder_Engagement_Meeting_w_narration.pptx">Physical Activity PowerPoint Presentation</a></p>
+
+                <h2>Clinical Practice Guidelines Package:</h2>
+                <p>This document contains log-in/call-in details for the meeting, the recommendations, as well as Evidence-to-Decision tables in support of each of the recommendations.</p>
+
+                <p><a href="https://forum.cfn-nce.ca/AnnokiUploadAuth.php/a/a4/Clinical_Guidelines_Package.pdf" target="_blank">Clinical Practice Guidelines Package here</a></p>
+
+                <h2>Feedback Survey:</h2>
+                <p>Upon review of the materials, <b>please complete the feedback survey below by June 22nd</b>.  Thank you!</p>
+
+                <p><a href="https://www.surveymonkey.com/r/CPGS2020" target="_blank">Survey</a></p>
+
+                <h2>Resources:</h2>
+                <p>If you are unfamiliar with GRADE, Evidence to Decision Tables, and Clinical Practice Guidelines, MERST has kindly gathered resources which you may find helpful here.</p>
+                
+                [Insert Resources for more information about CPGs, EtDs, and GRADE]
+            ]]>
+        </If>
+        <If if="{!=({getText(RP_VIRTUAL_MEETING,EULA,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the confidentiality agreement before you have access the virtual meeting materials.</p>
+            ]]>
+        </If>
+    </ReportSection>
+</Report>

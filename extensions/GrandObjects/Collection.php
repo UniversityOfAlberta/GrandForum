@@ -34,6 +34,19 @@ class Collection {
     }
     
     /**
+     * Returns a new Collection starting at index $start and contain at most $count entries
+     */
+    function paginate($start, $count){
+        $array = array();
+        foreach($this->objects as $i => $object){
+            if($i >= $start && count($array) < $count){
+                $array[] = $object;
+            }
+        }
+        return new Collection($array);
+    }
+    
+    /**
      * @return mixed Returns a jsonified version of this Collection
      */
     function toJSON(){

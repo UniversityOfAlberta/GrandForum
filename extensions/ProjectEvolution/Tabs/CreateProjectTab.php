@@ -26,7 +26,7 @@ class CreateProjectTab extends ProjectTab {
         $subprojectRow = new FormTableRow("{$pre}_subproject_row");
 
         //Sub-project radio button + parent project drop-down
-        $projectOptions = "<option value='0'>Choose Parent</option>\n";
+        $projectOptions = "<option value='0'></option>\n";
         foreach(Project::getAllProjects() as $project){
             $project_id = $project->getId();
             $project_name = $project->getName();
@@ -42,37 +42,23 @@ EOF;
 
         $subprojectDDRow = new FormTableRow("{$pre}_subprojectdd_row");
         $subp_dd =<<<EOF
-        <select id='{$pre}_subproject_parent_dd' name='new_parent_id' style='display:none;'>
+        <select id='{$pre}_subproject_parent_dd' name='new_parent_id' data-placeholder='Choose a Parent...'>
         {$projectOptions}
         </select>
         <script type='text/javascript'>
             var options = Array();
         
             $(document).ready(function(){
-                oldOptions = $("#new_subproject_parent_dd option");
-                updateParents();
-                $("[name=new_phase]").change(updateParents);
-                $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+                $("#new_subproject_parent_dd").chosen();
+                $("#new_subproject_parent_dd_chosen").hide();
             });
-            
-            function updateParents(){
-                $("#new_subproject_parent_dd").empty();
-                var phase = $("[name=new_phase]").val();
-                $("#new_subproject_parent_dd").append(oldOptions);
-                $('#new_subproject_parent_dd').val(0);
-                $("#new_subproject_parent_dd option").not("[value=0]").not("[phase=" + phase + "]").remove();
-                $("#new_subproject_parent_dd").combobox();
-                $(".custom-combobox input", $("#new_subproject_parent_dd").parent()).val("Choose Parent");
-            }
         
             function subReaction(){
-                updateParents();
                 if($('#new_subproject_y').is(':checked')) { 
-                     $(".custom-combobox", $("#new_subproject_parent_dd").parent()).show();
+                     $("#new_subproject_parent_dd_chosen").show();
                 }
                 else{
-                    $('#new_subproject_parent_dd').val(0);
-                    $(".custom-combobox", $("#new_subproject_parent_dd").parent()).hide();
+                    $("#new_subproject_parent_dd_chosen").hide();
                 }
             }
         </script>
@@ -140,15 +126,15 @@ EOF;
         $longDescRow->append(new TextareaField("{$pre}_long_description", "Description", "", VALIDATE_NOTHING));
               
         //Challenges
-        $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Primary Challenge");
+        $challengeFieldSet = new FieldSet("{$pre}_challenges_set", "Theme");
        
         $challengeNames = array();
-        $challenges = Theme::getAllThemes(PROJECT_PHASE);
+        $challenges = Theme::getAllThemes();
         foreach($challenges as $challenge){
             $challengeNames[$challenge->getId()] = $challenge->getAcronym();
         }
 
-        $challengeRadioBox = new VerticalRadioBox2("{$pre}_challenge", "", "", $challengeNames, VALIDATE_NOTHING);
+        $challengeRadioBox = new VerticalCheckBox2("{$pre}_challenge", "", array(), $challengeNames, VALIDATE_NOTHING);
         $challengeFieldSet->append($challengeRadioBox);
 
         if(!$config->getValue("projectTypes")){

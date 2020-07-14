@@ -4,7 +4,7 @@ class SubProjectChampionsReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
+        $proj = Project::newFromHistoricId($this->projectId);
         if($proj != null){
             $champions = array();
             $derivedChamps = array();

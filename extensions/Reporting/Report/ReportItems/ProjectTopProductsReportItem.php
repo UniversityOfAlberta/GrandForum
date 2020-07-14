@@ -4,7 +4,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 
 	private function getTable($pdf=false){
 	    $max = $this->getAttr("max", 10);
-	    $project = Project::newFromId($this->projectId);
+	    $project = Project::newFromHistoricId($this->projectId);
 	    $products = $project->getTopProducts();
 	    $lastUpdated = $project->getTopProductsLastUpdated();
         if($lastUpdated != ""){
@@ -54,7 +54,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 	}
 	
 	function renderWidget(){
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $tab = new ProjectDashboardTab($project, array('isLead' => true));
         $tab->showEditTopProducts($project, array('isMe' => true));
         
@@ -66,7 +66,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 	
 	function render(){
 		global $wgOut, $wgUser;
-		$project = Project::newFromId($this->projectId);
+		$project = Project::newFromHistoricId($this->projectId);
 		$item = $this->getTable(false);
 		$item .= $this->renderWidget();
         $item .= "<br /><button id='edit_top' type='button'>Edit Top Research Outcomes</button>";
@@ -124,7 +124,7 @@ class ProjectTopProductsReportItem extends StaticReportItem {
 	}
 	
 	function save(){
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         $tab = new ProjectDashboardTab($project, array('isLead' => true));
         $tab->handleEdit();
         return array();

@@ -40,6 +40,11 @@ BibliographyEditView = Backbone.View.extend({
             addWarning('Title must not be empty', true);
             return;
         }
+        if(this.model.get('products').length == 0){
+            clearWarning();
+            addWarning('At least one publication must be added', true);
+            return;
+        }
         this.$(".throbber").show();
         this.$("#saveBibliography").prop('disabled', true);
         this.model.save(null, {
