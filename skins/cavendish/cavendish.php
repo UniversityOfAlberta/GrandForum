@@ -358,7 +358,7 @@ class CavendishTemplate extends QuickTemplate {
 		    
 		    function setNavHeight(){
 		        var negHeight = 46;
-		        $("#side div").each(function(i, el){
+		        $("#side > div").each(function(i, el){
                     negHeight += $(el).outerHeight(true);
                 })
 		        $("#nav").css("max-height", "calc(100% - " + negHeight + "px)");
