@@ -677,34 +677,43 @@ class CavendishTemplate extends QuickTemplate {
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";
                 $text = "";
+                if(is_array($link)){
+                    $social = $link['social'];
+                    $text = $link['text'];
+                    $link = $link['url'];
+                }
                 switch($social){
                     case 'flickr':
                         $img = "glyphicons_social_35_flickr";
-                        $text = "Flickr";
+                        $text = ($text == "") ? "Flickr" : $text;
                         break;
                     case 'twitter':
                         $img = "glyphicons_social_31_twitter";
-                        $text = "Twitter";
+                        $text = ($text == "") ? "Twitter" : $text;
                         break;
                     case 'facebook':
                         $img = "glyphicons_social_30_facebook";
-                        $text = "Facebook";
+                        $text = ($text == "") ? "Facebook" : $text;
                         break;
                     case 'vimeo':
                         $img = "glyphicons_social_34_vimeo";
-                        $text = "Vimeo";
+                        $text = ($text == "") ? "Vimeo" : $text;
                         break;
                     case 'linkedin':
                         $img = "glyphicons_social_17_linked_in";
-                        $text = "LinkedIn";
+                        $text = ($text == "") ? "LinkedIn" : $text;
                         break;
                     case 'youtube':
                         $img = "glyphicons_social_22_youtube";
-                        $text = "YouTube";
+                        $text = ($text == "") ? "YouTube" : $text;
+                        break;
+                    case 'newsletter':
+                        $img = "glyphicons_social_39_e-mail";
+                        $text = ($text == "") ? "Newsletter" : $text;
                         break;
                     case 'intranet':
                         $img = "share_24x24";
-                        $text = "Intranet";
+                        $text = ($text == "") ? "Intranet" : $text;
                         break;
                 }
                 echo "<a class='changeImg' style='white-space:nowrap;' name='$img' href='$link' target='_blank'>
@@ -835,7 +844,7 @@ class CavendishTemplate extends QuickTemplate {
 		    }
         ?>
 	    <div id="header" style="<?php if(count($headerTabs) == 0){ echo 'display:none;'; } ?>">
-	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger.png" /></a>
+	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
 		    <a name="top" id="contentTop"></a>
 	        <ul class="top-nav">
 	            <?php echo implode("\n", $headerTabs); ?>

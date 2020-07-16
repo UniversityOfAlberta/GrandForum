@@ -9,6 +9,8 @@ else{
 }
 require_once("../../config/Config.php");
 
+$ti = $config->getValue("topInverted");
+$si = $config->getValue("sideInverted");
 $th = $config->getValue("topHeaderColor");
 $sc = $config->getValue("sideColor");
 $hl = $config->getValue("highlightColor");
@@ -304,5 +306,77 @@ a:active {
 }
 
 EOF;
+
+if($config->getValue("topInverted")){
+    echo <<<EOF
+    
+    #topheader {
+        background: #FFFFFF;
+        color: {$ti};
+        border-bottom: 1px solid rgba(0,0,0,0.10);
+    }
+    
+    #topheader a {
+        color: {$ti};
+    }
+    
+    #globalSearchInput {
+        background: {$ti};
+        color: #FFFFFF;
+    }
+    
+    #globalSearchThrobber {
+        background: {$ti};
+        color: #FFFFFF;
+    }
+    
+    #globalSearchButton {
+        background: {$ti} !important;
+        color: #FFFFFF;
+    }
+    
+EOF;
+}
+
+if($config->getValue("sideInverted")){
+    echo <<<EOF
+    #submenu ul a, #header ul a {
+        color: {$hl};
+    }
+    
+    #side, #nav, #sideFooter {
+        color: #888888;
+    }
+    
+    #sideToggle, #allTabs {
+        color: {$hl};
+    }
+    
+    #nav li a {
+        color: {$hl};
+    }
+    
+    #nav li span {
+        color: {$si} !important;
+    }
+    
+    #submenu li.action a {
+        color: {$hl} !important;
+    }
+    
+    #submenu li.action a:hover {
+        color: #FFFFFF;
+        background: {$hl};
+    }
+    
+    input.dark {
+        border: 1px solid #CCC;
+    }
+    
+    input.dark:focus {
+        border: 1px solid {$hl} !important;
+    }
+EOF;
+}
 
 ?>
