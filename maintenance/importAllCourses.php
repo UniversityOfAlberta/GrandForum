@@ -48,6 +48,11 @@
         else if ($term == "Winter2019"){ $startEndDate["start"] = 43470; $startEndDate["end"]  = 43563;} //Winter2019: Jan 7, 2019 - Apr 10, 2019
         else if ($term == "Spring2019"){ $startEndDate["start"] = 43589; $startEndDate["end"]  = 43626;} //Spring2019: May 6, 2019 - Jun 12, 2019
         else if ($term == "Summer2019"){ $startEndDate["start"] = 43652; $startEndDate["end"]  = 43689;} //Summer2019: Jul 8, 2019 - Aug 14, 2019
+        
+        else if ($term == "Fall2019"){ $startEndDate["start"] = 43710; $startEndDate["end"]  = 43804;}   //Fall2019:   Sep 3, 2019 - Dec 6, 2019
+        else if ($term == "Winter2020"){ $startEndDate["start"] = 43835; $startEndDate["end"]  = 43928;} //Winter2020: Jan 6, 2020 - Apr 8, 2020
+        else if ($term == "Spring2020"){ $startEndDate["start"] = 43954; $startEndDate["end"]  = 43991;} //Spring2020: May 4, 2020 - Jun 10, 2020
+        else if ($term == "Summer2020"){ $startEndDate["start"] = 44017; $startEndDate["end"]  = 44054;} //Summer2020: Jul 6, 2020 - Aug 12, 2020
                     
         return $startEndDate; 
     }
@@ -56,10 +61,10 @@
     $start = microtime(true);
     
     // clean DB
-    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 16878", true);
-    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 16879", true);  
+    DBFunctions::execSQL("DELETE FROM grand_courses WHERE id > 17712", true);
+    DBFunctions::execSQL("DELETE FROM grand_user_courses WHERE id > 17713", true);  
     
-    $dataDir = "csv_old/";
+    $dataDir = "csv/";
     $courseDescrFile = "allCoursesDescription.csv";
     //$dataDir = dirname(__FILE__).'/csv_test/'; // if csv in maintanence
     
@@ -128,7 +133,7 @@
                 $userID = Person::newFromEmployeeId($employeeID)->getId();
                 $person = Person::newFromEmployeeId($employeeID);
                 
-                if($person == null || !$person->isRole("ATSEC")){
+                if($person == null){
                     continue;
                 }
  
