@@ -976,7 +976,7 @@ class CavendishTemplate extends QuickTemplate {
 	            }
 	        }
 		}
-		else {
+		else if(!isExtensionEnabled("Shibboleth")){
 		    global $wgSiteName;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));

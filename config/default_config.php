@@ -99,6 +99,9 @@
     // Whether or not to allow projectStatus
     $config->setValue("projectStatus", true);
     
+    // Whether to auto create a user from single sign on
+    $config->setValue('shibCreateUser', false);
+    
     // Which extensions to enable
     $config->setValue("extensions", array(
         'AccessControl',
