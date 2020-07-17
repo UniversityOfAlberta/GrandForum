@@ -73,6 +73,12 @@
                 <br /><br /><br /><br /><br /><br /><br /><br />
             ]]>
         </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Milestone Comments</h2>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
                     start="{getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})}" 
                     end="{getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})}">
@@ -94,6 +100,59 @@
                 <h2>Future plan</h2>
                 We will be moving toward to milestone x next year/ we plan to accomplish milestone x by the year xxxx...
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_overview" type="Integer" blobItem="BUDGET_OVERVIEW" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                <h2>Budget Overview</h2>
+                <b>Funding received so far:</b> ${$item}
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees,Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_ProjectReport_budget").on("change", "tr.obj select", function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other (specify)"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                            text.prop('disabled', true);
+                            text.val('');
+                        }
+                    });
+                    $("#table_ProjectReport_budget tr.obj select").change();
+                    $("#add_ProjectReport_budget").click(function(){
+                        $("#table_ProjectReport_budget tr.obj select").change();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="future_budget" type="MultiText" blobItem="FUTURE_BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees
+Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                <br />
+                <b>Budget plan for the next six months:</b>
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_ProjectReport_future_budget").on("change", "tr.obj select", function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other (specify)"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                            text.prop('disabled', true);
+                            text.val('');
+                        }
+                    });
+                    $("#table_ProjectReport_future_budget tr.obj select").change();
+                    $("#add_ProjectReport_future_budget").click(function(){
+                        $("#table_ProjectReport_future_budget tr.obj select").change();
+                    });
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
