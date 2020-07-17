@@ -338,6 +338,7 @@ function ShibAutoAuthenticate(&$user) {
 function ShibUserLoadFromSession($user, &$result)
 {
     global $wgUser;
+    global $wgMessage;
 	global $wgContLang;
 	global $wgAuth;
 	global $shib_UN;
@@ -366,13 +367,13 @@ function ShibUserLoadFromSession($user, &$result)
 	//Is the user already in the database?
 	$person = new Person(array());
 	//$person = Person::newFromEmployeeId($shib_employeeId);
-	if($person->getId() == 0){
+	if($person == null || $person->getId() == 0){
 	    $person = Person::newFromEmail($shib_email);
 	}
-	if($person->getId() == 0){
+	if($person == null || $person->getId() == 0){
 	    $person = Person::newFromName($shib_UN);
 	}
-	if($person->getId() != 0){
+	if($person != null && $person->getId() != 0){
 		$user = $person->getUser();
 		$user->load();
 		$wgAuth->existingUser = true;
@@ -383,6 +384,10 @@ function ShibUserLoadFromSession($user, &$result)
 		$wgUser = $user;
 		impersonate();
 		return true;
+	}
+	if(!$config->getValue('shibCreateUser')){
+	    $wgMessage->addError("You do not have an account on the {$config->getValue('networkName')} Forum");
+	    return true;
 	}
 	$user = $person->getUser();
  
