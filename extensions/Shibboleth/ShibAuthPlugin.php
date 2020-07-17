@@ -340,6 +340,7 @@ function ShibAutoAuthenticate(&$user) {
 function ShibUserLoadFromSession($user, &$result)
 {
     global $wgUser;
+    global $wgMessage;
 	global $wgContLang;
 	global $wgAuth;
 	global $shib_UN;
@@ -364,17 +365,20 @@ function ShibUserLoadFromSession($user, &$result)
 		ShibBringBackAA();
 		return true;
 	}
- 
+    
+    $wgUserBefore = $wgUser;
+    $wgUser = User::newFromId(1); // Temporarily switch to Admin
 	//Is the user already in the database?
 	$person = new Person(array());
 	//$person = Person::newFromEmployeeId($shib_employeeId);
-	if($person->getId() == 0){
+	if($person == null || $person->getId() == 0){
 	    $person = Person::newFromEmail($shib_email);
 	}
-	if($person->getId() == 0){
+	if($person == null || $person->getId() == 0){
 	    $person = Person::newFromName($shib_UN);
 	}
-	if($person->getId() != 0){
+	if($person != null && $person->getId() != 0){
+	    $wgUser = $wgUserBefore; // Switch back to user
 		$user = $person->getUser();
 		$user->load();
 		$wgAuth->existingUser = true;
@@ -386,6 +390,12 @@ function ShibUserLoadFromSession($user, &$result)
 		impersonate();
 		return true;
 	}
+	$wgUser = $wgUserBefore; // Switch back to user
+	if(!$config->getValue('shibCreateUser')){
+	    $wgMessage->addError("You do not have an account on the {$config->getValue('networkName')} Forum");
+	    return true;
+	}
+
 	$user = $person->getUser();
  
 	//Place the hook back (Not strictly necessarily MW Ver >= 1.9)
@@ -462,7 +472,6 @@ function ShibUserLoadFromSession($user, &$result)
 	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 	}
 	$person = Person::newFromId($user->getId());
-	$person->updateNamesCache();
 	return true;
 }
 function ShibAddGroups($user) {

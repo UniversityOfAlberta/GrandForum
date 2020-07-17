@@ -64,6 +64,9 @@
     // Shibboleth default role
     $config->setValue("shibDefaultRole", "");
     
+    // Whether to auto create a user from single sign on
+    $config->setValue('shibCreateUser', false);
+    
     // Skin
     $config->setValue("skin", "cavendish");
     
