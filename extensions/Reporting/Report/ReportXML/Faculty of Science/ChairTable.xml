@@ -115,10 +115,10 @@
                             <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
-                            <th>Evaluation</th>
+                            <!--th>Evaluation</th>
                             <th width="1%">Merit Increment</th>
                             <th width="1%">Tenure</th>
-                            <th width="1%">Promotion</th>
+                            <th width="1%">Promotion</th-->
                     </thead>
                     <tbody>
             ]]>
@@ -174,7 +174,7 @@
                     <td align='center'>Not Locked</td>
                 ]]>
             </If>
-            <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
+            <!--If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                 <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
@@ -288,7 +288,7 @@
                         ]]>
                     </ReportItem>
                 </If>
-            </If>
+            </If-->
         </ReportItemSet>
         <Static>
             <![CDATA[
@@ -340,19 +340,7 @@
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1,
-                        "columns": [
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            {'visible' : false },
-                            {'visible' : false },
-                            {'visible' : false },
-                            {'visible' : false }
-                        ]
+                        "iDisplayLength": -1
                     });
                     
                     $(".viewEvaluation").click(function(){
