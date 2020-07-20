@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="true">
+<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <!--Role role="ISAC">
+        <Role role="ISAC">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="rw" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="IAC">
@@ -18,7 +18,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="atsec" permissions="rw" />
+            <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="rw" />
         </Role>
         <Role role="DEAN">
@@ -40,8 +40,8 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role-->
-        <Role role="ISAC">
+        </Role>
+        <!--Role role="ISAC">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -90,7 +90,7 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role>
+        </Role-->
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <Static>
@@ -340,7 +340,19 @@
                 <script type='text/javascript'>
                     $('#chairTable').dataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "iDisplayLength": -1
+                        "iDisplayLength": -1,
+                        "columns": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            {'visible' : false },
+                            {'visible' : false },
+                            {'visible' : false },
+                            {'visible' : false }
+                        ]
                     });
                     
                     $(".viewEvaluation").click(function(){
