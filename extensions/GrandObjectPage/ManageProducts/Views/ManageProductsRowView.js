@@ -104,7 +104,7 @@ ManageProductsViewRow = Backbone.View.extend({
         else{
             _.each(productStructure.categories[this.model.get('category')].
                    types[this.model.getType()].data, function(val, key){
-                        if(this.model.get('data')[key] != undefined && this.model.get('data')[key].trim() != ""){
+                        if(this.model.get('data')[key] != undefined && String(this.model.get('data')[key]).trim() != ""){
                             incomplete.incomplete = false;
                         }
                 }.bind(this)
