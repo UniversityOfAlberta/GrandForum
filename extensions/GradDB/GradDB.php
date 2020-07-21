@@ -244,15 +244,21 @@ class GradDB extends SpecialPage{
         foreach(Person::getAllPeople(NI) as $faculty){
             $names[$faculty->getId()] = $faculty->getNameForForms();
         }
+        $wgOut->addHTML("<table class='wikitable'>
+                            <tr>
+                                <th>Account</th>
+                                <th>Type</th>
+                                <th>Percent</th>
+                                <th>Award ($)</th>
+                                <th></th>
+                            </tr>");
         foreach(array_merge(array($gradDBFinancial->emptySupervisor()), $gradDBFinancial->getSupervisors()) as $supervisor){
-            $sup = new SelectBox("sup[]", "Supervisor", $supervisor['supervisor'], $names);
-            $sup->forceKey = true;
-            $sup->attr("data-placeholder", "Choose an account holder...");
             $account = new TextField("account[]", "Account", $supervisor['account']);
             $type = new SelectBox("type[]", "Type", $supervisor['type'], array("GTA" => "GTA", 
                                                                                "GRA" => "GRA", 
                                                                                "GRAF" => "GRAF",
-                                                                               "Fee Differential" => "Fee Differential"));
+                                                                               "Fee Differential" => "Fee Differential",
+                                                                               "Top Up" => "Top Up"));
             $percent = new SelectBox("percent[]", "% Funding", $supervisor['percent'], array("100" => "100",
                                                                                              "90" => "90",
                                                                                              "80" => "80",
@@ -265,34 +271,15 @@ class GradDB extends SpecialPage{
                                                                                              "10" => "10"));
             
             $wgOut->addHTML("
-                <fieldset>
-                <legend>Account Holder: <span style='font-weight: normal;'>{$sup->render()}</span> <button class='removeSupervisor' type='button'>Remove Account Holder</button></legend>
-                
-                <table>
-                    <tr>
-                        <td class='label'>Account:</td>
-                        <td>{$account->render()}</td>
-                    </tr>
-                    <tr>
-                        <td class='label'>Type:</td>
-                        <td>
-                            {$type->render()}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='label'>% Funding:</td>
-                        <td>
-                            {$percent->render()}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='label'>Award:</td>
-                        <td><span class='award'></span></td>
-                    </tr>
-                </table>
-                </fieldset>");
+                <tr>
+                    <td>{$account->render()}</td>
+                    <td>{$type->render()}</td>
+                    <td>{$percent->render()}</td>
+                    <td align='right'><span class='award'>4500</span></td>
+                    <td><button class='removeSupervisor' type='button'>Remove Line Item</button></td>
+                </tr>");
             }
-            $wgOut->addHTML("</div><button class='addSupervisor' type='button'>Add Account Holder</button><br /><br /><input type='submit' name='submit' value='Submit' />
+            $wgOut->addHTML("</table></div><button class='addSupervisor' type='button'>Add Line Item</button><br /><br /><input type='submit' name='submit' value='Submit' />
             </form>
             <script type='text/javascript'>
                 var template = $('#supervisors fieldset').first().detach();
