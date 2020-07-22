@@ -159,6 +159,14 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
     fill:#606060 !important;
 }
 
+.ui-widget-header a .ui-icon {
+    background-image: url(../smoothness/images/ui-icons_ffffff_256x240.png);
+}
+
+.ui-widget-header a:hover .ui-icon {
+    background-image: url(../smoothness/images/ui-icons_222222_256x240.png);
+}
+
 /* Icons */
 .edit-icon {
     cursor: pointer;
