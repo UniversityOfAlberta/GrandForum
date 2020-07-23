@@ -1,6 +1,7 @@
 {
     "require": {
-        "robmorgan/phinx": "*"
+        "robmorgan/phinx": "*",
+        "google/apiclient": "^2.0"
     },
 
     "config": {
