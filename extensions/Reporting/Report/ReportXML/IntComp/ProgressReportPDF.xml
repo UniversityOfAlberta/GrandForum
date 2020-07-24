@@ -68,7 +68,7 @@
                 </table>
             ]]>
         </Static>
-        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" optional="true" sizes="30%|40%|30%">
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" optional="true" multiple="true" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>UofA Co-Principal Investigators (if applicable):</h3>
                 {$item}
