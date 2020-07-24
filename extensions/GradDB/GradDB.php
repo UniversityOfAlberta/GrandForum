@@ -245,15 +245,22 @@ class GradDB extends SpecialPage{
             $names[$faculty->getId()] = $faculty->getNameForForms();
         }
         $wgOut->addHTML("<table class='wikitable'>
-                            <tr>
-                                <th>Account</th>
-                                <th>Type</th>
-                                <th>Percent</th>
-                                <th>Award ($)</th>
-                                <th></th>
-                            </tr>");
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Type</th>
+                                    <th>Percent</th>
+                                    <th>Award ($)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>");
+        $speedCodes = array("");
+        foreach($me->getSpeedCodes() as $code){
+            $speedCodes[$code['speedcode']] = "{$code['speedcode']} - {$code['title']}";
+        }
         foreach(array_merge(array($gradDBFinancial->emptySupervisor()), $gradDBFinancial->getSupervisors()) as $supervisor){
-            $account = new TextField("account[]", "Account", $supervisor['account']);
+            $account = new SelectBox("account[]", "Account", $supervisor['account'], $speedCodes);
             $type = new SelectBox("type[]", "Type", $supervisor['type'], array("GTA" => "GTA", 
                                                                                "GRA" => "GRA", 
                                                                                "GRAF" => "GRAF",
@@ -275,19 +282,19 @@ class GradDB extends SpecialPage{
                     <td>{$account->render()}</td>
                     <td>{$type->render()}</td>
                     <td>{$percent->render()}</td>
-                    <td align='right'><span class='award'>4500</span></td>
+                    <td align='right'><span class='award'></span></td>
                     <td><button class='removeSupervisor' type='button'>Remove Line Item</button></td>
                 </tr>");
             }
-            $wgOut->addHTML("</table></div><button class='addSupervisor' type='button'>Add Line Item</button><br /><br /><input type='submit' name='submit' value='Submit' />
+            $wgOut->addHTML("</tbody></table></div><button class='addSupervisor' type='button'>Add Line Item</button><br /><br /><input type='submit' name='submit' value='Submit' />
             </form>
             <script type='text/javascript'>
-                var template = $('#supervisors fieldset').first().detach();
+                var template = $('#supervisors tbody tr').first().detach();
                 
                 function initSupervisors(){
-                    var parent = $('#supervisors fieldset').last();
+                    var parent = $('#supervisors tbody tr').last();
                     
-                    $('select[name=\"sup[]\"]', parent).chosen();
+                    $('select[name=\"account[]\"]', parent).chosen();
                     
                     $('select[name=\"percent[]\"]', parent).change(function(){
                         var percent = parseInt($(this).val())/100;
@@ -295,12 +302,12 @@ class GradDB extends SpecialPage{
                     }).change();
                     
                     $('.removeSupervisor', parent).click(function(){
-                        $(this).closest('fieldset').remove();
+                        $(this).closest('tr').remove();
                     });
                 }
                 
                 $('.addSupervisor').click(function(){
-                    $('#supervisors').append(template[0].outerHTML);
+                    $('#supervisors tbody').append(template[0].outerHTML);
                     initSupervisors();
                 });
                 

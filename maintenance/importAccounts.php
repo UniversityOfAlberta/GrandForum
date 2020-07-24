@@ -61,7 +61,6 @@ function getClient()
     return $client;
 }
 
-
 // Get the API client and construct the service object.
 $client = getClient();
 $service = new Google_Service_Sheets($client);

@@ -116,9 +116,6 @@ class Person extends BackboneModel {
     var $dateOfRetirement;
     var $dateOfLastDegree;
     var $lastDegree;
-    //var $publicationHistoryRefereed;
-    //var $publicationHistoryBooks;
-    //var $publicationHistoryPatents;
     var $dateFso2;
     var $dateFso3;
     var $dateFso4;
@@ -595,9 +592,6 @@ class Person extends BackboneModel {
                                               'date_retirement',
                                               'date_last_degree',
                                               'last_degree',
-                                              //'publication_history_refereed',
-                                              //'publication_history_books',
-                                              //'publication_history_patents',
                                               'date_fso2',
                                               'date_fso3',
                                               'date_fso4',
@@ -620,9 +614,6 @@ class Person extends BackboneModel {
                 $this->dateOfRetirement = $row['date_retirement'];
                 $this->dateOfLastDegree = $row['date_last_degree'];
                 $this->lastDegree = $row['last_degree'];
-                //$this->publicationHistoryRefereed = $row['publication_history_refereed'];
-                //$this->publicationHistoryBooks = $row['publication_history_books'];
-                //$this->publicationHistoryPatents = $row['publication_history_patents'];
                 $this->dateFso2 = $row['date_fso2'];
                 $this->dateFso3 = $row['date_fso3'];
                 $this->dateFso4 = $row['date_fso4'];
@@ -654,9 +645,6 @@ class Person extends BackboneModel {
                                               'date_retirement' => $this->dateOfRetirement,
                                               'date_last_degree' => $this->dateOfLastDegree,
                                               'last_degree' => $this->lastDegree,
-                                              //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                              //'publication_history_books' => $this->publicationHistoryBooks,
-                                              //'publication_history_patents' => $this->publicationHistoryPatents,
                                               'date_fso2' => $this->dateFso2,
                                               'date_fso3' => $this->dateFso3,
                                               'date_fso4' => $this->dateFso4,
@@ -681,9 +669,6 @@ class Person extends BackboneModel {
                                           'date_retirement' => $this->dateOfRetirement,
                                           'date_last_degree' => $this->dateOfLastDegree,
                                           'last_degree' => $this->lastDegree,
-                                          //'publication_history_refereed' => $this->publicationHistoryRefereed,
-                                          //'publication_history_books' => $this->publicationHistoryBooks,
-                                          //'publication_history_patents' => $this->publicationHistoryPatents,
                                           'date_fso2' => $this->dateFso2,
                                           'date_fso3' => $this->dateFso3,
                                           'date_fso4' => $this->dateFso4,
@@ -698,6 +683,17 @@ class Person extends BackboneModel {
             }
         }
         return false;
+    }
+    
+    function getSpeedCodes(){
+        $me = Person::newFromWgUser();
+        $speedCodes = array();
+        if($this->isMe() || $me->isRoleAtLeast(STAFF)){
+            $speedCodes = DBFunctions::select(array('grand_account_codes'),
+                                              array('*'),
+                                              array('user_id' => $this->getId()));
+        }
+        return $speedCodes;
     }
     
     function hasTenure($date=null){
