@@ -86,7 +86,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" sizes="30%|40%|30%">
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" multiple="true" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>Huawei Technical Lead:</h3>
                 {$item}
