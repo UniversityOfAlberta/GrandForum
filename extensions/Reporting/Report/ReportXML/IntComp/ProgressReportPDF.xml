@@ -25,6 +25,12 @@
                 &nbsp;-&nbsp;{$item}<br /><br />
             ]]>
         </ReportItem>
+        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h4>Funds Available Date:</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
         <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
             <![CDATA[
                 <h4>Reporting Period:</h4>
