@@ -15,15 +15,21 @@
                 {$project_full_name}
             ]]>
         </Static>
-        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" default="{$project_start}" width="80px">
             <![CDATA[
-                <h3>Project Period:</h3>
+                <h3>Proposed Project Period:</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h3>Funds Available Date:</h3>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
@@ -37,13 +43,37 @@
                 &nbsp;-&nbsp;{$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+        <!--ReportItem id="pi" type="MultiText" blobItem="PI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
             <![CDATA[
                 <h3>UofA Principal Investigator:</h3>
                 {$item}
             ]]>
-        </ReportItem>
-        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" optional="true">
+        </ReportItem-->
+        <Static>
+            <![CDATA[
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Name</th><th>Department/Unit</th><th>Email</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="pis" type="ProjectLeaders">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_dept}</td>
+                        <td>{$user_email}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" optional="true" multiple="true">
             <![CDATA[
                 <h3>UofA Co-Principal Investigators (if applicable):</h3>
                 {$item}
@@ -56,7 +86,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email">
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" multiple="true">
             <![CDATA[
                 <h3>Huawei Technical Lead:</h3>
                 {$item}
@@ -71,6 +101,12 @@
                 <a href='{$project_url}?tab=milestones&edit' class='button' target='_blank'>Edit Milestones</a><br />
                 <small>(Opens in a new Tab)</small>
                 <br /><br /><br /><br /><br /><br /><br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Milestone Comments</h2>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
@@ -94,6 +130,79 @@
                 <h2>Future plan</h2>
                 We will be moving toward to milestone x next year/ we plan to accomplish milestone x by the year xxxx...
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_overview" type="Integer" blobItem="BUDGET_OVERVIEW" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                <h2>Budget Overview</h2>
+                <b>Funding received so far:</b> <br />
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <td><b>First Year:</b></td><td>${$item}</td>
+                    </tr>
+                         
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview2" type="Integer" blobItem="BUDGET_OVERVIEW2" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Second Year:</b></td><td>${$item}</td>
+                    </tr>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview3" type="Integer" blobItem="BUDGET_OVERVIEW3" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Third Year:</b></td><td>${$item}</td>
+                    </tr>
+                </table>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Actual Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees,Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_ProjectReport_budget").on("change", "tr.obj select", function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other (specify)"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                            text.prop('disabled', true);
+                            text.val('');
+                        }
+                    });
+                    $("#table_ProjectReport_budget tr.obj select").change();
+                    $("#add_ProjectReport_budget").click(function(){
+                        $("#table_ProjectReport_budget tr.obj select").change();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="future_budget" type="MultiText" blobItem="FUTURE_BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees
+Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                <br />
+                <b>Budget plan for the next six months:</b>
+                {$item}
+                <script type='text/javascript'>
+                    $("#table_ProjectReport_future_budget").on("change", "tr.obj select", function(e){
+                        var td = $($(e.target).closest("tr").children()[1]);
+                        var text = $("input", td);
+                        if($(e.target).val() == "Other (specify)"){
+                            text.prop('disabled', false);
+                        }
+                        else{
+                            text.prop('disabled', true);
+                            text.val('');
+                        }
+                    });
+                    $("#table_ProjectReport_future_budget tr.obj select").change();
+                    $("#add_ProjectReport_future_budget").click(function(){
+                        $("#table_ProjectReport_future_budget tr.obj select").change();
+                    });
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>

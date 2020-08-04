@@ -33,6 +33,7 @@ class ReportItemCallback {
             "project_status" => "getProjectStatus",
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
+            "project_start" => "getProjectStart",
             "project_leaders" => "getProjectLeaders",
             "project_leader_ids" => "getProjectLeaderIds",
             "project_problem" => "getProjectProblem",
@@ -293,6 +294,15 @@ class ReportItemCallback {
             $project_theme = $challenges->pluck('getAcronym()');
         }
         return $project_theme;
+    }
+    
+    function getProjectStart(){
+        $project_start = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $project_start = $project->getCreated();
+        }
+        return $project_start;
     }
     
     function getProjectLeaders(){

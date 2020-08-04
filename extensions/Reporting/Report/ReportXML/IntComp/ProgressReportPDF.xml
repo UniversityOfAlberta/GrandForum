@@ -16,13 +16,19 @@
         </Static>
         <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" width="80px">
             <![CDATA[
-                <h4>Project Period:</h4>
+                <h4>Proposed Project Period:</h4>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="80px">
+            <![CDATA[
+                <h4>Funds Available Date:</h4>
+                {$item}<br /><br />
             ]]>
         </ReportItem>
         <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
@@ -42,7 +48,33 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" optional="true" sizes="30%|40%|30%">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' frame='box' rules='all' width='100%'>
+                    <tr>
+                        <th width='30%'>Name</th>
+                        <th width='40%'>Department/Unit</th>
+                        <th width='30%'>Email</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="pis" type="ProjectLeaders">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td>{$user_dept}</td>
+                        <td>{$user_email}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" optional="true" multiple="true" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>UofA Co-Principal Investigators (if applicable):</h3>
                 {$item}
@@ -54,7 +86,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" sizes="30%|40%|30%">
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" class="wikitable" labels="Name|Department/Unit|Email" multiple="true" sizes="30%|40%|30%">
             <![CDATA[
                 <h3>Huawei Technical Lead:</h3>
                 {$item}
@@ -66,6 +98,12 @@
             <![CDATA[
                 <h2>Milestones</h2>
                 {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Milestone Comments</h2>
+                {$item}
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
@@ -85,6 +123,45 @@
         <ReportItem id="future" type="Textarea" blobItem="FUTURE" blobType="BLOB_TEXT" rich="true">
             <![CDATA[
                 <h2>Future plan</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_overview" type="Integer" blobItem="BUDGET_OVERVIEW" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                <h2>Budget Overview</h2>
+                <b>Funding received so far:</b> <br />
+                <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <td><b>First Year:</b></td><td>${$item}</td>
+                    </tr>
+                         
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview2" type="Integer" blobItem="BUDGET_OVERVIEW2" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Second Year:</b></td><td>${$item}</td>
+                    </tr>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview3" type="Integer" blobItem="BUDGET_OVERVIEW3" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Third Year:</b></td><td>${$item}</td>
+                    </tr>
+                </table>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget" type="MultiText" class="wikitable" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Actual Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees,Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="future_budget" class="wikitable" type="MultiText" blobItem="FUTURE_BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees
+Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
+            <![CDATA[
+                <br />
+                <b>Budget plan for the next six months:</b>
                 {$item}
             ]]>
         </ReportItem>
