@@ -3604,8 +3604,11 @@ class Person extends BackboneModel {
                 $ps = $hqp->getPapers($category, $history, $grand, $onlyPublic, $access, true, true);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
-                        $processed[$p->getId()] = true;
-                        $papersArray[] = $p;
+                        if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
+                           !$hqp->isRoleOn(NI, $p->getDate())){ // Check to make sure HQP isn't a Faculty now
+                            $processed[$p->getId()] = true;
+                            $papersArray[] = $p;
+                        }
                     }
                 }
             }
@@ -3679,8 +3682,11 @@ class Person extends BackboneModel {
                 $ps = $hqp->getPapersAuthored($category, $startRange, $endRange, false, $networkRelated, $useReported, $onlyUseStartDate);
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
-                        $processed[$p->getId()] = true;
-                        $papersArray[] = $p;
+                        if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
+                           !$hqp->isRoleOn(NI, $p->getDate())){ // Check to make sure HQP isn't a Faculty now
+                            $processed[$p->getId()] = true;
+                            $papersArray[] = $p;
+                        }
                     }
                 }
             }
