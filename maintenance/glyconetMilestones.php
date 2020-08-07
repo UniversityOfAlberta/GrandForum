@@ -13,13 +13,13 @@ define('Y1_Q1_COL',     4);
 define('Y1_Q2_COL',     5);
 define('Y1_Q3_COL',     6);
 define('Y1_Q4_COL',     7);
-define('Y2_Q1_COL',     8);
-define('Y2_Q2_COL',     9);
-define('Y2_Q3_COL',     10);
-define('Y2_Q4_COL',     11);
-define('LEADER_COL',    12);
-define('PERSON_COL',    13);
-define('TBD_COL',       14);
+//define('Y2_Q1_COL',     8);
+//define('Y2_Q2_COL',     9);
+//define('Y2_Q3_COL',     10);
+//define('Y2_Q4_COL',     11);
+define('LEADER_COL',    8);
+define('PERSON_COL',    9);
+define('TBD_COL',       10);
 
 $wgUser = User::newFromId(1);
 
@@ -108,7 +108,7 @@ function addMilestones($data, $person, $project){
                         case Y1_Q4_COL:
                             $quarters[] = ($startYear).":4";
                             break;
-                        case Y2_Q1_COL:
+                        /*case Y2_Q1_COL:
                             $quarters[] = ($startYear+1).":1";
                             break;
                         case Y2_Q2_COL:
@@ -119,7 +119,7 @@ function addMilestones($data, $person, $project){
                             break;
                         case Y2_Q4_COL:
                             $quarters[] = ($startYear+1).":4";
-                            break;
+                            break;*/
                         case LEADER_COL:
                             $leader = $cell;
                             break;
@@ -156,7 +156,7 @@ function addMilestones($data, $person, $project){
                 $_POST['modification'] = "";
                 $_POST['status'] = "New";
                 $_POST['people'] = $people;
-                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+                $_POST['end_date'] = ($startYear+1)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
                 $_POST['comment'] = $comments;
                 
@@ -177,7 +177,7 @@ function addMilestones($data, $person, $project){
 $alreadyDone = array();
 $projects = Project::getAllProjects();
 foreach($projects as $project){
-    $fileName = "docs/{$project->getName()}.xlsx";
+    $fileName = "docs/{$project->getName()}.xls";
     if(file_exists($fileName)){
         $data = file_get_contents($fileName);
         $person = array_pop($project->getLeaders());
