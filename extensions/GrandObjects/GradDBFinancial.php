@@ -14,8 +14,8 @@ class GradDBFinancial extends BackboneModel{
     var $pdf;
     var $html;
     
-    static $AWARD = 3600;
-    static $SALARY = 5038;
+    static $AWARD = 3852.12;
+    static $SALARY = 4798.96; // TODO: Need to handle different salary scales for MSc/PhD
     static $GRAF_STIPEND = 8891;
     static $HOURS = 12;
 
@@ -194,11 +194,11 @@ class GradDBFinancial extends BackboneModel{
         }
     }
     
-    function emptySupervisor($supId=0, $type="GTA", $account="", $percent=100, $acceptedDate=null){
+    function emptySupervisor($supId=0, $type="GTA", $account="", $hours=12, $acceptedDate=null){
         return array("supervisor" => $supId,
                      "type" => $type,
                      "account" => $account,
-                     "percent" => $percent,
+                     "hours" => $hours,
                      "accepted" => $acceptedDate);
     }
 
@@ -271,8 +271,8 @@ class GradDBFinancial extends BackboneModel{
     function getAward(){
         $percent = 0;
         foreach($this->getSupervisors() as $sup){
-            if($sup['percent'] != "N/A"){
-                $percent += $percent/100;
+            if($sup['hours'] != "N/A"){
+                $percent += $sup['hours']/12;
             }
         }
         return self::$AWARD*$percent;
@@ -281,8 +281,8 @@ class GradDBFinancial extends BackboneModel{
     function getHours(){
         $percent = 0;
         foreach($this->getSupervisors() as $sup){
-            if($sup['percent'] != "N/A"){
-                $percent += $percent/100;
+            if($sup['hours'] != "N/A"){
+                $percent += $sup['hours']/100;
             }
         }
         return self::$HOURS*$percent;
@@ -378,10 +378,10 @@ class GradDBFinancial extends BackboneModel{
                 <br />";
         foreach($this->getSupervisors(true) as $sup){
             $supervisor = $sup['supervisor'];
-            $award = self::$AWARD*$sup['percent']/100;
-            $salary = self::$SALARY*$sup['percent']/100;
+            $award = self::$AWARD*$sup['hours']/12;
+            $salary = self::$SALARY*$sup['hours']/12;
             $stipend = $award + $salary;
-            $hours = number_format(self::$HOURS*$sup['percent']/100, 1);
+            $hours = number_format(self::$HOURS*$sup['hours']/12, 1);
             if($hours == 0){
                 $hours = "N/A";
             }
@@ -395,7 +395,7 @@ class GradDBFinancial extends BackboneModel{
             }
             else if($sup['type'] == "GRAF" || $sup['type'] == "Fee Differential"){
                 $html .= "Maximum Hours Assigned Per Week: <b>N/A</b><br />
-                          Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$sup['percent']/100, 0)."</b>";
+                          Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$sup['hours']/12, 0)."</b>";
             }
             $html .="</div><br />";
         }

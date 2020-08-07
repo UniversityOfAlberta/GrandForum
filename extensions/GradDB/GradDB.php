@@ -195,7 +195,7 @@ class GradDB extends SpecialPage{
                 $gradDBFinancial->supervisors[] = $gradDBFinancial->emptySupervisor($_POST['sup'][$key], 
                                                                                     $_POST['type'][$key], 
                                                                                     $_POST['account'][$key],
-                                                                                    $_POST['percent'][$key]);
+                                                                                    $_POST['hours'][$key]);
             }
 
             if(!$gradDBFinancial->exists()){
@@ -249,7 +249,7 @@ class GradDB extends SpecialPage{
                                 <tr>
                                     <th>Account</th>
                                     <th>Type</th>
-                                    <th>Percent</th>
+                                    <th>Hours/Week</th>
                                     <th>Award ($)</th>
                                     <th></th>
                                 </tr>
@@ -266,22 +266,24 @@ class GradDB extends SpecialPage{
                                                                                "GRAF" => "GRAF",
                                                                                "Fee Differential" => "Fee Differential",
                                                                                "Top Up" => "Top Up"));
-            $percent = new SelectBox("percent[]", "% Funding", $supervisor['percent'], array("100" => "100",
-                                                                                             "90" => "90",
-                                                                                             "80" => "80",
-                                                                                             "70" => "70",
-                                                                                             "60" => "60",
-                                                                                             "50" => "50",
-                                                                                             "40" => "40",
-                                                                                             "30" => "30",
-                                                                                             "20" => "20",
-                                                                                             "10" => "10"));
+            $hours = new SelectBox("hours[]", "Hours/Week", $supervisor['hours'], array("12" => "12",
+                                                                                        "11" => "11",
+                                                                                        "10" => "10",
+                                                                                        "9" => "9",
+                                                                                        "8" => "8",
+                                                                                        "7" => "7",
+                                                                                        "6" => "6",
+                                                                                        "5" => "5",
+                                                                                        "4" => "4",
+                                                                                        "3" => "3",
+                                                                                        "2" => "2",
+                                                                                        "1" => "1"));
             
             $wgOut->addHTML("
                 <tr>
                     <td>{$account->render()}</td>
                     <td>{$type->render()}</td>
-                    <td>{$percent->render()}</td>
+                    <td>{$hours->render()}</td>
                     <td align='right'><span class='award'></span></td>
                     <td><button class='removeSupervisor' type='button'>Remove Line Item</button></td>
                 </tr>");
@@ -296,9 +298,9 @@ class GradDB extends SpecialPage{
                     
                     $('select[name=\"account[]\"]', parent).chosen();
                     
-                    $('select[name=\"percent[]\"]', parent).change(function(){
-                        var percent = parseInt($(this).val())/100;
-                        $('span.award', parent).text('$' + (900*percent*4));
+                    $('select[name=\"hours[]\"]', parent).change(function(){
+                        var percent = parseInt($(this).val())/12;
+                        $('span.award', parent).text('$' + Math.round((963.03*percent*4)));
                     }).change();
                     
                     $('.removeSupervisor', parent).click(function(){
