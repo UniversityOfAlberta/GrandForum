@@ -91,10 +91,10 @@
 
     foreach($data as $row){
         echo strip_tags($row['case']).": {$row['person']->getNameForForms()}\n"; // ({$row['person']->getId()})\n";
-        DBFunctions::insert('grand_case_numbers',
+        /*DBFunctions::insert('grand_case_numbers',
                             array('user_id' => $row['person']->getId(),
                                   'year' => 2020,
-                                  'number' => $row['case']));
+                                  'number' => $row['case']));*/
     }
 
 ?>
