@@ -1023,56 +1023,56 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h2>Service/Committees Evaluations</h2>
                         <h3>Departmental</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Faculty</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>University</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Scientific</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Community Outreach</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Other</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>General Comments</h2>
                         {$item}
@@ -1173,56 +1173,56 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h2>Service/Committees Evaluations</h2>
                         <h3>Departmental</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Faculty</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>University</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Scientific</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Community Outreach</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Other</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>General Comments</h2>
                         {$item}
@@ -1304,56 +1304,56 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h2>Service/Committees Evaluations</h2>
                         <h3>Departmental</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Faculty</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>University</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Scientific</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Community Outreach</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Other</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>General Comments</h2>
                         {$item}
@@ -1435,56 +1435,56 @@
                         ]]>
                     </ReportItem>
                 </ReportItemSet>
-                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}">
+                <ReportItem id="teaching" type="Textarea" blobType="BLOB_TEXT" blobItem="TEACHING" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Teaching Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}">
+                <ReportItem id="research" type="Textarea" blobType="BLOB_TEXT" blobItem="RESEARCH" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>Research Evaluations</h2>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="departmental" type="Textarea" blobType="BLOB_TEXT" blobItem="DEPARTMENTAL" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h2>Service/Committees Evaluations</h2>
                         <h3>Departmental</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="faculty" type="Textarea" blobType="BLOB_TEXT" blobItem="FACULTY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Faculty</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="university" type="Textarea" blobType="BLOB_TEXT" blobItem="UNIVERSITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>University</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="scientific" type="Textarea" blobType="BLOB_TEXT" blobItem="SCIENTIFIC" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Scientific</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="community" type="Textarea" blobType="BLOB_TEXT" blobItem="COMMUNITY" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Community Outreach</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px">
+                <ReportItem id="other" type="Textarea" blobType="BLOB_TEXT" blobItem="OTHER" blobSubItem="{$user_id}" height="100px" rich="true">
                     <![CDATA[
                         <h3>Other</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}">
+                <ReportItem id="general" type="Textarea" blobType="BLOB_TEXT" blobItem="GENERAL" blobSubItem="{$user_id}" rich="true">
                     <![CDATA[
                         <h2>General Comments</h2>
                         {$item}
