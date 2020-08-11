@@ -65,6 +65,9 @@ class PersonProfileTab extends AbstractEditableTab {
                     table.column(3).visible(true);
                 }
             }, 33);
+            $(document).ready(function(){
+                $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+            });
         </script>";
         $this->showCCV($this->person, $this->visibility);
         return $this->html;
@@ -203,6 +206,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
             $this->person->earlyCareerResearcher = @$_POST['earlyCareerResearcher'];
+            $this->person->mitacs = @$_POST['mitacs'];
             if($config->getValue('crcEnabled')){
                 $this->person->canadaResearchChair = array(
                     'rank' => @str_replace("'", "&#39;", $_POST['crc_rank']),
@@ -229,7 +233,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<div style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
+        $this->html .= "<div id='profileText' style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
     }
     
     /**
@@ -401,12 +405,7 @@ EOF;
         $html = "";
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
-            if($config->getValue('networkName') != "CS-CAN"){
-                $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
-            }
-            else {
-                $html .= "<h2>Department</h2><ul>";
-            }
+            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";
@@ -709,6 +708,18 @@ EOF;
                             </td>
                         </tr>";
             }
+            $mitacs = "";
+            if($config->getValue('mitacsEnabled')){
+                $checked = ($person->getMitacs() == "Yes") ? "checked" : "";
+                $mitacs = "<tr>
+                            <td colspan='2'>
+                                <fieldset>
+                                    <legend>Are you interested in being contacted with MITACS and other research opportunities?</legend>
+                                    <input type='checkbox' name='mitacs' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
+                                </fieldset>
+                            </td>
+                        </tr>";
+            }
         }
         
         $this->html .= "<table>
@@ -728,7 +739,8 @@ EOF;
                             {$gender}
                             {$stakeholder}
                             {$crc}
-                            {$ecr}";
+                            {$ecr}
+                            {$mitacs}";
         
         $roles = $person->getRoles();
 

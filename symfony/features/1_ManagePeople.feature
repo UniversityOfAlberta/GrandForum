@@ -125,6 +125,34 @@ Feature: Manage People
         And I wait "1000"
         Then I should see "Roles saved"
         And "hqp.tobeinactivated@behat-test.com" should not be subscribed to "test-hqps"
+    
+    Scenario: NI Re-Activating HQP
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        And "hqp.tobeinactivated@behat-test.com" should not be subscribed to "test-hqps"
+        When I follow "Manage People"
+        And I fill in "Search:" with "HQP ToBeInactivated"
+        And I click by css "#editRoles"
+        And I wait "500"
+        And I click by css "#infinity"
+        And I press "Save"
+        And I wait "1000"
+        Then I should see "Roles saved"
+        And "hqp.tobeinactivated@behat-test.com" should be subscribed to "test-hqps"
+    
+    Scenario: NI Inactivating HQP Again
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        And "hqp.tobeinactivated@behat-test.com" should be subscribed to "test-hqps"
+        When I follow "Manage People"
+        And I fill in "Search:" with "HQP ToBeInactivated"
+        And I click by css "#editRoles"
+        And I wait "500"
+        And I click by css "input[name=endDate]"
+        And I click by css ".ui-datepicker-next"
+        And I click by css ".ui-datepicker-calendar .ui-state-default"
+        And I press "Save"
+        And I wait "1000"
+        Then I should see "Roles saved"
+        And "hqp.tobeinactivated@behat-test.com" should not be subscribed to "test-hqps"
         
     Scenario: NI should not see Admin editing options
         Given I am logged in as "NI.User1" using password "NI.Pass1"
@@ -182,7 +210,7 @@ Feature: Manage People
         And I select "Theme1" from "name"
         And I press "Save"
         And I wait "1000"
-        And I follow "Themes"
+        And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User3"
         
     Scenario: Admin Adding TC
@@ -195,7 +223,7 @@ Feature: Manage People
         And I click by css "input[name=coordinator]"
         And I press "Save"
         And I wait "1000"
-        And I follow "Themes"
+        And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User4"
         
     Scenario: Adding Supervises relations

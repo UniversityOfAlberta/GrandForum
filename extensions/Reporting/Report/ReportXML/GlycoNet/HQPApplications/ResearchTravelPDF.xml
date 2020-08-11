@@ -105,7 +105,7 @@
                 <table class='small'>
                     <tr>
                         <td valign='top' style='font-weight: bold;'>
-                            The site of proposed exchange or conference/workshop is:
+                            The site of proposed exchange:
                         </td>
                         <td valign='top'>
                             {$item}
@@ -224,11 +224,6 @@
                         <td>&nbsp;&nbsp;Lodging</td>
                         <td align='right' style='padding-right:10px;'>{getText(RP_HQP_RESEARCH,PROPOSAL,LODGING,0,{$user_id},0}</td>
                         <td>{getText(RP_HQP_RESEARCH,PROPOSAL,LODGING_DESC,0,{$user_id},0}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;&nbsp;Meals</td>
-                        <td align='right' style='padding-right:10px;'>{getText(RP_HQP_RESEARCH,PROPOSAL,MEALS,0,{$user_id},0}</td>
-                        <td>{getText(RP_HQP_RESEARCH,PROPOSAL,MEALS_DESC,0,{$user_id},0}</td>
                     </tr>
                     <tr>
                         <td><b>Total</b></td>

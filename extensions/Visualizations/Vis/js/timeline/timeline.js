@@ -79,7 +79,9 @@
         timeline.on('select', function(properties){
             var id = _.first(properties.items);
             var item = items['_data'][id];
-            
+            if(item == undefined){
+                return;
+            }
             var start = new Date(item.start);
             var end = new Date(item.end);
             
@@ -96,7 +98,7 @@
                 content += "</p>";
             }
             
-            $(".selected", this).qtip({
+            $(".vis-selected", this).qtip({
                 show: {
                     event: 'click',
                     solo: true

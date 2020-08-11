@@ -8,7 +8,7 @@
 
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Strategic Initiatives" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
                 <h3>Background and Description of Opportunity</h3>
@@ -28,12 +28,18 @@
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>GlycoNet has set aside up to $750,000 for strategic initiatives in 2020–2021. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee.</p>
+                <p>GlycoNet has set aside up to $600,000 for Strategic Initiatives in 2020–2021. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee.</p>
                 
                 <h3>Eligibility</h3>
                 <p>This opportunity is open only to individuals eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
                 
                 <h3>Application Form and Submission</h3>
+                <p>This is a rolling competition until the funding lasts. Applicants can submit their proposals when they are ready. Application review will be performed as follow:</p>
+                <ul>
+                    <li>LOI approved in February 2020, Applications due April 10, 2020: Results expected by June 30, 2020</li>
+                    <li>June 15, 2020 deadline: Results expected by October 31, 2020</li>
+                    <li>September 15, 2020 deadline: Results expected by January 31, 2020</li>
+                </ul>
                 <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
                 <h3>Additional Information</h3>
@@ -181,7 +187,7 @@
         
         <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" height="300px">
             <![CDATA[
-                <h2>Response to Reviewer's Comments</h2>
+                <h2>Response to Reviewer's Comments (if applicable)</h2>
                 <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
                 {$item}
             ]]>
@@ -286,6 +292,30 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="commercial" name="Commercialization" blobSection="CAT_COMM" tooltip="Commercialization Plan" type="ReportSection">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
+            <![CDATA[
+                <b>Commercialization Plan Guidelines:</b>
+                <ul>
+                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution or the Project’s Industrial Partner.</li>
+                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch</li>
+                    <li>The plan should address the following items:
+                        <ul>
+                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
+                            <li>Market</li>
+                            <li>Barriers</li>
+                            <li>Commercialization Opportunity</li>
+                            <li>Competitive Advantage over other Technologies</li>
+                            <li>Business Expertise</li>
+                            <li>Commercialization Strategy</li>
+                            <li>Timelines</li>
+                        </ul>
+                    </li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="ReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
             <![CDATA[
@@ -363,30 +393,6 @@
         </ReportItem>
         <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf">
             <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="commercial" name="Commercialization" blobSection="CAT_COMM" tooltip="Commercialization Plan" type="ReportSection">
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
-            <![CDATA[
-                <b>Commercialization Plan Guidelines:</b>
-                <ul>
-                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution or the Project’s Industrial Partner.</li>
-                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch</li>
-                    <li>The plan should address the following items:
-                        <ul>
-                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
-                            <li>Market</li>
-                            <li>Barriers</li>
-                            <li>Commercialization Opportunity</li>
-                            <li>Competitive Advantage over other Technologies</li>
-                            <li>Business Expertise</li>
-                            <li>Commercialization Strategy</li>
-                            <li>Timelines</li>
-                        </ul>
-                    </li>
-                </ul>
                 {$item}
             ]]>
         </ReportItem>

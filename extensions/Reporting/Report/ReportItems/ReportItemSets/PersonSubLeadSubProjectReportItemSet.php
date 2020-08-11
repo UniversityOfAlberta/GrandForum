@@ -6,7 +6,7 @@ class PersonSubLeadSubProjectReportItemSet extends ReportItemSet {
         $data = array();
         $person = Person::newFromId($this->personId);
         $projects = array();
-        $project = Project::newFromId($this->projectId);
+        $project = Project::newFromHistoricId($this->projectId);
         foreach($project->getSubProjects() as $sub){
             if($person->leadershipOf($sub)){
                 $projects[] = $sub;

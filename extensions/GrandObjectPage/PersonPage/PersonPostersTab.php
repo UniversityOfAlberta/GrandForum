@@ -6,7 +6,7 @@ class PersonPostersTab extends AbstractTab {
     var $visibility;
 
     function PersonPostersTab($person, $visibility){
-        parent::AbstractTab("Posters");
+        parent::AbstractTab("Posters/Slides");
         $this->person = $person;
         $this->visibility = $visibility;
     }

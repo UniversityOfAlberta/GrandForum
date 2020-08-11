@@ -8,6 +8,7 @@ CarouselView = Backbone.View.extend({
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", function(){
+            this.model.set(this.model.filter(function(person){ return (!_.isEmpty(person.get('publicProfile')) || !_.isEmpty(person.get('privateProfile'))); }));
             this.model.set(this.model.shuffle());
             this.render();
             setInterval(this.renderProgress.bind(this), 15);
@@ -85,11 +86,17 @@ CarouselView = Backbone.View.extend({
         var model = this.model.at(this.index);
         this.card = new LargePersonCardView({el: this.$(".carouselContent"), model: model});
         this.card.render();
+        this.card.$(".links").appendTo(this.card.$(".large_card"));
+        this.card.$(".links").css("display", "inline-block")
+                             .css("margin-top", 13)
+                             .css("margin-left", 30)
+                             .css("vertical-align", "text-top");
+        this.card.$(".card_photo").css('height', 140);
         this.$(".carouselExtra").empty();
         if(model.get('keywords').length > 0){
             this.$(".carouselExtra").append("<b>Keywords:</b> " + model.get('keywords').join(', '));
         }
-        if(model.get('privateProfile').trim() != ""){
+        if(model.get('privateProfile') != null && model.get('privateProfile').trim() != ""){
             this.$(".carouselExtra").append(model.get('privateProfile'));
         }
         else {
@@ -97,6 +104,10 @@ CarouselView = Backbone.View.extend({
         }
         this.card.$(".card_photo img").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
         this.card.$("h1").wrap("<a class='carouselUrl' href='" + model.get('url') + "'>");
+        this.$(".carouselContent").css("min-height", 175);
+        this.$(".carouselExtra").css('max-height', 150)
+                                .css('height', 150)
+                                .css('overflow-y', 'auto');
     },
     
     render: function(){ 

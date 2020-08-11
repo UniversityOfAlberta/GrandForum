@@ -34,7 +34,9 @@ class EPICTable extends SpecialPage{
         foreach($epics as $epic){
             $wps = array();
             foreach($epic->getProjects() as $project){
-                $wps[$project->getChallenge()->getAcronym()] = $project->getChallenge()->getAcronym();
+                foreach($project->getChallenges() as $challenge){
+                    $wps[$challenge->getAcronym()] = $challenge->getAcronym();
+                }
             }
             echo "\"{$epic->getName()}\",";
             echo "\"{$epic->getEmail()}\",";

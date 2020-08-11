@@ -17,7 +17,13 @@ class ProjectMainTab extends AbstractEditableTab {
         $project = $this->project;
         $me = Person::newFromWgUser();
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        
+        $preds = $this->project->getPreds();
+        if(count($preds) > 0 && !isset($_GET['generatePDF'])){
+            $predLinks = array();
+            foreach($preds as $pred){
+                $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+            }
+        }
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
@@ -39,19 +45,21 @@ class ProjectMainTab extends AbstractEditableTab {
         if($project->getType() != "Administrative"){
             $this->showChallenge();
         }
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectTypes")){
+        if($config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
         if($config->getValue("bigBetProjects") && !$this->project->isSubProject()){
             $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
         }
-        if($config->getValue("networkName") != "CS-CAN" && $config->getValue("projectStatus")){
+        if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+                $endedhtml = ($this->project->getStatus() == "Ended") ? "(".substr($this->project->getEffectiveDate(), 0, 10).")" : "";
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()} {$endedhtml}</td></tr>";
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $dateField = new CalendarField("effective_date", "Effective Date", substr($this->project->getEffectiveDate(), 0, 10));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()} {$dateField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
@@ -60,7 +68,18 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>";
+        $this->html .= "</table>
+            <script type='text/javascript'>
+                $('[name=status]').change(function(){
+                    if($('[name=status]').val() == 'Ended'){
+                        $('[name=effective_date]').show();
+                    }
+                    else{
+                        $('[name=effective_date]').hide();
+                    }
+                });
+                $('[name=status]').change();
+            </script>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -91,16 +110,18 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->project = Project::newFromId($this->project->getId());
             $wgOut->setPageTitle($this->project->getFullName());
         }
-
-        if(isset($_POST['challenge_id'])){
-            $theme = Theme::newFromId($_POST['challenge_id']);
-            $this->project->theme = $theme;
+        
+        $this->project->themes = array();
+        if(isset($_POST['challenge']) && is_array($_POST['challenge'])){
+            foreach($_POST['challenge'] as $themeId){
+                $theme = Theme::newFromId($themeId);
+                $this->project->themes[] = $theme;
+            }
         }
         $this->project->update();
         if(isset($_POST['status']) && $me->isRoleAtLeast(STAFF)){
             if($_POST['status'] == "Ended"){
                 $_POST['project'] = $this->project->getName();
-                $_POST['effective_date'] = date('Y-m-d');
                 APIRequest::doAction('DeleteProject', true);
                 Project::$cache = array();
                 $this->project = Project::newFromId($this->project->getId());
@@ -154,25 +175,25 @@ class ProjectMainTab extends AbstractEditableTab {
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
-        $challenge = $this->project->getChallenge();
+        $challenges = $this->project->getChallenges();
         
-        $challenges = Theme::getAllThemes();
-        $chlg_opts = "<option value='0'>Not Specified</option>";
-        foreach ($challenges as $chlg){
-            $cid = $chlg->getId();
-            $cname = $chlg->getAcronym();
-            if($cname != "Not Specified"){
-                $selected = ($cname == $challenge->getAcronym())? "selected='selected'" : "";
-                $chlg_opts .= "<option value='{$cid}' {$selected}>{$chlg->getAcronym()}</option>";
-            }
-        }
         if($edit){
-            $this->html .=<<<EOF
-            <select name="challenge_id">{$chlg_opts}</select>
-EOF;
+            $challengeNames = array();
+            $themes = Theme::getAllThemes($this->project->getPhase());
+            foreach($themes as $challenge){
+                $challengeNames[$challenge->getId()] = $challenge->getAcronym();
+            }
+            $collection = new Collection($challenges);
+            $challengeCheckBox = new VerticalCheckBox2("challenge", "", $collection->pluck('getId()'), $challengeNames, VALIDATE_NOTHING);
+            
+            $this->html .= $challengeCheckBox->render();
         }
         else{
-            $this->html .= "{$challenge->getName()} ({$challenge->getAcronym()})";
+            $text = array();
+            foreach($challenges as $challenge){
+                $text[] = "{$challenge->getName()} ({$challenge->getAcronym()})";
+            }
+            $this->html .= implode(", ", $text);
         }
         $this->html .= "</td></tr>";
     }

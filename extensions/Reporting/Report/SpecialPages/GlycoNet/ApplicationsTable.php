@@ -234,9 +234,9 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2020, "2020", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2016, "2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_TRANS), $this->allNis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2016, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -339,7 +339,7 @@ class ApplicationsTable extends SpecialPage{
     function generateHQPResearch(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH'), $this->hqps, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), $this->hqps, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

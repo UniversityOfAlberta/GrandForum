@@ -16,7 +16,7 @@ class PDFReportItem extends StaticReportItem {
         }
         $project = null;
         if($useProject){
-            $project = Project::newFromId($this->projectId);
+            $project = Project::newFromHistoricId($this->projectId);
             if($project == null && $this->projectId > 0){
                 $project = new Project(array());
                 $project->id = $this->projectId;

@@ -8,22 +8,47 @@
         
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Instructions" blobSection="SEC_NONE" type="ReportSection">
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Clinical Partnerships" blobSection="SEC_NONE" type="ReportSection">
         <Static>
             <![CDATA[
+                <h3>Background and Description of Opportunity</h3>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence (NCE) that focuses on the role of glycans (carbohydrates) in health. Areas of focus are infectious diseases, chronic diseases, cancer, and neurodegenerative diseases. Additional information about Network research can be found at <a href='http://www.glyconet.ca' target='_blank'>http://www.glyconet.ca</a>.</p>
                 
-                Please read the following instructions carefully. A complete application consists of:
-                <ol>
-                    <li>Project Description and References</li>
-                    <li>Figures/Schemes (a single PDF file)</li>
-                    <li>Budget (a single Excel file)</li>
-                    <li>Budget Justification</li>
-                    <li>Proposed Milestones (a single Excel File)</li>
-                    <li>Letters of Support from Partners (as separate PDF Files)</li>
-                    <li>CCV (CIHR Academic Format) for each Network Investigator (as separate PDF files)</li>
-                </ol>
-                <p><b>Deadline: This is a rolling competition with no deadline.</b></p>
-                <p><i><b>Note:</b> The involvement of Partners is not required but is encouraged. Multidisciplinary projects involving two or more research groups will be given preference.</i></p>
+                <p>In this Request for Proposals, we are seeking to fund Clinical Partnership projects that would offer clinicians and biomedical researchers opportunities to partner with Network Investigators to study glycans or glycosylation changes in disease. This partnership would increase clinician awareness of the role of glycomics in disease, and expand glycomics translational research and its application in more problems of clinical importance. Partnership outcomes could be better understanding of disease, drug development strategies, or new drug targets.</p>
+                
+                <h3>Requirements</h3>
+                <p>Projects should:</p>
+                <ul>
+                    <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca) and be targeted to a specific disease.</li>
+                    <li>Be of an applied nature so that after additional funding through other means, the outcomes could lead to novel treatments for disease.</li>
+                    <li>Involve the training of Highly Qualified Personnel.</li>
+                    <li>Involve two research groups with one clinical or biomedical group.</li>
+                </ul>
+                <p>Examples of Clinical Partnership project could be the validation of the changes of a glycan with biobank samples in a specific disease.</p>
+                <p>It is anticipated that the large majority of the funding will be directed to the clinician group.</p>
+                <p>Although not required, partner funding would be an asset.</p>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside up to $150,000 annually for this competition. Proposals may request up to $50,000 in funding.  All projects should be completed within 12 months.</p>
+                
+                <h3>Eligibility</h3>
+                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC). Furthermore, GlycoNet requires that all investigators receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council.</p>
+                <p>Questions about project suitability can be directed to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>
+                
+                <h3>Application Form and Submission</h3>
+                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Applications will be reviewed on a quarterly basis. Funding is anticipated to begin on July 2, 2020 until the funds are fully allocated.</p>
+                
+                <h3>Deadline</h3>
+                <p>This is a rolling call. There are quarterly reviews until the funds are fully allocated. Applicants can submit their proposals when they are ready. Application review will be performed as follow:</p>
+                <ul>
+                    <li>April 10 deadline: Results expected by July 2</li>
+                    <li>July 2 deadline: Results expected by October 1</li>
+                    <li>October 1 deadline: Results expected by January 2</li>
+                    <li>January 2 deadline: Results expected by April 1</li>
+                </ul>
+                
+                <h3>Additional Information</h3>
+                <p>Questions about this opportunity can be sent to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>
             ]]>
         </Static>
     </ReportSection>
@@ -237,7 +262,7 @@
                             <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
                         </ul>
                     </li>
-                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
+                    <li>All partner contributions (optional) need to be supported by a letter from the partner institution (see below)
                         <ul>
                             <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
                         </ul>

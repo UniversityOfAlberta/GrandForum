@@ -111,28 +111,28 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <h3>Upload Attachments</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf">
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD2" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf">
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD3" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf">
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD4" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf">
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="UPLOAD5" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 {$item}
             ]]>
@@ -144,6 +144,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="jennifer@agewell-nce.ca,info@agewell-nce.ca" />
     </ReportSection>
 </Report>

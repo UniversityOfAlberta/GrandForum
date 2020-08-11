@@ -63,6 +63,30 @@ function abbr(str, nChars){
     return $(abbr).parent().html();
 }
 
+function showLanguage(language, textEn, textFr, delimiter){
+    if(delimiter == undefined){
+        delimiter = ' / ';
+    }
+    if(language == "English" || language == "en"){
+        return textEn;
+    }
+    else if(language == "French" || language == "fr"){
+        return textFr;
+    }
+    else if(language == "Bilingual" || language == "bi"){
+        if(textEn != "" && textFr != ""){
+            return textEn + delimiter + textFr;
+        }
+        else if(textEn != ""){
+            return textEn;
+        }
+        else if(textFr != ""){
+            return textFr;
+        }
+    }
+    return "";
+}
+
 function subview(subviewName){
     return "<div data-subview='" + subviewName + "'></div>";
 }

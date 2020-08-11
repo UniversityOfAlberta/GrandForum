@@ -279,7 +279,7 @@
     </ReportSection>
     <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_PROG_SUPERVISOR" type="EditableReportSection">
         <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
-            <If id="if" if="{contains({$getProjects},IFP2019)}">
+            <If id="if" if="{or({contains({$getProjects},IFP2019)}, {contains({$getProjects},IFA2019)})}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
                     <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_PROG_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
                         <![CDATA[

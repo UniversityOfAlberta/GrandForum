@@ -17,7 +17,12 @@ class ProjectMembersAPI extends RESTAPI {
                 foreach($exploded as $role){
                     $role = trim($role);
                     if(!$project->isDeleted()){
-                        $people = $project->getAllPeople($role);
+                        if(strstr($role, "Former")){
+                            $people = $project->getAllPeopleDuring($role, "0000-00-00", currentTimeStamp());
+                        }
+                        else{
+                            $people = $project->getAllPeople($role);
+                        }
                     }
                     else{
                         $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());

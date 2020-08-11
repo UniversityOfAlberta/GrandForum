@@ -35,7 +35,15 @@ if(firstTab == "" || firstTab == undefined){
 
 var lastPage = firstTab;
 
+var section = null;
+var leftPart = null;
+var rightPart = null;
+
 function initSideBar(){
+    section = jQuery(".back_button").closest("section");
+    leftPart = jQuery(jQuery('.elementor-row > .elementor-element', section).get(0));
+    rightPart = jQuery(jQuery('.elementor-row > .elementor-element', section).get(1));
+    
     jQuery("#menu-members").html("");
     jQuery("#nav_menu-4").hide();
     
@@ -111,14 +119,15 @@ function initSideBar(){
         jQuery(".back_button").hide();
         jQuery("#" + lastPage).show();
         jQuery("#" + lastPage + "_tab").show();
-        jQuery(".gdl-page-content iframe").each(function(i, el){
+        jQuery("iframe", section).each(function(i, el){
             this.contentWindow.location.replace('about:blank');
         });
-        jQuery(".gdl-page-content iframe").hide();
-        jQuery("img.throbber").hide();
-        jQuery(".gdl-page-float-left").animate({'width': "660px"});
-        jQuery(".gdl-page-item").animate({'width': "660px"});
-        jQuery(".gdl-page-item > div").animate({'width': "640px"}, function(){jQuery(".gdl-right-sidebar").show();});
+        jQuery("iframe", section).hide();
+        jQuery("img.throbber", section).hide();
+        
+        leftPart.animate({'width': "810px"}, function(){
+            rightPart.show();
+        });
     });
 }
 
@@ -129,7 +138,7 @@ function addTab(outerId, dataId, label){
 }
 
 function initTab(role, selector, tabSelector, fields, cols){
-    jQuery.get("https://forum.glyconet.ca/index.php?action=api.people/" + role, function(response){
+    jQuery.get("https://forum.glyconet.ca/index.php?action=api.people/" + role.replace("&", "%26"), function(response){
         jQuery(selector + "_tab > div").empty();
         if(selector == "#administrative-centre"){
             // Special case for re-ordering
@@ -202,14 +211,16 @@ function initTab(role, selector, tabSelector, fields, cols){
             if(firstPerson == "" || firstPerson == undefined){
                 jQuery(selector + "_tab").fadeOut();
                 jQuery(selector + "_tab > h1").fadeOut();
-                jQuery(".gdl-right-sidebar").hide();
-                jQuery(".gdl-page-float-left").animate({width: jQuery(".page-wrapper").width() + "px"});
+                
+                rightPart.hide();
+                leftPart.animate({width: section.width() + "px"});
             }
             else{
                 jQuery(selector + "_tab").hide();
                 jQuery(selector + "_tab > h1").hide();
-                jQuery(".gdl-right-sidebar").hide();
-                jQuery(".gdl-page-float-left").animate({width: jQuery(".page-wrapper").width() + "px"}, 0);
+                
+                rightPart.hide();
+                leftPart.animate({width: section.width() + "px"}, 0);
             }
             jQuery(".gdl-page-item").width("100%");
             jQuery(".gdl-page-item > div").width("100%");
@@ -236,7 +247,7 @@ function initTab(role, selector, tabSelector, fields, cols){
 
 jQuery(".page-wrapper").css('min-height', 500);
 jQuery(document).ready(initSideBar);
-initTab("SD,BOD Chair,ASD,Manager", "#executive-leadership", "tab-0", ['position','university'], 4);
+initTab("SD,BOD Chair,ADCP,ASD,Manager", "#executive-leadership", "tab-0", ['position','university'], 4);
 initTab("BOD", "#bod", "tab-4", ['position','university'], 4);
 initTab("SAB", "#sab", "tab-5", ['position','university'], 4);
 initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);

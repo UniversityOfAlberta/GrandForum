@@ -27,6 +27,30 @@
             <b>Additional Comments:</b>
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
+        
+        $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none;'>
+            {$loggedIn}
+            <table>
+                <tr>
+                    <td align='right'><b>Topic:</b></td>
+                    <td> 
+                        <select id='topic' style='vertical-align:middle;'>
+                            <option selected>Find an expert</option>
+                            <option>Find a student</option>
+                            <option>Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id='topic_other'>
+                    <td align='right'><b>Specify:</b></td>
+                    <td><input type='text' id='topicOther' /></td>
+                </tr>
+            </table>
+            <b>Description:</b><br />
+            <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
+            <div id='fileSizeError' class='error' style='display:none;'>This file is too large, please choose a file smaller than 5MB</div>
+            <b>Attachment:</b><br /><input type='file' /> (5MB max)
+        </div>");
         return true;
     }
     
@@ -35,16 +59,28 @@
         if($action == 'reportIssue'){
             $me = Person::newFromWgUser();
             $comments = nl2br($_POST['comments']);
-            $file = base64_decode(str_replace(' ', '+', str_replace("data:image/png;base64,", "", $_POST['img'])));
-            $file = str_replace("data:image/png;base64,", "", $_POST['img']);
-            $filename = "Screenshot.png";
-            $file_size = strlen($file);
+            if(isset($_POST['img'])){
+                $file = base64_decode(str_replace(' ', '+', str_replace("data:image/png;base64,", "", $_POST['img'])));
+                $file = str_replace("data:image/png;base64,", "", $_POST['img']);
+                $filename = "Screenshot.png";
+                $file_size = strlen($file);
+            }
             $uid = md5(uniqid(time()));
             $email = ($me->isLoggedIn()) ? $me->getEmail() : $_POST['email'];
-            $msg = "<p>{$comments}</p><br />
-                    <b>User:</b> {$me->getName()} ({$email})<br />
-                    <b>Browser:</b> {$_POST['browser']}<br />
-                    <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
+            $msg = "";
+            $subj = "";
+            if(isset($_POST['img'])){
+                $subj = "Report Issue";
+                $msg = "<p>{$comments}</p><br />
+                        <b>User:</b> {$me->getName()} ({$email})<br />
+                        <b>Browser:</b> {$_POST['browser']}<br />
+                        <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
+            }
+            else{
+                $subj = "Contact Us - {$_POST['topic']}";
+                $msg = "<p>{$comments}</p><br />
+                        <b>User:</b> {$me->getName()} ({$email})";
+            }
             
             $eol = "\r\n";
             // Basic headers
@@ -58,14 +94,25 @@
             $message .= "Content-Type: text/html; charset=ISO-8859-1".$eol;
             $message .= "Content-Transfer-Encoding: 8bit".$eol.$eol;
             $message .= $msg.$eol.$eol;
-            $message .= "--".$uid.$eol;
-            $message .= "Content-Type: application/octet-stream; name=\"".$filename."\"".$eol;
-            $message .= "Content-Transfer-Encoding: base64".$eol;
-            $message .= "Content-Disposition: attachment; filename=\"".$filename."\"".$eol.$eol;
-            $message .= chunk_split($file).$eol.$eol;
+            if(isset($_POST['img'])){
+                $message .= "--".$uid.$eol;
+                $message .= "Content-Type: application/octet-stream; name=\"".$filename."\"".$eol;
+                $message .= "Content-Transfer-Encoding: base64".$eol;
+                $message .= "Content-Disposition: attachment; filename=\"".$filename."\"".$eol.$eol;
+                $message .= chunk_split($file).$eol.$eol;
+            }
+            if(isset($_POST['fileObj']) && $_POST['fileObj'] != ""){
+                $fileObj = $_POST['fileObj'];
+                $exploded = explode(",", $fileObj['data']);
+                $message .= "--".$uid.$eol;
+                $message .= "Content-Type: application/octet-stream; name=\"".$fileObj['filename']."\"".$eol;
+                $message .= "Content-Transfer-Encoding: base64".$eol;
+                $message .= "Content-Disposition: attachment; filename=\"".$fileObj['filename']."\"".$eol.$eol;
+                $message .= @chunk_split($exploded[1]).$eol.$eol;
+            }
             $message .= "--".$uid."--";
             
-            mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] Report Issue", $message, $header);
+            mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header);
             exit;
         }
         return true;

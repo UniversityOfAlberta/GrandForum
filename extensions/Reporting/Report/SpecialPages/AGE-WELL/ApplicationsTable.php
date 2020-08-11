@@ -104,7 +104,7 @@ class ApplicationsTable extends SpecialPage{
         }
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
-            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>Entrepreneur</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>EEA</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=edge'>Edge</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
@@ -113,6 +113,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ih'>IH</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=fellow'>Policy Challenge</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=epicconference'>EPIC Conference</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer Institute</a>";
@@ -152,6 +153,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "summer" && ($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal")){
             $this->generateSummer();
+        }
+        else if($program == "epicconference" && $me->isRoleAtLeast(SD)){
+            $this->generateEpicConference();
         }
         else if($program == "fellow" && $me->isRoleAtLeast(SD)){
             $this->generateFellow();
@@ -284,6 +288,8 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2020', $this->fullHQPs, 2020, "2020-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2020', $this->fullHQPs, 2020, "2020-04"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2020', $this->fullHQPs, 2020, "2020-01"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2019', $this->fullHQPs, 2019, "2019-10"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', $this->fullHQPs, 2019, "2019-07"));
@@ -304,6 +310,37 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         
+        $sup = new TextReportItem();
+        $sup->setBlobType(BLOB_TEXT);
+        $sup->setBlobItem(HQP_APPLICATION_SUP);
+        $sup->setBlobSection(HQP_APPLICATION_FORM);
+        $sup->setId("supervisor");
+        
+        $uni = new TextReportItem();
+        $uni->setBlobType(BLOB_TEXT);
+        $uni->setBlobItem(HQP_APPLICATION_UNI);
+        $uni->setBlobSection(HQP_APPLICATION_FORM);
+        $uni->setId("uni");
+        
+        $dept = new TextReportItem();
+        $dept->setBlobType(BLOB_TEXT);
+        $dept->setBlobItem("HQP_APPLICATION_STAT");
+        $dept->setBlobSection(HQP_APPLICATION_FORM);
+        $dept->setId("status");
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem(HQP_APPLICATION_PROJ);
+        $title->setBlobSection(HQP_APPLICATION_FORM);
+        $title->setId("project");
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem(HQP_APPLICATION_KEYWORDS);
+        $keywords->setBlobSection(HQP_APPLICATION_FORM);
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
         $level = new CheckboxReportItem();
         $level->setBlobType(BLOB_ARRAY);
         $level->setBlobItem(HQP_APPLICATION_LVL);
@@ -315,6 +352,12 @@ class ApplicationsTable extends SpecialPage{
         $michael->setBlobItem("HQP_APPLICATION_MICHAEL");
         $michael->setBlobSection(HQP_APPLICATION_FORM);
         $michael->setId("MICHAEL");
+        
+        $ind = new CheckboxReportItem();
+        $ind->setBlobType(BLOB_ARRAY);
+        $ind->setBlobItem("HQP_APPLICATION_INDIGENOUS");
+        $ind->setBlobSection(HQP_APPLICATION_FORM);
+        $ind->setId("INDIGENOUS");
              
         $bme = new CheckboxReportItem();
         $bme->setBlobType(BLOB_ARRAY);
@@ -345,6 +388,38 @@ class ApplicationsTable extends SpecialPage{
         $trp->setBlobItem("HQP_APPLICATION_TRP");
         $trp->setBlobSection(HQP_APPLICATION_FORM);
         $trp->setId("TRP");
+        
+        $uoft = new CheckboxReportItem();
+        $uoft->setBlobType(BLOB_ARRAY);
+        $uoft->setBlobItem("HQP_APPLICATION_UOFT");
+        $uoft->setBlobSection(HQP_APPLICATION_FORM);
+        $uoft->setId("UOFT");
+        
+        $sfu = new CheckboxReportItem();
+        $sfu->setBlobType(BLOB_ARRAY);
+        $sfu->setBlobItem("HQP_APPLICATION_SFU");
+        $sfu->setBlobSection(HQP_APPLICATION_FORM);
+        $sfu->setId("SFU");
+        
+        $shrf = new CheckboxReportItem();
+        $shrf->setBlobType(BLOB_ARRAY);
+        $shrf->setBlobItem("HQP_APPLICATION_SHRF");
+        $shrf->setBlobSection(HQP_APPLICATION_FORM);
+        $shrf->setId("SHRF");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2020, "2020", array("Level" => $level,
+                                                                                                                                   "Michael F. Harcourt" => $michael,
+                                                                                                                                   "Indigenous" => $ind,
+                                                                                                                                   "MIRA" => $mira,
+                                                                                                                                   "UofT" => $uoft,
+                                                                                                                                   "SFU" => $sfu,
+                                                                                                                                   "NBHRF" => $nbhrf,
+                                                                                                                                   "SHRF" => $shrf,
+                                                                                                                                   "Supervisor" => $sup,
+                                                                                                                                   "Institution" => $uni,
+                                                                                                                                   "Status/Department" => $dept,
+                                                                                                                                   "Project Title" => $title,
+                                                                                                                                   "Keywords" => $keywords,)));
         
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2019, "2019", array("Level" => $level,
                                                                                                                                    "Michael F. Harcourt" => $michael,
@@ -387,6 +462,13 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateEpicConference(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', $this->hqps, 2020, "2020"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateFellow(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -397,6 +479,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEEA(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', $this->everyone, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

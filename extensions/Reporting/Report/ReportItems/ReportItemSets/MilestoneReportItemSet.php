@@ -4,7 +4,7 @@ class MilestoneReportItemSet extends ReportItemSet {
 
     function getData(){
         $data = array();
-        $proj = Project::newFromId($this->projectId);
+        $proj = Project::newFromHistoricId($this->projectId);
         if($proj != null){
             $proj_id = $proj->getId();
             $milestones = $proj->getMilestonesDuring();

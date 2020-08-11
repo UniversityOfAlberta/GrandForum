@@ -89,6 +89,9 @@ class PeopleTableTab extends AbstractTab {
             if($config->getValue('ecrEnabled')){
                 $statusHeader .= "<th>ECR</th>";
             }
+            if($config->getValue('mitacsEnabled')){
+                $statusHeader .= "<th>MITACS</th>";
+            }
             if($me->isRoleAtLeast(MANAGER)){
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
@@ -166,7 +169,6 @@ class PeopleTableTab extends AbstractTab {
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
-                        $project->getPhase() == PROJECT_PHASE &&
                         $project->getStatus() != "Proposed" &&
                         ($person->isRole($this->table, $project) || ($this->past !== false && $person->isRoleDuring($this->table, $start, $end, $project)))){
                         $subprojs = array();
@@ -193,7 +195,8 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Active";
                 }
                 else{
-                    $status = "Inactive";                
+                    $lastRole = $person->getRole(HQP, true);
+                    $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
                 $this->html .= "<td align='left'>{$person->getGender()}</td>";
                 if($config->getValue('crcEnabled')){
@@ -202,6 +205,9 @@ class PeopleTableTab extends AbstractTab {
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
+                if($config->getValue('mitacsEnabled')){
+                    $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
                 if($me->isRoleAtLeast(MANAGER)){
                     $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";

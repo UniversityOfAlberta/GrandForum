@@ -28,7 +28,7 @@
                 <p>Individuals wishing to take part in the Research & Travel Supplements Program must be currently supervised by a GlycoNet Network Investigator. Trainees must finish the exchange and/or the conference before completion of their degree program or tenure. Both Canadian and international students are eligible. For applicants who are interested in research exchange, the exchange site must be an academic institution or government lab inside or outside of Canada. For applications who are interested in attending a conference/workshop, the conference/workshop site must be glyco-focused and cannot be used for the Canadian Glycomics Symposium, nor the GlycoNet Annual General Meeting. A maximum of two applications from the same lab will be supported each year, and applications must align with one of GlycoNet’s research themes (see <a href='http://www.glyconet.ca/' target='_blank'>glyconet.ca</a>).</p>
                 
                 <h3>Funding Available</h3>
-                <p>Funding Available GlycoNet has set aside $16,000 annually for this program. For applicants who are participating in research exchange, the Network will contribute up to $2000/month in living expenses for trainees who working in another laboratory outside the city of their home institution (pro-rated for partial months). Exchanges of one week or less will not be considered. For applicants who wish to attend conferences and/or workshops, the Network will contribute up to $800 per conference/workshop. The award will be paid as a reimbursement to the award holder.</p>
+                <p>GlycoNet has set aside $16,000 annually for this program. For applicants who are participating in research exchange, the Network will contribute up to $2000/month in living expenses for trainees who working in another laboratory outside the city of their home institution (pro-rated for partial months). Exchanges of one week or less will not be considered. For applicants who wish to attend conferences and/or workshops, the Network will contribute up to $800 per conference/workshop. The award will be paid as a reimbursement to the award holder.</p>
                 
                 <h3>Instructions</h3>
                 <p>The applicant must complete the application through the GlycoNet forum. A complete application includes:</p>
@@ -52,10 +52,10 @@
                     </tr>
                     <tr>
                         <td>September 1 - December 31</td>
-                        <td>May 15</td>	
+                        <td>June 15</td>	
                     </tr>
                     <tr>
-                        <td>January 1 - April 30</td>
+                        <td>November 1 - April 30</td>
                         <td>September 15</td>
                     </tr>
                 </table>
@@ -244,7 +244,7 @@
                 <table>
                     <tr>
                         <td valign='top' style='font-weight: bold; white-space: nowrap;'>
-                            The site of proposed exchange or conference/workshop is:
+                            The site of proposed exchange:
                         </td>
                         <td valign='top' style='white-space: nowrap;'>
                             {$item}
@@ -403,19 +403,6 @@
             ]]>
         </ReportItem>
         <ReportItem id="lodging_desc" type="Textarea" blobItem="LODGING_DESC" height="50px" width="300px">
-            <![CDATA[
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="meals" type="Integer" blobItem="MEALS" min="0" max="10000000" width="70px">
-            <![CDATA[
-                    <tr>
-                        <td>Meals</td>
-                        <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="meals_desc" type="Textarea" blobItem="MEALS_DESC" height="50px" width="300px">
             <![CDATA[
                         <td>{$item}</td>
                     </tr>

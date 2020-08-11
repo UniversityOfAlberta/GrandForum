@@ -498,7 +498,7 @@ abstract class AbstractReportItem {
             if(isset(ReportItemCallback::$callbacks[$m])){
                 $v = str_replace("$", "\\$", ReportItemCallback::call($this, $m));
                 $v = str_replace(",", "&#44;", $v);
-                $cdata = str_replace("{\$".$m."}", nl2br($v), $cdata);
+                $cdata = str_replace("{\$".$m."}", @nl2br($v), $cdata);
             }
         }
         

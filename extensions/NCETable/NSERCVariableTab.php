@@ -362,51 +362,49 @@ EOF;
                             </thead>
                             <tbody>";
         foreach($projects as $project){
-            //if($project->getPhase() == 1){
-                $contributions = $project->getContributionsDuring($this->from, $this->to);
-                foreach($contributions as $contribution){
-                    $partners = $contribution->getPartners();
-                    $nRows = max(1, count($partners));
-                    $start = substr($contribution->getStartDate(), 0, 10);
-                    $end = substr($contribution->getEndDate(), 0, 10);
-                    $date = substr($contribution->getDate(), 0, 10);
-                    $this->html .= "<tr>
-                                        <td rowspan='$nRows'>{$project->getName()}</td>
-                                        <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>
-                                        <td rowspan='$nRows'><div style='max-height:60px;overflow-y:auto;'>".nl2br($contribution->getDescription())."</div></td>
-                                        <td rowspan='$nRows' align='center'>$start</td>
-                                        <td rowspan='$nRows' align='center'>$end</th>
-                                        <td rowspan='$nRows' align='center'>$date</td>";
-                    if(count($partners) > 0){
-                        foreach($partners as $i => $partner){
-                            $this->html .= "<td>{$partner->organization}</td>
-                                            <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
-                                            <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
-                                            <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
-                                            <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
-                            if($i == 0){
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
-                                $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
-                            }
-                            $this->html .= "</tr>";
-                            if($i < $nRows-1){
-                                $this->html .= "<tr>";
-                            }
+            $contributions = $project->getContributionsDuring($this->from, $this->to);
+            foreach($contributions as $contribution){
+                $partners = $contribution->getPartners();
+                $nRows = max(1, count($partners));
+                $start = substr($contribution->getStartDate(), 0, 10);
+                $end = substr($contribution->getEndDate(), 0, 10);
+                $date = substr($contribution->getDate(), 0, 10);
+                $this->html .= "<tr>
+                                    <td rowspan='$nRows'>{$project->getName()}</td>
+                                    <td rowspan='$nRows'><a href='{$contribution->getUrl()}' target='_blank'>{$contribution->getName()}</td>
+                                    <td rowspan='$nRows'><div style='max-height:60px;overflow-y:auto;'>".nl2br($contribution->getDescription())."</div></td>
+                                    <td rowspan='$nRows' align='center'>$start</td>
+                                    <td rowspan='$nRows' align='center'>$end</th>
+                                    <td rowspan='$nRows' align='center'>$date</td>";
+                if(count($partners) > 0){
+                    foreach($partners as $i => $partner){
+                        $this->html .= "<td>{$partner->organization}</td>
+                                        <td>{$contribution->getHumanReadableSubTypeFor($partner)}</td>
+                                        <td align='right'>$".number_format($contribution->getCashFor($partner), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getKindFor($partner), 2)."</td>
+                                        <td align='right'>$".number_format($contribution->getTotalFor($partner), 2)."</td>";
+                        if($i == 0){
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getCash(), 2)."</td>";
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getKind(), 2)."</td>";
+                            $this->html .= "<td rowspan='$nRows' align='right'>$".number_format($contribution->getTotal(), 2)."</td>";
+                        }
+                        $this->html .= "</tr>";
+                        if($i < $nRows-1){
+                            $this->html .= "<tr>";
                         }
                     }
-                    else{
-                        $this->html .= "<td></td>
-                                        <td></td>
-                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
-                                        <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
-                    }
                 }
-            //}
+                else{
+                    $this->html .= "<td></td>
+                                    <td></td>
+                                    <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getTotal(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getCash(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getKind(), 2)."</td>
+                                    <td align='right'>$".number_format($contribution->getTotal(), 2)."</td></tr>";
+                }
+            }
         }
         $this->html .= "</tbody></table>";
     }
@@ -897,13 +895,11 @@ EOF;
             $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
             
             foreach($projs as $project){
-                //if($project->getPhase() == 1){
-                    if(!isset($projects[$project->getName()])){
-                        $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                                             "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
-                    }
-                    $projects[$project->getName()][$pos][] = $hqp;
-                //}
+                if(!isset($projects[$project->getName()])){
+                    $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
+                                                         "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+                }
+                $projects[$project->getName()][$pos][] = $hqp;
             }
         }
 
@@ -1043,7 +1039,8 @@ EOF;
          <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
          <tr>
          <th>University</th>
-         <th>Researchers</th>";
+         <th>Researchers</th>
+         <th>Names</th>";
         $html .= "</tr>";
 
         foreach ($universities as $uni=>$data){
@@ -1063,6 +1060,11 @@ EOF;
             $num_students = count($hqpa);   
             $student_details = Dashboard::niDetails($hqpa, $this->to);
             if($num_students > 0){
+                $names = array();
+                foreach($hqpa as $hqp){
+                    $names[] = $hqp->getNameForForms();
+                }
+                $names = implode(", ", $names);
                 $html .=<<<EOF
                     <td>
                     <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
@@ -1074,10 +1076,14 @@ EOF;
                         <ul>$student_details</ul>
                     </div>
                     </td>
+                    <td>
+                        {$names}
+                    </td>
 EOF;
             }
             else{
-                $html .= "<td>0</td>";
+                $html .= "<td>0</td>
+                          <td></td>";
             }
 
             //}
@@ -1386,12 +1392,12 @@ EOF;
                     }
                     break;
                 // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
+                //case 'Misc':
+                //case 'Poster':
+                //case 'Book Review':
                 case 'Review Article':
-                case 'Invited Presentation':
-                default:
+                //case 'Invited Presentation':
+                //default:
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                             if($pub->getCategory() == "Publication" ||
                                $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
@@ -1811,12 +1817,12 @@ EOF;
                     }
                     break;
                 // B: Non-refereed contributions
-                case 'Misc':
-                case 'Poster':
-                case 'Book Review':
+                //case 'Misc':
+                //case 'Poster':
+                //case 'Book Review':
                 case 'Review Article':
-                case 'Invited Presentation':
-                default:
+                //case 'Invited Presentation':
+                //default:
                     if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
                         if($pub->getCategory() == "Publication" ||
                            $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||

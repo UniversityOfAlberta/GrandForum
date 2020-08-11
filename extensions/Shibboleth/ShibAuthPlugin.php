@@ -365,16 +365,34 @@ function ShibUserLoadFromSession($user, &$result)
 		return true;
 	}
  
+	    $sql = "SELECT user_id
+                FROM mw_user
+                WHERE LOWER(CONVERT(user_name USING latin1)) = LOWER('".DBFunctions::escape($shib_UN)."')
+                AND deleted != 1";
+
+        $data = DBFunctions::execSQL($sql); 
 	//Is the user already in the database?
-	if (User::idFromName($shib_UN) != null && User::idFromName($shib_UN) != 0)
+	if(count($data) == 0){
+	    $sql = "SELECT user_id
+		    FROM mw_user
+		    WHERE user_email LIKE LOWER('".DBFunctions::escape($shib_email)."')
+		    AND deleted != 1";
+	    $data = DBFunctions::execSQL($sql);
+
+	}
+	if (count($data) > 0)
 	{
-		$user = User::newFromName($shib_UN);
+		$user_id = $data[0]['user_id'];
+		$user = User::newFromId($user_id);
+		//$user = User::newFromName($shib_UN);
 		$user->load();
 		$wgAuth->existingUser = true;
 		$wgAuth->updateUser($user); //Make sure password is nologin
 		wfSetupSession();
 		$user->setCookies();
 		ShibAddGroups($user);
+		$wgUser = $user;
+		wfRunHooks('AuthPluginSetup', array());
 		return true;
 	}
  

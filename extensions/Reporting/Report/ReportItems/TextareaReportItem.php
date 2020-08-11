@@ -256,6 +256,20 @@ EOF;
         $dom = new SmartDOMDocument();
         $dom->loadHTML($blobValue);
 
+        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            // Set links to externalLink for TinyMCE links
+            $as = $dom->getElementsByTagName("a");
+            for($i=0; $i<$as->length; $i++){
+                $a = $as->item($i);
+                if($a->getAttribute('class') != 'anchor' && 
+                   $a->getAttribute('class') != 'mce-item-anchor' &&
+                   $a->getAttribute('class') != 'externalLink' && 
+                   $a->textContent != ""){
+                    $a->setAttribute('class', "externalLink");
+                }
+            }
+        }
+
         $imgs = $dom->getElementsByTagName("img");
         $margins = $config->getValue('pdfMargins');
         $maxWidth = PDFGenerator::cmToPixels(21.59 - $margins['left'] - $margins['right'])*DPI_CONSTANT;

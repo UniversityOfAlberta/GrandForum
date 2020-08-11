@@ -43,6 +43,9 @@ class NITableTab extends PeopleTableTab {
             if($config->getValue('ecrEnabled')){
                 $statusHeader .= "<th>ECR</th>";
             }
+            if($config->getValue('mitacsEnabled')){
+                $statusHeader .= "<th>MITACS</th>";
+            }
             if($me->isRoleAtLeast(MANAGER)){
                 $statusHeader .= "<th style='display:none;'>Indigenous</th>
                                   <th style='display:none;'>Disability</th>
@@ -120,7 +123,6 @@ class NITableTab extends PeopleTableTab {
                 $projs = array();
                 foreach($projects as $project){
                     if(!$project->isSubProject() && !isset($projs[$project->getId()]) &&
-                        $project->getPhase() == PROJECT_PHASE &&
                         $project->getStatus() != "Proposed" &&
                         $person->isRole($this->table, $project)){
                         $subprojs = array();
@@ -156,6 +158,9 @@ class NITableTab extends PeopleTableTab {
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
+                if($config->getValue('mitacsEnabled')){
+                    $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
                 if($me->isRoleAtLeast(MANAGER)){
                     $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";

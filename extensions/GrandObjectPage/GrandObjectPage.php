@@ -21,6 +21,10 @@
         require_once("Projections.php");
     }
     require_once("Bibliography/Bibliography.php");
+    if(isExtensionEnabled("Postings")){
+        require_once("NewsPosting/NewsPostingPage.php");
+        require_once("EventPosting/EventPostingPage.php");
+    }
     //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

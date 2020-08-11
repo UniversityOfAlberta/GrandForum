@@ -218,6 +218,9 @@ abstract class PDFGenerator {
     static function generate($name, $html, $head, $person=null, $project=null, $preview=false, $report=null, $stream=false, $orientation='portrait'){
         global $wgServer, $wgScriptPath, $wgUser, $config;
         
+        ini_set("max_execution_time","1600");
+        ini_set("memory_limit","2024M");
+        
         if(self::$preview){
             $preview = true;
         }
@@ -277,8 +280,6 @@ abstract class PDFGenerator {
         if($person == null || $person->getId() == 0){
             $person = Person::newFromId($wgUser->getId());
         }
-        ini_set("max_execution_time","500");
-        ini_set("memory_limit","1024M");
         
         $margins = $config->getValue('pdfMargins');
         
