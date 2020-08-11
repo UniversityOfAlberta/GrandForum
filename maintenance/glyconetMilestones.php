@@ -3,7 +3,7 @@
 require_once('commandLine.inc');
 require_once('../Classes/PHPExcel/IOFactory.php');
 
-$year = REPORTING_YEAR;
+$year = 2020;
 
 define('UNIVERSITY_COL',0);
 define('PI_COL',        1);
@@ -13,17 +13,13 @@ define('Y1_Q1_COL',     4);
 define('Y1_Q2_COL',     5);
 define('Y1_Q3_COL',     6);
 define('Y1_Q4_COL',     7);
-define('Y2_Q1_COL',     8);
-define('Y2_Q2_COL',     9);
-define('Y2_Q3_COL',     10);
-define('Y2_Q4_COL',     11);
-define('Y3_Q1_COL',     12);
-define('Y3_Q2_COL',     13);
-define('Y3_Q3_COL',     14);
-define('Y3_Q4_COL',     15);
-define('LEADER_COL',    16);
-define('PERSON_COL',    17);
-define('TBD_COL',       18);
+//define('Y2_Q1_COL',     8);
+//define('Y2_Q2_COL',     9);
+//define('Y2_Q3_COL',     10);
+//define('Y2_Q4_COL',     11);
+define('LEADER_COL',    8);
+define('PERSON_COL',    9);
+define('TBD_COL',       10);
 
 $wgUser = User::newFromId(1);
 
@@ -65,8 +61,8 @@ function addMilestones($data, $person, $project){
         $obj->setActiveSheetIndex(0);
         $cells = $obj->getActiveSheet()->toArray();
         $activity = "";
-        echo "== Processing milestones for {$person->getNameForForms()} ==\n";
-        $startYear = REPORTING_YEAR;
+        echo "== Processing milestones for {$person->getNameForForms()} - {$project} ==\n";
+        $startYear = 2020;
         foreach($cells as $rowN => $row){
             if($rowN == 0){
                 foreach($row as $colN => $cell){
@@ -112,7 +108,7 @@ function addMilestones($data, $person, $project){
                         case Y1_Q4_COL:
                             $quarters[] = ($startYear).":4";
                             break;
-                        case Y2_Q1_COL:
+                        /*case Y2_Q1_COL:
                             $quarters[] = ($startYear+1).":1";
                             break;
                         case Y2_Q2_COL:
@@ -123,19 +119,7 @@ function addMilestones($data, $person, $project){
                             break;
                         case Y2_Q4_COL:
                             $quarters[] = ($startYear+1).":4";
-                            break;
-                        case Y3_Q1_COL:
-                            $quarters[] = ($startYear+2).":1";
-                            break;
-                        case Y3_Q2_COL:
-                            $quarters[] = ($startYear+2).":2";
-                            break;
-                        case Y3_Q3_COL:
-                            $quarters[] = ($startYear+2).":3";
-                            break;
-                        case Y3_Q4_COL:
-                            $quarters[] = ($startYear+2).":4";
-                            break;
+                            break;*/
                         case LEADER_COL:
                             $leader = $cell;
                             break;
@@ -155,6 +139,9 @@ function addMilestones($data, $person, $project){
                     echo "\tProject not valid\n";
                     break;
                 }
+                if(trim($title) == ""){
+                    continue;
+                }
                 // Insert
                 $_POST['user_name'] = $person->getName();
                 $_POST['project'] = $p->getName();
@@ -169,12 +156,12 @@ function addMilestones($data, $person, $project){
                 $_POST['modification'] = "";
                 $_POST['status'] = "New";
                 $_POST['people'] = $people;
-                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+                $_POST['end_date'] = ($startYear+1)."-12-31 00:00:00";
                 $_POST['quarters'] = implode(",", $quarters);
                 $_POST['comment'] = $comments;
                 
                 APIRequest::doAction('ProjectMilestone', true);
-                echo "\tMilestone added\n";
+                echo "\tMilestone added $title\n";
             }
         }
     }
@@ -188,22 +175,17 @@ function addMilestones($data, $person, $project){
 }
 
 $alreadyDone = array();
-$allPeople = array_merge(Person::getAllPeople(NI), Person::getAllPeople(EXTERNAL));
-foreach($allPeople as $person){
-    $leadership = $person->leadership();
-    foreach($leadership as $lead){
-        $fileName = "docs/{$person->getName()} {$lead->getName()}.xlsx";
-        if(file_exists($fileName) &&
-           !isset($alreadyDone[$person->getName()][$lead->getName()])){
-            $data = file_get_contents($fileName);
-            $project = $lead->getName();
-            $alreadyDone[$person->getName()][$lead->getName()] = true;
-            addMilestones($data, $person, $project);
-        }
-        else {
-            echo "No data uploaded for {$person->getName()} {$lead->getName()}\n";
-            continue;
-        }
+$projects = Project::getAllProjects();
+foreach($projects as $project){
+    $fileName = "docs/{$project->getName()}.xls";
+    if(file_exists($fileName)){
+        $data = file_get_contents($fileName);
+        $person = array_pop($project->getLeaders());
+        addMilestones($data, $person, $project->getName());
+    }
+    else {
+        echo "No data uploaded for {$project->getName()}\n";
+        continue;
     }
 }
 

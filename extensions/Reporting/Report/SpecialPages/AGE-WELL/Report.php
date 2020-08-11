@@ -201,7 +201,7 @@ class Report extends AbstractReport {
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$theme->getAcronym()}", "{$url}WPReport&project={$theme->getAcronym()}", $selected);
             }
         }
-        if($person->isRole(APL) || $person->isRole(HQP)){
+        /*if($person->isRole(APL) || $person->isRole(HQP)){
             $ccs = array_merge($person->leadership(), $person->getProjects());
             $alreadyDone = array();
             foreach($ccs as $cc){
@@ -211,7 +211,7 @@ class Report extends AbstractReport {
                     $alreadyDone[$cc->getId()] = true;
                 }
             }
-        }
+        }*/
         if(count($person->getEvaluates("EEA-2019", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA Review", "{$url}EEAReview", $selected);

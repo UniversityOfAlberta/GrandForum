@@ -18,9 +18,6 @@ class Report extends AbstractReport{
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
-        if(isset($_GET['project'])){
-            $topProjectOnly = true;
-        }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
 

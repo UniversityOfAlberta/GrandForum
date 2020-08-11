@@ -5,6 +5,11 @@ class CalendarReportItem extends AbstractReportItem {
 	function render(){
 		global $wgOut;
 		$value = $this->getBlobValue();
+		$default = $this->getAttr('default', '');
+		$placeholder = $this->getAttr('placeholder', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		}
 		$width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
 		$format = $this->getAttr('format', 'yy-mm-dd');
 		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};' value='{$value}' />";

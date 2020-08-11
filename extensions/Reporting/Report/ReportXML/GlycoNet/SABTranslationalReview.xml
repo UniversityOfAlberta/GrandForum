@@ -30,7 +30,7 @@
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="TranslationalReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -47,7 +47,7 @@
             ]]>
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
@@ -75,7 +75,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_TRANS_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+        <If if="{==({getText(RP_SAB_TRANS_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},{$project_id})},Submitted)}">
             <![CDATA[
                 <div class="success">Your review(s) have been submitted.</div>
             ]]>
