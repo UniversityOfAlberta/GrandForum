@@ -98,18 +98,6 @@ class GrandAccess {
 	    return true;
 	}
 	
-	function changeGroups($user, &$aRights){
-        global $wgRoles;
-        foreach($aRights as $key => $right){
-            if($key >= 1000){
-                continue;
-            }
-            unset($aRights[$key]);
-        }
-        $aRights[0] = 'read';
-        return true;
-    }
-	
 }
 
 ?>

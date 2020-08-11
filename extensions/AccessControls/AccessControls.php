@@ -44,7 +44,6 @@ $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
 $wgHooks['UserGetRights'][] = 'GrandAccess::setupGrandAccess';
-$wgHooks['UserGetRights'][] = 'GrandAccess::changeGroups';
 $wgHooks['isValidEmailAddr'][] = 'isValidEmailAddr';
 $wgHooks['UserSetCookies'][] = 'userSetCookies';
 $wgHooks['BeforeInitialize'][] = 'checkLoggedIn';
