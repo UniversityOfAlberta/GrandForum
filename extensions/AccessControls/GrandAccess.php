@@ -7,9 +7,11 @@ class GrandAccess {
     static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues;
         if(isset(self::$alreadyDone[$user->getId()])){
+            $user->mGroups = self::$alreadyDone[$user->getId()];
+            $aRights = $user->mGroups;
             return true;
         }
-        self::$alreadyDone[$user->getId()] = true;
+        
 	    $me = Person::newFromId($user->getId());
 	    $i = 1000;
 	    $oldRights = $aRights;
@@ -95,8 +97,21 @@ class GrandAccess {
 	        $user->mGroups[] = "Poster";
 	        $user->mGroups[] = "Presentation";
 	    }
+	    self::$alreadyDone[$user->getId()] = $aRights;
 	    return true;
 	}
+	
+	static function changeGroups($user, &$aRights){
+        global $wgRoles;
+        foreach($aRights as $key => $right){
+            if($key >= 1000){
+                continue;
+            }
+            unset($aRights[$key]);
+        }
+        $aRights[0] = 'read';
+        return true;
+    }
 	
 }
 
