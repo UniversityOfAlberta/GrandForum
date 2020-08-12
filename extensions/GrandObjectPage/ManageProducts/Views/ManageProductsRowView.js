@@ -50,6 +50,11 @@ ManageProductsViewRow = Backbone.View.extend({
                     clearError();
                     addSuccess('The ' + product.get('category') + ' <i>' + product.get('title') + '</i> was duplicated');
                     this.parent.products.add(product);
+                    _.each(this.parent.subViews, function(val, key){
+                        if(val.model.get('id') == product.get('id')){
+                            val.editProduct();
+                        }
+                    });
                     this.duplicating = false;
                     this.$(".copy-icon").css('background', '');
                     this.$(".copy-icon .throbber").hide();
