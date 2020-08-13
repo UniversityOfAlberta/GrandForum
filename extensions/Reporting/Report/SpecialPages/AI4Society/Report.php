@@ -47,7 +47,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $config;
         $other = $toolbox['Other'];
         unset($toolbox['Other']);
-        $toolbox['AcademicPrograms']['links'][] = TabUtils::createToolboxLink("Course Catalogue", "index.php/Courses");
+        $toolbox['AcademicPrograms']['links'][] = TabUtils::createToolboxLink("Course Catalogue", "$wgServer$wgScriptPath/index.php/Courses");
         $toolbox['Other'] = $other;
         return true;
     }
