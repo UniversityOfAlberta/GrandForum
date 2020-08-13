@@ -246,7 +246,7 @@ class AddMember extends SpecialPage{
         $rolesRow->append($rolesLabel)->append($rolesField);
 
         $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Undergraduate Student");
+        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technical Assistant", "Research Internship", "Undergraduate Student");
         $departments = Person::getAllDepartments();
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
