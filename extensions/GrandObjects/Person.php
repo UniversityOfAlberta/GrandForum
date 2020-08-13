@@ -46,6 +46,7 @@ class Person extends BackboneModel {
                                                       "ra",
                                                       "research assistant",
                                                       "research/technical assistant", 
+                                                      "research internship",
                                                       "professional end user"),
                                      'ugrad' => array("bsc",
                                                       "b.sc.",
