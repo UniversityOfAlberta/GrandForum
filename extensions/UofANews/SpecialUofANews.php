@@ -34,6 +34,15 @@ class SpecialUofANews extends SpecialPage{
                 $wgOut->addHTML("</div>");
             }
         }
+        if(isset($_GET['embed'])){
+            $wgOut->addScript("<style> 
+                #bodyContent { 
+                    max-height: 600px;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                }
+            </style>");
+        }
     }
 
 }
