@@ -29,7 +29,7 @@ Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
             break;
         case "createaccount-text":
             $message = 'An account has been created for your e-mail address on {{SITENAME}} ($4) named "$2"';
-            if(isExtensionEnabled('Shibboleth')){
+            if(!isExtensionEnabled('Shibboleth')){
                 $message .= ', with password "$3".
 You should log in and change your password now.';
             }
