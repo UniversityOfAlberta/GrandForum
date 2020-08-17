@@ -146,6 +146,9 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                     $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 }
+                if(isExtensionEnabled("UofANews")){
+                    $tabbedPage->addTab(new PersonUofANewsTab($person, $visibility));
+                }
                 if($config->getValue('networkName') == 'AI4Society'){
                     $tabbedPage->addTab(new PersonPostersTab($person, $visibility));
                     $tabbedPage->addTab(new PersonMetricsTab($person, $visibility));

@@ -325,6 +325,10 @@ EOF;
                 $text .= $product->getTitle()."\n";
                 $text .= $product->getDescription()."\n";
             }
+            $news = UofANews::getNewsForPerson($person);
+            foreach($news as $article){
+                $text .= "{$article->getPartialTitle()}\n";
+            }
             CommonWords::$commonWords[] = strtolower($person->getFirstName());
             CommonWords::$commonWords[] = strtolower($person->getLastName());
             $data = Wordle::createDataFromText($text);
