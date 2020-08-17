@@ -45,10 +45,16 @@ class SpecialUofANews extends SpecialPage{
                 
                 .newsArticle {
                     display: block !important;
+                    padding: 0 10px !important;
+                    margin-bottom: 10px !important;
                 }
                 
                 .newsText {
                     padding-right: 0 !important;
+                }
+                
+                .newsText > h3 {
+                    padding-top: 0 !important;
                 }
                 
                 .newsImage {
@@ -59,7 +65,7 @@ class SpecialUofANews extends SpecialPage{
                     max-width: 100% !important;
                     max-height: 100% !important;
                     width: 100% !important;
-                    margin: 0 0 20px 0 !important;
+                    margin: 0 0 10px 0 !important;
                 }
             </style>");
         }
