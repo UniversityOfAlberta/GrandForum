@@ -1274,7 +1274,7 @@
     </ReportSection>
     <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
@@ -1405,7 +1405,7 @@
     </ReportSection>
     <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="" blobSection="FEC_CHAIR_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
