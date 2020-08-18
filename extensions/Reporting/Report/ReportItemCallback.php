@@ -689,7 +689,7 @@ class ReportItemCallback {
         return $count;
     }
     
-    function isAllowedToViewRecommendation(){
+    function isAllowedToViewRecommendation($userId){
         $deptPeople = new DepartmentPeopleReportItemSet();
         $deptPeople->setParent($this->reportItem->getSection());
         $deptPeople->setAttribute('start', '{$last_year}-07-01');
@@ -712,9 +712,9 @@ class ReportItemCallback {
         $deanPeople->setAttribute('start', '{$last_year}-07-01');
         $deanPeople->setAttribute('end', '{$this_year}-07-01');
         
-        $data = array_merge($deptPeople->getData(), $atsecPeople->getData(), $deanPeople->getData());        
+        $data = array_merge($deptPeople->getData(), $atsecPeople->getData(), $deanPeople->getData());
         foreach($data as $tuple){
-            if($tuple['person_id'] == $this->reportItem->personId){
+            if($tuple['person_id'] == $userId){
                 return true;
             }
         }
