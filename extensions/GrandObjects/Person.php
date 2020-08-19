@@ -3606,7 +3606,8 @@ class Person extends BackboneModel {
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
-                           !$hqp->isRoleOn(NI, $p->getDate())){ // Check to make sure HQP isn't a Faculty now
+                           !$hqp->isRoleOn(NI, $p->getDate()) &&
+                           !($p->getAcceptanceDate() == "0000-00-00" && $p->getDate() == "0000-00-00" && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
                             $processed[$p->getId()] = true;
                             $papersArray[] = $p;
                         }
@@ -3684,7 +3685,8 @@ class Person extends BackboneModel {
                 foreach($ps as $p){
                     if(!isset($processed[$p->getId()])){
                         if(!$hqp->isRoleOn(NI, $p->getAcceptanceDate()) && 
-                           !$hqp->isRoleOn(NI, $p->getDate())){ // Check to make sure HQP isn't a Faculty now
+                           !$hqp->isRoleOn(NI, $p->getDate()) &&
+                           !($p->getAcceptanceDate() == "0000-00-00" && $p->getDate() == "0000-00-00" && $hqp->isRole(NI))){ // Check to make sure HQP isn't a Faculty now
                             $processed[$p->getId()] = true;
                             $papersArray[] = $p;
                         }
