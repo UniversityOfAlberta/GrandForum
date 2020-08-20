@@ -116,31 +116,17 @@ class GradDB extends SpecialPage{
             $universities = $hqp->getUniversitiesDuring($date, $date);
             foreach($universities as $university){
                 if(in_array(strtolower($university['position']), Person::$studentPositions['grad'])){
-                    $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $term);
+                    $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $me->getId(), $term);
                     $button = (!$gradDBFinancial->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$gradDBFinancial->getMD5()}'>View Contract</a>";
                     $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $hqpAccepted = ($gradDBFinancial->hasHQPAccepted()) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
-                    $hasSupervisorAccepted = array();
-                    if($gradDBFinancial->exists()){
-                        foreach($gradDBFinancial->getSupervisors(true) as $sup){
-                            $supervisor = $sup['supervisor'];
-                            if($supervisor->getId() == 0){
-                                continue;
-                            }
-                            if($gradDBFinancial->hasSupervisorAccepted($supervisor->getId())){
-                                $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: &#10003;";
-                            }
-                            else{
-                                $hasSupervisorAccepted[] = "{$supervisor->getFullName()}: _";
-                            }
-                        }
-                    }
+                    $hasSupAccepted = ($gradDBFinancial->hasSupAccepted()) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $wgOut->addHTML("<tr>
                         <td><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                         <td>{$university['position']}</td>
                         <td align='center'>{$eligible}</td>
                         <td align='center'>{$hqpAccepted}</td>
-                        <td align='right' style='white-space: nowrap;'>".implode("<br />", $hasSupervisorAccepted)."</td>
+                        <td align='center'>{$hasSupAccepted}</td>
                         <td align='center'>{$button}</td>
                     </tr>");
                     break;
@@ -178,7 +164,7 @@ class GradDB extends SpecialPage{
         }
         $terms = (isset($_POST['terms'])) ? $_POST['terms'] : array($term);
         foreach($terms as $t){
-            $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $t);
+            $gradDBFinancial = GradDBFinancial::newFromTuple($hqp->getId(), $me->getId(), $t);
             if($gradDBFinancial->exists()){
                 $wgOut->addHTML("This entry already exists and cannot be edited");
                 return;
@@ -187,15 +173,15 @@ class GradDB extends SpecialPage{
         if(isset($_POST['submit'])){
             // Handle Form Submit
             $error = "";
-            $gradDBFinancial->userId = $hqp->getId();
+            $gradDBFinancial->hqpId = $hqp->getId();
+            $gradDBFinancial->supId = $me->getId();
             $gradDBFinancial->term = implode(",", $_POST['terms']);
             
-            $gradDBFinancial->supervisors = array();
-            foreach($_POST['sup'] as $key => $sup){
-                $gradDBFinancial->supervisors[] = $gradDBFinancial->emptySupervisor($_POST['sup'][$key], 
-                                                                                    $_POST['type'][$key], 
-                                                                                    $_POST['account'][$key],
-                                                                                    $_POST['hours'][$key]);
+            $gradDBFinancial->lines = array();
+            foreach($_POST['type'] as $key => $sup){
+                $gradDBFinancial->lines[] = $gradDBFinancial->emptyLine($_POST['type'][$key], 
+                                                                        $_POST['account'][$key],
+                                                                        $_POST['hours'][$key]);
             }
 
             if(!$gradDBFinancial->exists()){
@@ -225,7 +211,7 @@ class GradDB extends SpecialPage{
             }
             $hqpNames[$hqp->getId()] = "{$hqp->getNameForForms()} {$email}";
         }
-        $students = new SelectBox("hqp", "Student", $gradDBFinancial->userId, $hqpNames);
+        $students = new SelectBox("hqp", "Student", $gradDBFinancial->hqpId, $hqpNames);
         $students->forceKey = true;
         $students->attr("data-placeholder", "Choose a student...");
         $terms = new VerticalCheckBox("terms", "Terms", $gradDBFinancial->getTerms(), GradDBFinancial::yearTerms($term));
@@ -259,25 +245,25 @@ class GradDB extends SpecialPage{
         foreach($me->getSpeedCodes() as $code){
             $speedCodes[$code['speedcode']] = "{$code['speedcode']} - {$code['title']}";
         }
-        foreach(array_merge(array($gradDBFinancial->emptySupervisor()), $gradDBFinancial->getSupervisors()) as $supervisor){
-            $account = new SelectBox("account[]", "Account", $supervisor['account'], $speedCodes);
-            $type = new SelectBox("type[]", "Type", $supervisor['type'], array("GTA" => "GTA", 
+        foreach(array_merge(array($gradDBFinancial->emptyLine()), $gradDBFinancial->getLines()) as $line){
+            $account = new SelectBox("account[]", "Account", $line['account'], $speedCodes);
+            $type = new SelectBox("type[]", "Type", $line['type'], array("GTA" => "GTA", 
                                                                                "GRA" => "GRA", 
                                                                                "GRAF" => "GRAF",
                                                                                "Fee Differential" => "Fee Differential",
                                                                                "Top Up" => "Top Up"));
-            $hours = new SelectBox("hours[]", "Hours/Week", $supervisor['hours'], array("12" => "12",
-                                                                                        "11" => "11",
-                                                                                        "10" => "10",
-                                                                                        "9" => "9",
-                                                                                        "8" => "8",
-                                                                                        "7" => "7",
-                                                                                        "6" => "6",
-                                                                                        "5" => "5",
-                                                                                        "4" => "4",
-                                                                                        "3" => "3",
-                                                                                        "2" => "2",
-                                                                                        "1" => "1"));
+            $hours = new SelectBox("hours[]", "Hours/Week", $line['hours'], array("12" => "12",
+                                                                                  "11" => "11",
+                                                                                  "10" => "10",
+                                                                                  "9" => "9",
+                                                                                  "8" => "8",
+                                                                                  "7" => "7",
+                                                                                  "6" => "6",
+                                                                                  "5" => "5",
+                                                                                  "4" => "4",
+                                                                                  "3" => "3",
+                                                                                  "2" => "2",
+                                                                                  "1" => "1"));
             
             $wgOut->addHTML("
                 <tr>
@@ -359,8 +345,8 @@ class GradDB extends SpecialPage{
             if($gradDBFinancial->getHQP()->getId() == $me->getId() && !$gradDBFinancial->hasHQPAccepted()){
                 $gradDBFinancial->hqpAccepted = currentTimeStamp();
             }
-            else if($gradDBFinancial->isSupervisor($me->getId()) && !$gradDBFinancial->hasSupervisorAccepted($me->getId())){
-                $gradDBFinancial->setSupervisorField($me->getId(), 'accepted', currentTimeStamp());
+            else if($gradDBFinancial->isSupervisor($me->getId()) && !$gradDBFinancial->hasSupAccepted()){
+                $gradDBFinancial->supAccepted = currentTimeStamp();
             }
             else{
                 $wgMessage->addError("You have already accepted this contract.");

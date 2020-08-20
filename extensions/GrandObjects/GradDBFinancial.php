@@ -6,11 +6,13 @@
 class GradDBFinancial extends BackboneModel{
     
     var $id;
-    var $userId;
+    var $hqpId;
+    var $supId;
     var $term;
     var $md5;
     var $hqpAccepted = 0;
-    var $supervisors = array();
+    var $supAccepted = 0;
+    var $lines = array();
     var $pdf;
     var $html;
     
@@ -22,11 +24,13 @@ class GradDBFinancial extends BackboneModel{
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('id',
-                                          'user_id',
+                                          'hqp',
+                                          'supervsor',
                                           'term',
                                           'md5',
                                           'hqpAccepted',
-                                          'supervisors'),
+                                          'supAccepted',
+                                          '`lines`'),
                                     array('id' => EQ($id)));
         return new GradDBFinancial($data);
     }
@@ -34,19 +38,21 @@ class GradDBFinancial extends BackboneModel{
     static function newFromMd5($md5){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('id',
-                                          'user_id',
+                                          'hqp',
+                                          'supervisor',
                                           'term',
                                           'md5',
                                           'hqpAccepted',
-                                          'supervisors'),
+                                          'supAccepted',
+                                          '`lines`'),
                                     array('md5' => EQ($md5)));
         return new GradDBFinancial($data);
     }
     
-    static function getAllFromHQP($user_id){
+    static function getAllFromHQP($hqp_id){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('id'),
-                                    array('user_id' => EQ($user_id)));
+                                    array('hqp' => EQ($hqp_id)));
         $objs = array();
         foreach($data as $row){
             $objs[] = new GradDBFinancial(array($row));
@@ -54,18 +60,21 @@ class GradDBFinancial extends BackboneModel{
         return $objs;
     }
     
-    static function newFromTuple($user_id, $term){
+    static function newFromTuple($hqp_id, $sup_id, $term){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('id',
-                                          'user_id',
+                                          'hqp',
+                                          'supervisor',
                                           'term',
                                           'md5',
                                           'hqpAccepted',
-                                          'supervisors'),
-                                    array('user_id' => EQ($user_id),
+                                          'supAccepted',
+                                          '`lines`'),
+                                    array('hqp' => EQ($hqp_id),
+                                          'supervisor' => EQ($sup_id),
                                           'term' => LIKE("%$term%")));
         $obj = new GradDBFinancial($data);
-        $obj->userId = $user_id;
+        $obj->hqpId = $hqp_id;
         $obj->term = $term;
         return $obj;
     }
@@ -122,12 +131,12 @@ class GradDBFinancial extends BackboneModel{
     // Returns HQPs who have been attached to the 
     function getAttachedHQP($supId, $term){
         $data = DBFunctions::select(array('grand_graddb'),
-                                    array('user_id'),
-                                    array('supervisors' => LIKE("%\"supervisor\":\"{$supId}\"%"),
+                                    array('hqp'),
+                                    array('supervisor' => EQ($supId),
                                           'term' => LIKE("%{$term}%")));
         $hqps = array();
         foreach($data as $row){
-            $hqp = Person::newFromId($row['user_id']);
+            $hqp = Person::newFromId($row['hqp']);
             if($hqp != null && $hqp->getId() != 0){
                 $hqps[strtolower($hqp->getName())] = $hqp;
             }
@@ -139,15 +148,16 @@ class GradDBFinancial extends BackboneModel{
     function GradDBFinancial($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
-            $this->userId = $data[0]['user_id'];
+            $this->hqpId = $data[0]['hqp'];
+            $this->supId = $data[0]['supervisor'];
             $this->term = $data[0]['term'];
             $this->md5 = $data[0]['md5'];
             $this->hqpAccepted = $data[0]['hqpAccepted'];
-            $this->supervisors = json_decode($data[0]['supervisors'], true);
+            $this->supAccepted = $data[0]['supAccepted'];
+            $this->lines = json_decode($data[0]['lines'], true);
         }
-        if(count($this->supervisors) == 0){
-            $me = Person::newFromWgUser();
-            $this->supervisors[] = $this->emptySupervisor($me->getId());
+        if(count($this->lines) == 0){
+            $this->lines[] = $this->emptyLine();
         }
     }
     
@@ -170,11 +180,13 @@ class GradDBFinancial extends BackboneModel{
         $me = Person::newFromWGUser();
         if($me->isLoggedIn()){
             DBFunctions::insert('grand_graddb',
-                                array('user_id' => $this->userId,
+                                array('hqp' => $this->hqpId,
+                                      'supervisor' => $this->supId,
                                       'term' => $this->term,
                                       'md5' => $this->getMD5(),
-                                      'supervisors' => json_encode($this->supervisors),
-                                      'hqpAccepted' => $this->hqpAccepted));
+                                      '`lines`' => json_encode($this->lines),
+                                      'hqpAccepted' => $this->hqpAccepted,
+                                      'supAccepted' => $this->supAccepted));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
         }
@@ -184,22 +196,22 @@ class GradDBFinancial extends BackboneModel{
         $me = Person::newFromWGUser();
         if($me->isLoggedIn()){
             DBFunctions::update('grand_graddb',
-                                array('user_id' => $this->userId,
+                                array('hqp' => $this->hqpId,
+                                      'supervisor' => $this->supId,
                                       'term' => $this->term,
                                       'md5' => $this->getMD5(),
-                                      'supervisors' => json_encode($this->supervisors),
-                                      'hqpAccepted' => $this->hqpAccepted),
+                                      '`lines`' => json_encode($this->lines),
+                                      'hqpAccepted' => $this->hqpAccepted,
+                                      'supAccepted' => $this->supAccepted),
                                 array('id' => EQ($this->id)));
             DBFunctions::commit();
         }
     }
     
-    function emptySupervisor($supId=0, $type="GTA", $account="", $hours=12, $acceptedDate=null){
-        return array("supervisor" => $supId,
-                     "type" => $type,
+    function emptyLine($type="GTA", $account="", $hours=12){
+        return array("type" => $type,
                      "account" => $account,
-                     "hours" => $hours,
-                     "accepted" => $acceptedDate);
+                     "hours" => $hours);
     }
 
     function toArray(){
@@ -226,36 +238,21 @@ class GradDBFinancial extends BackboneModel{
     }
     
     function getHQP(){
-        return Person::newFromId($this->userId);
+        return Person::newFromId($this->hqpId);
     }
     
-    function getSupervisors($init=false){
-        if(!$init){
-            return $this->supervisors;
-        }
-        else{
-            $supervisors = array();
-            foreach($this->supervisors as $key => $sup){
-                $supervisors[] = $sup;
-                $supervisors[$key]['supervisor'] = Person::newFromId($supervisors[$key]['supervisor']);
-            }
-            return $supervisors;
-        }
+    function getSupervisor(){
+        return Person::newFromId($this->supId);
     }
     
-    function setSupervisorField($supId, $key, $value){
-        foreach($this->getSupervisors() as $k => $sup){
-            if($sup['supervisor'] == $supId){
-                $this->supervisors[$k][$key] = $value;
-                break;
-            }
-        }
+    function getLines(){
+        return $this->lines;
     }
 
     function getMD5(){
         if($this->md5 == ""){
             $rand = rand(0, 10000);
-            $this->md5 = md5("{$rand}_{$this->userId}_{$this->getTerm()}");
+            $this->md5 = md5("{$rand}_{$this->hqpId}_{$this->supId}_{$this->getTerm()}");
         }
         return $this->md5;
     }
@@ -270,22 +267,22 @@ class GradDBFinancial extends BackboneModel{
     
     function getAward(){
         $percent = 0;
-        foreach($this->getSupervisors() as $sup){
-            if($sup['hours'] != "N/A"){
-                $percent += $sup['hours']/12;
+        foreach($this->getLines() as $line){
+            if($line['hours'] != "N/A"){
+                $percent += $line['hours']/12;
             }
         }
         return self::$AWARD*$percent;
     }
     
     function getHours(){
-        $percent = 0;
-        foreach($this->getSupervisors() as $sup){
-            if($sup['hours'] != "N/A"){
-                $percent += $sup['hours']/100;
+        $hours = 0;
+        foreach($this->getLines() as $line){
+            if($line['hours'] != "N/A"){
+                $hours += $line['hours'];
             }
         }
-        return self::$HOURS*$percent;
+        return $hours;
     }
     
     function getStart(){
@@ -302,26 +299,20 @@ class GradDBFinancial extends BackboneModel{
         return $this->hqpAccepted;
     }
     
+    function getSupAccepted(){
+        return $this->supAccepted;
+    }
+    
     function hasHQPAccepted(){
         return ($this->hqpAccepted != "0000-00-00 00:00:00");
     }
     
-    function isSupervisor($supId){
-        foreach($this->getSupervisors() as $sup){
-            if($sup['supervisor'] == $supId){
-                return true;
-            }   
-        }
-        return false;
+    function hasSupAccepted(){
+        return ($this->supAccepted != "0000-00-00 00:00:00");
     }
     
-    function hasSupervisorAccepted($supId){
-        foreach($this->getSupervisors() as $sup){
-            if($sup['supervisor'] == $supId){
-                return ($sup['accepted'] != null);
-            }
-        }
-        return false;
+    function isSupervisor($supId){
+        return ($this->supId == $supId);
     }
     
     function getPDF(){
@@ -338,14 +329,12 @@ class GradDBFinancial extends BackboneModel{
         $end = date('d F Y', strtotime($this->getEnd()));
 
         $accepted = array();
-        foreach($this->getSupervisors(true) as $sup){
-            $supervisor = $sup['supervisor'];
-            if($sup['accepted'] != null){
-                $accepted[$supervisor->getId()] = "<p>Accepted by {$supervisor->getFullName()}: <b>{$sup['accepted']}</b></p>";
-            }
-            else{
-                $accepted[$supervisor->getId()] = "<p>Not yet accepted by {$supervisor->getFullName()}</p>";
-            }
+        
+        if($this->hasSupAccepted()){
+            $accepted[$this->getSupervisor()->getId()] = "<p>Accepted by {$this->getSupervisor()->getFullName()}: <b>{$this->getSupAccepted()}</b></p>";
+        }
+        else {
+            $accepted[$this->getSupervisor()->getId()] = "<p>Not yet accepted by {$this->getSupervisor()->getFullName()}</p>";
         }
 
         if($this->hasHQPAccepted()){
@@ -376,26 +365,25 @@ class GradDBFinancial extends BackboneModel{
                 <br />
                 We are pleased to offer you an appointment as a graduate assistant at the University of Alberta in accordance with the terms set out below. Should you accept this offer, your appointment will be governed by the Collective Agreement Governing Graduate Assistantships. The Agreement may be amended in accordance with terms of the Collective Agreement and such amendments are binding upon the University and the graduate assistant.</p>
                 <br />";
-        foreach($this->getSupervisors(true) as $sup){
-            $supervisor = $sup['supervisor'];
-            $award = self::$AWARD*$sup['hours']/12;
-            $salary = self::$SALARY*$sup['hours']/12;
+        foreach($this->getLines() as $line){
+            $award = self::$AWARD*$line['hours']/12;
+            $salary = self::$SALARY*$line['hours']/12;
             $stipend = $award + $salary;
-            $hours = number_format(self::$HOURS*$sup['hours']/12, 1);
+            $hours = $line['hours'];
             if($hours == 0){
                 $hours = "N/A";
             }
             $html .= "<div>
-                Graduate Assistantship Supervisor: <b>{$supervisor->getFullName()}</b><br />
+                Graduate Assistantship Supervisor: <b>{$this->getSupervisor()->getFullName()}</b><br />
                 Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
-                Type of Appointment: <b>{$sup['type']}</b><br />";
-            if($sup['type'] == "GTA" || $sup['type'] == "GRA"){
+                Type of Appointment: <b>{$line['type']}</b><br />";
+            if($line['type'] == "GTA" || $line['type'] == "GRA"){
                 $html .= "Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
                           Stipend Per Term: Award: <b>\$".number_format($award, 0)."</b> Salary: <b>\$".number_format($salary, 0)."</b> Total Stipend: <b>\$".number_format($stipend, 0)."</b>";
             }
-            else if($sup['type'] == "GRAF" || $sup['type'] == "Fee Differential"){
+            else if($line['type'] == "GRAF" || $line['type'] == "Fee Differential"){
                 $html .= "Maximum Hours Assigned Per Week: <b>N/A</b><br />
-                          Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$sup['hours']/12, 0)."</b>";
+                          Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$line['hours']/12, 0)."</b>";
             }
             $html .="</div><br />";
         }
