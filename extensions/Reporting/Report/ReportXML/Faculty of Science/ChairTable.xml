@@ -115,10 +115,10 @@
                             <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
-                            <!--th>Evaluation</th>
+                            <th>Evaluation</th>
                             <th width="1%">Merit Increment</th>
                             <th width="1%">Tenure</th>
-                            <th width="1%">Promotion</th-->
+                            <th width="1%">Promotion</th>
                     </thead>
                     <tbody>
             ]]>
@@ -174,7 +174,7 @@
                     <td align='center'>Not Locked</td>
                 ]]>
             </If>
-            <!--If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
+            <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                 <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
@@ -288,7 +288,7 @@
                         ]]>
                     </ReportItem>
                 </If>
-            </If-->
+            </If>
         </ReportItemSet>
         <Static>
             <![CDATA[
@@ -1005,7 +1005,7 @@
     </ReportSection>
     <ReportSection id="recommendations" tooltip="Recommendation for Academic Staff Member" name="Recommendations" title="" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
@@ -1155,7 +1155,7 @@
     </ReportSection>
     <ReportSection id="deans_advice" tooltip="Dean's Advice for Academic Staff Member" name="Dean Advice" title="" blobSection="FEC_DEAN_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
@@ -1286,7 +1286,7 @@
     </ReportSection>
     <ReportSection id="deans_decision" tooltip="Dean's Decision for Academic Staff Member" name="Dean Decision" title="" blobSection="FEC_DEAN_DECISION" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>
@@ -1417,7 +1417,7 @@
     </ReportSection>
     <ReportSection id="chairs_advice" tooltip="Chair's Advice for Academic Staff Member" name="Chair Advice" title="" blobSection="FEC_CHAIR_ADVICE" type="EditableReportSection" pagebreak="false" disabled="true">
         <ReportItemSet id="header" type="PersonReportItemSet" userId="{GET(userId)}">
-            <If id="if" if="{isAllowedToViewRecommendation()}">
+            <If id="if" if="{isAllowedToViewRecommendation({$user_id})}">
                 <Static>
                     <![CDATA[
                         <div id='generated' style="position:absolute; top:-1.75em;right:0;text-align:right;">{$user_case_number} / {$user_name}<br /><i>Generated: {$timestamp}</i></div>

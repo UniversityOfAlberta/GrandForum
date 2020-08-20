@@ -43,8 +43,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
             }
             if(($dept == "") || 
                ($person->isInDepartment($dept, $uni, $start, $end)) || 
-               ($found) ||
-               (($person->getName() == "Eleni.Stroulia" && $me->getName() == "Mauricio.Sacchi"))){
+               ($found)){
                 if(($me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Anthony.Singhal"){
                     // This is also a special case, but needs to be put here
                     goto create;
@@ -74,16 +73,13 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Not reviewed by BioSci, only Math
                     continue;
                 }
-                if(($me->getName() == "Ioanis.Nikolaidis" || $me->getName() == "CS.ExecutiveAssistant") && $person->getName() == "Eleni.Stroulia"){
-                    continue;
-                }
                 if(($me->getName() == ".Psychair") && $person->getName() == "Anthony.Singhal"){
                     continue;
                 }
                 if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair") && $person->getName() == "Deanna.Singhal"){
                     continue;
                 }
-                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair" || $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Jannie.Boulter") && $person->getName() == "Douglas.Wylie"){
+                if(($me->getName() == "Linda.Christensen" || $me->getName() == "David.Coltman") && $person->getName() == "Douglas.Wylie"){
                     continue;
                 }
                 create:
