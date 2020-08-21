@@ -365,6 +365,10 @@ class GradDBFinancial extends BackboneModel{
                 <br />
                 We are pleased to offer you an appointment as a graduate assistant at the University of Alberta in accordance with the terms set out below. Should you accept this offer, your appointment will be governed by the Collective Agreement Governing Graduate Assistantships. The Agreement may be amended in accordance with terms of the Collective Agreement and such amendments are binding upon the University and the graduate assistant.</p>
                 <br />";
+        $html .= "<div>
+                    Graduate Assistantship Supervisor: <b>{$this->getSupervisor()->getFullName()}</b><br />
+                    Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
+                </div><br />";
         foreach($this->getLines() as $line){
             $award = self::$AWARD*$line['hours']/12;
             $salary = self::$SALARY*$line['hours']/12;
@@ -374,8 +378,6 @@ class GradDBFinancial extends BackboneModel{
                 $hours = "N/A";
             }
             $html .= "<div>
-                Graduate Assistantship Supervisor: <b>{$this->getSupervisor()->getFullName()}</b><br />
-                Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
                 Type of Appointment: <b>{$line['type']}</b><br />";
             if($line['type'] == "GTA" || $line['type'] == "GRA"){
                 $html .= "Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
