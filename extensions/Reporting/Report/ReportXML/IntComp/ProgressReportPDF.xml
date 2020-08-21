@@ -107,8 +107,8 @@
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
-                    start="{getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})}" 
-                    end="{getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})}">
+                    start="{getText(RP_PROGRESS_REPORT,DETAILS,REPORT_START,0,0,{$project_id})}" 
+                    end="{getText(RP_PROGRESS_REPORT,DETAILS,REPORT_END,0,0,{$project_id})}">
             <![CDATA[
                 <h2>Publications and Presentations</h2>
                 {$item}
