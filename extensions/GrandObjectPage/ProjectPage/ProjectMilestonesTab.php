@@ -302,8 +302,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                                         </tr>
                                     </table>
                                 </div>
-                                <a class='button' id='addActivity'>Add Activity</a>&nbsp;
-                                <a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
+                                <a class='button' id='addActivity'>Add Activity</a>&nbsp;";
+                if(count($activities) > 0){
+                    $this->html .= "<a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
+                }
             
                 $statusHeader = "<th>Status</th>";
                 if($me->isRoleAtLeast(STAFF)){
