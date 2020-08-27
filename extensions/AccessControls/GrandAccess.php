@@ -63,6 +63,10 @@ class GrandAccess {
 	        $aRights[$i++] = "NI";
 	        $aRights[$i++] = "NI+";
 	    }
+	    if($me->isRole(ADMIN)){
+	        $aRights[$i++] = "sysop";
+	        $aRights[$i++] = "bureaucrat";
+	    }
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
