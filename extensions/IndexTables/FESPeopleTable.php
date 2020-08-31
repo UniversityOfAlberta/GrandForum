@@ -28,6 +28,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Roles</th>
+                    <th>Sub-Roles</th>
                     <th>Projects</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -59,11 +60,17 @@ class FESPeopleTable extends SpecialPage {
                     $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
                 }
             }
+            $universities = $person->getUniversities();
+            $positions = array();
+            foreach($universities as $uni){
+                $positions[$uni['position']] = $uni['position'];
+            }
             $projectsRow = implode("<br />", $projs);
             $wgOut->addHTML("<tr>
                              <td>{$person->getReversedName()}</td>
                              <td>{$person->getEmail()}</td>
                              <td>{$person->getRoleString()}</td>
+                             <td>".implode(", ", $positions)."</td>
                              <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
                              <td>{$earliestDate}</td>
                              <td>{$latestDate}</td>
