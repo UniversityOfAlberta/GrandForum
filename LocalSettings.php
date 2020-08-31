@@ -247,6 +247,8 @@ $wgRoleValues = array(INACTIVE => 0,
                       CI => 6,
                       CHAMP => 7,
                       PARTNER => 7,
+                      CORP => 7,
+                      DEPT => 7,
                       PS => 8,
                       PA => 8, // Might eventually be merged with PS
                       ACHAIR => 9,
