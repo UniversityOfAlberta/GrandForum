@@ -209,9 +209,9 @@ class GradDB extends SpecialPage{
         
         // Form
         $date = GradDBFinancial::term2Date($term);
-        $hqps = Person::getAllPeople(HQP);
-        $hqpNames = array("");
-        foreach($hqps as $hqp){
+        $hqpNames = array();
+        if($gradDBFinancial->hqpId != 0){
+            $hqp = $gradDBFinancial->getHQP();
             $email = str_replace("@ualberta.ca", "", $hqp->getEmail());
             if($email != ""){
                 $email = "($email)";
@@ -287,44 +287,7 @@ class GradDB extends SpecialPage{
             }
             $wgOut->addHTML("</tbody></table></div><button class='addSupervisor' type='button'>Add Line Item</button><br /><br /><input type='submit' name='submit' value='Submit' />
             </form>
-            <script type='text/javascript'>
-                var template = $('#supervisors tbody tr').first().detach();
-                
-                function initSupervisors(){
-                    var scale = {award: 0, salary: 0};
-                    var parent = $('#supervisors tbody tr').last();
-                    
-                    $('select#hqp').change(function(){
-                        $.get('index.php?action=api.graddbfinancial/' + $('select#hqp').val() + '/2020', function(response){
-                            scale = response;
-                            $('select[name=\"hours[]\"]', parent).change();
-                        });
-                    }).change();
-                    
-                    $('select[name=\"account[]\"]', parent).chosen();
-                    
-                    $('select[name=\"hours[]\"]', parent).change(function(){
-                        var percent = parseInt($(this).val())/12;
-                        $('span.award', parent).text('$' + Math.round(scale.award*percent));
-                        $('span.salary', parent).text('$' + Math.round(scale.salary*percent));
-                        $('span.total', parent).text('$' + Math.round(parseInt(scale.award*percent) + (scale.salary*percent)));
-                    }).change();
-                    
-                    $('.removeSupervisor', parent).click(function(){
-                        $(this).closest('tr').remove();
-                    });
-                }
-                
-                $('.addSupervisor').click(function(){
-                    $('#supervisors tbody').append(template[0].outerHTML);
-                    initSupervisors();
-                });
-                
-                initSupervisors();
-                
-                $('select[name=\"hqp\"]').chosen();
-                
-            </script>");
+            <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GradDB/graddb.js'></script>");
     }
     
     function downloadPDF(){
