@@ -178,10 +178,17 @@ class GradDB extends SpecialPage{
             $gradDBFinancial->term = implode(",", $_POST['terms']);
             
             $gradDBFinancial->lines = array();
+            $scale = GradDBFinancial::getScale($hqp, 2020);
             foreach($_POST['type'] as $key => $sup){
+                $award = $scale['award']*$_POST['hours'][$key]/GradDBFinancial::$HOURS;
+                $salary = $scale['salary']*$_POST['hours'][$key]/GradDBFinancial::$HOURS;
+                $stipend = $award + $salary;
                 $gradDBFinancial->lines[] = $gradDBFinancial->emptyLine($_POST['type'][$key], 
                                                                         $_POST['account'][$key],
-                                                                        $_POST['hours'][$key]);
+                                                                        $_POST['hours'][$key],
+                                                                        $award,
+                                                                        $salary,
+                                                                        $stipend);
             }
 
             if(!$gradDBFinancial->exists()){
@@ -236,7 +243,9 @@ class GradDB extends SpecialPage{
                                     <th>Account</th>
                                     <th>Type</th>
                                     <th>Hours/Week</th>
-                                    <th>Award ($)</th>
+                                    <th>Award</th>
+                                    <th>Salary</th>
+                                    <th>Total Stipend</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -271,6 +280,8 @@ class GradDB extends SpecialPage{
                     <td>{$type->render()}</td>
                     <td>{$hours->render()}</td>
                     <td align='right'><span class='award'></span></td>
+                    <td align='right'><span class='salary'></span></td>
+                    <td align='right'><span class='total'></span></td>
                     <td><button class='removeSupervisor' type='button'>Remove Line Item</button></td>
                 </tr>");
             }
@@ -280,13 +291,23 @@ class GradDB extends SpecialPage{
                 var template = $('#supervisors tbody tr').first().detach();
                 
                 function initSupervisors(){
+                    var scale = {award: 0, salary: 0};
                     var parent = $('#supervisors tbody tr').last();
+                    
+                    $('select#hqp').change(function(){
+                        $.get('index.php?action=api.graddbfinancial/' + $('select#hqp').val() + '/2020', function(response){
+                            scale = response;
+                            $('select[name=\"hours[]\"]', parent).change();
+                        });
+                    }).change();
                     
                     $('select[name=\"account[]\"]', parent).chosen();
                     
                     $('select[name=\"hours[]\"]', parent).change(function(){
                         var percent = parseInt($(this).val())/12;
-                        $('span.award', parent).text('$' + Math.round((963.03*percent*4)));
+                        $('span.award', parent).text('$' + Math.round(scale.award*percent));
+                        $('span.salary', parent).text('$' + Math.round(scale.salary*percent));
+                        $('span.total', parent).text('$' + Math.round(parseInt(scale.award*percent) + (scale.salary*percent)));
                     }).change();
                     
                     $('.removeSupervisor', parent).click(function(){
@@ -307,6 +328,7 @@ class GradDB extends SpecialPage{
     }
     
     function downloadPDF(){
+        global $wgOut;
         $gradDBFinancial = GradDBFinancial::newFromMD5($_GET['pdf']);
         $gradDBTimeUse = GradDBTimeUse::newFromMD5($_GET['pdf']);
         if($gradDBFinancial->exists()){

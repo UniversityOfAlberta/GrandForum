@@ -83,6 +83,7 @@ $apiRequest->addAction('Hidden','journal/search/:search', 'JournalAPI');
 //GradDB
 $apiRequest->addAction('Hidden','gradchair', 'GradChairAPI');
 $apiRequest->addAction('Hidden','gradchair/:hqpId', 'GradChairAPI');
+$apiRequest->addAction('Hidden','graddbfinancial/:hqpId/:year', 'GradDBFinancialAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;

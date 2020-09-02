@@ -16,10 +16,39 @@ class GradDBFinancial extends BackboneModel{
     var $pdf;
     var $html;
     
-    static $AWARD = 3852.12;
-    static $SALARY = 4798.96; // TODO: Need to handle different salary scales for MSc/PhD
     static $GRAF_STIPEND = 8891;
     static $HOURS = 12;
+    
+    static function getScale($person, $year){
+        // TODO: May need to switch to a specific db table to store a student's program status, similar to the grand_personal_fec_info
+        $university = $person->getUniversityDuring("{$year}-09-01", ($year+1)."-08-01");
+        $start = new DateTime("$year-09-01");
+        $end = new DateTime($university['start']);
+        $interval = $end->diff($start);
+        $days = $interval->format('%R%a days');
+        $years = $days/365;
+        $step = 1;
+        if(in_array(strtolower($university['position']), Person::$studentPositions['msc'])){
+            $step = min(1 + floor($years), 6);
+        }
+        else if(in_array(strtolower($university['position']), Person::$studentPositions['phd'])){
+            $extra = 0;
+            if(ceil($years) > 5){ $extra++; }
+            if(ceil($years) > 8){ $extra++; }
+            $step = min(3 + floor($years) + $extra, 13);
+        }
+        $data = DBFunctions::select(array('grand_graddb_salary_scales'),
+                                    array('award', "step{$step}"),
+                                    array('year' => EQ($year)));
+        if(count($data)){
+            return array('award' => $data[0]['award'],
+                         'salary' => $data[0]["step{$step}"]);
+        }
+        else{
+            return array('award' => 0,
+                         'salary' => 0);
+        }
+    }
 
     static function newFromId($id){
         $data = DBFunctions::select(array('grand_graddb'),
@@ -208,10 +237,13 @@ class GradDBFinancial extends BackboneModel{
         }
     }
     
-    function emptyLine($type="GTA", $account="", $hours=12){
+    function emptyLine($type="GTA", $account="", $hours=12, $award=0, $salary=0, $stipend=0){
         return array("type" => $type,
                      "account" => $account,
-                     "hours" => $hours);
+                     "hours" => $hours,
+                     "award" => $award,
+                     "salary" => $salary,
+                     "stipend" => $stipend);
     }
 
     function toArray(){
@@ -263,16 +295,6 @@ class GradDBFinancial extends BackboneModel{
     
     function getTerms(){
         return explode(",", $this->term);
-    }
-    
-    function getAward(){
-        $percent = 0;
-        foreach($this->getLines() as $line){
-            if($line['hours'] != "N/A"){
-                $percent += $line['hours']/12;
-            }
-        }
-        return self::$AWARD*$percent;
     }
     
     function getHours(){
@@ -370,9 +392,9 @@ class GradDBFinancial extends BackboneModel{
                     Period of Appointment: <b>{$start}</b> to <b>{$end}</b><br />
                 </div><br />";
         foreach($this->getLines() as $line){
-            $award = self::$AWARD*$line['hours']/12;
-            $salary = self::$SALARY*$line['hours']/12;
-            $stipend = $award + $salary;
+            $award = $line['award'];
+            $salary = $line['salary'];
+            $stipend = $line['stipend'];
             $hours = $line['hours'];
             if($hours == 0){
                 $hours = "N/A";
