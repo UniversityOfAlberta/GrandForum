@@ -109,6 +109,7 @@ class PersonPage {
                 }
                 if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
                     $tabbedPage->addTab(new HQPExitTab($person, $visibility));
+                    $tabbedPage->addTab(new HQPFundingTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonEmploymentTab($person, $visibility));

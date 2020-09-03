@@ -71,30 +71,29 @@ class GradDB extends SpecialPage{
         global $wgOut, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         $terms = array();
-        for($y = date('Y'); $y > date('Y')-10; $y--){
-            $terms["Fall$y"] = "Fall$y";
-            $terms["Spring/Summer$y"] = "Spring/Summer$y";
-            $terms["Winter$y"] = "Winter$y";
+
+        $year = date('Y');
+        $month = date('n');
+        if($month == 1){
+            $term = "Winter{$year}";
         }
+        else if($month >= 2 && $month < 5){
+            $term = "Spring/Summer{$year}";
+        }
+        else if($month >= 5 && $month < 9){
+            $term = "Fall{$year}";
+        }
+        else if($month >= 9){
+            $term = "Winter".($year+1);
+        }
+        $terms[] = GradDBFinancial::prevTerm($term);
+        $terms = array_merge($terms, GradDBFinancial::yearTerms($term));
+        
+        
         if(isset($_GET['term']) && in_array($_GET['term'], $terms)){
             $term = $_GET['term'];
         }
-        else{
-            $year = date('Y');
-            $month = date('n');
-            if($month == 1){
-                $term = "Winter{$year}";
-            }
-            else if($month >= 2 && $month < 5){
-                $term = "Spring/Summer{$year}";
-            }
-            else if($month >= 5 && $month < 9){
-                $term = "Fall{$year}";
-            }
-            else if($month >= 9){
-                $term = "Winter".($year+1);
-            }
-        }
+        
         $date = GradDBFinancial::term2Date($term);
         
         $termSelect = new SelectBox("term", "Term", $term, $terms);

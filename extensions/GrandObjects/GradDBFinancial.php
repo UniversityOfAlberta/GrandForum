@@ -80,7 +80,7 @@ class GradDBFinancial extends BackboneModel{
     
     static function getAllFromHQP($hqp_id){
         $data = DBFunctions::select(array('grand_graddb'),
-                                    array('id'),
+                                    array('*'),
                                     array('hqp' => EQ($hqp_id)));
         $objs = array();
         foreach($data as $row){
@@ -106,6 +106,19 @@ class GradDBFinancial extends BackboneModel{
         $obj->hqpId = $hqp_id;
         $obj->term = $term;
         return $obj;
+    }
+    
+    static function prevTerm($term){
+        $year = substr($term, -4);
+        if(strstr($term, "Winter") !== false){
+            return "Fall".($year-1);
+        }
+        if(strstr($term, "Spring/Summer") !== false){
+            return "Winter".($year);
+        }
+        if(strstr($term, "Fall") !== false){
+            return "Spring/Summer".($year);
+        }
     }
     
     static function yearTerms($term){

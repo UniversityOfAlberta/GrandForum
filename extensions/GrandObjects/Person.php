@@ -2122,6 +2122,14 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns all GradDBFinancials which are for this HQP
+     * @return array The GradDBFinancials which are for this HQP
+     */
+    function getGradDBFinancials(){
+        return GradDBFinancial::getAllFromHQP($this->getId());
+    }
+    
+    /**
      * Returns the current University that this Person is at
      * @return array The current University this Person is at
      */ 
