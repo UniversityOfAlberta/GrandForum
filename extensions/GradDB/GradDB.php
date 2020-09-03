@@ -197,9 +197,10 @@ class GradDB extends SpecialPage{
             if($error == ""){
                 $gradDBFinancial->generatePDF();
                 $wgMessage->addSuccess("Financial Information updated");
-                
-                /*$message = "<p>{$me->getFullName()} has filled out a contract for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
-                            <p> - {$config->getValue('networkName')}</p>";*/
+
+                // Supervisor Email
+                self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()}", $gradDBFinancial->getEmail(), $gradDBFinancial->getPDF(), "Contract.pdf");
+                // Student Email
                 self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()}", $gradDBFinancial->getEmail(), $gradDBFinancial->getPDF(), "Contract.pdf");
 
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?term={$term}");
