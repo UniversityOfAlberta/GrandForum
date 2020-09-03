@@ -33,6 +33,9 @@ class HQPFundingTab extends AbstractTab {
         global $wgServer, $wgScriptPath;
         if($this->canView()){
             $graddbs = $this->person->getGradDBFinancials();
+            if(count($graddbs) == 0){
+                return $this->html;
+            }
             $this->html .= "<table id='fundingHistory' class='wikitable' width='100%'>
                             <thead>
                                 <tr>
