@@ -1,5 +1,7 @@
 var template = $('#supervisors tbody tr').first().detach();
-                
+
+$("#bodyContent > h1").html("<a href='" + wgServer + wgScriptPath + "/index.php/Special:GradDB'>Grad DB</a> &gt; Make a Contract");
+
 var allPeople = new People();
 allPeople.roles = ['HQP'];
 allPeople.simple = true;
