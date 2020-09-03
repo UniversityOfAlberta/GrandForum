@@ -183,7 +183,7 @@ class GradDB extends SpecialPage{
                 $salary = $scale['salary']*$_POST['hours'][$key]/GradDBFinancial::$HOURS;
                 $stipend = $award + $salary;
                 $gradDBFinancial->lines[] = $gradDBFinancial->emptyLine($_POST['type'][$key], 
-                                                                        $_POST['account'][$key],
+                                                                        str_replace("_", "", $_POST['account'][$key]),
                                                                         $_POST['hours'][$key],
                                                                         $award,
                                                                         $salary,
@@ -198,9 +198,9 @@ class GradDB extends SpecialPage{
                 $gradDBFinancial->generatePDF();
                 $wgMessage->addSuccess("Financial Information updated");
                 
-                $message = "<p>{$me->getFullName()} has filled out a contract for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
-                            <p> - {$config->getValue('networkName')}</p>";
-                self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()}", $message, $gradDBFinancial->getPDF(), "Contract.pdf");
+                /*$message = "<p>{$me->getFullName()} has filled out a contract for {$gradDBFinancial->getTerm()}.  The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$gradDBFinancial->getMD5()}'><b>Click Here</b></a> to accept it.</p>
+                            <p> - {$config->getValue('networkName')}</p>";*/
+                self::mail("dwt@ualberta.ca", "Contract for {$gradDBFinancial->getTerm()}", $gradDBFinancial->getEmail(), $gradDBFinancial->getPDF(), "Contract.pdf");
 
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?term={$term}");
             }
@@ -251,15 +251,15 @@ class GradDB extends SpecialPage{
                             <tbody>");
         $speedCodes = array("");
         foreach($me->getSpeedCodes() as $code){
-            $speedCodes[$code['speedcode']] = "{$code['speedcode']} - {$code['title']}";
+            $speedCodes["_{$code['speedcode']}"] = "{$code['speedcode']} - {$code['title']}";
         }
         foreach(array_merge(array($gradDBFinancial->emptyLine()), $gradDBFinancial->getLines()) as $line){
             $account = new SelectBox("account[]", "Account", $line['account'], $speedCodes);
             $type = new SelectBox("type[]", "Type", $line['type'], array("GTA" => "GTA", 
-                                                                               "GRA" => "GRA", 
-                                                                               "GRAF" => "GRAF",
-                                                                               "Fee Differential" => "Fee Differential",
-                                                                               "Top Up" => "Top Up"));
+                                                                         "GRA" => "GRA", 
+                                                                         "GRAF" => "GRAF",
+                                                                         "Fee Differential" => "Fee Differential",
+                                                                         "Top Up" => "Top Up"));
             $hours = new SelectBox("hours[]", "Hours/Week", $line['hours'], array("12" => "12",
                                                                                   "11" => "11",
                                                                                   "10" => "10",

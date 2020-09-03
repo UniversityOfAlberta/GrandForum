@@ -443,6 +443,24 @@ class GradDBFinancial extends BackboneModel{
                             array('id' => EQ($this->id)));
         DBFunctions::commit();
     }
+    
+    function getEmail(){
+        global $wgServer, $wgScriptPath;
+        $accounts = array();
+        foreach($this->getLines() as $line){
+            $accounts[] = $line['account'];
+        }
+        $start = date('F Y', strtotime($this->getStart()));
+        $end = date('F Y', strtotime($this->getEnd()));
+        $message = "<p>{$this->getSupervisor()->getFullName()} has filled out a contract</p>
+            <div style='margin-left: 4em;'>
+                for {$this->getHQP()->getFullName()}<br />
+                to be funded by account ".implode(", ", $accounts)." held by {$this->getSupervisor()->getFullName()}<br />
+                from {$start} to {$end} (".implode(", ", $this->getTerms()).").
+            </div>
+            <p>The PDF is attached, so review the terms and then <a href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?accept={$this->getMD5()}'><b>Click Here</b></a> to accept it</p>";
+        return $message;
+    }
 
 }
 
