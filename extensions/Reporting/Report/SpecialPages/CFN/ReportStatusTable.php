@@ -47,6 +47,7 @@ class ReportStatusTable extends SpecialPage{
         $ssa2017 = array();
         $ssa2018 = array();
         $ssa2019 = array();
+        $ssa2020 = array();
         foreach($hqps as $hqp){
             if($hqp->isSubRole('IFP')){
                 $ifpDeleted = false;
@@ -102,6 +103,9 @@ class ReportStatusTable extends SpecialPage{
             else if(strstr($project->getName(), "SSA2019") !== false){
                 $ssa2019[$project->getName()] = $project;
             }
+            else if(strstr($project->getName(), "SSA2020") !== false){
+                $ssa2020[$project->getName()] = $project;
+            }
         }
         $wgOut->addHTML("<div id='tabs'>
                             <ul>
@@ -123,6 +127,7 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#ssa2017'>SSA2017</a></li>
                                 <li><a href='#ssa2018'>SSA2018</a></li>
                                 <li><a href='#ssa2019'>SSA2019</a></li>
+                                <li><a href='#ssa2020'>SSA2020</a></li>
                             </ul>");
         $this->addProjectTable(RP_FINAL_PROJECT,    'final',              2015);
         $this->addProjectTable(RP_PROGRESS,         'progress',           2015);
@@ -142,6 +147,7 @@ class ReportStatusTable extends SpecialPage{
         $this->addProjectTable('SSAReport',         'ssa2017',            2017, $ssa2017);
         $this->addProjectTable('SSAReport',         'ssa2018',            2018, $ssa2018);
         $this->addProjectTable('SSAReport',         'ssa2019',            2019, $ssa2019);
+        $this->addProjectTable('SSAReport',         'ssa2020',            2020, $ssa2020);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();
