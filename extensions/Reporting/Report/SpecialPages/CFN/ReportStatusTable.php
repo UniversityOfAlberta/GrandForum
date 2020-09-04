@@ -147,7 +147,7 @@ class ReportStatusTable extends SpecialPage{
         $this->addProjectTable('SSAReport',         'ssa2017',            2017, $ssa2017);
         $this->addProjectTable('SSAReport',         'ssa2018',            2018, $ssa2018);
         $this->addProjectTable('SSAReport',         'ssa2019',            2019, $ssa2019);
-        $this->addProjectTable('SSAReport',         'ssa2020',            2020, $ssa2020);
+        $this->addProjectTable('SSAReport',         'ssa2020',            2019, $ssa2020);
         $wgOut->addHTML("</div>");
         $wgOut->addHTML("<script type='text/javascript'>
             $('#tabs').tabs();
