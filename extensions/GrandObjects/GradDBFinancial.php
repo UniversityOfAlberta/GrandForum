@@ -10,10 +10,12 @@ class GradDBFinancial extends BackboneModel{
     var $supId;
     var $term;
     var $md5;
+    var $position;
     var $hqpAccepted = 0;
     var $supAccepted = 0;
     var $lines = array();
     var $pdf;
+    var $terminated;
     var $html;
     
     static $GRAF_STIPEND = 8891;
@@ -21,7 +23,7 @@ class GradDBFinancial extends BackboneModel{
     
     static function getScale($person, $year){
         // TODO: May need to switch to a specific db table to store a student's program status, similar to the grand_personal_fec_info
-        $university = $person->getUniversityDuring("{$year}-09-01", ($year+1)."-08-01");
+        $university = $person->getUniversity();
         $start = new DateTime("$year-09-01");
         $end = new DateTime($university['start']);
         $interval = $end->diff($start);
@@ -57,9 +59,11 @@ class GradDBFinancial extends BackboneModel{
                                           'supervsor',
                                           'term',
                                           'md5',
+                                          'position',
                                           'hqpAccepted',
                                           'supAccepted',
-                                          '`lines`'),
+                                          '`lines`',
+                                          '`terminated`'),
                                     array('id' => EQ($id)));
         return new GradDBFinancial($data);
     }
@@ -71,11 +75,24 @@ class GradDBFinancial extends BackboneModel{
                                           'supervisor',
                                           'term',
                                           'md5',
+                                          'position',
                                           'hqpAccepted',
                                           'supAccepted',
-                                          '`lines`'),
+                                          '`lines`',
+                                          '`terminated`'),
                                     array('md5' => EQ($md5)));
         return new GradDBFinancial($data);
+    }
+    
+    static function getAll(){
+        $data = DBFunctions::select(array('grand_graddb'),
+                                    array('*'),
+                                    array());
+        $objs = array();
+        foreach($data as $row){
+            $objs[] = new GradDBFinancial(array($row));
+        }
+        return $objs;
     }
     
     static function getAllFromHQP($hqp_id){
@@ -96,9 +113,11 @@ class GradDBFinancial extends BackboneModel{
                                           'supervisor',
                                           'term',
                                           'md5',
+                                          'position',
                                           'hqpAccepted',
                                           'supAccepted',
-                                          '`lines`'),
+                                          '`lines`',
+                                          '`terminated`'),
                                     array('hqp' => EQ($hqp_id),
                                           'supervisor' => EQ($sup_id),
                                           'term' => LIKE("%$term%")));
@@ -194,9 +213,11 @@ class GradDBFinancial extends BackboneModel{
             $this->supId = $data[0]['supervisor'];
             $this->term = $data[0]['term'];
             $this->md5 = $data[0]['md5'];
+            $this->position = $data[0]['position'];
             $this->hqpAccepted = $data[0]['hqpAccepted'];
             $this->supAccepted = $data[0]['supAccepted'];
             $this->lines = json_decode($data[0]['lines'], true);
+            $this->terminated = $data[0]['terminated'];
         }
         if(count($this->lines) == 0){
             $this->lines[] = $this->emptyLine();
@@ -221,14 +242,18 @@ class GradDBFinancial extends BackboneModel{
     function create(){
         $me = Person::newFromWGUser();
         if($me->isLoggedIn()){
+            $university = $this->getHQP()->getUniversity();
+            $this->position = $university['position'];
             DBFunctions::insert('grand_graddb',
                                 array('hqp' => $this->hqpId,
                                       'supervisor' => $this->supId,
                                       'term' => $this->term,
                                       'md5' => $this->getMD5(),
+                                      'position' => $this->position,
                                       '`lines`' => json_encode($this->lines),
                                       'hqpAccepted' => $this->hqpAccepted,
-                                      'supAccepted' => $this->supAccepted));
+                                      'supAccepted' => $this->supAccepted,
+                                      '`terminated`' => $this->terminated));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
         }
@@ -242,9 +267,11 @@ class GradDBFinancial extends BackboneModel{
                                       'supervisor' => $this->supId,
                                       'term' => $this->term,
                                       'md5' => $this->getMD5(),
+                                      'position' => $this->position,
                                       '`lines`' => json_encode($this->lines),
                                       'hqpAccepted' => $this->hqpAccepted,
-                                      'supAccepted' => $this->supAccepted),
+                                      'supAccepted' => $this->supAccepted,
+                                      '`terminated`' => $this->terminated),
                                 array('id' => EQ($this->id)));
             DBFunctions::commit();
         }
