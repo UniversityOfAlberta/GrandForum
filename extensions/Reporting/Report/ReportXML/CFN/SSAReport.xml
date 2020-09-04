@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" ajax="true" personId="0" year="2020">
+<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" pdfType="RPTP_SSA_FINAL_PROGRESS" ajax="true" personId="0" year="2020">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="report" permissions="rw" />
