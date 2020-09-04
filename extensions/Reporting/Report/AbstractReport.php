@@ -995,7 +995,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css");
+        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css"));
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");
