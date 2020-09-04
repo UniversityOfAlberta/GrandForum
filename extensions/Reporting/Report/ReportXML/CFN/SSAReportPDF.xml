@@ -100,7 +100,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2019-01-01" end="2019-12-31" table="false" details="true" totalOnly="true">
+        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2020-01-01" end="2020-12-31" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Section 2 - Dissemination of Project Research Results</h2>
                 {$item}<br />
