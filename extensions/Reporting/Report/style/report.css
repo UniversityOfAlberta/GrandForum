@@ -19,7 +19,7 @@
     height:100%;
     position:relative;
     overflow: hidden;
-    border-bottom: 1px solid #aaaaaa;
+    border-bottom: 1px solid #cccccc;
 }
 
 .hiddenFile {
@@ -89,14 +89,14 @@ table.small textarea {
 }
 
 #reportTabs {
-    background: #F8F8F8;
+    background: #FFFFFF;
     padding-bottom:15px;
     min-width:200px;
     padding-top:15px;
     padding-bottom:15px;
     border-width: 0 1px 0 0;
     border-style: solid;
-    border-color: #AAAAAA;
+    border-color: #cccccc;
     position:absolute;
     top:0;
     bottom:0;
@@ -198,7 +198,7 @@ table.small textarea {
     float:right;
     width: 200px;
     height:16px;
-    border:1px solid #AAAAAA;
+    border:1px solid #cccccc;
     position: relative;
 }
 
@@ -276,7 +276,7 @@ table.small textarea {
     user-select: none;
     border-width: 0 1px;
     border-style: solid;
-    border-color: #AAAAAA;
+    border-color: #cccccc;
     background:-webkit-gradient( linear, left top, right top, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient(left, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(left, #f8f8f8, #E8E8E8);
@@ -311,7 +311,7 @@ a.reportTab {
     line-height:25px;
     border-width: 1px 0 1px 1px;
     border-style: solid;
-    border-color: #AAAAAA;
+    border-color: #cccccc;
     margin-bottom:5px;
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
@@ -391,5 +391,5 @@ div.eula {
     max-height: 500px;
     overflow-y: scroll;
     padding: 5px;
-    border: 1px solid #AAAAAA;
+    border: 1px solid #cccccc;
 }
