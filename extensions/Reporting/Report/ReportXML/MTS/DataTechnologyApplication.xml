@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="MTS DATA &amp; TECHNOLOGY TARGETED CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="EXTERNAL+">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="MTS DATA &amp; TECHNOLOGY TARGETED CALL" name="Background" title="MTS DATA &amp; TECHNOLOGY TARGETED CALL" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <h3>BACKGROUND AND OBJECTIVES</h3>
+                <p>Data plays a critical role in understanding the opportunities and barriers to preventing youth homelessness. Researchers, service providers, advocates, and policymakers in the homelessness sector use data to provide evidence to improve service delivery and to create and advocate for individual and systems-level solutions. Over the past two decades, the homelessness sector across Canada has taken many necessary steps to improve its capacity to collect, store and use data. However, Making the Shift (MtS)  recognizes that there remains substantial work to understand sector needs and opportunities around 1) data infrastructure, 2) analytical methods, and 3) new technologies.</p>
+                <p>The MtS Data and Technology Call for Proposals is a one-time solicitation of grant applications addressing these three areas specific to the theme. The Call for Proposals has main two funding streams:</p>
+                <ol>
+                    <li>Exploring opportunities to use data and technology in support of understanding and preventing youth homelessness</li>
+                    <li>Developing a Data Infrastructure Roadmap: What data do we need to understand and prevent youth homelessness?</li>
+                </ol>
+                <p>A direct objective of this call is to develop exceptional projects that address these gaps specific to the <a href="http://makingtheshiftinc.ca/research/" target="_blank">MtS research agenda</a> and to complement the scope of the existing MtS-funded projects on youth homelessness prevention. Successful proposals should be designed to begin as soon as possible after notification of award. Submissions may be entered by an individual or a team. Priority will be given to projects that have strong partnerships and include people with lived experience of youth homelessness. Matching funds in the form of cash or in-kind contributions are encouraged.</p>
+
+<p><b>Important note:</b></p> 
+<p>For further information on eligibility, application guidelines and any specific requirements (if applicable) under each funding stream please refer to the <a href="https://yuoffice.sharepoint.com/:w:/s/g-MtSInc/EQQfQoI_FTZLvXTuPWYLNq4BteHILPpSpaWfMS-pIjuCRw?e=SIjcTe" target="_blank">application guide</a>.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="description" tooltip="Project Description" name="Description" blobSection="DESCRIPTION" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                <h3>I. Project Title</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+            <![CDATA[
+                <h3>II. Project Description</h3>
+                <small>
+                    Addressing the following points: 
+                    <ul>
+                        <li>Overall Research Question/Scope of the Project</li> 
+                        <li>Objectives and Methodology</li>
+                        <li>Outcomes and Impact (Including KMb and HQP)</li>
+                        <li>Research Team</li>
+                    </ul>
+                </small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="members" type="MultiText" blobItem="MEMBERS" blobType="BLOB_ARRAY" labels="Full Name|Institution|Email|Project Role" types="Text|Text|Text|Select(Co-Investigator,Collaborator)" multiple="true">
+            <![CDATA[
+                <h3>III. List of all Co-Investigators/Collaborators</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <h3>IV. References (1-page maximum)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+    </ReportSection>
+</Report>
