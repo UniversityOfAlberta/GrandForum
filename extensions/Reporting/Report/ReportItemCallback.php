@@ -35,6 +35,7 @@ class ReportItemCallback {
             "project_theme" => "getProjectTheme",
             "project_start" => "getProjectStart",
             "project_leaders" => "getProjectLeaders",
+            "project_leader_names" => "getProjectLeaderNames",
             "project_leader_ids" => "getProjectLeaderIds",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
@@ -312,6 +313,21 @@ class ReportItemCallback {
             $leaders = $project->getLeaders();
             foreach($leaders as $lead){
                 $leads[$lead->getReversedName()] = "<a target='_blank' href='{$lead->getUrl()}'>{$lead->getNameForForms()}</a>";
+            }
+        }
+        if(count($leads) == 0){
+            $leads[] = "N/A";
+        }
+        return implode(", ", $leads);
+    }
+    
+    function getProjectLeaderNames(){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $leaders = $project->getLeaders();
+            foreach($leaders as $lead){
+                $leads[$lead->getReversedName()] = "{$lead->getNameForForms()}";
             }
         }
         if(count($leads) == 0){
