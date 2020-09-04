@@ -23,7 +23,7 @@
         </Static>
     </ReportSection>
     
-    <ReportSection id="description" tooltip="Project Description" name="Description" blobSection="DESCRIPTION" type="EditableReportSection">
+    <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="EditableReportSection">
         <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
             <![CDATA[
                 <h3>I. Project Title</h3>
@@ -54,6 +54,13 @@
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
             <![CDATA[
                 <h3>IV. References (1-page maximum)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <![CDATA[
+                <h3>V. Budget</h3>
+                <a href="{$wgServer}{$wgScriptPath}/data/MTS_Budget.xlsx">Budget Template (XLS)</a>
                 {$item}
             ]]>
         </ReportItem>
