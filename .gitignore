@@ -46,6 +46,7 @@ symfony/screenshots
 symfony/vendor
 symfony/phantomjs.log
 symfony/phantomjs.pid
+extensions/MailingList/Newsletter/cache/*.html
 extensions/GrandObjects/facultyMap.php
 extensions/GlobalSearch/ExpertSearch/kf_error_log
 extensions/GlobalSearch/ExpertSearch/expert
