@@ -5,6 +5,8 @@ $wgSpecialPages['Newsletter'] = 'Newsletter'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['Newsletter'] = $dir . 'Newsletter.i18n.php';
 $wgSpecialPageGroups['Newsletter'] = 'network-tools';
 
+$wgHooks['ToolboxLinks'][] = 'Newsletter::createToolboxLinks';
+
 function runNewsletter($par) {
     Newsletter::execute($par);
 }
@@ -53,6 +55,15 @@ class Newsletter extends SpecialPage{
         <script type='text/javascript'>
             $('#accordion').accordion();
         </script>");
+    }
+    
+    static function createToolboxLinks(&$toolbox){
+        global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Newsletter", "$wgServer$wgScriptPath/index.php/Special:Newsletter");
+        }
+        return true;
     }
 
 }
