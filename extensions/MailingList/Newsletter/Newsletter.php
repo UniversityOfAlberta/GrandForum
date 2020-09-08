@@ -43,10 +43,11 @@ class Newsletter extends SpecialPage{
                 $contents = str_replace("<tt>", "", $contents);
                 $contents = str_replace("</tt>", "", $contents);
                 $contents = html_entity_decode($contents);
+                $contents = "<style> body { margin: 0 }; </style>\n{$contents}";
                 file_put_contents("extensions/MailingList/Newsletter/cache/{$id}.html", $contents);
             }
             $wgOut->addHTML("<h3><a href='#'>{$datestr}</a></h3>
-                             <div><iframe style='width:100%;height:500px;border:none;' src='{$wgServer}{$wgScriptPath}/extensions/MailingList/Newsletter/cache/{$id}.html'></iframe></div>");
+                             <div style='padding:0;margin:0;'><iframe style='width:100%;height:500px;border:none;' src='{$wgServer}{$wgScriptPath}/extensions/MailingList/Newsletter/cache/{$id}.html'></iframe></div>");
         }
         $wgOut->addHTML("</div>
         <script type='text/javascript'>
