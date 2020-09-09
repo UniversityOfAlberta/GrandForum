@@ -80,14 +80,27 @@ class GradDBFinancial extends BackboneModel{
                                           'supAccepted',
                                           '`lines`',
                                           '`terminated`'),
-                                    array('md5' => EQ($md5)));
+                                    array('md5' => EQ($md5),
+                                          '`terminated`' => NEQ(1)));
         return new GradDBFinancial($data);
     }
     
     static function getAll(){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('*'),
-                                    array());
+                                    array('`terminated`' => NEQ(1)));
+        $objs = array();
+        foreach($data as $row){
+            $objs[] = new GradDBFinancial(array($row));
+        }
+        return $objs;
+    }
+    
+    static function getAllByTerm($term){
+        $data = DBFunctions::select(array('grand_graddb'),
+                                    array('*'),
+                                    array('term' => LIKE("%$term%"),
+                                          '`terminated`' => NEQ(1)));
         $objs = array();
         foreach($data as $row){
             $objs[] = new GradDBFinancial(array($row));
@@ -98,7 +111,8 @@ class GradDBFinancial extends BackboneModel{
     static function getAllFromHQP($hqp_id){
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('*'),
-                                    array('hqp' => EQ($hqp_id)));
+                                    array('hqp' => EQ($hqp_id),
+                                          '`terminated`' => NEQ(1)));
         $objs = array();
         foreach($data as $row){
             $objs[] = new GradDBFinancial(array($row));
@@ -120,7 +134,8 @@ class GradDBFinancial extends BackboneModel{
                                           '`terminated`'),
                                     array('hqp' => EQ($hqp_id),
                                           'supervisor' => EQ($sup_id),
-                                          'term' => LIKE("%$term%")));
+                                          'term' => LIKE("%$term%"),
+                                          '`terminated`' => NEQ(1)));
         $obj = new GradDBFinancial($data);
         $obj->hqpId = $hqp_id;
         $obj->term = $term;

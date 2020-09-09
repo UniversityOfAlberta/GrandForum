@@ -118,14 +118,15 @@ class GradDB extends SpecialPage{
                         <th style='width:1%;'>TA Eligible</th>
                         <th style='width:1%;'>HQP Accepted</th>
                         <th style='width:1%;'>Supervisor Accepted</th>
-                        <th>Financial Form</th>
+                        <th style='width:1%;'>Financial Form</th>
                     </tr>
                 </thead>
                 <tbody>");
-        foreach(GradDBFinancial::getAll() as $graddb){
+        foreach(GradDBFinancial::getAllByTerm($term) as $graddb){
             $hqp = $graddb->getHQP();
             $sup = $graddb->getSupervisor();
-            $button = (!$graddb->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>View Contract</a>";
+            $button = "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>View Contract</a>
+                       <a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>Terminate</a>";
             $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
             $hqpAccepted = ($graddb->hasHQPAccepted()) ? $graddb->getHQPAccepted() : "";
             $supAccepted = ($graddb->hasSupAccepted()) ? $graddb->getSupAccepted() : "";
@@ -134,9 +135,9 @@ class GradDB extends SpecialPage{
                 <td>{$graddb->position}</td>
                 <td><a href='{$sup->getUrl()}'>{$sup->getReversedName()}</a></td>
                 <td align='center'>{$eligible}</td>
-                <td align='center'>{$hqpAccepted}</td>
-                <td align='center'>{$supAccepted}</td>
-                <td align='center'>{$button}</td>
+                <td align='center' style='white-space:nowrap;'>{$hqpAccepted}</td>
+                <td align='center' style='white-space:nowrap;'>{$supAccepted}</td>
+                <td align='center' style='white-space:nowrap;'>{$button}</td>
             </tr>");
         }
         $wgOut->addHTML("</tbody></table>");
@@ -161,7 +162,7 @@ class GradDB extends SpecialPage{
                         <th style='width:1%;'>TA Eligible</th>
                         <th style='width:1%;'>HQP Accepted</th>
                         <th style='width:1%;'>Supervisor Accepted</th>
-                        <th>Financial Form</th>
+                        <th style='width:1%;'>Financial Form</th>
                     </tr>
                 </thead>
                 <tbody>");
@@ -178,9 +179,9 @@ class GradDB extends SpecialPage{
                         <td><a href='{$hqp->getUrl()}'>{$hqp->getReversedName()}</a></td>
                         <td>{$university['position']}</td>
                         <td align='center'>{$eligible}</td>
-                        <td align='center'>{$hqpAccepted}</td>
-                        <td align='center'>{$supAccepted}</td>
-                        <td align='center'>{$button}</td>
+                        <td align='center' style='white-space:nowrap;'>{$hqpAccepted}</td>
+                        <td align='center' style='white-space:nowrap;'>{$supAccepted}</td>
+                        <td align='center' style='white-space:nowrap;'>{$button}</td>
                     </tr>");
                     break;
                 }
