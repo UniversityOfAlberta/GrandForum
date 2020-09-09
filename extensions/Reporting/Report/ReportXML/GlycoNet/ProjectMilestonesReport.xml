@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2019" disabled="false">
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" pdfFiles="ProjectMilestonesReportPDF" personId="0" ajax="true" year="2020" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="report" permissions="rw" />
@@ -23,6 +23,12 @@
         <ReportItem id="products" type="Textarea" blobType="BLOB_TEXT" blobItem="PRODUCTS"  rich="true">
             <![CDATA[
                 <h2>Publications, patents, and reports of invention issued since the annual report</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="covid" type="Textarea" blobType="BLOB_TEXT" blobItem="COVID" rich="true">
+            <![CDATA[
+                <h2>Describe the impact of the COVID-19 pandemic on your project</h2>
                 {$item}
             ]]>
         </ReportItem>
