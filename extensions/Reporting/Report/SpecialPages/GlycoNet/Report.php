@@ -229,8 +229,8 @@ class Report extends AbstractReport{
             /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TechnologyWorkshop")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Tech Workshop", "{$url}TechnologyWorkshop", $selected);*/
             
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SeminarSeries")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Seminar Series", "{$url}SeminarSeries", $selected);
+            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SeminarSeries")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Seminar Series", "{$url}SeminarSeries", $selected);*/
             
             $data = DBFunctions::select(array('grand_report_blobs'),
                                         array('*'),
