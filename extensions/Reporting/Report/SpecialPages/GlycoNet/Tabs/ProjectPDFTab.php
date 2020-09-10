@@ -18,7 +18,7 @@ class ProjectPDFTab extends AbstractTab {
         $me = Person::newFromWgUser();
         $this->html .= "<div id='accordion{$this->year}'>";
         foreach($this->rp as $rp){
-            $report = new DummyReport($rp, $me, null, $this->year);
+            $report = new DummyReport($rp, $me, $this->project, $this->year);
             $pdf = $report->getPDF();
             $this->html .= "<h3><a href='#'>{$report->name}</a></h3>";
             if(count($pdf) > 0){
