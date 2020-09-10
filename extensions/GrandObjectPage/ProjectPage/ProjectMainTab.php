@@ -321,7 +321,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showTable(){
         global $config;
         $me = Person::newFromWgUser();
-        $products = $this->project->getPapers("all", "0000-00-00", "2100-00-00");
+        $products = $this->project->getPapers("all", "0000-00-00", EOT);
         $string = "";
         if(count($products) > 0){
             $string = "<div class='pdfnodisplay'>";

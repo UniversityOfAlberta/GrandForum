@@ -7,6 +7,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 //require_once("RFPApplicationTable.php");
 require_once("ApplicationsTable.php");
+require_once("ProjectTable.php");
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
