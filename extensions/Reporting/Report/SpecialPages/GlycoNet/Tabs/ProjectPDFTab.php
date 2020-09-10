@@ -19,6 +19,7 @@ class ProjectPDFTab extends AbstractTab {
         $this->html .= "<div id='accordion{$this->year}'>";
         foreach($this->rp as $rp){
             $report = new DummyReport($rp, $me, $this->project, $this->year);
+            $report->year = $this->year;
             $pdf = $report->getPDF();
             $this->html .= "<h3><a href='#'>{$report->name}</a></h3>";
             if(count($pdf) > 0){
