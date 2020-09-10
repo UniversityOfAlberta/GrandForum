@@ -90,10 +90,11 @@ class ProjectTable extends SpecialPage{
             $start = substr($project->getCreated(), 0, 4);
             $end = substr($project->getDeleted(), 0, 4);
             // Application, Scientific Reviews, Business Assessment, Report 2017, Report 2018, Report 2019, Products, Business Development
-            $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Application", "APPLICATION"));
+            $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Application 1", "APPLICATION"));
+            $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Application 2", "APPLICATION2"));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Scientific Reviews", "SCIENTIFIC_REVIEWS"));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Business Assessment", "BUSINESS_ASSESSMENT"));
-            $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Business Development", "BUSINESS_DEVELOPMENT"));
+            
             if($end == "0000"){
                 $end = date('Y');
             }
@@ -101,6 +102,7 @@ class ProjectTable extends SpecialPage{
                 $tabbedPage->addTab(new ProjectPDFTab($project, "$year", array(RP_PROGRESS, 'RP_MILE_REPORT'), $year));
             }
             $tabbedPage->addTab(new ProjectProductsTab($project));
+            //$tabbedPage->addTab(new ProjectUploadPDFTab($project, "Business Development", "BUSINESS_DEVELOPMENT"));
             $tabbedPage->showPage();
             if(isset($_POST['submit'])){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:ProjectTable?project={$project->getId()}");
