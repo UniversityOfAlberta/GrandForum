@@ -57,7 +57,7 @@ class ProjectTable extends SpecialPage{
                 $themes[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()} ({$challenge->getAcronym()})</a>" : "";
             }
             $wgOut->addHTML("<tr>
-                                <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:ProjectTable?project={$project->getId()}'>{$project->getName()}</a></td>
+                                <td><span style='display:none;'>{$project->getName()}</span><a href='{$wgServer}{$wgScriptPath}/index.php/Special:ProjectTable?project={$project->getId()}'>{$project->getName()}</a></td>
                                 <td>{$project->getFullName()}</td>
                                 <td>".implode(", ", $leaders)."</td>
                                 <td>".implode(", ", $themes)."</td>
