@@ -89,7 +89,7 @@ class ProjectTable extends SpecialPage{
             
             $start = substr($project->getCreated(), 0, 4);
             $end = substr($project->getDeleted(), 0, 4);
-            // Application, Scientific Reviews, Business Assessment, Report 2017, Report 2018, Report 2019, Products, Business Development
+
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Application 1", "APPLICATION"));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Application 2", "APPLICATION2"));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Scientific Reviews", "SCIENTIFIC_REVIEWS"));
