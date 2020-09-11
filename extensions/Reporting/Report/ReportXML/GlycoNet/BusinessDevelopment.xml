@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Business Development" reportType="RP_BD_REPORT" pdfType="RPTP_BD_REPORT" pdfFiles="BusinessDevelopmentPDF" personId="0" ajax="true">
+<Report name="Business Development" reportType="RP_BD_REPORT" personId="0" year="0" ajax="true">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="bd" permissions="rw" />
@@ -152,6 +152,7 @@
                     $('#reportTabs').hide();
                     $('#bd_table').DataTable({
                         scrollX: true,
+                        searching: false,
                         aLengthMenu: [
                             [25, 50, 100, 200, -1],
                             [25, 50, 100, 200, "All"]
