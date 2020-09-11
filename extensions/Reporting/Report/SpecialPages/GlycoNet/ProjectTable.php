@@ -102,7 +102,7 @@ class ProjectTable extends SpecialPage{
                 $tabbedPage->addTab(new ProjectPDFTab($project, "$year", array(RP_PROGRESS, 'RP_MILE_REPORT'), $year));
             }
             $tabbedPage->addTab(new ProjectProductsTab($project));
-            //$tabbedPage->addTab(new ProjectUploadPDFTab($project, "Business Development", "BUSINESS_DEVELOPMENT"));
+            $tabbedPage->addTab(new ProjectBDTab($project));
             $tabbedPage->showPage();
             if(isset($_POST['submit'])){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:ProjectTable?project={$project->getId()}");
@@ -124,6 +124,9 @@ class ProjectTable extends SpecialPage{
         $person = Person::newFromWgUser();
         
         if(self::userCanExecute($wgUser)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "BusinessDevelopment")) ? "selected" : false;
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("BD", "$wgServer$wgScriptPath/index.php/Special:Report?report=BusinessDevelopment", $selected);
+            
             $selected = @($wgTitle->getText() == "ProjectTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/Special:ProjectTable", $selected);
         }

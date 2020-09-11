@@ -163,6 +163,20 @@
                         order: [[ 2, 'asc' ]],
                         iDisplayLength: -1
                     });
+                    
+                    $('select').change(function(){
+                        var val = $(this).val();
+                        if(val == "In Progress"){
+                            $(this).closest("td").css("background-color", "blue");
+                        }
+                        else if(val == "Completed"){
+                            $(this).closest("td").css("background-color", "green");
+                        }
+                        else {
+                            $(this).closest("td").css("background-color", "");
+                        }
+                    });
+                    $('select').change();
                 </script>
                 <style>
                     .dataTables_scrollBody thead {
