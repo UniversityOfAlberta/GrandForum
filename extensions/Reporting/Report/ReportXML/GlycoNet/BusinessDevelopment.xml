@@ -49,7 +49,7 @@
                 <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="projects" type="AllProjectsReportItemSet">
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
             <Static>
                 <![CDATA[
                     <tr>
