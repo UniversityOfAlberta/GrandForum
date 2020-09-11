@@ -102,6 +102,7 @@ class ProjectTable extends SpecialPage{
                 $tabbedPage->addTab(new ProjectPDFTab($project, "$year", array(RP_PROGRESS, 'RP_MILE_REPORT'), $year));
             }
             $tabbedPage->addTab(new ProjectProductsTab($project));
+            $tabbedPage->addTab(new ProjectMilestonesROTab($project, array('edit' => false)));
             $tabbedPage->addTab(new ProjectBDTab($project));
             $tabbedPage->showPage();
             if(isset($_POST['submit'])){
@@ -116,6 +117,7 @@ class ProjectTable extends SpecialPage{
             $('#bodyContent > h1').show();
             $('#project h1').hide();
             $('form').attr('action', $('form').attr('action') + '?project={$project->getId()}');
+            $('#milestones .button').remove();
         </script>");
     }
     

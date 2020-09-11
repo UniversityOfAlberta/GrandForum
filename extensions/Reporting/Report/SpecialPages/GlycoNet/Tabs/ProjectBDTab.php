@@ -81,16 +81,13 @@ class ProjectBDTab extends AbstractTab {
             $('.progress').each(function(){
                 var val = $(this).text();
                 if(val == 'In Progress'){
-                    $(this).closest('td').css('background-color', 'blue');
-                    $(this).closest('td').css('color', 'white');
+                    $(this).closest('td').css('background-color', '#3399ff');
                 }
                 else if(val == 'Completed'){
-                    $(this).closest('td').css('background-color', 'green');
-                    $(this).closest('td').css('color', 'white');
+                    $(this).closest('td').css('background-color', '#55bb55');
                 }
                 else {
                     $(this).closest('td').css('background-color', '');
-                    $(this).closest('td').css('color', 'black');
                 }
             });
         </script>";
