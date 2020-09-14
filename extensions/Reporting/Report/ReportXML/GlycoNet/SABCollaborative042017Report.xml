@@ -44,7 +44,7 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="Collaborative042017Report" project="false">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport042017" project="false">
                 <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_04_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
