@@ -103,6 +103,7 @@ class ProjectTable extends SpecialPage{
             }
             $tabbedPage->addTab(new ProjectProductsTab($project));
             $tabbedPage->addTab(new ProjectMilestonesROTab($project, array('edit' => false)));
+            $tabbedPage->addTab(new ProjectGlyconetBudgetTab($project));
             $tabbedPage->addTab(new ProjectBDTab($project));
             $tabbedPage->showPage();
             if(isset($_POST['submit'])){

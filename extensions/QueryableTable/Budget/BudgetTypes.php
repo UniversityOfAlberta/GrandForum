@@ -252,7 +252,9 @@ $budgetStructures[GLYCONET_BUDGET_STRUCTURE] =
           array(HEAD1_ROW,  HEAD_MONEY,      HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,  NA,     HEAD1_ROW,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  HEAD_MONEY,  BLANK,       NA,          NA,         NA),
     );
     
-$budgetStructures[GLYCONET_NI_BUDGET_STRUCTURE] = $budgetStructures[GLYCONET_BUDGET_STRUCTURE];
+$budgetStructures[GLYCONET_NI_BUDGET_STRUCTURE] = 
+    array(array(HEAD1, HEAD1),
+);
     
 $budgetStructures[TECH_WORKSHOP_STRUCTURE] = 
     array(array(HEAD_ROW,   NA,         NA,         NA,         NA),
