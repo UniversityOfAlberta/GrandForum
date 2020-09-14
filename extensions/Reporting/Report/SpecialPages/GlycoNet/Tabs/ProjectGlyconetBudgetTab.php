@@ -51,7 +51,10 @@ class ProjectGlyconetBudgetTab extends AbstractTab {
         $xls = $blb->getData();
 
         $multiBudget = new MultiBudget(array(GLYCONET_BUDGET_STRUCTURE2, GLYCONET_NI_BUDGET_STRUCTURE2), $xls);
-        $this->html .= $multiBudget->render();
+        if($multiBudget->nBudgets() > 0){
+            $this->html .= $multiBudget->render();
+            $this->html .= "<p><a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}&mime=application/vnd.ms-excel&fileName={$this->project->getName()}_Budget.xlsx'>Download Budget</a></p>";
+        }
     }
 }    
     
