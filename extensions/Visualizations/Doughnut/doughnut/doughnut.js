@@ -334,7 +334,6 @@ $.fn.doughnut = function(data, clickable, fn){
                     setInterval(function(){
                         if($("#" + id).is(":visible") && maxWidth != Math.round($("#" + id).width()) && 
                                                          response[0].width != Math.round($("#" + id).width())){
-                            console.log(response[0].width, maxWidth, Math.round($("#" + id).width()));
                             response[0].width = Math.round($("#" + id).width());
                             response[0].height = Math.round(response[0].width*0.50);
                             $("#" + id).empty();
