@@ -50,6 +50,10 @@ class GradDB extends SpecialPage{
         if(isset($_GET['pdf'])){
             $this->downloadPDF();
         }
+        else if(isset($_GET['terminate'])){
+            $this->terminate();
+            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:GradDB");
+        }
         else if(isset($_GET['accept'])){
             $this->accept();
         }
@@ -126,7 +130,7 @@ class GradDB extends SpecialPage{
             $hqp = $graddb->getHQP();
             $sup = $graddb->getSupervisor();
             $button = "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>View Contract</a>
-                       <a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>Terminate</a>";
+                       <a class='button' onclick='return confirm(\"Are you sure you want to terminate this contract?\");' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?terminate={$graddb->getMD5()}'>Terminate</a>";
             $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
             $hqpAccepted = ($graddb->hasHQPAccepted()) ? $graddb->getHQPAccepted() : "";
             $supAccepted = ($graddb->hasSupAccepted()) ? $graddb->getSupAccepted() : "";
@@ -363,8 +367,9 @@ class GradDB extends SpecialPage{
         global $wgMessage, $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         $graddb = GradDBFinancial::newFromMD5($_GET['accept']);
-        if($graddb->exists() && $graddb->isAllowedToView() && ($graddb->getHQP()->getId() == $me->getId() || 
-                                                                                 $graddb->isSupervisor($me->getId()))){
+        if($graddb->exists() && $graddb->isTerminated() && 
+           $graddb->isAllowedToView() && ($graddb->getHQP()->getId() == $me->getId() || 
+                                          $graddb->isSupervisor($me->getId()))){
             if($graddb->getHQP()->getId() == $me->getId() && !$graddb->hasHQPAccepted()){
                 $graddb->hqpAccepted = currentTimeStamp();
             }
@@ -382,6 +387,23 @@ class GradDB extends SpecialPage{
                         <p> - {$config->getValue('networkName')}</p>";
             self::mail("dwt@ualberta.ca", "Contract for {$graddb->getTerm()} Accepted", $message, $graddb->getPDF(), "Contract.pdf");
             $wgMessage->addSuccess("Thank you for accepting this contract.");
+        }
+        else if($graddb->isTerminated()){
+            $wgMessage->addError("This contract has been terminated.");
+        }
+        else{
+            $wgMessage->addError("This contract doesn't exist.");
+        }
+    }
+    
+    function terminate(){
+        global $wgMessage;
+        $me = Person::newFromWgUser();
+        $graddb = GradDBFinancial::newFromMD5($_GET['terminate']);
+        if($graddb->exists() && $graddb->isAllowedToTerminate()){
+            $graddb->terminated = true;
+            $graddb->update();
+            $wgMessage->addSuccess("Contract has been terminated.");
         }
         else{
             $wgMessage->addError("This contract doesn't exist.");

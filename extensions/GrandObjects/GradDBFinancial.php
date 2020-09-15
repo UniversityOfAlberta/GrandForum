@@ -15,7 +15,7 @@ class GradDBFinancial extends BackboneModel{
     var $supAccepted = 0;
     var $lines = array();
     var $pdf;
-    var $terminated;
+    var $terminated = false;
     var $html;
     
     static $GRAF_STIPEND = 8891;
@@ -80,8 +80,7 @@ class GradDBFinancial extends BackboneModel{
                                           'supAccepted',
                                           '`lines`',
                                           '`terminated`'),
-                                    array('md5' => EQ($md5),
-                                          '`terminated`' => NEQ(1)));
+                                    array('md5' => EQ($md5)));
         return new GradDBFinancial($data);
     }
     
@@ -253,6 +252,15 @@ class GradDBFinancial extends BackboneModel{
         }
         return false;
     }
+    
+    // Check if user is allowed to terminate this GradDBFinancial
+    function isAllowedToTerminate(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+        return false;
+    }
 
     function create(){
         $me = Person::newFromWGUser();
@@ -314,6 +322,10 @@ class GradDBFinancial extends BackboneModel{
     
     function exists(){
         return ($this->id != 0);
+    }
+    
+    function isTerminated(){
+        return $this->terminated;
     }
     
     function getCacheId(){
