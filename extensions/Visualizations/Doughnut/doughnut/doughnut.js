@@ -326,20 +326,23 @@ $.fn.doughnut = function(data, clickable, fn){
                 $("#" + id).empty();
                 if(response[0].width == "100%"){
                     $("#" + id).width("100%");
-                    response[0].width = $("#" + id).width();
-                    response[0].height = response[0].width*0.50;
+                    response[0].width = Math.round($("#" + id).width());
+                    response[0].height = Math.round(response[0].width*0.50);
                     create(holder, response[0], clickable, fn);
                     $("#" + id).width("100%");
-                    var maxWidth = $("#" + id).width();
+                    var maxWidth = Math.round($("#" + id).width());
                     setInterval(function(){
-                        if($("#" + id).is(":visible") && maxWidth != $("#" + id).width()){
-                            response[0].width = $("#" + id).width();
-                            response[0].height = response[0].width*0.50;
+                        if($("#" + id).is(":visible") && maxWidth != Math.round($("#" + id).width()) && 
+                                                         response[0].width != Math.round($("#" + id).width())){
+                            console.log(response[0].width, maxWidth, Math.round($("#" + id).width()));
+                            response[0].width = Math.round($("#" + id).width());
+                            response[0].height = Math.round(response[0].width*0.50);
                             $("#" + id).empty();
                             create(holder, response[0], clickable, fn);
                             $("#" + id).width("100%");
-                            maxWidth = $("#" + id).width();
+                            maxWidth = Math.round($("#" + id).width());
                         }
+                        $("#" + id).width("100%");
                     }, 100);
                 }
                 else{
