@@ -119,6 +119,8 @@ class ReportItemCallback {
             // GRADDB
             "graddb_start" => "getGradDBStart",
             "graddb_end" => "getGradDBEnd",
+            "graddb_term_start" => "getGradDBTermStart",
+            "graddb_term_end" => "getGradDBTermEnd",
             "graddb_hours" => "getGradDBHours",
             "graddb_gta_hours" => "getGradDBGTAHours",
             "graddb_gra_hours" => "getGradDBGRAHours",
@@ -750,6 +752,28 @@ class ReportItemCallback {
     function getGradDBEnd(){
         $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
         return date('d F Y', strtotime($graddb->getEnd()));
+    }
+    
+    function getGradDBTermStart(){
+        $name = str_replace("PDF", "", str_replace("TimeUseReport", "", $this->reportItem->getReport()->xmlName));
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        foreach($graddb->getTerms() as $term){
+            if(strstr(str_replace("/", "", $term), $name) !== false){
+                return date('d F Y', strtotime(GradDBFinancial::term2Date($term)));
+            }
+        }
+        return "";
+    }
+    
+    function getGradDBTermEnd(){
+        $name = str_replace("PDF", "", str_replace("TimeUseReport", "", $this->reportItem->getReport()->xmlName));
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        foreach($graddb->getTerms() as $term){
+            if(strstr(str_replace("/", "", $term), $name) !== false){
+                return date('d F Y', strtotime(GradDBFinancial::term2Date($term, true)));
+            }
+        }
+        return "";
     }
     
     function getGradDBHours(){

@@ -29,7 +29,7 @@
                 <p>This form must be completed by the Graduate Assistantship Supervisor and graduate student at the start of each University Term. This does not replace the requirement for a Letter of Appointment. The purpose of this form is to outline the estimated hours necessary to complete the assigned duties and to assure that the required duties can be performed within the assigned hours. Note: a Graduate Teaching Assistant and a Graduate Research Assistant performing duties which are not directly related to their own research cannot work more than 192 hours in a four­ month term (average of 12-hours per week) regardless of the number of teaching and/or research assistantship appointments held.</p>
                 <ol type="a">
                     <li>Name of Student: <b>{$user_last_name}, {$user_first_name}</b></li>
-                    <li>Assistantship Appointment: <b>{$graddb_start} - {$graddb_end}</b></li>
+                    <li>Assistantship Appointment: <b>{$graddb_term_start} - {$graddb_term_end}</b></li>
                     <li>Average Hours Per Week: <b>{$graddb_hours}</b></li>
                 </ol>
             ]]>
@@ -74,6 +74,10 @@
                         {$item}
                         <p><b><i>There are no working hours attached to a GRAF</i></b></p>
                     </div>
+                    <script type='text/javascript'>
+                        $('#table_{$post_id}').css("width", "100%").css("margin", "0");
+                        $('#table_{$post_id} tr:first th:first').css('text-align', 'left');
+                    </script>
                 ]]>
             </ReportItem>
         </If>

@@ -24,6 +24,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         if($wgUser->isLoggedIn()){
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
+            $tabs["TimeUseReports"] = TabUtils::createTab("Time Use Report");
             $tabs["ReportArchive"] = TabUtils::createTab("Report Archive");
             $tabs["Chair"] = TabUtils::createTab("Chair");
             $tabs["Dean"] = TabUtils::createTab("Dean");
@@ -66,6 +67,17 @@ class Report extends AbstractReport{
         if($person->isRole(ISAC) || $person->isRole(IAC)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "DepartmentPublications")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Publications", "{$url}DepartmentPublications", $selected);
+        }
+        
+        $graddbs = GradDBFinancial::getAllFromHQP($person->getId());
+        foreach($graddbs as $graddb){
+            $supervisor = $graddb->getSupervisor();
+            $md5 = $graddb->getMD5();
+            foreach($graddb->getTerms() as $termyear){
+                $term = str_replace("/", "", substr($termyear, 0, -4));
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TimeUseReport{$term}") && $_GET['project'] == "GradDB:{$md5}") ? "selected" : false;
+                $tabs["TimeUseReports"]['subtabs'][] = TabUtils::createSubTab("{$termyear}/{$supervisor->getLastName()}", "{$url}TimeUseReport{$term}&project=GradDB:{$md5}", $selected);
+            }
         }
         return true;
     }
