@@ -119,7 +119,23 @@ abstract class AbstractReport extends SpecialPage {
             $projectName = $_GET['project'];
         }
         if($projectName != null){
-            $this->project = Project::newFromName($projectName);
+            if(strpos($projectName, 'GradDB') !== false){
+                $graddbString = explode(":", $projectName);
+                $graddb = GradDBFinancial::newFromMD5($graddbString[1]);
+                if($graddb->exists()){
+                    $this->project = new Project(array());
+                    $this->project->id = $graddb->getId();
+                    $this->project->name = $projectName;
+                    $this->project->type = "GradDB";
+                }
+                else{
+                    // GradDB does not exist, show error
+                    permissionError();
+                }
+            }
+            else{
+                $this->project = Project::newFromName($projectName);
+            }
         }
         if(isset($_GET['generatePDF'])){
             $this->generatePDF = true;

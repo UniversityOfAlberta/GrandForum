@@ -56,7 +56,7 @@ class GradDBFinancial extends BackboneModel{
         $data = DBFunctions::select(array('grand_graddb'),
                                     array('id',
                                           'hqp',
-                                          'supervsor',
+                                          'supervisor',
                                           'term',
                                           'md5',
                                           'position',

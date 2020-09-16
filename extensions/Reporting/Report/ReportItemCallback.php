@@ -116,6 +116,16 @@ class ReportItemCallback {
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
+            // GRADDB
+            "graddb_start" => "getGradDBStart",
+            "graddb_end" => "getGradDBEnd",
+            "graddb_hours" => "getGradDBHours",
+            "graddb_gta_hours" => "getGradDBGTAHours",
+            "graddb_gra_hours" => "getGradDBGRAHours",
+            "graddb_graf_hours" => "getGradDBGRAFHours",
+            "isGRA" => "isGRA",
+            "isGTA" => "isGTA",
+            "isGRAF" => "isGRAF",
             // ISAC
             "chair_id" => "getChairId",
             // Products
@@ -730,6 +740,84 @@ class ReportItemCallback {
             }
         }
         return 0;
+    }
+    
+    function getGradDBStart(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return date('d F Y', strtotime($graddb->getStart()));
+    }
+    
+    function getGradDBEnd(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return date('d F Y', strtotime($graddb->getEnd()));
+    }
+    
+    function getGradDBHours(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return $graddb->getHours();
+    }
+    
+    function getGradDBGTAHours(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        $hours = 0;
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GTA"){
+                $hours += $line['hours'];
+            }
+        }
+        return $hours;
+    }
+    
+    function getGradDBGRAHours(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        $hours = 0;
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GRA"){
+                $hours += $line['hours'];
+            }
+        }
+        return $hours;
+    }
+    
+    function getGradDBGRAFHours(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        $hours = 0;
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GRAF"){
+                $hours += $line['hours'];
+            }
+        }
+        return $hours;
+    }
+    
+    function isGRA(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GRA"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function isGTA(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GTA"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function isGRAF(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        foreach($graddb->getLines() as $line){
+            if($line['type'] == "GRAF"){
+                return true;
+            }
+        }
+        return false;
     }
     
     function getProductId(){

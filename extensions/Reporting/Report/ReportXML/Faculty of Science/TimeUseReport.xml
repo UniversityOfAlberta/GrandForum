@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Student Progress Report" reportType="RP_TIME_USE" pdfFiles="TimeUseReport" ajax="true">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="student" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="student" tooltip="Graduate Assistantship Time Use Guideline Form" name="Time Use Guideline" title="Graduate Assistantship Time Use Guideline Form" blobSection="TIME_USE" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <style>
+                    div.container {
+                        margin-left: auto;
+                        margin-right: auto; 
+                        width: 60%;
+                        min-width: 600px;
+                        margin-bottom: 2em;
+                    }
+                    
+                    div.header {
+                        background: #aaaaaa; 
+                        font-weight: bold; 
+                        font-size: 1.5em; 
+                        padding: 0.5em; 
+                        text-align: center;
+                    }
+                </style>
+                <p>This form must be completed by the Graduate Assistantship Supervisor and graduate student at the start of each University Term. This does not replace the requirement for a Letter of Appointment. The purpose of this form is to outline the estimated hours necessary to complete the assigned duties and to assure that the required duties can be performed within the assigned hours. Note: a Graduate Teaching Assistant and a Graduate Research Assistant performing duties which are not directly related to their own research cannot work more than 192 hours in a four­ month term (average of 12-hours per week) regardless of the number of teaching and/or research assistantship appointments held.</p>
+                <ol type="a">
+                    <li>Name of Student: <b>{$user_last_name}, {$user_first_name}</b></li>
+                    <li>Assistantship Appointment: <b>{$graddb_start} - {$graddb_end}</b></li>
+                    <li>Average Hours Per Week: <b>{$graddb_hours}</b></li>
+                </ol>
+            ]]>
+        </Static>
+        <If if="{isGTA()}">
+            <ReportItem id="gta_duties" type="MultiText" blobItem="GTA_DUTIES" blobType="BLOB_ARRAY" labels="Outline Teaching Duties|Average Hrs/Wk" types="Textarea|Integer" sizes="|50" multiple="true">
+                <![CDATA[
+                    <div class='container'>
+                        <div class='header'>GRADUATE TEACHING ASSISTANTSHIP</div>
+                        {$item}
+                        <p>TOTAL HOURS (as per letter of appointment): <b>{$graddb_gta_hours}</b></p>
+                    </div>
+                    <script type='text/javascript'>
+                        $('#table_{$post_id}').css("width", "100%").css("margin", "0");
+                        $('#table_{$post_id} tr:first th:first').append("<br /><small>ex: Preparation for labs, Attendance at lecturers, Teaching labs/tutorials, Grading assigmments, essays, lab reports, and exam preparation</small>");
+                        $('#table_{$post_id} tr:first th:first').css('text-align', 'left');
+                    </script>
+                ]]>
+            </ReportItem>
+        </If>
+        <If if="{isGRA()}">
+            <ReportItem id="gra_duties" type="MultiText" blobItem="GRA_DUTIES" blobType="BLOB_ARRAY" labels="Outline Teaching Duties|Average Hrs/Wk" types="Textarea|Integer" sizes="|50" multiple="true">
+                <![CDATA[
+                    <div class='container'>
+                        <div class='header'>GRADUATE RESEARCH ASSISTANTSHIP</div>
+                        {$item}
+                        <p>TOTAL HOURS (as per letter of appointment): <b>{$graddb_gra_hours}</b></p>
+                    </div>
+                    <script type='text/javascript'>
+                        $('#table_{$post_id}').css("width", "100%").css("margin", "0");
+                        $('#table_{$post_id} tr:first th:first').append("<br /><small>ex: literature searches, lab duties, data analysis</small>");
+                        $('#table_{$post_id} tr:first th:first').css('text-align', 'left');
+                    </script>
+                ]]>
+            </ReportItem>
+        </If>
+        <If if="{isGRAF()}">
+            <ReportItem id="graf_duties" type="MultiText" blobItem="GRAF_DUTIES" blobType="BLOB_ARRAY" labels="Outline Teaching Duties" types="Textarea" sizes="" multiple="true">
+                <![CDATA[
+                    <div class='container'>
+                        <div class='header'>GRADUATE RESEARCH ASSISTANTSHIP FELLOWSHIP</div>
+                        {$item}
+                        <p><b><i>There are no working hours attached to a GRAF</i></b></p>
+                    </div>
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="vacation" type="Checkbox" blobItem="VACATION" blobType="BLOB_ARRAY" options="Vacation dates reviewed">
+            <![CDATA[
+                <div class='container' style='border: 1px solid #aaaaaa;'>
+                    <div style='padding: 0.5em;'>
+                        {$item} (one week per term vacation entitlement)
+                        (Please check the box to indicate vacation has been discussed)
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[
+                <h2>Preview</h2>
+                <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
