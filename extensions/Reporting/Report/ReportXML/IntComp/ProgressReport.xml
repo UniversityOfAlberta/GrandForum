@@ -15,30 +15,30 @@
                 {$project_full_name}
             ]]>
         </Static>
-        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" default="{$project_start}" width="80px">
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" default="{$project_start}" width="70px">
             <![CDATA[
                 <h3>Proposed Project Period:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="70px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}
             ]]>
         </ReportItem>
-        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="70px">
             <![CDATA[
                 <h3>Funds Available Date:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="70px">
             <![CDATA[
                 <h3>Reporting Period:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="70px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}
             ]]>
@@ -115,6 +115,20 @@
             <![CDATA[
                 <h2>Publications and Presentations</h2>
                 <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a> (Opens in a new Tab).  In order for the product to show up below, it must be associated with the project, and have been written between the reporting period ({getText(RP_PROGRESS_REPORT,DETAILS,REPORT_START,0,0,{$project_id})} - {getText(RP_PROGRESS_REPORT,DETAILS,REPORT_END,0,0,{$project_id})})</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interaction" type="Textarea" blobItem="INTERACTION" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Interactions between PI and Huawei Technical Leads</h2>
+                Please indicate the interaction between you and your corresponding Huawei technical team (e.g. how frequently do you communicate with them, etc.) during the reporting period
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="matching" type="Textarea" blobItem="MATCHING" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Are matching funds in place or intended to be obtained for this project</h2>
+                Please indicate whether or not you have received, applied for, or will be applying for matching funds, e.g. NSERC Alliance Grants
                 {$item}
             ]]>
         </ReportItem>
