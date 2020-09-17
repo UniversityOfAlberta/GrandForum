@@ -415,12 +415,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Sets the name of this Report
     function setName($name){
-        if($this->project != null){
-            $this->name = $name.": {$this->project->getName()}";
-        }
-        else{
-            $this->name = $name;
-        }
+        $this->name = $name;
     }
     
     function setHeaderName($name){

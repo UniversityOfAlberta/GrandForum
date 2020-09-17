@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Student Progress Report" reportType="RP_TIME_USE_WINTER" pdfFiles="TimeUseReport" extends="TimeUseReport">
+<Report reportType="RP_TIME_USE_WINTER" pdfFiles="TimeUseReportWinterPDF" extends="TimeUseReport">
     
 </Report>

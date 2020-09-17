@@ -60,6 +60,7 @@ class ReportItemCallback {
             // Reports
             "timestamp" => "getTimestamp",
             "post_id" => "getPostId",
+            "report_type" => "getReportType",
             "report_name" => "getReportName",
             "report_xmlname" => "getReportXMLName",
             "section_name" => "getSectionName",
@@ -117,6 +118,7 @@ class ReportItemCallback {
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
             // GRADDB
+            "graddb_id" => "getGradDBId",
             "graddb_start" => "getGradDBStart",
             "graddb_end" => "getGradDBEnd",
             "graddb_term_start" => "getGradDBTermStart",
@@ -744,6 +746,10 @@ class ReportItemCallback {
         return 0;
     }
     
+    function getGradDBId(){
+        return $this->reportItem->projectId;
+    }
+    
     function getGradDBStart(){
         $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
         return date('d F Y', strtotime($graddb->getStart()));
@@ -756,6 +762,9 @@ class ReportItemCallback {
     
     function getGradDBTermStart(){
         $name = str_replace("PDF", "", str_replace("TimeUseReport", "", $this->reportItem->getReport()->xmlName));
+        if($name == ""){
+            return $this->getGradDBStart();
+        }
         $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
         foreach($graddb->getTerms() as $term){
             if(strstr(str_replace("/", "", $term), $name) !== false){
@@ -767,6 +776,9 @@ class ReportItemCallback {
     
     function getGradDBTermEnd(){
         $name = str_replace("PDF", "", str_replace("TimeUseReport", "", $this->reportItem->getReport()->xmlName));
+        if($name == ""){
+            return $this->getGradDBEnd();
+        }
         $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
         foreach($graddb->getTerms() as $term){
             if(strstr(str_replace("/", "", $term), $name) !== false){
@@ -1363,6 +1375,10 @@ class ReportItemCallback {
     function getTimestamp(){
         $date = new DateTime("now", new DateTimeZone(date_default_timezone_get())); // USER's timezone
         return $date->format('Y-m-d H:i:s T');
+    }
+    
+    function getReportType(){
+        return $this->reportItem->getReport()->reportType;
     }
     
     function getReportName(){
