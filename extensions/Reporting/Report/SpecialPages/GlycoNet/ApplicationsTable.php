@@ -377,6 +377,7 @@ class ApplicationsTable extends SpecialPage{
     function generateCSPC(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), $this->hqps, 2020, "2020", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), $this->hqps, 2019, "2019", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }

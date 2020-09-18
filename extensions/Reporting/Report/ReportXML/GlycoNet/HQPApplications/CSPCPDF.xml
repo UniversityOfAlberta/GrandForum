@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" ajax="true" disabled="false" year="2019">
+<Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" ajax="true" disabled="false" year="2020">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
@@ -21,7 +21,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION" pagebreak="false">
+    <ReportSection id="application" name="Application" tooltip="Application" type="HeaderReportSection" blobSection="APPLICATION" pagebreak="false">
         <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" class="wikitable">
             <![CDATA[
                 <h3>Applicant Information</h3>
@@ -57,7 +57,28 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Description</h3>
-                <p>Describe why you are interested in participating in the CSPC, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                <p><b>Describe why you are interested in participating the CSPC, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Textarea" blobItem="THEME" rich="true" limit="300" recommended="true">
+            <![CDATA[
+                <br />
+                <br />
+                <p><b>Based on the Program, which theme are you most interested in and which sessions do you plan to attend?</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadPDF" blobItem="CV" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload your CV</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="UploadPDF" blobItem="CONSENT" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload supervisor consent/support letter</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/supervisor support letter-fillable.pdf' target='_blank'>Template</a>
                 {$item}
             ]]>
         </ReportItem>
