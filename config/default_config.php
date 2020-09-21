@@ -293,6 +293,8 @@
     $config->setConst("EVALUATOR",  "Evaluator");
     $config->setConst("CHAMP",      "Champion");
     $config->setConst("PARTNER",    "Partner");
+    $config->setConst("CORP",       "Corp");
+    $config->setConst("DEPT",       "AffiliateDept");
     $config->setConst("ASD",        "ASD");
     $config->setConst("SD",         "SD");
     $config->setConst("STAFF",      "Staff");
