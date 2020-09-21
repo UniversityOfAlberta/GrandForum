@@ -119,6 +119,10 @@ class ReportItemCallback {
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
             // GRADDB
             "graddb_id" => "getGradDBId",
+            "graddb_hqp_first_name" => "getGradDBHQPFirstName",
+            "graddb_hqp_last_name" => "getGradDBHQPLastName",
+            "graddb_sup_first_name" => "getGradDBSupFirstName",
+            "graddb_sup_last_name" => "getGradDBSupLastName",
             "graddb_start" => "getGradDBStart",
             "graddb_end" => "getGradDBEnd",
             "graddb_term_start" => "getGradDBTermStart",
@@ -168,6 +172,7 @@ class ReportItemCallback {
             "networkName" => "getNetworkName",
             "id" => "getId",
             "time2date" => "time2date",
+            "time" => "time",
             "name" => "getName",
             "index" => "getIndex",
             "value" => "getValue",
@@ -750,6 +755,26 @@ class ReportItemCallback {
         return $this->reportItem->projectId;
     }
     
+    function getGradDBHQPFirstName(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return $graddb->getHQP()->getFirstName();
+    }
+    
+    function getGradDBHQPLastName(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return $graddb->getHQP()->getLastName();
+    }
+    
+    function getGradDBSupFirstName(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return $graddb->getSupervisor()->getFirstName();
+    }
+    
+    function getGradDBSupLastName(){
+        $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
+        return $graddb->getSupervisor()->getLastName();
+    }
+    
     function getGradDBStart(){
         $graddb = GradDBFinancial::newFromId($this->reportItem->projectId);
         return date('d F Y', strtotime($graddb->getStart()));
@@ -1089,6 +1114,10 @@ class ReportItemCallback {
     
     function time2date($time, $format='F j, Y'){
         return time2date($time, $format);
+    }
+    
+    function time(){
+        return currentTimeStamp();
     }
     
     function getName(){

@@ -389,9 +389,11 @@ abstract class AbstractReportSection {
         if(!$this->checkPermission('w')){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#reportMain textarea').prop('disabled', 'disabled');
-                    $('#reportMain input').prop('disabled', 'disabled');
-                    $('#reportMain button').prop('disabled', 'disabled');
+                    _.defer(function(){
+                        $('#reportMain textarea').prop('disabled', 'disabled');
+                        $('#reportMain input').prop('disabled', 'disabled');
+                        $('#reportMain button').prop('disabled', 'disabled');
+                    });
                 });
             </script>");
         }

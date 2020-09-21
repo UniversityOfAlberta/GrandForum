@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Graduate Assistantship Time Use Guideline Form" reportType="RP_TIME_USE" pdfFiles="TimeUseReport" ajax="true">
+<Report name="Graduate Assistantship Time Use Guideline Form" reportType="RP_TIME_USE" personId="0" pdfFiles="TimeUseReport" ajax="true">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="time_use" permissions="rw" />
+            <SectionPermission id="supervisor" permissions="--" />
             <SectionPermission id="review" permissions="rw" />
         </Role>
+        <Role role="Faculty">
+            <SectionPermission id="time_use" permissions="--" />
+            <SectionPermission id="supervisor" permissions="rw" />
+            <SectionPermission id="review" permissions="--" />
+        </Role>
+        <Project></Project>
     </Permissions>
     <ReportSection id="time_use" tooltip="Graduate Assistantship Time Use Guideline Form" name="Time Use Guideline" title="Graduate Assistantship Time Use Guideline Form" blobSection="TIME_USE" type="EditableReportSection">
         <Static>
@@ -32,7 +39,7 @@
                 </style>
                 <p>This form must be completed by the Graduate Assistantship Supervisor and graduate student at the start of each University Term. This does not replace the requirement for a Letter of Appointment. The purpose of this form is to outline the estimated hours necessary to complete the assigned duties and to assure that the required duties can be performed within the assigned hours. Note: a Graduate Teaching Assistant and a Graduate Research Assistant performing duties which are not directly related to their own research cannot work more than 192 hours in a four­ month term (average of 12-hours per week) regardless of the number of teaching and/or research assistantship appointments held.</p>
                 <ol type="a">
-                    <li>Name of Student: <b>{$user_last_name}, {$user_first_name}</b></li>
+                    <li>Name of Student: <b>{$graddb_hqp_last_name}, {$graddb_hqp_first_name}</b></li>
                     <li>Assistantship Appointment: <b>{$graddb_term_start} - {$graddb_term_end}</b></li>
                     <li>Average Hours Per Week: <b>{$graddb_hours}</b></li>
                 </ol>
@@ -91,6 +98,35 @@
                         (Please check the box to indicate vacation has been discussed)
                     </div>
                 </div>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supervisor" tooltip="Supervisor Signature" name="Supervisor Signature" blobSection="SUPERVISOR" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="signature" type="Checkbox" blobItem="SIGNATURE" blobType="BLOB_ARRAY" options="I approve this time use report">
+            <![CDATA[
+                <h3>Check the following box if you believe the student's data to be correct</h3>
+                <div class='container' style='border: 1px solid #aaaaaa;'>
+                    <div style='padding: 0.5em;'>
+                        {$item}
+                    </div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="date" type="Text" blobItem="SIGNATURE_DATE" blobType="BLOB_TEXT">
+            <![CDATA[
+                <div style='display:none;'>
+                    {$item}
+                </div>
+                <script type='text/javascript'>
+                    $('input[name={$post_id}]').val("{time2date({time()})}");
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[
+                <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>

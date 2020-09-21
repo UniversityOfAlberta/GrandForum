@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="" headerName=" " reportType="RP_TIME_USE" pdfFiles="TimeUseReport" ajax="true">
+<Report name="" headerName=" " reportType="RP_TIME_USE" personId="0" pdfFiles="TimeUseReport" ajax="true">
     <ReportSection id="time_use" blobSection="TIME_USE" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
@@ -31,7 +31,7 @@
                 <h1 style='text-align:right;'>Appendix C<br />Graduate Assistantship Time Use Guideline Form</h1>
                 <p>This form must be completed by the Graduate Assistantship Supervisor and graduate student at the start of each University Term. This does not replace the requirement for a Letter of Appointment. The purpose of this form is to outline the estimated hours necessary to complete the assigned duties and to assure that the required duties can be performed within the assigned hours. Note: a Graduate Teaching Assistant and a Graduate Research Assistant performing duties which are not directly related to their own research cannot work more than 192 hours in a four­ month term (average of 12-hours per week) regardless of the number of teaching and/or research assistantship appointments held.</p>
                 <ol type="a">
-                    <li>Name of Student: <b>{$user_last_name}, {$user_first_name}</b></li>
+                    <li>Name of Student: <b>{$graddb_hqp_last_name}, {$graddb_hqp_first_name}</b></li>
                     <li>Assistantship Appointment: <b>{$graddb_term_start} - {$graddb_term_end}</b></li>
                     <li>Average Hours Per Week: <b>{$graddb_hours}</b></li>
                 </ol>
@@ -70,7 +70,7 @@
                 ]]>
             </ReportItem>
         </If>
-        <If if="{==({getArray({$report_type},TIME_USE,VACATION,0,{$user_id},{$graddb_id},vacation)},Vacation dates reviewed)}">
+        <If if="{==({getArray({$report_type},TIME_USE,VACATION,0,0,{$graddb_id},vacation)},Vacation dates reviewed)}">
             <![CDATA[
                 <div class='container' style='border: 1px solid black;'>
                     <div style='padding: 0.5em;'>
@@ -88,6 +88,38 @@
                         (Please check the box to indicate vacation has been discussed)
                     </div>
                 </div>
+            ]]>
+        </Else>
+        <If if="{==({getArray({$report_type},SUPERVISOR,SIGNATURE,0,0,{$graddb_id},signature)},I approve this time use report)}">
+            <![CDATA[
+                <table width='66%'>
+                    <tr>
+                        <td style='width:50%;'><b>{$graddb_sup_last_name}, {$graddb_sup_first_name}</b></td>
+                        <td style='width:10%;'></td>
+                        <td style='width:40%;'><b>{getText({$report_type},SUPERVISOR,SIGNATURE_DATE,0,0,{$graddb_id})}</b></td>
+                    </tr>
+                    <tr>
+                        <td style='border-top: 1px solid black;'>Name of Graduate Assistantship Supervisor</td>
+                        <td></td>
+                        <td style='border-top: 1px solid black;'>Date</td>
+                    </tr>
+                </table>
+            ]]>
+        </If>
+        <Else>
+            <![CDATA[
+                <table width='66%'>
+                    <tr>
+                        <td style='width:50%;'>&nbsp;</td>
+                        <td style='width:10%;'></td>
+                        <td style='width:40%;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style='border-top: 1px solid black;'>Name of Graduate Assistantship Supervisor</td>
+                        <td></td>
+                        <td style='border-top: 1px solid black;'>Date</td>
+                    </tr>
+                </table>
             ]]>
         </Else>
     </ReportSection>
