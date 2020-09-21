@@ -37,7 +37,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow">
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow|Research Technician|Research Associate">
             <![CDATA[
                     <tr>
                         <td valign="top" align="right" style="padding-top:3px;"><b>Academic Program/Status:</b></td>
