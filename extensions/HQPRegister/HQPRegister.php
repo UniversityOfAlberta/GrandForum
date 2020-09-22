@@ -38,6 +38,9 @@ class HQPRegister extends SpecialPage{
                 else if($config->getValue('networkName') == "IntComp"){
                     $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the LOI then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
                 }
+                else if($config->getValue('networkName') == "MTS"){
+                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
                 }
@@ -146,7 +149,8 @@ class HQPRegister extends SpecialPage{
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
             $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             if($config->getValue('networkName') == "ADA" || 
-               $config->getValue('networkName') == "CFN"){
+               $config->getValue('networkName') == "CFN" ||
+               $config->getValue('networkName') == "MTS"){
                 // No Role
             }
             else if($config->getValue('networkName') == "IntComp"){
