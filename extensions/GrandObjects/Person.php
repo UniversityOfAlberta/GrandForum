@@ -637,6 +637,9 @@ class Person extends BackboneModel {
      */
     static function getAllPeople($filter=null, $idOnly=false){
         global $config;
+        if($filter == null){
+            $filter = 'all';
+        }
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
@@ -764,6 +767,9 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllCandidates($filter=null){
+        if($filter == null){
+            $filter = 'all';
+        }
         if($filter == NI){
             $ars = self::getAllCandidates(AR);
             $cis = self::getAllCandidates(CI);
@@ -799,6 +805,9 @@ class Person extends BackboneModel {
      * @return array The array of People of the type $filter
      */
     static function getAllCandidatesDuring($filter=null, $startDate=false, $endDate=false){
+        if($filter == null){
+            $filter = 'all';
+        }
         if($filter == NI){
             $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
             $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
