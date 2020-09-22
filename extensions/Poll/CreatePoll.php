@@ -87,66 +87,43 @@ class CreatePoll extends SpecialPage{
 				                          'self_vote' => $_POST['self'],
 				                          'timestamp' => time(),
 				                          'time_limit' => $_POST['time']));
-				                          
-		        $rows = DBFunctions::select(array('grand_poll_collection'),
-		                                    array('collection_id'),
-		                                    array('collection_name' => EQ($name),
-		                                          'author_id' => EQ($wgUser->getId())),
-		                                    array('collection_id' => 'DESC'));
-				@$row = $rows[0];
-				$poll_id = null;
-				if($row != null){
-					$collection_id = DBFunctions::insertId();
-					foreach($groups as $group){
-					    DBFunctions::insert('grand_poll_groups',
-					                        array('group_name' => $group,
-					                              'collection_id' => $collection_id));
-				    }
 
-				    $j = 1;
-				    while(isset($_POST["op0_$j"])){
-					    $i = 0;
-					    $options = array();
-			
-					    $question = $_POST["question_$j"];
-					    $choices = $_POST["nChoices_$j"];
-			
-					    while(isset($_POST["op{$i}_$j"])){
-						    if($_POST["op{$i}_$j"] != null){
-							    $options[] = $_POST["op{$i}_$j"];
-						    }
-						    $i++;
-					    }
-			            DBFunctions::insert('grand_poll',
-			                                array('collection_id' => $collection_id,
-			                                      'poll_name' => $question,
-			                                      'choices' => $choices));
+				$collection_id = DBFunctions::insertId();
+				foreach($groups as $group){
+				    DBFunctions::insert('grand_poll_groups',
+				                        array('group_name' => $group,
+				                              'collection_id' => $collection_id));
+			    }
 
-			            $rows = DBFunctions::select(array('grand_poll'),
-			                                        array('poll_id'),
-			                                        array('poll_name' => $question,
-			                                              'collection_id' => $collection_id),
-			                                        array('poll_id' => 'DESC'));
-					    @$row = $rows[0];
-					    $poll_id = null;
-					    if($row != null){
-						    $poll_id = DBFunctions::insertId();
+			    $j = 1;
+			    while(isset($_POST["op0_$j"])){
+				    $i = 0;
+				    $options = array();
+		
+				    $question = $_POST["question_$j"];
+				    $choices = $_POST["nChoices_$j"];
+		
+				    while(isset($_POST["op{$i}_$j"])){
+					    if($_POST["op{$i}_$j"] != null){
+						    $options[] = $_POST["op{$i}_$j"];
 					    }
-					    if($poll_id != null){
-						    foreach($options as $option){
-						        DBFunctions::insert('grand_poll_options',
-						                            array('option_name' => $option,
-						                                  'poll_id' => $poll_id));
-						    }
-					    }
-					    $j++;
+					    $i++;
 				    }
-				    header("Location: $wgServer$wgScriptPath/index.php?action=viewPoll&id=$collection_id");
-				    exit;
-				}
-				else{
-				    $wgMessage->addError("There was an unknown problem creating the Poll.");
-				}
+		            DBFunctions::insert('grand_poll',
+		                                array('collection_id' => $collection_id,
+		                                      'poll_name' => $question,
+		                                      'choices' => $choices));
+
+		            $poll_id = DBFunctions::insertId();
+				    foreach($options as $option){
+				        DBFunctions::insert('grand_poll_options',
+				                            array('option_name' => $option,
+				                                  'poll_id' => $poll_id));
+				    }
+				    $j++;
+			    }
+			    header("Location: $wgServer$wgScriptPath/index.php?action=viewPoll&id=$collection_id");
+			    exit;
 			}
 			else {
 				// User failed to enter at least one of the required fields.  Display appropriate errors.
