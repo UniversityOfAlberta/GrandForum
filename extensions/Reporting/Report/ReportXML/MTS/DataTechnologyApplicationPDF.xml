@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="MTS DATA &amp; TECHNOLOGY TARGETED CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+    <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h4 style='font-size:1.5em;'>MTS DATA &amp; TECHNOLOGY TARGETED CALL</h4>
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                <h3>I. Project Title</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+            <![CDATA[
+                <h3>II. Project Description</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="members" type="MultiText" class="wikitable" blobItem="MEMBERS" blobType="BLOB_ARRAY" labels="Full Name|Institution|Email|Project Role" types="Text|Text|Text|Select(Co-Investigator,Collaborator)" multiple="true">
+            <![CDATA[
+                <h3>III. List of all Co-Investigators/Collaborators</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <h3>IV. References (1-page maximum)</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <![CDATA[
+                <h3>V. Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
