@@ -14,9 +14,10 @@
         $empId = $csv[2];
         $name = $csv[3];
         $inc = number_format($csv[19], 2, '.', '');
+        $reason = $csv[21];
         
         $person = Person::newFromEmployeeId($empId);
-        if($person->getId() != 0){
+        if($person->getId() != 0 && $reason == "CNA"){
             DBFunctions::insert('grand_cna',
                                 array('user_id' => $person->getId(),
                                       'year' => 2020,
