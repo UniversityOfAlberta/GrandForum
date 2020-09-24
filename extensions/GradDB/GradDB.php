@@ -7,6 +7,9 @@ $wgSpecialPages['GradDB'] = 'GradDB'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['GradDB'] = $dir . 'GradDB.i18n.php';
 $wgSpecialPageGroups['GradDB'] = 'network-tools';
 
+$wgHooks['TopLevelTabs'][] = 'GradDB::createTab';
+$wgHooks['SubLevelTabs'][] = 'GradDB::createSubTabs';
+
 class GradDB extends SpecialPage{
 
     static function mail($to, $subject, $message, $pdf, $fileName){
@@ -407,6 +410,23 @@ class GradDB extends SpecialPage{
         }
         else{
             $wgMessage->addError("This contract doesn't exist.");
+        }
+    }
+    
+    static function createTab(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        if($wgUser->isLoggedIn()){
+            $tabs["GradDB"] = TabUtils::createTab("GradDB");
+        }
+        return true;
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromWgUser();
+        if($person->isRole(NI)){
+            $selected = @($wgTitle->getText() == "GradDB") ? "selected" : false;
+            $tabs["GradDB"]['subtabs'][] = TabUtils::createSubTab("GradDB", "{$wgServer}{$wgScriptPath}/index.php/Special:GradDB", $selected);
         }
     }
 
