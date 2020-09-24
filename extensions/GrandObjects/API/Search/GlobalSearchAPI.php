@@ -25,12 +25,12 @@ class GlobalSearchAPI extends RESTAPI {
                                                          AND deleted = 0)
                                                         UNION
                                                         (SELECT user_id FROM mw_user
-                                                         WHERE MATCH(user_public_profile) AGAINST ('+".str_replace(" ", "* +", $escapedSearch)."*' IN BOOLEAN MODE)
+                                                         WHERE MATCH(user_public_profile) AGAINST ('+".str_replace(" ", "* +", preg_replace('/[+\-><\(\)~*\"@]+/', ' ', $escapedSearch))."*' IN BOOLEAN MODE)
                                                          AND deleted = 0)
                                                         UNION
                                                         (SELECT user_id FROM mw_user
                                                          WHERE user_id IN (SELECT user_id FROM grand_uofa_news 
-                                                                           WHERE MATCH(title) AGAINST ('+".str_replace(" ", "* +", $escapedSearch)."*' IN BOOLEAN MODE))
+                                                                           WHERE MATCH(title) AGAINST ('+".str_replace(" ", "* +", preg_replace('/[+\-><\(\)~*\"@]+/', ' ', $escapedSearch))."*' IN BOOLEAN MODE))
                                                          AND deleted = 0)");
 
                 foreach($people as $pRow){
