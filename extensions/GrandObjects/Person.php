@@ -934,17 +934,25 @@ class Person extends BackboneModel {
     
     function getIncrement($year){
         if(!isset(self::$personSalaryCache[$this->id][$year])){
-            $salary = DBFunctions::select(array('grand_user_salaries'),
+            $increment = DBFunctions::select(array('grand_user_salaries'),
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            self::$personSalaryCache[$this->id][$year] = @$salary[0];
+            self::$personSalaryCache[$this->id][$year] = @$increment[0];
         }
         $increment = @self::$personSalaryCache[$this->id][$year]['increment'];
         if($increment == ""){
             return "N/A";
         }
         return $increment;
+    }
+    
+    function getCNA($year){
+        $increment = DBFunctions::select(array('grand_cna'),
+                                         array('increment'),
+                                         array('user_id' => $this->getId(),
+                                                'year' => $year));
+        return @$increment[0]['increment'];
     }
     
     static function getSalaryIncrement($year, $type){

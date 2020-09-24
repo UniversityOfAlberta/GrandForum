@@ -107,6 +107,11 @@ class IncrementReportItem extends SelectReportItem {
                 $options[] = "0.00 (PTC)";
             }
         }
+        // Special Increment for COVID-19.  Average of previous 3 increments
+        $cna = $person->getCNA($this->getReport()->year);
+        if($cna){
+            $options[] = "{$cna} (CNA)";
+        }
         usort($options, function($a, $b){
             $floatA = floatval($a);
             $floatB = floatval($b);
