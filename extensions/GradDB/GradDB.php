@@ -424,7 +424,7 @@ class GradDB extends SpecialPage{
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if($person->isRole(NI)){
+        if($person->isRole(NI) || $person->isRole(STAFF)){
             $selected = @($wgTitle->getText() == "GradDB") ? "selected" : false;
             $tabs["GradDB"]['subtabs'][] = TabUtils::createSubTab("GradDB", "{$wgServer}{$wgScriptPath}/index.php/Special:GradDB", $selected);
         }
