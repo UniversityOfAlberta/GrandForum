@@ -1,5 +1,5 @@
 <div style="padding:5px;">
     <% _.each(subRoles, function(subRole, key){ %>
-        <div><%= HTML.CheckBox(this, 'subroles.' + key, {value: 1}) %>&nbsp;<span><%= subRole %></span></div>
+        <div><%= HTML.CheckBox(this, 'subroles.' + key, {value: true, default: false}) %>&nbsp;<span><%= subRole %></span></div>
     <% }.bind(this)) %>
 </div>
