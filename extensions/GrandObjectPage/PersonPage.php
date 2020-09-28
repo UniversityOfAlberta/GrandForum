@@ -131,7 +131,12 @@ class PersonPage {
                     }
                     if($config->getValue('networkName') == 'AGE-WELL' && 
                        $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                        $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                        if($person->isEpic2()){
+                            $tabbedPage->addTab(new HQPEpicTab2($person, $visibility));
+                        }
+                        else{
+                            $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                        }
                         $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
                     }
                     if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
