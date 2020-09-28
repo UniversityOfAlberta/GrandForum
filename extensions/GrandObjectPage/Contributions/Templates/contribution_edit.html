@@ -2,11 +2,13 @@
 <h2>People</h2>
 <div id="contributionAuthors">
 </div>
-<h2>Description</h2>
-<%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+<% if(networkName != 'MTS'){ %>
+    <h2>Description</h2>
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+<% } %>
 <table>
     <tr class="tooltip" title="The institution where the contribution was used">
-        <td align="right"><b>Institution:</b></td>
+        <td align="right"><b>PI Institution:</b></td>
         <td><%= HTML.TextBox(this, 'institution', {size: '40'}) %><br /></td>
     </tr>
     <tr class="tooltip" title="The province in which that institution is located">
