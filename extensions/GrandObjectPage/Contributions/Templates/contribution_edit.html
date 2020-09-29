@@ -1,3 +1,13 @@
+<div class="small">
+                For CASH and IN-KIND Contributions, DO NOT include:
+                <ul>
+                    <li>grants from federal granting agencies, such as NSERC, CIHR, SSHRC, CFI or Genome Canada and its provincial centres (except Genome BC) for research, equipment, etc.;</li>
+                    <li>contributions from partners who are funded by federal granting agencies, such as NCE, NSERC, CIHR, SSHRC, CFI or Genome Canada.</li>
+                    <li>salaries of individuals who are eligible to receive funds directly from the granting agencies (e.g. faculty members of postsecondary institutions) and any associated administrative overhead costs.</li>
+                    <li>contributions or contracts outside of the scope of the network’s activities.</li>
+                    <li>time on committees and boards.</li>
+                </ul>
+            </div>
 <span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'name', {size: '50'}) %>
 <h2>People</h2>
 <div id="contributionAuthors">
@@ -69,7 +79,13 @@
                     </tr>
                     <tr>
                         <td align="right"><b>Sector:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','Industry','Community/Not for profit','University']}) %></td>
+                        <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','University',
+                                                                                               'Industry',
+                                                                                               'Federal Departments and Agencies',
+                                                                                               'Provincial Departments and Agencies',
+                                                                                               'Hospitals and Care Centres',
+                                                                                               'Community/Not for profit',
+                                                                                               'Other']}) %></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Level:</b></td>
