@@ -78,6 +78,11 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align="right" style="white-space:nowrap;"><b>Network Signatory:</b></td>
+                        <td><%= HTML.Select(this, 'partners.' + i + '.signatory', {options: ['','Yes',
+                                                                                                'No']}) %></td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>Sector:</b></td>
                         <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','University',
                                                                                                'Industry',

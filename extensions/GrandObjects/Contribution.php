@@ -178,6 +178,7 @@ class Contribution extends BackboneModel {
             $subtype = ($other_subtype != "") ? "Other" : $this->getHumanReadableSubTypeFor($partner);
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
+                                "signatory" => $partner->getSignatory(),
                                 "industry" => $partner->getIndustry(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
@@ -276,6 +277,7 @@ class Contribution extends BackboneModel {
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
                                       'contact' => json_encode($partner['contact']),
+                                      'signatory' => $partner['signatory'],
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
@@ -363,6 +365,7 @@ class Contribution extends BackboneModel {
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
                                       'contact' => json_encode($partner['contact']),
+                                      'signatory' => $partner['signatory'],
                                       'industry' => $partner['industry'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
@@ -617,6 +620,9 @@ class Contribution extends BackboneModel {
                         if($p->contact == null){
                             $p->contact = $row['contact'];
                         }
+                    }
+                    if($p != null && $p->getSignatory() == null && $row['signatory'] != null){
+                        $p->signatory = $row['signatory'];
                     }
                     if($p != null && $p->getIndustry() == null && $row['industry'] != null){
                         $p->industry = $row['industry'];

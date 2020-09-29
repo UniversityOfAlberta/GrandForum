@@ -42,6 +42,12 @@
                 </td>
             </tr>
         <% } %>
+        <% if(partner.signatory != '' && partner.signatory != null){ %>
+            <tr>
+                <td align="right" style="white-space:nowrap;"><b>Network Signatory:</b></td>
+                <td><%= partner.signatory %></td>
+            </tr>
+        <% } %>
         <% if(partner.industry != '' && partner.industry != null){ %>
             <tr>
                 <td align="right"><b>Sector:</b></td>
