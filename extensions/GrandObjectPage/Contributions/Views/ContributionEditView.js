@@ -205,6 +205,9 @@ ContributionEditView = Backbone.View.extend({
                 this.$("#saveContribution").prop('disabled', false);
             }
         }.bind(this));
+        if(networkName == "MTS"){
+            this.$("select.partner_type option").not(":contains(Cash)").not(":contains(In-Kind)").not(":contains(Select)").remove();
+        }
     },
     
     render: function(){
