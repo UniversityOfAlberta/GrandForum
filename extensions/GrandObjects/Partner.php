@@ -10,6 +10,7 @@ class Partner {
     var $organization;
     var $contact;
     var $industry;
+    var $signatory;
     var $level;
     var $type;
     var $city;
@@ -88,6 +89,14 @@ class Partner {
      */
     function getContact(){
         return $this->contact;
+    }
+    
+    /**
+     * Returns whether this is a network signatory or not
+     * @return String Whether this is a network signatory or not
+     */
+    function getSignatory(){
+        return $this->signatory;
     }
     
     /**

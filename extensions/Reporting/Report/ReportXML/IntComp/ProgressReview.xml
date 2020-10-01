@@ -13,7 +13,21 @@
     <ReportSection id="feedback" tooltip="Feedback" name="Feedback" title="Feedback" blobSection="FEEDBACK" type="EditableReportSection">
         <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PROGRESS_REPORT">
             <If if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_leader_names} - {$project_name} - {$project_full_name}">
+                <Static>
+                    <![CDATA[
+                        {set(future,)}
+                    ]]>
+                </Static>
+                <If if="{or({==({$project_name}, IC LAB-05)},
+                            {==({$project_name}, Ad-hoc-03)},
+                            {==({$project_name}, IC LAB-10)},
+                            {==({$project_name}, Ad-hoc-05)}
+                        )}">
+                    <![CDATA[
+                        {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
+                    ]]>
+                </If>
+                <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
                     <ReportItem id="pdf" type="PDFReportItem" reportType="ProgressReport" project="true" buttonName="Report">
                         <![CDATA[
                             <table width='100%'>
@@ -47,7 +61,21 @@
     <ReportSection id="discussion" tooltip="Discussion" name="Discussion" title="Discussion" blobSection="DISCUSION" type="EditableReportSection">
         <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PROGRESS_REPORT">
             <If if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_leader_names} - {$project_name} - {$project_full_name}">
+                <Static>
+                    <![CDATA[
+                        {set(future,)}
+                    ]]>
+                </Static>
+                <If if="{or({==({$project_name}, IC LAB-05)},
+                            {==({$project_name}, Ad-hoc-03)},
+                            {==({$project_name}, IC LAB-10)},
+                            {==({$project_name}, Ad-hoc-05)}
+                        )}">
+                    <![CDATA[
+                        {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
+                    ]]>
+                </If>
+                <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
                     <Static>
                         <![CDATA[
                             <div style="display: flex;">

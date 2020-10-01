@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="MTS DATA &amp; TECHNOLOGY TARGETED CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
-        
+        <Role role="" />
     </Permissions>
     <ReportSection id="background" tooltip="MTS DATA &amp; TECHNOLOGY TARGETED CALL" name="Background" title="MTS DATA &amp; TECHNOLOGY TARGETED CALL" type="ReportSection" renderpdf="false">
         <Static>
@@ -69,7 +69,7 @@
             <![CDATA[{$item}]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>

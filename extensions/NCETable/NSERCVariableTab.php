@@ -91,64 +91,65 @@ function showDiv(div_id, details_div_id){
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
-
+        $lastYear = $this->year - 1;
+        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}&summary=grand";
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
+            <li class='toclevel-1'><a href='{$url}#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
                 <ul>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'>
+                    <a href='{$url}#Table4.0'>
                         <span class='tocnumber'>Table 2.1: </span>
                         <span class='toctext'>Contributions</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'>
+                    <a href='{$url}#Table2.2'>
                         <span class='tocnumber'>Table 2.2: </span>
                         <span class='toctext'>Contributions by Project</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'>
+                    <a href='{$url}#Table4'>
                         <span class='tocnumber'></span>
                         <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'>
+                    <a href='{$url}#Table4.2a'>
                         <span class='tocnumber'>Table 4.2a: </span>
                         <span class='toctext'>HQP Breakdown by University</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'>
+                    <a href='{$url}#Table4.2b'>
                         <span class='tocnumber'>Table 4.2b: </span>
                         <span class='toctext'>HQP Breakdown by Project</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'>
+                    <a href='{$url}#Table4.3'>
                         <span class='tocnumber'>Table 4.3: </span>
                         <span class='toctext'>NI Breakdown by University</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'>
+                    <a href='{$url}#Table5'>
                         <span class='tocnumber'>Table 5: </span>
                         <span class='toctext'>Post Network employment of graduate students</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'>
+                    <a href='{$url}#Table6'>
                         <span class='tocnumber'>Table 6: </span>
                         <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'>
+                    <a href='{$url}#Table7'>
                         <span class='tocnumber'>Table 7: </span>
                         <span class='toctext'>Publications list</span>
                     </a>

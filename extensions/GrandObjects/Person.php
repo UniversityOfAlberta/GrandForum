@@ -2820,7 +2820,14 @@ class Person extends BackboneModel {
         $roles = $this->getSubRoles();
         return (array_search($subRole, $roles) !== false);
     }
-
+    
+    function isSubRoleSince($subRole, $date){
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'changed' => GT($date)));
+        return (count($data) > 0);
+    }
     
     /**
      * Returns all of the Projects that this Person has been a member of
@@ -3712,6 +3719,24 @@ class Person extends BackboneModel {
                 $this->isSubRole("SIP/CAT HQP") ||
                 $this->isSubRole("Alumni HQP") ||
                 $this->isSubRole("EPIC grad"));
+    }
+    
+    function isEpic2(){
+        $date = "2020-09-01";
+        $university = $this->getUniversity();
+        $position = $university['position'];
+        $uniDate = $university['date'];
+        return (($uniDate > $date && ($position == "graduate student - doctoral" ||
+                                      $position == "graduate student - master's" ||
+                                      $position == "post-doctoral fellow" ||
+                                      $position == "medical student")) ||
+                $this->isSubRoleSince("Affiliate HQP", $date) || 
+                $this->isSubRoleSince("Project Funded HQP", $date) ||
+                $this->isSubRoleSince("WP/CC Funded HQP", $date) ||
+                $this->isSubRoleSince("SIP/CAT HQP", $date) ||
+                $this->isSubRoleSince("Award HQP", $date) ||
+                $this->isSubRoleSince("Alumni HQP", $date) ||
+                $this->isSubRoleSince("EPIC grad", $date));
     }
     
     /**

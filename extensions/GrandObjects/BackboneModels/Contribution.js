@@ -56,7 +56,8 @@ Contribution = Backbone.Model.extend({
         var partners = this.get('partners');
         var partner = {
             name:	  "",
-            contact:  {},	
+            contact:  {},
+            signatory: "",
             industry: "",
             level:	  "",
             type:	  "",

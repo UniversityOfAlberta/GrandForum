@@ -14,7 +14,7 @@ class HQPEpicTab extends AbstractEditableTab {
     function userCanView(){
         $me = Person::newFromWgUser();
         // Only allow the user, supervisors, and STAFF+ to view the tab
-        if($this->person->isEPIC()){
+        if($this->person->isEpic()){
             return ($this->visibility['isMe'] || 
                     $this->visibility['isSupervisor'] ||
                     $me->isRoleAtLeast(SD) ||
