@@ -20,7 +20,165 @@
             ]]>
         </Static>
     </ReportSection>
-    
+    <!--ReportSection id="survey" tooltip="Survey" name="Survey" title="SURVEY" blobSection="SURVEY" type="ReportSection" renderpdf="false">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Proposal Title</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="applicant" type="Text" blobItem="APPLICANT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Applicant Name</b><br />
+                    <small>First and last name of the principal investigator</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="position" type="Text" blobItem="POSITION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Position</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="dept" type="Text" blobItem="DEPT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Department and/or Faculty</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="telephone" type="Text" blobItem="TELEPHONE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Telephone</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Email address</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="tri_council" type="Select" blobItem="TRI_COUNCIL" width="400px" options="|Yes|No|Currently applying for status|I don't know">
+            <![CDATA[
+                <p>
+                    <b>Is your institution eligible to hold TriCouncil Funding?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sign_off" type="Select" blobItem="SIGN_OFF" width="400px" options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Do you have sign-off from your institution?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_funding" type="Select" blobItem="OTHER_FUNDING" width="400px" options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Do you have other types of funding for this project?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sources" type="Textarea" blobItem="SOURCES">
+            <![CDATA[
+                <p>
+                    <b>If you do have other types of funding, please identify the source and amount</b><br />
+                    <small>E.g. SSHRC Partnership grant, $300,000). Otherwise please enter N/A.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1" type="Text" blobItem="CI1" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Name Co-Investigator 1</b><br />
+                    <small>List all participating co-investigators/collaborators (eligible to receive TriCouncil funding). Do NOT include graduate students, postdoctoral fellows, research associates, research assistants, summer students or any person whose stipend is eligible for funding from the budget.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1_institution" type="Text" blobItem="CI1_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution of Co-Investigator 1</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2" type="Text" blobItem="CI2" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Name Co-Investigator 2 (if applicable)</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2_institution" type="Text" blobItem="CI2_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution of Co-Investigator 2</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="involve" type="Checkbox" blobItem="INVOLVE" width="400px" options="Research involving humans|Research involving human pluripotent stem cells|Research requiring the use of animals|Research involving biohazards|Research involving infections agents|Research involving radioactive materials|Research activities having potential effects on the environment|Research involving controlled information|Research performed in the Yukon, the Northwest Territories, and Nunavut|None of the above">
+            <![CDATA[
+                <p>
+                    <b>Does your project involve any of the following:</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="amount" type="Text" blobItem="AMOUNT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Add the overall amount requested from MtS for your project</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="stream" type="Select" blobItem="STREAM" width="400px" options="1) Funding Stream A (One year): data, technology, infrastructure, and new methods of data analysis (up to $50,000)|2) Funding Stream A (Multi-year): data, technology, infrastructure, and new methods of data analysis ($50,000-$200,000)|3) Funding Stream B: Developing a data infrastructure roadmap (up to $500,000)">
+            <![CDATA[
+                <p>
+                    <b>Which funding stream are you applying for?</b><br />
+                    <small>Please indicate the funding stream you are applying for and refer to the application guide for more details.</small>
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS">
+            <![CDATA[
+                <p>
+                    <b>Additional Comments</b><br />
+                    <small>Please include any additional comments or clarification needed to submit your proposal. You can always contact mtsfunding@yorku.ca with questions and for support.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection-->
     <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="EditableReportSection">
         <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
             <![CDATA[
