@@ -404,7 +404,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
                                     if(isset($blobItems["$blobItem"])){
                                         foreach($blobItems["$blobItem"] as $p){
                                             if(strstr("$path", "$p") !== false || strstr("$p", "$path") !== false){
-                                                throw new Exception("$file containts duplicate blobItem/blobSubItem \"$blobItem\" in section \"{$section->attributes()->id}\"");
+                                                if(@$item->attributes()->blobType != "BLOB_ARRAY" || isset($ids["$id"])){
+                                                    throw new Exception("$file containts duplicate blobItem/blobSubItem \"$blobItem\" in section \"{$section->attributes()->id}\"");
+                                                }
                                             }
                                         }
                                     }

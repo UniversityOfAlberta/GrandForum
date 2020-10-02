@@ -28,9 +28,7 @@ class NCETable extends SpecialPage {
     
     static function show(){
         require_once('NSERCTab.php');
-        require_once('NSERCRangeTab.php');
         require_once('NSERCVariableTab.php');
-        require_once('NSERCRangeVariableTab.php');
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
         
         $startYear = $config->getValue("projectPhaseDates");
@@ -40,7 +38,9 @@ class NCETable extends SpecialPage {
         $tabbedPage = new TabbedPage("tabs_nserc");
         
         if($startYear != $endYear){
-            $tabbedPage->addTab(new NSERCRangeTab($startYear, $endYear+1));
+            $int_start = "{$startYear}-01-01 00:00:00";
+            $int_end = ($endYear+1)."-03-31 00:00:00";
+            $tabbedPage->addTab(new NSERCVariableTab("{$startYear}-".($endYear+1), $int_start, $int_end, 1));
         }
         for($year = $endYear+1; $year >= $startYear; $year--){
             $tabbedPage->addTab(new NSERCTab($year));
