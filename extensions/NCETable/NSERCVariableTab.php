@@ -404,8 +404,7 @@ EOF;
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
-        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>";
-        $this->html .= self::getHQPStats();
+        
 
         $canadian = array();
         $foreign = array();
@@ -431,38 +430,9 @@ EOF;
             }
         }    
 
-        //additional people may still be on the forum, we find them through their theses
-        /*$papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to);
-        foreach($papers as $paper){
-            $type = $paper->getType();
-            if($type == "PhD Thesis" || $type == "Masters Thesis"){
-                $author = $paper->getAuthors();
-                if(count($author) < 1){
-                    continue;
-                }
-
-                $author = $author[0];
-                if(in_array($author->getName(), $unique)) {
-                    continue;
-                }
-                $unique[] = $author->getName();
-                $movedons[] = $author;
-
-                $author_nation = $author->getNationality();
-                if($author_nation == "Canadian" || $author_nation == "Landed Immigrant"){
-                    $canadian[] = $author;
-                }
-                else if($author_nation == "Foreign" || $author_nation == "Visa Holder"){
-                    $foreign[] = $author;
-                }
-                else{
-                    $unknown[] = $author;
-                }
-            }   
-        }*/
-
         $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds
 </h3>" .self::getUniStats();
+        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
         $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
         $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
