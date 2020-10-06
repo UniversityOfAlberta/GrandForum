@@ -129,26 +129,28 @@ function showDiv(div_id, details_div_id){
                     </a>
                 </li>
                 <li class='toclevel-2'>
+                    <a href='{$url}#Table3'>
+                        <span class='tocnumber'>Table 3: </span>
+                        <span class='toctext'>Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</span>
+                    </a>
+                    <ul>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table3.1'>
+                                <span class='tocnumber'>Table 3.1: </span>
+                                <span class='toctext'>Post Network employment of graduate students</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class='toclevel-2'>
                     <a href='{$url}#Table4'>
-                        <span class='tocnumber'></span>
-                        <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span>
+                        <span class='tocnumber'>Table 4: </span>
+                        <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
                     <a href='{$url}#Table5'>
                         <span class='tocnumber'>Table 5: </span>
-                        <span class='toctext'>Post Network employment of graduate students</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='{$url}#Table6'>
-                        <span class='tocnumber'>Table 6: </span>
-                        <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='{$url}#Table7'>
-                        <span class='tocnumber'>Table 7: </span>
                         <span class='toctext'>Publications list</span>
                     </a>
                 </li>
@@ -601,8 +603,8 @@ EOF;
 
         $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds
 </h3>" .self::getUniStats();
-        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
-        $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
+        $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>" . self::getHQPStats();
+        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
         $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
         $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
         $this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
@@ -1392,7 +1394,7 @@ EOF;
         $d_b_r2 = self::getDisseminationDetails($dissem['b_r2']);
 
         $html =<<<EOF
-            <a id='Table6'></a><h3>Table 6: Dissemination of Network Research Results and Collaborations</h3>
+            <a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
             <tr>
                 <th align='left'>Articles in refereed publications</th><th>Number of publications</th>
@@ -2020,7 +2022,7 @@ EOF;
         }   
 
         $html =<<<EOF
-            <a id='Table7'></a><h3>Table 7: Publications List</h3>
+            <a id='Table5'></a><h3>Table 5: Publications List</h3>
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
             <tr><th align='left'>A) Refereed Contributions</th><th>Number of publications</th></tr>
             <tr><td>&emsp;1. Articles in refereed publications</td><td align='center'>{$a1}</td></tr>
