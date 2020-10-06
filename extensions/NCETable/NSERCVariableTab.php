@@ -72,6 +72,8 @@ function showDiv(div_id, details_div_id){
                 case 'grand':
                     $wgOut->addScript($foldscript);
                     $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
+                    $this->html .= "<a id='Table1'></a><h3>Table 1: Organizations participating and contributing to the network and its projects</h3>";
+                    self::showContributions();
                     $this->html .= "<a id='Table1.1'></a><h3>Table 1.1: Contributions</h3>";
                     self::showContributionsTable();
                     $this->html .= "<a id='Table1.2'></a><h3>Table 1.2: Contributions by Project</h3>";
@@ -101,16 +103,24 @@ function showDiv(div_id, details_div_id){
             <li class='toclevel-1'><a href='{$url}#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
                 <ul>
                 <li class='toclevel-2'>
-                    <a href='{$url}#Table1.1'>
-                        <span class='tocnumber'>Table 1.1: </span>
-                        <span class='toctext'>Contributions</span>
+                    <a href='{$url}#Table1'>
+                        <span class='tocnumber'>Table 1: </span>
+                        <span class='toctext'>Organizations participating and contributing to the network and its projects</span>
                     </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='{$url}#Table1.2'>
-                        <span class='tocnumber'>Table 1.2: </span>
-                        <span class='toctext'>Contributions by Project</span>
-                    </a>
+                    <ul>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table1.1'>
+                                <span class='tocnumber'>Table 1.1: </span>
+                                <span class='toctext'>Contributions</span>
+                            </a>
+                        </li>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table1.2'>
+                                <span class='tocnumber'>Table 1.2: </span>
+                                <span class='toctext'>Contributions by Project</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class='toclevel-2'>
                     <a href='{$url}#Table2'>
@@ -150,6 +160,149 @@ function showDiv(div_id, details_div_id){
 EOF;
 
     }
+    
+    function showContributions() {
+        $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
+        $partners = array();
+        foreach ($contributions as $contr) {
+            $people = $contr->getPeople();
+            $projects = $contr->getProjects();
+            if(count($people) > 0 && 
+               count($projects) > 0){
+                foreach($contr->getPartners() as $partner){
+                    $partners[$partner->getOrganization()][] = array('partner' => $partner,
+                                                                     'contribution' => $contr);
+                }
+            }
+        }
+        
+        $html = "<table id='table1' class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
+                    <thead>
+                    <tr>
+                        <th>Participating organizations</th>
+                        <th>Sector</th>
+                        <th>Country</th>
+                        <th>Province</th>
+                        <th>City</th>
+                        <th>Network Agreement Signatories</th>
+                        <th>Total Cash Contributions</th>
+                        <th>Total In-Kind Contributions</th>
+                        <th>a) Equipment, software</th>
+                        <th>b) Materials</th>
+                        <th>c) Logistical support of field work</th>
+                        <th>d) Provision of services</th>
+                        <th>e) Use of company facilities</th>
+                        <th>f) Salaries of scientific staff</th>
+                        <th>g) Salaries of managerial and administrative staff</th>
+                        <th>h) Project-related travel</th>
+                        <th>i) Other (Justify in Column R)</th>
+                        <th>Justification for 'Other' Category</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+
+        foreach($partners as $org => $partner){
+            $sector = "";
+            $country = "";
+            $prov = "";
+            $city = "";
+            $signatory = "";
+            $cash = 0;
+            $inkind = 0;
+            $a = 0;
+            $b = 0;
+            $c = 0;
+            $d = 0;
+            $e = 0;
+            $f = 0;
+            $g = 0;
+            $h = 0;
+            $i = 0;
+            $other = array();
+            foreach($partner as $part){
+                $sector = ($sector == "") ? $part['partner']->getIndustry() : $sector;
+                $country = ($country == "") ? $part['partner']->getCountry() : $country;
+                $prov = ($prov == "") ? $part['partner']->getProv() : $prov;
+                $city = ($city == "") ? $part['partner']->getCity() : $city;
+                $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
+                $cash += $part['contribution']->getCashFor($part['partner']);
+                $inki = $part['contribution']->getKindFor($part['partner']);
+                $inkind += $inki;
+                
+                if($inki > 0){
+                    switch($part['contribution']->getHumanReadableSubTypeFor($part['partner'])){
+                        case "Equipment, Software":
+                            $a += $inki;
+                            break;
+                        case "Materials":
+                            $b += $inki;
+                            break;
+                        case "Logistical support of field work":
+                            $c += $inki;
+                            break;
+                        case "Provision of Services":
+                            $d += $inki;
+                            break;
+                        case "Use of Company Facilites":
+                            $e += $inki;
+                            break;
+                        case "Salaries of Scientific Staff":
+                            $f += $inki;
+                            break;
+                        case "Salaries of Managerial and Administrative Staff":
+                            $g += $inki;
+                            break;
+                        case "Project-related Travel":
+                            $h += $inki;
+                            break;
+                        default:
+                            $other[] = $part['contribution']->getHumanReadableSubTypeFor($part['partner']);
+                            $i += $inki;
+                            break;
+                    }
+                }
+            }
+            $html .= "<tr>
+                <td>{$org}</td>
+                <td>{$sector}</td>
+                <td>{$country}</td>
+                <td>{$prov}</td>
+                <td>{$city}</td>
+                <td>{$signatory}</td>
+                <td align='right'>$".number_format($cash, 2)."</td>
+                <td align='right'>$".number_format($inkind, 2)."</td>
+                <td align='right'>$".number_format($a, 2)."</td>
+                <td align='right'>$".number_format($b, 2)."</td>
+                <td align='right'>$".number_format($c, 2)."</td>
+                <td align='right'>$".number_format($d, 2)."</td>
+                <td align='right'>$".number_format($e, 2)."</td>
+                <td align='right'>$".number_format($f, 2)."</td>
+                <td align='right'>$".number_format($g, 2)."</td>
+                <td align='right'>$".number_format($h, 2)."</td>
+                <td align='right'>$".number_format($i, 2)."</td>
+                <td>".implode("; ", $other)."</td>
+            </tr>";
+        }
+        $html .= "</tbody>
+                </table>";
+                
+        $html .= "<script type='text/javascript'>
+            $(document).ready(function(){
+                $('#table1').dataTable({
+                    'aLengthMenu': [[100,-1], [100,'All']],
+                    'iDisplayLength': 100,
+                    'bFilter': true,
+                    'aaSorting': [[0,'asc']],
+                    'dom': 'Blfrtip',
+                    'buttons': [
+                        'excel'
+                    ]
+                });
+            });
+        </script>"; 
+               
+        $this->html .= $html;
+    }
 
     function showContributionsTable() {
         $html =<<<EOF
@@ -168,7 +321,6 @@ EOF;
             $('span.contribution_descr').qtip({ style: { name: 'cream', tip: true } });
         });
         </script>
-        <a id='Table1.1'></a>
         <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <thead>
         <tr>

@@ -180,6 +180,9 @@ class Contribution extends BackboneModel {
                                 "contact" => $partner->getContact(),
                                 "signatory" => $partner->getSignatory(),
                                 "industry" => $partner->getIndustry(),
+                                "country" => $partner->getCountry(),
+                                "prov" => $partner->getProv(),
+                                "city" => $partner->getCity(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
                                 "subtype" => $subtype,
@@ -279,6 +282,9 @@ class Contribution extends BackboneModel {
                                       'contact' => json_encode($partner['contact']),
                                       'signatory' => $partner['signatory'],
                                       'industry' => $partner['industry'],
+                                      'country' => @$partner['country'],
+                                      'prov' => @$partner['prov'],
+                                      'city' => @$partner['city'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
                                       'subtype' => $subType,
@@ -367,6 +373,9 @@ class Contribution extends BackboneModel {
                                       'contact' => json_encode($partner['contact']),
                                       'signatory' => $partner['signatory'],
                                       'industry' => $partner['industry'],
+                                      'country' => @$partner['country'],
+                                      'prov' => @$partner['prov'],
+                                      'city' => @$partner['city'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
                                       'subtype' => $subType,
@@ -626,6 +635,15 @@ class Contribution extends BackboneModel {
                     }
                     if($p != null && $p->getIndustry() == null && $row['industry'] != null){
                         $p->industry = $row['industry'];
+                    }
+                    if($p != null && $p->getCountry() == null && $row['country'] != null){
+                        $p->country = $row['country'];
+                    }
+                    if($p != null && $p->getProv() == null && $row['prov'] != null){
+                        $p->prov = $row['prov'];
+                    }
+                    if($p != null && $p->getCity() == null && $row['city'] != null){
+                        $p->city = $row['city'];
                     }
                     if($p != null && $p->getLevel() == null && $row['level'] != null){
                         $p->level = $row['level'];

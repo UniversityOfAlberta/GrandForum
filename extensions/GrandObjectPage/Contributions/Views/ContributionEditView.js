@@ -3,7 +3,7 @@ ContributionEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:total", this.render);
+        this.listenTo(this.model, "change:total", this.renderPartners);
         this.listenTo(this.model, "add:partners", this.render);
         this.listenTo(this.model, "delete:partners", this.render);
         
@@ -32,13 +32,13 @@ ContributionEditView = Backbone.View.extend({
         "click button#addPartner": "addPartner",
         "click button.deletePartner": "deletePartner",
         "change .partner_name": function(){
-            _.defer(this.render);
+            _.defer(this.renderPartners.bind(this));
         },
         "change .partner_type": function(){
-            _.defer(this.render);
+            _.defer(this.renderPartners.bind(this));
         },
         "change .partner_subtype": function(){
-            _.defer(this.render);
+            _.defer(this.renderPartners.bind(this));
         },
     },
     
@@ -208,6 +208,11 @@ ContributionEditView = Backbone.View.extend({
         if(networkName == "MTS"){
             this.$("select.partner_type option").not(":contains(Cash)").not(":contains(In-Kind)").not(":contains(Select)").remove();
         }
+        this.renderTotal();
+    },
+    
+    renderTotal: function(){
+        this.$("#contributionTotal").text(number_format(this.model.get('total')));
     },
     
     render: function(){
