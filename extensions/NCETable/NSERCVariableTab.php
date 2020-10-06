@@ -137,6 +137,12 @@ function showDiv(div_id, details_div_id){
                         <li class='toclevel-3'>
                             <a href='{$url}#Table3.1'>
                                 <span class='tocnumber'>Table 3.1: </span>
+                                <span class='toctext'>Number of HQP Involved in the Network</span>
+                            </a>
+                        </li>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table3.2'>
+                                <span class='tocnumber'>Table 3.2: </span>
                                 <span class='toctext'>Post Network employment of graduate students</span>
                             </a>
                         </li>
@@ -601,13 +607,13 @@ EOF;
             }
         }    
 
-        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds
-</h3>" .self::getUniStats();
-        $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>" . self::getHQPStats();
-        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
-        $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
-        $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
-        $this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
+        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats();
+        $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>";
+        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
+        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all");
+        //$this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
+        //$this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
+        //$this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
     }
 
     function getHQPStats(){
@@ -1065,9 +1071,9 @@ EOF;
                             "Other"=>"Other");
         
         $intkeys = array(
-            'Canadian' => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
-            'Foreign'  => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
-            'Other'    => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()));
+            'Canadian' => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
+            'Foreign'  => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
+            'Other'    => array('Unknown'=>array(), 'Unemployed'=>array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
@@ -1084,7 +1090,6 @@ EOF;
 
             //Theses data
             if(isset($movedon_data['works']) && $movedon_data['works']==""){
-
                 $thesis = $m->getThesis();
                 if(!is_null($thesis) && $thesis->getType() == "PhD Thesis"){
                     $m_pos = "PhD";
@@ -1109,23 +1114,41 @@ EOF;
                 }
 
                
-                if($movedon_data['country'] == ""){
-                    $m_nation = "Other";
-                }
-                else if($movedon_data['country'] == "Canada"){
+                if(trim(strtolower($movedon_data['country'])) == "canada"){
                     $m_nation = "Canadian";
-                }else{
+                }
+                else if($movedon_data['country'] != ""){
                     $m_nation = "Foreign";
                 }
-
-                if(!empty($movedon_data['studies']) || $m->isActive() ){
-                    $hqp_table[$positions[$m_pos]][$m_nation]['university'][] = $m;
+                else{
+                    $m_nation = "";
                 }
-                else if(!empty($movedon_data['employer'])){
-                    $hqp_table[$positions[$m_pos]][$m_nation]['industry'][] = $m;
+                
+                if($m_nation != ""){
+                    if($movedon_data['employment_type'] != ""){
+                        // Use specified employment type
+                        if($movedon_data['employment_type'] == "Unemployed"){
+                            $hqp_table[$positions[$m_pos]]["Other"][$movedon_data['employment_type']][] = $m;
+                        }
+                        else{
+                            $hqp_table[$positions[$m_pos]][$m_nation][$movedon_data['employment_type']][] = $m;
+                        }
+                    }
+                    else{
+                        // Guess the type of employment
+                        if(!empty($movedon_data['studies']) || $m->isActive() ){
+                            $hqp_table[$positions[$m_pos]][$m_nation]['University'][] = $m;
+                        }
+                        else if(!empty($movedon_data['employer'])){
+                            $hqp_table[$positions[$m_pos]][$m_nation]['Industry'][] = $m;
+                        }
+                        else{
+                            $hqp_table[$positions[$m_pos]][$m_nation]['Other'][] = $m;
+                        }
+                    }
                 }
                 else{
-                    $hqp_table[$positions[$m_pos]][$m_nation]['unknown'][] = $m;
+                    $hqp_table[$positions[$m_pos]]["Other"]["Unknown"][] = $m;
                 }
             }
         }   
@@ -1133,22 +1156,25 @@ EOF;
         $html =<<<EOF
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
-            <th rowspan='2'>Position /<br />Degree completed</th>
-            <th colspan='3'>Canadian</th>
-            <th colspan='3'>Foreign</th>
-            <th colspan='3'>Other</th>
+                <th rowspan='2'>Position /<br />Degree completed</th>
+                <th colspan='5'>Canadian Employment</th>
+                <th colspan='5'>Foreign Employment</th>
+                <th colspan='2'>Other</th>
             </tr>
             <tr>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>Total</th>
+                <th>University</th>
+                <th>Industry</th>
+                <th>Government</th>
+                <th>Hospital</th>
+                <th>Other</th>
+                <th>University</th>
+                <th>Industry</th>
+                <th>Government</th>
+                <th>Hospital</th>
+                <th>Other</th>
+                <th>Unknown</th>
+                <th>Unemployed</th>
+                <th>Total</th>
             </tr>
 EOF;
         $all_total = array();

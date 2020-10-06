@@ -2005,7 +2005,8 @@ class Person extends BackboneModel {
         if($this->movedOn == null){
             $sql = "SELECT *
                     FROM `grand_movedOn`
-                    WHERE `user_id` = '{$this->getId()}'";
+                    WHERE `user_id` = '{$this->getId()}'
+                    ORDER BY `effective_date` DESC";
             $data = DBFunctions::execSQL($sql);
             if(DBFunctions::getNRows() > 0){
                 $this->movedOn = $data[0];
@@ -2016,6 +2017,7 @@ class Person extends BackboneModel {
                                        "employer" => "",
                                        "city" => "",
                                        "country" => "",
+                                       "employment_type" => "",
                                        "effective_date" => "");
             }
         }
