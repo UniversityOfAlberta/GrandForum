@@ -167,8 +167,7 @@ EOF;
         foreach ($contributions as $contr) {
             $people = $contr->getPeople();
             $projects = $contr->getProjects();
-            if(count($people) > 0 && 
-               count($projects) > 0){
+            if(count($people) > 0){
                 foreach($contr->getPartners() as $partner){
                     $partners[$partner->getOrganization()][] = array('partner' => $partner,
                                                                      'contribution' => $contr);
@@ -201,6 +200,9 @@ EOF;
                     </thead>
                     <tbody>";
 
+        $nSignatory = 0;
+        $totalCash = 0;
+        $totalInkind = 0;
         foreach($partners as $org => $partner){
             $sector = "";
             $country = "";
@@ -225,6 +227,9 @@ EOF;
                 $prov = ($prov == "") ? $part['partner']->getProv() : $prov;
                 $city = ($city == "") ? $part['partner']->getCity() : $city;
                 $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
+                if($signatory == "Yes"){
+                    $nSignatory++;
+                }
                 $cash += $part['contribution']->getCashFor($part['partner']);
                 $inki = $part['contribution']->getKindFor($part['partner']);
                 $inkind += $inki;
@@ -262,6 +267,8 @@ EOF;
                     }
                 }
             }
+            $totalInkind += $inkind;
+            $totalCash += $cash;
             $html .= "<tr>
                 <td>{$org}</td>
                 <td>{$sector}</td>
@@ -284,6 +291,16 @@ EOF;
             </tr>";
         }
         $html .= "</tbody>
+                  <tfoot>
+                    <tr>
+                        <td><b>Total:</b></td>
+                        <td colspan='4'></td>
+                        <td align='right'>{$nSignatory}</td>
+                        <td align='right'>$".number_format($totalCash, 2)."</td>
+                        <td align='right'>$".number_format($totalInkind, 2)."</td>
+                        <td colspan='10'>
+                    </tr>
+                  </tfoot>
                 </table>";
                 
         $html .= "<script type='text/javascript'>
