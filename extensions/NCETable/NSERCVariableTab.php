@@ -972,6 +972,8 @@ EOF;
          </tr>
 EOF;
 
+        $totals = $empty;
+        
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
                 <tr>
@@ -990,7 +992,7 @@ EOF;
                 $student_details = Dashboard::hqpDetails($hqpa);
                 if($num_students > 0){
                     $html .=<<<EOF
-                        <td>
+                        <td align='right'>
                         <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_students
                         </a>
@@ -1003,8 +1005,9 @@ EOF;
 EOF;
                 }
                 else{
-                    $html .= "<td>0</td>";
+                    $html .= "<td align='right'>0</td>";
                 }
+                $totals[$posi][] = $num_students;
             }
 
             //Row Total
@@ -1015,7 +1018,7 @@ EOF;
             $student_details = Dashboard::hqpDetails($total_uni);
             if($num_students > 0){
                 $html .=<<<EOF
-                    <td>
+                    <td align='right'>
                     <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_students
                     </a>
@@ -1028,12 +1031,19 @@ EOF;
 EOF;
             }
             else{
-                $html .= "<td>0</td>";
+                $html .= "<td align='right'>0</td>";
             }
-
+            $totals["HQP"][] = $num_students;
             $html .= "</tr>";
         }
-            
+        $html .= "<tfoot>
+                    <tr><td><b>Total:</b></td>";
+        foreach($totals as $total){
+            $sum = array_sum($total);
+            $html .= "<td align='right'>{$sum}</td>";
+        }
+        $html .= "</tr>
+        </tfoot>";
         $html .= "</table>";
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
