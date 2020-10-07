@@ -1297,7 +1297,7 @@ EOF;
         
         $innovations = array();
         $copyrights = array();
-        $licenses = array();
+        $licences = array();
         $startups = array();
         $patents = array();
         $other = array();
@@ -1312,8 +1312,8 @@ EOF;
             else if(strstr($type, "copyright") !== false){
                 $copyrights[] = $product;
             }
-            else if(strstr($type, "licenses") !== false){
-                $licenses[] = $product;
+            else if(strstr($type, "licences") !== false){
+                $licences[] = $product;
             }
             else if(strstr($type, "startup") !== false || 
                     strstr($type, "start-up") !== false){
@@ -1339,7 +1339,7 @@ EOF;
                         <td>Copyrights</td><td align='right'>{$this->productDetails($copyrights, 'copyrights', 'Copyrights')}</td>
                     </tr>
                     <tr>
-                        <td>Licences</td><td align='right'>{$this->productDetails($licenses, 'licenses', 'Licences')}</td>
+                        <td>Licences</td><td align='right'>{$this->productDetails($licences, 'licences', 'Licences')}</td>
                     </tr>
                     <tr>
                         <td>New start-up companies</td><td align='right'>{$this->productDetails($startups, 'startups', 'New start-up companies')}</td>
