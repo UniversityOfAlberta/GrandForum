@@ -1070,6 +1070,8 @@ EOF;
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
         
+        $nationalities = array("Canadian", "Foreign", "Unknown");
+        
         $intkeys = array(
             'Canadian' => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
             'Foreign'  => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
@@ -1077,7 +1079,9 @@ EOF;
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
-            $hqp_table[$val] = $intkeys;
+            foreach($nationalities as $nationality){
+                $hqp_table[$val][$nationality] = $intkeys;
+            }
         }
 
         $totals_arr = $intkeys;
@@ -1085,9 +1089,17 @@ EOF;
         $details_div_id = "movedon_details_".$type;
 
         foreach ($movedons as $m){
-
             $movedon_data = $m->getMovedOn();
-
+            $nationality = $m->getNationality();
+            if($nationality == "Canadian" || $nationality == "Landed Immigrant"){
+                $nationality = "Canadian";
+            }
+            else if($nationality == ""){
+                $nationality = "Unknown";
+            }
+            else{
+                $nationality = "Foreign";
+            }
             //Theses data
             if(isset($movedon_data['works']) && $movedon_data['works']==""){
                 $thesis = $m->getThesis();
@@ -1101,7 +1113,7 @@ EOF;
                     continue;
                 }
                 
-                $hqp_table[$m_pos]["Canadian"]['university'][] = $m;
+                $hqp_table[$m_pos][$nationality]["Canadian"]['University'][] = $m;
             }
             //Movedon data
             else{
@@ -1128,35 +1140,36 @@ EOF;
                     if($movedon_data['employment_type'] != ""){
                         // Use specified employment type
                         if($movedon_data['employment_type'] == "Unemployed"){
-                            $hqp_table[$positions[$m_pos]]["Other"][$movedon_data['employment_type']][] = $m;
+                            $hqp_table[$positions[$m_pos]][$nationality]["Other"][$movedon_data['employment_type']][] = $m;
                         }
                         else{
-                            $hqp_table[$positions[$m_pos]][$m_nation][$movedon_data['employment_type']][] = $m;
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation][$movedon_data['employment_type']][] = $m;
                         }
                     }
                     else{
                         // Guess the type of employment
                         if(!empty($movedon_data['studies']) || $m->isActive() ){
-                            $hqp_table[$positions[$m_pos]][$m_nation]['University'][] = $m;
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['University'][] = $m;
                         }
                         else if(!empty($movedon_data['employer'])){
-                            $hqp_table[$positions[$m_pos]][$m_nation]['Industry'][] = $m;
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['Industry'][] = $m;
                         }
                         else{
-                            $hqp_table[$positions[$m_pos]][$m_nation]['Other'][] = $m;
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['Other'][] = $m;
                         }
                     }
                 }
                 else{
-                    $hqp_table[$positions[$m_pos]]["Other"]["Unknown"][] = $m;
+                    $hqp_table[$positions[$m_pos]][$nationality]["Other"]["Unknown"][] = $m;
                 }
             }
-        }   
+        }
 
         $html =<<<EOF
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
                 <th rowspan='2'>Position /<br />Degree completed</th>
+                <th rowspan='2'>Nationality</th>
                 <th colspan='5'>Canadian Employment</th>
                 <th colspan='5'>Foreign Employment</th>
                 <th colspan='2'>Other</th>
@@ -1179,69 +1192,75 @@ EOF;
 EOF;
         $all_total = array();
         foreach($hqp_table as $pos => $data){
-            $html .= "<tr><td>{$pos}</td>";
-            $pos_total = array();
-            foreach ($data as $nation => $area){
-                foreach ($area as $name => $val){
-                    $lnk_id = "lnk_" .$pos. "_" .$nation. "_". $name ."_tbl5_".$type;
-                    $div_id = "div_" .$pos. "_" .$nation. "_". $name ."_tbl5_".$type;
-                    
-                    $num_students = count($val);
-                    $student_details = Dashboard::hqpDetails($val);
-                    if($num_students > 0){
-                        $html .=<<<EOF
-                            <td>
-                            <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                            $num_students
-                            </a>
-                            <div style="display: none;" id="$div_id" class="cell_details_div">
-                                <p><span class="label">{$pos} / {$nation} / {$name}:</span> 
-                                <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                                <ul>$student_details</ul>
-                            </div>
-                            </td>
-EOF;
-                    }
-                    else{
-                        $html .= "<td>0</td>";
-                    }
-
-                    //$html .= "<td>{$val}</td>";
-                    $pos_total = array_merge($pos_total, $val);
-                    $totals_arr[$nation][$name] = array_merge($totals_arr[$nation][$name], $val);
-                    //$all_total += $num_students;
-                    $all_total = array_merge($all_total, $val);
+            $html .= "<tr><td rowspan='3'>{$pos}</td>";
+            foreach($nationalities as $i => $nationality){
+                $pos_total = array();
+                if($i != 0){
+                    $html .= "<tr>";
                 }
-            }
-
-            //Totals
-            $html .= "<td style='font-weight:bold;'>";
-            $lnk_id = "lnk_" .$pos. "_total_tbl5_".$type;
-            $div_id = "div_" .$pos. "_total_tbl5_".$type;
-            
-            $num_students = count($pos_total);
-            $student_details = Dashboard::hqpDetails($pos_total);
-            if($num_students > 0){
-                $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                    $num_students
-                    </a>
-                    <div style="display: none;" id="$div_id" class="cell_details_div">
-                        <p><span class="label">{$pos} / Total:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                        <ul>$student_details</ul>
-                    </div>
-                    </td>
+                $row = @$data[$nationality];
+                $html .= "<td>{$nationality}</td>";
+                foreach ($row as $nation => $area){
+                    foreach ($area as $name => $val){
+                        $lnk_id = "lnk_" .$pos. "_" .$nationality. "_" .$nation. "_". $name ."_tbl5_".$type;
+                        $div_id = "div_" .$pos. "_" .$nationality. "_" .$nation. "_". $name ."_tbl5_".$type;
+                        
+                        $num_students = count($val);
+                        $student_details = Dashboard::hqpDetails($val);
+                        if($num_students > 0){
+                            $html .=<<<EOF
+                                <td>
+                                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                                $num_students
+                                </a>
+                                <div style="display: none;" id="$div_id" class="cell_details_div">
+                                    <p><span class="label">{$pos} / {$nation} / {$name}:</span> 
+                                    <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                                    <ul>$student_details</ul>
+                                </div>
+                                </td>
 EOF;
-            }
-            else{
-                $html .= "0</td>";
-            }
+                        }
+                        else{
+                            $html .= "<td>0</td>";
+                        }
 
-            $html .= "</td></tr>";
+                        //$html .= "<td>{$val}</td>";
+                        $pos_total = array_merge($pos_total, $val);
+                        $totals_arr[$nation][$name] = array_merge($totals_arr[$nation][$name], $val);
+                        //$all_total += $num_students;
+                        $all_total = array_merge($all_total, $val);
+                    }
+                }
 
+                //Totals
+                $html .= "<td style='font-weight:bold;'>";
+                $lnk_id = "lnk_" .$pos. "_" .$nationality. "_total_tbl5_".$type;
+                $div_id = "div_" .$pos. "_" .$nationality. "_total_tbl5_".$type;
+                
+                $num_students = count($pos_total);
+                $student_details = Dashboard::hqpDetails($pos_total);
+                if($num_students > 0){
+                    $html .=<<<EOF
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        $num_students
+                        </a>
+                        <div style="display: none;" id="$div_id" class="cell_details_div">
+                            <p><span class="label">{$pos} / Total:</span> 
+                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <ul>$student_details</ul>
+                        </div>
+                        </td>
+EOF;
+                }
+                else{
+                    $html .= "0</td>";
+                }
+
+                $html .= "</td></tr>";
+            }
         }
-        $html .= "<tr style='font-weight:bold;'><td>Total:</td>";
+        $html .= "<tr style='font-weight:bold;'><td>Total:</td><td></td>";
         
         foreach($totals_arr as $nation => $data){
             foreach($data as $k=>$v){

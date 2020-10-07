@@ -8,6 +8,7 @@ class RadioReportItem extends AbstractReportItem {
         $labels = explode("|", $this->getAttr('labels', ''));
         $showScore = (strtolower($this->getAttr('showScore', 'false')) == 'true');
         $orientation = $this->getAttr('orientation', 'vertical');
+        $buttonPosition = $this->getAttr('buttonPosition', 'left');
         $value = $this->getBlobValue();
 		$default = $this->getAttr('default', '');
 		if($value === null && $default != ''){
@@ -26,7 +27,12 @@ class RadioReportItem extends AbstractReportItem {
 		            if($showScore){
 		                $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
 		            }
-		            $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		            if($buttonPosition == "left"){
+		                $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		            }
+		            else{
+		                $items[] = "<table cellspacing='0' cellpadding='0'><tr><td>{$labels[$i]}&nbsp;</td><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked /></td></tr>{$score}</table>";
+		            }
 		        }
 		        else{
 		            if($orientation == 'horizontal'){
