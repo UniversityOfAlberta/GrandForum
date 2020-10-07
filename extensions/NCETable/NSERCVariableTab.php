@@ -80,8 +80,8 @@ function showDiv(div_id, details_div_id){
                     self::showContributionsByProjectTable();
                     self::showGrandTables();
                     self::showDisseminations();
-                    self::showArtDisseminations();
-                    self::showActDisseminations();
+                    //self::showArtDisseminations();
+                    //self::showActDisseminations();
                     self::showPublicationList();
                     break;
             }
@@ -581,39 +581,13 @@ EOF;
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
-        
 
-        $canadian = array();
-        $foreign = array();
-        $unknown = array();
-
-        $unique = array();
-        $movedons = Person::getAllMovedOnDuring($this->from, $this->to);
-        foreach($movedons as $m){
-            if(in_array($m->getName(), $unique)) {
-                continue;
-            }
-            $unique[] = $m->getName();
-
-            $m_nation = $m->getNationality();
-            if($m_nation == "Canadian" || $m_nation == "Landed Immigrant"){
-                $canadian[] = $m;
-            }
-            else if($m_nation == "Foreign" || $m_nation == "Visa Holder" || $m_nation == "American"){
-                $foreign[] = $m;
-            }
-            else{
-                $unknown[] = $m;
-            }
-        }    
+        $movedons = Person::getAllMovedOnDuring($this->from, $this->to);  
 
         $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats();
         $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>";
         $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
         $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all");
-        //$this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
-        //$this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
-        //$this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
     }
 
     function getHQPStats(){
@@ -1317,461 +1291,92 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         return $html;
     }
-
+    
     function showDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
-
-        $dissem = array("a1_r1"=>array(), "a1_r2"=>array(), "a2_r1"=>array(), "a2_r2"=>array(), "b_r1"=>array(), "b_r2"=>array());
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            if($status == "Rejected"){
-                continue;
+        $html = "<a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>";
+        
+        $innovations = array();
+        $copyrights = array();
+        $licenses = array();
+        $startups = array();
+        $patents = array();
+        $other = array();
+        
+        $allProducts = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
+        foreach($allProducts as $product){
+            $category = strtolower($product->getCategory());
+            $type = strtolower($product->getType());
+            if(strstr($category, "product/innovation") !== false){
+                $innovations[] = $product;
             }
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                //echo "sdsd".$author->isSupervisor();
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
+            else if(strstr($type, "copyright") !== false){
+                $copyrights[] = $product;
             }
-            $key = "_r2";
-
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
+            else if(strstr($type, "licenses") !== false){
+                $licenses[] = $product;
             }
-            
-            switch ($pub->getType()) {
-                // A1: Articles in refereed publications
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    if($pub->getData('peer_reviewed') == "Yes"){
-                        $dissem["a1".$key][] = $pub;
-                    }
-                    else{
-                        $dissem["b".$key][] = $pub;
-                    }
-                    break;
-                // A2: Other refereed contributions
-                case 'Book':
-                case 'Book Chapter':
-                case 'Edited Book':
-                case 'Collections Paper':
-                case 'Conference Paper':
-                case 'Proceedings Paper':
-                    if($pub->getData('peer_reviewed') == "Yes"){
-                        $dissem["a2".$key][] = $pub;
-                    }
-                    else{
-                        $dissem["b".$key][] = $pub;
-                    }
-                    break;
-                // B: Non-refereed contributions
-                //case 'Misc':
-                //case 'Poster':
-                //case 'Book Review':
-                case 'Review Article':
-                //case 'Invited Presentation':
-                //default:
-                    if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
-                            if($pub->getCategory() == "Publication" ||
-                               $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
-                               ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
-                            $dissem["b".$key][] = $pub;
-                        }
-                    }
-                    break;
-                // C: Specialized Publications
-                case 'Bachelors Thesis':
-                case 'Masters Thesis':
-                case 'Masters Dissertation':
-                case 'PHD Thesis':
-                case 'PHD Dissertation':
-                case 'Tech Report':
-                case 'Abstract':
-                case 'Journal Abstract':
-                case 'Conference Abstract':
-                case 'White Paper':
-                case 'Symposium Record':
-                case 'Industrial Report':
-                case 'Internal Report':
-                case 'Manual':
-                    $dissem["c".$key][] = $pub;   
-                    break;
+            else if(strstr($type, "startup") !== false || 
+                    strstr($type, "start-up") !== false){
+                $startups[] = $product;
+            }
+            else if(strstr($type, "patent") !== false){
+                $patents[] = $product;
+            }
+            else if(strstr($category, "commercialization") !== false || 
+                    strstr($category, "product") !== false){
+                $other[] = $product;
             }
         }
         
-        $n_a1_r1 = count($dissem['a1_r1']);
-        $n_a1_r2 = count($dissem['a1_r2']);
-        $n_a2_r1 = count($dissem['a2_r1']);
-        $n_a2_r2 = count($dissem['a2_r2']);
-        $n_b_r1 = count($dissem['b_r1']);
-        $n_b_r2 = count($dissem['b_r2']);
-
-        $d_a1_r1 = self::getDisseminationDetails($dissem['a1_r1']);
-        $d_a1_r2 = self::getDisseminationDetails($dissem['a1_r2']);
-        $d_a2_r1 = self::getDisseminationDetails($dissem['a2_r1']);
-        $d_a2_r2 = self::getDisseminationDetails($dissem['a2_r2']);
-        $d_b_r1 = self::getDisseminationDetails($dissem['b_r1']);
-        $d_b_r2 = self::getDisseminationDetails($dissem['b_r2']);
-
-        $html =<<<EOF
-            <a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'>Articles in refereed publications</th><th>Number of publications</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_a1_r1} {$d_a1_r1}</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_a1_r2} {$d_a1_r2}</td>
-            </tr>
-            <tr>
-                <th align='left' colspan='2'>Other refereed contributions</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_a2_r1}  {$d_a2_r1}</td>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_a2_r2}  {$d_a2_r2}</td>
-            </tr>
-            <tr>
-                <th align='left' colspan='2'>Non-refereed contributions</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_b_r1} {$d_b_r1}</td>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_b_r2} {$d_b_r2}</td>
-            </tr>
-            </table>
-EOF;
-
+        $html .= "<table class='wikitable'>
+                    <tr>
+                        <th>Category</th><th>Number</th>
+                    </tr>
+                    <tr>
+                        <td>Products and innovations</td><td align='right'>{$this->productDetails($innovations, 'innovations', 'Products and innovations')}</td>
+                    </tr>
+                    <tr>
+                        <td>Copyrights</td><td align='right'>{$this->productDetails($copyrights, 'copyrights', 'Copyrights')}</td>
+                    </tr>
+                    <tr>
+                        <td>Licences</td><td align='right'>{$this->productDetails($licenses, 'licenses', 'Licences')}</td>
+                    </tr>
+                    <tr>
+                        <td>New start-up companies</td><td align='right'>{$this->productDetails($startups, 'startups', 'New start-up companies')}</td>
+                    </tr>
+                    <tr>
+                        <td>Patents</td><td align='right'>{$this->productDetails($patents, 'patents', 'Patents')}</td>
+                    </tr>
+                    <tr>
+                        <td>Other</td><td align='right'>{$this->productDetails($other, 'other', 'Others')}</td>
+                    </tr>
+                  </table>
+                  <div id='tbl4_details' class='pdf_hide details_div' style='display:none;'></div>";
+        
         $this->html .= $html;
     }
-
-    function showArtDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", $this->from, $this->to);
-        
-        if(count($publications) == 0){
-            return;
-        }
-
-        $types = Paper::getCategoryTypes("Artifact");
-
-        $dissem = array();
-        foreach($types as $t){
-            $t = preg_replace('/ /', '_', $t);
-            $dissem["{$t}_r1"] = array();
-            $dissem["{$t}_r2"] = array();
-        }
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                //echo "sdsd".$author->isSupervisor();
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
-
-
-            }
-            
-            $key = "_r2";
-            
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
-            }
-            
-
-            $pub_type = preg_replace('/ /', '_', $pub->getType());
-                
-            $dissem["{$pub_type}{$key}"][] = $pub;
-            
-        }
-      
-        $html =<<<EOF
-            <h4>Artifacts</h4>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'></th><th>Number of artifacts</th>
-            </tr>
-EOF;
-
-        foreach($types as $t){
-            $t_key = preg_replace('/ /', '_', $t);
-            $html .= "
-            <tr>
-                <th align='left' colspan='2'>{$t}</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>".count($dissem["{$t_key}_r1"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r1"])."</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>".count($dissem["{$t_key}_r2"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r2"])."</td>
-            </tr>
-            ";
-        }    
-        
-        $html .= "</table>";
-
-        $this->html .= $html;
-    }
-
-    function showActDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", $this->from, $this->to);
-        
-        if(count($publications) == 0){
-            return;
+    
+    function productDetails($products, $category, $title){
+        if(count($products) == 0){
+            return 0;
         }
         
-        //echo (sizeof($publications ));
-        $types = Paper::getCategoryTypes("Activity");
-
-        $dissem = array();
-        foreach($types as $t){
-            $t = preg_replace('/ /', '_', $t);
-            $dissem["{$t}_r1"] = array();
-            $dissem["{$t}_r2"] = array();
-        }
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
-
-
-            }
-            
-            $key = "_r2";
-            
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
-            }
-            
-
-            $pub_type = preg_replace('/ /', '_', $pub->getType());
-                
-            $dissem["{$pub_type}{$key}"][] = $pub;
-            
-        }
-      
-        $html =<<<EOF
-            <h4>Activities</h4>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'></th><th>Number of activities</th>
-            </tr>
-EOF;
-
-        foreach($types as $t){
-            $t_key = preg_replace('/ /', '_', $t);
-            $html .= "
-            <tr>
-                <th align='left' colspan='2'>{$t}</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>".count($dissem["{$t_key}_r1"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r1"])."</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>".count($dissem["{$t_key}_r2"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r2"])."</td>
-            </tr>
-            ";
-        }    
+        $div_id = "tbl4_$category";
+        $lnk_id = "lnk4_$category";
+        $details_div_id = "tbl4_details";
         
-        $html .= "</table>";
-
-        $this->html .= $html;
-    }
-
-    private function getDisseminationDetails($arr) {
-        if (empty($arr))
-            return "";
-
-        // Grab a random identifier to name this <div>.
-        $id = "dis" . mt_rand();
-        $ret = "<small><a href=\"javascript:ShowOrHide('{$id}','')\">Details</a></small><div id='{$id}' style='display:none;text-align:left'><ol>";
-        foreach ($arr as $publ) {
-            $title = $publ->getTitle();
-            $type = $publ->getType();
-            $authors = $publ->getAuthors();
-            $yr = substr($publ->getDate(), 0, 4);
-            $pg = $publ->getData('pages');
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = $publ->getData('publisher', '(no publisher)');
-
-            switch ($publ->getType()) {
-                case 'Book':
-                case 'Book Chapter':
-                case 'Collections Paper':
-                case 'Proceedings Paper':
-                    $vn = $publ->getData('book_title', 'no venue');
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
-                    break;
-
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    $vn = $publ->getData('journal_title', 'no venue');
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
-                    break;
-
-                case 'Masters Thesis':
-                case 'PhD Thesis':
-                case 'Tech Report':
-                    break;
-
-                case 'Misc':
-                case 'Poster':
-                default:
-                    $vn = $publ->getData('book_title', $publ->getData('eventname', 'no venue'));
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}\n";
-            }
-
-            $ret .= "\n<ul>";
-            foreach ($authors as $auth) {
-                $name = ($auth->getId())? "<strong>". $auth->getName() ."</strong>" : $auth->getName();
-                $projs = $auth->getProjects();
-                $proj_names = array();
-                if(!empty($projs)){
-                    foreach($projs as $p){
-                        $proj_names[] = $p->getName();
-                    }
-
-
-                }
-                $ret .= "\n<li>{$name} <small>(" . implode(', ', $proj_names) . ")</small></li>";
-            }
-            $ret .= "\n</ul></li>";
+        $details = array();
+        foreach($products as $product){
+            $details[] = "<li>{$product->getCitation()}</li>";
         }
 
-        $ret .= "\n</ol></div>";
-
-        return $ret;
-    }
-
-    private function getDisseminationDetails2($arr) {
-        if (empty($arr))
-            return "";
-
-        // Grab a random identifier to name this <div>.
-        $id = "dis" . mt_rand();
-        $ret = "<small><a href=\"javascript:ShowOrHide('{$id}','')\">Details</a></small><div id='{$id}' style='display:none;text-align:left'><ol>";
-        foreach ($arr as $publ) {
-            $title = $publ->getTitle();
-            $type = $publ->getType();
-            $authors = $publ->getAuthors();
-            $yr = substr($publ->getDate(), 0, 4);
-
-            $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;\n";            
-
-            $ret .= "\n<ul>";
-            foreach ($authors as $auth) {
-                $name = ($auth->getId())? "<strong>". $auth->getName() ."</strong>" : $auth->getName();
-                $projs = $auth->getProjects();
-                $proj_names = array();
-                if(!empty($projs)){
-                    foreach($projs as $p){
-                        $proj_names[] = $p->getName();
-                    }
-
-
-                }
-                $ret .= "\n<li>{$name} <small>(" . implode(', ', $proj_names) . ")</small></li>";
-            }
-            $ret .= "\n</ul></li>";
-        }
-
-        $ret .= "\n</ol></div>";
-
-        return $ret;
+        $html = "<a id='$lnk_id' onclick='showDiv(\"#$div_id\",\"$details_div_id\");' href='#$details_div_id'>".count($products)."</a>
+                 <div id='{$div_id}' style='display:none;' class='cell_details_div'>
+                    <p><span class='label'>$title:</span> 
+                    <button class='hide_div' onclick='$(\"#$details_div_id\").hide();return false;'>x</button></p>
+                    <ul>".implode("\n", $details)."</ul>
+                 </div>";
+        return $html;
     }
 
     function showPublicationList(){
@@ -1807,6 +1412,9 @@ EOF;
                 case 'Collections Paper':
                 case 'Conference Paper':
                 case 'Proceedings Paper':
+                    if($pub->getCategory() == "Product/Innovation"){
+                        break;
+                    }
                     if($pub->getData('peer_reviewed') == "Yes"){
                         $pub_count["a2"][] = $pub;
                     }

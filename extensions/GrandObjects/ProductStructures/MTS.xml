@@ -686,83 +686,46 @@
             </data>
         </Activity>
 
-        <!--
-        There are a number of these in DB, but not supported in UI anymore
-        <Activity type="Panel" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-
-        <Activity type="Tutorial" status="Not Invited">
-            <Data>
-            </Data>
-        </Activity>
-        -->
     </Activities>
     
     <!-- Artifacts -->
-    <Artifacts category="Artifact">
-        <Artifact type="Aesthetic Object" status="Peer Reviewed|Not Peer Reviewed">
+    <Artifacts category="Product/Innovation">
+        <Artifact type="Book">
             <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Device/Machine" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Open Software" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Artifact>
-
-        <Artifact type="Patent" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
-                <field bibtex="number" label="Number" type="String">number</field>
-            </data>
-        </Artifact>
-        
-        <Artifact type="Startup Company">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Company Name" type="String">name</field>
-            </data>
-        </Artifact>
-        
-        <Artifact type="Spin-Off Company">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Parent Company" type="String">parent_name</field>
-                <field label="Spin-Off Company" type="String">name</field>
-            </data>
-        </Artifact> 
-
-        <Artifact type="Repository" status="Peer Reviewed|Not Peer Reviewed">
-            <data>
-                <field label="File" type="File">file</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Artifact>
         
-        <Artifact type="Misc" status="Peer Reviewed|Not Peer Reviewed">
+        <Artifact type="Video">
             <data>
-                <field label="File" type="File">file</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Artifact>
-    </Artifacts>    
+        
+        <Artifact type="Training Module">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="App">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="On-line tool for schools">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+        
+        <Artifact type="Misc">
+            <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Artifact>
+    </Artifacts>
 
     <!-- Awards -->
     
@@ -886,16 +849,6 @@
             </data>
         </Presentation>
 
-        <Presentation type="RNotes" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
-
         <Presentation type="Tutorial" status="Invited|Not Invited">
             <data>
                 <field label="File" type="File">file</field>
@@ -906,15 +859,6 @@
             </data>
         </Presentation>
 
-        <Presentation type="WIP" status="Invited|Not Invited">
-            <data>
-                <field label="File" type="File">file</field>
-                <field label="Event Title" type="String">event_title</field>
-                <field label="Event Location" type="String">event_location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Presentation>
     </Presentations>
     
     <!-- Press -->
