@@ -1312,7 +1312,8 @@ EOF;
             else if(strstr($type, "copyright") !== false){
                 $copyrights[] = $product;
             }
-            else if(strstr($type, "licences") !== false){
+            else if(strstr($type, "licence") !== false || 
+                    strstr($type, "license") !== false){
                 $licences[] = $product;
             }
             else if(strstr($type, "startup") !== false || 
