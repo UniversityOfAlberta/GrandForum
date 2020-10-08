@@ -213,7 +213,6 @@ $(document).ready(function(){
     function setUpFormSubmit(){
         $.each($("form[name=report] [type=submit]"), function(index, value){
             $(value).click(function(){
-                console.log("CLICK");
                 if(timeout != null){
                     clearTimeout(timeout);
                 }
