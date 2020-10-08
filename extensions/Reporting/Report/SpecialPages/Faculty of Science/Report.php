@@ -46,7 +46,7 @@ class Report extends AbstractReport{
             $tabs["CV"]['subtabs'][] = TabUtils::createSubTab("QA CV", "{$url}QACV", $selected);
         }
 
-        if($person->isRole(ISAC) || $person->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(IAC) || $person->isRole(ACHAIR)){
+        if($person->isRole(ISAC) || $person->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(IAC) || $person->isRole(ACHAIR) || $person->getName() == "Christopher.Sturdy"){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ChairTable")) ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "{$url}ChairTable", $selected);
         }
