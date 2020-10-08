@@ -223,7 +223,7 @@
             <If id="if_chair" if="{and({!contains({$my_roles},EA)},
                                        {or({contains({$my_roles},Chair)},
                                            {contains({$user_sub_roles},Chair's Recommendation)},
-                                           {==({$user_id},64)}
+                                           {==({$my_id},64)}
                                        )}
                                   )}">
                 <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
