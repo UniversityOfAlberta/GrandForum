@@ -108,7 +108,7 @@
         </ReportItem>
         <ReportItem id="collection" type="Textarea" blobItem="COLLECTION" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
-                <h4>Collection</h4>
+                <h4>Data Collection</h4>
                 <small>Methods, processes, and procedures used for data collection.</small>
                 {$item}
                 <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
@@ -139,11 +139,18 @@
                 <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
             ]]>
         </ReportItem>
+        <ReportItem id="other" type="Textarea" blobItem="OTHER" rich="true" limit="500">
+            <![CDATA[
+                <h4>Describe any other relevant activities that were not captured in the previous sections.</h4>
+                {$item}
+                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+            ]]>
+        </ReportItem>
         
         <!-- CERI -->
         <Static>
             <![CDATA[
-                <h4>CERI</h4>
+                <h4>CERI - Community Engagement in Research Index</h4>
                 <p><small>0 – not applicable<br />
                           1 – community partners provide access to study subjects, e.g. assist with recruitment and outreach but are not engaged in the research aspects of the project.<br />
                           2 – community partners act as consultants and/or advisors on research project but do not make any research-related decisions.<br />
@@ -160,300 +167,300 @@
                     </tr>
             ]]>
         </Static>
-        <ReportItem id="ceri_1_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_1_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Grant proposal writing</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_1_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_1_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_1_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_1_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_1_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_1_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_2_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_2_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Background research/literature review</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_2_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_2_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_2_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_2_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_2_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_2_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_3_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_3_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Choosing research methods</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_3_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_3_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_3_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_3_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_3_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_3_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_4_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_4_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Developing sampling procedures</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_4_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_4_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_4_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_4_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_4_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_4_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_5_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_5_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Recruiting study participants</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_5_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_5_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_5_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_5_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_5_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_5_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_6_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_6_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Engaging other research partners</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_6_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_6_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_6_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_6_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_6_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_6_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_7_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_7_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Designing interview and/or survey questions</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_7_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_7_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_7_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_7_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_7_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_7_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_8_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_8_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Collecting primary data</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_8_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_8_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_8_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_8_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_8_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_8_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_9_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_9_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Analyzing collected data</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_9_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_9_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_9_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_9_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_9_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_9_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_10_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_10_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Interpreting study findings</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_10_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_10_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_10_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_10_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_10_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_10_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_11_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_11_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Writing reports and journal articles</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_11_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_11_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_11_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_11_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_11_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_11_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_12_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_12_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Sharing findings at meetings, conferences and on social media</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_12_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_12_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_12_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_12_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_12_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_12_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_13_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_13_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                     <tr>
                         <td>Other, what</td>
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_13_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_13_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_13_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_13_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ceri_13_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4|5">
+        <ReportItem id="ceri_13_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="0|1|2|3|4">
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
@@ -465,17 +472,9 @@
             ]]>
         </Static>
         
-        <ReportItem id="other" type="Textarea" blobItem="OTHER" rich="true" limit="500">
-            <![CDATA[
-                <h4>Other, what?</h4>
-                <small>Describe any other relevant activities that were not captured in the previous sections.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
-            ]]>
-        </ReportItem>
         <ReportItem id="resources" type="Textarea" blobItem="RESOURCES" rich="true" limit="250">
             <![CDATA[
-                <h3>2.3 Leveraging resources and opportunities</h3>
+                <h3>2.3 Leveraging resources and opportunities (optional)</h3>
                 <h4>If applicable, describe any resources leveraged during project implementation.</h4>
                 {$item}
             ]]>
@@ -507,47 +506,47 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="researchers" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="researchers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                <h3>3.4 What are your key messages for your key audience?</h3>
-                <table>
-                    <tr><td>Researchers:</td><td>{$item}</td></tr>
+                <h3>3.4 What are your key messages for your key audience?  Fill in those that apply in 1 or 2 sentences.</h3>
+                <table
+                    <tr><td align='right'>Researchers:</td><td>{$item}</td></tr>
                      
             ]]>
         </ReportItem>
-        <ReportItem id="policymakers" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="policymakers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Policymakers:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Policymakers:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="practitioners" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="practitioners" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Practitioners:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Practitioners:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funders" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="funders" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Funders:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Funders:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="legal" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="legal" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Legal Professionals:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Legal Professionals:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="public" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="public" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>General public:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>General public:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="media" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="media" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Media:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Media:</td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other" type="Text" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="other" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td>Other:</td><td>{$item}</td></tr>
+                    <tr><td align='right'>Other:</td><td>{$item}</td></tr>
                 </table>
             ]]>
         </ReportItem>
