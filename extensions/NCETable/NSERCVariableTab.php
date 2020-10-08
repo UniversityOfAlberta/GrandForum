@@ -230,14 +230,18 @@ EOF;
             $i = 0;
             $other = array();
             foreach($partner as $part){
+                $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
+                if($signatory == "Yes"){
+                    $nSignatory++;
+                    break;
+                }
+            }
+            foreach($partner as $part){
                 $sector = ($sector == "") ? $part['partner']->getIndustry() : $sector;
                 $country = ($country == "") ? $part['partner']->getCountry() : $country;
                 $prov = ($prov == "") ? $part['partner']->getProv() : $prov;
                 $city = ($city == "") ? $part['partner']->getCity() : $city;
                 $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
-                if($signatory == "Yes"){
-                    $nSignatory++;
-                }
                 $cash += $part['contribution']->getCashFor($part['partner']);
                 $inki = $part['contribution']->getKindFor($part['partner']);
                 $inkind += $inki;
