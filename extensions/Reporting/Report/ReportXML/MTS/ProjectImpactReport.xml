@@ -571,7 +571,7 @@
                         {$item}
                     </div>
                     <script type='text/javascript'>
-                        if('{getBlobMD5()}' != ''){
+                        if('{getBlobMD5()}' != '' || '{$index}' == 1){
                             $('#file{$index}').show();
                         }
                     </script>
