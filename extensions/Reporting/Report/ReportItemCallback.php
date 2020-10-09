@@ -1698,7 +1698,10 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+    function getBlobMD5($rp="", $section="", $blobId="", $subId="", $personId="", $projectId="", $year=null){
+        if($rp == ""){
+            return $this->reportItem->getMD5();
+        }
         if($year == null){
             $year = $this->reportItem->getReport()->year;
         }

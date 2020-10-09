@@ -558,13 +558,41 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="files" type="Upload" blobItem="FILES" blobType="BLOB_RAW" fileSize="5" mimeType=".zip">
+        <Static>
             <![CDATA[
                 <h3>3.5 Please attach or link to any knowledge mobilization products you developed.</h3>
-                <b>Files (.doc, .docx, .pdf, .jpg combined into a single zip file)</b>
-                {$item}
             ]]>
-        </ReportItem>
+        </Static>
+        <For from="1" to="20">
+            <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
+                <![CDATA[
+                    <div class='files' id='file{$index}' style='display:none;'>
+                        <b>Files (.doc, .docx, .pdf, .jpg</b>
+                        {$item}
+                    </div>
+                    <script type='text/javascript'>
+                        if('{getBlobMD5()}' != ''){
+                            $('#file{$index}').show();
+                        }
+                    </script>
+                ]]>
+            </ReportItem>
+        </For>
+        <Static>
+            <![CDATA[
+                <button id='addFile' type='button'>Add another file</button>
+                <script type='text/javascript'>
+                    $('#addFile').click(function(){
+                        $('.files:not(:visible)').first().show();
+                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                        if($('.files:not(:visible)').length == 0){
+                            $('#addFile').prop('disabled', true);
+                        }
+                    });
+                </script>
+                <br /><br />
+            ]]>
+        </Static>
         <ReportItem id="links" type="Textarea" blobItem="LINKS" rich="true">
             <![CDATA[
                 <b>Links (videos, websites)</b>
