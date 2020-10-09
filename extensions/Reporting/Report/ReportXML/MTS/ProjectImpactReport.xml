@@ -106,6 +106,44 @@
                 <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
             ]]>
         </ReportItem>
+        <ReportItem id="pi_consent" type="Checkbox" blobItem="PI_CONSENT" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
+            <![CDATA[
+                <h4>Photo Release Form for PIs</h4>
+                <p>I understand that photos and/or video recordings of my research project shared as part of this report may be used for the purpose of MtS Impact Evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge that these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
+                {$item}
+                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, MtS Post-Doctoral Fellow in Evaluation <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
+                <p>Please <a href='{$wgServer}{$wgScriptPath}/data/Photo Release Project Participants.docx' target='_blank'>attach consent forms</a> if you share photo/video recordings of the research project participants attach the photo/video consent forms for research project participants.</p>
+            ]]>
+        </ReportItem>
+        <For from="1" to="20">
+            <ReportItem id="consent{$index}" type="Upload" blobItem="CONSENT{$index}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                <![CDATA[
+                    <div class='consents' id='consent{$index}' style='display:none;'>
+                        {$item}
+                    </div>
+                    <script type='text/javascript'>
+                        if('{getBlobMD5()}' != '' || '{$index}' == 1){
+                            $('#consent{$index}').show();
+                        }
+                    </script>
+                ]]>
+            </ReportItem>
+        </For>
+        <Static>
+            <![CDATA[
+                <button id='addFile' type='button'>Add another file</button>
+                <script type='text/javascript'>
+                    $('#addFile').click(function(){
+                        $('.consents:not(:visible)').first().show();
+                        $('iframe', $('.consents:visible').last())[0].src = $('iframe', $('.consents:visible').last())[0].src;
+                        if($('.consents:not(:visible)').length == 0){
+                            $('#addFile').prop('disabled', true);
+                        }
+                    });
+                </script>
+                <br /><br />
+            ]]>
+        </Static>
         <ReportItem id="collection" type="Textarea" blobItem="COLLECTION" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h4>Data Collection</h4>
@@ -561,13 +599,13 @@
         <Static>
             <![CDATA[
                 <h3>3.5 Please attach or link to any knowledge mobilization products you developed.</h3>
+                <b>Files (.doc, .docx, .pdf, .jpg)</b>
             ]]>
         </Static>
         <For from="1" to="20">
             <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
                 <![CDATA[
                     <div class='files' id='file{$index}' style='display:none;'>
-                        <b>Files (.doc, .docx, .pdf, .jpg</b>
                         {$item}
                     </div>
                     <script type='text/javascript'>
@@ -783,18 +821,6 @@
                 </table>
             ]]>
         </Static>
-    </ReportSection>
-    <ReportSection id="appendix" name="Photo Release Form" title="Appendix 1 Photo Release Form" type="EULA" blobSection="APPENDIX">
-        <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the photo release form" no="No, I do not agree to the photo release form">
-            <![CDATA[
-                <p>I, <u>{$my_name}</u>, understand that photo and/or video recordings taken in the context of my participation in the <u>{$project_name}</u> research project may be used for the purpose of reporting and MtS Impact Evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional material or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
-                <b>Information about MtS Impact Evaluation project.</b>
-                <p>The evaluation research aims to understand the impact of collaborative approach to knowledge creation and mobilization for advancing the shift to prevention in the youth homelessness ecosystem.  The results of this evaluation will further inform strategies for achieving shift to prevention of youth homelessness so that all youth can thrive and achieve their potential.  Findings of this evaluation will be shared broadly targeting researchers and practitioners in the youth homelessness sector in Canada as well as internationally.</p>
-                <p>I consent to the use of my photo/video images taken in the context of my participation in the <u>{$project_name}</u> research project for the purpose of reporting and MtS Impact Evaluation research.</p>
-                {$item}
-                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
-            ]]>
-        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
