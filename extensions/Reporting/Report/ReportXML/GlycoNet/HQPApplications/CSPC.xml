@@ -30,12 +30,12 @@
 
                 <h3>Instructions</h3>
                 <ul>
-                    <li>Applicants to submit an application through the GlycoNet Forum by 11:59 pm MDT, October 16, 2020.</li>
+                    <li>Applicants to submit an application through the GlycoNet Forum by 11:59 pm MDT, October 18, 2020.</li>
                     <li>Applications will be reviewed by the Training Committee, and applicants will be notified of their application status no later than October 23, 2020.</li>
                     <li>Funding will support the registration fee for the pre-conference and conference.</li>
-                    <li>Award recipients must write and submit a blog article to the GlycoNet Communications Associate no later than December 15, 2020. In the article, award recipients will reflect on their conference experience, what they learned, as well as discuss what they found impactful about the conference and how it may influence their studies and career goals. These submissions will be shared publicly through the GlycoNet CuriOSEity blog. Articles must adhere to the blog quality standards requested by the Communications Associate.</li>
+                    <li>Award recipients will be contacted by the GlycoNet Communications Associate before December 15, 2020 regarding their experience at the conference. In the interview, award recipients will be ask to reflect on their conference experience, what they learned, as well as discuss what they found impactful about the conference and how it may influence their studies and career goals.</li>
                 </ul>
-                <p><b>Award Application Deadline:</b> October 16, 2020 at 11:59 PM MDT</p>
+                <p><b>Award Application Deadline:</b> October 18, 2020 at 11:59 PM MDT</p>
             ]]>
         </Static>
     </ReportSection>
@@ -106,7 +106,7 @@
             <![CDATA[
                 <p>By submitting this CSPC Competition Application Form I agree with GlycoNet that:</p>
                 <ol>
-                    <li>I agree to be contacted by the GlycoNet Communications Associate to provide a written reflection to be used for the CuriOSEity blog after the conference.</li>
+                    <li>I agree to be contacted by the GlycoNet Communications Associate regarding my experience after the conference.</li>
                     <li>I agree to represent GlycoNet as a Network trainee throughout the CSPC conference. (i.e. introduce yourself as a GlycoNet trainee in addition to your affiliated academic institution during conference sessions and in your conference profile)</li>
                 </ol>
                 {$item}

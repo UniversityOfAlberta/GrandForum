@@ -152,6 +152,7 @@ class ReportItemCallback {
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
+            "getDepartments" => "getDepartments",
             "getProjects" => "getProjects",
             "getProjectNames" => "getProjectNames",
             "getProjectTitles" => "getProjectTitles",
@@ -1247,6 +1248,12 @@ class ReportItemCallback {
             return implode(", ", $projects);
         }
         return "N/A";
+    }
+    
+    function getDepartments($delim=", "){
+        $departments = Person::getAllDepartments();
+        sort($departments);
+        return implode($delim, $departments);
     }
     
     function getProjects(){
