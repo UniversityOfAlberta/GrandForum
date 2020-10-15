@@ -3,7 +3,7 @@
 use Phinx\Migration\AbstractMigration;
 use Phinx\Db\Adapter\MysqlAdapter;
 
-class EventPosting extends AbstractMigration
+class BsiPosting extends AbstractMigration
 {
     /**
      * Change Method.
@@ -23,7 +23,7 @@ class EventPosting extends AbstractMigration
      */
     public function up()
     {
-        $table = $this->table('grand_event_postings', array('id' => 'id'));
+        $table = $this->table('grand_bsi_postings', array('id' => 'id'));
         $table->addColumn('user_id', 'integer')
               ->addColumn('visibility', 'string', array('limit' => 16))
               ->addColumn('language', 'string', array('limit' => 32))
@@ -34,15 +34,23 @@ class EventPosting extends AbstractMigration
               ->addColumn('end_date', 'datetime')
               ->addColumn('summary', 'text')
               ->addColumn('summary_fr', 'text')
-              ->addColumn('address', 'string', array('limit' => 70))
-              ->addColumn('city', 'string', array('limit' => 70))
-              ->addColumn('province', 'string', array('limit' => 70))
-              ->addColumn('country', 'string', array('limit' => 70))
+              ->addColumn('about', 'text')
+              ->addColumn('skills', 'text')
+              ->addColumn('first_name', 'string', array('limit' => 32))
+              ->addColumn('last_name', 'string', array('limit' => 32))
+              ->addColumn('email', 'string', array('limit' => 64))
+              ->addColumn('positions', 'integer')
+              ->addColumn('discipline', 'text', array('limit' => MysqlAdapter::TEXT_REGULAR))
+              ->addColumn('partner_name', 'string', array('limit' => 64))
+              ->addColumn('city', 'string', array('limit' => 64))
+              ->addColumn('province', 'string', array('limit' => 64))
+              ->addColumn('country', 'string', array('limit' => 64))
               ->addColumn('image', 'text', array('limit' => MysqlAdapter::TEXT_MEDIUM))
-              ->addColumn('image_caption', 'string', array('limit' => 500))
-              ->addColumn('image_caption_fr', 'string', array('limit' => 500))
+              ->addColumn('image_caption', 'string', array('limit' => 128))
+              ->addColumn('image_caption_fr', 'string', array('limit' => 128))
               ->addColumn('preview_code', 'string', array('limit' => 32))
               ->addColumn('created', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
+              ->addColumn('modified', 'timestamp')
               ->addColumn('deleted', 'boolean', array('default' => 0))
               ->addIndex('user_id')
               ->create();
