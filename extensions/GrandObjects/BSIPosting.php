@@ -8,6 +8,7 @@ class BSIPosting extends Posting {
     
     static $dbTable = 'grand_bsi_postings';
 
+    var $type;
     var $partnerName;
     var $city;
     var $province;
@@ -25,6 +26,7 @@ class BSIPosting extends Posting {
         if(count($data) > 0){
             $row = $data[0];
             parent::posting($data);
+            $this->type = $row['type'];
             $this->partnerName = $row['partner_name'];
             $this->city = $row['city'];
             $this->province = $row['province'];
@@ -38,6 +40,10 @@ class BSIPosting extends Posting {
             $this->about = $row['about'];
             $this->skills = $row['skills'];
         }
+    }
+    
+    function getType(){
+        return $this->type;
     }
     
     function getPartnerName(){
@@ -90,6 +96,7 @@ class BSIPosting extends Posting {
     
     function toArray(){
         $json = parent::toArray();
+        $json['type'] = $this->getType();
         $json['partnerName'] = $this->getPartnerName();
         $json['city'] = $this->getCity();
         $json['province'] = $this->getProvince();
@@ -109,7 +116,8 @@ class BSIPosting extends Posting {
         $status = parent::create();
         if($status){
             $status = DBFunctions::update(self::$dbTable,
-                                          array('partner_name' => $this->partnerName,
+                                          array('`type`' => $this->type,
+                                                'partner_name' => $this->partnerName,
                                                 'city' => $this->city,
                                                 'province' => $this->province,
                                                 'country' => $this->country,
@@ -130,7 +138,8 @@ class BSIPosting extends Posting {
         $status = parent::update();
         if($status){
             $status = DBFunctions::update(self::$dbTable,
-                                          array('partner_name' => $this->partnerName,
+                                          array('`type`' => $this->type,
+                                                'partner_name' => $this->partnerName,
                                                 'city' => $this->city,
                                                 'province' => $this->province,
                                                 'country' => $this->country,

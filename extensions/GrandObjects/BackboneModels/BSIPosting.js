@@ -8,10 +8,11 @@ BSIPosting = Posting.extend({
 
     defaults: function(){
         return _.extend(Object.assign({}, Posting.prototype.defaults), {
+            type: "",
             partnerName: "",
-            city: [],
-            province: [],
-            country: [],
+            city: "",
+            province: "",
+            country: "",
             firstName: "",
             lastName: "",
             email: "",

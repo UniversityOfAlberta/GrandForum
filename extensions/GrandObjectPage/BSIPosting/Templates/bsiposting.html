@@ -1,4 +1,4 @@
-<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:BSIPostingPage#" style="float: right;">Back to BSI Postings</a>
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:BSIPostingPage#" style="float: right;">Back to Internship Postings</a>
 <div>
     <style>
         .label {
@@ -8,7 +8,11 @@
     <h3>Summary</h3>
     <table class="wikitable">
         <tr>
-            <td class="label" width="125px">Partner name</td>
+            <td class="label" width="125px">Type</td>
+            <td><%= type %></td>
+        </tr>
+        <tr>
+            <td class="label">Partner name</td>
             <td><%= partnerName %></td>
         </tr>
         <% if(articleLink != ""){ %>

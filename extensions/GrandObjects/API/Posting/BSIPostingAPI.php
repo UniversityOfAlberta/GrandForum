@@ -5,12 +5,16 @@ class BSIPostingAPI extends PostingAPI {
     static $className = "BSIPosting";
     
     function validate(){
+        if(trim($this->POST('title')) == ""){
+            $this->throwError("A title must be provided");
+        }
         return true;
     }
     
     function extraVars($posting){
         $posting->visibility = "Publish";
         $posting->language = "English";
+        $posting->type = $this->POST('type');
         $posting->partnerName = $this->POST('partnerName');
         $posting->city = $this->POST('city');
         $posting->province = $this->POST('province');
