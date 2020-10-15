@@ -153,6 +153,7 @@
                     $('#reportTabs').hide();
                     $('#bd_table').DataTable({
                         scrollX: true,
+                        scrollY: ($(window).height() - 470) + "px",
                         searching: false,
                         aLengthMenu: [
                             [25, 50, 100, 200, -1],
@@ -162,7 +163,6 @@
                         {
                             leftColumns: 2
                         },
-                        fixedHeader: true,
                         columnDefs: [
                            {type: 'natural', targets: 2}
                         ],

@@ -1,0 +1,40 @@
+<% if(isAllowedToCreateBSIPostings){ %>
+    <a href="#/new" class="button" id="add">Create an BSI Item</a><br /><br />
+<% } %>
+<table id="postings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="25%" style="white-space: nowrap;">BSI Date</th>
+            <th width="25%" style="white-space: nowrap;">Partner</th>
+            <th width="54%">Posting</th>
+            <% if(isAllowedToCreateBSIPostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(posting){ %>
+            <tr>
+                <td>
+                    <span style="display:none;"><%= posting.get('startDate') %></span>
+                    <%= dateTimeHelpers.formatDate(posting.get('startDate')) %><br />
+                    (Posted: <%= dateTimeHelpers.formatDate(posting.get('created')) %> by <a href="<%= posting.get('user').url %>"><%= posting.get('user').fullName %></a>)
+                </td>
+                <td>
+                    <%= posting.get('partnerName') %>
+                </td>
+                <td>
+                    <a href="<%= posting.get('url') %>" ><%= posting.get('title') %></a>
+                </td>
+                <% if(isAllowedToCreateBSIPostings){ %>
+                    <td align="center">
+                        <% if(posting.get('isAllowedToEdit')){ %>
+                            <span id="<%= posting.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>
+<div id="editDialog" title="New BSI Posting"></div>

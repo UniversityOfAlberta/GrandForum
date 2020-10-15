@@ -1,0 +1,71 @@
+<div>
+    <style>
+        .label {
+            text-align: left;
+        }
+    </style>
+    <h3>Summary</h3>
+    <table class="wikitable">
+        <tr>
+            <td class="label" width="125px">Partner name</td>
+            <td><%= HTML.TextBox(this, 'partnerName', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Partner Web site</td>
+            <td><%= HTML.TextBox(this, 'articleLink', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Project location</td>
+            <td><%= HTML.TextBox(this, 'country', {placeholder: 'Country'}) %>
+                <%= HTML.TextBox(this, 'province', {placeholder: 'Province'}) %>
+                <%= HTML.TextBox(this, 'city', {placeholder: 'City'}) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Contact details</td>
+            <td><%= HTML.TextBox(this, 'firstName', {placeholder: 'First Name'}) %> <%= HTML.TextBox(this, 'lastName', {placeholder: 'Last Name'}) %><br />
+                <%= HTML.TextBox(this, 'email', {placeholder: 'Email Address'}) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Project desired<br />start & end dates </td>
+            <td><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %> - <%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+        </tr>
+        <tr>
+            <td class="label"># of University<br />positions</td>
+            <td><%= HTML.TextBox(this, 'positions', {size: 4}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Discipline</td>
+            <td><div id="discipline"></div></td>
+        </tr>
+    </table>
+    
+    <h3>Project</h3>
+    <table class="wikitable">
+        <tr>
+            <td class="label" width="125px">Project title</td>
+            <td><%= HTML.TextBox(this, 'title', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">About the<br />company</td>
+            <td><%= HTML.TextArea(this, 'about', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Describe the<br />project</td>
+            <td><%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Required<br />expertise/skills</td>
+            <td><%= HTML.TextArea(this, 'skills', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+    </table>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="savePosting">
+        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> BSI Posting
+    </button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>
