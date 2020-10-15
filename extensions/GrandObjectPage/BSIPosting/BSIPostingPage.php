@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('BSIPostingPage', 'BSI Posting', 'network-tools', dirname(__FILE__));
+BackbonePage::register('BSIPostingPage', 'Internships', 'network-tools', dirname(__FILE__));
 
 $wgHooks['ToolboxLinks'][] = 'BSIPostingPage::createToolboxLinks';
 
@@ -43,7 +43,7 @@ class BSIPostingPage extends BackbonePage {
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("BSI Postings", "$wgServer$wgScriptPath/index.php/Special:BSIPostingPage");
+            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Internships", "$wgServer$wgScriptPath/index.php/Special:BSIPostingPage");
         }
         return true;
     }
