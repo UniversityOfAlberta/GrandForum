@@ -16,6 +16,7 @@ BSIPosting = Posting.extend({
             lastName: "",
             email: "",
             positions: "",
+            positionsText: "",
             discipline: "",
             about: "",
             skills: ""

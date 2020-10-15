@@ -27,11 +27,11 @@
         </tr>
         <tr>
             <td class="label">Project desired<br />start & end dates </td>
-            <td><%= startDate %> - <%= endDate %></td>
+            <td><%= dateTimeHelpers.formatDate(startDate) %> - <%= dateTimeHelpers.formatDate(endDate) %></td>
         </tr>
         <tr>
             <td class="label"># of University<br />positions</td>
-            <td><%= positions %></td>
+            <td><%= positions %><br /><%= positionsText %></td>
         </tr>
         <tr>
             <td class="label">Discipline</td>

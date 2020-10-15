@@ -17,7 +17,7 @@
             <tr>
                 <td>
                     <span style="display:none;"><%= posting.get('startDate') %></span>
-                    <%= dateTimeHelpers.formatDate(posting.get('startDate')) %><br />
+                    <%= dateTimeHelpers.formatDate(posting.get('startDate')) %> - <%= dateTimeHelpers.formatDate(posting.get('endDate')) %><br />
                     (Posted: <%= dateTimeHelpers.formatDate(posting.get('created')) %> by <a href="<%= posting.get('user').url %>"><%= posting.get('user').fullName %></a>)
                 </td>
                 <td>

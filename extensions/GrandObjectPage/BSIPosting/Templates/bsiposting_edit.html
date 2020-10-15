@@ -33,7 +33,9 @@
         </tr>
         <tr>
             <td class="label"># of University<br />positions</td>
-            <td><%= HTML.TextBox(this, 'positions', {size: 4}) %></td>
+            <td><%= HTML.TextBox(this, 'positions', {size: 4}) %><br />
+                <%= HTML.TextArea(this, 'positionsText', {style: 'height: 100px; width:685px;'}) %>
+            </td>
         </tr>
         <tr>
             <td class="label">Discipline</td>

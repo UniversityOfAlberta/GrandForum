@@ -16,6 +16,7 @@ class BSIPosting extends Posting {
     var $lastName;
     var $email;
     var $positions;
+    var $positionsText;
     var $discipline;
     var $about;
     var $skills;
@@ -32,6 +33,7 @@ class BSIPosting extends Posting {
             $this->lastName = $row['last_name'];
             $this->email = $row['email'];
             $this->positions = $row['positions'];
+            $this->positionsText = $row['positions_text'];
             $this->discipline = $row['discipline'];
             $this->about = $row['about'];
             $this->skills = $row['skills'];
@@ -70,6 +72,10 @@ class BSIPosting extends Posting {
         return $this->positions;
     }
     
+    function getPositionsText(){
+        return $this->positionsText;
+    }
+    
     function getDiscipline(){
         return $this->discipline;
     }
@@ -92,6 +98,7 @@ class BSIPosting extends Posting {
         $json['lastName'] = $this->getLastName();
         $json['email'] = $this->getEmail();
         $json['positions'] = $this->getPositions();
+        $json['positionsText'] = $this->getPositionsText();
         $json['discipline'] = $this->getDiscipline();
         $json['about'] = $this->getAbout();
         $json['skills'] = $this->getSkills();
@@ -110,6 +117,7 @@ class BSIPosting extends Posting {
                                                 'last_name' => $this->lastName,
                                                 'email' => $this->email,
                                                 'positions' => $this->positions,
+                                                'positions_text' => $this->positionsText,
                                                 'discipline' => $this->discipline,
                                                 'about' => $this->about,
                                                 'skills' => $this->skills),
@@ -130,6 +138,7 @@ class BSIPosting extends Posting {
                                                 'last_name' => $this->lastName,
                                                 'email' => $this->email,
                                                 'positions' => $this->positions,
+                                                'positions_text' => $this->positionsText,
                                                 'discipline' => $this->discipline,
                                                 'about' => $this->about,
                                                 'skills' => $this->skills),

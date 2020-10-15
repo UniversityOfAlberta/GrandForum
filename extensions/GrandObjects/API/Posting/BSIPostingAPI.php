@@ -19,8 +19,9 @@ class BSIPostingAPI extends PostingAPI {
         $posting->lastName = $this->POST('lastName');
         $posting->email = $this->POST('email');
         $posting->positions = $this->POST('positions');
+        $posting->positionsText = $this->POST('positionsText');
         if(is_array($this->POST('discipline'))){
-            $posting->discipline = implode(", ", $this->POST('discipline'));
+            $posting->discipline = implode("; ", $this->POST('discipline'));
         }
         else{
             $posting->discipline = $this->POST('discipline');

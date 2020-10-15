@@ -40,6 +40,7 @@ class BsiPosting extends AbstractMigration
               ->addColumn('last_name', 'string', array('limit' => 32))
               ->addColumn('email', 'string', array('limit' => 64))
               ->addColumn('positions', 'integer')
+              ->addColumn('positions_text', 'text', array('limit' => MysqlAdapter::TEXT_REGULAR))
               ->addColumn('discipline', 'text', array('limit' => MysqlAdapter::TEXT_REGULAR))
               ->addColumn('partner_name', 'string', array('limit' => 64))
               ->addColumn('city', 'string', array('limit' => 64))

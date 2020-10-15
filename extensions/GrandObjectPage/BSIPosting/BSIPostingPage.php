@@ -22,6 +22,13 @@ class BSIPostingPage extends BackbonePage {
     }
     
     function getViews(){
+        global $wgOut;
+        $departments = json_encode(array_values(Person::getAllDepartments()));
+        
+        $wgOut->addScript("<script type='text/javascript'>
+            var allDepartments = $departments;
+        </script>");
+    
         return array('Backbone/*',
                      'BSIPostingsView',
                      'BSIPostingView',

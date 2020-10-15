@@ -9,10 +9,11 @@ BSIPostingEditView = PostingEditView.extend({
     renderTagsWidget: function(){
         var html = HTML.TagIt(this, 'discipline', {
             strictValues: false, 
-            values: this.model.get('discipline').split(', '),
+            values: this.model.get('discipline').split('; '),
             options: {
                 removeConfirmation: false,
-                availableTags: ['asdf', 'fdsa']
+                availableTags: allDepartments,
+                singleFieldDelimiter: ";"
             }
         });
         this.$("#discipline").html(html);
