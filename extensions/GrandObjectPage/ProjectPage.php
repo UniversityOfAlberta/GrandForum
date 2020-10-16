@@ -121,6 +121,9 @@ class ProjectPage {
                 if($config->getValue('wikiEnabled')){
                     $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
                 }
+                if($config->getValue('networkName') == "GlycoNet"){
+                    $tabbedPage->addTab(new ProjectReportsTab($project, $visibility));
+                }
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }
