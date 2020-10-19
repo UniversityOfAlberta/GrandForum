@@ -20,7 +20,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="Informed Consent" title="Informed Consent">
+    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="Informed Consent" title="Informed Consent" pagebreak="false">
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants and partners were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
             <![CDATA[
                 <h4>Informed consent and the use of images for evaluation</h4>
