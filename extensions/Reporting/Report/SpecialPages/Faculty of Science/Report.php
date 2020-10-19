@@ -25,6 +25,8 @@ class Report extends AbstractReport{
         if($wgUser->isLoggedIn()){
             $tabs["Reports"] = TabUtils::createTab("My Annual Report");
             $tabs["TimeUseReports"] = TabUtils::createTab("Time Use Report");
+            $tabs["SupervisorReports"] = TabUtils::createTab("Supervisor Report");
+            $tabs["StudentReports"] = TabUtils::createTab("Student Report");
             $tabs["ReportArchive"] = TabUtils::createTab("Report Archive");
             $tabs["Chair"] = TabUtils::createTab("Chair");
             $tabs["Dean"] = TabUtils::createTab("Dean");
@@ -79,6 +81,19 @@ class Report extends AbstractReport{
                 $tabs["TimeUseReports"]['subtabs'][] = TabUtils::createSubTab("{$termyear}/{$supervisor->getLastName()}", "{$url}TimeUseReport{$term}&project=GradDB:{$md5}", $selected);
             }
         }
+        
+        if($person->isRole(HQP) || $person->isRole(NI)){
+            // TODO: Limit to just certain types of Students?
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "StudentReport")) ? "selected" : false;
+            $tab = TabUtils::createSubTab("Report", "{$url}StudentReport", $selected);
+            if($person->isRole(HQP)){
+                $tabs["StudentReports"]['subtabs'][] = $tab;
+            }
+            else if($person->isRole(NI)){
+                $tabs["SupervisorReports"]['subtabs'][] = $tab;
+            }
+        }
+        
         return true;
     }
 }
