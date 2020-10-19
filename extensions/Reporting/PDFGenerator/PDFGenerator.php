@@ -238,6 +238,25 @@ abstract class PDFGenerator {
             }
         }
         
+        $imgs = $dom->getElementsByTagName("img");
+        for($i=0; $i<$imgs->length; $i++){
+            $img = $imgs->item($i);
+            if(strstr($img->getAttribute('style'), "display: block;")){
+                // Image centering
+                $img->setAttribute('style', str_replace("margin-left: auto;", "", 
+                                            str_replace("margin-right: auto;", "", 
+                                            str_replace("display: block;", "", $img->getAttribute('style')))));
+                
+                // Create wrapper div                            
+                $div = $dom->createElement('div');
+                $div->setAttribute('style', 'text-align: center;');
+                $img->parentNode->replaceChild($div,$img);
+                
+                //Append this image to wrapper div
+                $div->appendChild($img);
+            }
+        }
+        
         $tds = $dom->getElementsByTagName("td");
         for($i=0; $i<$tds->length; $i++){
             $td = $tds->item($i);
