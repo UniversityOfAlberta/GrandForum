@@ -536,7 +536,7 @@
         </ReportItem>
         <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other">
             <![CDATA[
-                <h3>3.2  Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
+                <h3>3.2 Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
                 {$item}
             ]]>
         </ReportItem>

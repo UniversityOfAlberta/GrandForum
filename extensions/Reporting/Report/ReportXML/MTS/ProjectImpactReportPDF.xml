@@ -464,21 +464,20 @@
     <ReportSection id="knowledge" type="EditableReportSection" blobSection="SECTION3" name="3 - Knowledge Mobilization" title="SECTION 3 KNOWLEDGE MOBILIZATION PLAN" tooltip="SECTION 3 KNOWLEDGE MOBILIZATION PLAN" pagebreak="false">
         <ReportItem id="learnings" type="Textarea" blobItem="LEARNINGS" rich="true" limit="250">
             <![CDATA[
-                <p><i>The purpose of this section is to track project knowledge mobilization activities and identify areas where your project may need support from the MtS.</i></p>
                 <h3>3.1 What are your emerging learnings at this stage of your project? Any ‘aha’ moments and/or milestones you would like to share?</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>3.2  Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
-                {$item}
+                <h3>3.2 Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="needs" type="Textarea" blobItem="NEEDS" rich="true" limit="250">
             <![CDATA[
                 <h3>3.3 What are the specific knowledge needs of each audience member?</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="researchers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
@@ -522,13 +521,13 @@
         <ReportItem id="other" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
                     <tr><td align='right' valign='top'><b>Other:</b></td><td>{$item}</td></tr>
-                </table>
+                </table><br />
             ]]>
         </ReportItem>
         <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h3>3.4 What venues, tools or platforms have you used, or are planning to use to disseminate your key messages?</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <Static>
@@ -546,7 +545,7 @@
         <ReportItem id="links" type="Textarea" blobItem="LINKS" rich="true">
             <![CDATA[
                 <h4>Links</h4>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
