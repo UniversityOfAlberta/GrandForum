@@ -280,7 +280,7 @@ class JobPosting extends BackboneModel {
 		                
 		                <p>This notification is sent by the <a href='{$wgServer}{$wgScriptPath}'>CS-Can | Info-Can Forum</a>.</p>";
 
-            mail("members@forum.cscan-infocan.ca","New job posting by {$this->getUniversity()}",$message,$headers);
+            mail("heads@forum.cscan-infocan.ca","New job posting by {$this->getUniversity()}",$message,$headers);
             
             $this->emailSent = true;
             DBFunctions::update('grand_job_postings',
