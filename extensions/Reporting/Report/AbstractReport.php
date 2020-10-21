@@ -698,7 +698,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Generates the PDF for the report, and saves it to the Database
-    function generatePDF($person=null, $submit=false){
+    function generatePDF($person=null, $submit=false, $batch=false){
         global $wgOut, $wgUser;
         session_write_close();
         $me = $person;
@@ -776,12 +776,14 @@ abstract class AbstractReport extends SpecialPage {
         if($submit){
             $this->submitReport($person);
         }
-        header('Content-Type: application/json');
-        header('Content-Length: '.strlen(json_encode($json)));
-        echo json_encode($json);
-        ob_flush();
-        flush();
-        exit;
+        if(!$batch){
+            header('Content-Type: application/json');
+            header('Content-Length: '.strlen(json_encode($json)));
+            echo json_encode($json);
+            ob_flush();
+            flush();
+            exit;
+        }
     }
     
     // Marks the report as submitted
