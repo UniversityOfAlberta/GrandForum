@@ -34,14 +34,8 @@
                 
                 <p>Please check the box if you are submitting any images that include your research project participants as part of your reporting on the project:</p>
                 {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="pi_consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PI_CONSENT" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
-            <![CDATA[
-                <h4>Photo Release Form for PIs</h4>
-                <p>I understand that photos and/or video recordings of my research project shared as part of this report may be used for the purpose of MtS Impact Evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge that these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
-                {$item}
-                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, MtS Post-Doctoral Fellow in Evaluation <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
+                
+                <h4>Participant Consent Forms</h4>
                 <p>Please <a href='{$wgServer}{$wgScriptPath}/data/Photo Release Project Participants.docx' target='_blank'>attach consent forms</a> if you share photo/video recordings of the research project participants attach the photo/video consent forms for research project participants.</p>
             ]]>
         </ReportItem>
@@ -75,6 +69,14 @@
                 <p><i>(This reporting form is due for submission in 9 months after the funds receipt by projects. For projects that received funds in March 2020, the Impact Report is due by November 30, 2020).</i></p>
             ]]>
         </Static>
+        <ReportItem id="pi_consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PI_CONSENT" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
+            <![CDATA[
+                <h4>Photo Release Form for PIs</h4>
+                <p>I understand that photos and/or video recordings of my research project shared as part of this report may be used for the purpose of MtS Impact Evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge that these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
+                {$item}
+                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, MtS Post-Doctoral Fellow in Evaluation <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="report" type="EditableReportSection" blobSection="SECTION1" name="1 - Project Information" title="SECTION 1 GENERAL PROJECT INFORMATION" tooltip="SECTION 1 GENERAL PROJECT INFORMATION">
         <Static>
@@ -531,7 +533,7 @@
         </ReportItem>
         <ReportItem id="benefits" type="Textarea" blobItem="BENEFITS" rich="true" limit="250">
             <![CDATA[
-                <h4>If applicable, and/or unexpected benefits or opportunities?</h4>
+                <h4>If applicable, any unexpected benefits or opportunities?</h4>
                 {$item}
             ]]>
         </ReportItem>

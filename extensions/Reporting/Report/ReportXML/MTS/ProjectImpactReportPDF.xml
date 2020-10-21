@@ -25,13 +25,6 @@
             <![CDATA[
                 <h4>Informed consent and the use of images for evaluation</h4>
                 <p>{$item}</p><br />
-                
-            ]]>
-        </ReportItem>
-        <ReportItem id="pi_consent" type="Checkbox" blobItem="PI_CONSENT" blobType="BLOB_ARRAY" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
-            <![CDATA[
-                <h4>Photo Release Form for PIs</h4>
-                <p>{$item}</p><br />
                 <h4>Participant Consent Forms</h4>
             ]]>
         </ReportItem>
@@ -42,6 +35,12 @@
                 ]]>
             </ReportItem>
         </For>
+        <ReportItem id="pi_consent" type="Checkbox" blobItem="PI_CONSENT" blobType="BLOB_ARRAY" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
+            <![CDATA[
+                <h4>Photo Release Form for PIs</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="report" type="EditableReportSection" blobSection="SECTION1" name="1 - Project Information" title="SECTION 1 GENERAL PROJECT INFORMATION" tooltip="SECTION 1 GENERAL PROJECT INFORMATION" pagebreak="false">
         <Static>
@@ -475,7 +474,7 @@
         </ReportItem>
         <ReportItem id="benefits" type="Textarea" blobItem="BENEFITS" rich="true" limit="250">
             <![CDATA[
-                <h4>If applicable, and/or unexpected benefits or opportunities?</h4>
+                <h4>If applicable, any unexpected benefits or opportunities?</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
