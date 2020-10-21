@@ -115,18 +115,20 @@ ContributionEditView = Backbone.View.extend({
     },
     
     renderAuthors: function(){
-        if(this.allPeople != null && this.allPeople.length > 0){
-            this.renderAuthorsWidget();
-        }
-        else{
-            this.allPeople = new People();
-            this.allPeople.fetch();
-            var spin = spinner("contributionAuthors", 10, 20, 10, 3, '#888');
-            this.allPeople.bind('sync', function(){
-                if(this.allPeople.length > 0){
-                    this.renderAuthorsWidget();
-                }
-            }, this);
+        if($("#contributionAuthors").length > 0){
+            if(this.allPeople != null && this.allPeople.length > 0){
+                this.renderAuthorsWidget();
+            }
+            else{
+                this.allPeople = new People();
+                this.allPeople.fetch();
+                var spin = spinner("contributionAuthors", 10, 20, 10, 3, '#888');
+                this.allPeople.bind('sync', function(){
+                    if(this.allPeople.length > 0){
+                        this.renderAuthorsWidget();
+                    }
+                }, this);
+            }
         }
     },
     

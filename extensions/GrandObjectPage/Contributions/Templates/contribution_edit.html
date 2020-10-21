@@ -1,17 +1,19 @@
 <div class="small">
-                For CASH and IN-KIND Contributions, DO NOT include:
-                <ul>
-                    <li>grants from federal granting agencies, such as NSERC, CIHR, SSHRC, CFI or Genome Canada and its provincial centres (except Genome BC) for research, equipment, etc.;</li>
-                    <li>contributions from partners who are funded by federal granting agencies, such as NCE, NSERC, CIHR, SSHRC, CFI or Genome Canada.</li>
-                    <li>salaries of individuals who are eligible to receive funds directly from the granting agencies (e.g. faculty members of postsecondary institutions) and any associated administrative overhead costs.</li>
-                    <li>contributions or contracts outside of the scope of the network’s activities.</li>
-                    <li>time on committees and boards.</li>
-                </ul>
-            </div>
-<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'name', {size: '50'}) %>
-<h2>People</h2>
-<div id="contributionAuthors">
+    For CASH and IN-KIND Contributions, DO NOT include:
+    <ul>
+        <li>grants from federal granting agencies, such as NSERC, CIHR, SSHRC, CFI or Genome Canada and its provincial centres (except Genome BC) for research, equipment, etc.;</li>
+        <li>contributions from partners who are funded by federal granting agencies, such as NCE, NSERC, CIHR, SSHRC, CFI or Genome Canada.</li>
+        <li>salaries of individuals who are eligible to receive funds directly from the granting agencies (e.g. faculty members of postsecondary institutions) and any associated administrative overhead costs.</li>
+        <li>contributions or contracts outside of the scope of the network’s activities.</li>
+        <li>time on committees and boards.</li>
+    </ul>
 </div>
+<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'name', {size: '50'}) %>
+<% if(networkName != 'MTS'){ %>
+    <h2>People</h2>
+    <div id="contributionAuthors">
+    </div>
+<% } %>
 <% if(networkName != 'MTS'){ %>
     <h2>Description</h2>
     <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
@@ -38,7 +40,7 @@
 <table width="100%">
     <tr>
         <td valign="top" width="50%">
-            <h2>Partners</h2>
+            <h2>Contributing Partners</h2>
             <% _.each(partners, function(partner, i){ %>
                 <div class="warning" style="display:none;" id="warning<%= i %>"></div>
                 <table id="partner<%= i %>">

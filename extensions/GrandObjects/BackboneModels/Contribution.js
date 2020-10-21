@@ -85,7 +85,7 @@ Contribution = Backbone.Model.extend({
             province: "",
             start: "",
             end: "",
-            authors: new Array(),
+            authors: new Array({id: me.get('id'), name: me.get('name'), fullname: me.get('fullName')}),
             partners: new Array(),
             projects: new Array(),
             cash: 0,
