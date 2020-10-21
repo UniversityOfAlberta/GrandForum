@@ -1,82 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Impact Report" reportType="RP_IMPACT" pdfType="RPTP_IMPACT" pdfFiles="ProjectImpactReportPDF" personId="0" ajax="true" disabled="false">
-    <Permissions>
-        <Role role="PL">
-
-        </Role>
-        <Role role="STAFF+">
-
-        </Role>
-        <Project />
-    </Permissions>
-    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="Intro &amp; Informed Consent" title="Introduction and Informed Consent">
-        <Static>
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static id="report_info_head">
             <![CDATA[
-                <h3>Objectives of this reporting template:</h3>
-                <ol>
-                    <li>Collect information on project status to determine continuation of funding.</li>
-                    <li>Gather the information/stories on key project achievements, challenges and lessons learned in the areas of:
-                        <ul>
-                            <li>Innovation, research and knowledge mobilization’ and</li>
-                            <li>Partnerships and network building.</li>
-                        </ul>
-                    <li>Encourage dialogue and collaborative reflection among research teams;</li>
-                    <li>Gather the information to inform MtS engagement and knowledge mobilization strategy for advancing research impact.</li>
-                </ol>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>Project Impact Report</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
             ]]>
         </Static>
+    </ReportSection>
+    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="Informed Consent" title="Informed Consent" pagebreak="false">
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants and partners were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
             <![CDATA[
-                <h3>Informed consent and the use of images for evaluation</h3>
-                <p>Dear network member, the information we ask you to submit in this report is used to fulfill our reporting requirements to our funder, determine the continuation of project funding and as part of the AWH/COH/MtS impact evaluation research. All information related to your project will be shared with the funder in the form of the report that summarises the main findings related to project progress, including achieving project objectives, knowledge mobilization and highly qualified personnel development targets. The questions of the reporting template are structured to encourage project team’s reflection on the research project implementation, collective work, engagement of partners and network building. The response to this template will inform MtS’s knowledge mobilization and training strategy for advancing network and partnership building, and research impact. The findings of this impact evaluation research will be used to understand the effectiveness of the MtS research, innovation and knowledge mobilization efforts as well as the effectiveness of partnerships and coalition building for greater research impact. The results will be shared with the MtS Research Network Members and with a broader audience including policy-makers, funders and practitioners.</p>
+                <h4>Informed consent and the use of images for evaluation</h4>
+                <p>{$item}</p><br />
                 
-                <p>All reported information will be held in strict confidence and will be accessible to the research team. All digital data will be encrypted and kept on a secure server under a password accessible only to the research team members. Please note that if you share pictures of your research project and/or your research participants for the purpose of this report, we may use these pictures when sharing evaluation findings with broader audience. It is your responsibility to inform the research participants that their images may be used in the context of this evaluation and ensure they sign the Photo Release Form. The script for informing your research participants and partners about the potential use of their images in impact evaluation project is attached as Appendix 1 of this form. Please attach consent forms signed by research participants and/or partners if you are submitting any images as part of this report.</p>
-                
-                <p>Please check the box if you are submitting any images that include your research project participants as part of your reporting on the project:</p>
-                {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="pi_consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PI_CONSENT" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
+        <ReportItem id="pi_consent" type="Checkbox" blobItem="PI_CONSENT" blobType="BLOB_ARRAY" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
             <![CDATA[
                 <h4>Photo Release Form for PIs</h4>
-                <p>I understand that photos and/or video recordings of my research project shared as part of this report may be used for the purpose of MtS Impact Evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge that these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
-                {$item}
-                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, MtS Post-Doctoral Fellow in Evaluation <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
-                <p>Please <a href='{$wgServer}{$wgScriptPath}/data/Photo Release Project Participants.docx' target='_blank'>attach consent forms</a> if you share photo/video recordings of the research project participants attach the photo/video consent forms for research project participants.</p>
+                <p>{$item}</p><br />
+                <h4>Participant Consent Forms</h4>
             ]]>
         </ReportItem>
         <For from="1" to="20">
             <ReportItem id="consent{$index}" type="Upload" blobItem="CONSENT{$index}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
                 <![CDATA[
-                    <div class='consents' id='consent{$index}' style='display:none;'>
-                        {$item}
-                    </div>
-                    <script type='text/javascript'>
-                        if('{getBlobMD5()}' != '' || '{$index}' == 1){
-                            $('#consent{$index}').show();
-                        }
-                    </script>
+                    {$item}
                 ]]>
             </ReportItem>
         </For>
-        <Static>
-            <![CDATA[
-                <button id='addFile' type='button'>Add another file</button>
-                <script type='text/javascript'>
-                    $('#addFile').click(function(){
-                        $('.consents:not(:visible)').first().show();
-                        $('iframe', $('.consents:visible').last())[0].src = $('iframe', $('.consents:visible').last())[0].src;
-                        if($('.consents:not(:visible)').length == 0){
-                            $('#addFile').prop('disabled', true);
-                        }
-                    });
-                </script>
-                <br /><br />
-                <p><i>(This reporting form is due for submission in 9 months after the funds receipt by projects. For projects that received funds in March 2020, the Impact Report is due by November 30, 2020).</i></p>
-            ]]>
-        </Static>
     </ReportSection>
-    <ReportSection id="report" type="EditableReportSection" blobSection="SECTION1" name="1 - Project Information" title="SECTION 1 GENERAL PROJECT INFORMATION" tooltip="SECTION 1 GENERAL PROJECT INFORMATION">
+    <ReportSection id="report" type="EditableReportSection" blobSection="SECTION1" name="1 - Project Information" title="SECTION 1 GENERAL PROJECT INFORMATION" tooltip="SECTION 1 GENERAL PROJECT INFORMATION" pagebreak="false">
         <Static>
             <![CDATA[
                 <table>
@@ -121,15 +88,13 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                </table>
+                </table><br />
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="activities" type="EditableReportSection" blobSection="SECTION2" name="2 - Project Activities" title="SECTION 2 KEY PROJECT ACTIVITIES" tooltip="SECTION 2 KEY PROJECT ACTIVITIES">
+    <ReportSection id="activities" type="EditableReportSection" blobSection="SECTION2" name="2 - Project Activities" title="SECTION 2 KEY PROJECT ACTIVITIES" tooltip="SECTION 2 KEY PROJECT ACTIVITIES" pagebreak="false">
         <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true" limit="100">
             <![CDATA[
-                <p><i>The purpose of this section is to track the project progress and identify any emerging patterns and practices respective to ‘innovation, research and knowledge mobilization’ and ‘partnerships and coalition building’.</i></p>
-                <p>As a team, reflect on your project and impact strategy implementation plan as identified in your original proposal, and describe highlights of progress in relation to achieving your project objectives, any challenges or adverse events that affected your original plan/strategy, and your response to the challenges, including any changes or adaptations to the original plan/strategy, where applicable. Where applicable, please attach pictures to illustrate your point and experiences of the project team.</p>
                 <h3>2.1 What is the intended ultimate impact of your research as described in your proposal?</h3>
                 {$item}
             ]]>
@@ -137,51 +102,38 @@
         <ReportItem id="recruitment" type="Textarea" blobItem="RECRUITMENT" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h3>2.2 Research Project Activities</h3>
-                <p>Describe highlights of progress in relation to achieving project objectives on each activity, challenges or adverse events affecting research project implementation, and your response to the challenges, including any adaptations to the original research project plan.  Please note that if you share pictures of your research project and your research participants for the purpose of this report, we may use these pictures when sharing evaluation findings with broader audience in knowledge mobilization products such as research summaries, snapshots, blogposts, etc.</p>
                 <h4>Recruitment</h4>
-                <small>Sampling, recruiting, and identifying research participants.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="collection" type="Textarea" blobItem="COLLECTION" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h4>Data Collection</h4>
-                <small>Methods, processes, and procedures used for data collection.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="analysis" type="Textarea" blobItem="ANALYSIS" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h4>Analysis</h4>
-                <small>Software, frameworks, etc. used to code, analyze, and interpret data.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="hqp" type="Textarea" blobItem="HQP" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h4>Highly Qualified Personnel Training and Development</h4>
-                <small>Recruiting and training  research project staff, including research assistants, project coordinators,  graduate students and post-doctoral fellows.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="networking" type="Textarea" blobItem="NETWORKING" rich="true" limit="500" default="&lt;p>Successes (Highlights related to your research and project objectives)&lt;/p>&lt;p>Barriers (Challenges and adverse events that have affected your project/research)&lt;/p>&lt;p>Strategies (Efforts taken to overcome barriers)&lt;/p>">
             <![CDATA[
                 <h4>Networking and Partnerships Plan Implementation.</h4>
-                <small>Engaging project partners, including – academic partners;
- community partners, e.g. service-delivery agencies; government; Indigenous partners; and people with lived experiences.</small>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="other" type="Textarea" blobItem="OTHER" rich="true" limit="500">
             <![CDATA[
                 <h4>Describe any other relevant activities that were not captured in the previous sections.</h4>
-                {$item}
-                <small><i>Minimum 100 and maximum 500 words plus 1-3 pictures if applicable.</i></small>
+                {$item}<br />
             ]]>
         </ReportItem>
         
@@ -189,21 +141,13 @@
         <Static>
             <![CDATA[
                 <h4>CERI - Community Engagement in Research Index</h4>
-                <p><small>
-                    This section of the report measures different levels of community participation in research projects. Pease rate the level of engagement among different types of non-academic partners in your research project activities according to the proposed scale.<br />
-                          0 – not involved<br />
-                          1 – community partners provide access to study subjects, e.g. assist with recruitment and outreach but are not engaged in the research aspects of the project.<br />
-                          2 – community partners act as consultants and/or advisors on research project but do not make any research-related decisions.<br />
-                          3 – community partners engage in co-design of the research-related activities<br />
-                          4 – community partners lead the activity participating as co-investigators
-                </small></p>
-                <table class="wikitable">
+                <table class="wikitable" frame="box" rules="all" width="100%">
                     <tr>
-                        <th width='100px;'>Research activities</th>
-                        <th width='100px;'>Service-delivery agencies</th>
-                        <th width='100px;'>Indigenous community-based agencies and/or governing bodies</th>
-                        <th width='100px;'>Persons with lived experiences of homelessness</th>
-                        <th width='100px;'>Orders of Government</th>
+                        <th>Research activities</th>
+                        <th>Service-delivery agencies</th>
+                        <th>Indigenous community-based agencies and/or governing bodies</th>
+                        <th>Persons with lived experiences of homelessness</th>
+                        <th>Orders of Government</th>
                     </tr>
             ]]>
         </Static>
@@ -512,7 +456,7 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                </table>
+                </table><br />
             ]]>
         </Static>
         <ReportItem id="ceri_explain" type="Textarea" blobItem="CERI_EXPLAIN" rich="true" limit="250">
@@ -526,185 +470,132 @@
             <![CDATA[
                 <h3>2.3 Leveraging resources and opportunities (optional)</h3>
                 <h4>If applicable, describe any resources leveraged during project implementation.</h4>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="benefits" type="Textarea" blobItem="BENEFITS" rich="true" limit="250">
             <![CDATA[
                 <h4>If applicable, and/or unexpected benefits or opportunities?</h4>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="knowledge" type="EditableReportSection" blobSection="SECTION3" name="3 - Knowledge Mobilization" title="SECTION 3 KNOWLEDGE MOBILIZATION PLAN" tooltip="SECTION 3 KNOWLEDGE MOBILIZATION PLAN">
+    <ReportSection id="knowledge" type="EditableReportSection" blobSection="SECTION3" name="3 - Knowledge Mobilization" title="SECTION 3 KNOWLEDGE MOBILIZATION PLAN" tooltip="SECTION 3 KNOWLEDGE MOBILIZATION PLAN" pagebreak="false">
         <ReportItem id="learnings" type="Textarea" blobItem="LEARNINGS" rich="true" limit="250">
             <![CDATA[
-                <p><i>The purpose of this section is to track project knowledge mobilization activities and identify areas where your project may need support from the MtS.</i></p>
-                <h3>3.1 What are your emerging learnings at this stage of your project? Any ‘aha’ moments and/or milestones you would like to share? (up to 250 words)</h3>
-                {$item}
+                <h3>3.1 What are your emerging learnings at this stage of your project? Any ‘aha’ moments and/or milestones you would like to share?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other">
+        <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h3>3.2 Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="needs" type="Textarea" blobItem="NEEDS" rich="true" limit="250">
             <![CDATA[
-                <h3>3.3 What are the specific knowledge needs of each audience member (e.g., policy makers are looking for actionable research that can inform policy decision-making)?</h3>
-                {$item}
+                <h3>3.3 What are the specific knowledge needs of each audience member?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="researchers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                <h3>3.4 What are your key messages for your key audience?  Fill in those that apply in 1 or 2 sentences.</h3>
+                <h3>3.4 What are your key messages for your key audience?</h3>
                 <table>
-                    <tr><td align='right'><b>Researchers:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Researchers:</b></td><td>{$item}</td></tr>
                      
             ]]>
         </ReportItem>
         <ReportItem id="policymakers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Policymakers:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Policymakers:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="practitioners" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Practitioners:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Practitioners:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="funders" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Funders:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Funders:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="legal" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Legal Professionals:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Legal Professionals:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="public" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>General public:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>General public:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="media" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Media:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top'><b>Media:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         <ReportItem id="other" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
             <![CDATA[
-                    <tr><td align='right'><b>Other:</b></td><td>{$item}</td></tr>
-                </table>
+                    <tr><td align='right' valign='top'><b>Other:</b></td><td>{$item}</td></tr>
+                </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other">
+        <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>3.4 What venues, tools or platforms have you used, or are planning to use to disseminate your key messages? (Refer to <a href="https://www.dropbox.com/sh/7lz1ld7r2vn3so6/AAAbXtaQTpQ_ogwl8po1k1FOa?dl=0" target="_blank">Network members manual</a> section 6 for more details). Select all that apply.</h3>
-                {$item}
+                <h3>3.4 What venues, tools or platforms have you used, or are planning to use to disseminate your key messages?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[
                 <h3>3.5 Please attach or link to any knowledge mobilization products you developed.</h3>
-                <b>Files (.doc, .docx, .pdf, .jpg)</b>
             ]]>
         </Static>
         <For from="1" to="20">
             <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
                 <![CDATA[
-                    <div class='files' id='file{$index}' style='display:none;'>
-                        {$item}
-                    </div>
-                    <script type='text/javascript'>
-                        if('{getBlobMD5()}' != '' || '{$index}' == 1){
-                            $('#file{$index}').show();
-                        }
-                    </script>
+                    {$item}
                 ]]>
             </ReportItem>
         </For>
-        <Static>
-            <![CDATA[
-                <button id='addFile' type='button'>Add another file</button>
-                <script type='text/javascript'>
-                    $('#addFile').click(function(){
-                        $('.files:not(:visible)').first().show();
-                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
-                        if($('.files:not(:visible)').length == 0){
-                            $('#addFile').prop('disabled', true);
-                        }
-                    });
-                </script>
-                <br /><br />
-            ]]>
-        </Static>
         <ReportItem id="links" type="Textarea" blobItem="LINKS" rich="true">
             <![CDATA[
-                <b>Links (videos, websites)</b>
-                {$item}
+                <h4>Links</h4>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other">
+        <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>3.6 Please, indicate the topics on which your project team would like to receive support from the MtS in the next six months (January 2021 to June 2021)?  Please select up to five items</h3>
+                <h3>3.6 Please, indicate the topics on which your project team would like to receive support from the MtS in the next six months (January 2021 to June 2021)?</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="topics_other" type="Text" width="200px" blobItem="TOPICS_OTHER">
             <![CDATA[
-                <div id='topics_other'>Other: {$item}</div>
-                <script type="text/javascript">
-                    $("[name='3KnowledgeMobilization_topics[]']").change(function(){
-                        if($("[name='3KnowledgeMobilization_topics[]'][value='Other']").is(":checked")){
-                            $("#topics_other").show();
-                        }
-                        else{
-                            $("#topics_other").hide();
-                        }
-                    }).change();
-                </script>
+                <br />
+                <i>{$item}</i>
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a selection of resources and toolkits on relevant topics)|Other">
+        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a selection of resources and toolkits on relevant topics)|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>3.7 How does your project team prefer to access support? Please select three items</h3>
+                <h3>3.7 How does your project team prefer to access support?</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="support_other" type="Text" width="200px" blobItem="SUPPORT_OTHER">
             <![CDATA[
-                <div id='support_other'>Other: {$item}</div>
-                <p>Disclaimer: pending availability of MtS and AWHC/COH staff</p>
-                <script type="text/javascript">
-                    $("[name='3KnowledgeMobilization_support[]']").change(function(){
-                        if($("[name='3KnowledgeMobilization_support[]'][value='Other']").is(":checked")){
-                            $("#support_other").show();
-                        }
-                        else{
-                            $("#support_other").hide();
-                        }
-                    }).change();
-                </script>
+                <br />
+                <i>{$item}</i><br /><br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="learning" type="EditableReportSection" blobSection="SECTION4" name="4 - Learning" title="SECTION 4 LEARNING FROM YOUR PROJECT (Optional)" tooltip="SECTION 4 LEARNING FROM YOUR PROJECT (Optional)">
+    <ReportSection id="learning" type="EditableReportSection" blobSection="SECTION4" name="4 - Learning" title="SECTION 4 LEARNING FROM YOUR PROJECT (Optional)" tooltip="SECTION 4 LEARNING FROM YOUR PROJECT (Optional)" pagebreak="false">
         <Static>
             <![CDATA[
-                <i>The purpose of this section is to encourage dialogue and collaborative reflection among project team members and partners to enhance partner & stakeholder engagement.</i>
-                <p>Together with research project partners, conduct team reflection and planning session to reflect on your project activities, challenges and responses described in Section 2 and summarize up to five key lessons (minimum one and maximum five lessons) learned in this reporting period. Explain how these lessons inform further steps of your project implementation.</p>
-                <p>For facilitation tips and resources, please consult the following:</p>
-                <ul>
-                    <li>Participatory Evaluation Techniques (good resources for activities for collaborative reflection)</li>
-                    <li><a href="https://en.healthnexus.ca/sites/en.healthnexus.ca/files/u47/the_power_of_reflection.pdf" target="_blank">https://en.healthnexus.ca/sites/en.healthnexus.ca/files/u47/the_power_of_reflection.pdf</a></li>
-                    <li>The Art of Hosting/Methods <a href="https://www.artofhosting.org/what-is-aoh/methods/" target="_blank">https://www.artofhosting.org/what-is-aoh/methods/</a></li>
-                    <li>Tips for remote meeting facilitation <a href="https://www.universityaffairs.ca/career-advice/career-advice-article/staying-human-in-the-zoom-boom/" target="_blank">Staying Human in the Zoom Boom</a></li>
-                    <li>Online facilitation for effective group work <a href="https://age-of-product.com/remote-agile-virtual-liberating-structures/" target="_blank">Virtual Liberating Structures</a></li>
-                </ul>
-                <table class="wikitable">
+                <table class="wikitable" frame="box" rules="all" width="100%">
                     <tr>
                         <th rowspan='2'>Key Lesson Learned</th>
                         <th colspan='3'>What you will continue doing, stop doing or start doing differently as a result of this lesson?</th>
@@ -831,13 +722,5 @@
                 </table>
             ]]>
         </Static>
-    </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="report_review" type="ReviewReportItem">
-            <![CDATA[{$item}]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="" />
     </ReportSection>
 </Report>

@@ -152,6 +152,7 @@ class ReportItemCallback {
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
+            "getDepartments" => "getDepartments",
             "getProjects" => "getProjects",
             "getProjectNames" => "getProjectNames",
             "getProjectTitles" => "getProjectTitles",
@@ -1249,6 +1250,12 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getDepartments($delim=", "){
+        $departments = Person::getAllDepartments();
+        sort($departments);
+        return implode($delim, $departments);
+    }
+    
     function getProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
@@ -1698,7 +1705,10 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+    function getBlobMD5($rp="", $section="", $blobId="", $subId="", $personId="", $projectId="", $year=null){
+        if($rp == ""){
+            return $this->reportItem->getMD5();
+        }
         if($year == null){
             $year = $this->reportItem->getReport()->year;
         }

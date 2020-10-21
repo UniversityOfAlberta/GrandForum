@@ -1,0 +1,68 @@
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:BSIPostingPage#" style="float: right;">Back to Internship Postings</a>
+<div>
+    <style>
+        .label {
+            text-align: left;
+        }
+    </style>
+    <h3>Summary</h3>
+    <table class="wikitable">
+        <tr>
+            <td class="label" width="125px">Type</td>
+            <td><%= type %></td>
+        </tr>
+        <tr>
+            <td class="label">Partner name</td>
+            <td><%= partnerName %></td>
+        </tr>
+        <% if(articleLink != ""){ %>
+            <tr>
+                <td class="label">Partner Web site</td>
+                <td><a href="<%= articleLink %>"><%= articleLink %></a></td>
+            </tr>
+        <% } %>
+        <tr>
+            <td class="label">Project location</td>
+            <td><%= country %>, <%= province %>, <%= city %></td>
+        </tr>
+        <tr>
+            <td class="label">Contact details</td>
+            <td><%= firstName %> <%= lastName %><br /><a href="mailto:<%= email %>"><%= email %></a></td>
+        </tr>
+        <tr>
+            <td class="label">Project desired<br />start & end dates </td>
+            <td><%= dateTimeHelpers.formatDate(startDate) %> - <%= dateTimeHelpers.formatDate(endDate) %></td>
+        </tr>
+        <tr>
+            <td class="label"># of University<br />positions</td>
+            <td><%= positions %><br /><%= positionsText %></td>
+        </tr>
+        <tr>
+            <td class="label">Discipline</td>
+            <td><%= discipline %></td>
+        </tr>
+    </table>
+    
+    <h3>Project</h3>
+    <table class="wikitable">
+        <tr>
+            <td class="label" width="125px">Project title</td>
+            <td><%= title %></td>
+        </tr>
+        <tr>
+            <td class="label">About the<br />company</td>
+            <td><%= about %></td>
+        </tr>
+        <tr>
+            <td class="label">Describe the<br />project</td>
+            <td><%= summary %></td>
+        </tr>
+        <tr>
+            <td class="label">Required<br />expertise/skills</td>
+            <td><%= skills %></td>
+        </tr>
+    </table>
+</div>
+<% if(isAllowedToEdit){ %>
+    <button id='editPosting'>Edit Internship</button>&nbsp;<button id='deletePosting'>Delete Internship</button>
+<% } %>

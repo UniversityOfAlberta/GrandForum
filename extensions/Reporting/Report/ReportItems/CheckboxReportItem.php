@@ -6,6 +6,7 @@ class CheckboxReportItem extends AbstractReportItem {
 		global $wgOut;
         $options = $this->parseOptions();
         $value = $this->getBlobValue();
+        $limit = $this->getAttr('limit', 0);
         if(is_array($value)){
             $value = array_filter($value);
         }
@@ -27,7 +28,23 @@ class CheckboxReportItem extends AbstractReportItem {
         else if($orientation == 'horizontal'){
             $output = implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $items);
         }
-        $output = "<input type='hidden' name='{$this->getPostId()}[]' value='' />".$output; 
+        $output = "<input type='hidden' name='{$this->getPostId()}[]' value='' />".$output;
+        if($limit > 0){
+            $output .= "<script type='text/javascript'>
+                $(\"[name='{$this->getPostId()}[]']\").change(function(){
+                    if($(\"[name='{$this->getPostId()}[]']:checked\").length > $limit){
+                        // Just in case
+                        this.checked = false;
+                    }
+                    if($(\"[name='{$this->getPostId()}[]']:checked\").length >= $limit){
+                        $(\"[name='{$this->getPostId()}[]']:not(:checked)\").prop('disabled', true);
+                    } 
+                    else{
+                        $(\"[name='{$this->getPostId()}[]']:not(:checked)\").prop('disabled', false);
+                    }
+                }).change();
+            </script>";
+        } 
         $output = $this->processCData("<div>{$output}</div>");
 		$wgOut->addHTML($output);
 	}

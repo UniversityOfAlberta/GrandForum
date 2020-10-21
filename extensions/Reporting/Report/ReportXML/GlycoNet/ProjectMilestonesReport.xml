@@ -10,13 +10,14 @@
     <ReportSection id="report" name="Milestones Report" title="Milestones Report" tooltip="Milestones Report" type="EditableReportSection" blobSection="REPORT">
         <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
             <![CDATA[
-                <h2>Top 3 successes</h2>
+                <h2>Top 3 successes <small style="color: red;">(Minimum 3 sentences)</small></h2>
+                
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="Textarea" blobType="BLOB_TEXT" blobItem="CHALLENGE"  rich="true">
             <![CDATA[
-                <h2>Top 3 challenges</h2>
+                <h2>Top 3 challenges <small style="color: red;">(Minimum 3 sentences)</small></h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -28,7 +29,7 @@
         </ReportItem>
         <ReportItem id="covid" type="Textarea" blobType="BLOB_TEXT" blobItem="COVID" rich="true">
             <![CDATA[
-                <h2>Describe the impact of the COVID-19 pandemic on your project</h2>
+                <h2>Describe the impact of the COVID-19 pandemic on your project <small style="color: red;">(Minimum 3 sentences)</small></h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -45,6 +46,22 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="By generating a PDF your report is automatically submitted" />
+        <If if="{and(
+                    {!=({getText(RP_MILE_REPORT,REPORT,SUCCESS,0,0,{$project_id})},)},
+                    {!=({getText(RP_MILE_REPORT,REPORT,CHALLENGE,0,0,{$project_id})},)},
+                    {!=({getText(RP_MILE_REPORT,REPORT,COVID,0,0,{$project_id})},)}
+                )}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="By generating a PDF your report is automatically submitted" />
+        </If>
+        <Else>
+            <![CDATA[
+                <p>You have not answered all of the required questions:</p>
+                <ul>
+                    <li>Top 3 successes</li>
+                    <li>Top 3 challenges</li>
+                    <li>Describe the impact of the COVID-19 pandemic on your project</li>
+                </ul>
+            ]]>
+        </Else>
     </ReportSection>
 </Report>

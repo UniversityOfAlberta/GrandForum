@@ -24,6 +24,9 @@
     if(isExtensionEnabled("Postings")){
         require_once("NewsPosting/NewsPostingPage.php");
         require_once("EventPosting/EventPostingPage.php");
+        if($config->getValue('networkName') == "AI4Society"){
+            require_once("BSIPosting/BSIPostingPage.php");
+        }
     }
     //require_once("AddMultimediaPage.php");
     

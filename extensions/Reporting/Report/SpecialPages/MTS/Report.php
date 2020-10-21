@@ -17,9 +17,6 @@ class Report extends AbstractReport{
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
-        if(isset($_GET['project']) && ($report == "NIReport" || $report == "HQPReport" || $report == "SABReport")){
-            $topProjectOnly = true;
-        }
         $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
 
@@ -34,13 +31,19 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
+
+        foreach($person->getProjects() as $project){
+            if($person->leadershipOf($project)){
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectImpactReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
+                $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectImpactReport&project={$project->getName()}", $selected);
+            }
+        }
         
         return true;
     }
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $config;
-
         return true;
     }
 }

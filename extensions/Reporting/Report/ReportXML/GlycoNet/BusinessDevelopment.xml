@@ -11,10 +11,10 @@
             <table id='bd_table' class='wikitable' width='100%'>
                 <thead>
                     <tr>
-                        <th rowspan='3'>Grant Type</th>
-                        <th rowspan='3'>Research Theme</th>
                         <th rowspan='3'>Project Code</th>
                         <th rowspan='3'>Lead NI</th>
+                        <th rowspan='3'>Grant Type</th>
+                        <th rowspan='3'>Research Theme</th>
                         <th rowspan='3'>Product Type</th>
                         <th colspan='5'>Proof of Concept</th>
                         <th colspan='4'>Preclinical</th>
@@ -57,14 +57,15 @@
             </Static>
             <ReportItem id="grant_type" type="Text" blobItem="GRANT_TYPE">
                 <![CDATA[
+                    <td>{$project_name}</td>
+                    <td>{$project_leader_names}</td>
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
             <Static>
                 <![CDATA[
                     <td>{$project_theme}</td>
-                    <td>{$project_name}</td>
-                    <td>{$project_leader_names}</td>
+                    
                 ]]>
             </Static>
             <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
@@ -152,11 +153,16 @@
                     $('#reportTabs').hide();
                     $('#bd_table').DataTable({
                         scrollX: true,
+                        scrollY: ($(window).height() - 470) + "px",
                         searching: false,
                         aLengthMenu: [
                             [25, 50, 100, 200, -1],
                             [25, 50, 100, 200, "All"]
                         ],
+                        fixedColumns:   
+                        {
+                            leftColumns: 2
+                        },
                         columnDefs: [
                            {type: 'natural', targets: 2}
                         ],

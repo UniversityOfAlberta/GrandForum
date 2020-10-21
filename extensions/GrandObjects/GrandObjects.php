@@ -178,6 +178,14 @@ $apiRequest->addAction('Hidden','eventposting/new/:date/:start/:count', 'EventPo
 $apiRequest->addAction('Hidden','eventposting/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/current', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/current/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/new/:date', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/new/:date/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:id', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:id/image', 'BSIPostingAPI');
 
 function createModels(){
 
@@ -212,6 +220,7 @@ function createModels(){
     addScript("Posting");
     addScript("NewsPosting");
     addScript("EventPosting");
+    addScript("BSIPosting");
     
     return true;
 }
