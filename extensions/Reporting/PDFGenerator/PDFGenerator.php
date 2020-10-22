@@ -23,6 +23,9 @@ function calculateDPI(){
 }
 
 function initGlobals(){
+    FootnotesReportItem::$top_anchor = 1;
+    FootnotesReportItem::$bottom_anchor = 1;
+    FootnoteReportItem::$nFootnotes = 0;
     $GLOBALS['attachedPDFs'] = array();
     $GLOBALS['chapters'] = array();
     $GLOBALS['footnotes'] = array();
