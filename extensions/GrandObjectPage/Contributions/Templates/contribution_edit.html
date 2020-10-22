@@ -110,6 +110,44 @@
                         <td align="right"><b>Level:</b></td>
                         <td><%= HTML.Select(this, 'partners.' + i + '.level', {options: ['','Provincial','Federal']}) %></td>
                     </tr>
+                    <!--tr>
+                        <td colspan="2">
+                            <h3>Cash Amounts:</h3>
+                            <% ['Salaries: Bachelors - Canadian and Permanent Residents',
+                                'Salaries: Bachelors - Foreign',
+                                'Salaries: Masters - Canadian and Permanent Residents',
+                                'Salaries: Masters - Foreign',
+                                'Salaries: Doctorate - Canadian and Permanent Residents',
+                                'Salaries: Doctorate - Foreign',
+                                'Salaries: Post-doctoral Canadian and Permanent residents',
+                                'Salaries: Postdoctoral',
+                                'Salaries: Other',
+                                'Salary and benefits of incumbent (Canada Research Chairs only)',
+                                'Professional and technical services/contracts',
+                                'Equipment (incl. powered vehicles)',
+                                'Materials, supplies and other expenditures',
+                                'Travel',
+                                'Other expenditures'].forEach(function(subType){ %>
+                                    <input type="text" size="6" />&nbsp;<%= subType %><br />
+                            <% }); %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <h3>In-Kind Amounts:</h3>
+                            <% ['Equipment, Software',
+                           'Materials',
+                           'Logistical Support of Field Work',
+                           'Provision of Services',
+                           'Use of Company Facilites',
+                           'Salaries of Scientific Staff',
+                           'Salaries of Managerial and Administrative Staff',
+                           'Project-related Travel',
+                           'Other'].forEach(function(subType){ %>
+                                    <input type="text" size="6" />&nbsp;<%= subType %><br />
+                            <% }); %>
+                        </td>
+                    </tr-->
                     <tr>
                         <td align="right"><b>Type:</b></td>
                         <td><%= HTML.Select(this, 'partners.' + i + '.type', {options: [{value: '', option: '[Select Contribution Type]'},
