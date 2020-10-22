@@ -72,7 +72,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="stream" type="Select" blobItem="STREAM" width="400px" options="1) Funding Stream A (One year): data, technology, infrastructure, and new methods of data analysis (up to $50,000)|2) Funding Stream A (Multi-year): data, technology, infrastructure, and new methods of data analysis ($50,000-$200,000)|3) Funding Stream B: Developing a data infrastructure roadmap (up to $500,000)">
+        <ReportItem id="stream" type="Select" blobItem="STREAM" width="400px" options="1) Funding Stream A: Developing a data infrastructure roadmap (up to $500,000)|2)Funding Stream B (One year): data, technology, infrastructure, and new methods of data analysis (up to $50,000)|2) Funding Stream B (Multi-year): data, technology, infrastructure, and new methods of data analysis ($50,000-$200,000)">
             <![CDATA[
                 <p>
                     <b>Which funding stream are you applying for?</b><br />
