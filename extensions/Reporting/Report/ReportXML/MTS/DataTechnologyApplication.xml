@@ -63,7 +63,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="survey" tooltip="Project Information" name="Project Information" title="Project Information" blobSection="SURVEY" type="ReportSection" renderpdf="false">
+    <ReportSection id="survey" tooltip="Project Information" name="Project Information" title="Project Information" blobSection="SURVEY" type="EditableReportSection" renderpdf="false">
         <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
             <![CDATA[
                 <p>
@@ -196,7 +196,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="involve" type="Checkbox" blobItem="INVOLVE" width="400px" options="Research involving humans|Research involving human pluripotent stem cells|Research requiring the use of animals|Research involving biohazards|Research involving infections agents|Research involving radioactive materials|Research activities having potential effects on the environment|Research involving controlled information|Research performed in the Yukon, the Northwest Territories, and Nunavut|None of the above">
+        <ReportItem id="involve" type="Checkbox" blobItem="INVOLVE" blobType="BLOB_ARRAY" width="400px" options="Research involving humans|Research involving human pluripotent stem cells|Research requiring the use of animals|Research involving biohazards|Research involving infections agents|Research involving radioactive materials|Research activities having potential effects on the environment|Research involving controlled information|Research performed in the Yukon, the Northwest Territories, and Nunavut|None of the above">
             <![CDATA[
                 <p>
                     <b>Does your project involve any of the following:</b><br />
