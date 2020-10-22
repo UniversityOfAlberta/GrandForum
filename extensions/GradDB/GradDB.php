@@ -43,7 +43,7 @@ class GradDB extends SpecialPage{
     }
 
     function GradDB() {
-        parent::__construct("GradDB", NI.'+', true);
+        parent::__construct("GradDB", HQP.'+', true);
     }
 
     function execute($par){
@@ -370,7 +370,7 @@ class GradDB extends SpecialPage{
         global $wgMessage, $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         $graddb = GradDBFinancial::newFromMD5($_GET['accept']);
-        if($graddb->exists() && $graddb->isTerminated() && 
+        if($graddb->exists() && !$graddb->isTerminated() && 
            $graddb->isAllowedToView() && ($graddb->getHQP()->getId() == $me->getId() || 
                                           $graddb->isSupervisor($me->getId()))){
             if($graddb->getHQP()->getId() == $me->getId() && !$graddb->hasHQPAccepted()){
