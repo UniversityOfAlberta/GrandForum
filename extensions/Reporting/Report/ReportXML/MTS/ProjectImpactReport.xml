@@ -19,6 +19,7 @@
                     <li>Encourage dialogue and collaborative reflection among research teams</li>
                     <li>Gather the information to inform MtS engagement and knowledge mobilization strategy</li>
                 </ol>
+                <p><i>(This reporting form is due for submission in 9 months after the funds receipt by projects. For projects that received funds in March 2020, the Impact Report is due by November 30, 2020).</i></p>
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
@@ -59,8 +60,6 @@
                         }
                     });
                 </script>
-                <br /><br />
-                <p><i>(This reporting form is due for submission in 9 months after the funds receipt by projects. For projects that received funds in March 2020, the Impact Report is due by November 30, 2020).</i></p>
             ]]>
         </Static>
         <ReportItem id="pi_consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PI_CONSENT" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
@@ -544,6 +543,21 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="target_other" type="Text" width="200px" blobItem="TARGET_OTHER">
+            <![CDATA[
+                <div id='target_other'>Other: {$item}</div>
+                <script type="text/javascript">
+                    $("[name='4KnowledgeMobilization_target[]']").change(function(){
+                        if($("[name='4KnowledgeMobilization_target[]'][value='Other']").is(":checked")){
+                            $("#target_other").show();
+                        }
+                        else{
+                            $("#target_other").hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </ReportItem>
         <ReportItem id="messages1" type="Textarea" blobItem="MESSAGES1" height="100px">
             <![CDATA[
                 <h3>4.3 What are your key messages (up to 3 messages) for your intended audience(s)?</h3>
@@ -564,6 +578,21 @@
             <![CDATA[
                 <h3>4.4 What knowledge mobilization outputs (finalized or in the making) that you would like to share with us or promote? (Refer to <a href="https://www.dropbox.com/sh/7lz1ld7r2vn3so6/AAAbXtaQTpQ_ogwl8po1k1FOa?dl=0" target="_blank">Network members manual</a> section 6 for more details). Select all that apply.</h3>
                 {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="venues_other" type="Text" width="200px" blobItem="VENUES_OTHER">
+            <![CDATA[
+                <div id='venues_other'>Other: {$item}</div>
+                <script type="text/javascript">
+                    $("[name='4KnowledgeMobilization_venues[]']").change(function(){
+                        if($("[name='4KnowledgeMobilization_venues[]'][value='Other']").is(":checked")){
+                            $("#venues_other").show();
+                        }
+                        else{
+                            $("#venues_other").hide();
+                        }
+                    }).change();
+                </script>
             ]]>
         </ReportItem>
         <Static>

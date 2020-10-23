@@ -489,7 +489,13 @@
         <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h3>4.2 Who are the intended target audience(s) of your knowledge mobilization activities?</h3>
-                {$item}<br />
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="target_other" type="Text" width="200px" blobItem="TARGET_OTHER">
+            <![CDATA[
+                <br />
+                <i>{$item}</i>
             ]]>
         </ReportItem>
         <ReportItem id="messages1" type="Textarea" blobItem="MESSAGES1" height="100px">
@@ -511,7 +517,13 @@
         <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h3>4.4 What knowledge mobilization outputs (finalized or in the making) that you would like to share with us or promote?</h3>
-                {$item}<br />
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="venues_other" type="Text" width="200px" blobItem="VENUES_OTHER">
+            <![CDATA[
+                <br />
+                <i>{$item}</i>
             ]]>
         </ReportItem>
         <Static>
