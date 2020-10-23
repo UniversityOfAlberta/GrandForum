@@ -144,6 +144,133 @@
                 ]]>
             </Static>
         </ReportItemSet>
+        
+        <!-- Companies -->
+        <For from="1" to="4">
+            <Static>
+                <![CDATA[
+                    {set(company,}
+                    {set(leaders,)}
+                ]]>
+            </Static>
+            <If if="{==({$index},1)}">
+                <![CDATA[
+                    {set(company, 48Hour Discovery}
+                    {set(leaders, Ratmir Derda)}
+                ]]>
+            </If>
+            <If if="{==({$index},2)}">
+                <![CDATA[
+                    {set(company, PanTHERA CryoSolutions}
+                    {set(leaders, Robert Ben and Jason Acker)}
+                ]]>
+            </If>
+            <If if="{==({$index},3)}">
+                <![CDATA[
+                    {set(company, GlyCa BioSciences}
+                    {set(leaders, Hon Sing Leong and Karla Williams)}
+                ]]>
+            </If>
+            <If if="{==({$index},4)}">
+                <![CDATA[
+                    {set(company, Carbaform Bioscience}
+                    {set(leaders, Robert Britton and David Vocadlo)}
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <tr>
+                ]]>
+            </Static>
+            <ReportItem id="grant_type" type="Text" blobItem="GRANT_TYPE" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{get(company)}</td>
+                    <td>{get(leaders)}</td>
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <td></td>
+                ]]>
+            </Static>
+            <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="proof_1" type="Select" blobItem="PROOF_1" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="proof_2" type="Select" blobItem="PROOF_2" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="proof_3" type="Select" blobItem="PROOF_3" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="proof_4" type="Select" blobItem="PROOF_4" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="proof_5" type="Select" blobItem="PROOF_5" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="pre_1" type="Select" blobItem="PRE_1" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="pre_2" type="Select" blobItem="PRE_2" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="pre_3" type="Select" blobItem="PRE_3" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="pre_4" type="Select" blobItem="PRE_4" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="targets" type="Text" blobItem="TARGETS" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ip" type="Text" blobItem="IP"  blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px"  blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </For>
+        <!-- End Companies -->
         <Static>
             <![CDATA[
                 </tbody>
