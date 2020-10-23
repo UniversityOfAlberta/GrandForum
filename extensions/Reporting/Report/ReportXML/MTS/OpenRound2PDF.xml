@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="OPEN CALL - SECOND ROUND" reportType="RP_OPEN2" pdfType="RPTP_OPEN2" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+    <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h4 style='font-size:1.5em;'>OPEN CALL - SECOND ROUND</h4>
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                <h3>I. Project Title</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true" limit="150">
+            <![CDATA[
+                <h3>II. Project Description</h3>
+                <h4>Abstract</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="150">
+            <![CDATA[
+                <h4>Research questions</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="250">
+            <![CDATA[
+                <h4>Objectives</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="500">
+            <![CDATA[
+                <h4>Methodology</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+            <![CDATA[
+                <h4>Detailed description of project</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="300">
+            <![CDATA[
+                <h4>Community engagement and partnerships</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="300">
+            <![CDATA[
+                <h4>Anticipated outcomes and impact</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="300">
+            <![CDATA[
+                <h4>Project team</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="members" type="MultiText" class="wikitable" blobItem="MEMBERS" blobType="BLOB_ARRAY" labels="Full Name|Institution|Email|Project Role" types="Text|Text|Text|Select(Co-Investigator,Collaborator)" multiple="true">
+            <![CDATA[
+                <h3>III. List of all Co-Investigators/Collaborators</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <h3>IV. References (1-page maximum)</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <![CDATA[
+                <h3>V. Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
