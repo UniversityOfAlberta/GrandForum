@@ -482,75 +482,41 @@
     <ReportSection id="knowledge" type="EditableReportSection" blobSection="SECTION4" name="4 - Knowledge Mobilization" title="SECTION 4 KNOWLEDGE MOBILIZATION PLAN" tooltip="SECTION 4 KNOWLEDGE MOBILIZATION PLAN" pagebreak="false">
         <ReportItem id="learnings" type="Textarea" blobItem="LEARNINGS" rich="true" limit="250">
             <![CDATA[
-                <h3>4.1 What are your emerging learnings at this stage of your project? Any ‘aha’ moments and/or milestones you would like to share?</h3>
+                <h3>4.1 What are some initial learnings at this stage of your project? Any ‘aha’ moments and/or milestones you would like to share?</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="target" type="Checkbox" blobItem="TARGET" blobType="BLOB_ARRAY" rich="true" options="Policymakers|Practitioners|Funders|Legal Professionals|General public|Media|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>4.2 Who are the intended target audience(s) your knowledge mobilization activities are intended for.</h3>
+                <h3>4.2 Who are the intended target audience(s) of your knowledge mobilization activities?</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="needs" type="Textarea" blobItem="NEEDS" rich="true" limit="250">
+        <ReportItem id="messages1" type="Textarea" blobItem="MESSAGES1" height="100px">
             <![CDATA[
-                <h3>4.3 What are the specific knowledge needs of each audience member?</h3>
+                <h3>4.3 What are your key messages for your intended audience(s)?</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="researchers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="messages2" type="Textarea" blobItem="MESSAGES2" height="100px">
             <![CDATA[
-                <h3>4.4 What are your key messages for your key audience?</h3>
-                <table>
-                    <tr><td align='right' valign='top'><b>Researchers:</b></td><td>{$item}</td></tr>
-                     
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="policymakers" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
+        <ReportItem id="messages3" type="Textarea" blobItem="MESSAGES3" height="100px">
             <![CDATA[
-                    <tr><td align='right' valign='top'><b>Policymakers:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="practitioners" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>Practitioners:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="funders" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>Funders:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="legal" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>Legal Professionals:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="public" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>General public:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="media" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>Media:</b></td><td>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="other" type="Textarea" width="400px" height="65px" blobItem="MESSAGES" blobType="BLOB_ARRAY">
-            <![CDATA[
-                    <tr><td align='right' valign='top'><b>Other:</b></td><td>{$item}</td></tr>
-                </table><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="venues" type="Checkbox" blobItem="VENUES" blobType="BLOB_ARRAY" rich="true" options="Blog post|Summary report|MtS Newsletter entry|Fact sheet or FAQ|Infographic|Handbook|Press release|Promotional material|Report|Research summary|Success story|Partner profile|Toolkit|Video|Webinar|Conference presentation|Workshop report|Lunch and learn event|Media event (e.g. TV, podcast, or radio segment)|Panel or symposium|Training session|Community of practice|Social media|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>4.5 What venues, tools or platforms have you used, or are planning to use to disseminate your key messages?</h3>
+                <h3>4.4 What knowledge mobilization outputs (finalized or in the making) that you would like to share with us or promote?</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-                <h3>4.6 Please attach or link to any knowledge mobilization products you developed.</h3>
+                <h3>4.5 Please attach or link to any knowledge mobilization products you developed.</h3>
             ]]>
         </Static>
         <For from="1" to="20">
@@ -568,7 +534,7 @@
         </ReportItem>
         <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>4.7 Please, indicate the topics on which your project team would like to receive support from the MtS in the next six months (January 2021 to June 2021)?</h3>
+                <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months (January 2021 to June 2021)?</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -578,9 +544,9 @@
                 <i>{$item}</i>
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a selection of resources and toolkits on relevant topics)|Other" delimiter="&lt;br />">
+        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a collection of resources on a broad range of topics in the context of youth homelessness prevention research)|Other" delimiter="&lt;br />">
             <![CDATA[
-                <h3>4.8 How does your project team prefer to access support?</h3>
+                <h3>4.7 How do you like us to deliver our support to you?</h3>
                 {$item}
             ]]>
         </ReportItem>
