@@ -9,7 +9,7 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="1 - Intro &amp; Consent" title="SECTION 1 Introduction and Informed Consent">
+    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="1 - Intro &amp; Consent" title="Project Impact Report&lt;div style='margin-top:5px;'>SECTION 1 Introduction and Informed Consent&lt;/div>">
         <Static>
             <![CDATA[
                 <h3>Objectives of this reporting template:</h3>
