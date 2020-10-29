@@ -8,7 +8,7 @@
             <SectionPermission id="study" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="study" name="FOCUS Delphi Study" title="FOCUS Delphi Study" tooltip="FOCUS Delphi Study" blobSection="STUDY" type="EditableReportSection">
+    <ReportSection id="study" name="FOCUS Delphi Study" title="FOCUS Delphi Study" tooltip="FOCUS Delphi Study" blobSection="STUDY" type="EditableReportSection" autosave="false">
         <Static>
             <![CDATA[
                 <p>Thank you for your participation in the FOCUS Delphi Study. Following three rounds of voting with an aim to reach consensus on a core set of data elements and outcomes, the following data elements and outcomes met consensus criteria across all three stakeholder groups.  In order to narrow the core set further to a number of data elements and outcomes which one could reasonably expect to be measured in research studies, we are asking you to identify your <b>top 2 data elements and outcomes within each category</b>.  Within each category, the data element or outcome which ranks highest will form part of the core set to be measured, while the data element or outcome which ranks second highest will form part of an additional ‘optional’ set.</p>
@@ -20,19 +20,19 @@
                 <p style='font-size:1.25em;'>Please identify your <b>first and second choice in each data element category</b>.</p>
                 <table>
                     <tr>
-                        <td colspan='2'><b>Participant Characteristics</b></td>
+                        <td colspan='2'><b>1. Data Element Category: Participant Characteristics</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
                         <td><b>2nd</b></td>
                     </tr>
                     <tr>
-                        <td style='white-space:nowrap;'>{$item}</td>
+                        <td style='white-space:nowrap;'><input type='hidden' name='{$post_id}' value='' />{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="el_characteristics_2" type="Radio" blobItem="EL_CHARACTERISTICS_2" labels="Age|Medications" options="Age|Medications">
             <![CDATA[
-                        <td style='white-space:nowrap;'>{$item}</td>
+                        <td style='white-space:nowrap;'><input type='hidden' name='{$post_id}' value='' />{$item}</td>
                     </tr>
                 </table><br />
             ]]>
@@ -42,7 +42,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Physical Performance</b></td>
+                        <td colspan='2'><b>2. Data Element Category: Physical Performance</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -64,7 +64,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Physical Function</b></td>
+                        <td colspan='2'><b>3. Data Element Category: Physical Function</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -86,7 +86,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Physical Health</b></td>
+                        <td colspan='2'><b>4. Data Element Category: Physical Health</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -108,7 +108,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Cognition and Mental Health</b></td>
+                        <td colspan='2'><b>5. Data Element Category: Cognition and Mental Health</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -130,7 +130,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Socioenvironmental Circumstances</b></td>
+                        <td colspan='2'><b>6. Data Element Category: Socioenvironmental Circumstances</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -154,7 +154,7 @@
                 <p style='font-size:1.25em;'>Please identify your <b>first and second choice in each outcome category</b>.</p>
                 <table>
                     <tr>
-                        <td colspan='2'><b>Physical function</b></td>
+                        <td colspan='2'><b>1. Outcome Category: Physical Function</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -176,7 +176,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Cognition and mental health</b></td>
+                        <td colspan='2'><b>2. Outcome Category: Cognition and Mental Health</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -198,7 +198,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Socioenvironmental circumstances</b></td>
+                        <td colspan='2'><b>3. Outcome Category: Socioenvironmental Circumstances</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -220,7 +220,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Frailty measures</b></td>
+                        <td colspan='2'><b>4. Outcome Category: Frailty Measures</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -242,7 +242,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan='2'><b>Other</b></td>
+                        <td colspan='2'><b>5. Outcome Category: Other</b></td>
                     </tr>
                     <tr>
                         <td width='1%'><b>1st</b></td>
@@ -259,5 +259,52 @@
                 </table><br />
             ]]>
         </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#optionsDiv").hide();
+                
+                    $("#reportBody input[type=radio]").click(function(e){
+                        var name = $(this).attr('name');
+                        var value = $(this).attr('value');
+                        var otherName = "";
+                        if(name.indexOf("_1") != -1){
+                            otherName = name.replace("_1", "_2");
+                        }
+                        else{
+                            otherName = name.replace("_2", "_1");
+                        }
+                        var other = $("#reportBody input[type=radio][name=" + otherName + "]:checked");
+                        var otherValue = $(other).attr('value');
+                        if(value == otherValue){
+                            $(other).prop('checked', false);
+                        }
+                    });
+                    
+                    $("#reportBody input[type=radio]").change(function(e){
+                        if($('#reportBody input[type=radio]:checked').length == 22){
+                            $('#reportFooter button[type=submit]').prop('disabled', false);
+                            $('#reportFooter input#submit').prop('disabled', false);
+                        }
+                        else{
+                            $('#reportFooter button[type=submit]').prop('disabled', true);
+                            $('#reportFooter input#submit').prop('disabled', true);
+                        }
+                    });
+                    $(document).ready(function(){
+                        $("#reportFooter button").after("<input id='submit' type='button' value='Submit' />");
+                        var callBack = function(){
+                            alert('Thank you for submitting the FOCUS Survey');
+                        }
+                        
+                        $("#submit").click(function(e){
+                            saveAll(callBack);
+                        });
+                        
+                        $("#reportBody input[type=radio]").change();
+                    });
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>
