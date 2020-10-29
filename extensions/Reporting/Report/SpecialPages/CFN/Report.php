@@ -29,6 +29,7 @@ class Report extends AbstractReport{
         $tabs["Reports"] = TabUtils::createTab("My Reports");
         $tabs["Applications"] = TabUtils::createTab("My Applications");
         $tabs["Reviews"] = TabUtils::createTab("My Reviews");
+        $tabs["Surveys"] = TabUtils::createTab("My Surveys");
         return true;
     }
     
@@ -268,6 +269,10 @@ class Report extends AbstractReport{
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2017")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2017", "{$url}ReviewReport2017", $selected);
+        }
+        if($person->isRoleAtLeast(STAFF)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FocusStudy")) ? "selected" : false;
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("FOCUS", "{$url}FocusStudy", $selected);
         }
         return true;
     }
