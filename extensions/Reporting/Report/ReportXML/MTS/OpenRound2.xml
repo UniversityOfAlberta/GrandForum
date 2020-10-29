@@ -6,25 +6,24 @@
     <ReportSection id="background" tooltip="OPEN CALL - SECOND ROUND" name="Background" title="OPEN CALL - SECOND ROUND" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
-                <p>Following the first open call, the MtS Staff conducted a gap analysis and convened a series of collaboratives, which included some of the applicants from the open call, to identify emerging themes or ideas that should be incorporated into the MtS research agenda.</p>
-                
-                <p>The MtS Open Call - Second Round of funding is targeting grant applications submitted to previous MtS funding competitions who: (1) demonstrated promising outcomes, but required revisions, and (2) directly corresponded with the gaps identified in MtS research agenda. (3) Received a high score and substantive positive feedback during the rigorous peer review process.</p>
-                
-                <p>A direct objective of this call is to develop exceptional projects that address these gaps specific to the MtS research agenda and to complement the scope of the existing MtS-funded projects on youth homelessness prevention.</p>
-                
-                <p>Projects invited to submit a proposal are asked to demonstrate that: </p> 
+                <p>Making the Shift (MtS) has extended the first open call for proposals, which took place in summer and fall 2019, to include a second round of funding. This additional round will focus on addressing gaps within the existing <a href="http://makingtheshiftinc.ca/research/" target="_blank">MtS research agenda</a>, as identified in  gap analysis conducted in consultation with network members and affiliates in the summer of 2020. More than themes were identified to enhance our research agenda, including, Mapping such as mapping international research in the area of early intervention prevention and promoting Indigenous-designed and Indigenous-led research activity.</p>
+
+                <p>Applications that didn't receive funding in the first round and who meet the following criteria have been asked to revise and resubmit their proposals for consideration by the MtS Research Management Committee:</p> 
                 <ul>
-                    <li>The design of the projects is the direct product of a collaboration between Making the Shift and the project team after responding to MtS feedback (i.e. the scope of work has to be pre-approved and co-developed)</li>
-                    <li>Thorough Budget revisions and strengthening cash and in-kind contributions</li>
-                    <li>Strengthening the Research to impact plan has taken place</li>
-                    <li>A focus on youth homelessness prevention as defined in the Roadmap for prevention of <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">homelessness</a> is clearly articulated throughout the proposal</li>
-                    <li>A direct response to the gap analysis and the subthemes is clear.</li>
-                    <li>Respond to MtS co-creation recommendations.</li>
+                    <li>Received positive peer review comments but there were elements of the proposal that require refinement and clarity; and</li>
+                    <li>The project demonstrated promise and addresses an immediate gap within the MtS research agenda.</li>
                 </ul>
 
-                <p>This invitation <b><u>does not</u></b> guarantee funding. All proposals will undergo a second round of review, with the RMC making a recommendation to the Making the Shift Board of Directors, and the Board making the final approval.</p>
-                
-                <p>For more information please refer to the <a href="{$wgServer}{$wgScriptPath}/data/Second_Round_Applicant_Guide_20201008-4.docx">application guide</a> - after removing highlights</p>
+                <p>Selected applicants are required to revise and resubmit their proposals and address the following:</p>
+                <ul>
+                    <li>Revise proposal to respond to detailed feedback provided by Making the Shift</li>
+                    <li>Demonstrate that the project addresses a gap in the MtS research agenda</li>
+                    <li>Demonstrate a clear link to youth homelessness prevention, as outlined in the Roadmap for the <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">Prevention of Youth Homelessness</a>.</li>
+                    <li>Articulate a clear research-to-impact plan (i.e. how will research findings be translated and disseminated to support program, practice, policy, and systems transformation).</li>
+                    <li>Propose a clear, realistic project budget, including a detailed accounting of cash and in-kind support.</li>
+                </ul>
+
+                <p>This invitation does not guarantee funding. Research Management Committee will review all applications and recommend proposals that the Board of Directors fund. Please review <a href="{$wgServer}{$wgScriptPath}/data/MtS_Second_Round_Applicant_Guide.pdf" target="_blank">application guide</a> for submission instructions.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -192,48 +191,42 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="150">
+        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="250">
             <![CDATA[
-                <h4>Research questions</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="250">
-            <![CDATA[
-                <h4>Objectives</h4>
+                <h4>Research question and Objectives</h4>
                 <small>What do you expect to accomplish within the timeframe of the project and how do you plan to do it?</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="500">
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="350">
             <![CDATA[
                 <h4>Methodology</h4>
                 <small>How are you going to execute the project and accomplish the objectives. If you plan to do research involving human subjects, please outline how you plan to address ethics approval and the overall engagement process and identify the step you will take to mitigate any disruption in operations due to COVID-19.</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="650">
             <![CDATA[
                 <h4>Detailed description of project</h4>
                 <small>What areas of focus does your research address, and why is it important? How does this project address the specific objectives and/or sub-objectives of the project? How does it correspond with the MtS research agenda (i.e. what is the link to youth homelessness prevention)? How will you engage community members in project? How will the experiences of persons with lived experience be included in your research?</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="300">
+        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="200">
             <![CDATA[
                 <h4>Community engagement and partnerships</h4>
                 <small>How will you engage community members in the proposed project (e.g., the process, roles, and/or compensation)? How will the experiences of persons with lived experience be incorporated into your research? How are you ensuring your project complies with the principles of equity, diversity, and inclusion?</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="300">
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="200">
             <![CDATA[
                 <h4>Anticipated outcomes and impact</h4>
                 <small>Who will benefit from your research? What are the anticipated outcomes (e.g., how is this project filling a gap within the existing evidence base or supporting community and policy decision-making)? What is your plan for translating research findings into resources, tools, training, presentations etc that can assist policy makers, practitioners, advocates, and other researchers in their efforts to advance prevention approaches to youth homelessness?</small>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="300">
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="200">
             <![CDATA[
                 <h4>Project team</h4>
                 <small>How are the roles, experiences, and skills of team members (including community partners) well position the team to execute the project? How are you engaging existing or new partnerships, including people with lived experiences?</small>

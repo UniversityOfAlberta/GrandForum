@@ -19,43 +19,37 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="150">
+        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="250">
             <![CDATA[
-                <h4>Research questions</h4>
+                <h4>Research question and Objectives</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="250">
-            <![CDATA[
-                <h4>Objectives</h4>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="500">
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="350">
             <![CDATA[
                 <h4>Methodology</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="650">
             <![CDATA[
                 <h4>Detailed description of project</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="300">
+        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="200">
             <![CDATA[
                 <h4>Community engagement and partnerships</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="300">
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="200">
             <![CDATA[
                 <h4>Anticipated outcomes and impact</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="300">
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="200">
             <![CDATA[
                 <h4>Project team</h4>
                 {$item}<br />
