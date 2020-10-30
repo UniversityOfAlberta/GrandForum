@@ -39,10 +39,17 @@ class FESPeopleTable extends SpecialPage {
                     <th>Alumni Sector</th>
                     <th>Institution</th>
                     <th>Department</th>
-                    <th>Gender</th>
-                    <th>CRC</th>
-                    <th>ECR</th>
-                    <th>MITACS</th>
+                    <th>Gender</th>");
+        if($config->getValue('crcEnabled')){
+            $wgOut->addHTML("<th>CRC</th>");
+        }
+        if($config->getValue('ecrEnabled')){
+            $wgOut->addHTML("<th>ECR</th>");
+        }
+        if($config->getValue('mitacsEnabled')){
+            $wgOut->addHTML("<th>MITACS</th>");
+        }
+        $wgOut->addHTML("
                     <th style='display:none;'>Indigenous</th>
                     <th style='display:none;'>Disability</th>
                     <th style='display:none;'>Minority</th>
@@ -79,7 +86,6 @@ class FESPeopleTable extends SpecialPage {
                 $positions[$uni['position']] = $uni['position'];
             }
             $projectsRow = implode("<br />", $projs);
-            $crcObj = $person->getCanadaResearchChair();
             if($person->isActive()){
                 $status = "Active";
             }
@@ -105,11 +111,18 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$alumni->alumni_sector}</td>
                              <td>{$person->getUni()}</td>
                              <td>{$person->getDepartment()}</td>
-                             <td>{$person->getGender()}</td>
-                             <td>".@implode("<br />\n", $crcObj)."</td>
-                             <td>{$person->getEarlyCareerResearcher()}</td>
-                             <td>{$person->getMitacs()}</td>
-                             <td style='display:none;'>{$person->getIndigenousStatus()}</td>
+                             <td>{$person->getGender()}</td>");
+            if($config->getValue('crcEnabled')){
+                $crcObj = $person->getCanadaResearchChair();
+                $wgOut->addHTML("<td>".@implode("<br />\n", $crcObj)."</td>");
+            }
+            if($config->getValue('ecrEnabled')){
+                $wgOut->addHTML("<td>{$person->getEarlyCareerResearcher()}</td>");
+            }
+            if($config->getValue('mitacsEnabled')){
+                $wgOut->addHTML("<td>{$person->getMitacs()}</td>");
+            }
+            $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
                              <td style='display:none;'>{$person->getMinorityStatus()}</td>
                              <td>{$person->getNationality()}</td>
