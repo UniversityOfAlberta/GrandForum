@@ -37,6 +37,19 @@ class FESPeopleTable extends SpecialPage {
                     <th>Alumni</th>
                     <th>Alumni Country</th>
                     <th>Alumni Sector</th>
+                    <th>Institution</th>
+                    <th>Department</th>
+                    <th>Gender</th>
+                    <th>CRC</th>
+                    <th>ECR</th>
+                    <th>MITACS</th>
+                    <th style='display:none;'>Indigenous</th>
+                    <th style='display:none;'>Disability</th>
+                    <th style='display:none;'>Minority</th>
+                    <th>Nationality</th>
+                    <th>Status</th>
+                    <th>Bio</th>
+                    <th>Keyworks</th>
                 </tr>
             </thead>
             <tbody>");
@@ -66,6 +79,17 @@ class FESPeopleTable extends SpecialPage {
                 $positions[$uni['position']] = $uni['position'];
             }
             $projectsRow = implode("<br />", $projs);
+            $crcObj = $person->getCanadaResearchChair();
+            if($person->isActive()){
+                $status = "Active";
+            }
+            else{
+                $status = "Inactive";                
+            }
+            $profile = $person->getProfile(true);
+            if($profile == ""){
+                $profile = $person->getProfile(false);
+            }
             $wgOut->addHTML("<tr>
                              <td>{$person->getReversedName()}</td>
                              <td>{$person->getEmail()}</td>
@@ -79,6 +103,19 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$alumni->alumni}</td>
                              <td>{$alumni->alumni_country}</td>
                              <td>{$alumni->alumni_sector}</td>
+                             <td>{$person->getUni()}</td>
+                             <td>{$person->getDepartment()}</td>
+                             <td>{$person->getGender()}</td>
+                             <td>".@implode("<br />\n", $crcObj)."</td>
+                             <td>{$person->getEarlyCareerResearcher()}</td>
+                             <td>{$person->getMitacs()}</td>
+                             <td style='display:none;'>{$person->getIndigenousStatus()}</td>
+                             <td style='display:none;'>{$person->getDisabilityStatus()}</td>
+                             <td style='display:none;'>{$person->getMinorityStatus()}</td>
+                             <td>{$person->getNationality()}</td>
+                             <td>{$status}</td>
+                             <td>{$profile}</td>
+                             <td>{$person->getKeywords(', ')}</td>
                             </tr>");
         }
         
