@@ -56,7 +56,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Nationality</th>
                     <th>Status</th>
                     <th>Bio</th>
-                    <th>Keyworks</th>
+                    <th>Keywords</th>
                 </tr>
             </thead>
             <tbody>");
