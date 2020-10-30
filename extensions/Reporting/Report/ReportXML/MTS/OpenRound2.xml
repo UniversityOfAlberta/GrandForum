@@ -8,13 +8,13 @@
             <![CDATA[
                 <p>Making the Shift (MtS) has extended the first open call for proposals, which took place in summer and fall 2019, to include a second round of funding. This additional round will focus on addressing gaps within the existing <a href="http://makingtheshiftinc.ca/research/" target="_blank">MtS research agenda</a>, as identified in  gap analysis conducted in consultation with network members and affiliates in the summer of 2020. More than themes were identified to enhance our research agenda, including, Mapping such as mapping international research in the area of early intervention prevention and promoting Indigenous-designed and Indigenous-led research activity.</p>
 
-                <p>Applications that didn't receive funding in the first round and who meet the following criteria have been asked to revise and resubmit their proposals for consideration by the MtS Research Management Committee:</p> 
+                Applications that didn't receive funding in the first round and who meet the following criteria have been asked to revise and resubmit their proposals for consideration by the MtS Research Management Committee:
                 <ul>
                     <li>Received positive peer review comments but there were elements of the proposal that require refinement and clarity; and</li>
                     <li>The project demonstrated promise and addresses an immediate gap within the MtS research agenda.</li>
                 </ul>
-
-                <p>Selected applicants are required to revise and resubmit their proposals and address the following:</p>
+                <br />
+                Selected applicants are required to revise and resubmit their proposals and address the following:
                 <ul>
                     <li>Revise proposal to respond to detailed feedback provided by Making the Shift</li>
                     <li>Demonstrate that the project addresses a gap in the MtS research agenda</li>
@@ -22,7 +22,7 @@
                     <li>Articulate a clear research-to-impact plan (i.e. how will research findings be translated and disseminated to support program, practice, policy, and systems transformation).</li>
                     <li>Propose a clear, realistic project budget, including a detailed accounting of cash and in-kind support.</li>
                 </ul>
-
+                <br />
                 <p>This invitation does not guarantee funding. Research Management Committee will review all applications and recommend proposals that the Board of Directors fund. Please review <a href="{$wgServer}{$wgScriptPath}/data/MtS_Second_Round_Applicant_Guide.pdf" target="_blank">application guide</a> for submission instructions.</p>
             ]]>
         </Static>
@@ -241,7 +241,7 @@
         </ReportItem>
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
             <![CDATA[
-                <h3>IV. References (1-page maximum)</h3>
+                <h3>IV. References (up to 20 resources)</h3>
                 {$item}
             ]]>
         </ReportItem>

@@ -23,7 +23,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
-        
+        $tabs["Applications"] = TabUtils::createTab("My Applications");
         return true;
     }
     
@@ -38,6 +38,15 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProjectImpactReport&project={$project->getName()}", $selected);
             }
         }
+        
+        /*if($person->isRoleAtLeast(INACTIVE) ||
+           $person->isRoleAtLeast(INACTIVE.'-Candidate')){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "OpenRound2") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Open Round2", "{$url}OpenRound2", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "DataTechnologyApplication") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("DataTech", "{$url}DataTechnologyApplication", $selected);
+        }*/
         
         return true;
     }

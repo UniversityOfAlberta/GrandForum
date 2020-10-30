@@ -75,6 +75,7 @@ class ApplicationsTable extends SpecialPage{
         </style>");
 
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=datatech'>DataTech</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=openround2'>OpenRound2</a>";
 
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
@@ -88,20 +89,92 @@ class ApplicationsTable extends SpecialPage{
         if($program == "datatech"){
             $this->generateDataTech();
         }
+        else if($program == "openround2"){
+            $this->generateOpenRound2();
+        }
         return;
     }
     
     function generateDataTech(){
         global $wgOut;
+
+        $survey = array('title' => 'Title',
+                        'stream' => 'Stream',
+                        'applicant' => 'Applicant',
+                        'position' => 'Position',
+                        'dept' => 'Department',
+                        'institution' => 'Institution',
+                        'dept' => 'Department',
+                        'tri_council' => "Tri-Council",
+                        'sign_off' => "Sign-Off",
+                        'other_funding' => "Other Funding",
+                        'sources' => "Sources",
+                        'ci1' => 'CI1',
+                        'ci1_institution' => 'CI1 Institution',
+                        'ci2' => 'CI2',
+                        'ci2_institution' => 'CI2 Institution',
+                        'involve' => "Involve",
+                        'amount' => "Amount");
         
-        $title = new TextReportItem();
-        $title->setBlobType(BLOB_TEXT);
-        $title->setBlobItem('TITLE');
-        $title->setBlobSection("PROPOSAL");
-        $title->setId("title");
+        $fields = array();
+        foreach($survey as $key => $label){
+            if($key == "involve"){
+                $field = new CheckboxReportItem();
+                $field->setBlobType(BLOB_ARRAY);
+            }
+            else{
+                $field = new TextReportItem();
+                $field->setBlobType(BLOB_TEXT);
+            }
+            $field->setBlobSection("SURVEY");
+            $field->setBlobItem(strtoupper($key));
+            $field->setId($key);
+            $fields[$label] = $field;
+        }
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_DATA_TECH', $this->everyone, 2020, "2020", array('Title' => $title)));
+        $tabbedPage->addTab(new ApplicationTab('RP_DATA_TECH', $this->everyone, 2020, "2020", $fields));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateOpenRound2(){
+        global $wgOut;
+
+        $survey = array('title' => 'Title',
+                        'applicant' => 'Applicant',
+                        'position' => 'Position',
+                        'dept' => 'Department',
+                        'institution' => 'Institution',
+                        'dept' => 'Department',
+                        'tri_council' => "Tri-Council",
+                        'sign_off' => "Sign-Off",
+                        'other_funding' => "Other Funding",
+                        'sources' => "Sources",
+                        'ci1' => 'CI1',
+                        'ci1_institution' => 'CI1 Institution',
+                        'ci2' => 'CI2',
+                        'ci2_institution' => 'CI2 Institution',
+                        'involve' => "Involve",
+                        'amount' => "Amount");
+        
+        $fields = array();
+        foreach($survey as $key => $label){
+            if($key == "involve"){
+                $field = new CheckboxReportItem();
+                $field->setBlobType(BLOB_ARRAY);
+            }
+            else{
+                $field = new TextReportItem();
+                $field->setBlobType(BLOB_TEXT);
+            }
+            $field->setBlobSection("SURVEY");
+            $field->setBlobItem(strtoupper($key));
+            $field->setId($key);
+            $fields[$label] = $field;
+        }
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_OPEN2', $this->everyone, 2020, "2020", $fields));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

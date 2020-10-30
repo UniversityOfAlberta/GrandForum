@@ -10,13 +10,14 @@
                 <h2>BACKGROUND AND OBJECTIVES</h2>
                 <p>Researchers, service providers, advocates, and policymakers in the homelessness sector need access to timely, accurate, and comprehensive data to identify barriers and opportunities to enhance services and improve policies that contribute to homelessness prevention.</p>
 
-                <p>To its credit, the homelessness sector in Canada has taken important steps to improve its capacity to collect, store, and access data. However, there is much more that needs to be done to:</p>
+                To its credit, the homelessness sector in Canada has taken important steps to improve its capacity to collect, store, and access data. However, there is much more that needs to be done to:
                 <ol>
                     <li>Expand and enhance <b>data infrastructure</b> to harmonize and integrate data systems and platforms.</li>
                     <li>Identify and test <b>analytical methods</b> to improve evidence-based decision-making.</li>
                     <li>Explore the role of <b>new technologies</b> to predict and prevent homelessness from occurring.</li>
                 </ol>
-                <p>To address these gaps in research and to create a space for exploration and innovation, Making the Shift (MtS) is soliciting proposals from researchers and community organizations (<a href="https://www.ic.gc.ca/eic/site/063.nsf/eng/h_3D5FA603.html" target="_blank">who are able to hold tri-council funding</a>) for one-time grants that respond to one of the following funding streams:</p>
+                <br />
+                To address these gaps in research and to create a space for exploration and innovation, Making the Shift (MtS) is soliciting proposals from researchers and community organizations (<a href="https://www.ic.gc.ca/eic/site/063.nsf/eng/h_3D5FA603.html" target="_blank">who are able to hold tri-council funding</a>) for one-time grants that respond to one of the following funding streams:
                 <ol>
                     <li><b>Developing a data infrastructure roadmap to support policy, operational, research decision-making</b></li> 
                     <li><b>Exploring opportunities to use data, technology, infrastructure, and new methods of data analysis to better understand and prevent youth homelessness</b></li>
@@ -42,7 +43,7 @@
                 
                 <p>This stream targets projects that investigate, map and explore the role and use of technology, data, infrastructure, and/or methods of data analysis to prototype novel solutions focused on youth homelessness prevention</p>
                 
-                <p>Applicants can choose from one of two types of grants:</p>
+                Applicants can choose from one of two types of grants:
                 <ol>
                     <li>One-year projects
                         <ol>
@@ -57,7 +58,7 @@
                         </ol>
                     </li>
                 </ol>
-                
+                <br />
                 <p>Do you have questions? Contact the Making the Shift funding team at, <a href="mailto:mtsfunding@yorku.ca">mtsfunding@yorku.ca</a>, for questions regarding your proposal or the submission process.</p>
             ]]>
         </Static>
@@ -291,7 +292,7 @@
         </ReportItem>
         <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
             <![CDATA[
-                <h3>IV. References (1-page maximum)</h3>
+                <h3>IV. References (up to 20 resources)</h3>
                 {$item}
             ]]>
         </ReportItem>
