@@ -15,12 +15,15 @@
                         <th rowspan='3'>Lead NI</th>
                         <th rowspan='3'>Grant Type</th>
                         <th rowspan='3'>Research Theme</th>
+                        <th rowspan='3'>Start</th>
+                        <th rowspan='3'>End</th>
                         <th rowspan='3'>Product Type</th>
                         <th colspan='5'>Proof of Concept</th>
                         <th colspan='4'>Preclinical</th>
                         <th rowspan='3'>Targets / Indication</th>
                         <th rowspan='3'>where are they at ,  important milestone</th>
                         <th rowspan='3'>IP Filing</th>
+                        <th rowspan='3'>Partners</th>
                         <th rowspan='3'>next step</th>
                     </tr>
                     <tr>
@@ -29,7 +32,7 @@
                         <th>In vitro/ ex-vivo</th>
                         <th>In vivo</th>
                         <th>Candidate Selected</th>
-                        <th>Large Scale Syntheis</th>
+                        <th>Large Scale Synthesis</th>
                         <th>Efficacy</th>
                         <th>Toxicology</th>
                         <th>Pharmacology</th>
@@ -68,52 +71,62 @@
                     
                 ]]>
             </Static>
+            <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
             <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_1" type="Select" blobItem="PROOF_1" options="|Completed|In Progress">
+            <ReportItem id="proof_1" type="Select" blobItem="PROOF_1" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_2" type="Select" blobItem="PROOF_2" options="|Completed|In Progress">
+            <ReportItem id="proof_2" type="Select" blobItem="PROOF_2" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_3" type="Select" blobItem="PROOF_3" options="|Completed|In Progress">
+            <ReportItem id="proof_3" type="Select" blobItem="PROOF_3" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_4" type="Select" blobItem="PROOF_4" options="|Completed|In Progress">
+            <ReportItem id="proof_4" type="Select" blobItem="PROOF_4" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_5" type="Select" blobItem="PROOF_5" options="|Completed|In Progress">
+            <ReportItem id="proof_5" type="Select" blobItem="PROOF_5" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_1" type="Select" blobItem="PRE_1" options="|Completed|In Progress">
+            <ReportItem id="pre_1" type="Select" blobItem="PRE_1" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_2" type="Select" blobItem="PRE_2" options="|Completed|In Progress">
+            <ReportItem id="pre_2" type="Select" blobItem="PRE_2" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_3" type="Select" blobItem="PRE_3" options="|Completed|In Progress">
+            <ReportItem id="pre_3" type="Select" blobItem="PRE_3" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_4" type="Select" blobItem="PRE_4" options="|Completed|In Progress">
+            <ReportItem id="pre_4" type="Select" blobItem="PRE_4" options="|Completed|In Progress|N/A">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -129,6 +142,11 @@
                 ]]>
             </ReportItem>
             <ReportItem id="ip" type="Text" blobItem="IP">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -194,52 +212,62 @@
                     <td></td>
                 ]]>
             </Static>
+            <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
             <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_1" type="Select" blobItem="PROOF_1" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="proof_1" type="Select" blobItem="PROOF_1" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_2" type="Select" blobItem="PROOF_2" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="proof_2" type="Select" blobItem="PROOF_2" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_3" type="Select" blobItem="PROOF_3" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="proof_3" type="Select" blobItem="PROOF_3" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_4" type="Select" blobItem="PROOF_4" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="proof_4" type="Select" blobItem="PROOF_4" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="proof_5" type="Select" blobItem="PROOF_5" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="proof_5" type="Select" blobItem="PROOF_5" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_1" type="Select" blobItem="PRE_1" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="pre_1" type="Select" blobItem="PRE_1" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_2" type="Select" blobItem="PRE_2" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="pre_2" type="Select" blobItem="PRE_2" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_3" type="Select" blobItem="PRE_3" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="pre_3" type="Select" blobItem="PRE_3" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="pre_4" type="Select" blobItem="PRE_4" options="|Completed|In Progress" blobSubItem="COMPANY{$index}">
+            <ReportItem id="pre_4" type="Select" blobItem="PRE_4" options="|Completed|In Progress|N/A" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
@@ -254,12 +282,17 @@
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="ip" type="Text" blobItem="IP"  blobSubItem="COMPANY{$index}">
+            <ReportItem id="ip" type="Text" blobItem="IP" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px"  blobSubItem="COMPANY{$index}">
+            <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px" blobSubItem="COMPANY{$index}">
                 <![CDATA[
                     <td>{$item}</td>
                 ]]>
