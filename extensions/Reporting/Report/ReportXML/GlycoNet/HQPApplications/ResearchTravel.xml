@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research &amp; Travel Supplements Program" reportType="RP_HQP_RESEARCH" pdfType="HQP_RESEARCH" pdfFiles="HQPApplications/ResearchTravelPDF" ajax="true" disabled="false" year="2020">
+<Report name="Research &amp; Travel Supplements Program" reportType="RP_HQP_RESEARCH" pdfType="HQP_RESEARCH" pdfFiles="HQPApplications/ResearchTravelPDF" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -48,14 +48,14 @@
                     </tr>
                     <tr>
                         <td>May 1 - August 31</td>
-                        <td>January 15</td>
+                        <td>February 1</td>
                     </tr>
                     <tr>
                         <td>September 1 - December 31</td>
-                        <td>June 15</td>	
+                        <td>May 15</td>	
                     </tr>
                     <tr>
-                        <td>November 1 - April 30</td>
+                        <td>January 1 - April 30</td>
                         <td>September 15</td>
                     </tr>
                 </table>
