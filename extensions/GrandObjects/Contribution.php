@@ -16,31 +16,34 @@ class Contribution extends BackboneModel {
                             "scho" => "Scholarship",
                             "cont" => "Contract",
                             "fell" => "Fellowship");
-    static $subTypeMap = array("none" => "None",
-                               "equi" => "Equipment, Software",
-                               "mate" => "Materials",
-                               "logi" => "Logistical Support of Field Work",
-                               "srvc" => "Provision of Services",
-                               "faci" => "Use of Company Facilites",
-                               "sifi" => "Salaries of Scientific Staff",
-                               "mngr" => "Salaries of Managerial and Administrative Staff",
-                               "trvl" => "Project-related Travel",
-                               "othe" => "Other",
-                               "1a"   => "Salaries: Bachelors - Canadian and Permanent Residents",
-                               "1b"   => "Salaries: Bachelors - Foreign",
-                               "1c"   => "Salaries: Masters - Canadian and Permanent Residents",
-                               "1d"   => "Salaries: Masters - Foreign",
-                               "1e"   => "Salaries: Doctorate - Canadian and Permanent Residents",
-                               "1f"   => "Salaries: Doctorate - Foreign",
-                               "2a"   => "Salaries: Post-doctoral Canadian and Permanent residents",
-                               "2b"   => "Salaries: Postdoctoral",
-                               "2c"   => "Salaries: Other",
-                               "3"    => "Salary and benefits of incumbent (Canada Research Chairs only)",
-                               "4"    => "Professional and technical services/contracts",
-                               "5"    => "Equipment (incl. powered vehicles)",
-                               "6"    => "Materials, supplies and other expenditures",
-                               "7"    => "Travel",
-                               "8"    => "Other expenditures");
+                            
+    static $inkindMap = array("equi" => "Equipment, Software",
+                              "mate" => "Materials",
+                              "logi" => "Logistical Support of Field Work",
+                              "srvc" => "Provision of Services",
+                              "faci" => "Use of Company Facilites",
+                              "sifi" => "Salaries of Scientific Staff",
+                              "mngr" => "Salaries of Managerial and Administrative Staff",
+                              "trvl" => "Project-related Travel",
+                              "othe" => "Other");
+                            
+    static $cashMap = array("1a" => "Salaries: Bachelors - Canadian and Permanent Residents",
+                            "1b" => "Salaries: Bachelors - Foreign",
+                            "1c" => "Salaries: Masters - Canadian and Permanent Residents",
+                            "1d" => "Salaries: Masters - Foreign",
+                            "1e" => "Salaries: Doctorate - Canadian and Permanent Residents",
+                            "1f" => "Salaries: Doctorate - Foreign",
+                            "2a" => "Salaries: Post-doctoral - Canadian and Permanent residents",
+                            "2b" => "Salaries: Post-doctoral - Foreign",
+                            "2c" => "Salaries: Other",
+                            "3"  => "Salary and benefits of incumbent (Canada Research Chairs only)",
+                            "4"  => "Professional and technical services/contracts",
+                            "5"  => "Equipment (incl. powered vehicles)",
+                            "6"  => "Materials, supplies and other expenditures",
+                            "7"  => "Travel",
+                            "8"  => "Other expenditures");
+                            
+    static $subTypeMap = array();
 
     var $id;
     var $name;
@@ -52,7 +55,6 @@ class Contribution extends BackboneModel {
     var $partners;
     var $partnersWaiting = true;
     var $type;
-    var $subtype;
     var $cash = array();
     var $kind = array();
     var $description;
@@ -62,7 +64,6 @@ class Contribution extends BackboneModel {
     var $start_date;
     var $end_date;
     var $date;
-    var $unknown;
     
     // Creates a Contribution from the given id
     // The most recent revision is grabbed
@@ -135,10 +136,8 @@ class Contribution extends BackboneModel {
             $this->partners = array();
             $this->partnersWaiting = true; // Lazyness
             $this->type = array();
-            $this->subtype = array();
             $this->cash = array();
             $this->kind = array();
-            $this->unknown = array();
             $this->description = $data[0]['description'];
             $this->institution = $data[0]['institution'];
             $this->province = $data[0]['province'];
@@ -174,8 +173,6 @@ class Contribution extends BackboneModel {
                                 'url' => $project->getUrl());
         }
         foreach($this->getPartners() as $partner){
-            $other_subtype = (!isset(self::$subTypeMap[$partner->subtype])) ? $partner->subtype : "";
-            $subtype = ($other_subtype != "") ? "Other" : $this->getHumanReadableSubTypeFor($partner);
             $partners[] = array("name" => $partner->getOrganization(),
                                 "contact" => $partner->getContact(),
                                 "signatory" => $partner->getSignatory(),
@@ -185,8 +182,7 @@ class Contribution extends BackboneModel {
                                 "city" => $partner->getCity(),
                                 "level" => $partner->getLevel(),
                                 "type" => $this->getHumanReadableTypeFor($partner),
-                                "subtype" => $subtype,
-                                "other_subtype" => $other_subtype,
+                                "amounts" => $partner->getAmounts(),
                                 "cash" => $this->getCashFor($partner),
                                 "inkind" => $this->getKindFor($partner),
                                 "total" => $this->getTotalFor($partner));
@@ -268,14 +264,12 @@ class Contribution extends BackboneModel {
                                       'project_id' => $project));
         }
         $typeMap = array_flip(self::$typeMap);
-        $subTypeMap = array_flip(self::$subTypeMap);
         foreach($this->partners as $key => $partner){
             $partner = (array) $partner;
             $value = @$partner['id'];
             if($value == ""){
                 $value = $partner['name'];
             }
-            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
@@ -287,9 +281,7 @@ class Contribution extends BackboneModel {
                                       'city' => @$partner['city'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
-                                      'subtype' => $subType,
-                                      'cash' => $partner['cash'],
-                                      'kind' => $partner['inkind']));
+                                      'amounts' => json_encode($partner['amounts'])));
         }
         foreach($this->people as $author){
             if(is_numeric($author)){
@@ -359,14 +351,12 @@ class Contribution extends BackboneModel {
                                       'project_id' => $project));
         }
         $typeMap = array_flip(self::$typeMap);
-        $subTypeMap = array_flip(self::$subTypeMap);
         foreach($this->partners as $key => $partner){
             $partner = (array) $partner;
             $value = @$partner['id'];
             if($value == ""){
                 $value = $partner['name'];
             }
-            $subType = ($partner['subtype'] == "Other") ? $partner['other_subtype'] : @$subTypeMap[$partner['subtype']];
             DBFunctions::insert('grand_contributions_partners',
                                 array('contribution_id' => $this->rev_id,
                                       'partner' => $value,
@@ -378,9 +368,7 @@ class Contribution extends BackboneModel {
                                       'city' => @$partner['city'],
                                       'level' => $partner['level'],
                                       'type' => @$typeMap[$partner['type']],
-                                      'subtype' => $subType,
-                                      'cash' => $partner['cash'],
-                                      'kind' => $partner['inkind']));
+                                      'amounts' => json_encode($partner['amounts'])));
         }
         // Notifications
         foreach($this->people as $author){
@@ -649,36 +637,19 @@ class Contribution extends BackboneModel {
                         $p->level = $row['level'];
                     }
                     $id = $p->getOrganization();
-                    $p->subtype = $row['subtype'];
+                    $p->amounts = json_decode($row['amounts'], true);
+                    $this->cash[$id] = 0;
+                    $this->kind[$id] = 0;
+                    foreach($p->amounts as $key => $amount){
+                        if(isset(self::$cashMap[$key]) || $key == "none"){
+                            @$this->cash[$id] += $amount;
+                        }
+                        if(isset(self::$inkindMap[$key])){
+                            @$this->kind[$id] += $amount;
+                        }
+                    }
                     
                     $this->type[$id] = $row['type'];
-                    
-                    if($row['type'] == 'caki'){
-                        $this->cash[$id] = $row['cash'];
-                        $this->kind[$id] = $row['kind'];
-                    }
-                    else if($row['type'] == 'cash' ||
-                            $row['type'] == 'grnt' ||
-                            $row['type'] == 'char' ||
-                            $row['type'] == 'scho' ||
-                            $row['type'] == 'fell' ||
-                            $row['type'] == 'cont'){
-                        $this->cash[$id] = $row['cash'];
-                        $this->kind[$id] = 0;
-                    }
-                    else if($row['type'] == 'inki'){
-                        $this->cash[$id] = 0;
-                        $this->kind[$id] = $row['kind'];
-                    }
-                    else if($row['type'] == 'none'){
-                        $this->cash[$id] = $row['cash'];
-                        $this->kind[$id] = 0;
-                    }else{
-                        $this->cash[$id] = 0;
-                        $this->kind[$id] = 0;
-                    }
-                    $this->subtype[$id] = $row['subtype'];
-                    $this->unknown[$id] = $row['unknown'];
                 }
             }
             
@@ -688,35 +659,12 @@ class Contribution extends BackboneModel {
         return $this->partners;
     }
     
-    // Returns the type of this Contribution
-    // (Depricated! a contribution can potentially have many types, based on the number of partners)
-    function getType(){
-        $this->getPartners();
-        if(isset($this->partners[0])){
-            return $this->getTypeFor($this->partners[0]);
-        }
-        else{
-            return "none";
-        }
-    }
-    
     // Returns the type of Contribution for the given Partner
     function getTypeFor($partner){
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
         if(isset($this->type[$id])){
             return $this->type[$id];
-        }
-    }
-    
-    // (Depricated! a contribution can potentially have many types, based on the number of partners)
-    function getHumanReadableType(){
-        $this->getPartners();
-        if(isset($this->partners[0])){
-            return $this->getHumanReadableTypeFor($this->partners[0]);
-        }
-        else{
-            return "None";
         }
     }
     
@@ -729,45 +677,27 @@ class Contribution extends BackboneModel {
         return $type;
     }
     
-    // Returns the sub-type of Contribution
-    // (Depricated! a contribution can potentially have many types, based on the number of partners)
-    function getSubType(){
-        $this->getPartners();
-        if(isset($this->partners[0])){
-            return $this->getSubTypeFor($this->partners[0]);
-        }
-        else{
-            return "none";
-        }
-    }
-    
-    // Returns the sub-type of Contribution for the given Partner
-    function getSubTypeFor($partner){
-        $this->getPartners();
-        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
-        if(isset($this->subtype[$id])){
-            return $this->subtype[$id];
-        }
-    }
-    
-    // (Depricated! a contribution can potentially have many types, based on the number of partners)
-    function getHumanReadableSubType(){
-        $this->getPartners();
-        if(isset($this->partners[0])){
-            return $this->getHumanReadableSubTypeFor($this->partners[0]);
-        }
-        else{
-            return "None";
-        }
-    }
-    
     // Returns the Human Readable sub-type of Contribution for the given Partner
     function getHumanReadableSubTypeFor($partner){
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
-        $type0 = @$this->subtype[$id];
-        $type = (isset(self::$subTypeMap[$type0])) ? self::$subTypeMap[$type0] : $type0;
-        return $type;
+        $subtypes = array();
+        foreach($this->partners as $p){
+            if($p->getOrganization() == $id){
+                foreach($p->amounts as $subtype => $amount){
+                    if($subtype == "inkind_other" && $amount != ""){
+                        $subtypes[$subtype] = $amount;
+                    }
+                    else if($amount > 0 && $subtype != "none" && isset(self::$subTypeMap[$subtype])){
+                        $subtypes[$subtype] = self::$subTypeMap[$subtype];
+                    }
+                }
+            }
+        }
+        if(count($subtypes) == 0){
+            return "None";
+        }
+        return implode(", ", $subtypes);
     }
     
     function getContactFor($partner){
@@ -846,23 +776,21 @@ class Contribution extends BackboneModel {
     }
     
     // Returns the in kind value for the given Partner
-    function getKindFor($partner){
+    function getKindFor($partner, $subType=""){
         $this->getPartners();
         $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
+        if($subType != ""){
+            foreach($this->partners as $p){
+                if($p->getOrganization() == $id){
+                    return @$p->amounts[$subType];
+                }
+            }
+            return 0;
+        }
         if(isset($this->kind[$id])){
             return $this->kind[$id];
         }
         return 0;
-    }
-    
-    // Returns whether or not the amount this partner contributed was inferred or not
-    function getUnknownFor($partner){
-        $this->getPartners();
-        $id = ($partner instanceof Partner) ? $partner->getOrganization() : $partner;
-        if(isset($this->unknown[$id])){
-            return ($this->unknown[$id] == 1);
-        }
-        return false;
     }
     
     // Returns the sum of cash and in kind Contributions
@@ -1008,28 +936,6 @@ class Contribution extends BackboneModel {
         }
         return false;
     }
-    
-    // Returns an array of strings representing all the custom misc types
-	static function getAllOtherSubTypes(){
-	    $sql = "SELECT DISTINCT subtype
-	            FROM grand_contributions_partners
-	            WHERE subtype != 'othe' AND
-	            subtype != 'none' AND
-	            subtype != 'equi' AND
-	            subtype != 'mate' AND
-	            subtype != 'logi' AND
-	            subtype != 'srvc' AND
-	            subtype != 'faci' AND
-	            subtype != 'sifi' AND
-	            subtype != 'mngr' AND
-	            subtype != 'trvl'";
-	    $data = DBFunctions::execSQL($sql);
-	    $return = array();
-	    foreach($data as $row){
-	        $return[] = $row['subtype'];
-	    }
-	    return $return;
-	}
 	
 	static function getAllCustomPartners(){
 	    $sql = "SELECT DISTINCT partner
@@ -1044,4 +950,15 @@ class Contribution extends BackboneModel {
 	    return $return;
 	}
 }
+
+global $config;
+if($config->getValue('networkName') == "MtS"){
+    unset(Contribution::$cashMap["3"]);
+    unset(Contribution::$cashMap["8"]);
+}
+
+Contribution::$subTypeMap = array("none" => "None") + 
+                            Contribution::$cashMap + 
+                            Contribution::$inkindMap;
+
 ?>

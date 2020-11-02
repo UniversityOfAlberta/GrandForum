@@ -9,18 +9,32 @@ Contribution = Backbone.Model.extend({
     
     updateTotals: function(){
         var partners = this.get('partners');
-        var cash = _.reduce(_.pluck(partners, 'cash'), function(ret, a){ 
-            if(_.isFinite(a)){ 
-                return parseInt(ret) + parseInt(a);
+        var cash = _.reduce(_.pluck(partners, 'amounts'), function(ret, a){
+            var total = 0;
+            _.each(a, function(amount, id){
+                if((cashMap[id] != undefined || id == "none") && _.isFinite(amount)){
+                    total += parseInt(amount);
+                }
+            });
+            if(_.isFinite(total)){
+                return parseInt(ret) + parseInt(total);
             }
             return ret;
         }, 0);
-        var inkind = _.reduce(_.pluck(partners, 'inkind'), function(ret, a){ 
-            if(_.isFinite(parseInt(a))){ 
-                return parseInt(ret) + parseInt(a);
+
+        var inkind = _.reduce(_.pluck(partners, 'amounts'), function(ret, a){
+            var total = 0;
+            _.each(a, function(amount, id){
+                if(inkindMap[id] != undefined && _.isFinite(amount)){
+                    total += parseInt(amount);
+                }
+            });
+            if(_.isFinite(total)){
+                return parseInt(ret) + parseInt(total);
             }
             return ret;
         }, 0);
+        
         var total = cash + inkind;
         this.set('cash', cash);
         this.set('inkind', inkind);
@@ -64,8 +78,7 @@ Contribution = Backbone.Model.extend({
             city: "",
             level:	  "",
             type:	  "",
-            subtype:  "",
-            other_subtype: "",
+            amounts: {},
             cash:	  0,
             inkind:	  0,
             total:	  0

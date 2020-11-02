@@ -3,7 +3,7 @@ ContributionEditView = Backbone.View.extend({
     initialize: function(options){
         this.parent = this;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:total", this.renderPartners);
+        this.listenTo(this.model, "change:total", this.renderTotal);
         this.listenTo(this.model, "add:partners", this.render);
         this.listenTo(this.model, "delete:partners", this.render);
         
@@ -17,7 +17,7 @@ ContributionEditView = Backbone.View.extend({
         if(!this.model.isNew() && !this.isDialog){
             this.model.fetch({silent: true, 
                               success: function(){
-                                this.listenTo(this.model, "change:partners", this.renderPartners);
+                                this.listenTo(this.model, "change:partners", this.renderTotal);
                               }.bind(this)
                              });
         }
@@ -35,9 +35,6 @@ ContributionEditView = Backbone.View.extend({
             _.defer(this.renderPartners.bind(this));
         },
         "change .partner_type": function(){
-            _.defer(this.renderPartners.bind(this));
-        },
-        "change .partner_subtype": function(){
             _.defer(this.renderPartners.bind(this));
         },
     },
@@ -137,66 +134,49 @@ ContributionEditView = Backbone.View.extend({
         _.each(this.model.get('partners'), function(partner, i){
             var lastType = this.$("#partner" + i).attr('last-type');
             var type = partner.type;
-            var subtype = partner.subtype;
             this.$("#partner" + i).attr('last-type', type);
             if(lastType != type){
                 // Changed UI based on Type
                 if(type == 'In-Kind'){
-                    this.$("#partner" + i + " #cash input").val(0).trigger("change");
+                    this.$("#partner" + i + " #amount").hide();
                     this.$("#partner" + i + " #inkind").show();
                     this.$("#partner" + i + " #cash").hide();
-                    this.$("#partner" + i + " #subtype_inkind").show();
-                    this.$("#partner" + i + " #subtype_cash").hide();
                 }
                 else if(type == 'Cash and In-Kind'){
+                    this.$("#partner" + i + " #amount").hide();
                     this.$("#partner" + i + " #inkind").show();
                     this.$("#partner" + i + " #cash").show();
-                    this.$("#partner" + i + " #subtype_inkind").show();
-                    this.$("#partner" + i + " #subtype_cash").hide();
                 }
                 else if(type == 'Cash'){
-                    this.$("#partner" + i + " #inkind input").val(0).trigger("change");
+                    this.$("#partner" + i + " #amount").hide();
                     this.$("#partner" + i + " #inkind").hide();
                     this.$("#partner" + i + " #cash").show();
-                    this.$("#partner" + i + " #subtype_inkind").hide();
-                    this.$("#partner" + i + " #subtype_cash").show();
+                }
+                else if(type != ""){
+                    this.$("#partner" + i + " #amount").show();
+                    this.$("#partner" + i + " #inkind").hide();
+                    this.$("#partner" + i + " #cash").hide();
                 }
                 else{
-                    this.$("#partner" + i + " #inkind input").val(0).trigger("change");
+                    this.$("#partner" + i + " #amount").hide();
                     this.$("#partner" + i + " #inkind").hide();
-                    this.$("#partner" + i + " #cash").show();
-                    this.$("#partner" + i + " #subtype_inkind").hide();
-                    this.$("#partner" + i + " #subtype_cash").hide();
+                    this.$("#partner" + i + " #cash").hide();
                 }
+                this.$("#partner" + i + " tr:hidden input.amount").each(function(id, el){
+                    if($(el).val() != ""){
+                        $(el).val("").change();
+                    }
+                }.bind(this));
             }
-            // Changing UI based on Sub-Type
-            if(subtype == "Other"){
-                this.$("#partner" + i + " #other_subtype").show();
-            }
-            else{
-                this.$("#partner" + i + " #other_subtype").hide();
-            }
-
+            
             // Warnings
             this.$("#warning" + i).empty();
             var reg = /^\d*$/;
             if(partner.name.trim() == ''){
                 this.$("#warning" + i).append("This partner is missing a name<br />");
             }
-            if(partner.type.trim() == ''){
-                this.$("#warning" + i).append("Missing contribution type<br />");
-            }
-            if((this.$("#partner" + i + " #subtype_cash").is(":visible") || this.$("#partner" + i + " #subtype_inkind").is(":visible")) && partner.subtype.trim() == ''){
-                this.$("#warning" + i).append("Missing contribution sub-type<br />");
-            }
-            if(this.$("#partner" + i + " #other_subtype").is(":visible") && partner.other_subtype.trim() == ''){
-                this.$("#warning" + i).append("Missing contribution sub-type<br />");
-            }
-            if(this.$("#partner" + i + " #cash").is(":visible") && !reg.test(partner.cash)){
-                this.$("#warning" + i).append("Cash is not an integer<br />");
-            }
-            if(this.$("#partner" + i + " #inkind").is(":visible") && !reg.test(partner.inkind)){
-                this.$("#warning" + i).append("In-Kind is not an integer<br />");
+            if(partner.type == ""){
+                this.$("#warning" + i).append("This partner is missing a contribution type<br />");
             }
             if(this.$("#warning" + i).text().trim() != ""){
                 this.$("#warning" + i).show();
@@ -204,12 +184,12 @@ ContributionEditView = Backbone.View.extend({
             }
             else{
                 this.$("#warning" + i).hide();
-                this.$("#saveContribution").prop('disabled', false);
             }
         }.bind(this));
-        if(networkName == "MTS"){
+        if(networkName == "MtS"){
             this.$("select.partner_type option").not(":contains(Cash)").not(":contains(In-Kind)").not(":contains(Select)").remove();
         }
+        this.$(".amount").forceNumeric({min: 0, max: Number.MAX_VALUE});
         this.renderTotal();
     },
     

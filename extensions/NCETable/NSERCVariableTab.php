@@ -247,36 +247,16 @@ EOF;
                 $inkind += $inki;
                 
                 if($inki > 0){
-                    switch($part['contribution']->getHumanReadableSubTypeFor($part['partner'])){
-                        case "Equipment, Software":
-                            $a += $inki;
-                            break;
-                        case "Materials":
-                            $b += $inki;
-                            break;
-                        case "Logistical support of field work":
-                            $c += $inki;
-                            break;
-                        case "Provision of Services":
-                            $d += $inki;
-                            break;
-                        case "Use of Company Facilites":
-                            $e += $inki;
-                            break;
-                        case "Salaries of Scientific Staff":
-                            $f += $inki;
-                            break;
-                        case "Salaries of Managerial and Administrative Staff":
-                            $g += $inki;
-                            break;
-                        case "Project-related Travel":
-                            $h += $inki;
-                            break;
-                        default:
-                            $other[] = $part['contribution']->getHumanReadableSubTypeFor($part['partner']);
-                            $i += $inki;
-                            break;
-                    }
+                    $a += $part['contribution']->getKindFor($part['partner'], "equi");
+                    $b += $part['contribution']->getKindFor($part['partner'], "mate");
+                    $c += $part['contribution']->getKindFor($part['partner'], "logi");
+                    $d += $part['contribution']->getKindFor($part['partner'], "srvc");
+                    $e += $part['contribution']->getKindFor($part['partner'], "faci");
+                    $f += $part['contribution']->getKindFor($part['partner'], "sifi");
+                    $g += $part['contribution']->getKindFor($part['partner'], "mngr");
+                    $h += $part['contribution']->getKindFor($part['partner'], "trvl");
+                    $i += $part['contribution']->getKindFor($part['partner'], "othe");
+                    $other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
                 }
             }
             $totalInkind += $inkind;
@@ -403,43 +383,15 @@ EOF;
                 $hrType = $contr->getHumanReadableTypeFor($p);
                 $hrSubType = $contr->getHumanReadableSubTypeFor($p);
                 
-                if($hrSubType != "None"){
-                    $subType_array[] = "{$hrType} ({$hrSubType})";
-                }
-                else{
+                //if($hrSubType != "None"){
+                //    $subType_array[] = "{$hrType} ({$hrSubType})";
+                //}
+                //else{
                     $subType_array[] = "{$hrType}";
-                }
-
-                if(!$contr->getUnknownFor($p)){
-                    $tmp_cash = "\$".number_format($contr->getCashFor($p), 2);
-                    $tmp_kind = "\$".number_format($contr->getKindFor($p), 2);
-                    $details .= "<h4>{$org}</h4><table>";
-                    $details .="<tr><td align='right'><b>Type:</b></td><td>{$hrType}</td></tr>";
-
-                    if($tmp_type == "inki" || $tmp_type == "caki"){
-                        $details .="<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>";
-                    }
-                    if($tmp_type == "inki"){
-                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
-                    }
-                    else if($tmp_type == "cash"){
-                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    else if($tmp_type == "caki"){
-                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
-                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    else{
-                        $details .="<tr><td align='right'><b>Estimated Value:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    $details .= "</table>";
-                }
+                //}
             }
-            if(empty($details)){
-                $details .= "<h4>Other</h4>";
-            }
+            
             $tmp_total = number_format($total, 2);
-            $details .= "<h4>Total: \$<span id='contributionTotal'>{$tmp_total}</span></h4>";
             $partner_names = implode(', ', $partners_array);
 
             $people_names = array();
@@ -486,16 +438,11 @@ EOF;
                         <td align='center'>{$start}</td>
                         <td align='center'>{$end}</td>
                         <td align='center'>{$date}</td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$cash}</a></td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$kind}</a></td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$total}</a>
-                        <div id="contr_details-{$con_id}" title="{$name_plain}">
-                        {$details}
-                        </div>
-                        </td>
+                        <td align='right'>\${$cash}</td>
+                        <td align='right'>\${$kind}</td>
+                        <td align='right'>\${$total}</td>
                     </tr>
 EOF;
-                $dialog_js .= "$( '#contr_details-{$con_id}' ).dialog({autoOpen: false});";
             }
         }
 

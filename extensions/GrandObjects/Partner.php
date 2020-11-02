@@ -13,6 +13,7 @@ class Partner {
     var $signatory;
     var $level;
     var $type;
+    var $amounts = array();
     var $city;
     var $prov;
     var $country;
@@ -118,6 +119,10 @@ class Partner {
     // Returns the type of this Partner
     function getType(){
         return $this->type;
+    }
+    
+    function getAmounts(){
+        return $this->amounts;
     }
     
     // Returns the city of this Partner
