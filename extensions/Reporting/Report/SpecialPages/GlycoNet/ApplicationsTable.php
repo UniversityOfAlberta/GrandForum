@@ -48,7 +48,11 @@ class ApplicationsTable extends SpecialPage{
         $this->strat2020 = array();
         $this->collab2020 = array();
         $this->clinical2020 = array();
+        $this->trans2020 = array();
         foreach(Person::getAllCandidates() as $person){
+            if($person->isSubRole('Trans2020')){
+                $this->trans2020[] = $person;
+            }
             if($person->isSubRole('Strat2017')){
                 $this->strat2017[] = $person;
             }
@@ -234,7 +238,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->trans2020, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2016, "2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
