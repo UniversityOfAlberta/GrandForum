@@ -57,12 +57,18 @@ class HQPRegister extends SpecialPage{
     }
     
     function userCanExecute($user){
-        $person = Person::newFromUser($user);
-        return !$person->isLoggedIn();
+        return true;
     }
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $wgOut->clearHTML();
+            $wgOut->setPageTitle("Account already exists");
+            $wgOut->addHTML("Your account already exists.");
+            return;
+        }
         if(!isset($_POST['submit'])){
             HQPRegister::generateFormHTML($wgOut);
         }
