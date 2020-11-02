@@ -39,14 +39,14 @@ class Report extends AbstractReport{
             }
         }
         
-        /*if($person->isRoleAtLeast(INACTIVE) ||
+        if($person->isRoleAtLeast(INACTIVE) ||
            $person->isRoleAtLeast(INACTIVE.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "OpenRound2") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Open Round2", "{$url}OpenRound2", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "DataTechnologyApplication") ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("DataTech", "{$url}DataTechnologyApplication", $selected);
-        }*/
+        }
         
         return true;
     }
