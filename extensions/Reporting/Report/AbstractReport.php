@@ -209,6 +209,7 @@ abstract class AbstractReport extends SpecialPage {
     
     function execute(){
         global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
+        $me = Person::newFromWgUser();
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
                 $managerImpersonating = false;
@@ -222,6 +223,16 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             if(!$this->checkPermissions()){
+                if(!$me->isLoggedIn()){
+                    $register = "";
+                    if(isExtensionEnabled('HQPRegister')){
+                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:HQPRegister'>register</a>";
+                    }
+                    $wgOut->clearHTML();
+                    $wgOut->setPageTitle("Not logged in");
+                    $wgOut->addHTML("Please login {$register} in order to access this page.");
+                    return;
+                }
                 permissionError();
             }
             if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
