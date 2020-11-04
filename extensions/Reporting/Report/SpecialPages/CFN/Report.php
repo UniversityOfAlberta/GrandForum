@@ -270,7 +270,7 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ReviewReport2017")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Reviews 2017", "{$url}ReviewReport2017", $selected);
         }
-        if($person->isRoleAtLeast(STAFF)){
+        if($person->isSubRole('FOCUS')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FocusStudy")) ? "selected" : false;
             $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("FOCUS", "{$url}FocusStudy", $selected);
         }
