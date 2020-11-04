@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FOCUS Delphi Study Results" ajax="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="MANAGER+">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="study" name="FOCUS Delphi Results" title="FOCUS Delphi Results" tooltip="FOCUS Delphi Results" blobSection="STUDY" type="ReportSection" autosave="false">
+        <Static>
+            <![CDATA[
+                <table id="focusResults" class="wikitable" frame="box" rules="all" width="100%">
+                    <thead>
+                        <tr>
+                            <th rowspan='3'>Stakeholder Category</th>
+                            <th colspan='12'>Data Element Category</th>
+                            <th colspan='10'>Outcome Category</th>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Q1</th>
+                            <th colspan='2'>Q2</th>
+                            <th colspan='2'>Q3</th>
+                            <th colspan='2'>Q4</th>
+                            <th colspan='2'>Q5</th>
+                            <th colspan='2'>Q6</th>
+                            <th colspan='2'>Q1</th>
+                            <th colspan='2'>Q2</th>
+                            <th colspan='2'>Q3</th>
+                            <th colspan='2'>Q4</th>
+                            <th colspan='2'>Q5</th>
+                        </tr>
+                        <tr>
+                            <th><span style='display:none;'>Data Element Category: Q1: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q1: </span>2nd</th>
+                            <th><span style='display:none;'>Data Element Category: Q2: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q2: </span>2nd</th>
+                            <th><span style='display:none;'>Data Element Category: Q3: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q3: </span>2nd</th>
+                            <th><span style='display:none;'>Data Element Category: Q4: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q4: </span>2nd</th>
+                            <th><span style='display:none;'>Data Element Category: Q5: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q5: </span>2nd</th>
+                            <th><span style='display:none;'>Data Element Category: Q6: </span>1st</th>
+                            <th><span style='display:none;'>Data Element Category: Q6: </span>2nd</th>
+                            <th><span style='display:none;'>Outcome Category: Q1: </span>1st</th>
+                            <th><span style='display:none;'>Outcome Category: Q1: </span>2nd</th>
+                            <th><span style='display:none;'>Outcome Category: Q2: </span>1st</th>
+                            <th><span style='display:none;'>Outcome Category: Q2: </span>2nd</th>
+                            <th><span style='display:none;'>Outcome Category: Q3: </span>1st</th>
+                            <th><span style='display:none;'>Outcome Category: Q3: </span>2nd</th>
+                            <th><span style='display:none;'>Outcome Category: Q4: </span>1st</th>
+                            <th><span style='display:none;'>Outcome Category: Q4: </span>2nd</th>
+                            <th><span style='display:none;'>Outcome Category: Q5: </span>1st</th>
+                            <th><span style='display:none;'>Outcome Category: Q5: </span>2nd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet type="AllPeople">
+            <If if="{contains({$user_sub_roles}, FOCUS)}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                            <td >{$user_stakeholder}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_PERFORMANCE_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_PERFORMANCE_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_FUNCTION_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_FUNCTION_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_HEALTH_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_HEALTH_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_COGNITION_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_COGNITION_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_SOCIO_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,EL_SOCIO_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_FUNCTION_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_FUNCTION_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_COGNITION_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_COGNITION_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_SOCIO_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_SOCIO_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_FRAILTY_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_FRAILTY_2,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_OTHER_1,0,{$user_id},0}</td>
+                            <td>{getText(RP_FOCUS_STUDY,STUDY,OUT_OTHER_2,0,{$user_id},0}</td>
+                        </tr>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#focusResults').DataTable({
+                        'aLengthMenu': [[100,-1], [100,'All']], 
+                        'iDisplayLength': 100, 
+                        'autoWidth':false,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel', 'pdf'
+                        ]
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

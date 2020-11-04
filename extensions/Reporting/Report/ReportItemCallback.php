@@ -99,6 +99,7 @@ class ReportItemCallback {
             "user_gender" => "getUserGender",
             "user_twitter" => "getUserTwitter",
             "user_reversed_name" => "getUserReversedName",
+            "user_stakeholder" => "getUserStakeholder",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
             "user_id" => "getUserId",
@@ -1095,6 +1096,11 @@ class ReportItemCallback {
     function getUserReversedName(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getReversedName();
+    }
+    
+    function getUserStakeholder(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getStakeholder();
     }
     
     function getUserLastName(){
