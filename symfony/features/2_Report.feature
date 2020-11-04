@@ -52,7 +52,7 @@ Feature: Reporting
         
     Scenario: Guest tries to access report
         Given I am on "index.php/Special:Report?report=LoggedIn"
-        Then I should see "Permission Error"
+        Then I should see "Not logged in"
         
     Scenario: HQP tries to access report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
