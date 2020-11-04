@@ -57,11 +57,11 @@
             ]]>
         </Static>
         <ReportItemSet type="AllPeople">
-            <If if="{contains({$user_sub_roles}, FOCUS)}">
+            <If if="{and({!=({$user_stakeholder},)},{contains({$user_sub_roles}, FOCUS)})}">
                 <Static>
                     <![CDATA[
                         <tr>
-                            <td >{$user_stakeholder}</td>
+                            <td>{$user_stakeholder}</td>
                             <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_1,0,{$user_id},0}</td>
                             <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_2,0,{$user_id},0}</td>
                             <td>{getText(RP_FOCUS_STUDY,STUDY,EL_PERFORMANCE_1,0,{$user_id},0}</td>
