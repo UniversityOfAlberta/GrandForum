@@ -11,6 +11,7 @@
                 <table id="focusResults" class="wikitable" frame="box" rules="all" width="100%">
                     <thead>
                         <tr>
+                            <th rowspan='3'>Name</th>
                             <th rowspan='3'>Stakeholder Category</th>
                             <th colspan='12'>Data Element Category</th>
                             <th colspan='10'>Outcome Category</th>
@@ -61,6 +62,7 @@
                 <Static>
                     <![CDATA[
                         <tr>
+                            <td>{$user_name}</td>
                             <td>{$user_stakeholder}</td>
                             <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_1,0,{$user_id},0}</td>
                             <td>{getText(RP_FOCUS_STUDY,STUDY,EL_CHARACTERISTICS_2,0,{$user_id},0}</td>
