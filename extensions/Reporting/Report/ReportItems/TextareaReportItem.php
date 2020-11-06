@@ -14,6 +14,7 @@ class TextareaReportItem extends AbstractReportItem {
                 $mentionSource[] = array("name" => $mention);
             }
         }
+        $recommended = strtolower($this->getAttr('recommended', 'false'));
         return"<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
                     $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
@@ -35,6 +36,7 @@ class TextareaReportItem extends AbstractReportItem {
                     if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
                         readOnly = true;
                     }
+                    $('textarea[name={$this->getPostId()}]').show();
                     $('textarea[name={$this->getPostId()}]').tinymce({
                         theme: 'modern',
                         readonly: readOnly,
@@ -69,17 +71,29 @@ class TextareaReportItem extends AbstractReportItem {
                         },
                         setup: function(ed){
                             if('$limit' > 0){
-                                var updateCount = function(){
-                                    _.delay(function(){
-                                        var words = $('.mce-wordcount', $(ed.editorContainer)).text().replace('Words:', '').trim();
-                                        changeColor{$this->getPostId()}(null, words);
-                                        $('#{$this->getPostId()}_chars_left').text(words);
-                                    }, 100);
+                                var updateCount = function(e){
+                                    initResizeEvent();
+                                    ed.undoManager.add();
+                                    var wordcount = ed.plugins.wordcount.getCount();
+                                    changeColor{$this->getPostId()}(null, wordcount);
+                                    $('#{$this->getPostId()}_chars_left').text(wordcount);
+                                    if(wordcount > $limit && '$recommended' == 'false' && e.keyCode != 8 && e.keyCode != 46) {
+                                        var status = tinymce.dom.Event.cancel(e);
+                                        if(detectIE() != false){
+                                            ed.execCommand('UNDO');
+                                            ed.selection.collapse();
+                                        }
+                                        else{
+                                            ed.execCommand('DELETE');
+                                        }
+                                        return status;
+                                    }
                                 };
                                 ed.on('keydown', updateCount);
                                 ed.on('keyup', updateCount);
                                 ed.on('change', updateCount);
                                 ed.on('init', updateCount);
+                                ed.on('paste', updateCount);
                             }
                         }
                     });

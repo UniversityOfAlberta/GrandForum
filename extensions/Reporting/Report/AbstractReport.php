@@ -709,7 +709,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     // Generates the PDF for the report, and saves it to the Database
-    function generatePDF($person=null, $submit=false){
+    function generatePDF($person=null, $submit=false, $batch=false){
         global $wgOut, $wgUser;
         session_write_close();
         $me = $person;
@@ -787,12 +787,14 @@ abstract class AbstractReport extends SpecialPage {
         if($submit){
             $this->submitReport($person);
         }
-        header('Content-Type: application/json');
-        header('Content-Length: '.strlen(json_encode($json)));
-        echo json_encode($json);
-        ob_flush();
-        flush();
-        exit;
+        if(!$batch){
+            header('Content-Type: application/json');
+            header('Content-Length: '.strlen(json_encode($json)));
+            echo json_encode($json);
+            ob_flush();
+            flush();
+            exit;
+        }
     }
     
     // Marks the report as submitted
@@ -839,15 +841,15 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");
-        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/report.js'></script>");
-        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/instructions.js'></script>");
-        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/progress.js'></script>");
-        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/sticky.js'></script>");
+        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/report.js?".filemtime(dirname(__FILE__)."/scripts/report.js")."'></script>");
+        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/instructions.js?".filemtime(dirname(__FILE__)."/scripts/instructions.js")."'></script>");
+        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/progress.js?".filemtime(dirname(__FILE__)."/scripts/progress.js")."'></script>");
+        $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/sticky.js?".filemtime(dirname(__FILE__)."/scripts/sticky.js")."'></script>");
         if($this->ajax){
-            $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/ajax.js'></script>");
+            $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/ajax.js?".filemtime(dirname(__FILE__)."/scripts/ajax.js")."'></script>");
         }
         else{
-            $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/noAjax.js'></script>");
+            $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/noAjax.js?".filemtime(dirname(__FILE__)."/scripts/noAjax.js")."'></script>");
         }
         $wgOut->addHTML("<div id='outerReport'>
                             <div class='displayTableCell'><div id='aboveTabs'></div>

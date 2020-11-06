@@ -524,7 +524,7 @@ select[disabled] {
     box-shadow:inset 0 0 1px 0 #f8f8f8;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn) > :not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
@@ -555,7 +555,7 @@ input[type=button], input[type=submit], .button, .button:visited, .dt-button, .u
     user-select: none;
 }
 
-button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
+:not(.mce-btn):not(.mce-window-head) >  button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     font-family: Arial, Verdana, sans-serif !important;
     font-size:13px !important;
     white-space:nowrap;
@@ -567,7 +567,7 @@ button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
     user-select: none;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);

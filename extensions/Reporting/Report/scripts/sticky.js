@@ -17,7 +17,7 @@ function sticky(response, postId, stickies){
           } else if (this.nodeType === Node.TEXT_NODE && !this.nodeValue.match(/^\s+$/)) {
             if($(this).closest('a').length == 0 && $(this).closest('h1,h2,h3,h4,h5,h6,h7,.header').length > 0){
                 $(this).replaceWith($.map(this.nodeValue.split(/(\S+)/), function (w) {
-                  return w.match(/^\s*$/) ? document.createTextNode(w) : $('<span>', {id: count = count + 1, text: w, class: 'word'}).get();
+                  return w.match(/^\s*$/) ? document.createTextNode(w) : $('<span>', {id: "sticky" + (count = count + 1), text: w, class: 'word'}).get();
                 }));
             }
           }
@@ -26,7 +26,7 @@ function sticky(response, postId, stickies){
     }(0));
     
     $('#pdfHTML #pdfBody .word').each(function(i, el){
-        var id = $(el).attr('id');
+        var id = $(el).attr('id').replace("sticky", "");
         if(stickies[id] != undefined && 
            stickies[id] != ''){
             // Create the Sticky
@@ -42,7 +42,7 @@ function sticky(response, postId, stickies){
             if($('div', this).length == 0){
                 // Create the Sticky
                 var head = $(this).text();
-                var id = $(this).attr('id');
+                var id = $(this).attr('id').replace("sticky", "");
                 $(this).append('<div class="sticky" style="display:none;"><b>' + head + '</b><a class="X">X</a><br /><textarea name="' + postId + '[' + id + ']" placeholder="Enter Annotation..."></textarea></div>');
             }
             // Show the Sticky

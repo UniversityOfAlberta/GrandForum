@@ -12,7 +12,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         $excludeMe = (strtolower($this->getAttr("excludeMe", "false")) == "true");
         $me = Person::newFromWgUser();
 
-        if(!$me->isRole(ISAC) && !$me->isRole(ACHAIR) && !$me->isRole(IAC) && !$me->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
+        if($me->getName() != "Christopher.Sturdy" && !$me->isRole(ISAC) && !$me->isRole(ACHAIR) && !$me->isRole(IAC) && !$me->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END)){
             // Person isn't a Chair/EA, so don't return anyone
             return $data;
         }
@@ -30,6 +30,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
         else {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         }
+        
         foreach($allPeople as $person){
             if($person->getCaseNumber($this->getReport()->year) == ""){
                 continue;
@@ -69,6 +70,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 // SPECIAL CASES BELOW
+                if($me->getName() == "Christopher.Sturdy" && $person->getName() != "Deanna.Singhal"){
+                    // Sturdy should only see Deanna
+                    continue;
+                }
                 if(($me->getName() == "Linda.Christensen" || $me->getName() == "David.Coltman") && $person->getName() == "Mark.Lewis"){
                     // Not reviewed by BioSci, only Math
                     continue;

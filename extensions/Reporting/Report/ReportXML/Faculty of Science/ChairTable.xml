@@ -1,42 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <Role role="ISAC">
-            <SectionPermission id="evaluations" permissions="rw" />
+        <Person id="64">
+            <!-- Sturdy -->
+            <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="recommendations" permissions="r" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
-            <SectionPermission id="chairs_advice" permissions="rw" />
+            <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
-        </Role>
-        <Role role="IAC">
-            <SectionPermission id="evaluations" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="" />
+        </Person>
+        <Role role="ISAC">
+            <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
-            <SectionPermission id="recommendations" permissions="rw" />
+            <SectionPermission id="recommendations" permissions="r" />
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
             <SectionPermission id="atsec" permissions="" />
-            <SectionPermission id="dept_hqp" permissions="rw" />
+            <SectionPermission id="dept_hqp" permissions="r" />
+        </Role>
+        <Role role="IAC">
+            <SectionPermission id="evaluations" permissions="r" />
+            <SectionPermission id="dean_evaluations" permissions="" />
+            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="deans_advice" permissions="" />
+            <SectionPermission id="deans_decision" permissions="" />
+            <SectionPermission id="chairs_advice" permissions="r" />
+            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
         <Role role="DEAN">
             <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="rw" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="rw" />
-            <SectionPermission id="deans_decision" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="deans_advice" permissions="r" />
+            <SectionPermission id="deans_decision" permissions="r" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role>
         <Role role="DEANEA">
             <SectionPermission id="evaluations" permissions="" />
-            <SectionPermission id="dean_evaluations" permissions="rw" />
-            <SectionPermission id="recommendations" permissions="rw" />
-            <SectionPermission id="deans_advice" permissions="rw" />
-            <SectionPermission id="deans_decision" permissions="rw" />
+            <SectionPermission id="dean_evaluations" permissions="r" />
+            <SectionPermission id="recommendations" permissions="r" />
+            <SectionPermission id="deans_advice" permissions="r" />
+            <SectionPermission id="deans_decision" permissions="r" />
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
@@ -209,7 +220,12 @@
                     ]]>
                 </ReportItem>
             </If>
-            <If id="if_chair" if="{and({!contains({$my_roles},EA)},{or({contains({$my_roles},Chair)},{contains({$user_sub_roles},Chair's Recommendation)})})}">
+            <If id="if_chair" if="{and({!contains({$my_roles},EA)},
+                                       {or({contains({$my_roles},Chair)},
+                                           {contains({$user_sub_roles},Chair's Recommendation)},
+                                           {==({$my_id},64)}
+                                       )}
+                                  )}">
                 <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
                     <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px">
                         <![CDATA[

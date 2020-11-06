@@ -6,12 +6,6 @@ if(isset($_GET['generatePDF'])){
 require_once('PDFParams.php');
 require_once('ReportIndex.php');
 require_once('ReportStorage.php');
-$GLOBALS['attachedPDFs'] = array();
-$GLOBALS['chapters'] = array();
-$GLOBALS['footnotes'] = array();
-$GLOBALS['nFootnotes'] = 0;
-$GLOBALS['nFootnotesProcessed'] = 0;
-$GLOBALS['section'] = 0;
 
 function calculateDPI(){
     if(isset($_GET['dpi'])){
@@ -28,7 +22,20 @@ function calculateDPI(){
     PDFGenerator::$preview = isset($_GET['preview']);
 }
 
-calculateDPI();
+function initGlobals(){
+    FootnotesReportItem::$top_anchor = 1;
+    FootnotesReportItem::$bottom_anchor = 1;
+    FootnoteReportItem::$nFootnotes = 0;
+    $GLOBALS['attachedPDFs'] = array();
+    $GLOBALS['chapters'] = array();
+    $GLOBALS['footnotes'] = array();
+    $GLOBALS['nFootnotes'] = 0;
+    $GLOBALS['nFootnotesProcessed'] = 0;
+    $GLOBALS['section'] = 0;
+    calculateDPI();
+}
+
+initGlobals();
 
 /**
  * This class helps with the generation of a PDF document.
