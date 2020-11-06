@@ -184,8 +184,8 @@ class GradDB extends SpecialPage{
                     // TODO: Probably need to set year
                     $pdf = $report->getPDF();
                     $button = (!$graddb->exists()) ? "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?hqp={$hqp->getId()}&term={$term}'>Make a Contract</a>" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:GradDB?pdf={$graddb->getMD5()}'>View Contract</a>";
-                    $timeUseButton = (!$graddb->exists()) ? "" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TimeUseReport".substr($term,0,-4)."&project=GradDB:{$graddb->getMD5()}'>Time-Use Report</a>";
-                    $reportButton = (count($pdf) == 0) ? "" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Student Report</a>";
+                    $timeUseButton = (!$graddb->exists()) ? "" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=TimeUseReport".substr($term,0,-4)."&project=GradDB:{$graddb->getMD5()}'>Time-Use</a>";
+                    $reportButton = (count($pdf) == 0) ? "" : "<a class='button' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'>Report</a>";
                     $eligible = ($hqp->isTAEligible($date)) ? "<span style='font-size:2em;'>&#10003;</span>" : "";
                     $hqpAccepted = ($graddb->hasHQPAccepted()) ? $graddb->getHQPAccepted() : "";
                     $supAccepted = ($graddb->hasSupAccepted()) ? $graddb->getSupAccepted() : "";
