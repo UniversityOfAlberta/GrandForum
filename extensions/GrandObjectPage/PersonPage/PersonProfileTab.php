@@ -612,8 +612,13 @@ EOF;
                             <td>".implode("; ", $committee)."</td>
                         </tr>";
                 }
-                $this->html .= "</table>
-                <a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage HQP</a>";
+                $this->html .= "</table>";
+                if($me->isRole(HQP)){
+                    $this->html .= "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage Supervisors</a>";
+                }
+                else{
+                    $this->html .= "<a class='button' href='{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople'>Manage HQP</a>";
+                }
             }
         }
     }
