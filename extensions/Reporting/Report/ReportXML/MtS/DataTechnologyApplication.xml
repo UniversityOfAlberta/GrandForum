@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="MtS DATA &amp; TECHNOLOGY TARGETED CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
         <Role role="" />
     </Permissions>
-    <ReportSection id="background" tooltip="MtS DATA &amp; TECHNOLOGY TARGETED CALL" name="Background" title="MtS DATA &amp; TECHNOLOGY TARGETED CALL" type="ReportSection" renderpdf="false">
+    <ReportSection id="background" tooltip="MtS DATA &amp; TECHNOLOGY OPEN CALL" name="Background" title="MtS DATA &amp; TECHNOLOGY OPEN CALL" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
                 <b>Submission deadline:</b> December 7, 2020<br />

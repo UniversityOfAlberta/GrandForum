@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="MtS DATA &amp; TECHNOLOGY TARGETED CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
-                <h4 style='font-size:1.5em;'>MtS DATA &amp; TECHNOLOGY TARGETED CALL</h4>
+                <h4 style='font-size:1.5em;'>MtS DATA &amp; TECHNOLOGY OPEN CALL</h4>
             ]]>
         </Static>
         <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
