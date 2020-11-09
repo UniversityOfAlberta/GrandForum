@@ -20,6 +20,7 @@ class Collaboration extends BackboneModel{
     var $other = "";
     var $personName = "";
     var $position = "";
+    var $email = "";
     var $cash = 0;
     var $inkind = 0;
     var $projectedCash = 0;
@@ -136,6 +137,7 @@ class Collaboration extends BackboneModel{
             $this->userKnowledge = $data[0]['user'];
             $this->personName = $data[0]['person_name'];
             $this->position = $data[0]['position'];
+            $this->email = $data[0]['email'];
             $this->other = $data[0]['other'];
             $this->cash = $data[0]['cash'];
             $this->inkind = $data[0]['inkind'];
@@ -196,6 +198,10 @@ class Collaboration extends BackboneModel{
 
     function getPosition() {
         return $this->position;
+    }
+    
+    function getEmail(){
+        return $this->email;
     }
 
     function getCash() {
@@ -318,6 +324,7 @@ class Collaboration extends BackboneModel{
                                   'other' => $this->other,
                                   'person_name' => $this->personName,
                                   'position' => $this->position,
+                                  'email' => $this->email,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
                                   'cash' => $this->cash,
@@ -376,6 +383,7 @@ class Collaboration extends BackboneModel{
                                   'other' => $this->other,
                                   'person_name' => $this->personName,
                                   'position' => $this->position,
+                                  'email' => $this->email,
                                   'year' => $this->year,
                                   'end_year' => $this->endYear,
                                   'cash' => $this->cash,
@@ -472,6 +480,7 @@ class Collaboration extends BackboneModel{
             'other' => $this->getOther(),
             'personName' => $this->getPersonName(),
             'position' => $this->getPosition(),
+            'email' => $this->getEmail(),
             'url' => $this->getUrl(),
             'cash' => $this->getCash(),
             'inkind' => $this->getInKind(),
