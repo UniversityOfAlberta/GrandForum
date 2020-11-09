@@ -134,6 +134,9 @@
     // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
     
+    // Whether or not Agencies field is enabled
+    $config->setValue("agenciesEnabled", false);
+    
     // Whether or not Canada Research Chair is enabled
     $config->setValue("crcEnabled", false);
     
