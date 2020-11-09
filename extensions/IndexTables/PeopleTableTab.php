@@ -14,6 +14,7 @@ class PeopleTableTab extends AbstractTab {
         else{
             $tabTitle = Inflect::pluralize($table);
         }
+        $tabTitle = ucwords($tabTitle);
         $wgOut->setPageTitle($tabTitle);
         if(!$past){
             parent::AbstractTab($tabTitle);
@@ -62,6 +63,7 @@ class PeopleTableTab extends AbstractTab {
         $emailHeader = "";
         $idHeader = "";
         $epicHeader = "";
+        $hqpHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
@@ -85,6 +87,7 @@ class PeopleTableTab extends AbstractTab {
                                <th style='white-space: nowrap;'>COI</th>
                                <th style='white-space: nowrap;'>NDA</th>";
             }
+            $hqpHeader = "<th>Supervisors</th>";
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -135,6 +138,7 @@ class PeopleTableTab extends AbstractTab {
                                     {$uniHeader}
                                     <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
+                                    {$hqpHeader}
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
                                     {$statusHeader}
                                     {$epicHeader}
@@ -218,6 +222,13 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left'>{$person->getDepartment()}</td>";
             }
             $this->html .= "<td align='left'>{$university['position']}</td>";
+            if($hqpHeader != ''){
+                $supervisors = array();
+                foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
+                    $supervisors[$supervisor->id] = "<a href='{$supervisor->getUrl()}'>{$supervisor->getNameForForms()}</a>";
+                }
+                $this->html .= "<td>".implode("; ", $supervisors)."</td>";
+            }
             $keywords = $person->getKeywords(', ');
             $bio = strip_tags(trim($person->getProfile()));
             if($bio != ""){
