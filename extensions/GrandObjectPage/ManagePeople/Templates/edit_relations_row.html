@@ -9,6 +9,7 @@
     <hr style="background-color:#aaa;" />
     <div style="white-space: nowrap;">
         <select id="selectedProject">
+            <option value="" selected disabled hidden>---</option>
             <% _.each(allowedProjects, function(project){ %>
                 <option><%= project %></option>
             <% }) %>
