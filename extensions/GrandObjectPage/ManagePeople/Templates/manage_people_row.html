@@ -20,10 +20,14 @@
     
 </div>
 <td align="center">
-    <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+    <% if(!frozen){ %>
+        <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+    <% } %>
 </td>
 <td align="center">
-    <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+    <% if(!frozen){ %>
+        <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+    <% } %>
 </td>
 <td align="center">
     <% if(me.get('id') != id){ %>
