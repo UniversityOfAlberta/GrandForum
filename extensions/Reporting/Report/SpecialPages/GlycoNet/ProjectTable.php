@@ -106,6 +106,7 @@ class ProjectTable extends SpecialPage{
             //$tabbedPage->addTab(new ProjectGlyconetBudgetTab($project));
             $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Budget", "BUDGET"));
             $tabbedPage->addTab(new ProjectBDTab($project));
+            $tabbedPage->addTab(new ProjectUploadPDFTab($project, "Additional Info", "ADDITIONAL", true));
             $tabbedPage->showPage();
             if(isset($_POST['submit'])){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:ProjectTable?project={$project->getId()}");
