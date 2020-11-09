@@ -100,6 +100,9 @@ class PeopleTableTab extends AbstractTab {
             if($config->getValue('ecrEnabled')){
                 $statusHeader .= "<th>ECR</th>";
             }
+            if($config->getValue('agenciesEnabled')){
+                $statusHeader .= "<th>Agencies</th>";
+            }
             if($config->getValue('mitacsEnabled')){
                 $statusHeader .= "<th>MITACS</th>";
             }
@@ -241,6 +244,9 @@ class PeopleTableTab extends AbstractTab {
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
+                if($config->getValue('agenciesEnabled')){
+                    $this->html .= "<td align='left'>{$person->getAgencies(', ')}</td>";
                 }
                 if($config->getValue('mitacsEnabled')){
                     $this->html .= "<td align='left'>{$person->getMitacs()}</td>";

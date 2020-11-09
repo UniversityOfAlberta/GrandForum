@@ -1633,14 +1633,18 @@ class Person extends BackboneModel {
      * Returns the agencieis array for this Person
      * @return string The agencies array for this Person
      */
-    function getAgencies(){
+    function getAgencies($delim=null){
         $me = Person::newFromWgUser();
+        $agencies = array();
         if($me->isLoggedIn()){
             if(is_array($this->agencies)){
-                return $this->agencies;
+                $agencies = $this->agencies;
             }
         }
-        return array();
+        if($delim != null){
+            return implode($delim, $agencies);
+        }
+        return $agencies;
     }
     
     /**
