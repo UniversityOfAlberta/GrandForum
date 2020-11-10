@@ -9,7 +9,27 @@
 </div>
 <div style="display:flex;padding:5px;">
     <div class="collab_box" style="flex-grow:3;max-width: 330px;">
-
+        <div>
+            <fieldset style="width: 240px; background: white; border: 1px solid #E0E0E0; border-radius: 4px;">
+                <legend style="font-size: 1em;">Contact</legend>
+                <table style="border-spacing:10px 0px;">
+                    <tr>
+                        <td style="vertical-align: baseline;"><b>Name</b></td>
+                        <td><%= personName %></td>
+                    </tr>
+                    <tr>
+                        <td><b>Position</b></td>
+                        <td><%= position %></td>
+                    </tr>
+                    <% if(email != ''){ %>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td><a href="mailto:<%= email %>"><%= email %></a></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </fieldset>
+        </div>
         <table style="max-width:100%; margin-top: 5px;">
             <tr>
                 <td><b>Country</b></td>

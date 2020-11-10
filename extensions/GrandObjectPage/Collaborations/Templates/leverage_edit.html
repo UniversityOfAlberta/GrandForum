@@ -8,11 +8,38 @@
     <h3>Organization:</h3>
     <%= HTML.TextBox(this, 'title', {size: '50', style: "width:393px"}) %><br />
 
-    <h3>Partnership existed prior to FES grant?</h3>
-    <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
-    <h3>To date, have you received in-kind and/or cash support from this organization?</h3>
-    <div style="margin-left:15px;">
-        <% if(cash == 0 && inkind == 0) { %>
+    <div style="margin-bottom: 10px; display:flex">
+        <div style="max-width:400px;width:50%">
+            <h3>Contact:</h3>
+            <table style="margin-left: 15px;width:90%">
+                <tr>
+                    <td><b>Name</b></td>
+                    <td style="width:100%">
+                        <%= HTML.TextBox(this, 'personName', {style: "width:100%"}) %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Position</b></td>
+                    <td style="width:100%">
+                        <%= HTML.TextBox(this, 'position', {style: "width:100%"}) %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Email</b></td>
+                    <td style="width:100%">
+                        <%= HTML.TextBox(this, 'email', {style: "width:100%"}) %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="max-width:600px; width:50%; display:inline-block; margin-left:18px;">
+            <% if (knowledgeUser != 1) { %>
+                <h3>Collaboration existed prior to FES grant?</h3>
+                <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
+            <% } %>
+            <h3>To date, have you received in-kind and/or cash support from this organization?</h3>
+            <div style="margin-left:15px;">
+                <% if(cash == 0 && inkind == 0) { %>
             <input style="margin-top: 8px;vertical-align:bottom;" type="radio" name="fund" value="yes"> Yes
             <input type="radio" style="margin-top: 8px;vertical-align:bottom;" name="fund" value="no" checked> No
             <br />
@@ -61,6 +88,8 @@
                 </table>
             </div>
         <% } %>
+            </div>
+        </div>
     </div>
 
     <div style="margin-bottom: 10px;">
