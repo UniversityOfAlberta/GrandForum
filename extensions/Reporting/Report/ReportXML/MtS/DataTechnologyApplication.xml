@@ -6,7 +6,8 @@
     <ReportSection id="background" tooltip="MtS DATA &amp; TECHNOLOGY OPEN CALL" name="Background" title="MtS DATA &amp; TECHNOLOGY OPEN CALL" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
-                <b>Submission deadline:</b> December 7, 2020<br />
+                <b>Submission deadline:</b> 4PM EST, December 7, 2020<br />
+                <span style='color: red;'>Before starting your application, please ensure you have selected the right Call</span>
                 <h2>BACKGROUND AND OBJECTIVES</h2>
                 <p>Researchers, service providers, advocates, and policymakers in the homelessness sector need access to timely, accurate, and comprehensive data to identify barriers and opportunities to enhance services and improve policies that contribute to homelessness prevention.</p>
 
