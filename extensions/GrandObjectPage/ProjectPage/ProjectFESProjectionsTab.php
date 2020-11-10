@@ -15,6 +15,10 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
     function generatePDFBody(){
         $this->generateBody();
     }
+    
+    function canEdit(){
+        return (!$this->project->isFeatureFrozen(FREEZE_PROJECTIONS) && parent::canEdit());
+    }
 
     function generateBody(){
         global $wgOut, $config;
