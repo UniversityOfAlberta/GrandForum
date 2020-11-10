@@ -33,6 +33,16 @@ class CollaborationAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $emptyProject = new Project(array());
+        $leveragesFrozen = $emptyProject->isFeatureFrozen("Leverages");
+        $collaborationsFrozen = $emptyProject->isFeatureFrozen("Collaborations");
+        
+        if($this->POST('leverage') == true && $leveragesFrozen){
+            $this->throwError("Leverages have been Frozen");
+        }
+        else if($this->POST('leverage') == false && $collaborationsFrozen){
+            $this->throwError("Collaborations have been frozen");
+        }
         $collab = new Collaboration(array());
         $collab->title = $this->POST('title');
         $collab->endYear = $this->POST('endYear');
@@ -64,6 +74,16 @@ class CollaborationAPI extends RESTAPI {
     }
     
     function doPUT(){
+        $emptyProject = new Project(array());
+        $leveragesFrozen = $emptyProject->isFeatureFrozen("Leverages");
+        $collaborationsFrozen = $emptyProject->isFeatureFrozen("Collaborations");
+        
+        if($this->POST('leverage') == true && $leveragesFrozen){
+            $this->throwError("Leverages have been Frozen");
+        }
+        else if($this->POST('leverage') == false && $collaborationsFrozen){
+            $this->throwError("Collaborations have been frozen");
+        }
         $collab = Collaboration::newFromId($this->getParam('id'));
         $collab->title = $this->POST('title');
         $collab->endYear = $this->POST('endYear');
@@ -95,7 +115,17 @@ class CollaborationAPI extends RESTAPI {
     }
     
     function doDELETE(){
+        $emptyProject = new Project(array());
+        $leveragesFrozen = $emptyProject->isFeatureFrozen("Leverages");
+        $collaborationsFrozen = $emptyProject->isFeatureFrozen("Collaborations");
+
         $collab = Collaboration::newFromId($this->getParam('id'));
+        if($collab->leverage == true && $leveragesFrozen){
+            $this->throwError("Leverages have been Frozen");
+        }
+        else if($this->leverage == false && $collaborationsFrozen){
+            $this->throwError("Collaborations have been frozen");
+        }
         $collab = $collab->delete();
         return $collab->toJSON();
     }

@@ -130,7 +130,7 @@
 </div>
 <br />
 
-<% if(me.isLoggedIn()){ %>
+<% if(me.isLoggedIn() && !collaborationsFrozen){ %>
     </br>
     <button id="editCollaboration">Edit <%= formType %></button>
     <button id="deleteCollaboration">Delete <%= formType %></button>
