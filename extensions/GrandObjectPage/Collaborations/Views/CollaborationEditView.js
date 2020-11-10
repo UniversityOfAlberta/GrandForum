@@ -52,6 +52,11 @@ CollaborationEditView = Backbone.View.extend({
             addWarning("This " + this.model.getType().toLowerCase() + " does not have funding information, or is not in the form of a number.", true);
             return;
         }
+        if(!this.updateFiles()){
+            clearWarning();
+            addWarning("The max file size is 2MB per file", true);
+            return;
+        }
         if(!this.updateThemesWarning()){
             clearWarning();
             addWarning("This " + this.model.getType().toLowerCase() + " does not have any attributes selected.", true);
@@ -192,6 +197,16 @@ CollaborationEditView = Backbone.View.extend({
         else {
             return true;
         }
+    },
+    
+    updateFiles: function(){
+        var tooBig = false;
+        _.each(this.model.get('files'), function(file){
+            if(file.size > 1024*1024*2){
+                tooBig = true;
+            }
+        });
+        return !tooBig;
     },
 
     render: function(){

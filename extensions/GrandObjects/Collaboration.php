@@ -27,6 +27,7 @@ class Collaboration extends BackboneModel{
     var $projectedInkind = 0;
     var $year = YEAR;
     var $endYear = 0;
+    var $files = array();
     var $existed = "";
     var $knowledgeUser = false;
     var $leverage = false;
@@ -38,27 +39,38 @@ class Collaboration extends BackboneModel{
     /**
      * Returns a new Collaboration from the given id
      * @param integer $id The id of the Collaboration
+     * @param boolean $includeFiles Whether to include the file uploads or not in the response
      * @return Collaboration The Collaboration with the given id
      */
-    static function newFromId($id){
+    static function newFromId($id, $includeFiles=true){
         $me = Person::newFromWgUser();
         if(!$me->isLoggedIn()) {
             return new Collaboration(array());
         }
-
-        if(isset(self::$cache[$id])){
-            return self::$cache[$id];
-        }
-        $me = Person::newFromWgUser();
         
-        $data = DBFunctions::select(array('grand_collaborations'),
-                                    array('*'),
-                                    array('id' => EQ($id)));
-        $collab = new Collaboration($data);
-        if(!$collab->isAllowedToEdit()){
-            $collab = new Contribution(array());
+        if(!isset(self::$cache[$id])){
+            $me = Person::newFromWgUser();
+            
+            $data = DBFunctions::select(array('grand_collaborations'),
+                                        array('*'),
+                                        array('id' => EQ($id)));
+            $collab = new Collaboration($data);
+            if(!$collab->isAllowedToEdit()){
+                $collab = new Contribution(array());
+            }
+            self::$cache[$collab->id] = &$collab;
         }
-        self::$cache[$collab->id] = &$collab;
+        $collab = self::$cache[$id];
+        if($includeFiles){
+            $collab->files = array();
+            $data = DBFunctions::select(array('grand_collaboration_files'),
+                                        array('*'),
+                                        array('collaboration_id' => EQ($collab->id)),
+                                        array('id' => 'ASC'));
+            foreach($data as $row){
+                $collab->files[] = json_decode($row['file']);
+            }
+        }
         return $collab;
     }
     
@@ -77,7 +89,7 @@ class Collaboration extends BackboneModel{
                                     array('leverage' => $leverage));
         $collabs = array();
         foreach($data as $row){
-            $collab = Collaboration::newFromId($row['id']);
+            $collab = Collaboration::newFromId($row['id'], false);
             if($collab->getId() != 0){
                 $collabs[] = $collab;
             }
@@ -252,6 +264,13 @@ class Collaboration extends BackboneModel{
         return Person::newFromId($this->accessId);
     }
     
+    function getFileCount(){
+        $data = DBFunctions::select(array('grand_collaboration_files'),
+                                    array('id'),
+                                    array('collaboration_id' => EQ($this->id)));
+        return count($data);
+    }
+    
     /**
      * Returns whether or not this logged in user can edit this Collaboration
      */
@@ -352,6 +371,21 @@ class Collaboration extends BackboneModel{
                                               true);
             }
         }
+        
+        // Update collaboration_files table
+        if($status){
+            $status = DBFunctions::delete("grand_collaboration_files", 
+                                          array('collaboration_id' => $this->id),
+                                          true);
+        }
+        foreach($this->files as $file){
+            if($status){
+                $status = DBFunctions::insert("grand_collaboration_files", 
+                                              array('collaboration_id' => $this->id,
+                                                    'file' => $file),
+                                              true);
+            }
+        }
         $this->projectsWaiting = true;
         DBFunctions::commit();
         return $this;
@@ -409,6 +443,21 @@ class Collaboration extends BackboneModel{
                                               true);
             }
         }
+        
+        // Update collaboration_files table
+        if($status){
+            $status = DBFunctions::delete("grand_collaboration_files", 
+                                          array('collaboration_id' => $this->id),
+                                          true);
+        }
+        foreach($this->files as $file){
+            if($status){
+                $status = DBFunctions::insert("grand_collaboration_files", 
+                                              array('collaboration_id' => $this->id,
+                                                    'file' => json_encode($file)),
+                                              true);
+            }
+        }
         $this->projectsWaiting = true;
         DBFunctions::commit();
         return $this;
@@ -441,6 +490,8 @@ class Collaboration extends BackboneModel{
             DBFunctions::delete('grand_collaborations',
                                 array('id' => EQ($this->getId())));
             DBFunctions::delete('grand_collaboration_projects',
+                                array('collaboration_id' => EQ($this->getId())));
+            DBFunctions::delete('grand_collaboration_files',
                                 array('collaboration_id' => EQ($this->getId())));
             $this->id = null;
         }
@@ -488,6 +539,8 @@ class Collaboration extends BackboneModel{
             'projectedInkind' => $this->getProjectedInKind(),
             'year' => $this->getYear(),
             'endYear' => $this->getEndYear(),
+            'fileCount' => $this->getFileCount(),
+            'files' => $this->files,
             'existed' => $this->getExisted(),
             'knowledgeUser' => $this->getKnowledgeUser(),
             'leverage' => $this->getLeverage(),

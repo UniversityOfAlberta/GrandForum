@@ -130,6 +130,18 @@
             <div><%= HTML.ProjectSelector(this, 'projects') %></div>
         </div>
     </div>
+    
+    <div style="width:820px;padding-right:10px;">
+        <h3>Documents:</h3>
+        <% for(i=0; i<5; i++){ %>
+            <%= HTML.File(this, 'files.' + i, {}) %>
+            <% if(files[i] != undefined){ %>
+                <a href="<%= wgServer + wgScriptPath %>/index.php?action=api.collaborationFile/<%= id %>/<%= i %>" target="_blank"><%= files[i].filename %></a>
+            <% } %>
+            <br />
+        <% } %>
+    </div>
+    
     <br />
 </div>
 <% if(!this.isDialog){ %>

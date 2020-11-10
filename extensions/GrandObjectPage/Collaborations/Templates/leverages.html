@@ -21,6 +21,7 @@
             <th>Projects</th>
             <th>Year</th>
             <th>End Year</th>
+            <th>#Files</th>
             <th>Description</th>
             <th>Last Changed</th>
             <th width="1%"></th>
@@ -87,6 +88,9 @@
                     <% } else {%>
                         Active
                     <% } %>
+                </td>
+                <td>
+                    <%= collab.get('fileCount') %>
                 </td>
                 <td style="max-width: 100px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">
                     <%= collab.get('other') %>

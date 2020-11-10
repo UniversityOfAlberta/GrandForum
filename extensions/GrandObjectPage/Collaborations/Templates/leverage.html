@@ -110,6 +110,19 @@
 </div>
 <br />
 
+<% if(fileCount > 0){ %>
+    <div style="margin-left:10px;">
+        <h3>Documents:</h3>
+        <ol>
+        <% for(i=0; i<5; i++){ %>
+            <% if(files[i] != undefined){ %>
+                <li><a href="<%= wgServer + wgScriptPath %>/index.php?action=api.collaborationFile/<%= id %>/<%= i %>" target="_blank"><%= files[i].filename %></a></li>
+            <% } %>
+        <% } %>
+        </ol>
+    </div>
+<% } %>
+
 <% if(me.isLoggedIn()){ %>
     </br>
     <button id="editCollaboration">Edit <%= formType %></button>

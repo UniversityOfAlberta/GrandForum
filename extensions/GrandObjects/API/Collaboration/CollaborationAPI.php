@@ -6,6 +6,20 @@ class CollaborationAPI extends RESTAPI {
         $leverages = ($this->getParam('leverages') != "");
         if($this->getParam('id') != ""){
             $collab = Collaboration::newFromId($this->getParam('id'));
+            if($this->getParam('file') != ""){
+                $files = $collab->files;
+                if(isset($files[$this->getParam('file')])){
+                    $file = $files[$this->getParam('file')];
+                    header('Content-Type: '.$file->type);
+                    header('Content-Disposition: attachment; filename="'.$file->filename.'"');
+                    $exploded = explode(",", $file->data);
+                    echo base64_decode($exploded[1]);
+                }
+                else{
+                    $this->throwError("The collaboration <i>{$collab->getTitle()}</i> does not have a file by the id of {$this->getParam('file')}");
+                }
+                exit;
+            }
             return $collab->toJSON();
         }
         else if($leverages){
@@ -41,6 +55,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
+        $collab->files = $this->POST('files');
         $status = $collab->create();
         if(!$status) {
             $this->throwError("Could not create collaboration");
@@ -71,6 +86,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
+        $collab->files = $this->POST('files');
         $status = $collab->update();
         if(!$status) {
             $this->throwError("Could not create collaboration");

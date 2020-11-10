@@ -36,6 +36,8 @@ Collaboration = Backbone.Model.extend({
             existed: "",
             year: YEAR,
             endYear: "0",
+            fileCount: 0,
+            files: new Array(),
             knowledgeUser: 0, // true or false
             leverage: 0, // true or false
             changed: ""

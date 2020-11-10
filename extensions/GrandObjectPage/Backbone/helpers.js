@@ -418,6 +418,7 @@ HTML.File = function(view, attr, options){
             var fileObj = {
                 filename: file.name,
                 type: file.type,
+                size: file.size,
                 data: reader.result
             };
             fileObj.filename = file.name;

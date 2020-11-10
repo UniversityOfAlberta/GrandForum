@@ -55,6 +55,11 @@ LeverageEditView = CollaborationEditView.extend({
             addWarning("This " + this.model.getType().toLowerCase() + " does not have funding information, or is not in the form of a number.", true);
             return;
         }*/
+        if(!this.updateFiles()){
+            clearWarning();
+            addWarning("The max file size is 2MB per file", true);
+            return;
+        }
         if(!this.updateProjects()){
             clearWarning();
             addWarning("This " + this.model.getType().toLowerCase() + " does not have any associated projects.", true);
