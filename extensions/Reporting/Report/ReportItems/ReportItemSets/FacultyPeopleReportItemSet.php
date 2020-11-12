@@ -18,6 +18,10 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
+            if(!$person->isSubRole("SPECIAL2020")){
+                // Special rule for covid. Only certain people will be evaluated
+                continue;
+            }
             $caseNumber = $person->getCaseNumber($this->getReport()->year);
             if($caseNumber == ""){
                 continue;
