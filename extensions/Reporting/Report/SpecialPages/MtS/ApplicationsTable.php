@@ -74,6 +74,7 @@ class ApplicationsTable extends SpecialPage{
             }
         </style>");
 
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=impact'>Impact</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=datatech'>DataTech</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=openround2'>OpenRound2</a>";
 
@@ -86,13 +87,24 @@ class ApplicationsTable extends SpecialPage{
         
         $this->initArrays();
         
-        if($program == "datatech"){
+        if($program == "impact"){
+            $this->generateImpact();
+        }
+        else if($program == "datatech"){
             $this->generateDataTech();
         }
         else if($program == "openround2"){
             $this->generateOpenRound2();
         }
         return;
+    }
+    
+    function generateImpact(){
+        global $wgOut;
+
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_IMPACT', $this->projects, 2020, "2020"));
+        $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateDataTech(){
