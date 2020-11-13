@@ -1926,7 +1926,8 @@ class Paper extends BackboneModel{
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
                           'access' => $this->getAccess(),
-                          'topProjects' => $topProjects);
+                          'topProjects' => $topProjects,
+                          'citation' => $this->getCitation(false,false,false));
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }

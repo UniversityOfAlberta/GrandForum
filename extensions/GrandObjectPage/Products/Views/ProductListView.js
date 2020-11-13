@@ -62,6 +62,7 @@ ProductListView = Backbone.View.extend({
                                 "<span style='white-space: nowrap;'>" + model.type + "</span>",
                                 "<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", "<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>",
                                 model.status);
+            row.push(model.citation);
             if(networkName == "FES"){
                 if(typeof model.data.collaboration != 'undefined'){
                     row.push(model.data.collaboration);
@@ -148,9 +149,9 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
-        var targets = [ 4, 5 ];
+        var targets = [ 4, 5, 6 ];
         if(networkName == "FES"){
-            targets = [4, 5, 6, 7, 8, 9, 10, 11];
+            targets = [4, 5, 6, 7, 8, 9, 10, 11, 12 ];
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
