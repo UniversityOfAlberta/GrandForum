@@ -58,7 +58,7 @@ class Collaboration extends BackboneModel{
             if(!$collab->isAllowedToEdit()){
                 $collab = new Contribution(array());
             }
-            self::$cache[$collab->id] = &$collab;
+            self::$cache[$id] = &$collab;
         }
         $collab = self::$cache[$id];
         if($includeFiles){
@@ -90,7 +90,7 @@ class Collaboration extends BackboneModel{
         $collabs = array();
         foreach($data as $row){
             $collab = Collaboration::newFromId($row['id'], false);
-            if($collab->getId() != 0){
+            if($collab != null && $collab->getId() != 0){
                 $collabs[] = $collab;
             }
         }

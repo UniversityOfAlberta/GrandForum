@@ -718,7 +718,7 @@ EOF;
                 $ecr = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves'>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
+                                    <legend>>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
                                     <input type='checkbox' name='earlyCareerResearcher' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
                                     <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
                                 </fieldset>
@@ -732,7 +732,7 @@ EOF;
                 $agencies = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend>From which agencies or organizations you apply for funding?</legend>
+                                    <legend>From which agencies or organizations do you apply for funding?</legend>
                                     {$checkbox->render()}
                                 </fieldset>
                             </td>
