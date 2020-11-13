@@ -59,8 +59,11 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $dateField = new CalendarField("effective_date", "Effective Date", substr($this->project->getEffectiveDate(), 0, 10));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()} {$dateField->render()}</td></tr>";
+                $startField = new CalendarField("start_date", "Start Date", substr($this->project->getCreated(), 0, 10));
+                $endField = new CalendarField("effective_date", "End Date", substr($this->project->getEffectiveDate(), 0, 10));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $this->html .= "<tr><td><b>Start Date:</b></td><td>{$startField->render()}</td></tr>";
+                $this->html .= "<tr><td><b>End Date:</b></td><td>{$endField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
@@ -73,10 +76,10 @@ class ProjectMainTab extends AbstractEditableTab {
             <script type='text/javascript'>
                 $('[name=status]').change(function(){
                     if($('[name=status]').val() == 'Ended'){
-                        $('[name=effective_date]').show();
+                        $('[name=effective_date]').closest('tr').show();
                     }
                     else{
-                        $('[name=effective_date]').hide();
+                        $('[name=effective_date]').closest('tr').hide();
                     }
                 });
                 $('[name=status]').change();
@@ -124,17 +127,28 @@ class ProjectMainTab extends AbstractEditableTab {
             if($_POST['status'] == "Ended"){
                 $_POST['project'] = $this->project->getName();
                 APIRequest::doAction('DeleteProject', true);
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
             }
             else{
                 DBFunctions::update('grand_project_status',
                                     array('status' => $_POST['status']),
                                     array('evolution_id' => EQ($this->project->getEvolutionId()),
                                           'project_id' => EQ($this->project->getId())));
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
             }
+            Project::$cache = array();
+            // Update Dates
+            $startDate = @DBFunctions::escape($_POST['start_date']);
+            $endDate = @DBFunctions::escape($_POST['effective_date']);
+            DBFunctions::execSQL("UPDATE `grand_project_evolution`
+                                  SET `effective_date` = '$endDate'
+                                  WHERE `new_id` = '{$this->project->getId()}'
+                                  ORDER BY `date` DESC
+                                  LIMIT 1", true);
+            DBFunctions::execSQL("UPDATE `grand_project_evolution`
+                                  SET `effective_date` = '$startDate'
+                                  WHERE `new_id` = '{$this->project->getId()}'
+                                  ORDER BY `date` ASC
+                                  LIMIT 1", true);
+            $this->project = Project::newFromId($this->project->getId());
         }
         
         if(isset($_POST['acronym'])){
