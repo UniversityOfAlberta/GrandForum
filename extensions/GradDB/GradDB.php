@@ -347,23 +347,11 @@ class GradDB extends SpecialPage{
     function downloadPDF(){
         global $wgOut;
         $graddb = GradDBFinancial::newFromMD5($_GET['pdf']);
-        $gradDBTimeUse = GradDBTimeUse::newFromMD5($_GET['pdf']);
         if($graddb->exists()){
             if($graddb->isAllowedToView()){
                 header("Content-Type: application/pdf");
                 header("Content-Disposition:filename=\"{$graddb->getHQP()->getName()}_{$graddb->getTerm()}_Appointment.pdf\"");
                 echo $graddb->getPDF();
-                exit;
-            }
-            else{
-                permissionError();
-            }
-        }
-        else if($gradDBTimeUse->exists()){
-            if($gradDBTimeUse->isAllowedToView()){
-                header("Content-Type: application/pdf");
-                header("Content-Disposition:filename=\"{$gradDBTimeUse->getHQP()->getName()}_{$gradDBTimeUse->getTerm()}_TimeUse.pdf\"");
-                echo $gradDBTimeUse->getPDF();
                 exit;
             }
             else{
