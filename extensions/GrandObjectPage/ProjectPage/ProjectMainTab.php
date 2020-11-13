@@ -21,9 +21,13 @@ class ProjectMainTab extends AbstractEditableTab {
         if(count($preds) > 0 && !isset($_GET['generatePDF'])){
             $predLinks = array();
             foreach($preds as $pred){
-                $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+                if($pred->getName() != $project->getName()){
+                    $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+                }
             }
-            $this->html .= "<div style='margin-left: 5px; margin-top: -20px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
+            if(count($predLinks) > 0){
+                $this->html .= "<div style='margin-left: 5px; margin-top: -20px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
+            }
         }
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
             // Show a mailing list link if the person is subscribed
