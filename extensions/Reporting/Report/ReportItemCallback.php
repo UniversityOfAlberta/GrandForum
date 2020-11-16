@@ -1306,9 +1306,9 @@ class ReportItemCallback {
     function getUserProjectEndDate(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromHistoricId($this->reportItem->projectId);
-        $date = $project->getEndDate($person);
+        $date = $project->getLeaveDate($person);
         if($date != "0000-00-00 00:00:00"){
-            return time2date($project->getEndDate($person));
+            return time2date($project->getLeaveDate($person));
         }
         return "";
     }

@@ -14,10 +14,11 @@ class Project extends BackboneModel {
     var $fullName;
     var $name;
     var $status;
+    var $startDate;
+    var $endDate;
     var $type;
     var $private;
     var $parentId;
-    var $bigbet;
     var $people;
     var $phase;
     var $contributions;
@@ -57,7 +58,7 @@ class Project extends BackboneModel {
             self::$cache[$project->name] = &$project;
             return $project;
         }
-        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
+        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.start_date, s.end_date, s.private
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -66,7 +67,7 @@ class Project extends BackboneModel {
                  AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.start_date, s.end_date, s.private
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -121,7 +122,8 @@ class Project extends BackboneModel {
                                           's.type',
                                           's.private',
                                           's.status',
-                                          's.bigbet'),
+                                          's.start_date',
+                                          's.end_date'),
                                     array('LOWER(p.name)' => strtolower(trim($name)),
                                           'e.new_id' => EQ(COL('p.id')),
                                           's.evolution_id' => EQ(COL('e.id'))),
@@ -181,7 +183,8 @@ class Project extends BackboneModel {
                                           's.type',
                                           's.private',
                                           's.status',
-                                          's.bigbet'),
+                                          's.start_date',
+                                          's.end_date'),
                                     array('LOWER(d.full_name)' => strtolower(trim($title)),
                                           'p.id' => EQ(COL('d.project_id')),
                                           'e.new_id' => EQ(COL('p.id')),
@@ -227,7 +230,7 @@ class Project extends BackboneModel {
             return Project::newFromId($id);
         }
         $sqlExtra = ($evolutionId != null) ? $sqlExtra = "AND e.id = $evolutionId" : "";
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -260,7 +263,7 @@ class Project extends BackboneModel {
             return Project::newFromName($name);
         }
         $name = DBFunctions::escape($name);
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
@@ -441,9 +444,10 @@ class Project extends BackboneModel {
             $this->name = $data[0]['name'];
             $this->evolutionId = $data[0]['evolutionId'];
             $this->status = $data[0]['status'];
+            $this->startDate = $data[0]['start_date'];
+            $this->endDate = $data[0]['end_date'];
             $this->type = $data[0]['type'];
             $this->private = $data[0]['private'];
-            $this->bigbet = $data[0]['bigbet'];
             $this->phase = $data[0]['phase'];
             $this->parentId = $data[0]['parent_id'];
             $this->succ = false;
@@ -495,7 +499,6 @@ class Project extends BackboneModel {
                        'private' => $this->isPrivate(),
                        'theme' => $theme,
                        'themeName' => $themeName,
-                       'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
@@ -642,10 +645,6 @@ EOF;
     
     function isPrivate(){
         return $this->private;
-    }
-    
-    function isBigBet(){
-        return $this->bigbet;
     }
     
     /**
@@ -803,6 +802,22 @@ EOF;
     // Returns when the evolution state took place
     function getEffectiveDate(){
         return $this->effectiveDate;
+    }
+    
+    function getStartDate(){
+        $date = $this->startDate;
+        if($date == "0000-00-00 00:00:00"){
+            $date = $this->getCreated();
+        }
+        return $date;
+    }
+    
+    function getEndDate(){
+        $date = $this->endDate;
+        if($date == "0000-00-00 00:00:00"){
+            $date = $this->getEffectiveDate();
+        }
+        return $date;
     }
     
     // Returns an array of Person objects which represent
@@ -1502,7 +1517,7 @@ EOF;
     }
     
     // Returns the endDate for the given Person
-    function getEndDate($person){
+    function getLeaveDate($person){
         if($person != null && $person instanceof Person){
             $this->getEndDates();
             if(isset($this->endDates[$person->getId()])){

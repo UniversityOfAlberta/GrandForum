@@ -181,7 +181,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                                   'className' => 'visOrange'));
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
                 $start = substr($project->getJoinDate($person), 0, 10);
-                $end = substr($project->getEndDate($person), 0, 10);
+                $end = substr($project->getLeaveDate($person), 0, 10);
                 if($end == "0000-00-00"){
                     $end = $today;
                 }

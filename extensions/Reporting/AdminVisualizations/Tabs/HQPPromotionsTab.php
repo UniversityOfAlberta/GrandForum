@@ -117,7 +117,7 @@ class HQPPromotionsTab extends AbstractTab {
        
             foreach($person->getProjects(true) as $project){
                 $start = substr($project->getJoinDate($person), 0, 10);
-                $end = substr($project->getEndDate($person), 0, 10);
+                $end = substr($project->getLeaveDate($person), 0, 10);
                 if($end == "0000-00-00"){
                     $end = $today;
                 }

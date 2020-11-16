@@ -7,7 +7,6 @@ class CreateProjectAPI extends API{
 	    $this->addPOST("fullName",true,"The full name of the project","Media Enabled Organizational Workflow");
 	    $this->addPOST("status",true,"The status of this project","Proposed");
 	    $this->addPOST("type",true,"The type of this project","Research");
-	    $this->addPOST("bigbet",true,"Whether this is a big bet project or not","No");
 	    $this->addPOST("phase", true, "The phase of this project", "1");
 	    $this->addPOST("effective_date", true, "The date that this action should take place", "2012-10-15");
 	    $this->addPOST("description",false,"The overview for this project","MEOW is great");
@@ -21,7 +20,6 @@ class CreateProjectAPI extends API{
         $_POST['fullName'] = @$_POST['fullName'];
         $_POST['status'] = @$_POST['status'];
         $_POST['type'] = @$_POST['type'];
-        $_POST['bigbet'] = @$_POST['bigbet'];
         $_POST['phase'] = @$_POST['phase'];
         $_POST['effective_date'] = @$_POST['effective_date'];
         $_POST['description'] = @$_POST['description'];
@@ -60,7 +58,6 @@ class CreateProjectAPI extends API{
 	    
 	    $status = (isset($_POST['status'])) ? $_POST['status'] : 'Proposed';
 	    $type = (isset($_POST['type'])) ? $_POST['type'] : 'Research';
-	    $bigbet = (isset($_POST['bigbet']) && $_POST['bigbet'] == "Yes") ? 1 : 0;
 	    $phase = (isset($_POST['phase'])) ? $_POST['phase'] : PROJECT_PHASE;
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : COL('CURRENT_TIMESTAMP');
 	    // It is important not to get the database into an unstable state, so start a transaction
@@ -97,14 +94,12 @@ class CreateProjectAPI extends API{
 	                                    true);
 	    }
 	    if($stat){
-	        $data = DBFunctions::select(array('grand_project_evolution'),
-	                                    array('MAX(id)' => 'id'));
+	        $evoId = DBFunctions::insertId();
 	        $stat = DBFunctions::insert('grand_project_status',
 	                                    array('evolution_id' => $data[0]['id'],
 	                                          'project_id' => $nsId,
 	                                          'status' => $status,
-	                                          'type' => $type,
-	                                          'bigbet' => $bigbet),
+	                                          'type' => $type),
 	                                    true);
 	    }
 	    if($stat){

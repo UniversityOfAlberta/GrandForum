@@ -30,7 +30,6 @@ class InactivateProjectTab extends ProjectTab {
         $create->getElementById("delete_full_name_row")->remove();
         $create->getElementById("delete_status_row")->remove();
         $create->getElementById("delete_type_row")->remove();
-        $create->getElementById("delete_bigbet_row")->remove();
         $create->getElementById("delete_phase_row")->remove();
         //$create->getElementById("delete_champ_row")->remove();
         $create->getElementById("delete_form_table")->prepend($projRow, 'delete_acronym_row');

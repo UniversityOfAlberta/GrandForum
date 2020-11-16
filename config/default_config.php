@@ -182,9 +182,6 @@
     // Whether or not to include HQP Products for supervisors
     $config->setValue("includeHQPProducts", true);
     
-    // Whether or not to allow bigBetProjects
-    $config->setValue("bigBetProjects", false);
-    
     // Whether or not to allow projectTypes
     $config->setValue("projectTypes", false);
     

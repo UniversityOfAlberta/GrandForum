@@ -35,7 +35,6 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         $website = $this->project->getWebsite();
-        $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
         if($edit){
             if($project->isSubProject()){
@@ -53,18 +52,16 @@ class ProjectMainTab extends AbstractEditableTab {
         if($config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
-        if($config->getValue("bigBetProjects") && !$this->project->isSubProject()){
-            $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
-        }
         if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $endedhtml = ($this->project->getStatus() == "Ended") ? "(".substr($this->project->getEffectiveDate(), 0, 10).")" : "";
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()} {$endedhtml}</td></tr>";
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+                $this->html .= "<tr><td><b>Start Date:</b></td><td>".substr($this->project->getStartDate(), 0, 10)."</td></tr>";
+                $this->html .= "<tr><td><b>End Date:</b></td><td>".substr($this->project->getEndDate(), 0, 10)."</td></tr>";
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $startField = new CalendarField("start_date", "Start Date", substr($this->project->getCreated(), 0, 10));
-                $endField = new CalendarField("effective_date", "End Date", substr($this->project->getEffectiveDate(), 0, 10));
+                $startField = new CalendarField("start_date", "Start Date", substr($this->project->getStartDate(), 0, 10));
+                $endField = new CalendarField("effective_date", "End Date", substr($this->project->getEndDate(), 0, 10));
                 $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
                 $this->html .= "<tr><td><b>Start Date:</b></td><td>{$startField->render()}</td></tr>";
                 $this->html .= "<tr><td><b>End Date:</b></td><td>{$endField->render()}</td></tr>";
@@ -76,18 +73,7 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>
-            <script type='text/javascript'>
-                $('[name=status]').change(function(){
-                    if($('[name=status]').val() == 'Ended'){
-                        $('[name=effective_date]').closest('tr').show();
-                    }
-                    else{
-                        $('[name=effective_date]').closest('tr').hide();
-                    }
-                });
-                $('[name=status]').change();
-            </script>";
+        $this->html .= "</table>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -140,8 +126,14 @@ class ProjectMainTab extends AbstractEditableTab {
             }
             Project::$cache = array();
             // Update Dates
+            $this->project = Project::newFromId($this->project->getId());
             $startDate = @DBFunctions::escape($_POST['start_date']);
             $endDate = @DBFunctions::escape($_POST['effective_date']);
+            DBFunctions::update('grand_project_status',
+                                array('start_date' => $startDate,
+                                      'end_date' => $endDate),
+                                array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                      'project_id' => EQ($this->project->getId())));
             DBFunctions::execSQL("UPDATE `grand_project_evolution`
                                   SET `effective_date` = '$endDate'
                                   WHERE `new_id` = '{$this->project->getId()}'
@@ -152,6 +144,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                   WHERE `new_id` = '{$this->project->getId()}'
                                   ORDER BY `date` ASC
                                   LIMIT 1", true);
+            Project::$cache = array();
             $this->project = Project::newFromId($this->project->getId());
         }
         
