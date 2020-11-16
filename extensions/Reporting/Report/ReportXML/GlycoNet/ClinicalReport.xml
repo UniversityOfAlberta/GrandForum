@@ -102,8 +102,8 @@
         <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
-                <h2>Equity and Diversity</h2>
-                <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
+                <h2>Equity, Diversity and Inclusion</h2>
+                <p>Demonstrate how equity, diversity and inclusion (EDI) has been incorporated into the project (see application instructions for more details).</p>
                 {$item}
             ]]>
         </ReportItem>

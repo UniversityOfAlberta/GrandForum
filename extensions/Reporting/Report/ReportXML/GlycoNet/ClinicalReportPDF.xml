@@ -59,7 +59,7 @@
         <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
-                <p><b><u>Equity and Diversity</u></b></p>
+                <p><b><u>Equity, Diversity and Inclusion</u></b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
