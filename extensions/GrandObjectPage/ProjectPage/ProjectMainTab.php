@@ -233,6 +233,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "</td><td width='50%' valign='top'>";
                 if($wgUser->isLoggedIn()){
                     $this->showRole(HQP);
+                    $this->showRole(HQP, "Alumni ".HQP, true);
                 }
                 $this->html .= "</td></tr>";
                 $this->html .= "<tr><td valign='top' width='50%'>";
@@ -245,13 +246,15 @@ class ProjectMainTab extends AbstractEditableTab {
         }
     }
     
-    function showRole($role, $text=null){
+    function showRole($role, $text=null, $past=false){
         global $config;
         $me = Person::newFromWgUser();
-        if(isset($this->shownRoles[$role])){
-            return;
+        if(!$past){
+            if(isset($this->shownRoles[$role])){
+                return;
+            }
+            $this->shownRoles[$role] = true;
         }
-        $this->shownRoles[$role] = true;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 
@@ -261,6 +264,25 @@ class ProjectMainTab extends AbstractEditableTab {
         else{
             $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
         }
+        // Filter for Alumni people
+        if($past){
+            $allPeople = $project->getAllPeopleDuring($role, "0000-00-00", EOT);
+            $alumnis = array();
+            foreach($allPeople as $p1){
+                $found = false;
+                foreach($people as $p2){
+                    if($p1->getId() == $p2->getId()){
+                        $found = true;
+                        break;
+                    }
+                }
+                if(!$found){
+                    $alumnis[] = $p1;
+                }
+            }
+            $people = $alumnis;
+        }
+        
         if(count($people) > 0){
             if($text != null){
                 $this->html .= "<h2><span class='mw-headline'>{$text}</span></h2>";
