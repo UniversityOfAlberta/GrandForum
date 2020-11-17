@@ -101,9 +101,36 @@ class ApplicationsTable extends SpecialPage{
     
     function generateImpact(){
         global $wgOut;
-
+        
+        $ceri1 = new AverageArrayReportItem();
+        $ceri1->setBlobType(BLOB_ARRAY);
+        $ceri1->setBlobItem('CERI');
+        $ceri1->setBlobSection("SECTION3");
+        $ceri1->setAttr("indices", "ceri_1_1|ceri_2_1|ceri_3_1|ceri_4_1|ceri_5_1|ceri_6_1|ceri_7_1|ceri_8_1|ceri_9_1|ceri_10_1|ceri_11_1|ceri_12_1|ceri_13_1");
+        
+        $ceri2 = new AverageArrayReportItem();
+        $ceri2->setBlobType(BLOB_ARRAY);
+        $ceri2->setBlobItem('CERI');
+        $ceri2->setBlobSection("SECTION3");
+        $ceri2->setAttr("indices", "ceri_1_2|ceri_2_2|ceri_3_2|ceri_4_2|ceri_5_2|ceri_6_2|ceri_7_2|ceri_8_2|ceri_9_2|ceri_10_2|ceri_11_2|ceri_12_2|ceri_13_2");
+        
+        $ceri3 = new AverageArrayReportItem();
+        $ceri3->setBlobType(BLOB_ARRAY);
+        $ceri3->setBlobItem('CERI');
+        $ceri3->setBlobSection("SECTION3");
+        $ceri3->setAttr("indices", "ceri_1_3|ceri_2_3|ceri_3_3|ceri_4_3|ceri_5_3|ceri_6_3|ceri_7_3|ceri_8_3|ceri_9_3|ceri_10_3|ceri_11_3|ceri_12_3|ceri_13_3");
+        
+        $ceri4 = new AverageArrayReportItem();
+        $ceri4->setBlobType(BLOB_ARRAY);
+        $ceri4->setBlobItem('CERI');
+        $ceri4->setBlobSection("SECTION3");
+        $ceri4->setAttr("indices", "ceri_1_4|ceri_2_4|ceri_3_4|ceri_4_4|ceri_5_4|ceri_6_4|ceri_7_4|ceri_8_4|ceri_9_4|ceri_10_4|ceri_11_4|ceri_12_4|ceri_13_4");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_IMPACT', $this->projects, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab('RP_IMPACT', $this->projects, 2020, "2020", array('Service-delivery agencies' => $ceri1,
+                                                                                                 'Indigenous community-based agencies and/or governing bodies' => $ceri2,
+                                                                                                 'Persons with lived experiences of homelessness' => $ceri3,
+                                                                                                 'Orders of Government' => $ceri4)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
