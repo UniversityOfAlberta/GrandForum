@@ -141,6 +141,7 @@
             <![CDATA[
                 <h4>CERI - Community Engagement in Research Index</h4>
                 <table class="wikitable" frame="box" rules="all" width="100%">
+                    <thead>
                     <tr>
                         <th>Research activities</th>
                         <th>Service-delivery agencies</th>
@@ -148,6 +149,8 @@
                         <th>Persons with lived experiences of homelessness</th>
                         <th>Orders of Government</th>
                     </tr>
+                    </thead>
+                    <tbody>
             ]]>
         </Static>
         <ReportItem id="ceri_1_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
@@ -451,6 +454,7 @@
             <![CDATA[
                         <td align='center'>{$item}</td>
                     </tr>
+                    </tbody>
             ]]>
         </ReportItem>
         <Static>
