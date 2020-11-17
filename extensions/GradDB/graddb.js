@@ -81,10 +81,12 @@ if($("#hqpTable").length == 0){
             $.get('index.php?action=api.graddbfinancial/' + $('select#hqp').val() + '/2020', function(response){
                 scale = response;
                 $('select[name=\"hours[]\"]', parent).change();
+                $('select[name=\"type[]\"]', parent).change();
             });
         }).change();
         
         $('select[name=\"account[]\"]', parent).chosen();
+        $('input[name=\"award[]\"]', parent).forceNumeric({min: 0, max: 9999999999999999});
         
         $('select[name=\"hours[]\"]', parent).change(function(){
             var percent = parseInt($(this).val())/12;
@@ -96,6 +98,37 @@ if($("#hqpTable").length == 0){
         $('.removeSupervisor', parent).click(function(){
             $(this).closest('tr').remove();
         });
+        
+        $('input[name=\"award[]\"]', parent).change(function(){
+            var val = $(this).val();
+            $('span.total', parent).text('$' + val);
+        });
+        
+        $('select[name=\"type[]\"]', parent).change(function(){
+            var val = $(this).val();
+            if(val == "Fee Differential"){
+                $('span.award', parent).show();
+                $('input[name=\"award[]\"]', parent).hide();
+                $('select[name=\"hours[]\"]', parent).hide();
+                $('span.award', parent).text('$1000');
+                $('span.salary', parent).text('$0');
+                $('span.total', parent).text('$1000');
+            }
+            else if(val == "Top Up"){
+                $('span.award', parent).hide();
+                $('input[name=\"award[]\"]', parent).show();
+                $('select[name=\"hours[]\"]', parent).hide();
+                $('span.award', parent).text('$1000');
+                $('span.salary', parent).text('$0');
+                $('span.total', parent).text('$1000');
+                $('input[name=\"award[]\"]', parent).change();
+            }
+            else{
+                $('span.award', parent).show();
+                $('input[name=\"award[]\"]', parent).hide();
+                $('select[name=\"hours[]\"]', parent).show().change();
+            }
+        }).change();
     }
 
     $('.addSupervisor').click(function(){

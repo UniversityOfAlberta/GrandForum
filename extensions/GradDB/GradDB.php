@@ -234,15 +234,30 @@ class GradDB extends SpecialPage{
             $graddb->lines = array();
             $scale = GradDBFinancial::getScale($hqp, 2020);
             foreach($_POST['type'] as $key => $sup){
-                $award = $scale['award']*$_POST['hours'][$key]/GradDBFinancial::$HOURS;
-                $salary = $scale['salary']*$_POST['hours'][$key]/GradDBFinancial::$HOURS;
+                $type = $_POST['type'][$key];
+                $account = $_POST['account'][$key];
+                if($type == "Fee Differential"){
+                    $hours = 0;
+                    $award = 1000;
+                    $salary = 0;
+                }
+                else if($type == "Top Up"){
+                    $hours = 0;
+                    $award = $_POST['award'][$key];
+                    $salary = 0;
+                }
+                else{
+                    $hours = $_POST['hours'][$key];
+                    $award = $scale['award']*$hours/GradDBFinancial::$HOURS;
+                    $salary = $scale['salary']*$hours/GradDBFinancial::$HOURS;
+                }
                 $stipend = $award + $salary;
-                $graddb->lines[] = $graddb->emptyLine($_POST['type'][$key], 
-                                                                        str_replace("_", "", $_POST['account'][$key]),
-                                                                        $_POST['hours'][$key],
-                                                                        $award,
-                                                                        $salary,
-                                                                        $stipend);
+                $graddb->lines[] = $graddb->emptyLine($type, 
+                                                      str_replace("_", "", $account),
+                                                      $hours,
+                                                      $award,
+                                                      $salary,
+                                                      $stipend);
             }
 
             if(!$graddb->exists()){
@@ -328,13 +343,14 @@ class GradDB extends SpecialPage{
                                                                                   "3" => "3",
                                                                                   "2" => "2",
                                                                                   "1" => "1"));
+            $award = new NumberField("award[]", "Top Up", $line['award']);
             
             $wgOut->addHTML("
                 <tr>
                     <td>{$account->render()}</td>
                     <td>{$type->render()}</td>
                     <td>{$hours->render()}</td>
-                    <td align='right'><span class='award'></span></td>
+                    <td align='right'>{$award->render()}<span class='award'></span></td>
                     <td align='right'><span class='salary'></span></td>
                     <td align='right'><span class='total'></span></td>
                     <td><button class='removeSupervisor' type='button'>Remove Line Item</button></td>

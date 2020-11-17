@@ -472,9 +472,12 @@ class GradDBFinancial extends BackboneModel{
                 $html .= "Maximum Hours Assigned Per Week: <b>{$hours}</b><br />
                           Stipend Per Term: Award: <b>\$".number_format($award, 0)."</b> Salary: <b>\$".number_format($salary, 0)."</b> Total Stipend: <b>\$".number_format($stipend, 0)."</b>";
             }
-            else if($line['type'] == "GRAF" || $line['type'] == "Fee Differential"){
+            else if($line['type'] == "GRAF"){
                 $html .= "Maximum Hours Assigned Per Week: <b>N/A</b><br />
                           Total Stipend: <b>\$".number_format(self::$GRAF_STIPEND*$line['hours']/12, 0)."</b>";
+            }
+            else if($line['type'] == "Fee Differential" || $line['type'] == "Top Up"){
+                $html .= "Total Stipend: <b>\$".number_format($line['stipend'], 0)."</b>";
             }
             $html .="</div><br />";
         }
