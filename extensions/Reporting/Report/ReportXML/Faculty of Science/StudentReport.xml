@@ -195,6 +195,11 @@
     <ReportSection id="supervisor" tooltip="Supervisor Report" name="Supervisor Report" title="Supervisor Report" blobSection="SUPERVISOR" type="EditableReportSection">
         <ReportItemSet type="PersonSupervises">
             <ReportItemSet type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="pdf" type="PDFReportItem" reportType="StudentReport" preview="true" height="400px">
+                    <![CDATA[
+                        {$item}
+                    ]]>
+                </ReportItem>
                 <Static>
                     <![CDATA[
                         <style>
@@ -242,11 +247,6 @@
                         </table>
                     ]]>
                 </Static>
-                <ReportItem id="pdf" type="PDFReportItem" reportType="StudentReport" useHTML="true">
-                    <![CDATA[
-                        {$item}
-                    ]]>
-                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
     </ReportSection>

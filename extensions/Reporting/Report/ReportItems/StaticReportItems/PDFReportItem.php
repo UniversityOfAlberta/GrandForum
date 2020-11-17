@@ -16,6 +16,7 @@ class PDFReportItem extends StaticReportItem {
         $width = $this->getAttr("width", 'auto');
         $height = $this->getAttr("height", "700px");
         $useHTML = (strtolower($this->getAttr("useHTML", "false")) == "true");
+        $preview = (strtolower($this->getAttr("preview", "false")) == "true");
         $embed = (strtolower($this->getAttr("embed", "false")) == "true");
         if(strstr($width, "%") !== false){
             $width = $width.";-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box";
@@ -25,8 +26,22 @@ class PDFReportItem extends StaticReportItem {
             $project = Project::newFromId($this->projectId);
         }
         $person = Person::newFromId($this->personId);
-        $report = new DummyReport($reportType, $person, $project, $year, true);
+        $report = new DummyReport($reportType, $person, $project, $year);
         $report->person = $person;
+        
+        if($preview && !isset($_GET['generatePDF'])){
+            if(count($report->pdfFiles) > 0){
+                foreach($report->pdfFiles as $pdfFile){
+                    $report = new DummyReport($pdfFile, $person, $project, $year);
+                    $report->person = $person;
+                    $wgOut->addHTML("<div style='max-height:{$height};overflow-y:auto;padding:30px;border:15px solid #AAAAAA;'>");
+                    $report->renderForPDF();
+                    $wgOut->addHTML("</div>");
+                }
+            }
+            return;
+        }
+        
         $tok = false;
         $check = $report->getPDF(false, $section);
         if (count($check) > 0) {
