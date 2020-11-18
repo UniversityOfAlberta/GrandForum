@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report reportType="RP_TIME_USE_SPRINGSUMMER" pdfFiles="TimeUseReportSpringSummerPDF" extends="TimeUseReport">
+<Report reportType="RP_TIME_USE_SPRINGSUMMER"  pdfType="RPTP_TIME_USE_SPRINGSUMMER" pdfFiles="TimeUseReportSpringSummerPDF" extends="TimeUseReport">
     
 </Report>

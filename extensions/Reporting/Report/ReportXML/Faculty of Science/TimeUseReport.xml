@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Graduate Assistantship Time Use Guideline Form" reportType="RP_TIME_USE" personId="0" pdfFiles="TimeUseReport" ajax="true">
+<Report name="Graduate Assistantship Time Use Guideline Form" reportType="RP_TIME_USE" pdfType="RPTP_TIME_USE" personId="0" pdfFiles="TimeUseReport" ajax="true">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="time_use" permissions="rw" />
@@ -125,6 +125,7 @@
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
+                {$graddb_id}
                 <p>The following is just a preview of what the PDF will look like, the generated PDF may appear differently so make sure to look it over after generating it.</p>
                 {$item}
             ]]>

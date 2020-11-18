@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report reportType="RP_TIME_USE_FALL" extends="TimeUseReportPDF">
+<Report reportType="RP_TIME_USE_FALL"  pdfType="RPTP_TIME_USE_FALL" extends="TimeUseReportPDF">
     
 </Report>

@@ -120,9 +120,8 @@ EOF;
         foreach($this->getReport()->pdfFiles as $file){
             $tok = false;
             $tst = '';
-            $sto = new ReportStorage($person);
-            $project = Project::newFromId($this->projectId);
-            $report = new DummyReport($file, $person, $project);
+
+            $report = new DummyReport($file, $person, $this->getReport()->project);
             $report->person = $person;
         	$check = $report->getPDF(false, $this->getAttr("section", ""));
         	if (count($check) > 0) {

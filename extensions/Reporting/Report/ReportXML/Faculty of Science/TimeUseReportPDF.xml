@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="" headerName=" " reportType="RP_TIME_USE" personId="0" pdfFiles="TimeUseReport" ajax="true">
+<Report name="" headerName=" " reportType="RP_TIME_USE" personId="0" ajax="true">
     <ReportSection id="time_use" blobSection="TIME_USE" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
