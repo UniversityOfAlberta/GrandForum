@@ -223,6 +223,9 @@ function createModels(){
     addScript("NewsPosting");
     addScript("EventPosting");
     addScript("BSIPosting");
+    addScript("CRMContact");
+    addScript("CRMOpportunity");
+    addScript("CRMTask");
     
     return true;
 }
