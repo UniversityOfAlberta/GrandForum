@@ -28,6 +28,9 @@
             require_once("BSIPosting/BSIPostingPage.php");
         }
     }
+    if(isExtensionEnabled("CRM")){
+        require_once("CRM/CRM.php");
+    }
     //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';

@@ -17,3 +17,14 @@ CRMContact = Backbone.Model.extend({
     }
 
 });
+
+/**
+ * CRMContacts Collection
+ */
+CRMContacts = Backbone.Collection.extend({
+    model: CRMContact,
+    
+    url: function(){
+        return 'index.php?action=api.crmcontact';
+    }
+});

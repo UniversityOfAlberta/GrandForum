@@ -228,7 +228,8 @@
         //'ContactUs',
         'MyThreads',
         'Freeze',
-        //'Postings'
+        //'Postings',
+        //'CRM'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,

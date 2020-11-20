@@ -17,3 +17,16 @@ CRMOpportunity = Backbone.Model.extend({
     }
 
 });
+
+/**
+ * CRMOpportunities Collection
+ */
+CRMOpportunities = Backbone.Collection.extend({
+    model: CRMOpportunity,
+    
+    contact: 0,
+    
+    url: function(){
+        return 'index.php?action=api.crmcontact/' + this.contact + '/crmopportunities'
+    }
+});

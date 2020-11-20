@@ -1,0 +1,12 @@
+/* Any custom styles should go here */
+
+#availableTagsDiv {
+    position: absolute;
+    width: 220px;
+    background: #F7F7F7;
+    padding: 8px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+}
