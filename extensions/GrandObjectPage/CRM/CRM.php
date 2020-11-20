@@ -9,11 +9,13 @@ class CRM extends BackbonePage {
     }
     
     function getTemplates(){
-        return array('Backbone/*');
+        return array('Backbone/*',
+                     'crm_contacts_table');
     }
     
     function getViews(){
-        return array('Backbone/*');
+        return array('Backbone/*',
+                     'CRMContactsTableView');
     }
     
     function getModels(){

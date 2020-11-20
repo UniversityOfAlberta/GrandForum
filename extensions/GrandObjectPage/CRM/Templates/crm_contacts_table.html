@@ -1,0 +1,21 @@
+<p><a href="#/contact/new" class="button" id="add">Add Contact</a></p>
+<table id="contacts" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th>Contact</th>
+            <th>Owner</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(contact){ %>
+            <tr>
+                <td>
+                    <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a>
+                </td>
+                <td>
+                    <a href="<%= contact.get('owner').url %>"><%= contact.get('owner').name %></a>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

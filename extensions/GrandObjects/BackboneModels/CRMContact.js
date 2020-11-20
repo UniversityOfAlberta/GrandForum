@@ -11,8 +11,10 @@ CRMContact = Backbone.Model.extend({
     defaults: function() {
         return{
             id: null,
+            title: "",
             owner: "",
-            details: ""
+            details: "",
+            url: ""
         };
     }
 

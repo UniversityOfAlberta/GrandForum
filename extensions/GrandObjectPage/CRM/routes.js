@@ -32,7 +32,7 @@ pageRouter.on('route:showCRM', function(){
     
     main.set('title', "Contacts");
     this.closeCurrentView();
-    this.currentView = new CRMContactsTable({el: $("#currentView"), model: contacts});
+    this.currentView = new CRMContactsTableView({el: $("#currentView"), model: contacts});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

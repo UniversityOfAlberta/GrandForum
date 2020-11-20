@@ -24,8 +24,10 @@ class Crm extends AbstractMigration
     public function up()
     {
         $table = $this->table('grand_crm_contact', array('id' => 'id'));
-        $table->addColumn('owner', 'integer')
+        $table->addColumn('title', 'string', array('limit' => 256)
+              ->addColumn('owner', 'integer')
               ->addColumn('details', 'text')
+              ->addIndex('title')
               ->addIndex('owner')
               ->create();
               

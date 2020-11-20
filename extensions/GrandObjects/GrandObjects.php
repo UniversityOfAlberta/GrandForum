@@ -32,6 +32,7 @@ autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
+autoload_register('GrandObjects/API/CRM');
 
 global $apiRequest;
 // Person
@@ -190,12 +191,12 @@ $apiRequest->addAction('Hidden','bsiposting/:id', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/:id/image', 'BSIPostingAPI');
 
 // CRM
-$apiRequest->addAction('Hidden','crmcontact', 'CRMContact');
-$apiRequest->addAction('Hidden','crmcontact/:id', 'CRMContact');
-$apiRequest->addAction('Hidden','crmcontact/:contact_id/crmopportunities', 'CRMOpportunity');
-$apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunity');
-$apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTask');
-$apiRequest->addAction('Hidden','crmtask/:id', 'CRMTask');
+$apiRequest->addAction('Hidden','crmcontact', 'CRMContactAPI');
+$apiRequest->addAction('Hidden','crmcontact/:id', 'CRMContactAPI');
+$apiRequest->addAction('Hidden','crmcontact/:contact_id/crmopportunities', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTaskAPI');
+$apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
 
 
 $apiRequest->addAction('Hidden','crm/:crmcontact/:crmopportunity', 'CRMContact');
