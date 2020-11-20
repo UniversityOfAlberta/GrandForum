@@ -19,20 +19,29 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
-        "": "showCRM",
+        "": "showCRMContactsTable",
+        ":id": "showCRMContact"
     }
 });
 
 // Initiate the router
 var pageRouter = new PageRouter;
 
-pageRouter.on('route:showCRM', function(){
+pageRouter.on('route:showCRMContactsTable', function(){
     // Get All Products
     var contacts = new CRMContacts();
     
     main.set('title', "Contacts");
     this.closeCurrentView();
     this.currentView = new CRMContactsTableView({el: $("#currentView"), model: contacts});
+});
+
+pageRouter.on('route:showCRMContact', function(id){
+    // Get All Products
+    var contact = new CRMContact({id: id});
+
+    this.closeCurrentView();
+    this.currentView = new CRMContactView({el: $("#currentView"), model: contact});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's
