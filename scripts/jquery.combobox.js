@@ -70,7 +70,7 @@
             $("option", element).prop('selected', false);
             $("option", element).filter(function() {
                 //may want to use $.trim in here
-                return $(this).text() == ui.item.option.value; 
+                return $(this).text().trim() == ui.item.option.value.trim(); 
             }).prop('selected', true);
             element.trigger('change');
         });
@@ -96,7 +96,7 @@
                 $("option", element).prop('selected', false);
                 $("option", element).filter(function() {
                     //may want to use $.trim in here
-                    return $(this).text() == found; 
+                    return $(this).text().trim() == found.trim(); 
                 }).prop('selected', true);
             }
             element.trigger('change');
@@ -123,7 +123,7 @@
                 $("option", element).prop('selected', false);
                 $("option", element).filter(function() {
                     //may want to use $.trim in here
-                    return $(this).text() == found; 
+                    return $(this).text().trim() == found.trim(); 
                 }).prop('selected', true);
             }
             element.trigger('change');
