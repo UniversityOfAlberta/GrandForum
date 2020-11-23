@@ -4,10 +4,6 @@
         <td class="label">Title:</td>
         <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
     </tr>
-    <tr>
-        <td class="label">Owner:</td>
-        <td><a href="<%= owner.url %>"><%= owner.name %></a></td>
-    </tr>
 </table>
 <h3>Details</h3>
 <%= HTML.TextArea(this, 'details', {style: 'height: 150px; width:685px;'}) %>
