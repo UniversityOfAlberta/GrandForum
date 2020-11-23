@@ -578,15 +578,25 @@ class CavendishTemplate extends QuickTemplate {
 		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
+		        <?php if(isset($_GET['scroll'])){ ?>
+		            html {
+                        overflow: visible !important;
+                    }
+		        <?php } ?>
+		        <?php if(isset($_GET['noTitle'])){ ?>
+		            h1 {
+                        display: none !important;
+                    }
+		        <?php } ?>
 		    
 		        html {
 		            overflow: hidden;
 		            background: #FFFFFF;
 		        }
 			
-			body {
-			    background:#FFFFFF;
-			}
+                body {
+                    background:#FFFFFF;
+                }
 		        
 		        #side {
 		            display: none;
