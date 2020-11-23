@@ -8,9 +8,38 @@ CRMContactEditView = Backbone.View.extend({
         });
         this.template = _.template($('#crm_contact_edit_template').html());
     },
+    
+    save: function(){
+        this.$(".throbber").show();
+        this.$("#save").prop('disabled', true);
+        this.model.save(null, {
+            success: function(){
+                this.$(".throbber").hide();
+                this.$("#save").prop('disabled', false);
+                clearAllMessages();
+                document.location = this.model.get('url');
+            }.bind(this),
+            error: function(o, e){
+                this.$(".throbber").hide();
+                this.$("#save").prop('disabled', false);
+                clearAllMessages();
+                if(e.responseText != ""){
+                    addError(e.responseText, true);
+                }
+                else{
+                    addError("There was a problem saving the Contact", true);
+                }
+            }.bind(this)
+        });
+    },
        
     events: {
-        
+        "click #save": "save",
+        "click #cancel": "cancel"
+    },
+    
+    cancel: function(){
+        document.location = this.model.get('url');
     },
     
     render: function(){

@@ -14,11 +14,31 @@ class CRMContactAPI extends RESTAPI {
     }
     
     function doPOST(){
-
+        $me = Person::newFromWgUser();
+        $contact = CRMContact::newFromId($this->getParam('id'));
+        if($contact->isAllowedToCreate()){
+            $contact->title = $this->POST('title');
+            $contact->owner = $me->getId();
+            $contact->details = $this->POST('details');
+            $contact->create();
+            return $contact->toJSON();
+        }
+        else{
+            $this->throwError("You are not allowed to create this Contact");
+        }
     }
     
     function doPUT(){
-
+        $contact = CRMContact::newFromId($this->getParam('id'));
+        if($contact->isAllowedToEdit()){
+            $contact->title = $this->POST('title');
+            $contact->details = $this->POST('details');
+            $contact->update();
+            return $contact->toJSON();
+        }
+        else{
+            $this->throwError("You are not allowed to edit this Contact");
+        }
     }
     
     function doDELETE(){

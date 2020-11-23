@@ -13,7 +13,11 @@
 <%= HTML.TextArea(this, 'details', {style: 'height: 150px; width:685px;'}) %>
 <h3>Opportunities</h3>
 
-<% if(isAllowedToEdit){ %>
-    <br />
-    <button id='edit'>Edit Contact</button>
-<% } %>
+<div style="width:180px;display:inline-block;">
+    <button id="save">
+        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contact
+    </button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:180px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>
