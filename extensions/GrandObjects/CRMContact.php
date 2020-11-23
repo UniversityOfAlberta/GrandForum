@@ -56,7 +56,7 @@ class CRMContact extends BackboneModel {
 	}
 	
 	function getOwner(){
-	    return Person::newFromId($this->owner);
+	    return $this->owner;
 	}
 	
 	function getDetails(){
@@ -68,6 +68,21 @@ class CRMContact extends BackboneModel {
 	    return "{$wgServer}{$wgScriptPath}/index.php/Special:CRM#/{$this->getId()}";
 	}
 	
+	function isAllowedToEdit(){
+        $me = Person::newFromWgUser();
+        return ($me->getId() == $this->getOwner() || $me->isRoleAtLeast(STAFF));
+    }
+    
+    function isAllowedToView(){
+        $me = Person::newFromWgUser();
+        return $me->isLoggedIn();
+    }
+    
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return $me->isLoggedIn();
+    }
+	
 	function toArray(){
 	    $person = $this->getPerson();
 	    $owner = array('id' => $person->getId(),
@@ -78,32 +93,39 @@ class CRMContact extends BackboneModel {
 	                  'title' => $this->getTitle(),
 	                  'owner' => $owner,
 	                  'details' => $this->getDetails(),
-	                  'url' => $this->getUrl());
+	                  'url' => $this->getUrl(),
+	                  'isAllowedToEdit' => $this->isAllowedToEdit());
 	    return $json;
 	}
 	
 	function create(){
-	    $me = Person::newFromWgUser();
-	    $this->owner = $me->getId();
-	    DBFunctions::insert('grand_crm_contact',
-	                        array('title' => $this->title,
-	                              'owner' => $this->owner,
-	                              'details' => $this->details));
-	    $this->id = DBFunctions::insertId();
+	    if(self::isAllowedToCreate()){
+	        $me = Person::newFromWgUser();
+	        $this->owner = $me->getId();
+	        DBFunctions::insert('grand_crm_contact',
+	                            array('title' => $this->title,
+	                                  'owner' => $this->owner,
+	                                  'details' => $this->details));
+	        $this->id = DBFunctions::insertId();
+	    }
 	}
 	
 	function update(){
-	    $me = Person::newFromWgUser();
-	    $this->owner = $me->getId();
-	    DBFunctions::update('grand_crm_contact',
-	                        array('title' => $this->title,
-	                              'owner' => $this->owner,
-	                              'details' => $this->details),
-	                        array('id' => $this->id));
+	    if($this->isAllowedToEdit()){
+	        $me = Person::newFromWgUser();
+	        $this->owner = $me->getId();
+	        DBFunctions::update('grand_crm_contact',
+	                            array('title' => $this->title,
+	                                  'owner' => $this->owner,
+	                                  'details' => $this->details),
+	                            array('id' => $this->id));
+	    }
 	}
 	
 	function delete(){
+	    if($this->isAllowedToEdit()){
 	    
+	    }
 	}
 	
 	function exists(){

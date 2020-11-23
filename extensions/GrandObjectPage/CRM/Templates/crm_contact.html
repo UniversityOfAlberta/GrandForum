@@ -2,3 +2,9 @@
 <b>Owner:</b> <a href="<%= owner.url %>"><%= owner.name %></a>
 <h3>Details</h3>
 <%= details %>
+<h3>Opportunities</h3>
+
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='edit'>Edit Contact</button>
+<% } %>

@@ -20,7 +20,9 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "showCRMContactsTable",
-        ":id": "showCRMContact"
+        "new": "newCRMContact",
+        ":id": "showCRMContact",
+        ":id/edit": "editCRMContact"
     }
 });
 
@@ -28,7 +30,7 @@ PageRouter = Backbone.Router.extend({
 var pageRouter = new PageRouter;
 
 pageRouter.on('route:showCRMContactsTable', function(){
-    // Get All Products
+    // Get All CRMContacts
     var contacts = new CRMContacts();
     
     main.set('title', "Contacts");
@@ -36,12 +38,38 @@ pageRouter.on('route:showCRMContactsTable', function(){
     this.currentView = new CRMContactsTableView({el: $("#currentView"), model: contacts});
 });
 
+pageRouter.on('route:newCRMContact', function(){
+    // Create New CRMContact
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contact = new CRMContact();
+        this.closeCurrentView();
+        this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+    }
+});
+
 pageRouter.on('route:showCRMContact', function(id){
-    // Get All Products
+    // Show a single CRMContact
     var contact = new CRMContact({id: id});
 
     this.closeCurrentView();
     this.currentView = new CRMContactView({el: $("#currentView"), model: contact});
+});
+
+pageRouter.on('route:editCRMContact', function (id) {
+    // Edit a single CRMContact
+    if(!me.isLoggedIn()){
+        clearAllMessages();
+        addError("You do not have permissions to view this page");
+    }
+    else{
+        var contact = new CRMContact({id: id});
+        this.closeCurrentView();
+        this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+    }
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

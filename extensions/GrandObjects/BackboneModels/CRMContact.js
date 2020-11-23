@@ -14,7 +14,8 @@ CRMContact = Backbone.Model.extend({
             title: "",
             owner: "",
             details: "",
-            url: ""
+            url: "",
+            isAllowedToEdit: true
         };
     }
 
