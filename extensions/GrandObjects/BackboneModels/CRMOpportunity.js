@@ -12,6 +12,7 @@ CRMOpportunity = Backbone.Model.extend({
         return{
             id: null,
             contact: "",
+            description: "",
             category: ""
         };
     }
@@ -24,9 +25,9 @@ CRMOpportunity = Backbone.Model.extend({
 CRMOpportunities = Backbone.Collection.extend({
     model: CRMOpportunity,
     
-    contact: 0,
+    contact: null,
     
     url: function(){
-        return 'index.php?action=api.crmcontact/' + this.contact + '/crmopportunities'
+        return 'index.php?action=api.crmcontact/' + this.contact.get('id') + '/crmopportunities';
     }
 });

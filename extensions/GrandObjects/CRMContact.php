@@ -68,6 +68,10 @@ class CRMContact extends BackboneModel {
 	    return "{$wgServer}{$wgScriptPath}/index.php/Special:CRM#/{$this->getId()}";
 	}
 	
+	function getOpportunities(){
+	    return CRMOpportunity::getOpportunities($this->getId());
+	}
+	
 	function isAllowedToEdit(){
         $me = Person::newFromWgUser();
         return ($me->getId() == $this->getOwner() || $me->isRoleAtLeast(STAFF));

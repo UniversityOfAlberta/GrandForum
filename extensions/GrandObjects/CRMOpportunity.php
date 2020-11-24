@@ -8,6 +8,7 @@ class CRMOpportunity extends BackboneModel {
 
     var $id;
     var $contact;
+    var $description;
     var $category;
 	
 	static function newFromId($id){
@@ -18,10 +19,22 @@ class CRMOpportunity extends BackboneModel {
 	    return $opportunity;
 	}
 	
+	static function getOpportunities($contact_id){
+	    $data = DBFunctions::select(array('grand_crm_opportunity'),
+	                                array('*'),
+	                                array('contact' => $contact_id));
+	    $opportunities = array();
+	    foreach($data as $row){
+	        $opportunities[] = new CRMOpportunity(array($row));
+	    }
+	    return $opportunities;
+	}
+	
 	function CRMOpportunity($data){
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->contact = $data[0]['contact'];
+		    $this->description = $data[0]['description'];
 		    $this->category = $data[0]['category'];
 		}
 	}
@@ -34,6 +47,10 @@ class CRMOpportunity extends BackboneModel {
 	    return $this->contact;
 	}
 	
+	function getDescription(){
+	    return $this->description;
+	}
+	
 	function getCategory(){
 	    return $this->category;
 	}
@@ -41,6 +58,7 @@ class CRMOpportunity extends BackboneModel {
 	function toArray(){
 	    $json = array('id' => $this->getId(),
 	                  'contact' => $this->getContact(),
+	                  'description' => $this->getDescription(),
 	                  'category' => $this->getCategory());
 	    return $json;
 	}
@@ -48,6 +66,7 @@ class CRMOpportunity extends BackboneModel {
 	function create(){
 	    DBFunctions::insert('grand_crm_opportunity',
 	                        array('contact' => $this->contact,
+	                              'description' => $this->description,
 	                              'category' => $this->category));
 	    $this->id = DBFunctions::insertId();
 	}
@@ -55,6 +74,7 @@ class CRMOpportunity extends BackboneModel {
 	function update(){
 	    DBFunctions::update('grand_crm_opportunity',
 	                        array('contact' => $this->contact,
+	                              'description' => $this->description,
 	                              'category' => $this->category),
 	                        array('id' => $this->id));
 	}

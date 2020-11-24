@@ -1,7 +1,9 @@
 CRMContact = Backbone.Model.extend({
 
     initialize: function(){
-    
+        this.opportunities = new CRMOpportunities();
+        this.opportunities.contact = this;
+        this.on("sync", function(){ this.opportunities.fetch(); }.bind(this));
     },
 
     urlRoot: function(){

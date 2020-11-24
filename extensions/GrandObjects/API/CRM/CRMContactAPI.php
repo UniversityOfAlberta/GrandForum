@@ -15,8 +15,8 @@ class CRMContactAPI extends RESTAPI {
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        $contact = CRMContact::newFromId($this->getParam('id'));
-        if($contact->isAllowedToCreate()){
+        if(CRMContact::isAllowedToCreate()){
+            $contact = new Contact();
             $contact->title = $this->POST('title');
             $contact->owner = $me->getId();
             $contact->details = $this->POST('details');

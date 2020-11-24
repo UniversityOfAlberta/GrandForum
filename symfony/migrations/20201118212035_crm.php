@@ -33,6 +33,7 @@ class Crm extends AbstractMigration
               
         $table = $this->table('grand_crm_opportunity', array('id' => 'id'));
         $table->addColumn('contact', 'integer')
+              ->addColumn('description', 'text')
               ->addColumn('category', 'string', array('limit' => 64))
               ->addIndex('contact')
               ->create();
