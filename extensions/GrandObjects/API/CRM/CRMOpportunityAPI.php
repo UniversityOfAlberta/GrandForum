@@ -18,7 +18,8 @@ class CRMOpportunityAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         if(CRMOpportunity::isAllowedToCreate()){
             $opportunity = new CRMOpportunity();
-            $opportunity->owner = $me->getId();
+            $opportunity->contact = $this->POST('contact');
+            $opportunity->category = $this->POST('category');
             $opportunity->description = $this->POST('description');
             $opportunity->create();
             return $opportunity->toJSON();
@@ -31,8 +32,8 @@ class CRMOpportunityAPI extends RESTAPI {
     function doPUT(){
         $opportunity = CRMOpportunity::newFromId($this->getParam('id'));
         if($opportunity->isAllowedToEdit()){
-            $opportunity->title = $this->POST('title');
-            $opportunity->details = $this->POST('details');
+            $opportunity->category = $this->POST('category');
+            $opportunity->description = $this->POST('description');
             $opportunity->update();
             return $opportunity->toJSON();
         }

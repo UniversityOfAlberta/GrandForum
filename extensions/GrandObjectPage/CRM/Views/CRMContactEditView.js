@@ -15,10 +15,7 @@ CRMContactEditView = Backbone.View.extend({
         this.$("#save").prop('disabled', true);
         this.model.save(null, {
             success: function(){
-                this.$(".throbber").hide();
-                this.$("#save").prop('disabled', false);
-                clearAllMessages();
-                document.location = this.model.get('url');
+                this.saveOpportunities();
             }.bind(this),
             error: function(o, e){
                 this.$(".throbber").hide();
@@ -33,6 +30,19 @@ CRMContactEditView = Backbone.View.extend({
             }.bind(this)
         });
     },
+    
+    saveOpportunities: function(){
+        var xhrs = [];
+        this.model.opportunities.each(function(model){
+            xhrs.push(model.save());
+        });
+        $.when.apply(null, xhrs).done(function(){
+            this.$(".throbber").hide();
+            this.$("#save").prop('disabled', false);
+            clearAllMessages();
+            document.location = this.model.get('url');
+        }.bind(this));
+    },
        
     events: {
         "click #save": "save",
@@ -42,7 +52,6 @@ CRMContactEditView = Backbone.View.extend({
     cancel: function(){
         document.location = this.model.get('url');
     },
-    
         
     renderOpportunities: function(){
         this.$("#opportunities").empty();

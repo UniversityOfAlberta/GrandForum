@@ -44,7 +44,7 @@ class CRMOpportunity extends BackboneModel {
 	}
 	
 	function getContact(){
-	    return $this->contact;
+	    return CRMContact::newFromId($this->contact);
 	}
 	
 	function getDescription(){
@@ -55,9 +55,21 @@ class CRMOpportunity extends BackboneModel {
 	    return $this->category;
 	}
 	
+	function isAllowedToEdit(){
+        return $this->getContact()->isAllowedToEdit();
+    }
+    
+    function isAllowedToView(){
+        return $this->getContact()->isAllowedToView();
+    }
+    
+    static function isAllowedToCreate(){
+        return CRMContact::isAllowedToCreate();
+    }
+	
 	function toArray(){
 	    $json = array('id' => $this->getId(),
-	                  'contact' => $this->getContact(),
+	                  'contact' => $this->getContact()->getId(),
 	                  'description' => $this->getDescription(),
 	                  'category' => $this->getCategory());
 	    return $json;
