@@ -258,7 +258,9 @@ if(file_exists("people.csv")){
                 Person::$rolesCache = array();
                 addUserUniversity($username, $university, $department, $title);
                 if($role != ""){
-                    addUserRole($username, $role);
+                    foreach(explode(",", $role) as $r){
+                        addUserRole($username, trim($r));
+                    }
                 }
                 addUserWebsite($username, $website);
                 addUserProfile($username, $profile);
