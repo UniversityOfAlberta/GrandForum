@@ -118,7 +118,8 @@ class Inflect
         'hqp training',
         'staff',
         'cycle i',
-        'cycle ii'
+        'cycle ii',
+        'project staff'
     );
 
 	/**
