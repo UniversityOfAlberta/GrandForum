@@ -14,7 +14,9 @@ class CRM extends BackbonePage {
                      'crm_contact',
                      'crm_contact_edit',
                      'crm_opportunity',
-                     'crm_opportunity_edit');
+                     'crm_opportunity_edit',
+                     'crm_task',
+                     'crm_task_edit');
     }
     
     function getViews(){
@@ -23,7 +25,9 @@ class CRM extends BackbonePage {
                      'CRMContactView',
                      'CRMContactEditView',
                      'CRMOpportunityView',
-                     'CRMOpportunityEditView');
+                     'CRMOpportunityEditView',
+                     'CRMTaskView',
+                     'CRMTaskEditView');
     }
     
     function getModels(){

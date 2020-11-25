@@ -21,6 +21,17 @@ class CRMTask extends BackboneModel {
 	    return $opportunity;
 	}
 	
+	static function getTasks($opportunity_id){
+	    $data = DBFunctions::select(array('grand_crm_task'),
+	                                array('*'),
+	                                array('opportunity' => $opportunity_id));
+	    $tasks = array();
+	    foreach($data as $row){
+	        $tasks[] = new CRMTask(array($row));
+	    }
+	    return $tasks;
+	}
+	
 	function CRMTask($data){
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];

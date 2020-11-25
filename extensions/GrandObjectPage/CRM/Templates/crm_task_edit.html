@@ -1,0 +1,9 @@
+<%= HTML.TextArea(this, 'description', {style: 'height: 70px; width:600px;'}) %><br />
+<table>
+    <tr>
+        <td><b>Due Date:</b></td><td><%= HTML.DatePicker(this, 'dueDate', {}) %></td>
+    </tr>
+    <tr>
+        <td><b>Status:</b></td><td><%= HTML.Select(this, 'status', {options: ['Active', 'Completed', 'Aborted']}) %></td>
+    </tr>
+</table>

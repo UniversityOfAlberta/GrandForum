@@ -55,6 +55,10 @@ class CRMOpportunity extends BackboneModel {
 	    return $this->category;
 	}
 	
+	function getTasks(){
+	    return CRMTask::getTasks($this->getId());
+	}
+	
 	function isAllowedToEdit(){
         return $this->getContact()->isAllowedToEdit();
     }

@@ -1,7 +1,17 @@
 CRMOpportunity = Backbone.Model.extend({
 
     initialize: function(){
-    
+        if(!this.isNew()){
+            this.tasks = new CRMTasks();
+            this.tasks.opportunity = this;
+            this.tasks.fetch();
+        }
+        
+        this.on("create", function(){
+            this.tasks.each(function(task){
+                task.set('opportunity', this.get('id'));
+            }.bind(this));
+        }.bind(this));
     },
 
     urlRoot: function(){

@@ -4,10 +4,16 @@ CRMContactEditView = Backbone.View.extend({
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
+        this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
+        this.listenTo(this.model.opportunities, "remove", this.renderOpportunities);
         this.listenTo(this.model, "change:title", function(){
             main.set('title', this.model.get('title'));
         });
         this.template = _.template($('#crm_contact_edit_template').html());
+    },
+    
+    addOpportunity: function(){
+        this.model.opportunities.add(new CRMOpportunity({contact: this.model.get('id')}));
     },
     
     save: function(){
@@ -45,6 +51,7 @@ CRMContactEditView = Backbone.View.extend({
     },
        
     events: {
+        "click #addOpportunity": "addOpportunity",
         "click #save": "save",
         "click #cancel": "cancel"
     },

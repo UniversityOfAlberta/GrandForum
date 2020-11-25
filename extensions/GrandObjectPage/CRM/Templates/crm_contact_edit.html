@@ -9,7 +9,9 @@
 <%= HTML.TextArea(this, 'details', {style: 'height: 150px; width:685px;'}) %>
 <h3>Opportunities</h3>
 <div id="opportunities"></div>
-
+<button id="addOpportunity">Add Opportunity</button>
+<br />
+<br />
 <div style="width:180px;display:inline-block;">
     <button id="save">
         <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contact

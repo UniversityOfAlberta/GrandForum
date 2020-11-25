@@ -27,9 +27,9 @@ CRMTask = Backbone.Model.extend({
 CRMTasks = Backbone.Collection.extend({
     model: CRMTask,
     
-    opportunity: 0,
+    opportunity: null,
     
     url: function(){
-        return 'index.php?action=api.crmopportunity/' + this.opportunity + '/tasks';
+        return 'index.php?action=api.crmopportunity/' + this.opportunity.get('id') + '/tasks';
     }
 });
