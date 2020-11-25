@@ -15,7 +15,7 @@ class AverageArrayReportItem extends AbstractReportItem {
 		        $count++;
 		    }
 		}
-		$denominator = $this->getAttr("denominator", $count);
+		$count = $this->getAttr("denominator", $count);
 		$avg = number_format($sum/max(1,$count), 2);
 		$wgOut->addHTML($this->processCData("{$avg}"));
 	}
