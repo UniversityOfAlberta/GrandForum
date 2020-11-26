@@ -8,7 +8,7 @@ class CRMTask extends BackboneModel {
 
     var $id;
     var $opportunity;
-    var $description;
+    var $task;
     var $dueDate;
     var $transactions;
     var $status;
@@ -17,7 +17,7 @@ class CRMTask extends BackboneModel {
 	    $data = DBFunctions::select(array('grand_crm_task'),
 	                                array('*'),
 	                                array('id' => $id));
-	    $opportunity = new CRMOpportunity($data);
+	    $opportunity = new CRMTask($data);
 	    return $opportunity;
 	}
 	
@@ -36,7 +36,7 @@ class CRMTask extends BackboneModel {
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->opportunity = $data[0]['opportunity'];
-		    $this->description = $data[0]['description'];
+		    $this->task = $data[0]['task'];
 		    $this->dueDate = $data[0]['due_date'];
 		    $this->transactions = json_decode($data[0]['transactions']);
 		    $this->status = $data[0]['status'];
@@ -48,11 +48,11 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function getOpportunity(){
-	    return $this->opportunity;
+	    return CRMOpportunity::newFromId($this->opportunity);
 	}
 	
-	function getDescription(){
-	    return $this->description;
+	function getTask(){
+	    return $this->task;
 	}
 	
 	function getDueDate(){
@@ -67,10 +67,22 @@ class CRMTask extends BackboneModel {
 	    return $this->status;
 	}
 	
+	function isAllowedToEdit(){
+        return $this->getOpportunity()->isAllowedToEdit();
+    }
+    
+    function isAllowedToView(){
+        return $this->getOpportunity()->isAllowedToView();
+    }
+    
+    static function isAllowedToCreate(){
+        return CRMOpportunity::isAllowedToCreate();
+    }
+	
 	function toArray(){
 	    $json = array('id' => $this->getId(),
-	                  'opportunity' => $this->getOpportunity(),
-	                  'description' => $this->getDescription(),
+	                  'opportunity' => $this->getOpportunity()->getId(),
+	                  'task' => $this->getTask(),
 	                  'dueDate' => $this->getDueDate(),
 	                  'transactions' => $this->getTransactions(),
 	                  'status' => $this->getStatus());
@@ -80,7 +92,7 @@ class CRMTask extends BackboneModel {
 	function create(){
 	    DBFunctions::insert('grand_crm_opportunity',
 	                        array('opportunity' => $this->opportunity,
-	                              'description' => $this->description,
+	                              'task' => $this->task,
 	                              'due_date' => $this->dueDate,
 	                              'transactions' => json_encode($this->transactions),
 	                              'status' => $this->status));
@@ -90,7 +102,7 @@ class CRMTask extends BackboneModel {
 	function update(){
 	    DBFunctions::update('grand_crm_opportunity',
 	                        array('opportunity' => $this->opportunity,
-	                              'description' => $this->description,
+	                              'task' => $this->task,
 	                              'due_date' => $this->dueDate,
 	                              'transactions' => json_encode($this->transactions),
 	                              'status' => $this->status),

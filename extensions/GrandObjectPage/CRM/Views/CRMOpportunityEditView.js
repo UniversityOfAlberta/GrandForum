@@ -3,11 +3,17 @@ CRMOpportunityEditView = Backbone.View.extend({
     initialize: function(){
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model.tasks, "sync", this.renderTasks);
+        this.listenTo(this.model.tasks, "add", this.renderTasks);
+        this.listenTo(this.model.tasks, "remove", this.renderTasks);
         this.template = _.template($('#crm_opportunity_edit_template').html());
     },
     
+    addTask: function(){
+        this.model.tasks.add(new CRMTask({opportunity: this.model.get('id')}));
+    },
+    
     events: {
-        
+        "click #addTask": "addTask"
     },
     
     renderTasks: function(){

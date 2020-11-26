@@ -43,6 +43,18 @@ CRMContactEditView = Backbone.View.extend({
             xhrs.push(model.save());
         });
         $.when.apply(null, xhrs).done(function(){
+            this.saveTasks();
+        }.bind(this));
+    },
+    
+    saveTasks: function(){
+        var xhrs = [];
+        this.model.opportunities.each(function(model){
+            model.tasks.each(function(task){
+                xhrs.push(task.save());
+            });
+        });
+        $.when.apply(null, xhrs).done(function(){
             this.$(".throbber").hide();
             this.$("#save").prop('disabled', false);
             clearAllMessages();

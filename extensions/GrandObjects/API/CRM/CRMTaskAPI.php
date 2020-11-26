@@ -4,8 +4,8 @@ class CRMTaskAPI extends RESTAPI {
     
     function doGET(){
         if($this->getParam('id') != ""){
-            $opportunity = CRMTask::newFromId($this->getParam('id'));
-            return $opportunity->toJSON();
+            $task = CRMTask::newFromId($this->getParam('id'));
+            return $task->toJSON();
         }
         else{
             $opportunity = CRMOpportunity::newFromId($this->getParam('opportunity_id'));
@@ -16,29 +16,32 @@ class CRMTaskAPI extends RESTAPI {
     
     function doPOST(){
         $me = Person::newFromWgUser();
-        if(CRMOpportunity::isAllowedToCreate()){
-            $opportunity = new CRMOpportunity();
-            $opportunity->contact = $this->POST('contact');
-            $opportunity->category = $this->POST('category');
-            $opportunity->description = $this->POST('description');
-            $opportunity->create();
-            return $opportunity->toJSON();
+        if(CRMTask::isAllowedToCreate()){
+            $task = new CRMTask(array());
+            $task->opportunity = $this->POST('opportunity');
+            $task->task = $this->POST('task');
+            $task->dueDate = $this->POST('dueDate');
+            $task->transactions = $this->POST('transactions');
+            $task->status = $this->POST('status');
+            $task->create();
+            return $task->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to create this Opportunity");
+            $this->throwError("You are not allowed to create this Task");
         }
     }
     
     function doPUT(){
-        $opportunity = CRMOpportunity::newFromId($this->getParam('id'));
-        if($opportunity->isAllowedToEdit()){
-            $opportunity->category = $this->POST('category');
-            $opportunity->description = $this->POST('description');
-            $opportunity->update();
-            return $opportunity->toJSON();
+        $task = CRMTask::newFromId($this->getParam('id'));
+        if($task->isAllowedToEdit()){
+            $task->task = $this->POST('task');
+            $task->dueDate = $this->POST('dueDate');
+            $task->transactions = $this->POST('transactions');
+            $task->status = $this->POST('status');
+            return $task->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Contact");
+            $this->throwError("You are not allowed to edit this Task");
         }
     }
     

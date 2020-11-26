@@ -40,7 +40,7 @@ class Crm extends AbstractMigration
               
         $table = $this->table('grand_crm_task', array('id' => 'id'));
         $table->addColumn('opportunity', 'integer')
-              ->addColumn('description', 'text')
+              ->addColumn('task', 'text')
               ->addColumn('due_date', 'datetime')
               ->addColumn('transactions', 'text')
               ->addColumn('status', 'string', array('limit' => 64))

@@ -38,7 +38,7 @@ class CRMOpportunityAPI extends RESTAPI {
             return $opportunity->toJSON();
         }
         else{
-            $this->throwError("You are not allowed to edit this Contact");
+            $this->throwError("You are not allowed to edit this Opportunity");
         }
     }
     
