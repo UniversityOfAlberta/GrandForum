@@ -73,6 +73,7 @@ CRMContactEditView = Backbone.View.extend({
     render: function(){
         main.set('title', this.model.get('title'));
         this.$el.html(this.template(this.model.toJSON()));
+        this.renderOpportunities();
         return this.$el;
     }
 
