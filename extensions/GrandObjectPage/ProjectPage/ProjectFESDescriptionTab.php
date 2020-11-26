@@ -16,7 +16,7 @@ class ProjectFESDescriptionTab extends AbstractEditableTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+        if($me->isRoleAtLeast(HQP) && $me->isMemberOf($this->project) && !$me->isSubRole("UofC")){
             $project = $this->project;
             $this->showDescription();
         }

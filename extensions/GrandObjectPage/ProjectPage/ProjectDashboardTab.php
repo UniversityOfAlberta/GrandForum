@@ -67,7 +67,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function generatePDFBody(){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+        if($me->isRoleAtLeast(HQP) && $me->isMemberOf($this->project) && !$me->isSubRole("UofC")){
             if(!$this->project->isSubProject()){
                 $this->showTopProducts($this->project, $this->visibility);
                 if($config->getValue('projectTechEnabled')){
@@ -80,7 +80,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function generateBody(){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+        if($me->isRoleAtLeast(HQP) && $me->isMemberOf($this->project) && !$me->isSubRole("UofC")){
             if(!$this->project->isSubProject()){
                 $this->showTopProducts($this->project, $this->visibility);
                 if($config->getValue('projectTechEnabled')){
