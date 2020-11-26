@@ -130,28 +130,28 @@ class ApplicationsTable extends SpecialPage{
         $ceri1_score->setBlobType(BLOB_ARRAY);
         $ceri1_score->setBlobItem('CERI');
         $ceri1_score->setBlobSection("SECTION3");
-        $ceri1_score->setAttr("indices", "ceri_1_1|ceri_2_1|ceri_3_1|ceri_4_1|ceri_5_1|ceri_6_1|ceri_7_1|ceri_8_1|ceri_9_1|ceri_10_1|ceri_11_1|ceri_12_1|ceri_13_1");
+        $ceri1_score->setAttr("indices", "ceri_1_1|ceri_2_1|ceri_3_1|ceri_4_1|ceri_5_1|ceri_6_1|ceri_7_1|ceri_8_1|ceri_9_1|ceri_10_1|ceri_11_1|ceri_12_1");
         $ceri1_score->setAttr("denominator", "3");
         
         $ceri2_score = new AverageArrayReportItem();
         $ceri2_score->setBlobType(BLOB_ARRAY);
         $ceri2_score->setBlobItem('CERI');
         $ceri2_score->setBlobSection("SECTION3");
-        $ceri2_score->setAttr("indices", "ceri_1_2|ceri_2_2|ceri_3_2|ceri_4_2|ceri_5_2|ceri_6_2|ceri_7_2|ceri_8_2|ceri_9_2|ceri_10_2|ceri_11_2|ceri_12_2|ceri_13_2");
+        $ceri2_score->setAttr("indices", "ceri_1_2|ceri_2_2|ceri_3_2|ceri_4_2|ceri_5_2|ceri_6_2|ceri_7_2|ceri_8_2|ceri_9_2|ceri_10_2|ceri_11_2|ceri_12_2");
         $ceri2_score->setAttr("denominator", "3");
         
         $ceri3_score = new AverageArrayReportItem();
         $ceri3_score->setBlobType(BLOB_ARRAY);
         $ceri3_score->setBlobItem('CERI');
         $ceri3_score->setBlobSection("SECTION3");
-        $ceri3_score->setAttr("indices", "ceri_1_3|ceri_2_3|ceri_3_3|ceri_4_3|ceri_5_3|ceri_6_3|ceri_7_3|ceri_8_3|ceri_9_3|ceri_10_3|ceri_11_3|ceri_12_3|ceri_13_3");
+        $ceri3_score->setAttr("indices", "ceri_1_3|ceri_2_3|ceri_3_3|ceri_4_3|ceri_5_3|ceri_6_3|ceri_7_3|ceri_8_3|ceri_9_3|ceri_10_3|ceri_11_3|ceri_12_3");
         $ceri3_score->setAttr("denominator", "3");
         
         $ceri4_score = new AverageArrayReportItem();
         $ceri4_score->setBlobType(BLOB_ARRAY);
         $ceri4_score->setBlobItem('CERI');
         $ceri4_score->setBlobSection("SECTION3");
-        $ceri4_score->setAttr("indices", "ceri_1_4|ceri_2_4|ceri_3_4|ceri_4_4|ceri_5_4|ceri_6_4|ceri_7_4|ceri_8_4|ceri_9_4|ceri_10_4|ceri_11_4|ceri_12_4|ceri_13_4");
+        $ceri4_score->setAttr("indices", "ceri_1_4|ceri_2_4|ceri_3_4|ceri_4_4|ceri_5_4|ceri_6_4|ceri_7_4|ceri_8_4|ceri_9_4|ceri_10_4|ceri_11_4|ceri_12_4");
         $ceri4_score->setAttr("denominator", "3");
         
         $tabbedPage = new InnerTabbedPage("reports");
