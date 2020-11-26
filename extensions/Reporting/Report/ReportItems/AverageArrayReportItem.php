@@ -6,6 +6,7 @@ class AverageArrayReportItem extends AbstractReportItem {
 	    global $wgOut;
 	    $values = $this->getBlobValue();
 		$indices = explode("|", $this->getAttr("indices"));
+		
 		$sum = 0;
 		$count = 0;
 		foreach($indices as $index){
@@ -14,6 +15,7 @@ class AverageArrayReportItem extends AbstractReportItem {
 		        $count++;
 		    }
 		}
+		$count = $this->getAttr("denominator", $count);
 		$avg = number_format($sum/max(1,$count), 2);
 		$wgOut->addHTML($this->processCData("{$avg}"));
 	}

@@ -147,7 +147,7 @@ class ApplicationTab extends AbstractTab {
                 $first = $report;
                 $report = array($report);
             }
-            if($first->hasStarted() || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
+            if($first->hasStarted(true) || ($this->showAllWithPDFs && count($first->getPDF()) > 0)){
                 foreach($report as $rep){
                     $pName = $person->getName();
                     if($person instanceof Theme){
@@ -194,7 +194,7 @@ class ApplicationTab extends AbstractTab {
                     }
                     else if($rep instanceof AbstractReport){
                         $pdf = $rep->getPDF();
-                        if($rep->hasStarted() || count($pdf) > 0){
+                        if($rep->hasStarted(true) || count($pdf) > 0){
                             $this->html .= "<tr>
                             <td>{$pName}</td>";
                             if($isPerson){

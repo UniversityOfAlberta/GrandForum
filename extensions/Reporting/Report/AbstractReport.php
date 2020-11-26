@@ -633,7 +633,7 @@ abstract class AbstractReport extends SpecialPage {
      * Returns whether or not the Person has started the report yet
      * @return boolean Whether or not the Person has started the report yet
      */
-    function hasStarted(){
+    function hasStarted($deep=false){
         $personId = $this->person->getId();
         $projectId = ($this->project != null) ? $this->project->getId() : 0;
         $data = DBFunctions::select(array('grand_report_blobs'),
@@ -642,6 +642,30 @@ abstract class AbstractReport extends SpecialPage {
                                           'proj_id' => EQ($projectId),
                                           'rp_type' => EQ($this->reportType),
                                           'year' => EQ($this->year)));
+        if($data[0]['count'] > 0 && $deep){
+            $data = DBFunctions::select(array('grand_report_blobs'),
+                                        array('*'),
+                                        array('user_id' => EQ($personId),
+                                              'proj_id' => EQ($projectId),
+                                              'rp_type' => EQ($this->reportType),
+                                              'year' => EQ($this->year),
+                                              'blob_type' => NEQ(BLOB_RAW)));
+            foreach($data as $row){
+                $blobData = @unserialize(trim($row['data']));
+                if(is_array($blobData)){
+                    $blobData = implode("", array_flatten($blobData));
+                    if($blobData != ""){
+                        return true;
+                    }
+                }
+                else {
+                    if($blobData != ""){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         return ($data[0]['count'] > 0);
     }
     

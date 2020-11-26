@@ -4906,19 +4906,6 @@ class Person extends BackboneModel {
     }    
 }
 if(isset($facultyMap)){
-    // https://arjunphp.com/flatten-nested-arrays-using-php/
-    function array_flatten($array, $prefix = '') {     
-        $result = array();     
-        foreach($array as $key=>$value) {
-            if(is_array($value)) {
-                $result = $result + array_flatten($value, $prefix . $key . '.');
-            }
-            else {
-                $result[$prefix.$key] = $value;
-            }
-        }
-        return $result;
-    }
     Person::$facultyMap = array_flip(array_flatten($facultyMap));
     foreach(Person::$facultyMap as $key => $val){
         $exploded = explode(".", $val);
