@@ -194,12 +194,11 @@ $apiRequest->addAction('Hidden','bsiposting/:id/image', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','crmcontact', 'CRMContactAPI');
 $apiRequest->addAction('Hidden','crmcontact/:id', 'CRMContactAPI');
 $apiRequest->addAction('Hidden','crmcontact/:contact_id/crmopportunities', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity', 'CRMOpportunityAPI');
 $apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunityAPI');
 $apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTaskAPI');
+$apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
-
-
-$apiRequest->addAction('Hidden','crm/:crmcontact/:crmopportunity', 'CRMContact');
 
 function createModels(){
 
