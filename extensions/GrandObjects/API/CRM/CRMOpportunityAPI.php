@@ -17,7 +17,7 @@ class CRMOpportunityAPI extends RESTAPI {
     function doPOST(){
         $me = Person::newFromWgUser();
         if(CRMOpportunity::isAllowedToCreate()){
-            $opportunity = new CRMOpportunity();
+            $opportunity = new CRMOpportunity(array());
             $opportunity->contact = $this->POST('contact');
             $opportunity->category = $this->POST('category');
             $opportunity->description = $this->POST('description');
