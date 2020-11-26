@@ -1,7 +1,7 @@
 <%= HTML.TextArea(this, 'description', {style: 'height: 70px; width:600px;'}) %><br />
 <table>
     <tr>
-        <td><b>Due Date:</b></td><td><%= HTML.DatePicker(this, 'dueDate', {}) %></td>
+        <td><b>Due Date:</b></td><td><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
     </tr>
     <tr>
         <td><b>Status:</b></td><td><%= HTML.Select(this, 'status', {options: ['Active', 'Completed', 'Aborted']}) %></td>

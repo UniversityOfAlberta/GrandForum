@@ -56,7 +56,7 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function getDueDate(){
-	    return $this->dueDate;
+	    return substr($this->dueDate, 0, 10);
 	}
 	
 	function getTransactions(){

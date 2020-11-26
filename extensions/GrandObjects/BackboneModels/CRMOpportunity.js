@@ -1,9 +1,9 @@
 CRMOpportunity = Backbone.Model.extend({
 
     initialize: function(){
+        this.tasks = new CRMTasks();
+        this.tasks.opportunity = this;
         if(!this.isNew()){
-            this.tasks = new CRMTasks();
-            this.tasks.opportunity = this;
             this.tasks.fetch();
         }
         
