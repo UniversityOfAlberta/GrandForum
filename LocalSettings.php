@@ -346,6 +346,20 @@ function array_clean(array $haystack){
     return $haystack;
 }
 
+// https://arjunphp.com/flatten-nested-arrays-using-php/
+function array_flatten($array, $prefix = '') {     
+    $result = array();     
+    foreach($array as $key=>$value) {
+        if(is_array($value)) {
+            $result = $result + array_flatten($value, $prefix . $key . '.');
+        }
+        else {
+            $result[$prefix.$key] = $value;
+        }
+    }
+    return $result;
+}
+
 function str_replace_first($search, $replace, $subject) {
     $pos = strpos($subject, $search);
     if ($pos !== false) {
