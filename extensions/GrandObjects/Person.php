@@ -2847,6 +2847,14 @@ class Person extends BackboneModel {
         return (array_search($subRole, $roles) !== false);
     }
     
+    function isSubRoleBefore($subRole, $date){
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'changed' => LT($date)));
+        return (count($data) > 0);
+    }
+    
     function isSubRoleSince($subRole, $date){
         $data = DBFunctions::select(array('grand_role_subtype'),
                                     array('sub_role'),
@@ -3752,6 +3760,15 @@ class Person extends BackboneModel {
         $university = $this->getUniversity();
         $position = $university['position'];
         $uniDate = $university['date'];
+        if($this->isSubRoleBefore("Affiliate HQP", $date) || 
+           $this->isSubRoleBefore("Project Funded HQP", $date) ||
+           $this->isSubRoleBefore("WP/CC Funded HQP", $date) ||
+           $this->isSubRoleBefore("SIP/CAT HQP", $date) ||
+           $this->isSubRoleBefore("Award HQP", $date) ||
+           $this->isSubRoleBefore("Alumni HQP", $date) ||
+           $this->isSubRoleBefore("EPIC grad", $date)){
+            return false;
+        }
         return (($uniDate > $date && ($position == "graduate student - doctoral" ||
                                       $position == "graduate student - master's" ||
                                       $position == "post-doctoral fellow" ||
