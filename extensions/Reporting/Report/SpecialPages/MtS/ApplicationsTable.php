@@ -191,12 +191,15 @@ class ApplicationsTable extends SpecialPage{
         
         // 4.2 Target
         $html .= "<h3>Section 4.2</h3>
-                  <table class='wikitable'>
+                  <table class='wikitable summary{$year}'>
+                    <thead>
                     <tr>
                         <th>Target Audience</th>
                         <th>N of projects</th>
                         <th>Projects</th>
-                    </tr>";
+                    </tr>
+                    </thead>
+                    <tbody>";
         foreach($summary_4_2 as $key => $vals){
             $html .= "<tr>";
             $html .= "<td>{$key}</td>";
@@ -204,16 +207,19 @@ class ApplicationsTable extends SpecialPage{
             $html .= "<td>".implode("; ", $vals)."</td>";
             $html .= "</tr>";
         }
-        $html .= "</table>";
+        $html .= "</tbody></table>";
         
         // 4.4 Venues
         $html .= "<h3>Section 4.4</h3>
-                  <table class='wikitable'>
+                  <table class='wikitable summary{$year}'>
+                    <thead>
                     <tr>
                         <th>KMb Item</th>
                         <th>N of projects</th>
                         <th>Projects</th>
-                    </tr>";
+                    </tr>
+                    </thead>
+                    <tbody>";
         foreach($summary_4_4 as $key => $vals){
             $html .= "<tr>";
             $html .= "<td>{$key}</td>";
@@ -221,16 +227,19 @@ class ApplicationsTable extends SpecialPage{
             $html .= "<td>".implode("; ", $vals)."</td>";
             $html .= "</tr>";
         }
-        $html .= "</table>";
+        $html .= "</tbody></table>";
         
         // 4.6 Topics
         $html .= "<h3>Section 4.6</h3>
-                  <table class='wikitable'>
+                  <table class='wikitable summary{$year}'>
+                    <thead>
                     <tr>
                         <th>KMb Outputs</th>
                         <th>N of projects</th>
                         <th>Projects</th>
-                    </tr>";
+                    </tr>
+                    </thead>
+                    <tbody>";
         foreach($summary_4_6 as $key => $vals){
             $html .= "<tr>";
             $html .= "<td>{$key}</td>";
@@ -238,16 +247,19 @@ class ApplicationsTable extends SpecialPage{
             $html .= "<td>".implode("; ", $vals)."</td>";
             $html .= "</tr>";
         }
-        $html .= "</table>";
+        $html .= "</tbody></table>";
         
         // 4.7 Support
         $html .= "<h3>Section 4.7</h3>
-                  <table class='wikitable'>
+                  <table class='wikitable summary{$year}'>
+                    <thead>
                     <tr>
                         <th>Method of delivery</th>
                         <th>N of projects</th>
                         <th>Projects</th>
-                    </tr>";
+                    </tr>
+                    </thead>
+                    <tbody>";
         foreach($summary_4_7 as $key => $vals){
             $html .= "<tr>";
             $html .= "<td>{$key}</td>";
@@ -255,7 +267,7 @@ class ApplicationsTable extends SpecialPage{
             $html .= "<td>".implode("; ", $vals)."</td>";
             $html .= "</tr>";
         }
-        $html .= "</table>";
+        $html .= "</tbody></table>";
         
         $html .= "<script type='text/javascript'>
             $('.summary{$year}').dataTable({
