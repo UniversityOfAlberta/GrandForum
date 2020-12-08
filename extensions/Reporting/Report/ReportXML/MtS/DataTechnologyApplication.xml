@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="true" year="2020">
     <Permissions>
         <Role role="" />
     </Permissions>
