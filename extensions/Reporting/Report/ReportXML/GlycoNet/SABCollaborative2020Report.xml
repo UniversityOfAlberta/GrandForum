@@ -32,11 +32,12 @@
             <SectionPermission id="submit" permissions="" />
         </Person>
     </Permissions>
-    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="MATERIALS" type="EditableReportSection" renderpdf="false">
         <Static>
             <![CDATA[
             <table align="left" class='wikitable'>
                 <tr>
+                    <th style="min-width:110px;">Project Code</th>
                     <th style="min-width:110px;">PI Name</th>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Proposal PDF</th>
@@ -44,8 +45,13 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative2020">
+            <ReportItem id="code" type="Text" width="100px" blobItem="CODE" blobSubItem="{$user_id}_{$project_id}">
+                <![CDATA[
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2020" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
