@@ -115,6 +115,9 @@
     // The Default productVisibility
     $config->setValue("productVisibility", "Forum");
     
+    // The terminology to use for "Sub-Role"
+    $config->setValue("subRoleTerm", "Sub-Role");
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
 

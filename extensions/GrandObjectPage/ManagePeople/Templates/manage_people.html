@@ -33,7 +33,7 @@ If you would like to manage additional people who already exist on the Forum, th
             <% } %>
             <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
                 <th style="border-left: 2px solid #CCCCCC;" width="1%">Candidate</th>
-                <th style="white-space: nowrap;" width="1%">Sub-Roles</th>
+                <th style="white-space: nowrap;" width="1%"><%= subRolesTerm.pluralize() %></th>
                 <th style="white-space: nowrap;" width="1%">Theme<br />Leadership</th>
             <% } %>
             <th style="border-left: 2px solid #CCCCCC;">Name</th>

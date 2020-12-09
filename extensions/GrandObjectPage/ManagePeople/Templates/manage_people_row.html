@@ -13,7 +13,7 @@
 <div id="alumniDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Recruitment/Alumni">
     
 </div>
-<div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Sub-Roles">
+<div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit <%= subRolesTerm.pluralize() %>">
     
 </div>
 <div id="themeLeadershipDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Theme Leadership">
@@ -52,7 +52,7 @@
         <% } %>
     </td>
     <td align="center">
-        <span id="editSubRoles" class="edit-icon" title="Edit Sub-Roles"></span>
+        <span id="editSubRoles" class="edit-icon" title="Edit <%= subRolesTerm.pluralize() %>"></span>
     </td>
     <td align="center">
         <span id="editThemeLeadership" class="edit-icon" title="Edit Theme Leadership"></span>

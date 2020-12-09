@@ -93,7 +93,7 @@ class AddMember extends SpecialPage{
         }
         $hqpType = "";
         if(count($config->getValue('subRoles')) > 0 && !$history){
-            $hqpType = "<th>Sub-Role</th>";
+            $hqpType = "<th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
         }
         if($history){
             $wgOut->addHTML("<a href='$wgServer$wgScriptPath/index.php/Special:AddMember?action=view'>View New Requests</a><br /><br />

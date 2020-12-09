@@ -20,6 +20,7 @@ class PersonSubRolesAPI extends RESTAPI {
     }
     
     function doPUT(){
+        global $config;
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->getParam('id'));
         if($me->isRoleAtLeast(STAFF) && $person->getId() != 0){
@@ -50,7 +51,7 @@ class PersonSubRolesAPI extends RESTAPI {
             return $this->doGET();
         }
         else{
-            $this->throwError("Could not modify Sub-Roles");
+            $this->throwError("Could not modify ".Inflect::pluralize($config->getValue('subRoleTerm')));
         }
     }
     
