@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Plan Update 2020-21" reportType="RP_PROJ_PLAN_UPDATE" pdfType="RPTP_PROJ_PLAN_UPDATE" personId="0" ajax="true" year="2020" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static id="report_info_head">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>Project Plan Update 2020-21</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
+        <ReportItem id="active" type="Checkbox" blobItem="ACTIVE" blobType="BLOB_ARRAY" options="Active">
+            <![CDATA[
+                <h3>1. What is the current status of the AGE-WELL funded project?</h3>
+            ]]>
+        </ReportItem>
+        <If if="{==({getArray(RP_PROJ_PLAN_UPDATE,STATUS,ACTIVE,0,0,{$project_id},active)},Active)}">
+            <ReportItem id="active_1" type="Radio" blobItem="ACTIVE_1" options="Yes|No" orientation="horizontal">
+                <![CDATA[
+                    <b>Active</b><br />
+                    <b>Was project start delayed by COVID-19?</b> {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="active_2" type="Calendar" blobItem="ACTIVE_2">
+                <![CDATA[
+                    <b>If Yes, what was the project restart date?</b> {$item}<br /><br />
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <If if="{==({getArray(RP_PROJ_PLAN_UPDATE,STATUS,INACTIVE,0,0,{$project_id},inactive)},Inactive)}">
+            <ReportItem id="inactive_1" type="Radio" blobItem="INACTIVE_1" options="Yes|No" orientation="horizontal">
+                <![CDATA[
+                    <b>Inactive</b><br />
+                    <b>If inactive, was it delayed by COVID-19?</b> {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="inactive_2" type="Calendar" blobItem="INACTIVE_2">
+                <![CDATA[
+                    <b>Anticipated start date:</b> {$item}<br /><br />
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="information" type="Textarea" blobItem="INFORMATION" rich="true">
+            <![CDATA[
+                <h4>Additional information to clarify the status of your project (optional):</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true">
+            <![CDATA[
+               <h3>2. Please describe how you think the COVID-19 situation will impact your project in the longer-term.</h3>
+               {$item}
+               <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="pivots" type="Textarea" blobItem="PIVOTS" rich="true">
+            <![CDATA[
+               <h3>3. Please summarize any solutions or pivots that have been or will be implemented.</h3>
+               {$item}
+               <br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="update" type="EditableReportSection" blobSection="UPDATE" tooltip="B. Project Plan Update" name="Project Plan Update" title="B. Project Plan Update" pagebreak="false">
+        <ReportItem id="timeline" type="Textarea" blobItem="TIMELINE" rich="true">
+            <![CDATA[
+                <h3>1. Describe the specific challenges, changes or adjustments to project plans in the context of COVID-19 related to:</h3>
+                <h4>a. Project timeline</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="extension" type="Radio" blobItem="EXTENSION" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                <b>Would you like to request an extension now?</b>
+                {$item}<br />
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="goals" type="Textarea" blobItem="GOALS" rich="true">
+            <![CDATA[
+                <h4>b. Research goals and objectives, including whether COVID-19 considerations or research questions that have been incorporated into your project:</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="methods" type="Textarea" blobItem="METHODS" rich="true">
+            <![CDATA[
+                <h4>c. Research methods:</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="partnerships" type="Textarea" blobItem="PARTNERSHIPS" rich="true">
+            <![CDATA[
+                <h4>d. Networking and partnerships:</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+            <![CDATA[
+                <h4>e. Knowledge mobilization and commercialization:</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp" type="Textarea" blobItem="HQP" rich="true">
+            <![CDATA[
+                <h4>f. Recruitment and/or training of HQP:</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h3>Additional Project Materials</h3>
+            ]]>
+        </Static>
+        <For from="1" to="20">
+            <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </For>
+    </ReportSection>
+</Report>

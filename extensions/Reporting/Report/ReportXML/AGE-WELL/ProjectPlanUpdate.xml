@@ -18,7 +18,7 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="Project Plan Update 2020-21">
+    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="Project Plan Update 2020-21: {$project_name}">
         <Static>
             <![CDATA[
                 <p>In May 2020 the AGE-WELL Network Management Office surveyed Project Leads to better understand the current and anticipated impact of COVID-19 on funded projects. Teams were told at that time that they will have an opportunity to submit a revised project plan and budget at a later date.</p>
@@ -171,7 +171,7 @@
                     Recruitment and/or training of HQP:
                     {$item}
                 </li>
-                </ul>
+                </ol>
             ]]>
         </ReportItem>
         <ReportItem id="platform_pdf" type="PDFReportItem" buttonName="Platform Report" project="true" reportType="PlatformReport" year="2019">
