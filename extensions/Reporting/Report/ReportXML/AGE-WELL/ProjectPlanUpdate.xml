@@ -23,7 +23,7 @@
             <![CDATA[
                 <p>In May 2020 the AGE-WELL Network Management Office surveyed Project Leads to better understand the current and anticipated impact of COVID-19 on funded projects. Teams were told at that time that they will have an opportunity to submit a revised project plan and budget at a later date.</p>
                 
-                <p>In light of research disruptions and delays due to COVID-19, AGE-WELL will not undertake an Annual Project Progress Evaluation (APPE) of its multi-year projects this fall as planned. Instead, projects funded through the AGE-WELL Core Research Program and Platform Project Program will complete the project update process outlined in this document consisting of updates to project status, project plans and project outputs by <u>January 15</u>, 2021 via the Forum research portal.</p>
+                <p>In light of research disruptions and delays due to COVID-19, AGE-WELL will not undertake an Annual Project Progress Evaluation (APPE) of its multi-year projects this fall as planned. Instead, projects funded through the AGE-WELL Core Research Program and Platform Project Program will complete the project update process outlined in this document consisting of updates to project status, project plans and project outputs by <u><b>January 15</b></u>, 2021 via the Forum research portal.</p>
                 
                 <p>The Forum portal is the primary mechanism for preparing and submitting progress reports and funding requests, and serves as a central repository for information about people, projects, and activities within AGE-WELL. The project update process requires Project Leads to ensure that their Forum project profiles are up to date and that all project HQP have been added to the portal. How-to guides for Forum reporting and adding HQP are included in this document. A separate Budget Update process will proceed as usual in February 2021. Project Leads will prepare and submit a revised project budget at that time including an estimate of unspent funds at year-end.</p>
                 
@@ -113,7 +113,7 @@
     <ReportSection id="update" type="EditableReportSection" blobSection="UPDATE" tooltip="B. Project Plan Update" name="Project Plan Update" title="B. Project Plan Update">
         <Static>
             <![CDATA[
-                <p>The majority of AGE-WELL funded projects reported in May that their project plans would require adjustment in light of COVID-19. In this section, teams are asked to describe in detail those specific challenges, changes or adjustments. Materials from your last Project Plan Update (Jan 2020) are accessible in this section for reference.  If helpful for project planning, Project Leads have the option to request a one-year no-cost extension to their current three-year award at this time, with justification. Note that a no extension may be requested in the final year of the project as per usual process.</p>
+                <p>The majority of AGE-WELL funded projects reported in May that their project plans would require adjustment in light of COVID-19. In this section, teams are asked to describe in detail those specific challenges, changes or adjustments. Materials from your last Project Plan Update (Jan 2020) are accessible in this section for reference.  If helpful for project planning, Project Leads have the option to request a one-year no-cost extension to their current three-year award at this time, with justification. Note that a no-cost extension may be requested in the final year of the project as per usual process.</p>
             ]]>
         </Static>
         <ReportItem id="timeline" type="Textarea" blobItem="TIMELINE" rich="true">
@@ -126,9 +126,10 @@
         </ReportItem>
         <ReportItem id="extension" type="Radio" blobItem="EXTENSION" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    Project Leads have the option to request a no-cost extension now to the current award term (Apr 1, 2020- Mar 21, 2023) to assist with project planning.<br />
-                    Would you like to request an extension now? 
+                    <p>Project Leads have the option to request a no-cost extension now to the current award term (Apr 1, 2020- Mar 31, 2023) to assist with project planning. This would change your award term end to Mar 31, 2024. If choose not to extend your award term now, you will be able to choose to extend in 2023 as per usual process.</p>
+                    <b>Would you like to request an extension now?</b>
                     {$item}
+                    <br />
                 </li>
             ]]>
         </ReportItem>
