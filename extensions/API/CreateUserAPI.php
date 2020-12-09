@@ -8,6 +8,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");
         $this->addPOST("wpRealName",false,"The User's real name","My Real Name");
         $this->addPOST("wpFirstName",false,"The User's first name","My First Name");
+        $this->addPOST("wpMiddleName",false,"The User's middle name","My Middle Name");
         $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
@@ -123,6 +124,7 @@ class CreateUserAPI extends API{
                     
                     DBFunctions::update('mw_user',
                                         array('first_name' => @$_POST['wpFirstName'],
+                                              'middle_name' => @$_POST['wpMiddleName'],
                                               'last_name' => @$_POST['wpLastName']),
                                         array('user_id' => $person->getId()));
                 
