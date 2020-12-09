@@ -23,11 +23,11 @@
         </Static>
     </ReportSection>
     <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
-        <ReportItem id="active" type="Checkbox" blobItem="ACTIVE" blobType="BLOB_ARRAY" options="Active">
+        <Static>
             <![CDATA[
                 <h3>1. What is the current status of the AGE-WELL funded project?</h3>
             ]]>
-        </ReportItem>
+        </Static>
         <If if="{==({getArray(RP_PROJ_PLAN_UPDATE,STATUS,ACTIVE,0,0,{$project_id},active)},Active)}">
             <ReportItem id="active_1" type="Radio" blobItem="ACTIVE_1" options="Yes|No" orientation="horizontal">
                 <![CDATA[
