@@ -126,7 +126,7 @@
         </ReportItem>
         <ReportItem id="extension" type="Radio" blobItem="EXTENSION" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <p>Project Leads have the option to request a no-cost extension now to the current award term (Apr 1, 2020- Mar 31, 2023) to assist with project planning. This would change your award term end to Mar 31, 2024. If choose not to extend your award term now, you will be able to choose to extend in 2023 as per usual process.</p>
+                    <p>Project Leads have the option to request a no-cost extension now to the current award term (Apr 1, 2020- Mar 31, 2023) to assist with project planning. This would change your award term end to Mar 31, 2024. If choose <u>not</u> to extend your award term now, you will be able to choose to extend in 2023 as per usual process.</p>
                     <b>Would you like to request an extension now?</b>
                     {$item}
                     <br />
