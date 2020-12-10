@@ -13,7 +13,7 @@
     <% if(this.model.getPossibleStatus().length > 0){ %>
         <tr><td align="right"><b>Status:</b></td><td><%= status %></td></tr>
     <% } %>
-    <tr><td align="right"><b>Date:</b></td><td><%= formatDate(date) %></td></tr>
+    <tr><td align="right"><b>Date<% if(networkName == "FES"){ %> Published<% } %>:</b></td><td><%= formatDate(date) %></td></tr>
     <% _.each(this.model.getPossibleFields(), function(val, index){ %>
         <% if(data[index] != "" && data[index] != undefined && !val.hidden){ %>
             <% if(index == "impact_factor" && data["impact_factor_override"] != undefined && data["impact_factor_override"] != ""){ return; } %>
@@ -42,6 +42,8 @@
                         <% } else { %>
                             <a download="<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>'); }" target="_blank"><%= data[index]['filename'] %></a>
                         <% } %>
+                    <% } else if(val.type == "Date"){ %>
+                        <%= formatDate(data[index]) %>
                     <% } else { %>
                         <%= data[index] %>
                     <% } %>
