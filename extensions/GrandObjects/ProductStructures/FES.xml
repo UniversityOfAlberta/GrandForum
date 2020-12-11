@@ -17,6 +17,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -51,6 +53,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -85,6 +89,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -121,6 +127,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -155,6 +163,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -195,6 +205,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -235,6 +247,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Type of Media">type</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Article URL" type="URL">url</field>
@@ -259,6 +273,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -294,6 +310,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -332,6 +350,8 @@
                 <status>Rejected</status>
             </statuses>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -356,6 +376,8 @@
         
         <Publication type="Research Report" status="Submitted|To Appear|Under Revision|Published|Rejected">
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -374,6 +396,8 @@
         <Publication type="Report, brief, and other forms of grey literature" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Title"></title>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -397,6 +421,8 @@
         <Publication type="Government Publication" ccv_id="7e57525337d5498a9506fdadee098b10" ccv_name="Reports" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <title ccv_id="dd692787647b495fbadb038b6937950d" ccv_name="Report Title"></title>
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
@@ -425,6 +451,8 @@
         
         <Publication type="Misc" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
                 <field label="Lead Author">lead_author</field>
                 <field label="Internal Collaboration" type="Check">collaboration</field>
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
