@@ -23,34 +23,40 @@ class PDFReportItem extends StaticReportItem {
             }
         }
         $person = Person::newFromId($this->personId);
-        $report = new DummyReport($reportType, $person, $project, $year, true);
-        if($report->allowIdProjects){
-            // Handle allowIdProjects
-            $report->project = new Project(array());
-            $report->project->id = $this->projectId;
+        $projects = array_merge(array($project), $project->getPreds());
+        $found = false;
+        foreach($projects as $project){
+            $report = new DummyReport($reportType, $person, $project, $year, true);
+            if($report->allowIdProjects){
+                // Handle allowIdProjects
+                $report->project = new Project(array());
+                $report->project->id = $this->projectId;
+            }
+            $tok = false;
+            $tst = '';
+            $len = 0;
+            $sub = 0;
+            $sto = new ReportStorage($person, $project);
+        	$check = $report->getPDF();
+        	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
+        		$tok = $check[0]['token'];
+        		$sto->select_report($tok);
+        		$tst = $sto->metadata('timestamp');
+        		$len = $sto->metadata('len_pdf');
+        		$sub = $sto->metadata('submitted');
+        		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
+        		$item = $this->processCData($item);
+		        $wgOut->addHTML($item);
+		        $found = true;
+		        break;
+        	}
         }
-        $tok = false;
-        $tst = '';
-        $len = 0;
-        $sub = 0;
-        $sto = new ReportStorage($person, $project);
-    	$check = $report->getPDF();
-    	if (count($check) > 0 && ($reportType != "ProjectNIComments" || $person->getId() != $me->getId())) {
-    		$tok = $check[0]['token'];
-    		$sto->select_report($tok);
-    		$tst = $sto->metadata('timestamp');
-    		$len = $sto->metadata('len_pdf');
-    		$sub = $sto->metadata('submitted');
-    		$item = "<a class='button' style='width:{$width};' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$tok}'>{$buttonName}</a>";
-    		$item = $this->processCData($item);
-		    $wgOut->addHTML($item);
-    	}
-    	else{
-    	    if($noRenderIfNull == "true"){
+        if(!$found){
+            if($noRenderIfNull == "true"){
     	        return;
     	    }
     	    $wgOut->addHTML($this->processCData(""));
-    	}
+        }
 	}
 	
 	function renderForPDF(){
