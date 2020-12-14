@@ -14,10 +14,18 @@
             <th>Sector</th>
             <th>Country</th>
             <th>Exists Prior to FES</th>
-            <th>Cash</th>
-            <th>In-Kind</th>
-            <th>Projected Cash</th>
-            <th>Projected In-Kind</th>
+            <th>FY1-4 Cash</th>
+            <th>FY1-4 In-Kind</th>
+            <th>FY5-8 Cash</th>
+            <th>FY5-8 In-Kind</th>
+            <th>FY5 Cash</th>
+            <th>FY5 In-Kind</th>
+            <th>FY6 Cash</th>
+            <th>FY6 In-Kind</th>
+            <th>FY7 Cash</th>
+            <th>FY7 In-Kind</th>
+            <th>FY8 Cash</th>
+            <th>FY8 In-Kind</th>
             <th>Creator</th>
             <th>Projects</th>
             <th>Year</th>
@@ -65,6 +73,30 @@
                 </td>
                 <td align="right">
                     <%= collab.get('projectedInkind') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['cashFY5'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['inkindFY5'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['cashFY6'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['inkindFY6'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['cashFY7'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['inkindFY7'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['cashFY8'],2,'') %>
+                </td>
+                <td align="right">
+                    <%= number_format(collab.get('extra')['inkindFY8'],2,'') %>
                 </td>
                 <td>
                     <% if (collab.get('creator').id != 0){ %>

@@ -29,6 +29,7 @@ class Collaboration extends BackboneModel{
     var $endYear = 0;
     var $files = array();
     var $existed = "";
+    var $extra = array();
     var $knowledgeUser = false;
     var $leverage = false;
     var $accessId = 0;
@@ -156,6 +157,10 @@ class Collaboration extends BackboneModel{
             $this->projectedCash = $data[0]['projected_cash'];
             $this->projectedInkind = $data[0]['projected_inkind'];
             $this->existed = $data[0]['existed'];
+            $this->extra = json_decode($data[0]['extra']);
+            if($this->extra == null){
+                $this->extra = array();
+            }
             $this->knowledgeUser = $data[0]['knowledge_user'];
             $this->leverage = $data[0]['leverage'];
             $this->projectsWaiting = true;
@@ -234,6 +239,10 @@ class Collaboration extends BackboneModel{
     
     function getExisted(){
         return $this->existed;
+    }
+    
+    function getExtra(){
+        return $this->extra;
     }
 
     function getKnowledgeUser() {
@@ -351,6 +360,7 @@ class Collaboration extends BackboneModel{
                                   'projected_cash' => $this->projectedCash,
                                   'projected_inkind' => $this->projectedInkind,
                                   'existed' => $this->existed,
+                                  'extra' => json_encode($this->extra),
                                   'knowledge_user' => $this->knowledgeUser,
                                   'leverage' => $this->leverage,
                                   'access_id' => $me->getId()));
@@ -425,6 +435,7 @@ class Collaboration extends BackboneModel{
                                   'projected_cash' => $this->projectedCash,
                                   'projected_inkind' => $this->projectedInkind,
                                   'existed' => $this->existed,
+                                  'extra' => json_encode($this->extra),
                                   'knowledge_user' => $this->knowledgeUser,
                                   'leverage' => $this->leverage),
                             array('id' => EQ($this->getId())));
@@ -542,6 +553,7 @@ class Collaboration extends BackboneModel{
             'fileCount' => $this->getFileCount(),
             'files' => $this->files,
             'existed' => $this->getExisted(),
+            'extra' => $this->getExtra(),
             'knowledgeUser' => $this->getKnowledgeUser(),
             'leverage' => $this->getLeverage(),
             'projects' => $projects,

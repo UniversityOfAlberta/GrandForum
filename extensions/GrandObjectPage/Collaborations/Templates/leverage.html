@@ -8,7 +8,7 @@
     <% } %>
 </div>
 <div style="display:flex;padding:5px;">
-    <div class="collab_box" style="flex-grow:3;max-width: 330px;">
+    <div class="collab_box" style="flex-grow:3;max-width:550px;">
         <div>
             <fieldset style="width: 240px; background: white; border: 1px solid #E0E0E0; border-radius: 4px;">
                 <legend style="font-size: 1em;">Contact</legend>
@@ -47,48 +47,37 @@
                 <td><%= existed %></td>
             </tr>
             <tr>
-                <td><b>Cash</b></td>
-                <td></td>
-                <td>
-                    <% if (cash == 0) { %>
-                        <span>Not funded</span>
-                    <% } else { %>
-                        $<%= cash %>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <td><b>In-Kind</b></td>
-                <td></td>
-                <td>
-                    <% if (inkind == 0) { %>
-                        <span>Not funded</span>
-                    <% } else { %>
-                        $<%= inkind %>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <td><b>Projected Cash</b></td>
-                <td></td>
-                <td>
-                    <% if (projectedCash == 0) { %>
-                        <span>Not funded</span>
-                    <% } else { %>
-                        $<%= projectedCash %>
-                    <% } %>
-                </td>
-            </tr>
-            <tr>
-                <td><b>Projected In-Kind</b></td>
-                <td></td>
-                <td>
-                    <% if (projectedInkind == 0) { %>
-                        <span>Not funded</span>
-                    <% } else { %>
-                        $<%= projectedInkind %>
-                    <% } %>
-                </td>
+                <td colspan="3">
+                    <table class="wikitable" style="white-space:nowrap;">
+                        <tr>
+                            <th></th>
+                            <th>FY1-4</th>
+                            <th>FY5-8</th>
+                            <th>FY5</th>
+                            <th>FY6</th>
+                            <th>FY7</th>
+                            <th>FY8</th>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;"><b>Cash:</b></td>
+                            <td align="right"><% if (cash == 0 || cash == undefined) { %>Not funded<% } else { %>$<%= cash %><% } %></td>
+                            <td align="right"><% if (projectedCash == 0 || projectedCash == undefined) { %>Not funded<% } else { %>$<%= projectedCash %><% } %></td>
+                            <td align="right"><% if (extra.cashFY5 == 0 || extra.cashFY5 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.cashFY5,2,'') %><% } %></td>
+                            <td align="right"><% if (extra.cashFY6 == 0 || extra.cashFY6 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.cashFY6,2,'') %><% } %></td>
+                            <td align="right"><% if (extra.cashFY7 == 0 || extra.cashFY7 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.cashFY7,2,'') %><% } %></td>
+                            <td align="right"><% if (extra.cashFY8 == 0 || extra.cashFY8 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.cashFY8,2,'') %><% } %></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap;"><b>In-kind:</b></td>
+                            <td align="right"><% if (inkind == 0 || cash == undefined) { %>Not funded<% } else { %>$<%= inkind %><% } %></td>
+                            <td align="right"><% if (projectedInkind == 0 || projectedInkind == undefined) { %>Not funded<% } else { %>$<%= projectedInkind %><% } %></td>
+                            <td align="right"><% if (extra.inkindFY5 == 0 || extra.inkindFY5 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.inkindFY5,'') %><% } %></td>
+                            <td align="right"><% if (extra.inkindFY6 == 0 || extra.inkindFY6 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.inkindFY6,'') %><% } %></td>
+                            <td align="right"><% if (extra.inkindFY7 == 0 || extra.inkindFY7 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.inkindFY7,'') %><% } %></td>
+                            <td align="right"><% if (extra.inkindFY8 == 0 || extra.inkindFY8 == undefined) { %>Not funded<% } else { %>$<%= number_format(extra.inkindFY8,'') %><% } %></td>
+                        </tr>
+                    </table>
+                </tr>
             </tr>
         </table>
     </div>
