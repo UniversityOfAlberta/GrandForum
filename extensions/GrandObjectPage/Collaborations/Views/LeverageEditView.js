@@ -2,45 +2,14 @@ LeverageEditView = CollaborationEditView.extend({
 
     initialize: function(){
         this.parent = this;
-        this.listenTo(this.model, "sync", function(){
-            function roundMoney(number){
-                if(Math.round(number) == number){
-                    return Math.round(number);
-                }
-                return number;
-            }
-            this.model.set('cash', roundMoney(this.model.get('cash')));
-            this.model.set('projectedCash', roundMoney(this.model.get('projectedCash')));
-            this.model.set('cashFY5', roundMoney(this.model.get('cashFY5')));
-            this.model.set('cashFY6', roundMoney(this.model.get('cashFY6')));
-            this.model.set('cashFY7', roundMoney(this.model.get('cashFY7')));
-            this.model.set('cashFY8', roundMoney(this.model.get('cashFY8')));
-            this.model.set('inkind', roundMoney(this.model.get('inkind')));
-            this.model.set('projectedInkind', roundMoney(this.model.get('projectedInkind')));
-            this.model.set('inkindFY5', roundMoney(this.model.get('inkindFY5')));
-            this.model.set('inkindFY6', roundMoney(this.model.get('inkindFY6')));
-            this.model.set('inkindFY7', roundMoney(this.model.get('inkindFY7')));
-            this.model.set('inkindFY8', roundMoney(this.model.get('inkindFY8')));
-        
-            if(this.model.get('cash') == 0){
-                this.model.set('cash', "");
-            }
-            if(this.model.get('projectedCash') == 0){
-                this.model.set('projectedCash', "");
-            }
-            if(this.model.get('inkind') == 0){
-                this.model.set('inkind', "");
-            }
-            if(this.model.get('projectedInkind') == 0){
-                this.model.set('projectedInkind', "");
-            }
-        }.bind(this));
+        this.listenTo(this.model, "sync", this.fixFunding.bind(this));
         this.listenTo(this.model, "sync", this.render);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
             }
         });
+        this.fixFunding();
         
         this.template = _.template($('#leverage_edit_template').html());
 
@@ -59,6 +28,40 @@ LeverageEditView = CollaborationEditView.extend({
         else{
             // Doesn't exist yet
             document.location = "#/leverages";
+        }
+    },
+    
+    fixFunding: function(){
+        function roundMoney(number){
+            if(Math.round(number) == number){
+                return Math.round(number);
+            }
+            return number;
+        }
+        this.model.set('cash', roundMoney(this.model.get('cash')));
+        this.model.set('projectedCash', roundMoney(this.model.get('projectedCash')));
+        this.model.set('cashFY5', roundMoney(this.model.get('cashFY5')));
+        this.model.set('cashFY6', roundMoney(this.model.get('cashFY6')));
+        this.model.set('cashFY7', roundMoney(this.model.get('cashFY7')));
+        this.model.set('cashFY8', roundMoney(this.model.get('cashFY8')));
+        this.model.set('inkind', roundMoney(this.model.get('inkind')));
+        this.model.set('projectedInkind', roundMoney(this.model.get('projectedInkind')));
+        this.model.set('inkindFY5', roundMoney(this.model.get('inkindFY5')));
+        this.model.set('inkindFY6', roundMoney(this.model.get('inkindFY6')));
+        this.model.set('inkindFY7', roundMoney(this.model.get('inkindFY7')));
+        this.model.set('inkindFY8', roundMoney(this.model.get('inkindFY8')));
+    
+        if(this.model.get('cash') == 0){
+            this.model.set('cash', "");
+        }
+        if(this.model.get('projectedCash') == 0){
+            this.model.set('projectedCash', "");
+        }
+        if(this.model.get('inkind') == 0){
+            this.model.set('inkind', "");
+        }
+        if(this.model.get('projectedInkind') == 0){
+            this.model.set('projectedInkind', "");
         }
     },
     
