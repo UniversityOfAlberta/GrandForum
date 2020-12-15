@@ -103,10 +103,8 @@ class MultiBudget {
     function renderForPDF(){
         $ret = "";
         foreach($this->budgets as $key => $budget){
-            $ret .= "<div style='page-break-inside: avoid;'>";
             $ret .= "<b>{$this->sheetNames[$key]}</b>";
             $ret .= $budget->renderForPDF();
-            $ret .= "</div>";
         }
         return $ret;
     }
