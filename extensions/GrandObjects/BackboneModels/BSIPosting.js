@@ -20,7 +20,8 @@ BSIPosting = Posting.extend({
             positionsText: "",
             discipline: "",
             about: "",
-            skills: ""
+            skills: "",
+            deletedText: ""
         });
     }
     

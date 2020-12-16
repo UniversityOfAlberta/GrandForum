@@ -32,6 +32,7 @@ class BSIPostingAPI extends PostingAPI {
         }
         $posting->about = $this->POST('about');
         $posting->skills = $this->POST('skills');
+        $posting->deletedText = $this->POST('deletedText');
     }
 	
 }
