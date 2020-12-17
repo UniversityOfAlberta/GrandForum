@@ -71,7 +71,7 @@
                             <a href="<%= posting.get('url') %>" ><%= posting.get('title') %></a>
                         </td>
                         <td>
-                            <%= posting.get('deletedText') %>
+                            <%= nl2br(posting.get('deletedText')) %>
                         </td>
                     </tr>
                 <% }.bind(this)) %>
