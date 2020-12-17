@@ -3769,17 +3769,7 @@ class Person extends BackboneModel {
            $this->isSubRoleBefore("EPIC grad", $date)){
             return false;
         }
-        return (($uniDate > $date && ($position == "graduate student - doctoral" ||
-                                      $position == "graduate student - master's" ||
-                                      $position == "post-doctoral fellow" ||
-                                      $position == "medical student")) ||
-                $this->isSubRoleSince("Affiliate HQP", $date) || 
-                $this->isSubRoleSince("Project Funded HQP", $date) ||
-                $this->isSubRoleSince("WP/CC Funded HQP", $date) ||
-                $this->isSubRoleSince("SIP/CAT HQP", $date) ||
-                $this->isSubRoleSince("Award HQP", $date) ||
-                $this->isSubRoleSince("Alumni HQP", $date) ||
-                $this->isSubRoleSince("EPIC grad", $date));
+        return true;
     }
     
     /**
