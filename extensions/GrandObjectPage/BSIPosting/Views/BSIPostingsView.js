@@ -2,6 +2,20 @@ BSIPostingsView = PostingsView.extend({
 
     template: _.template($('#bsipostings_template').html()),
     
+    initialize: function(){
+        this.deleted = new BSIPostings();
+        this.deleted.deleted = true;
+        this.model.fetch();
+        main.set('title', 'Postings');
+        this.listenTo(this.model, "sync", function(){
+            this.deleted.fetch();
+        }.bind(this));
+        this.listenTo(this.model, "remove", function(){
+            this.deleted.fetch();
+        }.bind(this));
+        this.listenTo(this.deleted, "sync", this.render);
+    },
+    
     delete: function(e) {
         var deleteDialog = this.$("#deleteDialog" + e.target.id).dialog({
             autoOpen: false,
@@ -58,6 +72,23 @@ BSIPostingsView = PostingsView.extend({
         });
         deleteDialog.parent().appendTo(this.$el);
         deleteDialog.dialog('open');
+    },
+    
+    render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$("table#postings").DataTable({
+            "autoWidth": true,
+            "order": [[ 0, "desc" ]]
+        });
+        this.$("table#deleted").DataTable({
+            "autoWidth": true,
+            "order": [[ 0, "desc" ]]
+        });
+        this.$("#showDeleted").click(function(){
+            this.$("#showDeleted").hide();
+            this.$("#deletedPostings").slideDown();
+        }.bind(this));
+        return this.$el;
     }
 
 });

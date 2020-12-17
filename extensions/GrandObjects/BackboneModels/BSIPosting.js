@@ -31,6 +31,15 @@ BSIPostings = Backbone.Collection.extend({
     
     model: BSIPosting,
     
-    url: 'index.php?action=api.bsiposting' 
+    deleted: false,
+    
+    url: function(){
+        if(this.deleted){
+            return 'index.php?action=api.bsiposting/deleted';
+        }
+        else {
+            return 'index.php?action=api.bsiposting';
+        }
+    }
     
 });

@@ -181,6 +181,7 @@ $apiRequest->addAction('Hidden','eventposting/:start/:count', 'EventPostingAPI')
 $apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/deleted', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/current', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/current/:start/:count', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/new/:date', 'BSIPostingAPI');
