@@ -11,7 +11,7 @@ class CRMContact extends BackboneModel {
     var $id;
     var $title;
     var $owner;
-    var $details;
+    var $details = array();
 	
 	static function newFromId($id){
 	    if(!isset(self::$cache[$id])){
@@ -39,7 +39,10 @@ class CRMContact extends BackboneModel {
 		    $this->id = $data[0]['id'];
 		    $this->title = $data[0]['title'];
 		    $this->owner = $data[0]['owner'];
-		    $this->details = $data[0]['details'];
+		    $this->details = json_decode($data[0]['details']);
+		    if($this->details == null){
+		        $this->details = array();
+		    }
 		}
 	}
 	
@@ -109,7 +112,7 @@ class CRMContact extends BackboneModel {
 	        DBFunctions::insert('grand_crm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
-	                                  'details' => $this->details));
+	                                  'details' => json_encode($this->details)));
 	        $this->id = DBFunctions::insertId();
 	    }
 	}
@@ -121,7 +124,7 @@ class CRMContact extends BackboneModel {
 	        DBFunctions::update('grand_crm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
-	                                  'details' => $this->details),
+	                                  'details' => json_encode($this->details)),
 	                            array('id' => $this->id));
 	    }
 	}

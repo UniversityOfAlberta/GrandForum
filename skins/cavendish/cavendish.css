@@ -1153,6 +1153,18 @@ del {
     white-space:nowrap;
 }
 
+.left-align {
+    text-align: left !important;
+}
+
+.center-align {
+    text-align: center !important;
+}
+
+.right-align {
+    text-align: right !important;
+}
+
 .field {
     vertical-align: top;
 }

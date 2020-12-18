@@ -1,12 +1,22 @@
 <a class="button backButton" href="#">Back to Contacts</a>
 <table>
     <tr>
-        <td class="label">Title:</td>
-        <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+        <td class="label">First Name:</td>
+        <td><%= HTML.TextBox(this, 'details.firstName', {size: '20'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Last Name:</td>
+        <td><%= HTML.TextBox(this, 'details.lastName', {size: '20'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Email:</td>
+        <td><%= HTML.TextBox(this, 'details.email', {size: '30'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Institution:</td>
+        <td><%= HTML.TextBox(this, 'details.institution', {size: '30'}) %></td>
     </tr>
 </table>
-<h3>Details</h3>
-<%= HTML.TextArea(this, 'details', {style: 'height: 150px; width:685px;'}) %>
 <h3>Opportunities</h3>
 <div id="opportunities"></div>
 <button id="addOpportunity">Add Opportunity</button>
