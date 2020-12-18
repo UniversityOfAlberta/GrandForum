@@ -77,9 +77,7 @@ CRMContactEditView = Backbone.View.extend({
         this.model.opportunities.each(function(model){
             var view = new CRMOpportunityEditView({model: model});
             this.$("#opportunities").append(view.render());
-            this.$("#opportunities").append("<hr />");
         }.bind(this));
-        this.$("#opportunities hr").last().remove();
     },
     
     render: function(){
