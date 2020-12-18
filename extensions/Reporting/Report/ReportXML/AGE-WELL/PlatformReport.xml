@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Platform Project Progress Report and Project Plan Update (2019-2020)" reportType="RP_PLAT_REPORT" pdfType="RPTP_PLAT_REPORT" pdfFiles="PlatformReportPDF" personId="0" ajax="true" disabled="false" year="2019" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30">
+<Report name="AGE-WELL Platform Project Progress Report and Project Plan Update (2019-2020)" reportType="RP_PLAT_REPORT" pdfType="RPTP_PLAT_REPORT" pdfFiles="PlatformReportPDF" personId="0" ajax="true" disabled="true" year="2019" startDate="{$this_year}-10-01" endDate="{$next_year}-09-30">
     <Permissions>
         <Role role="SD+">
             <SectionPermission id="instructions" permissions="rw" />

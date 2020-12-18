@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Cycle II Clinical Partnerships RFP" reportType="RP_CLINICAL" pdfType="RPTP_CLINICAL" pdfFiles="ClinicalReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="Cycle II Clinical Partnerships RFP" reportType="RP_CLINICAL" pdfType="RPTP_CLINICAL" pdfFiles="ClinicalReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2021">
     <Permissions>
-        <Role role="" subRole="Clinical2020">
+        <Role role="" subRole="Clinical2021">
 
         </Role>
         <Role role="Staff">
@@ -36,16 +36,10 @@
                 <p>Questions about project suitability can be directed to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>
                 
                 <h3>Application Form and Submission</h3>
-                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Applications will be reviewed on a quarterly basis. Funding is anticipated to begin on July 2, 2020 until the funds are fully allocated.</p>
+                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Applications will be reviewed on a quarterly basis. Funding is anticipated to begin on July 2, 2021 until the funds are fully allocated.</p>
                 
                 <h3>Deadline</h3>
-                <p>This is a rolling call. There are quarterly reviews until the funds are fully allocated. Applicants can submit their proposals when they are ready. Application review will be performed as follow:</p>
-                <ul>
-                    <li>April 10 deadline: Results expected by July 2</li>
-                    <li>July 2 deadline: Results expected by October 1</li>
-                    <li>October 31 deadline: Results expected by January 2</li>
-                    <li>January 2 deadline: Results expected by April 1</li>
-                </ul>
+                <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability. Please check the website for the next deadline.</p>
                 
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>

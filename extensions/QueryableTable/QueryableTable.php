@@ -15,12 +15,14 @@ define('HEAD4', -108);
 define('HEAD1_ROW', -109);
 define('HEAD2_ROW', -110);
 define('STRING', -111);
+define('WRAP', -112);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
 $cellTypes[NA] = "NACell";
 $cellTypes[BLANK] = "BlankCell";
 $cellTypes[READ] = "ReadCell";
+$cellTypes[WRAP] = "WrapCell";
 $cellTypes[STRING] = "StringCell";
 $cellTypes[HEAD] = "HeadCell";
 $cellTypes[HEAD_ROW] = "HeadRowCell";
@@ -664,7 +666,13 @@ abstract class QueryableTable {
                             $span = $Cell->span;
                             $class .= " explicitSpan";
                         }
-                        $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                        if($Cell->wrap){
+                            $ret[] = "<td style='width:3em;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                        }
+                        else{
+                            $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                        }
+                        
                         ++$i;
                     }
                     $ret[] = "</tr>\n";

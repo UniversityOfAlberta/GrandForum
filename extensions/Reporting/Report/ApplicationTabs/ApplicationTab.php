@@ -6,6 +6,7 @@ class ApplicationTab extends AbstractTab {
     var $people;
     var $year;
     var $extraCols;
+    var $extra;
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
@@ -36,6 +37,10 @@ class ApplicationTab extends AbstractTab {
             $this->idProjectRange = $idProjectRange;
         }
         $this->html = "";
+    }
+    
+    function addExtra($html){
+        $this->extra = $html;
     }
 
     function generateBody(){
@@ -252,6 +257,7 @@ class ApplicationTab extends AbstractTab {
                 ]
             });
         </script>";
+        $this->html .= "<br />".$this->extra;
     }
 }
 ?>

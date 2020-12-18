@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="MtS DATA &amp; TECHNOLOGY OPEN CALL" reportType="RP_DATA_TECH" pdfType="RPTP_DATA_TECH" pdfFiles="DataTechnologyApplicationPDF" ajax="true" allowIdProjects="true" disabled="true" year="2020">
     <Permissions>
         <Role role="" />
     </Permissions>
@@ -25,7 +25,7 @@
                 </ol>
                 <p>The purpose of this call for proposals is to develop exceptional projects that address gaps specific to the <a href="http://makingtheshiftinc.ca/research/" target="_blank">MtS research agenda</a> focusing on the prevention of youth homelessness and to complement the scope of the existing MtS-funded projects. Successful proposals should be designed to begin as soon as possible after notification of award. Submissions may be entered by an individual or a team. Priority will be given to projects that have strong partnerships and include people with lived experience of youth homelessness. Matching funds in the form of cash or in-kind contributions are encouraged.</p>
 
-                <p><b>Important note:</b> For further information on eligibility, application guidelines and any specific requirements (if applicable) under each funding stream please refer to the <a href="http://makingtheshiftinc.ca/wordpress/wp-content/uploads/2020/10/Application_Guide.pdf" target="_blank">application guide</a>.</p>
+                <p><b>Important note:</b> Supporting documents (e.g., CVs and letters of support) are not required at this stage of the funding competition. However, successful applicants may be asked to provide them at a later date. For further information on eligibility, application guidelines and any specific requirements (if applicable) under each funding stream please refer to the <a href="http://makingtheshiftinc.ca/wordpress/wp-content/uploads/2020/10/Application_Guide.pdf" target="_blank">application guide</a>.</p>
 
                 <h2>SCOPE AND FUNDING STREAMS</h2>
 

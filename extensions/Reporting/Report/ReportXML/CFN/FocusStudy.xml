@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="FOCUS Delphi Study" reportType="RP_FOCUS_STUDY" ajax="true" disabled="false" year="2020">
+<Report name="FOCUS Delphi Study" reportType="RP_FOCUS_STUDY" ajax="true" disabled="true" year="2020">
     <Permissions>
         <Role role="INACTIVE+" subRole="FOCUS">
             <SectionPermission id="study" permissions="rw" />

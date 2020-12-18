@@ -21,6 +21,7 @@ class BSIPosting extends Posting {
     var $discipline;
     var $about;
     var $skills;
+    var $deletedText;
     
     function BSIPosting($data){
         if(count($data) > 0){
@@ -39,6 +40,7 @@ class BSIPosting extends Posting {
             $this->discipline = $row['discipline'];
             $this->about = $row['about'];
             $this->skills = $row['skills'];
+            $this->deletedText = $row['deleted_text'];
         }
     }
     
@@ -94,6 +96,10 @@ class BSIPosting extends Posting {
         return $this->skills;
     }
     
+    function getDeletedText(){
+        return $this->deletedText;
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['type'] = $this->getType();
@@ -109,6 +115,7 @@ class BSIPosting extends Posting {
         $json['discipline'] = $this->getDiscipline();
         $json['about'] = $this->getAbout();
         $json['skills'] = $this->getSkills();
+        $json['deletedText'] = $this->getDeletedText();
         return $json;
     }
     
@@ -128,7 +135,8 @@ class BSIPosting extends Posting {
                                                 'positions_text' => $this->positionsText,
                                                 'discipline' => $this->discipline,
                                                 'about' => $this->about,
-                                                'skills' => $this->skills),
+                                                'skills' => $this->skills,
+                                                'deleted_text' => $this->deletedText),
                                           array('id' => $this->id));
         }
         return $status;
@@ -150,7 +158,8 @@ class BSIPosting extends Posting {
                                                 'positions_text' => $this->positionsText,
                                                 'discipline' => $this->discipline,
                                                 'about' => $this->about,
-                                                'skills' => $this->skills),
+                                                'skills' => $this->skills,
+                                                'deleted_text' => $this->deletedText),
                                           array('id' => $this->id));
         }
         return $status;

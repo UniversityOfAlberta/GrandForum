@@ -96,7 +96,7 @@ class CreateProjectAPI extends API{
 	    if($stat){
 	        $evoId = DBFunctions::insertId();
 	        $stat = DBFunctions::insert('grand_project_status',
-	                                    array('evolution_id' => $data[0]['id'],
+	                                    array('evolution_id' => $evoId,
 	                                          'project_id' => $nsId,
 	                                          'status' => $status,
 	                                          'type' => $type),

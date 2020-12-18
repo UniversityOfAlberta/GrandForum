@@ -101,10 +101,12 @@ class MultiBudget {
     }
     
     function renderForPDF(){
-        if(count($this->budgets) > 0){
-            return $this->budgets[0]->renderForPDF();
+        $ret = "";
+        foreach($this->budgets as $key => $budget){
+            $ret .= "<b>{$this->sheetNames[$key]}</b>";
+            $ret .= $budget->renderForPDF();
         }
-        return "";
+        return $ret;
     }
     
 }

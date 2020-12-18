@@ -7,6 +7,7 @@ abstract class PostingAPI extends RESTAPI {
     function doGET(){
         $id = $this->getParam('id');
         $current = ($this->getParam('current') != "");
+        $deleted = ($this->getParam('deleted') != "");
         $new = ($this->getParam('new') != "");
         $image = ($this->getParam('image') != "");
         $className = static::$className;
@@ -42,6 +43,9 @@ abstract class PostingAPI extends RESTAPI {
             }
             else if($current){
                 $postings = new Collection($className::getCurrentPostings());
+            }
+            else if($deleted){
+                $postings = new Collection($className::getDeletedPostings());
             }
             else {
                 $postings = new Collection($className::getAllPostings());

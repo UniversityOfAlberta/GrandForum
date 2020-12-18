@@ -307,6 +307,7 @@ class CavendishTemplate extends QuickTemplate {
 		    mainBorderColor = "<?php echo $config->getValue('mainBorderColor'); ?>";
 		    productsTerm = "<?php echo $config->getValue('productsTerm'); ?>";
 		    productVisibility = "<?php echo $config->getValue('productVisibility'); ?>";
+		    subRolesTerm = "<?php echo $config->getValue('subRoleTerm'); ?>";
 		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;

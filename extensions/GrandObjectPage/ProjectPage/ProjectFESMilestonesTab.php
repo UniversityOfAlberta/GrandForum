@@ -479,9 +479,16 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
+            $leader = $milestone->getLeader();
+            $peopleText = $milestone->getPeopleText();
+            $uniText = "";
+            if($leader->getName() != "" && $leader->getUniversity() != null){
+                $uni = University::newFromName($leader->getUni());
+                $uniText = " ({$uni->getShortName()})";
+            }
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
-                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1-2+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title}</td>
+                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1-2+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title} {$uniText}</td>
                             </tr>";
             
             $this->html .= "<tr>
@@ -491,14 +498,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $comment = str_replace("'", "&#39;", $milestone->getComment());
             $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
             $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
-            $leader = $milestone->getLeader();
-            $peopleText = $milestone->getPeopleText();
-            $uniText = "";
-            if($leader->getName() != "" && $leader->getUniversity() != null){
-                $uni = University::newFromName($leader->getUni());
-                $uniText = " ({$uni->getShortName()})";
-            }
-            $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>{$uniText}" : "";
+            $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
             
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $members = $project->getAllPeople();

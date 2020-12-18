@@ -5,7 +5,11 @@
 <table id='listTable' frame='box' rules='all'>
     <thead>
         <tr>
-            <th width='1%'>Date</th>
+            <th width='1%'>Date<% if(networkName == "FES"){ %> Published<% } %></th>
+            <% if(networkName == "FES" && this.model.category == "Publication"){ %>
+                <th width='1%'>Submitted Date</th>
+                <th width='1%'>Accepted Date</th>
+            <% } %>
             <th width='1%'>Type</th>
             <th width='50%'>Title</th>
             <th width='48%'>Authors</th>

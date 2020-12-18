@@ -113,11 +113,14 @@ HTML.Name = function(attr){
                .split("/").join("_");
 }
 
-HTML.Value = function(view, attr){
+HTML.Value = function(model, attr){
+    if(model.model != undefined){
+        model = model.model;
+    }
     if(attr.indexOf('.') != -1){
         var elems = attr.split(".");
         var last = _.last(elems);
-        data = view.model.get(elems[0]);
+        data = model.get(elems[0]);
         for (var i = 1; i < elems.length; ++i) {
             if (data[elems[i]] == undefined) {
                 return '';
@@ -128,7 +131,7 @@ HTML.Value = function(view, attr){
         return data;
     }
     else{
-        return view.model.get(attr);
+        return model.get(attr);
     }
 }
 
@@ -168,11 +171,13 @@ HTML.TextBox = function(view, attr, options){
     return el.outerHTML;
 }
 
-HTML.TextArea = function(view, attr, options){
+HTML.TextArea = function(view, attr, options, model){
+    if(model == undefined){ model = view.model; }
     var el = HTML.Element("textarea", "text", options);
     el.setAttribute('name', HTML.Name(attr));
-    el.innerHTML = HTML.Value(view, attr);
-    view.events['change textarea[name=' + HTML.Name(attr) + ']'] = function(e){
+    el.setAttribute('id', model.cid);
+    el.innerHTML = HTML.Value(model, attr);
+    view.events['change textarea#' + model.cid + '[name=' + HTML.Name(attr) + ']'] = function(e){
         if(attr.indexOf('.') != -1){
             var elems = attr.split(".");
             var recurse = function(data, depth) {
@@ -188,18 +193,18 @@ HTML.TextArea = function(view, attr, options){
                 }
             }
             
-            var data = view.model.get(elems[0]);
+            var data = model.get(elems[0]);
             data = recurse(data, 1);
-            view.model.set(elems[0], _.clone(data));
-            view.model.trigger('change', view.model);
-            view.model.trigger('change:' + elems[0], view.model);
+            model.set(elems[0], _.clone(data));
+            model.trigger('change', model);
+            model.trigger('change:' + elems[0], model);
         }
         else{
-            view.model.set(attr, $(e.target).val());
+            model.set(attr, $(e.target).val());
         }
     };
-    view.undelegate('change', 'textarea[name=' + HTML.Name(attr) + ']');
-    view.delegate('change', 'textarea[name=' + HTML.Name(attr) + ']', view.events['change textarea[name=' + HTML.Name(attr) + ']']);
+    view.undelegate('change', 'textarea#' + model.cid + '[name=' + HTML.Name(attr) + ']');
+    view.delegate('change', 'textarea#' + model.cid + '[name=' + HTML.Name(attr) + ']', view.events['change textarea#' + model.cid + '[name=' + HTML.Name(attr) + ']']);
     return el.outerHTML;
 }
 

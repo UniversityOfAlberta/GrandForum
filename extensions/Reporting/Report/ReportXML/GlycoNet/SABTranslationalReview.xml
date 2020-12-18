@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Translational Review" reportType="RP_SAB_TRANS_REVIEW" ajax="true" disabled="false" year="2020">
+<Report name="SAB Translational Review" reportType="RP_SAB_TRANS_REVIEW" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
@@ -22,6 +22,7 @@
             <![CDATA[
             <table align="left" class="wikitable">
                 <tr>
+                    <th style="min-width:110px;">Project Code</th>
                     <th style="min-width:110px;">PI Name</th>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Proposal PDF</th>
@@ -30,7 +31,7 @@
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="TranslationalReport" project="false">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<tr><td>{getText(RP_SAB_TRANS_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -47,7 +48,7 @@
             ]]>
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Translational">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_TRANS_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_TRANS,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>

@@ -62,6 +62,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->projectedCash = $this->POST('projectedCash');
         $collab->projectedInkind = $this->POST('projectedInkind');
         $collab->existed = $this->POST('existed');
+        $collab->extra = $this->POST('extra');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
@@ -103,6 +104,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->projectedCash = $this->POST('projectedCash');
         $collab->projectedInkind = $this->POST('projectedInkind');
         $collab->existed = $this->POST('existed');
+        $collab->extra = $this->POST('extra');
         $collab->knowledgeUser = $this->POST('knowledgeUser');
         $collab->leverage = $this->POST('leverage');
         $collab->projects = $this->POST('projects');
@@ -123,7 +125,7 @@ class CollaborationAPI extends RESTAPI {
         if($collab->leverage == true && $leveragesFrozen){
             $this->throwError("Leverages have been Frozen");
         }
-        else if($this->leverage == false && $collaborationsFrozen){
+        else if($collab->leverage == false && $collaborationsFrozen){
             $this->throwError("Collaborations have been frozen");
         }
         $collab = $collab->delete();

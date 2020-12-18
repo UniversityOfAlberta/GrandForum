@@ -28,7 +28,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Roles</th>
-                    <th>Sub-Roles</th>
+                    <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                     <th>Projects</th>
                     <th>Start Date</th>
                     <th>End Date</th>

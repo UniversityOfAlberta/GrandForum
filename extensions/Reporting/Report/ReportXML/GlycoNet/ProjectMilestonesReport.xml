@@ -11,7 +11,6 @@
         <ReportItem id="success" type="Textarea" blobType="BLOB_TEXT" blobItem="SUCCESS" rich="true">
             <![CDATA[
                 <h2>Top 3 successes <small style="color: red;">(Minimum 3 sentences)</small></h2>
-                
                 {$item}
             ]]>
         </ReportItem>
@@ -36,6 +35,13 @@
         <ReportItem id="info" type="Textarea" blobType="BLOB_TEXT" blobItem="INFO" rich="true">
             <![CDATA[
                 <h2>Any other additional info</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="presentation" type="Upload" blobType="BLOB_RAW" blobItem="PRESENTATION" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h2>Presentation (PDF)</h2>
+                The pdf will be appended to the end of the generated milestone report pdf.
                 {$item}
             ]]>
         </ReportItem>

@@ -34,6 +34,7 @@ Collaboration = Backbone.Model.extend({
             projectedCash: 0,
             projectedInkind: 0,
             existed: "",
+            extra: {},
             year: YEAR,
             endYear: "0",
             fileCount: 0,

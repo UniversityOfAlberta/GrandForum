@@ -9,6 +9,7 @@ abstract class Cell {
     var $dynamic = false;
     var $params = array();
     var $summable = true;
+    var $wrap = false;
     
     function setValue($value){
         $this->value = $value;

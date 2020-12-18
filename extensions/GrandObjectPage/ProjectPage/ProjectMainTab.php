@@ -218,7 +218,10 @@ class ProjectMainTab extends AbstractEditableTab {
         $project = $this->project;
 
         if(!$edit){
-            $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "<div class='small'>";
+            }
+            $this->html .= "<table width='100%'><tr><td valign='top' width='33%'>";
             $this->showRole(PL);
             $this->showRole(PA);
             if($this->project->getType() == "Innovation Hub"){
@@ -230,19 +233,26 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
                 $this->showRole(CI);
                 $this->showRole(AR);
-                $this->html .= "</td><td width='50%' valign='top'>";
+                $this->html .= "</td><td width='33%' valign='top'>";
                 if($wgUser->isLoggedIn()){
                     $this->showRole(HQP);
+                }
+                $this->html .= "</td><td width='33%' valign='top'>";
+                if($wgUser->isLoggedIn()){
                     $this->showRole(HQP, "Alumni ".HQP, true);
                 }
                 $this->html .= "</td></tr>";
-                $this->html .= "<tr><td valign='top' width='50%'>";
+                $this->html .= "<tr><td valign='top' width='33%'>";
                 $this->showRole(CHAMP);
+                $this->html .= "</td><td width='33%' valign='top'>";
                 $this->showRole(PARTNER);
-                $this->html .= "</td><td width='50%' valign='top'>";
+                $this->html .= "</td><td width='33%' valign='top'>";
                 $this->showRole(EXTERNAL);
             }
             $this->html .= "</td></tr></table>";
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "</div>";
+            }
         }
     }
     

@@ -301,11 +301,11 @@ ManagePeopleRowView = Backbone.View.extend({
 	                    this.editSubRoles.model.save(null, {
 	                        success: function(){
 	                            clearAllMessages();
-	                            addSuccess("Sub-Roles saved");
+	                            addSuccess(subRolesTerm.pluralize() + " saved");
 	                        },
 	                        error: function(){
 	                            clearAllMessages();
-	                            addError("Could not modify Sub-Roles");
+	                            addError("Could not modify " + subRolesTerm.pluralize());
 	                        }
 	                    });
                         this.subRolesDialog.dialog('close');

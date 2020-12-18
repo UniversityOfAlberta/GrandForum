@@ -57,11 +57,27 @@ ProductListView = Backbone.View.extend({
             if(ranking != undefined && ranking != ""){
                 ifranking.push("Ranking: " + ranking);
             }
-
-            var row = new Array("<span style='white-space: nowrap;'>" + model.date + "</span>", 
-                                "<span style='white-space: nowrap;'>" + model.type + "</span>",
-                                "<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>", "<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>",
-                                model.status);
+            
+            var row = new Array();
+            row.push("<span style='white-space: nowrap;'>" + model.date + "</span>");
+            if(networkName == "FES" && model.category == "Publication"){
+                if(model.data.date_submitted != undefined){
+                    row.push("<span style='white-space: nowrap;'>" + model.data.date_submitted  + "</span>");
+                }
+                else{
+                    row.push("");
+                }
+                if(model.data.date_accepted != undefined){
+                    row.push("<span style='white-space: nowrap;'>" + model.data.date_accepted  + "</span>");
+                }
+                else{
+                    row.push("");
+                }
+            }
+            row.push("<span style='white-space: nowrap;'>" + model.type + "</span>");
+            row.push("<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>");
+            row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
+            row.push(model.status);
             row.push(model.citation);
             if(networkName == "FES"){
                 if(typeof model.data.collaboration != 'undefined'){
@@ -151,7 +167,12 @@ ProductListView = Backbone.View.extend({
         var data = this.processData(0);
         var targets = [ 4, 5, 6 ];
         if(networkName == "FES"){
-            targets = [4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+            if(this.model.category == "Publication"){
+                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
+            }
+            else {
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+            }
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],

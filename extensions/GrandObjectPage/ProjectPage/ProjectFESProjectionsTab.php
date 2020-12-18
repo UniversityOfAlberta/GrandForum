@@ -225,9 +225,8 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
                     }
                 }
             }
-        
-        header("Location: {$this->project->getUrl()}?tab=projections");
-        exit;
+        Messages::addSuccess("'Projections' updated successfully.");
+        redirect("{$this->project->getUrl()}?tab=projections");
     }
     
 }

@@ -61,5 +61,6 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="presentation" type="UploadPDF" blobType="BLOB_RAW" blobItem="PRESENTATION" fileSize="5" mimeType="application/pdf" />
     </ReportSection>
 </Report>

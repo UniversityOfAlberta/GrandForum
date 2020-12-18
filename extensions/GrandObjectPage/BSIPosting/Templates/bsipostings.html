@@ -29,6 +29,12 @@
                 <% if(isAllowedToCreateBSIPostings){ %>
                     <td align="center">
                         <% if(posting.get('isAllowedToEdit')){ %>
+                            <div id="deleteDialog<%= posting.get('id') %>" title="Delete" style="display:none;">
+                                <h3>Interns</h3>
+                                <small>Mention who was hired for this position</small>
+                                <%= HTML.TextArea(this, 'deletedText', {style: 'height: 100px;'}, posting) %>
+                                <div class="throbber" style="float:right;display:none;"></div>
+                            </div>
                             <span id="<%= posting.get('id') %>" class="delete-icon"></span>
                         <% } %>
                     </td>
@@ -37,3 +43,39 @@
         <% }.bind(this)) %>
     </tbody>
 </table>
+<% if(isAllowedToCreateBSIPostings){ %>
+    <button id="showDeleted" type="button" style="margin-top: 1em;">Show Deleted</button>
+    <div id="deletedPostings" style="display:none;">
+        <h3>Deleted</h3>
+        <table id="deleted" frame="box" rules="all">
+            <thead>
+                <tr>
+                    <th width="25%" style="white-space: nowrap;">Date</th>
+                    <th width="25%" style="white-space: nowrap;">Partner</th>
+                    <th width="25%">Posting</th>
+                    <th width="25%">Interns</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% this.deleted.each(function(posting){ %>
+                    <tr>
+                        <td>
+                            <span style="display:none;"><%= posting.get('startDate') %></span>
+                            <%= dateTimeHelpers.formatDate(posting.get('startDate')) %> - <%= dateTimeHelpers.formatDate(posting.get('endDate')) %><br />
+                            (Posted: <%= dateTimeHelpers.formatDate(posting.get('created')) %> by <a href="<%= posting.get('user').url %>"><%= posting.get('user').fullName %></a>)
+                        </td>
+                        <td>
+                            <%= posting.get('partnerName') %>
+                        </td>
+                        <td>
+                            <a href="<%= posting.get('url') %>" ><%= posting.get('title') %></a>
+                        </td>
+                        <td>
+                            <%= nl2br(posting.get('deletedText')) %>
+                        </td>
+                    </tr>
+                <% }.bind(this)) %>
+            </tbody>
+        </table>
+    </div>
+<% } %>

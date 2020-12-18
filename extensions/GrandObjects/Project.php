@@ -345,7 +345,7 @@ class Project extends BackboneModel {
     }
     
     // Same as getAllProjects, but will also return deleted projects
-    static function getAllProjectsEver($subProjects=false){
+    static function getAllProjectsEver($subProjects=false, $historic=false){
         $me = Person::newFromWgUser();
         if($subProjects == false){
             $subProjects = EQ(0);
@@ -359,7 +359,12 @@ class Project extends BackboneModel {
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromId($row['id']);
+            if($historic){
+                $project = Project::newFromHistoricId($row['id']);
+            }
+            else{
+                $project = Project::newFromId($row['id']);
+            }
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || ($project->getStatus() != 'Proposed' && !$project->isPrivate()))){
                     $projects[$project->getName()] = $project;

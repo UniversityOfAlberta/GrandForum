@@ -38,57 +38,36 @@
                 <%= HTML.Select(this, 'existed', {options: ['','Yes','No']}) %>
             <% } %>
             <h3>To date, have you received in-kind and/or cash support from this organization?</h3>
-            <div style="margin-left:15px;">
-                <% if(cash == 0 && inkind == 0) { %>
-            <input style="margin-top: 8px;vertical-align:bottom;" type="radio" name="fund" value="yes"> Yes
-            <input type="radio" style="margin-top: 8px;vertical-align:bottom;" name="fund" value="no" checked> No
-            <br />
-            <div id="fundingAmount" style="margin-top:5px; display:none;">
-                <table>
-                    <tr>
-                        <td><b>Cash amount contributed to date (CAD equivalent):</b></td>
-                        <td><%= HTML.TextBox(this, 'cash', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>In-kind amount contributed to date (CAD equivalent):</b></td>
-                        <td><%= HTML.TextBox(this, 'inkind', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>Cash amount committed for remainder of grant:</b></td>
-                        <td><%= HTML.TextBox(this, 'projectedCash', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>In-kind amount committed for remainder of grant:</b></td>
-                        <td><%= HTML.TextBox(this, 'projectedInkind', {style: 'width:100%;'}) %></td>
-                    </tr>
-                </table>
-            </div>
-        <% } else { %>
-            <input style="margin-top: 10px;" type="radio" name="fund" value="yes" checked> Yes
-            <input type="radio" name="fund" value="no" > No
-            <br />
-            <div id="fundingAmount" style="margin-top:7px;">
-                <table>
-                    <tr>
-                        <td><b>Cash amount contributed to date (CAD equivalent):</b></td>
-                        <td><%= HTML.TextBox(this, 'cash', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>In-kind amount contributed to date (CAD equivalent):</b></td>
-                        <td><%= HTML.TextBox(this, 'inkind', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>Cash amount committed for remainder of grant:</b></td>
-                        <td><%= HTML.TextBox(this, 'projectedCash', {style: 'width:100%;'}) %></td>
-                    </tr>
-                    <tr>
-                        <td><b>In-kind amount committed for remainder of grant:</b></td>
-                        <td><%= HTML.TextBox(this, 'projectedInkind', {style: 'width:100%;'}) %></td>
-                    </tr>
-                </table>
-            </div>
-        <% } %>
-            </div>
+            <table class="wikitable">
+                <tr>
+                    <th></th>
+                    <th>FY1-4</th>
+                    <th>FY5-8</th>
+                    <th>FY5</th>
+                    <th>FY6</th>
+                    <th>FY7</th>
+                    <th>FY8</th>
+                </tr>
+                <tr>
+                    <td style="white-space:nowrap;"><b>Cash:</b></td>
+                    <td><%= HTML.TextBox(this, 'cash', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'projectedCash', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.cashFY5', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.cashFY6', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.cashFY7', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.cashFY8', {style: 'width:75px;'}) %></td>
+                </tr>
+                <tr>
+                    <td style="white-space:nowrap;"><b>In-kind:</b></td>
+                    <td><%= HTML.TextBox(this, 'inkind', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'projectedInkind', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.inkindFY5', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.inkindFY6', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.inkindFY7', {style: 'width:75px;'}) %></td>
+                    <td><%= HTML.TextBox(this, 'extra.inkindFY8', {style: 'width:75px;'}) %></td>
+                </tr>
+            </table>
+            <small><i>Amounts in (CAD equivalent)</i></small>
         </div>
     </div>
 

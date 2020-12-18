@@ -652,6 +652,9 @@ abstract class AbstractReport extends SpecialPage {
                                               'blob_type' => NEQ(BLOB_RAW)));
             foreach($data as $row){
                 $blobData = @unserialize(trim($row['data']));
+                if($blobData === false){
+                    $blobData = trim($row['data']);
+                }
                 if(is_array($blobData)){
                     $blobData = implode("", array_flatten($blobData));
                     if($blobData != ""){

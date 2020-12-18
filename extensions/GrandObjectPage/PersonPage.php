@@ -86,7 +86,8 @@ class PersonPage {
                 }
                 foreach($person->getProjects() as $project){
                     // Allow Project Assistants to edit
-                    if($me->isRole(PA, $project)){
+                    if($me->isRole(PA, $project) ||
+                       $me->isRole(PS, $project)){
                         $isSupervisor = true;
                         break;
                     }

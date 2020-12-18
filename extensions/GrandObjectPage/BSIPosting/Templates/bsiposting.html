@@ -64,5 +64,11 @@
     </table>
 </div>
 <% if(isAllowedToEdit){ %>
+    <div id="deleteDialog" title="Delete" style="display:none;">
+        <h3>Interns</h3>
+        <small>Mention who was hired for this position</small>
+        <%= HTML.TextArea(this, 'deletedText', {style: 'height: 100px;'}) %>
+        <div class="throbber" style="float:right;display:none;"></div>
+    </div>
     <button id='editPosting'>Edit Internship</button>&nbsp;<button id='deletePosting'>Delete Internship</button>
 <% } %>
