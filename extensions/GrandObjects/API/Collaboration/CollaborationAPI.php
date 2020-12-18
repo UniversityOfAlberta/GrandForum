@@ -125,7 +125,7 @@ class CollaborationAPI extends RESTAPI {
         if($collab->leverage == true && $leveragesFrozen){
             $this->throwError("Leverages have been Frozen");
         }
-        else if($this->leverage == false && $collaborationsFrozen){
+        else if($collab->leverage == false && $collaborationsFrozen){
             $this->throwError("Collaborations have been frozen");
         }
         $collab = $collab->delete();
