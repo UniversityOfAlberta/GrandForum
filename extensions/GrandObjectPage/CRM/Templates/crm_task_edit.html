@@ -1,6 +1,9 @@
 <%= HTML.TextArea(this, 'task', {style: 'height: 70px; width:615px; vertical-align:baseline;'}) %><br />
 <table>
     <tr>
+        <td><b>Assignee:</b></td><td><select><option></option><option>David Turner</option></select></td>
+    </tr>
+    <tr>
         <td><b>Due Date:</b></td><td><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
     </tr>
     <tr>
