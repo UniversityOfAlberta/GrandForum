@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="OPEN CALL - SECOND ROUND" reportType="RP_OPEN2" pdfType="RPTP_OPEN2" pdfFiles="OpenRound2PDF" ajax="true" allowIdProjects="true" disabled="true" year="2020">
+<Report name="OPEN CALL - SECOND ROUND" reportType="RP_OPEN2" pdfType="RPTP_OPEN2" pdfFiles="OpenRound2PDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
     <Permissions>
         <Role role="" />
     </Permissions>
