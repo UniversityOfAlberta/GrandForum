@@ -169,8 +169,10 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '70px' },  // Country
                                                         { 'width': '70px' },  // Applicant Type
                                                         { 'width': '140px' }, // Education history
+                                                        { 'width': '140px' }, // Country of Degrees
                                                         { 'width': '70px' },  // Program Name
                                                         { 'width': '70px' },  // EPL
+                                                        { 'width': '100px' }, // UofA References
                                                         { 'width': '110px' }, // Areas
                                                         { 'width': '85px' },  // Supervisors
                                                         { 'width': '80px' },  // Scholarships Held/Applied
@@ -339,7 +341,7 @@ SopsView = Backbone.View.extend({
 
     filterProgramName: function(settings,data,dataIndex){
         var filterprograms = this.filterSelectProgramName.chosen().val();
-        var studentprogram = data[8];
+        var studentprogram = data[9];
         if (!_.isEmpty(filterprograms)) {
             for (var i = 0; i < filterprograms.length; ++i) {
                 if (studentprogram.indexOf(filterprograms[i]) > -1) {
@@ -354,7 +356,7 @@ SopsView = Backbone.View.extend({
     filterGPA: function(settings,data,dataIndex){
         var min = parseFloat(this.referenceGPAInputMin.val(),0);
         var max = parseFloat(this.referenceGPAInputMax.val(),0);
-        var gpa = parseFloat( data[13] ) || 0; // use column 2
+        var gpa = parseFloat( data[15] ) || 0; // use column 2
         //check if gpa inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gpa <= max ) ||
@@ -382,7 +384,7 @@ SopsView = Backbone.View.extend({
 
     filterDecision: function(settings,data,dataIndex){
         var input = this.filterSelectDecision.chosen().val();
-        var decision = data[24];
+        var decision = data[26];
         if (!_.isEmpty(input)) {
             for (var i = 0; i < input.length; ++i) {
                 if (input[i] == decision) {
@@ -395,7 +397,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterByTags: function(settings,data,dataIndex){
-        var tags = data[21].replace(/<\/?[^>]+(>|$)/g, "").split(",");
+        var tags = data[23].replace(/<\/?[^>]+(>|$)/g, "").split(",");
         if(this.filterByTagsEl.is(':checked')){
             for(j = 0; j < tags.length; j++){
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
@@ -410,7 +412,7 @@ SopsView = Backbone.View.extend({
 
    filterByAreasOfInterest: function(settings,data,dataIndex){
         var filterSelected= this.filterSelectAoI.chosen().val();
-        var aois = data[10].split(", ");
+        var aois = data[12].split(", ");
         if (!_.isEmpty(filterSelected)) {
             for (var i = 0; i < filterSelected.length; ++i) {
                 if ($.inArray(filterSelected[i], aois) != -1) {
@@ -424,7 +426,7 @@ SopsView = Backbone.View.extend({
 
    filterSupervisors: function(settings,data,dataIndex){
         var filtersupervisors = this.filterSelectSupervisors.chosen().val();
-        var studentsupervisors = unaccentChars(data[11]).split(", ");
+        var studentsupervisors = unaccentChars(data[13]).split(", ");
         if (!_.isEmpty(filtersupervisors)) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
                 if ($.inArray(unaccentChars(filtersupervisors[i]), studentsupervisors) != -1) {
@@ -438,7 +440,7 @@ SopsView = Backbone.View.extend({
 
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = this.filterSelectReviewers.chosen().val();
-        var reviewers = unaccentChars(data[18]);
+        var reviewers = unaccentChars(data[20]);
         if (!_.isEmpty(filterreviewers)) {
             for (var i = 0; i < filterreviewers.length; ++i) {
                 if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
@@ -453,7 +455,7 @@ SopsView = Backbone.View.extend({
    filterNumPubs: function(settings,data,dataIndex){
         var min = parseFloat(this.numPubsInputMin.val(),0);
         var max = parseFloat(this.numPubsInputMax.val(),0);
-        var pubs = parseFloat( data[15] ) || 0; // use column 14
+        var pubs = parseFloat( data[17] ) || 0; // use column 14
         //check if num pubs inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && pubs <= max ) ||
@@ -468,7 +470,7 @@ SopsView = Backbone.View.extend({
     filterNumAwards: function(settings,data,dataIndex){
         var min = parseFloat(this.numAwardsInputMin.val(),0);
         var max = parseFloat(this.numAwardsInputMax.val(),0);
-        var awards = parseFloat( data[16] ) || 0; // use column 15
+        var awards = parseFloat( data[18] ) || 0; // use column 15
         //check if num awards inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && awards <= max ) ||
@@ -481,7 +483,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterScholHeld: function(settings,data,dataIndex){
-        var values = data[12].split('/')[0].split(", ");
+        var values = data[14].split('/')[0].split(", ");
 
         var options = {};
         options["NSERC"] = this.heldNSERC[0].checked;
@@ -504,7 +506,7 @@ SopsView = Backbone.View.extend({
     }, 
 
     filterScholApplied: function(settings,data,dataIndex){
-        var values = data[12].split('/')[1].split(", ");
+        var values = data[14].split('/')[1].split(", ");
 
         var options = {};
         options["NSERC"] = this.appliedNSERC[0].checked;
@@ -545,7 +547,7 @@ SopsView = Backbone.View.extend({
         if (selectedTest == '') {
             return true;
         }
-        var userEPL = data[9].split(" ");
+        var userEPL = data[10].split(" ");
         if (userEPL[0] == selectedTest) {
             return true;
         } else {
@@ -556,7 +558,7 @@ SopsView = Backbone.View.extend({
     filterEPLScore: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValEPLScoreMin.val(), 0);
         var max = parseFloat(this.filterValEPLScoreMax.val(), 0);
-        var score = parseFloat(data[9].split(" ")[1]) || 0;
+        var score = parseFloat(data[10].split(" ")[1]) || 0;
         //check if score inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && score <= max ) ||
@@ -571,7 +573,7 @@ SopsView = Backbone.View.extend({
     filterGREVerbal: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValGreVerbalMin.val(),0);
         var max = parseFloat(this.filterValGreVerbalMax.val(),0);
-        var gre = parseFloat( data[14].split(", ")[0] ) || 0;
+        var gre = parseFloat( data[16].split(", ")[0] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gre <= max ) ||
@@ -586,7 +588,7 @@ SopsView = Backbone.View.extend({
     filterGREQuantitative: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValGreQuantMin.val(),0);
         var max = parseFloat(this.filterValGreQuantMax.val(),0);
-        var gre = parseFloat( data[14].split(", ")[1] ) || 0;
+        var gre = parseFloat( data[16].split(", ")[1] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gre <= max ) ||
@@ -601,7 +603,7 @@ SopsView = Backbone.View.extend({
     filterGREAnalytical: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValGreAnalyticalMin.val(),0);
         var max = parseFloat(this.filterValGreAnalyticalMax.val(),0);
-        var gre = parseFloat( data[14].split(", ")[2] ) || 0;
+        var gre = parseFloat( data[16].split(", ")[2] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gre <= max ) ||
@@ -616,7 +618,7 @@ SopsView = Backbone.View.extend({
     filterGRECS: function(settings,data,dataIndex){
         var min = parseFloat(this.filterValGreCSMin.val(),0);
         var max = parseFloat(this.filterValGreCSMax.val(),0);
-        var gre = parseFloat( data[14].split(", ")[3] ) || 0;
+        var gre = parseFloat( data[16].split(", ")[3] ) || 0;
         //check if gre inbetween min-max
         if ( ( isNaN( min ) && isNaN( max ) ) ||
              ( isNaN( min ) && gre <= max ) ||
@@ -630,7 +632,7 @@ SopsView = Backbone.View.extend({
 
     filterCourses: function(settings,data,dataIndex){
         var input = this.filterCoursesEl.val().toUpperCase();
-        var courses = data[17];
+        var courses = data[19];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
         }
@@ -639,7 +641,7 @@ SopsView = Backbone.View.extend({
 
     filterNotes: function(settings,data,dataIndex){
         var input = this.filterNotesEl.val().toUpperCase();
-        var courses = data[20];
+        var courses = data[22];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
         }
@@ -648,7 +650,7 @@ SopsView = Backbone.View.extend({
 
     filterComments: function(settings,data,dataIndex){
         var input = this.filterCommentsEl.val().toUpperCase();
-        var courses = data[21];
+        var courses = data[23];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
         }
@@ -658,7 +660,7 @@ SopsView = Backbone.View.extend({
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if(this.filterMeOnly.is(':checked')){
-            var name = data[18];
+            var name = data[20];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }

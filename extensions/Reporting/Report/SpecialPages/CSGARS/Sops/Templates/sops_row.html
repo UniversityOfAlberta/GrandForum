@@ -57,6 +57,14 @@
     <div class="scrollableCell"><%= education_history %></div>
 </td>
 
+<td>
+    <div class="scrollableCell">
+        <% _.each(additional.education, function(degree){ %>
+            <%= _.values(degree).join(" ") %><br />
+        <% }) %>
+    </div>
+</td>
+
 <td style="white-space: nowrap;" id='program_name'>
     <% var t = program_name.replace(/Master of Science/g, 'MSc.'); %>
     <%= t.replace(/Doctor of Philosophy/g, 'PhD') %>
@@ -76,6 +84,12 @@
 </td>
 
 <!--  department specific -->
+<td class="scrollableCell">
+    <% _.each(_.filter(additional.referees, function(referee){ return (referee.email != null && referee.email.indexOf("@ualberta.ca") !== -1); }), function(referee){ %>
+        <%= referee.name.trim() %><br />
+    <% }) %>
+</td>
+
 <td id='aos' class="scrollableCell">
     <div class="scrollableCell"><%= additional.areas_of_study %></div>
 </td>

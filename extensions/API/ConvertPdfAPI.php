@@ -22,6 +22,46 @@ class ConvertPdfAPI extends API{
         return trim($substr);
     }
     
+    function get_education($string){
+        $start = "<b>Reason:</b>";
+        $end = "Other&#160;Comments";
+        $string = preg_replace('/<!--[^>]*-->/', '', $string);
+        $lines = explode("\n", $string);
+        $startFound = false;
+        $between = array();
+        $educations = array();
+        
+        $lastTop = 0;
+        $id = -1;
+        foreach($lines as $line){
+            if($startFound && strstr($line, $end) !== false){
+                break;
+            }
+            if($startFound){
+                if(strstr($line, "PDF Created by University of Alberta") !== false ||
+                   strstr($line, "Page ") !== false ||
+                   strstr($line, "Application&#160;Submitted") !== false ||
+                   strstr($line, "PDF&#160;Created") !== false){
+                    continue;
+                }
+                if(strstr($line, "<p") !== false){
+                    $top = explode("top:", $line);
+                    $top = @explode(";", $top[1]);
+                    $top = $top[0];
+                    if($top != $lastTop){
+                        $id++;
+                    }
+                    $educations[$id][] = trim(strip_tags(str_replace("<br/>", " ", str_replace("&#160;", " ", $line))));
+                    $lastTop = $top;
+                }
+            }
+            else if(strstr($line, $start) !== false){
+                $startFound = true;
+            }
+        }
+        return $educations;
+    }
+    
     function get_lines_between($string, $start, $end){
         $string = preg_replace('/<!--[^>]*-->/', '', $string);
         $lines = explode("\n", $string);
@@ -64,37 +104,32 @@ class ConvertPdfAPI extends API{
             }
         }
         
-        $education = $this->get_lines_between($contents, "<b>Reason:</b>", "</div>");
-        $index = 0;
+        $education = $this->get_education($contents);
         $key = -1;
-        foreach($education as $line){
-            if($line == ""){
-                $index = count($data['Education']);
-                $key = -1;
-            }
-            else{
-                $key++;
-            }
-            switch($key){
-                case 0:
-                    $data['Education'][$index]['institution'] = $line;
-                    break;
-                case 1:
-                    $data['Education'][$index]['country'] = $line;
-                    break;
-                case 2:
-                    $data['Education'][$index]['degree'] = $line;
-                    break;
-                case 3:
-                    $explode = explode(" ", $line);
-                    $data['Education'][$index]['status'] = @$explode[0];
-                    $data['Education'][$index]['start'] = @$explode[1];
-                    $data['Education'][$index]['end'] = @$explode[2];
-                    break;
-                case 4:
-                    $data['Education'][$index]['reason'] = $line;
-                    break;
-                    
+        foreach($education as $index => $line){
+            $data['Education'][$index] = $line;
+            continue;
+            foreach($line as $key => $cell){
+                switch($key){
+                    case 0:
+                        $data['Education'][$index]['institution'] = $cell;
+                        break;
+                    case 1:
+                        $data['Education'][$index]['country'] = $cell;
+                        break;
+                    case 2:
+                        $data['Education'][$index]['degree'] = $cell;
+                        break;
+                    case 3:
+                        $explode = explode(" ", $cell);
+                        $data['Education'][$index]['status'] = @$explode[0];
+                        $data['Education'][$index]['start'] = @$explode[1];
+                        $data['Education'][$index]['end'] = @$explode[2];
+                        break;
+                    case 4:
+                        $data['Education'][$index]['reason'] = $cell;
+                        break;
+                }
             }
         }
         $referees = array();

@@ -68,6 +68,10 @@ class SOP extends AbstractSop{
 
         $moreJson['country_of_citizenship_full'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "qCountry");
 
+        $pdf = $this->getPdf(true);
+        $moreJson['education'] = (isset($pdf['Education'])) ? $pdf['Education'] : array();
+        $moreJson['referees'] = (isset($pdf['Referees'])) ? $pdf['Referees'] : array();
+
         return $moreJson;
 
     }

@@ -108,6 +108,7 @@ abstract class AbstractSop extends BackboneModel{
                                           'word_count',
                                           'emotion_stats',
                                           'personality_stats',
+                                          'pdf_data',
                                           'reviewer'),
                                     array('id' => EQ($id)));
         if(count($data)>0){
@@ -152,6 +153,7 @@ abstract class AbstractSop extends BackboneModel{
                                           'word_count',
                                           'emotion_stats',
                                           'personality_stats',
+                                          'pdf_data',
                                           'reviewer'),
                                     array('user_id' => EQ($id)));
         if(count($data)>0){
@@ -203,7 +205,7 @@ abstract class AbstractSop extends BackboneModel{
             $this->min_age = $row['min_age'];
             $this->word_count = $row['word_count'];
 
-            //$this->pdf = $row['pdf_data'];
+            $this->pdf = $row['pdf_data'];
             $this->visible = $row['reviewer'];
         }
         $this->annotations = SOP_Annotation::getAllSOPAnnotations($this->id);
