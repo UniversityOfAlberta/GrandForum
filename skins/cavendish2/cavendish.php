@@ -1009,6 +1009,7 @@ class CavendishTemplate2 extends QuickTemplate {
                 $GLOBALS['toolbox']['Help'] = TabUtils::createToolboxHeader("Other");
                 $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQs");
                 if($me->isRole(EVALUATOR) || $me->isRole(MANAGER) || $me->isRole(ADMIN)){
+                    $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("January 2021 Instructions", "$wgServer$wgScriptPath/data/GradAdm2021.pdf", "_blank");
                     $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("Reviewer Manual", "$wgServer$wgScriptPath/data/GARS_Manual.pdf", "_blank");
                     $GLOBALS['toolbox']['Help']['links'][] = TabUtils::createToolboxLink("Admission Policy", "https://skatgame.net/appli", "_blank");
                 }
