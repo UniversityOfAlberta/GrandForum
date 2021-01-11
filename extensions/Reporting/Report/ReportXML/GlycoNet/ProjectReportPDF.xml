@@ -158,6 +158,12 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="lay_summary" type="TextareaReportItem" blobItem="LAY_SUMMARY" rich="true">
+            <![CDATA[
+                <p><b>Lay Summary</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <p><b>Future Directions</b></p>
@@ -327,7 +333,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
         <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
@@ -353,5 +359,17 @@
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false">
+        <ReportItemSet id="people" type="ProjectAllPeopleReportItemSet">
+            <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">
+                <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$user_id}" fileSize="5" mimeType="application/pdf">
+                    <![CDATA[
+                        <p><b>{$user_name}</b><br />
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+        </ReportItemSet>
     </ReportSection>
 </Report>
