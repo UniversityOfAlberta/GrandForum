@@ -24,8 +24,8 @@ class UserGsmsBulkUploadAPI extends API{
                 $i++;
                 continue; //fix this to check instead of just skipping
             }
-            else if($row[2] == ""){
-                break;
+            else if($row[1] == "" && $row[2] == ""){
+                continue;
             }
             $application_year_array = explode("/",$row[8]);
             $application_year = $application_year_array[0]; 
