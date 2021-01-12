@@ -104,11 +104,14 @@
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
+                            <li>Project Information</li>
+                            <li>Summary/Background</li>
+                            <li>Figures</li>
                             <li>Milestones (all)</li>
                             <li>Achievements</li>
-                            <li>HQP</li>
-                            <li>Networking</li>
                             <li>KTEE</li>
+                            <li>Networking</li>
+                            <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
                             <li>CCV</li>
@@ -138,11 +141,13 @@
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
-                            <li>Milestones (assigned milestones only)</li>
+                            <li>Project Information</li>
+                            <li>Figures</li>
+                            <li>Milestones (all)</li>
                             <li>Achievements</li>
-                            <li>HQP</li>
-                            <li>Networking</li>
                             <li>KTEE</li>
+                            <li>Networking</li>
+                            <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
                             <li>CCV</li>
@@ -355,6 +360,7 @@
                     {set(achievements,)}
                     {set(deliverables,)}
                     {set(lay_summary,)}
+                    {set(covid,)}
                     {set(impact,)}
                     {set(benefits,)}
                 ]]>
@@ -377,6 +383,12 @@
                         {set(lay_summary,{concat({get(lay_summary)}, 
                             {concat(<h3>{$user_name}</h3>,
                                 {getText(RP_PROGRESS,ACHIEVEMENTS,LAY_SUMMARY,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(covid,{concat({get(covid)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,COVID,{$user_id},0,{$project_id})}
                             )}
                         )})}
                         
@@ -424,7 +436,19 @@
             </ReportItem>
             <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true">
                 <![CDATA[
-                    <small><br />Highlight the impact of the project over the past year in five sentences.</small>
+                    <small><br />Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid_popup" type="PopupReportItem" title="NI Comments" text="{get(covid)}">
+                <![CDATA[
+                    <p><b>Impact of COVID-19</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid" type="Textarea" blobItem="COVID" rich="true">
+                <![CDATA[
+                    <small><br />Describe the impact of the COVID-19 pandemic on your project.</small>
                     {$item}
                 ]]>
             </ReportItem>
@@ -470,7 +494,14 @@
             <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" blobSubItem="{$my_id}">
                 <![CDATA[
                     <p><b>Lay Summary</b></p>
-                    <small>Highlight the impact of the project over the past year in five sentences.</small>
+                    <small>Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid" type="Textarea" blobItem="COVID" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Impact of COVID-19</b></p>
+                    <small>Describe the impact of the COVID-19 pandemic on your project.</small>
                     {$item}
                 ]]>
             </ReportItem>
