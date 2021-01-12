@@ -5,6 +5,7 @@ class NewsPostingAPI extends PostingAPI {
     static $className = "NewsPosting";
     
     function validate(){
+        global $config;
         $language = $this->POST('language');
         if($language == "en" || $language == "bi"){
             if(trim($this->POST('title')) == ""){
@@ -22,16 +23,17 @@ class NewsPostingAPI extends PostingAPI {
                 $this->throwError("The french summary must not be empty");
             }
         }
+        $maxSummaryLength = ($config->getValue("networkName") == "AI4Society") ? 4000 : 2000;
         if(strlen($this->POST('title')) > 300){
             $this->throwError("The english title must be no longer than 300 characters");
         }
         if(strlen($this->POST('titleFr')) > 300){
             $this->throwError("The french title must be no longer than 300 characters");
         }
-        if(strlen($this->POST('summary')) > 2000){
+        if(strlen($this->POST('summary')) > $maxSummaryLength){
             $this->throwError("The english summary must be no longer than 2000 characters");
         }
-        if(strlen($this->POST('summaryFr')) > 2000){
+        if(strlen($this->POST('summaryFr')) > $maxSummaryLength){
             $this->throwError("The french summary must be no longer than 2000 characters");
         }
         if(strlen($this->POST('imageCaption')) > 500){
