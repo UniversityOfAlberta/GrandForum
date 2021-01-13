@@ -163,7 +163,7 @@
             <!-- HQP View -->
             <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>Deadline: April 2</b></p>
+                    <p><b>Deadline: March 17, 2021</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
