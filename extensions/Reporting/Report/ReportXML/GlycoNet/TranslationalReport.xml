@@ -287,7 +287,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="commercial" name="Commercialization" blobSection="CAT_COMM" tooltip="Commercialization Plan" type="ReportSection">
-        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <b>Commercialization Plan Guidelines:</b>
                 <ul>
