@@ -127,7 +127,7 @@
 <!-- reviewer info -->
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <% if (reviewers[i].rank == "-1") { %>
+        <% if (reviewers[i].rank == "-1" && !_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN])) { %>
             <!--%= reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
             <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
