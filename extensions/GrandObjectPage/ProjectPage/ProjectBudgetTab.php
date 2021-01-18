@@ -293,6 +293,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                         {$alloc}<br />";
                     }
+                    if($config->getValue('networkName') == "AGE-WELL" && $i == 2021){
+                        $this->html .= "<p>Project Leads are asked to submit budgets that reflect their best estimate of planned expenses for 2021-22. We anticipate that budgets may include a mix of funds carried forward from 2020-21 and new funding from AGE-WELL in 2021-22.</p>
+<p>As long as a project will advance in 2021, investigators can expect approval to carry forward unspent funds. The amount of new funding issued for April 1 will take into account your carry forward request, applying a formula so that you will have the budget you need even if you underestimate the amount of unspent funds at the time of this update.
+Please check your original Notice of Award for the approved total grant value.</p>";
+                    }
                     $this->html .= "<h3>Upload Budget</h3>
                                     <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
@@ -353,29 +358,51 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
-                        $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".$i."-".($i+1).".</p>";
+                        if($i == 2021){
+                            $this->html .= "<p>Please upload a 2021-22 project budget and provide a budget breakdown for each Network Investigator that will be holding funds in 2021-22 in the following excel tabs.  The budget should be a best estimate of spending in the year ahead and may include both funds carried forward from 2020 and new funding from AGE-WELL.</p>";
+                        }
+                        else{
+                            $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".$i."-".($i+1).".</p>";
+                        }
                         if($i >= 2020){
                             $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2020.xlsx'>Budget Template</a>";
                         }
                         else{
                             $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
                         }
-                        $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>
-                                        <p>Note: Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
-                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
-                                        <h3>Budget Update</h3>
-                                        <p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
+                        $this->html .= "<h3>Budget Justification</h3>";
+                        if($i == 2021){
+                            $this->html .= "<p>In a separate free-form document, please provide a standard budget justification with details in each category where a budget request has been made. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>";
+                        }
+                        else {
+                            $this->html .= "<p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>
+                                        <p>Note: Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>";
+                       }
+                       $this->html .= "<textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
+                                        <h3>Budget Update</h3>";
+                        if($i == 2021){
+                            $this->html .= "<p>Please provide an overview of any <u>major</u> changes that have been made to your project budget since it was last approved by the Research Management Committee (Jan 2020).</p>";
+                        }
+                        else{
+                            $this->html .= "<p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
+                        }
                         $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
                         $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, ".($i+1).":</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
                         
-                        $this->html .= "<p>Core Research Program (CRP): As stated in the funding letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of total project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
-                        
-                        $this->html .= "<p>Innovation Hubs and Platform Projects: As stated in the extension letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
-                        
-                        $this->html .= "<p>Workpackages (WP)/Cross-Cutting (CC) Activities: As stated in the WP stipend and CC extension letters, no funds can be carried forward. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.</p>";
-                        
-                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end and use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in 2021/22 once approved.</p>";
+                        if($i == 2021){
+                            $this->html .= "<p>Core Research Program (CRP) / Platform Projects (PPP): Project funds may carry forward to the next fiscal year provided a project plan update was submitted in January 2021 and a reasonable justification for unspent funds is included as part of this update.</p>
+<p>Note that any NSERC COVID Supplement funds associated with your AGE-WELL grant cannot be carried forward. Unspent funds listed here should reflect the initial AGE-WELL award only. 
+Please provide detail for each sub-project or investigator holding funds as part of your award.</p>";
+                        }
+                        else {
+                            $this->html .= "<p>Core Research Program (CRP): As stated in the funding letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of total project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                            
+                            $this->html .= "<p>Innovation Hubs and Platform Projects: As stated in the extension letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                            
+                            $this->html .= "<p>Workpackages (WP)/Cross-Cutting (CC) Activities: As stated in the WP stipend and CC extension letters, no funds can be carried forward. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.</p>";
+                            
+                            $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end and use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in 2021/22 once approved.</p>";
+                        }
                         
                         $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
