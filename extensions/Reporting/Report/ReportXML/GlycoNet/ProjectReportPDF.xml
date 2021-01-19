@@ -359,7 +359,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet Cycle II" multiple="true">
+        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
                 <h3>Potential GlycoNet Partners for Cycle II</h3>
                 {$item}
