@@ -65,52 +65,64 @@ class ProjectBudgetTab extends AbstractEditableTab {
         $error = null;
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
-                foreach($file['tmp_name'] as $year => $tmp){
-                    if($tmp != ""){
-                        $contents = file_get_contents($tmp);
-                        // Network specific Budget Validations
-                        if($config->getValue('networkName') == "FES"){
-                            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-                            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
-                            $budget = $multiBudget->getBudget(0);
-                            $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
-                            for($i=0; $i < $nYears; $i++){
-                                $request  = $budget->copy()
-                                                   ->where(HEAD1_ROW, array('Request From Future Energy Systems', 'Request From Future Energy System'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $other    = $budget->copy()
-                                                   ->where(HEAD2_ROW, array('Other Federal Funding'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $external = $budget->copy()
-                                                   ->where(HEAD2_ROW, array('External Funding (not Federal)'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $total    = $budget->copy()
-                                                   ->where(HEAD1_ROW, array('Total Funding for the project'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                                   
-                                $requestVal  = floatval(str_replace("$", "", $request->toString()));
-                                $otherVal    = floatval(str_replace("$", "", $other->toString()));
-                                $externalVal = floatval(str_replace("$", "", $external->toString()));
-                                $totalVal    = floatval(str_replace("$", "", $total->toString()));
+                if($key == "budget"){
+                    foreach($file['tmp_name'] as $year => $tmp){
+                        if($tmp != ""){
+                            $contents = file_get_contents($tmp);
+                            // Network specific Budget Validations
+                            if($config->getValue('networkName') == "FES"){
+                                $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
+                                $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
+                                $budget = $multiBudget->getBudget(0);
+                                $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
+                                for($i=0; $i < $nYears; $i++){
+                                    $request  = $budget->copy()
+                                                       ->where(HEAD1_ROW, array('Request From Future Energy Systems', 'Request From Future Energy System'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $other    = $budget->copy()
+                                                       ->where(HEAD2_ROW, array('Other Federal Funding'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $external = $budget->copy()
+                                                       ->where(HEAD2_ROW, array('External Funding (not Federal)'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $total    = $budget->copy()
+                                                       ->where(HEAD1_ROW, array('Total Funding for the project'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                                       
+                                    $requestVal  = floatval(str_replace("$", "", $request->toString()));
+                                    $otherVal    = floatval(str_replace("$", "", $other->toString()));
+                                    $externalVal = floatval(str_replace("$", "", $external->toString()));
+                                    $totalVal    = floatval(str_replace("$", "", $total->toString()));
 
-                                if(($request->size() == 0 ||
-                                    $other->size() == 0 ||
-                                    $external->size() == 0 ||
-                                    $total->size() == 0) ||
-                                   ($requestVal + $otherVal + $externalVal) != $totalVal){
-                                    $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
-                                } 
+                                    if(($request->size() == 0 ||
+                                        $other->size() == 0 ||
+                                        $external->size() == 0 ||
+                                        $total->size() == 0) ||
+                                       ($requestVal + $otherVal + $externalVal) != $totalVal){
+                                        $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
+                                    } 
+                                }
+                            }
+                            if($error == null){
+                                $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
+                                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                                $blb->store($contents, $addr);
+                                $this->updateAllocations($year, $contents);
                             }
                         }
-                        if($error == null){
-                            $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
-                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                    }
+                }
+                else if($key == "justification_upload"){
+                    foreach($file['tmp_name'] as $year => $tmp){
+                        $contents = file_get_contents($tmp);
+                        if($contents != ""){
+                            $blb = new ReportBlob(BLOB_RAW, $year, 0, $this->project->getId());
+                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, "LDR_BUD_JUSTIFICATION_UPLOAD", 0);
                             $blb->store($contents, $addr);
-                            $this->updateAllocations($year, $contents);
                         }
                     }
                 }
@@ -258,6 +270,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);
                 $justification = $blb->getData();
+                // Justification Upload
+                $blb = new ReportBlob(BLOB_RAW, $i, 0, $this->project->getId());
+                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION_UPLOAD', 0);
+                $result = $blb->load($addr);
+                $just_md5 = $blb->getMD5();
                 // Deviations
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_DEVIATIONS', 0);
@@ -341,6 +358,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     if($i > $startYear){
                         if($config->getValue('networkName') == "AGE-WELL"){
                             $justification = nl2br($justification);
+                            if($just_md5 != ""){
+                                $justification = "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$just_md5}&mime=application/pdf&fileName={$project->getName()}_{$i}_Budget.pdf'>Download Justification</a><br />";
+                            }
                             $deviations = nl2br($deviations);
                             $carryOver = nl2br($carryOver);
                             $this->html .= "<h3>Budget Justification</h3>
@@ -380,7 +400,7 @@ Please provide detail for each sub-project or investigator holding funds as part
                             $this->html .= "<h4>Upload Budget</h4>
                                             <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                             $this->html .= "<h4>Budget Justification</h4>
-                                            <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>";
+                                            <input type='file' name='justification_upload[$i]' accept='.pdf' /><br />";
                             $this->html .= "<script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";
