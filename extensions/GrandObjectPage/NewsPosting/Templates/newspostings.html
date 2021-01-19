@@ -5,8 +5,7 @@
     <thead>
         <tr>
             <th width="25%" style="white-space: nowrap;">News Date</th>
-            <th width="5%" style="white-space: nowrap;">Language</th>
-            <th width="54%">Posting</th>
+            <th width="75%">Posting</th>
             <% if(isAllowedToCreateNewsPostings){ %>
                 <th width="1%">Delete?</th>
             <% } %>
@@ -16,12 +15,7 @@
         <% this.model.each(function(news){ %>
             <tr>
                 <td>
-                    <span style="display:none;"><%= news.get('startDate') %></span>
-                    <%= dateTimeHelpers.formatDate(news.get('startDate')) %><br />
-                    (Posted: <%= dateTimeHelpers.formatDate(news.get('created')) %> by <a href="<%= news.get('user').url %>"><%= news.get('user').fullName %></a>)
-                </td>
-                <td align="center">
-                    <%= news.getLanguage() %>
+                    Posted: <%= dateTimeHelpers.formatDate(news.get('created')) %> by <a href="<%= news.get('user').url %>"><%= news.get('user').fullName %></a>
                 </td>
                 <td>
                     <a href="<%= news.get('url') %>" ><%= showLanguage(news.get('language'), news.get('title'), news.get('titleFr')) %></a>
