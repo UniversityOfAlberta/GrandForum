@@ -15,6 +15,7 @@
         <% this.model.each(function(news){ %>
             <tr>
                 <td>
+                    <span style="display:none;"><%= news.get('created') %></span>
                     Posted: <%= dateTimeHelpers.formatDate(news.get('created')) %> by <a href="<%= news.get('user').url %>"><%= news.get('user').fullName %></a>
                 </td>
                 <td>
