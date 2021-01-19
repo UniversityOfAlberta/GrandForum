@@ -340,14 +340,14 @@
         </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
                 
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}<br />
