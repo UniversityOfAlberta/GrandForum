@@ -361,7 +361,7 @@
         </ReportItem>
         <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
-                <h3>Potential GlycoNet Partners for Cycle II</h3>
+                <h3>Potential GlycoNet Partners for Legacy</h3>
                 {$item}
             ]]>
         </ReportItem>
