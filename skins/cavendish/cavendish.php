@@ -669,8 +669,18 @@ class CavendishTemplate extends QuickTemplate {
 		            
 		            <?php if(isset($_GET['newTab'])){ ?>
 		                $("a").attr("target", "_blank");
+		                $("a").each(function(i, a){
+		                    if($(a).attr("href") != undefined){
+		                        $(a).attr("href", $(a).attr("href").replace("embed", ""));
+		                    }
+		                });
 		                setInterval(function(){
 		                    $("a").attr("target", "_blank");
+		                    $("a").each(function(i, a){
+		                        if($(a).attr("href") != undefined){
+		                            $(a).attr("href", $(a).attr("href").replace("embed", ""));
+		                        }
+		                    });
 		                }, 100);
 		            <?php } ?>
 		        });
