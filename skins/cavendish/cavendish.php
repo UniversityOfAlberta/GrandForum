@@ -666,6 +666,10 @@ class CavendishTemplate extends QuickTemplate {
 		                height = $("#bodyContent").height();
 		                parent.postMessage(height+10, "*");
 		            }, 100);
+		            
+		            <?php if(isset($_GET['newTab'])){ ?>
+		                $("a").attr("target", "_blank");
+		            <?php } ?>
 		        });
 		    </script>
 		<?php
