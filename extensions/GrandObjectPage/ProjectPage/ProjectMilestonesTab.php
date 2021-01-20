@@ -49,7 +49,9 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
                         foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
                             foreach($qs as $qId => $q){
-                                $quarters[] = ($year).":$qId";
+                                if($q != ""){
+                                    $quarters[] = ($year).":$qId:$q";
+                                }
                             }
                         }
                     }
@@ -169,6 +171,23 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         global $wgUser, $wgOut, $wgServer, $wgScriptPath;
         if($wgUser->isLoggedIn()){
             $project = $this->project;
+            $this->html .= "<style>
+                .milestone {
+                    max-width:22px;
+                    min-width:22px;
+                    -moz-appearance: none;
+                    -webkit-appearance: none;
+                    padding-left: 6px;
+                    padding-right: 4px;
+                }
+                
+                @-moz-document url-prefix() {
+                    .milestone {
+                        padding-left: 2px;
+                        padding-right: 5px;
+                    }
+                }
+            </style>";
             $this->showMilestones();
             return $this->html;
         }
@@ -200,28 +219,30 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             for($q=1;$q<=4;$q++){
                 $class = ($q == 1) ? "class='left_border'" : "";
-                $color = @Milestone::$statuses[$milestone->getStatus()];
+                $color = @Milestone::$statuses[$quarters[$y][$q]];
 
                 $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
-                $checkbox = "";
+                $select = "";
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
-                    $checked = "";
-                    if(isset($quarters[$y][$q])){
-                        $checked = "checked='checked'";
+                    $select = "<select class='milestone' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]'>
+                        <option></option>";
+                    foreach(Milestone::$statuses as $status => $c){
+                        $selected = (@$quarters[$y][$q] == $status && isset($quarters[$y][$q])) ? "selected" : "";
+                        $select .= "<option value='$status' $selected>{$status[0]} - $status</option>";
                     }
-                    $checkbox = "<input class='milestone' type='checkbox' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]' $checked />";
+                    $select .= "</select>";
                 }
                 if(isset($quarters[$y][$q])){
-                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$select</td>";
                 }
                 else{
-                    $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";
+                    $this->html .= "<td style='text-align:center;' $class>$select</td>";
                 }
             }
         }
     }
     
-    function showMilestones($pdf=false, $year=false){
+    function showMilestones($pdf=false, $year=false, $showStatus=false){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
         $me = Person::newFromWgUser();
         $project = $this->project;
@@ -306,14 +327,19 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 if(count($activities) > 0){
                     $this->html .= "<a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
                 }
-            
-                $statusHeader = "<th>Status</th>";
+                
+                if($showStatus){
+                    $statusHeader = "<th>Status</th>";
+                }
+                else{
+                    $statusHeader = "<th style='display:none;'>Status</th>";
+                }
                 if($me->isRoleAtLeast(STAFF)){
                     $statusHeader .= "<th width='1%'>Delete?</td>";
                 }
             }
             else{
-                $statusHeader = "<th>Status</th>";
+                $statusHeader = "";
             }
             $statusColspan++;
             if(!$this->canEditMilestone(null)){
@@ -458,7 +484,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     
                     $selectBox = new SelectBox("milestone_status[$activityId][{$milestone->getMilestoneId()}]", "status", $milestone->getStatus(), $statuses);
                     $statusText = $selectBox->render();
-                    $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
+                    if($showStatus){
+                        $this->html .= "<td id='status' class='left_comment' align='center'>$statusText</td>";
+                    }
+                    else{
+                        $this->html .= "<td id='status' class='left_comment' align='center' style='display:none;'>$statusText</td>";
+                    }
                     if($me->isRoleAtLeast(STAFF)){
                         $this->html .= "<td align='center'><input type='checkbox' name='milestone_delete[$activityId][{$milestone->getMilestoneId()}]' value='delete' /></td>";
                     }
@@ -542,10 +573,16 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 });
                 
                 var changeColor = function(){
-                    var checked = $(this)[0].checked;
+                    var checked = (($(this)[0].nodeName == 'SELECT' && $(this).val() != '') || 
+                                   ($(this)[0].nodeName == 'INPUT' && $(this)[0].checked));
                     if(checked){
-                        var status = $('td#status select', $(this).parent().parent()).val();
-                        var color = colors[status];
+                        if($(this)[0].nodeName == 'SELECT' && $(this).val() != ''){
+                            var color = colors[$(this).val()];
+                        }
+                        else {
+                            var status = $('td#status select', $(this).parent().parent()).val();
+                            var color = colors[status];
+                        }
                         $(this).parent()[0].style.backgroundColor = color;
                     }
                     else{
@@ -560,6 +597,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     var color = colors[status];
                     $('input.milestone:checked', $(this).parent().parent()).parent().css('background', color);
                 });
+                $('#milestones_table td select.milestone').change(changeColor);
+                $('#milestones_table td select.milestone').each(changeColor);
                 
                 $('#addActivity').click(function(){
                     $('#addActivityDialog').dialog({

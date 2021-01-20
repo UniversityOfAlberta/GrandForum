@@ -239,7 +239,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
-            parent::generateBody();
+            $this->showMilestones(false, false, true);
             $this->addScript();
             $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
             $this->showFESMilestones();
@@ -250,7 +250,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
-            parent::generateBody();
+            $this->showMilestones(false, false, true);
             $this->addScript();
             $this->html .= "<hr style='clear:both;' /><h2 style='clear:both;'>Milestones</h2>";
             $this->showFESMilestones();
@@ -262,7 +262,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
             $this->html .= "<h2>Activity Schedule</h2>";
-            $this->showMilestones(true);
+            $this->showMilestones(true, false, true);
             $this->html .= "<div style='page-break-after:always;'></div>";
             $this->html .= "<h2>Milestones</h2>";
             $this->showFESMilestones(true);
