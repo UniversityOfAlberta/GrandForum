@@ -669,6 +669,9 @@ class CavendishTemplate extends QuickTemplate {
 		            
 		            <?php if(isset($_GET['newTab'])){ ?>
 		                $("a").attr("target", "_blank");
+		                setInterval(function(){
+		                    $("a").attr("target", "_blank");
+		                }, 100);
 		            <?php } ?>
 		        });
 		    </script>
