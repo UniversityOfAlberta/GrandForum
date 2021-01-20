@@ -383,7 +383,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         if($i == 2021){
                             // Special year
                             $this->html .= "<p>Project Leads are asked to submit budgets that reflect their best estimate of planned expenses for 2021-22. We anticipate that budgets may include a mix of funds carried forward from 2020-21 and new funding from AGE-WELL in 2021-22.</p>
-<p>As long as a project will advance in 2021, investigators can expect approval to carry forward unspent funds. The amount of new funding issued for April 1 will take into account your carry forward request, applying a formula so that you will have the budget you need even if you underestimate the amount of unspent funds at the time of this update.
+<p>As long as a project will advance in 2021, investigators can expect approval to carry forward unspent funds. The amount of new funding issued for April 1 will take into account your carry forward request, applying a formula so that you will have the budget you need even if you over or underestimate the amount of unspent funds at the time of this update.
 Please check your original Notice of Award for the approved total grant value.</p>";
                             $this->html .= "<h3>Budget Update</h3>
                                             <p>Please provide an overview of any <u>major</u> changes that have been made to your project budget since it was last approved by the Research Management Committee (Jan 2020).</p>
