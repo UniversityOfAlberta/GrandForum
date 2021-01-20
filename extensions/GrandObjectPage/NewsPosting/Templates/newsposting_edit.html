@@ -38,16 +38,16 @@
             <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
         </tr>
     </table>
-    <h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>
+    <h3>Summary <small>(max <% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters, plain text only / texte brut seulement)</small>:</h3>
     <u><b>English</b></u><br />
     <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
-        <small><span id="characterCount"></span>/2000 characters</small><br />
+        <small><span id="characterCount"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
         <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
     </div><br /><br />
     
     <u><b>French</b></u><br />
     <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
-        <small><span id="characterCountFr"></span>/2000 characters</small><br />
+        <small><span id="characterCountFr"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
         <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
     </div>
 </div>

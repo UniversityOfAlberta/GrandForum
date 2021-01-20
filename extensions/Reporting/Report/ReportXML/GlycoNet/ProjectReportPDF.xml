@@ -158,6 +158,18 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="covid" type="TextareaReportItem" blobItem="COVID" rich="true">
+            <![CDATA[
+                <p><b>Impact of COVID-19</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="lay_summary" type="TextareaReportItem" blobItem="LAY_SUMMARY" rich="true">
+            <![CDATA[
+                <p><b>Lay Summary</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" rich="true" limit="500" recommended="true">
             <![CDATA[
                 <p><b>Future Directions</b></p>
@@ -327,15 +339,15 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions" pagebreak="false">
-        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
+        <ReportItem id="cash_contributions" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" multiple="true">
             <![CDATA[
                 <h3>Cash Contributions</h3>
                 {$item}<br />
                 
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
+        <ReportItem id="inkind_contributions" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" multiple="true">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}<br />
@@ -347,11 +359,23 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet Cycle II" multiple="true">
+        <ReportItem id="potentials" type="MultiText" class="wikitable" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
-                <h3>Potential GlycoNet Partners for Cycle II</h3>
+                <h3>Potential GlycoNet Partners for Legacy</h3>
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV" pagebreak="false">
+        <ReportItemSet id="people" type="ProjectAllPeopleReportItemSet">
+            <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">
+                <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$user_id}" fileSize="5" mimeType="application/pdf">
+                    <![CDATA[
+                        <p><b>{$user_name}</b><br />
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </If>
+        </ReportItemSet>
     </ReportSection>
 </Report>

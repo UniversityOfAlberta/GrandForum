@@ -65,52 +65,64 @@ class ProjectBudgetTab extends AbstractEditableTab {
         $error = null;
         if(isset($_FILES)){
             foreach($_FILES as $key => $file){
-                foreach($file['tmp_name'] as $year => $tmp){
-                    if($tmp != ""){
-                        $contents = file_get_contents($tmp);
-                        // Network specific Budget Validations
-                        if($config->getValue('networkName') == "FES"){
-                            $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
-                            $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
-                            $budget = $multiBudget->getBudget(0);
-                            $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
-                            for($i=0; $i < $nYears; $i++){
-                                $request  = $budget->copy()
-                                                   ->where(HEAD1_ROW, array('Request From Future Energy Systems', 'Request From Future Energy System'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $other    = $budget->copy()
-                                                   ->where(HEAD2_ROW, array('Other Federal Funding'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $external = $budget->copy()
-                                                   ->where(HEAD2_ROW, array('External Funding (not Federal)'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                $total    = $budget->copy()
-                                                   ->where(HEAD1_ROW, array('Total Funding for the project'))
-                                                   ->select(HEAD_MONEY)
-                                                   ->limitCols($i, 1);
-                                                   
-                                $requestVal  = floatval(str_replace("$", "", $request->toString()));
-                                $otherVal    = floatval(str_replace("$", "", $other->toString()));
-                                $externalVal = floatval(str_replace("$", "", $external->toString()));
-                                $totalVal    = floatval(str_replace("$", "", $total->toString()));
+                if($key == "budget"){
+                    foreach($file['tmp_name'] as $year => $tmp){
+                        if($tmp != ""){
+                            $contents = file_get_contents($tmp);
+                            // Network specific Budget Validations
+                            if($config->getValue('networkName') == "FES"){
+                                $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE');
+                                $multiBudget = new MultiBudget(array($structure, FES_EQUIPMENT_STRUCTURE, FES_EXTERNAL_STRUCTURE), $contents);
+                                $budget = $multiBudget->getBudget(0);
+                                $nYears = $budget->copy()->where(HEAD_ROW, array("Direct Costs"))->trimCols()->nCols() - 1;
+                                for($i=0; $i < $nYears; $i++){
+                                    $request  = $budget->copy()
+                                                       ->where(HEAD1_ROW, array('Request From Future Energy Systems', 'Request From Future Energy System'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $other    = $budget->copy()
+                                                       ->where(HEAD2_ROW, array('Other Federal Funding'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $external = $budget->copy()
+                                                       ->where(HEAD2_ROW, array('External Funding (not Federal)'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                    $total    = $budget->copy()
+                                                       ->where(HEAD1_ROW, array('Total Funding for the project'))
+                                                       ->select(HEAD_MONEY)
+                                                       ->limitCols($i, 1);
+                                                       
+                                    $requestVal  = floatval(str_replace("$", "", $request->toString()));
+                                    $otherVal    = floatval(str_replace("$", "", $other->toString()));
+                                    $externalVal = floatval(str_replace("$", "", $external->toString()));
+                                    $totalVal    = floatval(str_replace("$", "", $total->toString()));
 
-                                if(($request->size() == 0 ||
-                                    $other->size() == 0 ||
-                                    $external->size() == 0 ||
-                                    $total->size() == 0) ||
-                                   ($requestVal + $otherVal + $externalVal) != $totalVal){
-                                    $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
-                                } 
+                                    if(($request->size() == 0 ||
+                                        $other->size() == 0 ||
+                                        $external->size() == 0 ||
+                                        $total->size() == 0) ||
+                                       ($requestVal + $otherVal + $externalVal) != $totalVal){
+                                        $error = "The totals in the budget do not add up.  Make sure that you did not modify the spreadsheet formulas.";
+                                    } 
+                                }
+                            }
+                            if($error == null){
+                                $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
+                                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                                $blb->store($contents, $addr);
+                                $this->updateAllocations($year, $contents);
                             }
                         }
-                        if($error == null){
-                            $blb = new ReportBlob(BLOB_EXCEL, $year, 0, $this->project->getId());
-                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                    }
+                }
+                else if($key == "justification_upload"){
+                    foreach($file['tmp_name'] as $year => $tmp){
+                        $contents = file_get_contents($tmp);
+                        if($contents != ""){
+                            $blb = new ReportBlob(BLOB_RAW, $year, 0, $this->project->getId());
+                            $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, "LDR_BUD_JUSTIFICATION_UPLOAD", 0);
                             $blb->store($contents, $addr);
-                            $this->updateAllocations($year, $contents);
                         }
                     }
                 }
@@ -258,6 +270,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);
                 $justification = $blb->getData();
+                // Justification Upload
+                $blb = new ReportBlob(BLOB_RAW, $i, 0, $this->project->getId());
+                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION_UPLOAD', 0);
+                $result = $blb->load($addr);
+                $just_md5 = $blb->getMD5();
                 // Deviations
                 $blb = new ReportBlob(BLOB_TEXT, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_DEVIATIONS', 0);
@@ -282,24 +299,31 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 
                 if($edit && $editable){
-                    if($me->isRoleAtLeast(STAFF)){
-                        $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
-                                        $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
-                                        <script type='text/javascript'>
-                                            $('input#allocation$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
-                                        </script>";
+                    if(!$config->getValue('networkName') == "AGE-WELL" || $i != 2021){
+                        if($me->isRoleAtLeast(STAFF)){
+                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                                            $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
+                                            <script type='text/javascript'>
+                                                $('input#allocation$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
+                                            </script>";
+                        }
+                        else{
+                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                                            {$alloc}<br />";
+                        }
+                        $this->html .= "<h3>Upload Budget</h3>
+                                        <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                     }
-                    else{
-                        $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
-                                        {$alloc}<br />";
-                    }
-                    $this->html .= "<h3>Upload Budget</h3>
-                                    <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                 }
                 
                 if(!$edit || !$editable){
-                    $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
-                                        $alloc<br /><br />";
+                    if($config->getValue('networkName') == "AGE-WELL" && $i == 2021){
+                    
+                    }
+                    else{
+                        $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                                            $alloc<br /><br />";
+                    }
                     if($config->getValue('networkName') == "FES"){
                         if(preg_match("/.*-T.*/", $this->project->getName())){
                             $multiBudget = new MultiBudget(array($structure, FES_EXTERNAL_STRUCTURE), $xls);
@@ -334,6 +358,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     if($i > $startYear){
                         if($config->getValue('networkName') == "AGE-WELL"){
                             $justification = nl2br($justification);
+                            if($just_md5 != ""){
+                                $justification = "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$just_md5}&mime=application/pdf&fileName={$project->getName()}_{$i}_Budget.pdf'>Download Justification</a><br />";
+                            }
                             $deviations = nl2br($deviations);
                             $carryOver = nl2br($carryOver);
                             $this->html .= "<h3>Budget Justification</h3>
@@ -353,34 +380,60 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
-                        $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".$i."-".($i+1).".</p>";
-                        if($i >= 2020){
-                            $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2020.xlsx'>Budget Template</a>";
+                        if($i == 2021){
+                            // Special year
+                            $this->html .= "<p>Project Leads are asked to submit budgets that reflect their best estimate of planned expenses for 2021-22. We anticipate that budgets may include a mix of funds carried forward from 2020-21 and new funding from AGE-WELL in 2021-22.</p>
+<p>As long as a project will advance in 2021, investigators can expect approval to carry forward unspent funds. The amount of new funding issued for April 1 will take into account your carry forward request, applying a formula so that you will have the budget you need even if you over or underestimate the amount of unspent funds at the time of this update.
+Please check your original Notice of Award for the approved total grant value.</p>";
+                            $this->html .= "<h3>Budget Update</h3>
+                                            <p>Please provide an overview of any <u>major</u> changes that have been made to your project budget since it was last approved by the Research Management Committee (Jan 2020).</p>
+                                            <textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
+                            $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, 2021:</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                            $this->html .= "<p>Core Research Program (CRP) / Platform Projects (PPP): Project funds may carry forward to the next fiscal year provided a project plan update was submitted in January 2021 and a reasonable justification for unspent funds is included as part of this update.</p>
+<p>Note that any NSERC COVID Supplement funds associated with your AGE-WELL grant cannot be carried forward. Unspent funds listed here should reflect the initial AGE-WELL award only. 
+Please provide detail for each sub-project or investigator holding funds as part of your award.</p>
+                                            <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>";
+                            $this->html .= "<h3>Upload Budget and Budget Justification</h3>
+                                            <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2021-22.xlsx'>Budget Template</a><br />
+                                            <p>Please upload a 2021-22 project budget and provide a budget breakdown for each Network Investigator that will be holding funds in 2021-22 in the following excel tabs.  The budget should be a best estimate of spending in the year ahead and may include both funds carried forward from 2020 and new funding from AGE-WELL.</p>
+                                            <p>In a separate free-form document, please provide a standard budget justification with details in each category where a budget request has been made. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>";
+                            $this->html .= "<h4>Upload Budget</h4>
+                                            <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
+                            $this->html .= "<h4>Budget Justification</h4>
+                                            <input type='file' name='justification_upload[$i]' accept='.pdf' /><br />";
+                            $this->html .= "<script type='text/javascript'>
+                                            $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
+                                        </script>";
                         }
-                        else{
-                            $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
-                        }
-                        $this->html .= "<h3>Budget Justification</h3>
-                                        <p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>
-                                        <p>Note: Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>
-                                        <textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
-                                        <h3>Budget Update</h3>
-                                        <p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
-                        $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
-                        $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, ".($i+1).":</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
-                        
-                        $this->html .= "<p>Core Research Program (CRP): As stated in the funding letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of total project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
-                        
-                        $this->html .= "<p>Innovation Hubs and Platform Projects: As stated in the extension letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
-                        
-                        $this->html .= "<p>Workpackages (WP)/Cross-Cutting (CC) Activities: As stated in the WP stipend and CC extension letters, no funds can be carried forward. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.</p>";
-                        
-                        $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end and use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in 2021/22 once approved.</p>";
-                        
-                        $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
+                        else {
+                            // Normal year
+                            $this->html .= "<p>Please upload your $i/".substr(($i+1),2,2)." project budget and provide a budget breakdown on the following excel tabs for each Network Investigator that will be holding funds in Year ".$i."-".($i+1).".</p>";
+                            if($i >= 2020){
+                                $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2020.xlsx'>Budget Template</a>";
+                            }
+                            else{
+                                $this->html .= "<a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget.xlsx'>Budget Template</a>";
+                            }
+                            $this->html .= "<h3>Budget Justification</h3>";
+                            $this->html .= "<p>Please provide a detailed justification for each category where a budget request has been made. Justifications should include the rationale for the requested item, such as the need for the specified number of HQP or the requested budget, as well as details on any partner contributions that you may be receiving. Confirmed and projected partner contributions (cash and in-kind) are critical to include for the upcoming year.</p>
+                                            <p>Note: Unless changes have been made, this information can be copied and pasted from the budget request submitted with your approved application.</p>";
+                            $this->html .= "<textarea name='justification[$i]' style='height:200px;resize: vertical;'>{$justification}</textarea>
+                                            <h3>Budget Update</h3>";
+                            $this->html .= "<p>If relevant, please provide a description of any changes that have been made to your $i/".substr(($i+1),2,2)." budget since it was last approved by the Research Management Committee.</p>";
+                            $this->html .= "<textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
+                            $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, ".($i+1).":</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                            $this->html .= "<p>Core Research Program (CRP): As stated in the funding letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of total project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                            
+                            $this->html .= "<p>Innovation Hubs and Platform Projects: As stated in the extension letter, the permissible carry forward of funds for fiscal year 2020/21 is 15%. If greater than 15% of project funds are unspent, approval to carry forward funds via a detailed justification to the Research Management Committee is required.</p>";
+                            
+                            $this->html .= "<p>Workpackages (WP)/Cross-Cutting (CC) Activities: As stated in the WP stipend and CC extension letters, no funds can be carried forward. All unspent funds will be recalled by AGE-WELL once the Network Management Office has received the Form 300s from your respective institutions.</p>";
+                            
+                            $this->html .= "<p>Please provide a justification for the projected amount of unspent funds at year end and use this space to justify carrying forward amounts over 15%. Please also describe how these funds will be spent in 2021/22 once approved.</p>";
+                            $this->html .= "<textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>
                                         <script type='text/javascript'>
                                             $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                         </script>";
+                        }
                     }
                 }
                 if($edit && $config->getValue('networkName') == "FES" && $editable){

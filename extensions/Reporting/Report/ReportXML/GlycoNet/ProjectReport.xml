@@ -13,6 +13,7 @@
             <SectionPermission id="ktee" permissions="r" />
             <SectionPermission id="budget" permissions="-" />
             <SectionPermission id="contributions" permissions="-" />
+            <SectionPermission id="ccv" permissions="-" />
             <SectionPermission id="extension" permissions="-" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
@@ -29,6 +30,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
@@ -45,6 +47,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
@@ -61,6 +64,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="-" />
@@ -77,6 +81,7 @@
             <SectionPermission id="ktee" permissions="rw" />
             <SectionPermission id="budget" permissions="rw" />
             <SectionPermission id="contributions" permissions="rw" />
+            <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -86,7 +91,7 @@
         <If id="is_pl" if="{contains({$my_full_roles},PL)}">
             <!-- Project Leader View -->
             <![CDATA[
-                <p><b>Deadline: May 12, 2020</b></p>
+                <p><b>Deadline: March 31, 2021</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
@@ -99,13 +104,17 @@
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
+                            <li>Project Information</li>
+                            <li>Summary/Background</li>
+                            <li>Figures</li>
                             <li>Milestones (all)</li>
                             <li>Achievements</li>
-                            <li>HQP</li>
-                            <li>Networking</li>
                             <li>KTEE</li>
+                            <li>Networking</li>
+                            <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
+                            <li>CCV</li>
                         </ul>
                     </li>
                     <li>Generate and preview project report PDF</li>
@@ -116,10 +125,10 @@
                 <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Claude Larrivee Aboussafy (clarrivee@glyconet.ca).</p>
             ]]>
         </If>
-        <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <![CDATA[
-                <p><b>Deadline: May 5, 2020</b></p>
+                <p><b>Deadline: March 24, 2021</b></p>
                 <p><b>Before completing the report:</b></p>
                 <ul>
                     <li>Update the personal information on your Forum profile</li>
@@ -132,13 +141,16 @@
                 <ul>
                     <li>Fill in all applicable sections of the Project Report:
                         <ul>
+                            <li>Project Information</li>
+                            <li>Figures</li>
                             <li>Milestones (assigned milestones only)</li>
                             <li>Achievements</li>
-                            <li>HQP</li>
-                            <li>Networking</li>
                             <li>KTEE</li>
+                            <li>Networking</li>
+                            <li>HQP</li>
                             <li>Budget</li>
                             <li>Partner Contributions</li>
+                            <li>CCV</li>
                         </ul>
                     </li>
                 </ul><br />
@@ -151,7 +163,7 @@
             <!-- HQP View -->
             <ReportItem id="roles" type="TextareaReportItem" blobItem="ROLES" blobSubItem="{$my_id}">
                 <![CDATA[
-                    <p><b>Deadline: April 2</b></p>
+                    <p><b>Deadline: March 17, 2021</b></p>
                     <p><b>Before completing the report:</b></p>
                     <ul>
                         <li>Update the personal information on your Forum profile, including gender, nationality, and alumni status if you will be leaving the Network in the near future (see “Getting Started with the GlycoNet Forum” on the <a target='_blank' href='http://canadianglycomics.ca/forum-help-and-faqs/'>Forum Help & FAQs</a> page)</li>
@@ -300,7 +312,7 @@
                 </If>
             </ReportItemSet>
         </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" blobSubItem="{$my_id}" fileSize="20" mimeType="application/pdf">
                 <![CDATA[
@@ -347,6 +359,8 @@
                 <![CDATA[
                     {set(achievements,)}
                     {set(deliverables,)}
+                    {set(lay_summary,)}
+                    {set(covid,)}
                     {set(impact,)}
                     {set(benefits,)}
                 ]]>
@@ -363,6 +377,18 @@
                         {set(deliverables,{concat({get(deliverables)}, 
                             {concat(<h3>{$user_name}</h3>,
                                 {getText(RP_PROGRESS,ACHIEVEMENTS,DELIVERABLES,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(lay_summary,{concat({get(lay_summary)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,LAY_SUMMARY,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(covid,{concat({get(covid)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,COVID,{$user_id},0,{$project_id})}
                             )}
                         )})}
                         
@@ -402,6 +428,30 @@
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="lay_popup" type="PopupReportItem" title="NI Comments" text="{get(lay_summary)}">
+                <![CDATA[
+                    <p><b>Lay Summary</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" rich="true">
+                <![CDATA[
+                    <small><br />Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid_popup" type="PopupReportItem" title="NI Comments" text="{get(covid)}">
+                <![CDATA[
+                    <p><b>Impact of COVID-19</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid" type="Textarea" blobItem="COVID" rich="true">
+                <![CDATA[
+                    <small><br />Describe the impact of the COVID-19 pandemic on your project.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
             <ReportItem id="impact_popup" type="PopupReportItem" title="NI Comments" text="{get(impact)}">
                 <![CDATA[
                     <p><b>Future Directions</b></p>
@@ -427,7 +477,7 @@
                 ]]>
             </ReportItem>
         </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <ReportItem id="achievements" type="TextareaReportItem" blobItem="ACHIEVEMENTS" blobSubItem="{$my_id}">
                 <![CDATA[
@@ -438,6 +488,20 @@
             <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$my_id}">
                 <![CDATA[
                     <p><b>Research Achievements in the Current Funding Period</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="lay_summary" type="Textarea" blobItem="LAY_SUMMARY" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Lay Summary</b></p>
+                    <small>Highlight the impact of the project over the past year in five sentences.  This summary may be included in the GlycoNet Annual Report.</small>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="covid" type="Textarea" blobItem="COVID" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Impact of COVID-19</b></p>
+                    <small>Describe the impact of the COVID-19 pandemic on your project.</small>
                     {$item}
                 ]]>
             </ReportItem>
@@ -488,7 +552,7 @@
                 ]]>
             </ReportItem>
         </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <ReportItem id="impact" type="TextareaReportItem" blobItem="IMPACT" blobSubItem="{$my_id}">
                 <![CDATA[
@@ -562,7 +626,7 @@
                 ]]>
             </ReportItem>
         </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <ReportItem id="collaborations" type="TextareaReportItem" blobItem="COLLABORATIONS" blobSubItem="{$my_id}">
                 <![CDATA[
@@ -614,7 +678,7 @@
                 </ReportItemSet>
             </ReportItemSet>
         </If>
-        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
+        <If id="not_pl" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
             <!-- Network Investigator View -->
             <Static>
                 <![CDATA[
@@ -802,7 +866,7 @@
         </Static>
     </ReportSection>
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="Partner Contributions" title="Partner Contributions">
-        <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount Received within the fiscal year|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
+        <ReportItem id="cash_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="CASH" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of funds|Notes/Comments|Balance of unused funds|University receiving funds" types="Text|Integer|Select(Bachelors - Canadian and Permanent Residents,Bachelors - Foreign,Masters - Canadian and Permanent Residents,Masters - Foreign,Doctorate - Canadian and Permanent Residents,Doctorate - Foreign,Post-doctoral - Canadian and Permanent Residents,Post-doctoral - Foreign,Equipment,Materials\, supplies and other expenditures,Travel,Other (Please describe))|Textarea|Integer|Text" sizes="|75|250||75|175" multiple="true" addText="Add Contribution">
             <![CDATA[
                 Contact information for each funding source described in the tables below should be entered into the "Partners and Collaborators" table in the Project Information tab.
                 <h3>Cash Contributions</h3>
@@ -810,7 +874,7 @@
                 <small>*Add additional lines for different uses of funds from the same source</small>
             ]]>
         </ReportItem>
-        <ReportItem id="inkind_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" sizes="|75|250||175" multiple="true" addText="Add Contribution">
+        <ReportItem id="inkind_contributions" type="MultiText" blobType="BLOB_ARRAY" blobItem="INKIND" labels="Source of Funds|Amount &lt;u>Received within the fiscal year&lt;/u>|Use of Funds|Description|University receiving contribution" types="Text|Integer|Select(Equipment\, software,Materials,Logistical support of field work,Provision of services,Use of company facilities,Salaries of scientific staff,Salaries of managerial\, administrative staff,Project-related travel,Other (specify))|Textarea|Text" sizes="|75|250||175" multiple="true" addText="Add Contribution">
             <![CDATA[
                 <h3>In-Kind Contributions</h3>
                 {$item}
@@ -855,13 +919,32 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="potentials" type="MultiText" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet Cycle II" multiple="true">
+        <ReportItem id="potentials" type="MultiText" blobItem="POTENTIALS" blobType="BLOB_ARRAY" labels="Partner Organization|Top-Most Executive Contact|Potential Role in GlycoNet's Legacy" multiple="true">
             <![CDATA[
-                <h3>Potential GlycoNet Partners for Cycle II</h3>
-                <p>GlycoNet management is compiling a list of potential partners who may be interested in working with the network in Cycle II. Potential partnerships could be at the network level or with individual projects, and could involve industry, government, foundations, etc. Please fill in the following table with any contacts that you may have.</p>
+                <h3>Potential GlycoNet Partners for Legacy</h3>
+                <p>GlycoNet management is compiling a list of potential partners who may be interested in working with the network after Cycle II. Potential partnerships could be at the network level or with individual projects, and could involve industry, government, foundations, etc. Please fill in the following table with any contacts that you may have.</p>
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" type="EditableReportSection" blobSection="CCV" name="CCV" title="CCV">
+        <ReportItem id="ccv" type="UploadReportItem" blobItem="CCV" blobSubItem="{$my_id}" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <p><b>CCV Upload (PDF)</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <If id="is_pl" if="{contains({$my_full_roles},PL)}">
+            <!-- Project Leader View -->
+            <ReportItemSet id="people" type="ProjectPeopleNoLeadersReportItemSet" roles="NI,NFI,CI,AR,OldNI,FAKENI">
+                <If id="if_null" if="{!=({getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})},)}">
+                    <![CDATA[
+                        <p><b>{$user_name}</b><br />
+                        <a href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={getBlobMD5(RP_PROGRESS,CCV,CCV,{$user_id},0,{$project_id})}&mime=application/pdf'>Download CCV</a></p>
+                    ]]>
+                </If>
+            </ReportItemSet>
+        </If>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
