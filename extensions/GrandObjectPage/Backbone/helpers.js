@@ -404,6 +404,7 @@ HTML.Select = function(view, attr, options){
         else{
             view.model.set(attr, $(e.target).val());
         }
+        console.log(view.model.toJSON());
     };
     view.undelegate('change', 'select[name=' + HTML.Name(attr) + ']');
     view.delegate('change', 'select[name=' + HTML.Name(attr) + ']', view.events['change select[name=' + HTML.Name(attr) + ']']);
@@ -463,7 +464,6 @@ HTML.MiscAutoComplete = function(view, attr, options){
             }
         });
     };
-    console.log(options.misc);
     var events = view.events;
     events['change input[name=' + HTML.Name(attr) + '_misc]'] = evt;
     _.defer(function(){

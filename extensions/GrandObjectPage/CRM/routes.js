@@ -29,6 +29,10 @@ PageRouter = Backbone.Router.extend({
 // Initiate the router
 var pageRouter = new PageRouter;
 
+allPeople = new People();
+allPeople.simple = true;
+allPeople.fetch();
+
 pageRouter.on('route:showCRMContactsTable', function(){
     // Get All CRMContacts
     var contacts = new CRMContacts();

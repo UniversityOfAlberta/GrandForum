@@ -1,5 +1,10 @@
 <%= task %><br />
 <table>
+    <% if(assignee.id != null && assignee.id != 0){ console.log(assignee.id); %>
+        <tr>
+            <td><b>Assignee:</b></td><td><a href="<%= assignee.url %>"><%= assignee.name %></a></td>
+        </tr>
+    <% } %>
     <tr>
         <td><b>Due Date:</b></td><td><%= dueDate %></td>
     </tr>

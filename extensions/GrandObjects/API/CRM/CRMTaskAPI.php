@@ -19,6 +19,7 @@ class CRMTaskAPI extends RESTAPI {
         if(CRMTask::isAllowedToCreate()){
             $task = new CRMTask(array());
             $task->opportunity = $this->POST('opportunity');
+            $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->transactions = $this->POST('transactions');
@@ -34,10 +35,12 @@ class CRMTaskAPI extends RESTAPI {
     function doPUT(){
         $task = CRMTask::newFromId($this->getParam('id'));
         if($task->isAllowedToEdit()){
+            $task->assignee = $this->POST('assignee')->id;
             $task->task = $this->POST('task');
             $task->dueDate = $this->POST('dueDate');
             $task->transactions = $this->POST('transactions');
             $task->status = $this->POST('status');
+            $task->update();
             return $task->toJSON();
         }
         else{

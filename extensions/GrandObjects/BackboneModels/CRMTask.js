@@ -12,6 +12,9 @@ CRMTask = Backbone.Model.extend({
         return{
             id: null,
             opportunity: "",
+            assignee: {id: "",
+                       name: "",
+                       url: ""},
             task: "",
             dueDate: "",
             transactions: new Array(),

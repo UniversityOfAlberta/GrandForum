@@ -13,6 +13,9 @@ CRMTaskEditView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        _.defer(function(){
+            this.$('select[name=assignee_id]').chosen();
+        }.bind(this));
         return this.$el;
     }
 

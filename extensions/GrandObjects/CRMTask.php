@@ -8,6 +8,7 @@ class CRMTask extends BackboneModel {
 
     var $id;
     var $opportunity;
+    var $assignee;
     var $task;
     var $dueDate;
     var $transactions;
@@ -36,6 +37,7 @@ class CRMTask extends BackboneModel {
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->opportunity = $data[0]['opportunity'];
+		    $this->assignee = $data[0]['assignee'];
 		    $this->task = $data[0]['task'];
 		    $this->dueDate = $data[0]['due_date'];
 		    $this->transactions = json_decode($data[0]['transactions']);
@@ -49,6 +51,14 @@ class CRMTask extends BackboneModel {
 	
 	function getOpportunity(){
 	    return CRMOpportunity::newFromId($this->opportunity);
+	}
+	
+	function getAssignee(){
+	    return $this->assignee;
+	}
+	
+	function getPerson(){
+	    return Person::newFromId($this->assignee);
 	}
 	
 	function getTask(){
@@ -80,8 +90,14 @@ class CRMTask extends BackboneModel {
     }
 	
 	function toArray(){
+	    $person = $this->getPerson();
+	    $assignee = array('id' => $person->getId(),
+	                      'name' => $person->getNameForForms(),
+	                      'url' => $person->getUrl());
+	                   
 	    $json = array('id' => $this->getId(),
 	                  'opportunity' => $this->getOpportunity()->getId(),
+	                  'assignee' => $assignee,
 	                  'task' => $this->getTask(),
 	                  'dueDate' => $this->getDueDate(),
 	                  'transactions' => $this->getTransactions(),
@@ -90,8 +106,9 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function create(){
-	    DBFunctions::insert('grand_crm_opportunity',
+	    DBFunctions::insert('grand_crm_task',
 	                        array('opportunity' => $this->opportunity,
+	                              'assignee' => $this->assignee,
 	                              'task' => $this->task,
 	                              'due_date' => $this->dueDate,
 	                              'transactions' => json_encode($this->transactions),
@@ -100,8 +117,9 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function update(){
-	    DBFunctions::update('grand_crm_opportunity',
+	    DBFunctions::update('grand_crm_task',
 	                        array('opportunity' => $this->opportunity,
+	                              'assignee' => $this->assignee,
 	                              'task' => $this->task,
 	                              'due_date' => $this->dueDate,
 	                              'transactions' => json_encode($this->transactions),
