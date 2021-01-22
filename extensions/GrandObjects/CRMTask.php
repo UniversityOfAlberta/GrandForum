@@ -28,7 +28,10 @@ class CRMTask extends BackboneModel {
 	                                array('opportunity' => $opportunity_id));
 	    $tasks = array();
 	    foreach($data as $row){
-	        $tasks[] = new CRMTask(array($row));
+	        $task = new CRMTask(array($row));
+	        if($task->isAllowedToView()){
+	            $tasks[] = $task;
+	        }
 	    }
 	    return $tasks;
 	}
@@ -90,19 +93,22 @@ class CRMTask extends BackboneModel {
     }
 	
 	function toArray(){
-	    $person = $this->getPerson();
-	    $assignee = array('id' => $person->getId(),
-	                      'name' => $person->getNameForForms(),
-	                      'url' => $person->getUrl());
-	                   
-	    $json = array('id' => $this->getId(),
-	                  'opportunity' => $this->getOpportunity()->getId(),
-	                  'assignee' => $assignee,
-	                  'task' => $this->getTask(),
-	                  'dueDate' => $this->getDueDate(),
-	                  'transactions' => $this->getTransactions(),
-	                  'status' => $this->getStatus());
-	    return $json;
+	    if($this->isAllowedToView()){
+	        $person = $this->getPerson();
+	        $assignee = array('id' => $person->getId(),
+	                          'name' => $person->getNameForForms(),
+	                          'url' => $person->getUrl());
+	                       
+	        $json = array('id' => $this->getId(),
+	                      'opportunity' => $this->getOpportunity()->getId(),
+	                      'assignee' => $assignee,
+	                      'task' => $this->getTask(),
+	                      'dueDate' => $this->getDueDate(),
+	                      'transactions' => $this->getTransactions(),
+	                      'status' => $this->getStatus());
+	        return $json;
+	    }
+	    return array();
 	}
 	
 	function create(){

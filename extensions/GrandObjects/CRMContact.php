@@ -29,7 +29,10 @@ class CRMContact extends BackboneModel {
 	                                array());
 	    $contacts = array();
 	    foreach($data as $row){
-	        $contacts[] = CRMContact::newFromId($row['id']);
+	        $contact = CRMContact::newFromId($row['id']);
+	        if($contact->isAllowedToView()){
+	            $contacts[] = $contact;
+	        }
 	    }
 	    return $contacts;
 	}
@@ -91,29 +94,32 @@ class CRMContact extends BackboneModel {
     }
 	
 	function toArray(){
-	    $person = $this->getPerson();
-	    $owner = array('id' => $person->getId(),
-	                   'name' => $person->getNameForForms(),
-	                   'url' => $person->getUrl());
-	    $opportunities = array();
-	    foreach($this->getOpportunities() as $opportunity){
-	        $opp = $opportunity->toArray();
-	        $tasks = array();
-	        foreach($opportunity->getTasks() as $task){
-	            $tasks[] = $task->toArray();
+	    if($this->isAllowedToView()){
+	        $person = $this->getPerson();
+	        $owner = array('id' => $person->getId(),
+	                       'name' => $person->getNameForForms(),
+	                       'url' => $person->getUrl());
+	        $opportunities = array();
+	        foreach($this->getOpportunities() as $opportunity){
+	            $opp = $opportunity->toArray();
+	            $tasks = array();
+	            foreach($opportunity->getTasks() as $task){
+	                $tasks[] = $task->toArray();
+	            }
+	            $opp['tasks'] = $tasks;
+	            $opportunities[] = $opp;
 	        }
-	        $opp['tasks'] = $tasks;
-	        $opportunities[] = $opp;
+	        
+	        $json = array('id' => $this->getId(),
+	                      'title' => $this->getTitle(),
+	                      'owner' => $owner,
+	                      'details' => $this->getDetails(),
+	                      'url' => $this->getUrl(),
+	                      'isAllowedToEdit' => $this->isAllowedToEdit(),
+	                      'opportunities' => $opportunities);
+	        return $json;
 	    }
-	    
-	    $json = array('id' => $this->getId(),
-	                  'title' => $this->getTitle(),
-	                  'owner' => $owner,
-	                  'details' => $this->getDetails(),
-	                  'url' => $this->getUrl(),
-	                  'isAllowedToEdit' => $this->isAllowedToEdit(),
-	                  'opportunities' => $opportunities);
-	    return $json;
+	    return null;
 	}
 	
 	function create(){

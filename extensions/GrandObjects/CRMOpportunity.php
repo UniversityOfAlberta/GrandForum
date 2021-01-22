@@ -25,7 +25,10 @@ class CRMOpportunity extends BackboneModel {
 	                                array('contact' => $contact_id));
 	    $opportunities = array();
 	    foreach($data as $row){
-	        $opportunities[] = new CRMOpportunity(array($row));
+	        $opportunity = new CRMOpportunity(array($row));
+	        if($opportunity->isAllowedToView()){
+	            $opportunities[] = $opportunity;
+	        }
 	    }
 	    return $opportunities;
 	}
@@ -72,11 +75,14 @@ class CRMOpportunity extends BackboneModel {
     }
 	
 	function toArray(){
-	    $json = array('id' => $this->getId(),
-	                  'contact' => $this->getContact()->getId(),
-	                  'description' => $this->getDescription(),
-	                  'category' => $this->getCategory());
-	    return $json;
+	    if($this->isAllowedToView()){
+	        $json = array('id' => $this->getId(),
+	                      'contact' => $this->getContact()->getId(),
+	                      'description' => $this->getDescription(),
+	                      'category' => $this->getCategory());
+	        return $json;
+	    }
+	    return array();
 	}
 	
 	function create(){
