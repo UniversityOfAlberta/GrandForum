@@ -1,5 +1,8 @@
 CRMContactEditView = Backbone.View.extend({
 
+    subViews: [],
+    saving: false,
+
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
@@ -19,9 +22,14 @@ CRMContactEditView = Backbone.View.extend({
     save: function(){
         this.$(".throbber").show();
         this.$("#save").prop('disabled', true);
+        this.saving = true;
         this.model.save(null, {
+            silent: true,
             success: function(){
                 this.saveOpportunities();
+                _.defer(function(){
+                    this.saving = false;
+                }.bind(this));
             }.bind(this),
             error: function(o, e){
                 this.$(".throbber").hide();
@@ -33,6 +41,9 @@ CRMContactEditView = Backbone.View.extend({
                 else{
                     addError("There was a problem saving the Contact", true);
                 }
+                _.defer(function(){
+                    this.saving = false;
+                }.bind(this));
             }.bind(this)
         });
     },
@@ -40,7 +51,7 @@ CRMContactEditView = Backbone.View.extend({
     saveOpportunities: function(){
         var xhrs = [];
         this.model.opportunities.each(function(model){
-            xhrs.push(model.save());
+            xhrs.push(model.save(null, {silent: true}));
         });
         $.when.apply(null, xhrs).done(function(){
             this.saveTasks();
@@ -51,7 +62,7 @@ CRMContactEditView = Backbone.View.extend({
         var xhrs = [];
         this.model.opportunities.each(function(model){
             model.tasks.each(function(task){
-                xhrs.push(task.save());
+                xhrs.push(task.save(null, {silent: true}));
             });
         });
         $.when.apply(null, xhrs).done(function(){
@@ -73,17 +84,24 @@ CRMContactEditView = Backbone.View.extend({
     },
         
     renderOpportunities: function(){
+        _.each(this.subViews, function(view){
+            view.remove();
+        }.bind(this));
+        this.subViews = new Array();
         this.$("#opportunities").empty();
         this.model.opportunities.each(function(model){
             var view = new CRMOpportunityEditView({model: model});
             this.$("#opportunities").append(view.render());
+            this.subViews.push(view);
         }.bind(this));
     },
     
     render: function(){
-        main.set('title', this.model.get('title'));
-        this.$el.html(this.template(this.model.toJSON()));
-        this.renderOpportunities();
+        if(!this.saving){
+            console.log("RENDER CONTACT");
+            main.set('title', this.model.get('title'));
+            this.$el.html(this.template(this.model.toJSON()));
+        }
         return this.$el;
     }
 

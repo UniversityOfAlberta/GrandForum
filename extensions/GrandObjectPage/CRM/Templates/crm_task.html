@@ -1,6 +1,6 @@
 <%= task %><br />
 <table>
-    <% if(assignee.id != null && assignee.id != 0){ console.log(assignee.id); %>
+    <% if(assignee.id != null && assignee.id != 0){ %>
         <tr>
             <td><b>Assignee:</b></td><td><a href="<%= assignee.url %>"><%= assignee.name %></a></td>
         </tr>

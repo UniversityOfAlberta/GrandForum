@@ -1,6 +1,7 @@
 CRMTaskEditView = Backbone.View.extend({
 
     tagName: "li",
+    saving: false,
 
     initialize: function(){
         this.listenTo(this.model, "sync", this.render);
@@ -12,6 +13,7 @@ CRMTaskEditView = Backbone.View.extend({
     },
     
     render: function(){
+        console.log("RENDER TASK");
         this.$el.html(this.template(this.model.toJSON()));
         _.defer(function(){
             this.$('select[name=assignee_id]').chosen();
