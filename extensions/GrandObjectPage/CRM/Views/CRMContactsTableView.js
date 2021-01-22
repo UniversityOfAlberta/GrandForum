@@ -4,7 +4,7 @@ CRMContactsTableView = Backbone.View.extend({
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
         this.template = _.template($('#crm_contacts_table_template').html());
-        main.set('title', 'Contacts');
+        main.set('title', 'Manage CRM');
         this.listenTo(this.model, "remove", this.render);
     },
        

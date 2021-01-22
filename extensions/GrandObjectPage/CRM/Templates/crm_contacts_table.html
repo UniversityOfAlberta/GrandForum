@@ -4,16 +4,44 @@
         <tr>
             <th>Contact</th>
             <th>Owner</th>
+            <th width="1%">Opportunities</th>
+            <th width="1%">Tasks</th>
         </tr>
     </thead>
     <tbody>
         <% this.model.each(function(contact){ %>
             <tr>
                 <td>
-                    <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a>
+                    <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
+                    <%= contact.get('details').email %>
                 </td>
                 <td>
                     <a href="<%= contact.get('owner').url %>"><%= contact.get('owner').name %></a>
+                </td>
+                <td align="right">
+                    <div style="display:none;">
+                        <% _.each(contact.get('opportunities'), function(opportunity){ %>
+                            <span class="category"><%= opportunity.category %></span>
+                            <span class="description"><%= opportunity.description %></span>
+                        <% }) %>
+                    </div>
+                    <%= contact.get('opportunities').length %>
+                </td>
+                <td align="right">
+                    <div style="display:none;">
+                        <% var sum = 0;
+                            _.each(contact.get('opportunities'), function(opportunity){
+                                sum += opportunity.tasks.length;
+                                _.each(opportunity.tasks, function(task){ %>
+                                    <span class="task"><%= task.task %></span>
+                                    <span class="assignee"><%= task.assignee.name %></span>
+                                    <span class="dueDate"><%= task.dueDate %></span>
+                                    <span class="status"><%= task.status %></span>
+                                    <span class="transactions"><%= task.transactions %></span>
+                        <%      })
+                            }) %>
+                    </div>
+                    <%= sum %>
                 </td>
             </tr>
         <% }) %>

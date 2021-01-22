@@ -95,13 +95,24 @@ class CRMContact extends BackboneModel {
 	    $owner = array('id' => $person->getId(),
 	                   'name' => $person->getNameForForms(),
 	                   'url' => $person->getUrl());
+	    $opportunities = array();
+	    foreach($this->getOpportunities() as $opportunity){
+	        $opp = $opportunity->toArray();
+	        $tasks = array();
+	        foreach($opportunity->getTasks() as $task){
+	            $tasks[] = $task->toArray();
+	        }
+	        $opp['tasks'] = $tasks;
+	        $opportunities[] = $opp;
+	    }
 	    
 	    $json = array('id' => $this->getId(),
 	                  'title' => $this->getTitle(),
 	                  'owner' => $owner,
 	                  'details' => $this->getDetails(),
 	                  'url' => $this->getUrl(),
-	                  'isAllowedToEdit' => $this->isAllowedToEdit());
+	                  'isAllowedToEdit' => $this->isAllowedToEdit(),
+	                  'opportunities' => $opportunities);
 	    return $json;
 	}
 	
