@@ -345,7 +345,7 @@
                 <![CDATA[
                     <h3>Comments</h3>
                     <p>If any of the milestones have been delayed or abandoned, please comment on them below.<br />
-                        <b>Please Note:</b> If a new milestone is to be added, it must first be approved by the RMC.
+                        <b>Please Note:</b> If a new milestone is to be added, please provide a justification.
                     </p>
                     {$item}
                 ]]>
