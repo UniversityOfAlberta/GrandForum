@@ -4,8 +4,9 @@ CRMOpportunityEditView = Backbone.View.extend({
     saving: false,
 
     initialize: function(){
+        this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model.tasks, "sync", this.renderTasks);
+        //this.listenTo(this.model.tasks, "sync", this.renderTasks);
         this.listenTo(this.model.tasks, "add", this.renderTasks);
         this.listenTo(this.model.tasks, "remove", this.renderTasks);
         this.template = _.template($('#crm_opportunity_edit_template').html());
@@ -33,9 +34,10 @@ CRMOpportunityEditView = Backbone.View.extend({
     },
     
     render: function(){
-        console.log("RENDER OPPORTUNITY");
-        this.$el.html(this.template(this.model.toJSON()));
-        this.$el.addClass("opportunity");
+        if(!this.model.saving){
+            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.addClass("opportunity");
+        }
         return this.$el;
     }
 

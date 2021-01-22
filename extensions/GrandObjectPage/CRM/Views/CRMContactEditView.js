@@ -4,9 +4,10 @@ CRMContactEditView = Backbone.View.extend({
     saving: false,
 
     initialize: function(){
+        this.model.saving = false;
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
+        //this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
         this.listenTo(this.model.opportunities, "remove", this.renderOpportunities);
         this.listenTo(this.model, "change:title", function(){
@@ -22,13 +23,12 @@ CRMContactEditView = Backbone.View.extend({
     save: function(){
         this.$(".throbber").show();
         this.$("#save").prop('disabled', true);
-        this.saving = true;
+        this.model.saving = true;
         this.model.save(null, {
-            silent: true,
             success: function(){
                 this.saveOpportunities();
                 _.defer(function(){
-                    this.saving = false;
+                    this.model.saving = false;
                 }.bind(this));
             }.bind(this),
             error: function(o, e){
@@ -42,7 +42,7 @@ CRMContactEditView = Backbone.View.extend({
                     addError("There was a problem saving the Contact", true);
                 }
                 _.defer(function(){
-                    this.saving = false;
+                    this.model.saving = false;
                 }.bind(this));
             }.bind(this)
         });
@@ -51,7 +51,19 @@ CRMContactEditView = Backbone.View.extend({
     saveOpportunities: function(){
         var xhrs = [];
         this.model.opportunities.each(function(model){
-            xhrs.push(model.save(null, {silent: true}));
+            model.saving = true;
+            xhrs.push(model.save(null, {
+                success: function(){
+                    _.defer(function(){
+                        model.saving = false;
+                    }.bind(this));
+                },
+                error: function(){
+                    _.defer(function(){
+                        model.saving = false;
+                    }.bind(this));
+                }
+            }));
         });
         $.when.apply(null, xhrs).done(function(){
             this.saveTasks();
@@ -62,7 +74,19 @@ CRMContactEditView = Backbone.View.extend({
         var xhrs = [];
         this.model.opportunities.each(function(model){
             model.tasks.each(function(task){
-                xhrs.push(task.save(null, {silent: true}));
+                task.saving = true;
+                xhrs.push(task.save(null, {
+                    success: function(){
+                        _.defer(function(){
+                            task.saving = false;
+                        }.bind(this));
+                    },
+                    error: function(){
+                        _.defer(function(){
+                            task.saving = false;
+                        }.bind(this));
+                    }
+                }));
             });
         });
         $.when.apply(null, xhrs).done(function(){
@@ -97,8 +121,7 @@ CRMContactEditView = Backbone.View.extend({
     },
     
     render: function(){
-        if(!this.saving){
-            console.log("RENDER CONTACT");
+        if(!this.model.saving){
             main.set('title', this.model.get('title'));
             this.$el.html(this.template(this.model.toJSON()));
         }

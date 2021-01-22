@@ -1,9 +1,9 @@
 CRMTaskEditView = Backbone.View.extend({
 
     tagName: "li",
-    saving: false,
 
     initialize: function(){
+        this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
         this.template = _.template($('#crm_task_edit_template').html());
     },
@@ -13,11 +13,12 @@ CRMTaskEditView = Backbone.View.extend({
     },
     
     render: function(){
-        console.log("RENDER TASK");
-        this.$el.html(this.template(this.model.toJSON()));
-        _.defer(function(){
-            this.$('select[name=assignee_id]').chosen();
-        }.bind(this));
+        if(!this.model.saving){
+            this.$el.html(this.template(this.model.toJSON()));
+            _.defer(function(){
+                this.$('select[name=assignee_id]').chosen();
+            }.bind(this));
+        }
         return this.$el;
     }
 
