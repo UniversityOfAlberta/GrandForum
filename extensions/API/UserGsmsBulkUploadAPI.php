@@ -58,7 +58,8 @@ class UserGsmsBulkUploadAPI extends API{
                 strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Waiting for Response") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Incoming") !== false ||
-                strstr($data_array[$gsms_id]['folder'], "Admit") !== false)){
+                strstr($data_array[$gsms_id]['folder'], "Admit") !== false ||
+                strstr($data_array[$gsms_id]['folder'], "Review in Progress") !== false)){
                 $row[14] = $data_array[$gsms_id]['admission_program_name'];
                 $row[20] = $data_array[$gsms_id]['folder'];
             }
