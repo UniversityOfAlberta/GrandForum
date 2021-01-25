@@ -23,7 +23,10 @@ class PDFReportItem extends StaticReportItem {
             }
         }
         $person = Person::newFromId($this->personId);
-        $projects = array_merge(array($project), $project->getPreds());
+        $projects = array();
+        if($project != null){
+            $projects = array_merge(array($project), $project->getPreds());
+        }
         $found = false;
         foreach($projects as $project){
             $report = new DummyReport($reportType, $person, $project, $year, true);
