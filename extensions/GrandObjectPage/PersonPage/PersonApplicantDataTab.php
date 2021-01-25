@@ -120,7 +120,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                             <table style='float: left'>";
                 $this->html .= "<tr>";
                 $epltest = ($gsms['epl_test'] != "") ? $gsms['epl_test'] : '--';
-                $this->html .= "<td><b>EPL Test:</b></td>
+                $this->html .= "<td><b>ELP Test:</b></td>
                                     <td align='right'>{$epltest}</td>
                                 </tr>
                                 <tr>";
@@ -137,7 +137,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "<table style='float: left; margin-left:5px;'>
                                 <tr>";
                 $score = ($gsms['epl_score'] != "") ? $gsms['epl_score'] : '--';
-                $this->html .= "<td><b>EPL Score:</b></td>
+                $this->html .= "<td><b>ELP Score:</b></td>
                                     <td align='right'>{$score}</td>
                                 </tr>
                                 <tr>";
@@ -304,11 +304,11 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "<td class='text'>{$gsms->education_history}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
-                $this->html .= "<td class='label'>EPL Test</td>";
+                $this->html .= "<td class='label'>ELP Test</td>";
                 $this->html .= "<td class='text'>{$gsms->epl_test}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
-                $this->html .= "<td class='label'>EPL Score</td>";
+                $this->html .= "<td class='label'>ELP Score</td>";
                 $this->html .= "<td class='text'>{$gsms->epl_score}</td>";
                 $this->html .= "</tr>";
                 $this->html .= "<tr>";
@@ -496,12 +496,12 @@ class PersonApplicantDataTab extends AbstractEditableTab {
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
-        $this->html .= "<td class='label'>EPL Test: </td>";
+        $this->html .= "<td class='label'>ELP Test: </td>";
         $this->html .= "<td><input name='epl_test' style='width:100px' type='number' value='{$gsms->epl_test}' /></td>";
         $this->html .= "</tr>";
 
         $this->html .= "<tr>";
-        $this->html .= "<td class='label'>EPL Score: </td>";
+        $this->html .= "<td class='label'>ELP Score: </td>";
         $this->html .= "<td><input name='epl_score' style='width:100px' type='number' value='{$gsms->epl_score}' /></td>";
         $this->html .= "</tr>";
 
