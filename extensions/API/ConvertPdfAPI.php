@@ -22,6 +22,37 @@ class ConvertPdfAPI extends API{
         return trim($substr);
     }
     
+    function get_duolingo($string){
+        $duolingo = array();
+        $lines = $this->get_lines_between($string, "CERTIFICATE", "Learn more:&#160;<a href=\"https://englishtest.duolingo.com/scores\">englishtest.duolingo.com/scores</a>");
+        if(count($lines) > 0){
+            $duolingo['epl_test'] = "DUOL";
+            foreach($lines as $line){
+                if(strstr($line, "Overall") !== false){
+                    $line = @explode(" ", $line);
+                    $duolingo['epl_score'] = @$line[0];
+                }
+                else if(strstr($line, "Literacy") !== false){
+                    $line = @explode(" ", $line);
+                    $duolingo['epl_read'] = @$line[0];
+                }
+                else if(strstr($line, "Conversation") !== false){
+                    $line = @explode(" ", $line);
+                    $duolingo['epl_speaking'] = @$line[0];
+                }
+                else if(strstr($line, "Comprehension") !== false){
+                    $line = @explode(" ", $line);
+                    $duolingo['epl_listen'] = @$line[0];
+                }
+                else if(strstr($line, "Production") !== false){
+                    $line = @explode(" ", $line);
+                    $duolingo['epl_write'] = @$line[0];
+                }
+            }
+        }
+        return $duolingo;
+    }
+    
     function get_education($string){
         $start = "<b>Reason:</b>";
         $end = "Other&#160;Comments";
@@ -105,6 +136,7 @@ class ConvertPdfAPI extends API{
         }
         
         $education = $this->get_education($contents);
+        $data['duolingo'] = $this->get_duolingo($contents);
         $key = -1;
         foreach($education as $index => $line){
             $data['Education'][$index] = $line;
@@ -222,6 +254,8 @@ class ConvertPdfAPI extends API{
                 unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
+                $duolingo = $data['duolingo'];
+                unset($data['duolingo']);
                 $sdata = serialize($data);
                 unset($data);
 		        if(count(DBFunctions::select(array('grand_sop'),
@@ -231,7 +265,16 @@ class ConvertPdfAPI extends API{
                     DBFunctions::update('grand_sop',
                                         array('pdf_data' => $sdata),
                                         array('user_id' => EQ($userId)));
-            
+                    if(count($duolingo) > 0){
+                        $gsms_sheet = GsmsData::newFromUserId($userId);
+                        $gsms_sheet->epl_test = $duolingo['epl_test'];
+                        $gsms_sheet->epl_score = $duolingo['epl_score'];
+                        $gsms_sheet->epl_listen = $duolingo['epl_listen'];
+                        $gsms_sheet->epl_write = $duolingo['epl_write'];
+                        $gsms_sheet->epl_read = $duolingo['epl_read'];
+                        $gsms_sheet->epl_speaking = $duolingo['epl_speaking'];
+                        $gsms_sheet->update();
+                    }
                     $sql = "update grand_sop 
 	                    set pdf_contents = '$content_parsed'
 	                    where user_id = '$userId'";
