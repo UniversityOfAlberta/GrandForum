@@ -189,21 +189,23 @@ class UserGsmsBulkUploadAPI extends API{
                     $gsms_sheet->applicant_type = @$student['applicant_type'];
                     $gsms_sheet->education_history = @$student['education_history'];
                     $gsms_sheet->department = @$student['department'];
-                    if($alreadyProcessed && $gsms_sheet->epl_test != "" && $gsms_sheet->epl_test != @$student['epl_test']){
-                        $gsms_sheet->epl_test .= @",{$student['epl_test']}";
-                        $gsms_sheet->epl_score .= @",{$student['epl_score']}";
-                        $gsms_sheet->epl_listen .= @",{$student['epl_listen']}";
-                        $gsms_sheet->epl_write .= @",{$student['epl_write']}";
-                        $gsms_sheet->epl_read .= @",{$student['epl_read']}";
-                        $gsms_sheet->epl_speaking .= @",{$student['epl_speaking']}";
-                    }
-                    else{
-                        $gsms_sheet->epl_test = @$student['epl_test'];
-                        $gsms_sheet->epl_score = @$student['epl_score'];
-                        $gsms_sheet->epl_listen = @$student['epl_listen'];
-                        $gsms_sheet->epl_write = @$student['epl_write'];
-                        $gsms_sheet->epl_read = @$student['epl_read'];
-                        $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                    if(@$student['epl_test'] != ""){
+                        if($alreadyProcessed && $gsms_sheet->epl_test != "" && $gsms_sheet->epl_test != @$student['epl_test']){
+                            $gsms_sheet->epl_test .= @",{$student['epl_test']}";
+                            $gsms_sheet->epl_score .= @",{$student['epl_score']}";
+                            $gsms_sheet->epl_listen .= @",{$student['epl_listen']}";
+                            $gsms_sheet->epl_write .= @",{$student['epl_write']}";
+                            $gsms_sheet->epl_read .= @",{$student['epl_read']}";
+                            $gsms_sheet->epl_speaking .= @",{$student['epl_speaking']}";
+                        }
+                        else{
+                            $gsms_sheet->epl_test = @$student['epl_test'];
+                            $gsms_sheet->epl_score = @$student['epl_score'];
+                            $gsms_sheet->epl_listen = @$student['epl_listen'];
+                            $gsms_sheet->epl_write = @$student['epl_write'];
+                            $gsms_sheet->epl_read = @$student['epl_read'];
+                            $gsms_sheet->epl_speaking = @$student['epl_speaking'];
+                        }
                     }
                     /*$gsms_sheet->epl_test = @$student['epl_test'];
                     $gsms_sheet->epl_score = @$student['epl_score'];
