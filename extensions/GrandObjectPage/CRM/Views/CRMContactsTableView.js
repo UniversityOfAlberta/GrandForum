@@ -16,12 +16,14 @@ CRMContactsTableView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         this.$("table#contacts").DataTable({
             "autoWidth": true,
-            'iDisplayLength': 100,
-            'dom': 'Blfrtip',
-            'buttons': [
-                'excel', 'pdf'
-            ]
+            'bPaginate': false,
+            'iDisplayLength': -1,
+            'order': [[ 1, "asc" ]],
+            'aLengthMenu': [[-1], ['All']]
         });
+        this.$('#contacts_wrapper').prepend("<div id='contacts_length' class='dataTables_length'></div>");
+	    this.$("#contacts_length").empty();
+	    this.$("#contacts_length").append(this.$("#addContact").detach());
         return this.$el;
     }
 

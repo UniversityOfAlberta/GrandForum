@@ -1,7 +1,8 @@
-<p><a href="#/new" class="button" id="add">Add Contact</a></p>
+<a id="addContact" href="#/new" class="button" id="add">Add Contact</a>
 <table id="contacts" frame="box" rules="all">
     <thead>
         <tr>
+            <th width="1%">Edit</th>
             <th>Contact</th>
             <th>Owner</th>
             <th width="1%">Opportunities</th>
@@ -11,6 +12,9 @@
     <tbody>
         <% this.model.each(function(contact){ %>
             <tr>
+                <td align="center">
+                    <span class="edit-icon"></span>
+                </td>
                 <td>
                     <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
                     <%= contact.get('details').email %>
