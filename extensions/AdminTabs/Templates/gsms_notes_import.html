@@ -1,0 +1,9 @@
+<div id="gsms_notes_tab">
+        <h2>GSMS CSV Bulk Upload</h2>
+        <p>Please upload an Excel/CSV file containing rows with the format "GSMS ID","Notes"</p>
+        <iframe name="fileUpload" style="display:none;"></iframe>
+        <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.userGsmsNotesUpload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="gsms_notes" /><br />
+        <form><br />
+        <input id="gsmsUpload" type="button" value="Upload" /> <span class="throbber" style="display:none;"></span>
+</div>

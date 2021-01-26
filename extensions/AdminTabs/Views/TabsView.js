@@ -38,6 +38,13 @@ TabsView = Backbone.View.extend({
                         intervalId3 = null;
                     }
                  }, 100);
+                 var intervalId4 = setInterval(function(){
+                    if($('#tabs-5').is(':visible') && self.subviews.gsmsNotesImport != undefined){
+                        self.subviews.gsmsNotesImport.render();
+                        clearInterval(intervalId4);
+                        intervalId4 = null;
+                    }
+                 }, 100);
                  this.render();
             }.bind(this))
         }.bind(this));
@@ -55,6 +62,9 @@ TabsView = Backbone.View.extend({
         },
         "gsmsOutcomeImport" : function(){
              return new GsmsOutcomeImportView({parent: this, model: new AdminTabsModel()});
+        },
+        "gsmsNotesImport" : function(){
+             return new GsmsNotesImportView({parent: this, model: new AdminTabsModel()});
         },
     },
 

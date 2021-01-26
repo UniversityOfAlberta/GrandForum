@@ -144,6 +144,7 @@ class APIRequest{
         $this->addAction('User Accounts', 'uploadReviewers', 'UploadReviewersAPI');
         $this->addAction('User Accounts', 'uploadUserOTBio', 'UserOTBioAPI');
         $this->addAction('User Accounts', 'userGsmsBulkUpload', 'UserGsmsBulkUploadAPI');
+        $this->addAction('User Accounts', 'userGsmsNotesUpload', 'UserGsmsNotesUploadAPI');
         $this->addAction('User Accounts', 'updateUserFinalAdjudication', 'UpdateUserFinalAdjudicationAPI');
         $this->addAction('User Accounts', 'updateApplicantData', 'UserApplicantDataAPI');
         $this->addAction('User Accounts', 'assignReviewer', 'AssignReviewersAPI');

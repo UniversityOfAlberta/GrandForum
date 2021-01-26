@@ -1,5 +1,5 @@
-GsmsOutcomeImportView = Backbone.View.extend({
-    template: _.template($("#gsms_outcome_import_template").html()),
+GsmsNotesImportView = Backbone.View.extend({
+    template: _.template($("#gsms_notes_import_template").html()),
 
     initialize: function(options){
         this.parent = options.parent;

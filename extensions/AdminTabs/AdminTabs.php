@@ -23,6 +23,7 @@ class AdminTabs extends BackbonePage {
 		     "edit_bio",
 		     "tabs",
 		     "gsms_outcome_import",
+		     "gsms_notes_import",
 		     );
     }
     
@@ -34,6 +35,7 @@ class AdminTabs extends BackbonePage {
 		     "EditBioView",
 		     "TabsView",
 		     "GsmsOutcomeImportView",
+		     "GsmsNotesImportView",
 		     );
     }
     
@@ -66,6 +68,7 @@ class AdminTabs extends BackbonePage {
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Reviewer Assignment", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-2");
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Student Stats Edit", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-3");
             $toolbox['Other']['links'][] = TabUtils::createToolboxLink("GSMS CSV", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-4");
+            $toolbox['Other']['links'][] = TabUtils::createToolboxLink("Notes Upload", "$wgServer$wgScriptPath/index.php/Special:AdminTabs#tabs-5");
         }
         return true;
     }
