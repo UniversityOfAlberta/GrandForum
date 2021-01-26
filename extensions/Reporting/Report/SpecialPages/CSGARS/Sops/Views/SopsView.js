@@ -181,7 +181,8 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '70px' },  // Number of Publications
                                                         { 'width': '70px' },  // Awards
                                                         { 'width': '110px' }, // Courses
-                                                        { 'width': '120px' }, // Reviewers
+                                                        { 'width': '70px' }, // Submitted
+                                                        { 'width': '150px' }, // Reviewers
                                                         { 'width': '70px' },  // Avg Rev Rank
                                                         { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
@@ -226,6 +227,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
                                                         SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
                                                         SopsView.filtersSelected.filterDoB = this.filterDoB.val();
+                                                        SopsView.filtersSelected.filterSubmitted = this.filterSubmitted.val();
                                                         SopsView.filtersSelected.filterValEPLScoreMin = this.filterValEPLScoreMin.val();
                                                         SopsView.filtersSelected.filterValEPLScoreMax = this.filterValEPLScoreMax.val();
                                                         SopsView.filtersSelected.filterValGreVerbalMin = this.filterValGreVerbalMin.val();
@@ -251,6 +253,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.appliedAITF = this.appliedAITF.prop("checked");
                                                         SopsView.filtersSelected.appliedNSERC = this.appliedNSERC.prop("checked");
                                                         SopsView.filtersSelected.filterDoBSpan = this.filterDoBSpan.val();
+                                                        SopsView.filtersSelected.filterSubmittedSpan = this.filterSubmittedSpan.val();
                                                         SopsView.filtersSelected.filterSelectEPLTest = this.filterSelectEPLTest.val();
                                                      }.bind(this)
                                                  });
@@ -384,7 +387,7 @@ SopsView = Backbone.View.extend({
 
     filterDecision: function(settings,data,dataIndex){
         var input = this.filterSelectDecision.chosen().val();
-        var decision = data[26];
+        var decision = data[27];
         if (!_.isEmpty(input)) {
             for (var i = 0; i < input.length; ++i) {
                 if (input[i] == decision) {
@@ -397,7 +400,7 @@ SopsView = Backbone.View.extend({
     },
 
     filterByTags: function(settings,data,dataIndex){
-        var tags = data[23].replace(/<\/?[^>]+(>|$)/g, "").split(",");
+        var tags = data[24].replace(/<\/?[^>]+(>|$)/g, "").split(",");
         if(this.filterByTagsEl.is(':checked')){
             for(j = 0; j < tags.length; j++){
                 var tag = tags[j].replace(/\s/g, '').replace('//','').toLowerCase();
@@ -440,7 +443,7 @@ SopsView = Backbone.View.extend({
 
    filterReviewers: function(settings,data,dataIndex){
         var filterreviewers = this.filterSelectReviewers.chosen().val();
-        var reviewers = unaccentChars(data[20]);
+        var reviewers = unaccentChars(data[21]);
         if (!_.isEmpty(filterreviewers)) {
             for (var i = 0; i < filterreviewers.length; ++i) {
                 if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
@@ -532,6 +535,20 @@ SopsView = Backbone.View.extend({
         var birthday = new Date(data[4]);
         var operator = this.filterDoBSpan.find(":selected").text();
         var filterdate = this.filterDoB.datepicker('getDate');
+
+        var operation = {
+            '--':     function(a, b) { return true; },
+            'before': function(a, b) { if(filterdate){return a < b;} else {return true;} },
+            'after':  function(a, b) { if(filterdate){return a > b;} else {return true;} }
+        };
+
+        return operation[operator](birthday, filterdate);
+    },
+    
+    filterSub: function(settings,data,dataIndex){
+        var birthday = new Date(data[20]);
+        var operator = this.filterSubmittedSpan.find(":selected").text();
+        var filterdate = this.filterSubmitted.datepicker('getDate');
 
         var operation = {
             '--':     function(a, b) { return true; },
@@ -641,7 +658,7 @@ SopsView = Backbone.View.extend({
 
     filterNotes: function(settings,data,dataIndex){
         var input = this.filterNotesEl.val().toUpperCase();
-        var courses = data[22];
+        var courses = data[23];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
         }
@@ -650,7 +667,7 @@ SopsView = Backbone.View.extend({
 
     filterComments: function(settings,data,dataIndex){
         var input = this.filterCommentsEl.val().toUpperCase();
-        var courses = data[23];
+        var courses = data[24];
         if(courses.toUpperCase().indexOf(input) > -1){
                 return true;
         }
@@ -660,7 +677,7 @@ SopsView = Backbone.View.extend({
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if(this.filterMeOnly.is(':checked')){
-            var name = data[20];
+            var name = data[21];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
@@ -717,6 +734,8 @@ SopsView = Backbone.View.extend({
         this.appliedNSERC = this.$('#appliedNSERC');
         this.filterDoB = this.$('#filterDoB');
         this.filterDoBSpan = this.$('#filterDoBSpan');
+        this.filterSubmitted = this.$('#filterSubmitted');
+        this.filterSubmittedSpan = this.$('#filterSubmittedSpan');
         this.filterSelectEPLTest = this.$('#filterSelectEPLTest');
         this.filterValEPLScoreMin = this.$('#filterValEPLScoreMin');
         this.filterValEPLScoreMax = this.$('#filterValEPLScoreMax');
@@ -762,6 +781,7 @@ SopsView = Backbone.View.extend({
         fnField('referenceGPAInputMin');
         fnField('referenceGPAInputMax');
         fnField('filterDoB');
+        fnField('filterSubmitted');
         fnField('filterValEPLScoreMin');
         fnField('filterValEPLScoreMax');
         fnField('filterValGreVerbalMin');
@@ -790,6 +810,7 @@ SopsView = Backbone.View.extend({
         fnCheckbox('filterMeOnly');
 
         fnField('filterDoBSpan');
+        fnField('filterSubmittedSpan');
         fnField('filterSelectEPLTest');
 
         this.addRows();
@@ -811,6 +832,7 @@ SopsView = Backbone.View.extend({
             this.filterScholHeld.bind(this),
             this.filterScholApplied.bind(this),
             this.filterBirthday.bind(this),
+            this.filterSub.bind(this),
             this.filterGREVerbal.bind(this),
             this.filterGREQuantitative.bind(this),
             this.filterGREAnalytical.bind(this),
@@ -830,6 +852,11 @@ SopsView = Backbone.View.extend({
             changeYear: true,
             yearRange: "-100:-18",
             defaultDate: "-18y"
+        });
+        this.$("#filterSubmitted").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
         });
         return this.$el;
     }
@@ -858,6 +885,8 @@ SopsView.filtersSelected = {
     appliedNSERC: null,
     filterDoB: null,
     filterDoBSpan: null,
+    filterSubmitted: null,
+    filterSubmittedSpan: null,
     filterSelectEPLTest: null,
     filterValEPLScoreMin: null,
     filterValEPLScoreMax: null,
