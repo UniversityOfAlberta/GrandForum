@@ -536,6 +536,17 @@
             <td>
           </tr>
           <tr>
+            <td align="right"><b>Submitted:</b></td>
+            <td style="white-space: nowrap;">
+              <select id="filterSubmittedSpan" class="filter_option" style="width: 88px">
+                <option value="" selected="selected">--</option>
+                <option value="before" >before</option>
+                <option value="after">after</option>
+              </select>
+              <input type="text" id="filterSubmitted" class="filter_option" style="width:110px;" />
+            </td>
+          </tr>
+          <tr>
             <td align="right"><b>Notes:</b></td>
             <td>
               <input type="text" class="filter_option" id="filterNotes" placeholder="Search here..." style="width: 205px">
@@ -579,6 +590,7 @@
       <th>Pubs</th>
       <th>Awards</th>
       <th>Courses</th>
+      <th>Submitted</th>
       <!--Reviewer Information-->
       <th>Reviewers (Rank Given)</th>
       <th>Average Reviewer Rank</th>

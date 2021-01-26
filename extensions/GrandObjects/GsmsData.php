@@ -377,7 +377,8 @@ class GsmsData extends BackboneModel{
                   'epl_speaking' => $this->epl_speaking,
                   'folder' => $this->folder,
                   'additional' => $this->getAdditional(),
-                  'gsms_url' => $this->gsms_url);
+                  'gsms_url' => $this->gsms_url,
+                  'submitted_date' => $this->submitted_date);
 
         // Not sure if specific from here //	
         //sop information needed in table
