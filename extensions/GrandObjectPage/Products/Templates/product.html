@@ -25,7 +25,7 @@
                         <%= data[index] %>
                     <% } else if(val.type == "URL"){ %>
                         <a href="<%= data[index] %>" target="_blank"><%= data[index] %></a>
-                    <% } else if(val.type == "File" || val.type == "PPT"){
+                    <% } else if(val.type == "File" || val.type == "PPT" || val.type == "PDF"){
                         var dataStr = data[index]['data'].split(';base64,')[1]
                         var type = data[index]['data'].split(';base64,')[0].replace(/data:/,'')
                         var byteCharacters = atob(data[index]['data'].split(',')[1]);
@@ -37,7 +37,7 @@
                         blob = new Blob([byteArray], {type: type});
                         var blobUrl = URL.createObjectURL(blob);
                     %>
-                        <% if(val.type == "PPT" && data[index]['filename'].match(/.*(\.ods)|(\.odp)|(\.odt)|(\.pdf)/)){ %>
+                        <% if((val.type == "PPT" || val.type == "PDF") && data[index]['filename'].match(/.*(\.ods)|(\.odp)|(\.odt)|(\.pdf)/)){ %>
                             <iframe src="<%= wgServer + wgScriptPath %>/scripts/ViewerJS/#<%= wgServer + wgScriptPath %>/index.php?action=api.productFile/<%= id %>/file/<%= data[index]['filename'] %>" style="width:600px; height:450px;" frameborder="0" allowfullscreen="true"></iframe>
                         <% } else { %>
                             <a download="<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>" href="<%= blobUrl %>" onClick="if(window.navigator.msSaveOrOpenBlob){ window.navigator.msSaveOrOpenBlob(blob, '<%= data[index]['filename'].replace(/"/, "").replace(/'/, "") %>'); }" target="_blank"><%= data[index]['filename'] %></a>
