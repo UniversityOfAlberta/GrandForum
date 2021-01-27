@@ -66,7 +66,7 @@ class ConvertPdfAPI extends API{
         $id = -1;
         foreach($lines as $line){
             if($startFound && strstr($line, $end) !== false){
-                break;
+                return $educations;
             }
             if($startFound){
                 if(strstr($line, "PDF Created by University of Alberta") !== false ||
@@ -90,7 +90,7 @@ class ConvertPdfAPI extends API{
                 $startFound = true;
             }
         }
-        return $educations;
+        return array();
     }
     
     function get_lines_between($string, $start, $end){
