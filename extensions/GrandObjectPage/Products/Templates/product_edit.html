@@ -90,6 +90,8 @@
                         <%= HTML.Select(this, 'data.' + index, {options: val.options}) %>
                     <% } else if(val.type == "File"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30}) %>
+                    <% } else if(val.type == "PDF"){ %>
+                        <%= HTML.File(this, 'data.' + index, {size: 30, accept: ".pdf"}) %>
                     <% } else if(val.type == "PPT"){ %>
                         <%= HTML.File(this, 'data.' + index, {size: 30, accept: ".odt,.odp,.ods,.pdf"}) %>
                     <% } else if(val.type == "Date"){ %>
