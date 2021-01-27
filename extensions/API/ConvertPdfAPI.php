@@ -101,7 +101,7 @@ class ConvertPdfAPI extends API{
         
         foreach($lines as $line){
             if($startFound && strstr($line, $end) !== false){
-                break;
+                return $between;
             }
             if($startFound){
                 $between[] = trim(strip_tags(str_replace("<br/>", " ", str_replace("&#160;", " ", $line))));
@@ -110,7 +110,7 @@ class ConvertPdfAPI extends API{
                 $startFound = true;
             }
         }
-        return $between;
+        return array();
     }
 
     function extract_pdf_data($contents){
