@@ -159,6 +159,9 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonPostersTab($person, $visibility));
                     $tabbedPage->addTab(new PersonMetricsTab($person, $visibility));
                 }
+                if($config->getValue('networkName') == 'GlycoNet'){
+                    $tabbedPage->addTab(new PersonCertificatesTab($person, $visibility));
+                }
                 $tabbedPage->showPage();
 
                 self::showTitle($person, $visibility);
