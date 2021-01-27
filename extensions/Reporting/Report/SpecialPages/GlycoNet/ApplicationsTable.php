@@ -301,8 +301,8 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2021, 2021, "2021"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2020, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2021, 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2020, 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
