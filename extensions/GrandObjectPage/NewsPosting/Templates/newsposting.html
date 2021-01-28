@@ -18,7 +18,7 @@
         
     </table>
     <% if(image != ""){ %>
-        <h3><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-width: 400px; max-height: 400px;" alt="Attachment" /></a></h3>
+        <h3><a href="<%= image %>" target="_blank"><img src="<%= image %>" style="max-width: 400px; max-height: 400px;" onerror="$(this).replaceWith('Attachment')" alt="Attachment" /></a></h3>
     <% } %>
     <h3>Summary</h3>
     <%= showLanguage(language, nl2br(summary), nl2br(summaryFr), "<br /><br />") %>
