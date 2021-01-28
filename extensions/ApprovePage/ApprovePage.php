@@ -9,7 +9,7 @@ require_once("ApprovePageAdmin.php");
 
 class ApprovePage extends SpecialPage{
 
-    function ApprovePage() {
+    function __construct() {
             parent::__construct("ApprovePage", STAFF.'+', true);
     }
 

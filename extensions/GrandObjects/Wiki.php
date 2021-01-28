@@ -62,7 +62,7 @@ class Wiki extends BackboneModel {
         return $articles;
     }
     
-    function Wiki($article){
+    function __construct($article){
         if($article != null){
             $this->id = $article->getId();
             $this->ns = $article->getTitle()->getNsText();
@@ -93,12 +93,14 @@ class Wiki extends BackboneModel {
     }
 
     function getNewestAuthor(){
-        $data = DBFunctions::select(array("mw_revision"),
-                                    array("rev_user"),
-                                    array("rev_page"=>$this->getId()),
+        $data = DBFunctions::select(array("mw_revision", "mw_revision_actor_temp", "mw_actor"),
+                                    array("actor_user"),
+                                    array("rev_page" => EQ($this->getId()),
+                                          "revactor_rev" => EQ(COL("rev_id")),
+                                          "revactor_actor" => EQ(COL("actor_id"))),
                                     array("rev_id"=>"DESC"));
         if(count($data)>0){
-        return Person::newFromId($data[0]['rev_user']);
+            return Person::newFromId($data[0]['actor_user']);
         }
         return null;
     }
@@ -145,27 +147,29 @@ class Wiki extends BackboneModel {
     }
 
     function isApproved(){
-            $data = DBFunctions::select(array("grand_page_approved"=>"a",
-                                              "mw_revision"=>"r"),
-                                        array("a.approved", "r.rev_user"),
-                                        array("a.page_id"=>EQ(COL("r.rev_page")),
-                                              "r.rev_page"=>$this->getId(),
-                          "a.approved"=>1),
-                                        array("rev_id"=>"DESC"));
+        $data = DBFunctions::select(array("grand_page_approved"=>"a",
+                                          "mw_revision"=>"r", "mw_revision_actor_temp", "mw_actor"),
+                                    array("a.approved", "actor_user"),
+                                    array("a.page_id"=>EQ(COL("r.rev_page")),
+                                          "r.rev_page"=>$this->getId(),
+                                          "revactor_rev" => EQ(COL("r.rev_id")),
+                                          "revactor_actor" => EQ(COL("actor_id")),
+                                          "a.approved"=>1),
+                                    array("rev_id"=>"DESC"));
         return (count($data)>0);
-
     }
 
     function canView(){
         $me = Person::newFromWgUser();
-        $data = DBFunctions::select(array("grand_page_approved"=>"a", 
-                          "mw_revision"=>"r"),
-                    array("a.approved", "r.rev_user"),
-                    array("a.page_id"=>EQ(COL("r.rev_page")),
-                          "r.rev_page"=>$this->getId()), 
-                    array("rev_id"=>"DESC"));
+        $data = DBFunctions::select(array("grand_page_approved"=>"a","mw_revision"=>"r", "mw_revision_actor_temp", "mw_actor"),
+                                    array("a.approved", "actor_user"),
+                                    array("a.page_id"=>EQ(COL("r.rev_page")),
+                                          "r.rev_page"=>$this->getId(),
+                                          "revactor_rev" => EQ(COL("r.rev_id")),
+                                          "revactor_actor" => EQ(COL("actor_id"))), 
+                                    array("rev_id"=>"DESC"));
         if (count($data)>0){
-        return ($data[0]['approved'] || $me->getId() === $data[0]['rev_user'] || $me->isRoleAtLeast(STAFF));
+            return ($data[0]['approved'] || $me->getId() === $data[0]['actor_user'] || $me->isRoleAtLeast(STAFF));
         }
         return true;
     }

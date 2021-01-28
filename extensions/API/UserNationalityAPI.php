@@ -2,7 +2,7 @@
 
 class UserNationalityAPI extends API{
 
-    function UserNationalityAPI(){
+    function __construct(){
         $this->addPOST("nationality", true, "The nationality of the user", "Canadian");
     }
 

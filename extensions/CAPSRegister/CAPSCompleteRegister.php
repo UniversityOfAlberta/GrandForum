@@ -10,7 +10,7 @@ function runCAPSCompleteRegister($par) {
 
 class CAPSCompleteRegister extends SpecialPage{
 
-    function CAPSCompleteRegister() {
+    function __construct() {
         SpecialPage::__construct("CAPSCompleteRegister", null, false, 'runCAPSCompleteRegister');
     }
     

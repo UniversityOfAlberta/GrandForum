@@ -16,8 +16,8 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @author Aaron Schulz
  */
+use Psr\Log\LoggerInterface;
 
 /**
  * Version of PoolCounter that uses Redis
@@ -45,7 +45,7 @@
  * Also this should be on a server plenty of RAM for the working set to avoid evictions.
  * Evictions could temporarily allow wait queues to double in size or temporarily cause
  * pools to appear as full when they are not. Using volatile-ttl and bumping memory-samples
- * and redis.conf can be helpful otherwise.
+ * in redis.conf can be helpful otherwise.
  *
  * @ingroup Redis
  * @since 1.23
@@ -55,46 +55,51 @@ class PoolCounterRedis extends PoolCounter {
 	protected $ring;
 	/** @var RedisConnectionPool */
 	protected $pool;
+	/** @var LoggerInterface */
+	protected $logger;
 	/** @var array (server label => host) map */
 	protected $serversByLabel;
 	/** @var string SHA-1 of the key */
 	protected $keySha1;
-	/** @var integer TTL for locks to expire (work should finish in this time) */
+	/** @var int TTL for locks to expire (work should finish in this time) */
 	protected $lockTTL;
 
 	/** @var RedisConnRef */
 	protected $conn;
 	/** @var string Pool slot value */
 	protected $slot;
-	/** @var integer AWAKE_* constant */
+	/** @var int AWAKE_* constant */
 	protected $onRelease;
 	/** @var string Unique string to identify this process */
 	protected $session;
-	/** @var integer UNIX timestamp */
+	/** @var int UNIX timestamp */
 	protected $slotTime;
 
-	const AWAKE_ONE = 1; // wake-up if when a slot can be taken from an existing process
-	const AWAKE_ALL = 2; // wake-up if an existing process finishes and wake up such others
+	private const AWAKE_ONE = 1; // wake-up if when a slot can be taken from an existing process
+	private const AWAKE_ALL = 2; // wake-up if an existing process finishes and wake up such others
 
-	/** @var Array List of active PoolCounterRedis objects in this script */
+	/** @var PoolCounterRedis[] List of active PoolCounterRedis objects in this script */
 	protected static $active = null;
 
-	function __construct( $conf, $type, $key ) {
+	public function __construct( $conf, $type, $key ) {
 		parent::__construct( $conf, $type, $key );
 
 		$this->serversByLabel = $conf['servers'];
-		$this->ring = new HashRing( array_fill_keys( array_keys( $conf['servers'] ), 100 ) );
+
+		$serverLabels = array_keys( $conf['servers'] );
+		$this->ring = new HashRing( array_fill_keys( $serverLabels, 10 ) );
 
 		$conf['redisConfig']['serializer'] = 'none'; // for use with Lua
 		$this->pool = RedisConnectionPool::singleton( $conf['redisConfig'] );
+		$this->logger = \MediaWiki\Logger\LoggerFactory::getInstance( 'redis' );
 
 		$this->keySha1 = sha1( $this->key );
 		$met = ini_get( 'max_execution_time' ); // usually 0 in CLI mode
-		$this->lockTTL = $met ? 2*$met : 3600;
+		$this->lockTTL = $met ? 2 * $met : 3600;
 
 		if ( self::$active === null ) {
-			self::$active = array();
-			register_shutdown_function( array( __CLASS__, 'releaseAll' ) );
+			self::$active = [];
+			register_shutdown_function( [ __CLASS__, 'releaseAll' ] );
 		}
 	}
 
@@ -107,7 +112,7 @@ class PoolCounterRedis extends PoolCounter {
 			$servers = $this->ring->getLocations( $this->key, 3 );
 			ArrayUtils::consistentHashSort( $servers, $this->key );
 			foreach ( $servers as $server ) {
-				$conn = $this->pool->getConnection( $this->serversByLabel[$server] );
+				$conn = $this->pool->getConnection( $this->serversByLabel[$server], $this->logger );
 				if ( $conn ) {
 					break;
 				}
@@ -120,21 +125,25 @@ class PoolCounterRedis extends PoolCounter {
 		return Status::newGood( $this->conn );
 	}
 
-	function acquireForMe() {
-		$section = new ProfileSection( __METHOD__ );
+	public function acquireForMe( $timeout = null ) {
+		$status = $this->precheckAcquire();
+		if ( !$status->isGood() ) {
+			return $status;
+		}
 
-		return $this->waitForSlotOrNotif( self::AWAKE_ONE );
+		return $this->waitForSlotOrNotif( self::AWAKE_ONE, $timeout );
 	}
 
-	function acquireForAnyone() {
-		$section = new ProfileSection( __METHOD__ );
+	public function acquireForAnyone( $timeout = null ) {
+		$status = $this->precheckAcquire();
+		if ( !$status->isGood() ) {
+			return $status;
+		}
 
-		return $this->waitForSlotOrNotif( self::AWAKE_ALL );
+		return $this->waitForSlotOrNotif( self::AWAKE_ALL, $timeout );
 	}
 
-	function release() {
-		$section = new ProfileSection( __METHOD__ );
-
+	public function release() {
 		if ( $this->slot === null ) {
 			return Status::newGood( PoolCounter::NOT_LOCKED ); // not locked
 		}
@@ -143,9 +152,13 @@ class PoolCounterRedis extends PoolCounter {
 		if ( !$status->isOK() ) {
 			return $status;
 		}
+		/** @var RedisConnRef $conn */
 		$conn = $status->value;
+		'@phan-var RedisConnRef $conn';
 
+		// phpcs:disable Generic.Files.LineLength
 		static $script =
+		/** @lang Lua */
 <<<LUA
 		local kSlots,kSlotsNextRelease,kWakeup,kWaiting = unpack(KEYS)
 		local rMaxWorkers,rExpiry,rSlot,rSlotTime,rAwakeAll,rTime = unpack(ARGV)
@@ -154,8 +167,12 @@ class PoolCounterRedis extends PoolCounter {
 		if rSlot ~= 'w' and redis.call('exists',kSlotsNextRelease) == 1 then
 			if 1*redis.call('zScore',kSlotsNextRelease,rSlot) ~= (rSlotTime + rExpiry) then
 				-- Slot lock expired and was released already
-			elseif redis.call('lLen',kSlots) >= (1*rMaxWorkers - 1) then
-				-- Clear list to save space; it will re-init as needed
+			elseif redis.call('lLen',kSlots) >= 1*rMaxWorkers then
+				-- Slots somehow got out of sync; reset the list for sanity
+				redis.call('del',kSlots,kSlotsNextRelease)
+			elseif redis.call('lLen',kSlots) == (1*rMaxWorkers - 1) and redis.call('zCard',kWaiting) == 0 then
+				-- Slot list will be made full; clear it to save space (it re-inits as needed)
+				-- since nothing is waiting on being unblocked by a push to the list
 				redis.call('del',kSlots,kSlotsNextRelease)
 			else
 				-- Add slot back to pool and update the "next release" time
@@ -178,9 +195,11 @@ class PoolCounterRedis extends PoolCounter {
 		end
 		return 1
 LUA;
+		// phpcs:enable
+
 		try {
-			$res = $conn->luaEval( $script,
-				array(
+			$conn->luaEval( $script,
+				[
 					$this->getSlotListKey(),
 					$this->getSlotRTimeSetKey(),
 					$this->getWakeupListKey(),
@@ -191,7 +210,7 @@ LUA;
 					$this->slotTime, // used for CAS-style sanity check
 					( $this->onRelease === self::AWAKE_ALL ) ? 1 : 0,
 					microtime( true )
-				),
+				],
 				4 # number of first argument(s) that are keys
 			);
 		} catch ( RedisException $e ) {
@@ -203,14 +222,17 @@ LUA;
 		$this->onRelease = null;
 		unset( self::$active[$this->session] );
 
+		$this->onRelease();
+
 		return Status::newGood( PoolCounter::RELEASED );
 	}
 
 	/**
 	 * @param int $doWakeup AWAKE_* constant
+	 * @param int|float|null $timeout
 	 * @return Status
 	 */
-	protected function waitForSlotOrNotif( $doWakeup ) {
+	protected function waitForSlotOrNotif( $doWakeup, $timeout = null ) {
 		if ( $this->slot !== null ) {
 			return Status::newGood( PoolCounter::LOCK_HELD ); // already acquired
 		}
@@ -219,9 +241,12 @@ LUA;
 		if ( !$status->isOK() ) {
 			return $status;
 		}
+		/** @var RedisConnRef $conn */
 		$conn = $status->value;
+		'@phan-var RedisConnRef $conn';
 
 		$now = microtime( true );
+		$timeout = $timeout ?? $this->timeout;
 		try {
 			$slot = $this->initAndPopPoolSlotList( $conn, $now );
 			if ( ctype_digit( $slot ) ) {
@@ -233,13 +258,13 @@ LUA;
 			} elseif ( $slot === 'QUEUE_WAIT' ) {
 				// This process is now registered as waiting
 				$keys = ( $doWakeup == self::AWAKE_ALL )
-					// Wait for an open slot or wake-up signal (preferring the later)
-					? array( $this->getWakeupListKey(), $this->getSlotListKey() )
+					// Wait for an open slot or wake-up signal (preferring the latter)
+					? [ $this->getWakeupListKey(), $this->getSlotListKey() ]
 					// Just wait for an actual pool slot
-					: array( $this->getSlotListKey() );
+					: [ $this->getSlotListKey() ];
 
-				$res = $conn->blPop( $keys, $this->timeout );
-				if ( $res === array() ) {
+				$res = $conn->blPop( $keys, $timeout );
+				if ( $res === [] ) {
 					$conn->zRem( $this->getWaitSetKey(), $this->session ); // no longer waiting
 					return Status::newGood( PoolCounter::TIMEOUT );
 				}
@@ -262,6 +287,8 @@ LUA;
 			self::$active[$this->session] = $this;
 		}
 
+		$this->onAcquire();
+
 		return Status::newGood( $slot === 'w' ? PoolCounter::DONE : PoolCounter::LOCKED );
 	}
 
@@ -272,12 +299,13 @@ LUA;
 	 */
 	protected function initAndPopPoolSlotList( RedisConnRef $conn, $now ) {
 		static $script =
+		/** @lang Lua */
 <<<LUA
 		local kSlots,kSlotsNextRelease,kSlotWaits = unpack(KEYS)
 		local rMaxWorkers,rMaxQueue,rTimeout,rExpiry,rSess,rTime = unpack(ARGV)
 		-- Initialize if the "next release" time sorted-set is empty. The slot key
 		-- itself is empty if all slots are busy or when nothing is initialized.
-		-- If the list is empty but the set is not, then it is the later case.
+		-- If the list is empty but the set is not, then it is the latter case.
 		-- For sanity, if the list exists but not the set, then reset everything.
 		if redis.call('exists',kSlotsNextRelease) == 0 then
 			redis.call('del',kSlots)
@@ -317,7 +345,7 @@ LUA;
 		return slot
 LUA;
 		return $conn->luaEval( $script,
-			array(
+			[
 				$this->getSlotListKey(),
 				$this->getSlotRTimeSetKey(),
 				$this->getWaitSetKey(),
@@ -327,7 +355,7 @@ LUA;
 				$this->lockTTL,
 				$this->session,
 				$now
-			),
+			],
 			3 # number of first argument(s) that are keys
 		);
 	}
@@ -340,6 +368,7 @@ LUA;
 	 */
 	protected function registerAcquisitionTime( RedisConnRef $conn, $slot, $now ) {
 		static $script =
+		/** @lang Lua */
 <<<LUA
 		local kSlots,kSlotsNextRelease,kSlotWaits = unpack(KEYS)
 		local rSlot,rExpiry,rSess,rTime = unpack(ARGV)
@@ -356,7 +385,7 @@ LUA;
 		return 1
 LUA;
 		return $conn->luaEval( $script,
-			array(
+			[
 				$this->getSlotListKey(),
 				$this->getSlotRTimeSetKey(),
 				$this->getWaitSetKey(),
@@ -364,7 +393,7 @@ LUA;
 				$this->lockTTL,
 				$this->session,
 				$now
-			),
+			],
 			3 # number of first argument(s) that are keys
 		);
 	}
@@ -406,7 +435,8 @@ LUA;
 				if ( $poolCounter->slot !== null ) {
 					$poolCounter->release();
 				}
-			} catch ( Exception $e ) {}
+			} catch ( Exception $e ) {
+			}
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 class ResearcherEmailAPI extends API{
 
-    function ResearcherEmailAPI(){
+    function __construct(){
         $this->addGET("name", false, "The User Name of the researcher to get.  The name must be in the format First.Last", "Eleni.Stroulia");
         $this->addGET("id", false, "The ID of the researcher to get", "3");
         $this->addGET("type", false, "The type of user to get.", NI);

@@ -2,7 +2,7 @@
 
 class DeleteRoleAPI extends API{
 
-    function DeleteRoleAPI(){
+    function __construct(){
         $this->addPOST("name", true, "The User Name of the user", "UserName");
         $this->addPOST("role", true, "The name of the role", "HQP");
         $this->addPOST("comment", true, "A comment for why the user is no longer in this role", "My Reason");

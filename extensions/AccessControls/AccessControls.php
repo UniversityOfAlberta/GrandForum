@@ -1,5 +1,6 @@
 <?php
 
+require "SpecialSideUserLogin.php";
 require "Management.php";
 //require "NamespaceManager.php";
 require "AnnokiNamespaces.php";
@@ -45,7 +46,6 @@ $wgHooks['SpecialPageBeforeExecute'][] = 'onUserCanExecute';
 $wgHooks['AbortMove'][] = 'onAbortMove';
 $wgHooks['TitleMoveComplete'][] = 'onTitleMoveComplete';
 $wgHooks['FetchChangesList'][] = 'onFetchChangesList';
-$wgHooks['UnknownAction'][] = 'listStragglers';
 $wgHooks['EditFilter'][] = 'preventUnauthorizedTransclusionsOnSave';
 $wgHooks['ParserBeforeStrip'][] = 'preventUnauthorizedTransclusionOnPreview';
 $wgHooks['ParserAfterTidy'][] = 'checkPublicSections';
@@ -66,6 +66,10 @@ if ($egAnProtectUploads){
   $wgHooks['ArticleViewHeader'][] = 'UploadProtection::addNsInfoToImagePage';
   $wgHooks['UploadVerification'][] = 'UploadProtection::preventUnauthorizedOverwrite';
  }
+ 
+ 
+UnknownAction::createAction('listStragglers');
+UnknownAction::createAction('logout');
 
 define("EX_ACCESS_CONTROLS", true);
 
@@ -99,7 +103,7 @@ function permissionError(){
         // Depending on when this function is called, the title may not be created yet, so make an empty one
         $wgTitle = new Title();
     }
-    wfRunHooks('BeforeDisplayNoArticleText', array(null));
+    Hooks::run('BeforeDisplayNoArticleText', array(null));
     if($wgUser->isLoggedIn()){
         $wgOut->setPageTitle("Permission error");
         $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>

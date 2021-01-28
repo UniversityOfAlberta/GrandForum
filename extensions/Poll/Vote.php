@@ -20,7 +20,7 @@ class Vote {
 		}
 	}
 	
-	function Vote($id, $user){
+	function __construct($id, $user){
 		$this->id = $id;
 		$this->user = $user;
 	}

@@ -2,7 +2,7 @@
 
 class ProjectJoinRequestAPI extends API{
 
-    function ProjectJoinRequestAPI(){
+    function __construct(){
         $this->addPOST("project", true, "The name of the project to join", "Project1");
         $this->addPOST("reason", false, "The reason for joining", "Because I deserve it");
     }

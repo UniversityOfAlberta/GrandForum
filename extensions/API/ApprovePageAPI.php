@@ -2,7 +2,7 @@
 
 class ApprovePageAPI extends API{
 
-    function ApprovePageAPI(){
+    function __construct(){
         $this->addPOST("id",true,"The id of page to approve.","id");
     }
 

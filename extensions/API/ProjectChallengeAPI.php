@@ -2,7 +2,7 @@
 
 class ProjectChallengeAPI extends API{
 
-    function ProjectChallengeAPI(){
+    function __construct(){
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("challenge_id",true,"Primary challenge ID","1");
     }

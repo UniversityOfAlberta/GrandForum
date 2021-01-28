@@ -2,7 +2,7 @@
 
 class PublicationAPI extends API{
 
-    function PublicationAPI(){
+    function __construct(){
         $this->addGET("id", false, "The Publication ID", "2401");
         $this->addGET("user", false, "The name of an author.  The name must be in the format First.Last", "Martha.Ladly");
         $this->addGET("project", false, "The name of a project", "GAMFIT");

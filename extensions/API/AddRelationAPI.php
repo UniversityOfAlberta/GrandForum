@@ -2,7 +2,7 @@
 
 class AddRelationAPI extends API{
 
-    function AddRelationAPI(){
+    function __construct(){
         $this->addPOST("name1",true,"The name of the first user, as in 'name1 works with name2'","First1.Last1");
         $this->addPOST("name2",true,"The name of the second user, as in 'name1 works with name2'","First2.Last2");
         $this->addPOST("type",true,"The type of relation (ie. Supervises)","Supervises");

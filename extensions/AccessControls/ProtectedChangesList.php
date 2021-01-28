@@ -14,7 +14,7 @@ class ProtectedChangesList {
 }
 
 class ProtectedEnhancedChangesList extends EnhancedChangesList {
-	public function recentChangesLine( &$rc, $watched = false ) {
+	public function recentChangesLine( &$rc, $watched = false, $linenumber = NULL ) {
 		if (ProtectedChangesList::isUserAllowed($rc)) {
 			return parent::recentChangesLine($rc, $watched);
 		}
@@ -23,7 +23,7 @@ class ProtectedEnhancedChangesList extends EnhancedChangesList {
 }
 
 class ProtectedOldChangesList extends OldChangesList {
-	public function recentChangesLine( &$rc, $watched = false ) {
+	public function recentChangesLine( &$rc, $watched = false, $linenumber = NULL ) {
 		if (ProtectedChangesList::isUserAllowed($rc)) {
 			return parent::recentChangesLine($rc, $watched);
 		}

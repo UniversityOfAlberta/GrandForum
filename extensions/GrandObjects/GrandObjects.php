@@ -6,7 +6,7 @@ define("WORKS_WITH", 'Works With');
 define("SUPERVISES", 'Supervises');
 define("MENTORS", 'Mentors');
 
-$wgHooks['UnknownAction'][] = 'UserCreateRequest::stream';
+UnknownAction::createAction('UserCreateRequest::stream');
 
 autoload_register('GrandObjects');
 autoload_register('GrandObjects/API');

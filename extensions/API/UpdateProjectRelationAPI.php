@@ -2,7 +2,7 @@
 
 class UpdateProjectRelationAPI extends API{
 
-    function UpdateProjectRelationAPI(){
+    function __construct(){
         $this->addPOST("id",true,"The id of the relation in which to edit","42");
         $this->addPOST("project_relations",true,"The projects which this relation has, separated by commas","MEOW,NAVEL");
     }

@@ -3,9 +3,9 @@
 require_once("MyScreenCaptures.php");
 
 $wgHooks['BeforePageDisplay'][] = 'ScreenCapture::addRecordScript';
-$wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedStory';
-$wgHooks['UnknownAction'][] = 'ScreenCapture::setRecordedStory';
-$wgHooks['UnknownAction'][] = 'ScreenCapture::getRecordedImage';
+UnknownAction::createAction('ScreenCapture::getRecordedStory');
+UnknownAction::createAction('ScreenCapture::setRecordedStory');
+UnknownAction::createAction('ScreenCapture::getRecordedImage');
 
 
 class ScreenCapture {

@@ -2,7 +2,7 @@
 
 class UserProfileAPI extends API{
 
-    function UserProfileAPI(){
+    function __construct(){
         $this->addPOST("type", true, "The type of profile this is.  Can be either 'public' or 'private'", "public");
         $this->addPOST("profile", true, "The profile text for this account.  Can be either 'public' or 'private'", "This is my profile");
     }

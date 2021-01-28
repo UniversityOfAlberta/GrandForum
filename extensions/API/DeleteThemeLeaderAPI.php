@@ -2,7 +2,7 @@
 
 class DeleteThemeLeaderAPI extends API{
 
-    function DeleteThemeLeaderAPI(){
+    function __construct(){
         $this->addPOST("name", true, "The User Name of the user to add", "UserName");
         $this->addPOST("theme", true, "The theme number", "2");
         $this->addPOST("comment", true, "A comment for why the user is no longer a leade of this theme", "My Reason");

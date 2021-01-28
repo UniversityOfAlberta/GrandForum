@@ -17,7 +17,7 @@ class IndexTable {
     var $text = "";
 
     static function externalRedirect($out, $parseroutput){
-        global $wgTitle;
+        global $wgTitle, $wgServer;
         if($wgTitle->getNsText() == "File"){
             redirect($wgServer.wfLocalFile($wgTitle->getText())->getUrl() );
         }
@@ -162,10 +162,7 @@ class IndexTable {
             $result = true;
             $this->userCanExecute($wgTitle, $wgUser, "read", $result);
             if(!$result || !$wgUser->isLoggedIn()){
-                $wgOut->loginToUse();
-                $wgOut->output();
-                $wgOut->disable();
-                return true;
+                throw new PermissionsError('read');
             }
             $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){

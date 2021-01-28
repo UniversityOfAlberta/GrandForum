@@ -2,7 +2,7 @@
 
 class MaterialListAPI extends API{
 
-    function MaterialAPI(){
+    function __construct(){
         $this->addGET("type", false, "The type of the Material (can be either 'vimeo', 'youtube', 'img', 'video', 'audio', 'ppt', 'zip', 'pdf', 'other')", "img");
         $this->addGET("format", false, "The format of the output(can either be 'xml' or 'json').  If this value is not provided, then xml is assumed", "xml");
 	}

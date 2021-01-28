@@ -2,7 +2,7 @@
 
 class UserTwitterAccountAPI extends API{
 
-    function UserTwitterAccountAPI(){
+    function __construct(){
         $this->addPOST("twitter", true, "The name of the twitter account", "stroulia");
     }
 

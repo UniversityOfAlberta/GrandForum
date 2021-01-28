@@ -41,7 +41,7 @@ class JungAPI extends API{
     var $nodeType;
     var $output = "json";
 
-    function JungAPI(){
+    function __construct(){
         $this->year = date("Y");
         $this->addGET("year", true, "", "2012");
         $this->addGET("type", false, "", "Physical");

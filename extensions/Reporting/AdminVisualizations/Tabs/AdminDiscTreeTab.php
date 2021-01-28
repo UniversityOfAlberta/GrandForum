@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminDiscTreeTab::getAdminDiscTreeData';
+UnknownAction::createAction('AdminDiscTreeTab::getAdminDiscTreeData');
 
 class AdminDiscTreeTab extends AbstractTab {
 	

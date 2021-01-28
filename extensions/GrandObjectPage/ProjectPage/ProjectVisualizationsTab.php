@@ -1,16 +1,16 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectTimelineData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectDoughnutData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectChordData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectWordleData');
 
 class ProjectVisualizationsTab extends AbstractTab {
 
     var $project;
     var $visibility;
 
-    function ProjectVisualizationsTab($project, $visibility){
+    function __construct($project, $visibility){
         parent::AbstractTab("Visualizations");
         $this->project = $project;
         $this->visibility = $visibility;

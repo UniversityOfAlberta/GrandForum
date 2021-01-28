@@ -4,7 +4,7 @@ class InnerTabbedPage extends TabbedPage {
 
     var $html;
 
-    function InnerTabbedPage($id="tabs"){
+    function __construct($id="tabs"){
         parent::TabbedPage($id);
         $this->html = "";
     }

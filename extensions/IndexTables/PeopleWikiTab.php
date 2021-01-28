@@ -5,13 +5,13 @@ class PeopleWikiTab extends AbstractTab {
     var $table;
     var $visibility;
 
-    function PeopleWikiTab($table, $visibility){
+    function __construct($table, $visibility){
         global $wgLang;
         if($wgLang->getCode() == 'en'){
-            parent::AbstractTab("Resources");
+            parent::__construct("Resources");
         }
         else if($wgLang->getCode() == 'fr'){
-            parent::AbstractTab("Ressources");
+            parent::__construct("Ressources");
         }
         $this->table = $table;
         $this->visibility = $visibility;
@@ -59,7 +59,7 @@ class PeopleWikiTab extends AbstractTab {
             $wgMessage->addSuccess("The file <b>{$_FILES['wpUploadFile']['name']}</b> was uploaded successfully");
         }
         elseif($_POST['fileURL'] != '' && $_POST['realTitle'] != ''){
-            $wikipage= WikiPage::factory(Title::makeTitle(NS_IMAGE,str_replace(" ", "_", ucfirst($_POST['realTitle']))));
+            $wikipage= WikiPage::factory(Title::makeTitle(NS_FILE,str_replace(" ", "_", ucfirst($_POST['realTitle']))));
             $wikipage->doEdit('','',0,false,$wgUser);
             $data = DBFunctions::select(array('mw_an_upload_permissions'),
                                         array('*'),
@@ -97,7 +97,6 @@ class PeopleWikiTab extends AbstractTab {
         
         $table = $this->table;
         $me = Person::newFromWgUser();
-        $edit = $this->visibility['edit'];
         
         $extraText = "";
         if($table == "Articles"){
@@ -107,9 +106,6 @@ class PeopleWikiTab extends AbstractTab {
             $extraText = " members may be most interested in becoming familiar with";
         }
         
-        if(!$this->visibility['isMember'] && false){
-            return $this->html;
-        }
         if(in_array($this->table, $resources)){
             $this->html .= "<div class='helpful_resources' style='display:inline-block; font-size:1.1em'>
                         <div style='margin-right:10px; display:inline-block; text-align:center'><a href='$wgServer$wgScriptPath/index.php/CAPS:ALL_Clinical'><img width='100px' src='$wgServer$wgScriptPath/skins/icons/caps/clinical_guidelines_files.png'></a><br /><span class='en'>Clinical Guidelines</span><span class='fr'>Lignes directrices cliniques</span></div>
@@ -425,7 +421,7 @@ class PeopleWikiTab extends AbstractTab {
                     $hour = substr($date, 8, 2);
                     $minute = substr($date, 10, 2);
                     $second = substr($date, 12, 2);
-                    $editor = Person::newFromId($revision->getRawUser());
+                    $editor = Person::newFromId($revision->getUser());
                     if($data[0]['title'] != ""){
                         $title = ucfirst($data[0]['title']);
                     }

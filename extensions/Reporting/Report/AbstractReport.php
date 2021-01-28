@@ -8,8 +8,8 @@
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['CanUserReadPDF'][] = 'AbstractReport::canUserReadPDF';
-$wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
-$wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
+UnknownAction::createAction('AbstractReport::downloadBlob');
+UnknownAction::createAction('AbstractReport::tinyMCEUpload');
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
@@ -21,7 +21,6 @@ if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php")){
     require_once("SpecialPages/{$config->getValue('networkName')}/ReportSurvey.php");
 }
-
 
 autoload_register('Reporting/Report');
 autoload_register('Reporting/Report/ApplicationTabs');

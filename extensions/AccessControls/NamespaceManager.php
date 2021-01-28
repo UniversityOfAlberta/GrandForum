@@ -86,7 +86,7 @@ class NamespaceManager extends SpecialPage {
 			return;
 		}
 
-		$dbw =& wfGetDB( DB_MASTER );
+		$dbw = wfGetDB( DB_MASTER );
 		$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("public" => $newValue), array("nsId" => $nsId));
 		
 		$wgOut->redirect($redirect);

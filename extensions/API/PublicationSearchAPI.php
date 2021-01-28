@@ -3,7 +3,7 @@
 class PublicationSearchAPI extends API{
 
 
-    function PublicationSearchAPI(){
+    function __construct(){
         $this->addGET("keywords", true, "Delimited keywords to find in the title", "Keywords");
         $this->addGET("category", false, "The category of the Publication", "Artifact");
         $this->addGET("type", false, "The type of Publication", "Proceedings Paper");

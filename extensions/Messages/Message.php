@@ -15,7 +15,7 @@ class Messages {
     var $infoIndex = 0;
     var $purpleIndex = 0;
     
-    function Messages(){
+    function __construct(){
         if(isset($_COOKIE['errors'])){
             $this->errors = unserialize($_COOKIE['errors']);
         }

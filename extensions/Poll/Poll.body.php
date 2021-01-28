@@ -5,7 +5,7 @@ require_once("CreatePoll.php");
 
 $poll = new PollView();
 
-$wgHooks['UnknownAction'][] = array($poll, 'viewPoll');
+UnknownAction::createAction(array($poll, 'viewPoll'));
 //$notificationFunctions[] = 'PollView::createNotification';
 
 class PollView {
@@ -52,9 +52,7 @@ class PollView {
 						$wgOut->addHTML("You are not allowed to view this poll");
 					}
 					else {
-						$wgOut->loginToUse();
-						$wgOut->output();
-						$wgOut->disable();
+						throw new PermissionsError('read');
 					}
 					return false;
 				}

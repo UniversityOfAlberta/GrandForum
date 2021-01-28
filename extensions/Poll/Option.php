@@ -30,7 +30,7 @@ class Option {
 		}
 	}
 	
-	function Option($id, $name, $votes){
+	function __construct($id, $name, $votes){
 		$this->id = $id;
 		$this->name = $name;
 		$this->votes = $votes;

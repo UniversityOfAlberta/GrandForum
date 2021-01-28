@@ -19,6 +19,7 @@
  *
  * @file
  */
+use MediaWiki\MediaWikiServices;
 
 /**
  * Class for managing forking command line scripts.
@@ -30,11 +31,11 @@
  * @ingroup Maintenance
  */
 class ForkController {
-	protected $children = array(), $childNumber = 0;
+	protected $children = [], $childNumber = 0;
 	protected $termReceived = false;
 	protected $flags = 0, $procsToStart = 0;
 
-	protected static $restartableSignals = array(
+	protected static $restartableSignals = [
 		SIGFPE,
 		SIGILL,
 		SIGSEGV,
@@ -44,16 +45,16 @@ class ForkController {
 		SIGPIPE,
 		SIGXCPU,
 		SIGXFSZ,
-	);
+	];
 
 	/**
 	 * Pass this flag to __construct() to cause the class to automatically restart
 	 * workers that exit with non-zero exit status or a signal such as SIGSEGV.
 	 */
-	const RESTART_ON_ERROR = 1;
+	private const RESTART_ON_ERROR = 1;
 
 	public function __construct( $numProcs, $flags = 0 ) {
-		if ( PHP_SAPI != 'cli' ) {
+		if ( !wfIsCLI() ) {
 			throw new MWException( "ForkController cannot be used from the web." );
 		}
 		$this->procsToStart = $numProcs;
@@ -73,7 +74,7 @@ class ForkController {
 	 */
 	public function start() {
 		// Trap SIGTERM
-		pcntl_signal( SIGTERM, array( $this, 'handleTermSignal' ), false );
+		pcntl_signal( SIGTERM, [ $this, 'handleTermSignal' ], false );
 
 		do {
 			// Start child processes
@@ -122,6 +123,7 @@ class ForkController {
 				pcntl_signal_dispatch();
 			} else {
 				declare( ticks = 1 ) {
+					// @phan-suppress-next-line PhanPluginDuplicateExpressionAssignment
 					$status = $status;
 				}
 			}
@@ -148,18 +150,17 @@ class ForkController {
 	}
 
 	protected function prepareEnvironment() {
-		global $wgMemc;
 		// Don't share DB, storage, or memcached connections
-		wfGetLBFactory()->destroyInstance();
-		FileBackendGroup::destroySingleton();
-		LockManagerGroup::destroySingletons();
+		MediaWikiServices::resetChildProcessServices();
+		JobQueueGroup::destroySingletons();
 		ObjectCache::clear();
-		$wgMemc = null;
+		RedisConnectionPool::destroySingletons();
 	}
 
 	/**
 	 * Fork a number of worker processes.
 	 *
+	 * @param int $numProcs
 	 * @return string
 	 */
 	protected function forkWorkers( $numProcs ) {
@@ -188,8 +189,6 @@ class ForkController {
 	}
 
 	protected function initChild() {
-		global $wgMemc, $wgMainCacheType;
-		$wgMemc = wfGetCache( $wgMainCacheType );
 		$this->children = null;
 		pcntl_signal( SIGTERM, SIG_DFL );
 	}

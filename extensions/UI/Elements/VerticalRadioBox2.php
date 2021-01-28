@@ -2,8 +2,8 @@
 
 class VerticalRadioBox2 extends RadioBox {
     
-    function VerticalRadioBox2($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::RadioBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
     }
     
     function render(){

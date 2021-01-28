@@ -50,7 +50,7 @@ abstract class UIElement {
     var $extraValidations;
     var $attr;
     
-    function UIElement($id, $name, $value, $validations){
+    function __construct($id, $name, $value, $validations){
         $this->parent = null;
         $this->id = $id;
         $this->name = $name;

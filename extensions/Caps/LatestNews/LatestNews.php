@@ -6,11 +6,11 @@ $wgSpecialPages['LatestNews'] = 'LatestNews'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['LatestNews'] = $dir . 'LatestNews.i18n.php';
 $wgSpecialPageGroups['LatestNews'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'LatestNews::getPDF';
+UnknownAction::createAction('LatestNews::getPDF');
 
 class LatestNews extends SpecialPage{
 
-    function LatestNews() {
+    function __construct() {
         parent::__construct("LatestNews", null, true);
     }
 

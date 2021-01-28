@@ -1,7 +1,7 @@
 <?php
 abstract class SerializedCache extends Cache{
 
-	function SerializedCache($fileName, $directory = ""){
+	function __construct($fileName, $directory = ""){
 		parent::Cache($directory.sha1($fileName));
 	}
 	

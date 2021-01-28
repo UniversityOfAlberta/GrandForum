@@ -4,7 +4,7 @@ class ProjectMilestoneAPI extends API{
 
     var $update;
 
-    function ProjectMilestoneAPI($update=false){
+    function __construct($update=false){
         $this->update = $update;
         $this->addPOST("project",true,"The name of the project","MEOW");
         $this->addPOST("leader",false,"The name of the leader for this milestone","First.Last");

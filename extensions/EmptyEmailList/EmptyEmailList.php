@@ -13,7 +13,7 @@ function runEmptyEmailList($par) {
 
 class EmptyEmailList extends SpecialPage{
 
-	function EmptyEmailList() {
+	function __construct() {
 		SpecialPage::__construct("EmptyEmailList", NI.'+', true, 'runEmptyEmailList');
 	}
 

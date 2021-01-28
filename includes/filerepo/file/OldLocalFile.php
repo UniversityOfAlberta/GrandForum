@@ -21,55 +21,63 @@
  * @ingroup FileAbstraction
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+
 /**
  * Class to represent a file in the oldimage table
  *
+ * @stable to extend
  * @ingroup FileAbstraction
  */
 class OldLocalFile extends LocalFile {
-	/** @var string Timestamp */
+	/** @var string|int Timestamp */
 	protected $requestedTime;
 
 	/** @var string Archive name */
 	protected $archive_name;
 
-	const CACHE_VERSION = 1;
-	const MAX_CACHE_ROWS = 20;
+	public const CACHE_VERSION = 1;
 
 	/**
+	 * @stable to override
 	 * @param Title $title
 	 * @param FileRepo $repo
-	 * @param null|int $time Timestamp or null
-	 * @return OldLocalFile
+	 * @param string|int|null $time
+	 * @return static
 	 * @throws MWException
 	 */
-	static function newFromTitle( $title, $repo, $time = null ) {
+	public static function newFromTitle( $title, $repo, $time = null ) {
 		# The null default value is only here to avoid an E_STRICT
 		if ( $time === null ) {
 			throw new MWException( __METHOD__ . ' got null for $time parameter' );
 		}
 
-		return new self( $title, $repo, $time, null );
+		return new static( $title, $repo, $time, null );
 	}
 
 	/**
+	 * @stable to override
+	 *
 	 * @param Title $title
 	 * @param FileRepo $repo
 	 * @param string $archiveName
-	 * @return OldLocalFile
+	 * @return static
 	 */
-	static function newFromArchiveName( $title, $repo, $archiveName ) {
-		return new self( $title, $repo, null, $archiveName );
+	public static function newFromArchiveName( $title, $repo, $archiveName ) {
+		return new static( $title, $repo, null, $archiveName );
 	}
 
 	/**
+	 * @stable to override
+	 *
 	 * @param stdClass $row
 	 * @param FileRepo $repo
-	 * @return OldLocalFile
+	 * @return static
 	 */
-	static function newFromRow( $row, $repo ) {
+	public static function newFromRow( $row, $repo ) {
 		$title = Title::makeTitle( NS_FILE, $row->oi_name );
-		$file = new self( $title, $repo, null, $row->oi_archive_name );
+		$file = new static( $title, $repo, null, $row->oi_archive_name );
 		$file->loadFromRow( $row, 'oi_' );
 
 		return $file;
@@ -79,80 +87,111 @@ class OldLocalFile extends LocalFile {
 	 * Create a OldLocalFile from a SHA-1 key
 	 * Do not call this except from inside a repo class.
 	 *
-	 * @param string $sha1 base-36 SHA-1
+	 * @stable to override
+	 *
+	 * @param string $sha1 Base-36 SHA-1
 	 * @param LocalRepo $repo
 	 * @param string|bool $timestamp MW_timestamp (optional)
 	 *
 	 * @return bool|OldLocalFile
 	 */
-	static function newFromKey( $sha1, $repo, $timestamp = false ) {
-		$dbr = $repo->getSlaveDB();
+	public static function newFromKey( $sha1, $repo, $timestamp = false ) {
+		$dbr = $repo->getReplicaDB();
 
-		$conds = array( 'oi_sha1' => $sha1 );
+		$conds = [ 'oi_sha1' => $sha1 ];
 		if ( $timestamp ) {
 			$conds['oi_timestamp'] = $dbr->timestamp( $timestamp );
 		}
 
-		$row = $dbr->selectRow( 'oldimage', self::selectFields(), $conds, __METHOD__ );
+		$fileQuery = static::getQueryInfo();
+		$row = $dbr->selectRow(
+			$fileQuery['tables'], $fileQuery['fields'], $conds, __METHOD__, [], $fileQuery['joins']
+		);
 		if ( $row ) {
-			return self::newFromRow( $row, $repo );
+			return static::newFromRow( $row, $repo );
 		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * Fields in the oldimage table
-	 * @return array
+	 * Return the tables, fields, and join conditions to be selected to create
+	 * a new oldlocalfile object.
+	 * @since 1.31
+	 * @stable to override
+	 *
+	 * @param string[] $options
+	 *   - omit-lazy: Omit fields that are lazily cached.
+	 * @return array[] With three keys:
+	 *   - tables: (string[]) to include in the `$table` to `IDatabase->select()`
+	 *   - fields: (string[]) to include in the `$vars` to `IDatabase->select()`
+	 *   - joins: (array) to include in the `$join_conds` to `IDatabase->select()`
 	 */
-	static function selectFields() {
-		return array(
-			'oi_name',
-			'oi_archive_name',
-			'oi_size',
-			'oi_width',
-			'oi_height',
-			'oi_metadata',
-			'oi_bits',
-			'oi_media_type',
-			'oi_major_mime',
-			'oi_minor_mime',
-			'oi_description',
-			'oi_user',
-			'oi_user_text',
-			'oi_timestamp',
-			'oi_deleted',
-			'oi_sha1',
-		);
+	public static function getQueryInfo( array $options = [] ) {
+		$commentQuery = MediaWikiServices::getInstance()->getCommentStore()->getJoin( 'oi_description' );
+		$actorQuery = ActorMigration::newMigration()->getJoin( 'oi_user' );
+		$ret = [
+			'tables' => [ 'oldimage' ] + $commentQuery['tables'] + $actorQuery['tables'],
+			'fields' => [
+				'oi_name',
+				'oi_archive_name',
+				'oi_size',
+				'oi_width',
+				'oi_height',
+				'oi_bits',
+				'oi_media_type',
+				'oi_major_mime',
+				'oi_minor_mime',
+				'oi_timestamp',
+				'oi_deleted',
+				'oi_sha1',
+			] + $commentQuery['fields'] + $actorQuery['fields'],
+			'joins' => $commentQuery['joins'] + $actorQuery['joins'],
+		];
+
+		if ( in_array( 'omit-nonlazy', $options, true ) ) {
+			// Internal use only for getting only the lazy fields
+			$ret['fields'] = [];
+		}
+		if ( !in_array( 'omit-lazy', $options, true ) ) {
+			// Note: Keep this in sync with self::getLazyCacheFields()
+			$ret['fields'][] = 'oi_metadata';
+		}
+
+		return $ret;
 	}
 
 	/**
+	 * @stable to call
+	 *
 	 * @param Title $title
 	 * @param FileRepo $repo
-	 * @param string $time Timestamp or null to load by archive name
-	 * @param string $archiveName archive name or null to load by timestamp
+	 * @param string|int|null $time Timestamp or null to load by archive name
+	 * @param string|null $archiveName Archive name or null to load by timestamp
 	 * @throws MWException
 	 */
-	function __construct( $title, $repo, $time, $archiveName ) {
+	public function __construct( $title, $repo, $time, $archiveName ) {
 		parent::__construct( $title, $repo );
 		$this->requestedTime = $time;
 		$this->archive_name = $archiveName;
-		if ( is_null( $time ) && is_null( $archiveName ) ) {
+		if ( $time === null && $archiveName === null ) {
 			throw new MWException( __METHOD__ . ': must specify at least one of $time or $archiveName' );
 		}
 	}
 
 	/**
+	 * @stable to override
 	 * @return bool
 	 */
-	function getCacheKey() {
+	protected function getCacheKey() {
 		return false;
 	}
 
 	/**
+	 * @stable to override
 	 * @return string
 	 */
-	function getArchiveName() {
+	public function getArchiveName() {
 		if ( !isset( $this->archive_name ) ) {
 			$this->load();
 		}
@@ -163,61 +202,84 @@ class OldLocalFile extends LocalFile {
 	/**
 	 * @return bool
 	 */
-	function isOld() {
+	public function isOld() {
 		return true;
 	}
 
 	/**
 	 * @return bool
 	 */
-	function isVisible() {
+	public function isVisible() {
 		return $this->exists() && !$this->isDeleted( File::DELETED_FILE );
 	}
 
-	function loadFromDB() {
-		wfProfileIn( __METHOD__ );
-
+	/**
+	 * @stable to override
+	 * @param int $flags
+	 */
+	protected function loadFromDB( $flags = 0 ) {
 		$this->dataLoaded = true;
-		$dbr = $this->repo->getSlaveDB();
-		$conds = array( 'oi_name' => $this->getName() );
-		if ( is_null( $this->requestedTime ) ) {
+
+		$dbr = ( $flags & self::READ_LATEST )
+			? $this->repo->getMasterDB()
+			: $this->repo->getReplicaDB();
+
+		$conds = [ 'oi_name' => $this->getName() ];
+		if ( $this->requestedTime === null ) {
 			$conds['oi_archive_name'] = $this->archive_name;
 		} else {
 			$conds['oi_timestamp'] = $dbr->timestamp( $this->requestedTime );
 		}
-		$row = $dbr->selectRow( 'oldimage', $this->getCacheFields( 'oi_' ),
-			$conds, __METHOD__, array( 'ORDER BY' => 'oi_timestamp DESC' ) );
+		$fileQuery = static::getQueryInfo();
+		$row = $dbr->selectRow(
+			$fileQuery['tables'],
+			$fileQuery['fields'],
+			$conds,
+			__METHOD__,
+			[ 'ORDER BY' => 'oi_timestamp DESC' ],
+			$fileQuery['joins']
+		);
 		if ( $row ) {
 			$this->loadFromRow( $row, 'oi_' );
 		} else {
 			$this->fileExists = false;
 		}
-
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
 	 * Load lazy file metadata from the DB
+	 * @stable to override
 	 */
 	protected function loadExtraFromDB() {
-		wfProfileIn( __METHOD__ );
-
 		$this->extraDataLoaded = true;
-		$dbr = $this->repo->getSlaveDB();
-		$conds = array( 'oi_name' => $this->getName() );
-		if ( is_null( $this->requestedTime ) ) {
+		$dbr = $this->repo->getReplicaDB();
+		$conds = [ 'oi_name' => $this->getName() ];
+		if ( $this->requestedTime === null ) {
 			$conds['oi_archive_name'] = $this->archive_name;
 		} else {
 			$conds['oi_timestamp'] = $dbr->timestamp( $this->requestedTime );
 		}
+		$fileQuery = static::getQueryInfo( [ 'omit-nonlazy' ] );
 		// In theory the file could have just been renamed/deleted...oh well
-		$row = $dbr->selectRow( 'oldimage', $this->getLazyCacheFields( 'oi_' ),
-			$conds, __METHOD__, array( 'ORDER BY' => 'oi_timestamp DESC' ) );
+		$row = $dbr->selectRow(
+			$fileQuery['tables'],
+			$fileQuery['fields'],
+			$conds,
+			__METHOD__,
+			[ 'ORDER BY' => 'oi_timestamp DESC' ],
+			$fileQuery['joins']
+		);
 
 		if ( !$row ) { // fallback to master
 			$dbr = $this->repo->getMasterDB();
-			$row = $dbr->selectRow( 'oldimage', $this->getLazyCacheFields( 'oi_' ),
-				$conds, __METHOD__, array( 'ORDER BY' => 'oi_timestamp DESC' ) );
+			$row = $dbr->selectRow(
+				$fileQuery['tables'],
+				$fileQuery['fields'],
+				$conds,
+				__METHOD__,
+				[ 'ORDER BY' => 'oi_timestamp DESC' ],
+				$fileQuery['joins']
+			);
 		}
 
 		if ( $row ) {
@@ -225,18 +287,15 @@ class OldLocalFile extends LocalFile {
 				$this->$name = $value;
 			}
 		} else {
-			wfProfileOut( __METHOD__ );
 			throw new MWException( "Could not find data for image '{$this->archive_name}'." );
 		}
-
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
-	 * @param string $prefix
-	 * @return array
+	 * @inheritDoc
+	 * @stable to override
 	 */
-	function getCacheFields( $prefix = 'img_' ) {
+	protected function getCacheFields( $prefix = 'img_' ) {
 		$fields = parent::getCacheFields( $prefix );
 		$fields[] = $prefix . 'archive_name';
 		$fields[] = $prefix . 'deleted';
@@ -246,26 +305,29 @@ class OldLocalFile extends LocalFile {
 
 	/**
 	 * @return string
+	 * @stable to override
 	 */
-	function getRel() {
-		return 'archive/' . $this->getHashPath() . $this->getArchiveName();
+	public function getRel() {
+		return $this->getArchiveRel( $this->getArchiveName() );
 	}
 
 	/**
 	 * @return string
+	 * @stable to override
 	 */
-	function getUrlRel() {
-		return 'archive/' . $this->getHashPath() . rawurlencode( $this->getArchiveName() );
+	public function getUrlRel() {
+		return $this->getArchiveRel( rawurlencode( $this->getArchiveName() ) );
 	}
 
-	function upgradeRow() {
-		wfProfileIn( __METHOD__ );
+	/**
+	 * @stable to override
+	 */
+	public function upgradeRow() {
 		$this->loadFromFile();
 
 		# Don't destroy file info of missing files
 		if ( !$this->fileExists ) {
-			wfDebug( __METHOD__ . ": file does not exist, aborting\n" );
-			wfProfileOut( __METHOD__ );
+			wfDebug( __METHOD__ . ": file does not exist, aborting" );
 
 			return;
 		}
@@ -273,9 +335,9 @@ class OldLocalFile extends LocalFile {
 		$dbw = $this->repo->getMasterDB();
 		list( $major, $minor ) = self::splitMime( $this->mime );
 
-		wfDebug( __METHOD__ . ': upgrading ' . $this->archive_name . " to the current schema\n" );
+		wfDebug( __METHOD__ . ': upgrading ' . $this->archive_name . " to the current schema" );
 		$dbw->update( 'oldimage',
-			array(
+			[
 				'oi_size' => $this->size, // sanity
 				'oi_width' => $this->width,
 				'oi_height' => $this->height,
@@ -285,12 +347,11 @@ class OldLocalFile extends LocalFile {
 				'oi_minor_mime' => $minor,
 				'oi_metadata' => $this->metadata,
 				'oi_sha1' => $this->sha1,
-			), array(
+			], [
 				'oi_name' => $this->getName(),
-				'oi_archive_name' => $this->archive_name ),
+				'oi_archive_name' => $this->archive_name ],
 			__METHOD__
 		);
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
@@ -298,7 +359,7 @@ class OldLocalFile extends LocalFile {
 	 *   revision rows
 	 * @return bool
 	 */
-	function isDeleted( $field ) {
+	public function isDeleted( $field ) {
 		$this->load();
 
 		return ( $this->deleted & $field ) == $field;
@@ -308,7 +369,7 @@ class OldLocalFile extends LocalFile {
 	 * Returns bitfield value
 	 * @return int
 	 */
-	function getVisibility() {
+	public function getVisibility() {
 		$this->load();
 
 		return (int)$this->deleted;
@@ -319,39 +380,44 @@ class OldLocalFile extends LocalFile {
 	 * field of this image file, if it's marked as deleted.
 	 *
 	 * @param int $field
-	 * @param User|null $user User object to check, or null to use $wgUser
+	 * @param User|null $user User object to check, or null to use $wgUser (deprecated since 1.35)
 	 * @return bool
 	 */
-	function userCan( $field, User $user = null ) {
+	public function userCan( $field, User $user = null ) {
 		$this->load();
 
-		return Revision::userCanBitfield( $this->deleted, $field, $user );
+		if ( !$user ) {
+			wfDeprecated( __METHOD__ . ' without passing a $user parameter', '1.35' );
+			global $wgUser;
+			$user = $wgUser;
+		}
+		return RevisionRecord::userCanBitfield(
+			$this->deleted,
+			$field,
+			$user
+		);
 	}
 
 	/**
 	 * Upload a file directly into archive. Generally for Special:Import.
 	 *
 	 * @param string $srcPath File system path of the source file
-	 * @param string $archiveName Full archive name of the file, in the form
-	 *   $timestamp!$filename, where $filename must match $this->getName()
 	 * @param string $timestamp
 	 * @param string $comment
 	 * @param User $user
-	 * @param int $flags
-	 * @return FileRepoStatus
+	 * @return Status
 	 */
-	function uploadOld( $srcPath, $archiveName, $timestamp, $comment, $user, $flags = 0 ) {
+	public function uploadOld( $srcPath, $timestamp, $comment, $user ) {
 		$this->lock();
 
-		$dstRel = 'archive/' . $this->getHashPath() . $archiveName;
-		$status = $this->publishTo( $srcPath, $dstRel,
-			$flags & File::DELETE_SOURCE ? FileRepo::DELETE_SOURCE : 0
-		);
+		$archiveName = $this->getArchiveName();
+		$dstRel = $this->getArchiveRel( $archiveName );
+		$status = $this->publishTo( $srcPath, $dstRel );
 
-		if ( $status->isGood() ) {
-			if ( !$this->recordOldUpload( $srcPath, $archiveName, $timestamp, $comment, $user ) ) {
-				$status->fatal( 'filenotfound', $srcPath );
-			}
+		if ( $status->isGood() &&
+			!$this->recordOldUpload( $srcPath, $archiveName, $timestamp, $comment, $user )
+		) {
+			$status->fatal( 'filenotfound', $srcPath );
 		}
 
 		$this->unlock();
@@ -361,6 +427,7 @@ class OldLocalFile extends LocalFile {
 
 	/**
 	 * Record a file upload in the oldimage table, without adding log entries.
+	 * @stable to override
 	 *
 	 * @param string $srcPath File system path to the source file
 	 * @param string $archiveName The archive name of the file
@@ -369,9 +436,8 @@ class OldLocalFile extends LocalFile {
 	 * @param User $user User who did this upload
 	 * @return bool
 	 */
-	function recordOldUpload( $srcPath, $archiveName, $timestamp, $comment, $user ) {
+	protected function recordOldUpload( $srcPath, $archiveName, $timestamp, $comment, $user ) {
 		$dbw = $this->repo->getMasterDB();
-		$dbw->begin( __METHOD__ );
 
 		$dstPath = $this->repo->getZonePath( 'public' ) . '/' . $this->getRel();
 		$props = $this->repo->getFileProps( $dstPath );
@@ -379,8 +445,11 @@ class OldLocalFile extends LocalFile {
 			return false;
 		}
 
+		$commentFields = MediaWikiServices::getInstance()->getCommentStore()
+			->insert( $dbw, 'oi_description', $comment );
+		$actorFields = ActorMigration::newMigration()->getInsertValues( $dbw, 'oi_user', $user );
 		$dbw->insert( 'oldimage',
-			array(
+			[
 				'oi_name' => $this->getName(),
 				'oi_archive_name' => $archiveName,
 				'oi_size' => $props['size'],
@@ -388,19 +457,29 @@ class OldLocalFile extends LocalFile {
 				'oi_height' => intval( $props['height'] ),
 				'oi_bits' => $props['bits'],
 				'oi_timestamp' => $dbw->timestamp( $timestamp ),
-				'oi_description' => $comment,
-				'oi_user' => $user->getId(),
-				'oi_user_text' => $user->getName(),
 				'oi_metadata' => $props['metadata'],
 				'oi_media_type' => $props['media_type'],
 				'oi_major_mime' => $props['major_mime'],
 				'oi_minor_mime' => $props['minor_mime'],
 				'oi_sha1' => $props['sha1'],
-			), __METHOD__
+			] + $commentFields + $actorFields, __METHOD__
 		);
 
-		$dbw->commit( __METHOD__ );
-
 		return true;
+	}
+
+	/**
+	 * If archive name is an empty string, then file does not "exist"
+	 *
+	 * This is the case for a couple files on Wikimedia servers where
+	 * the old version is "lost".
+	 * @return bool
+	 */
+	public function exists() {
+		$archiveName = $this->getArchiveName();
+		if ( $archiveName === '' || !is_string( $archiveName ) ) {
+			return false;
+		}
+		return parent::exists();
 	}
 }

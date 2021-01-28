@@ -21,8 +21,9 @@ $wgHooks['EditPage::attemptSave'][] = array($editor, 'onEditFilter');
 $wgHooks['BeforePageDisplay'][] = 'TemplateEditor::addJS';
 $wgHooks['SkinTemplateNavigation'][] = 'TemplateEditor::addTETabs'; //Adds template editor tab
 $wgHooks['EditPageBeforeEditButtons'][] = 'TemplateEditor::modifySaveButton';
-$wgHooks['UnknownAction'][] = 'TemplateEditor::efTEHandleRequest'; //Catches '&' actions sent to MediaWiki
 $wgHooks['SkinTemplateNavigation'][] = 'removeEditTab'; // Removes the 'Edit' tab when viewing a Template page
+
+UnknownAction::createAction('TemplateEditor::efTEHandleRequest');
 
 
 //define ( "TEXTFIELD", 0 );

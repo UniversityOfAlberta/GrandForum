@@ -2,7 +2,7 @@
 
 class UserCapsAPI extends API{
 
-    function UserCapsAPI(){
+    function __construct(){
         $this->addPOST("alias", true, "The alias of a the user", "Admin");
         $this->addPOST("city", true, "The city of the user", "555-5555");
         $this->addPOST("province", true, "The province of the user", "555-5555");

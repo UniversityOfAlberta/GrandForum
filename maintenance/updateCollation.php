@@ -24,9 +24,10 @@
  * @author Aryeh Gregor (Simetrical)
  */
 
-#$optionsWithArgs = array( 'begin', 'max-slave-lag' );
-
 require_once __DIR__ . '/Maintenance.php';
+
+use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * Maintenance script that will find all rows in the categorylinks table
@@ -35,24 +36,24 @@ require_once __DIR__ . '/Maintenance.php';
  * @ingroup Maintenance
  */
 class UpdateCollation extends Maintenance {
-	const BATCH_SIZE = 10000; // Number of rows to process in one batch
-	const SYNC_INTERVAL = 20; // Wait for slaves after this many batches
+	private const BATCH_SIZE = 100; // Number of rows to process in one batch
+	private const SYNC_INTERVAL = 5; // Wait for replica DBs after this many batches
 
-	public $sizeHistogram = array();
+	public $sizeHistogram = [];
 
 	public function __construct() {
 		parent::__construct();
 
-		global $wgCategoryCollation;
-		$this->mDescription = <<<TEXT
+		$this->addDescription( <<<TEXT
 This script will find all rows in the categorylinks table whose collation is
-out-of-date (cl_collation != '$wgCategoryCollation') and repopulate cl_sortkey
-using the page title and cl_sortkey_prefix.  If all collations are
-up-to-date, it will do nothing.
-TEXT;
+out-of-date (cl_collation is not the same as \$wgCategoryCollation) and
+repopulate cl_sortkey using the page title and cl_sortkey_prefix. If all
+collations are up-to-date, it will do nothing.
+TEXT
+		);
 
 		$this->addOption( 'force', 'Run on all rows, even if the collation is ' .
-			'supposed to be up-to-date.' );
+			'supposed to be up-to-date.', false, false, 'f' );
 		$this->addOption( 'previous-collation', 'Set the previous value of ' .
 			'$wgCategoryCollation here to speed up this script, especially if your ' .
 			'categorylinks table is large. This will only update rows with that ' .
@@ -68,9 +69,8 @@ TEXT;
 	}
 
 	public function execute() {
-		global $wgCategoryCollation;
-
 		$dbw = $this->getDB( DB_MASTER );
+		$dbr = $this->getDB( DB_REPLICA );
 		$force = $this->getOption( 'force' );
 		$dryRun = $this->getOption( 'dry-run' );
 		$verboseStats = $this->getOption( 'verbose-stats' );
@@ -78,7 +78,7 @@ TEXT;
 			$collationName = $this->getOption( 'target-collation' );
 			$collation = Collation::factory( $collationName );
 		} else {
-			$collationName = $wgCategoryCollation;
+			$collationName = $this->getConfig()->get( 'CategoryCollation' );
 			$collation = Collation::singleton();
 		}
 
@@ -86,24 +86,32 @@ TEXT;
 		// but this will raise an exception, breaking all category pages
 		$collation->getFirstLetter( 'MediaWiki' );
 
-		$options = array(
-			'LIMIT' => self::BATCH_SIZE,
-			'ORDER BY' => 'cl_to, cl_type, cl_from',
-			'STRAIGHT_JOIN',
-		);
-
-		if ( $force || $dryRun ) {
-			$collationConds = array();
+		// Locally at least, (my local is a rather old version of mysql)
+		// mysql seems to filesort if there is both an equality
+		// (but not for an inequality) condition on cl_collation in the
+		// WHERE and it is also the first item in the ORDER BY.
+		if ( $this->hasOption( 'previous-collation' ) ) {
+			$orderBy = 'cl_to, cl_type, cl_from';
 		} else {
+			$orderBy = 'cl_collation, cl_to, cl_type, cl_from';
+		}
+		$options = [
+			'LIMIT' => self::BATCH_SIZE,
+			'ORDER BY' => $orderBy,
+			'STRAIGHT_JOIN' // per T58041
+		];
+
+		$collationConds = [];
+		if ( !$force ) {
 			if ( $this->hasOption( 'previous-collation' ) ) {
 				$collationConds['cl_collation'] = $this->getOption( 'previous-collation' );
 			} else {
-				$collationConds = array( 0 =>
+				$collationConds = [ 0 =>
 					'cl_collation != ' . $dbw->addQuotes( $collationName )
-				);
+				];
 			}
 
-			$count = $dbw->estimateRowCount(
+			$count = $dbr->estimateRowCount(
 				'categorylinks',
 				'*',
 				$collationConds,
@@ -111,7 +119,7 @@ TEXT;
 			);
 			// Improve estimate if feasible
 			if ( $count < 1000000 ) {
-				$count = $dbw->selectField(
+				$count = $dbr->selectField(
 					'categorylinks',
 					'COUNT(*)',
 					$collationConds,
@@ -120,29 +128,42 @@ TEXT;
 			}
 			if ( $count == 0 ) {
 				$this->output( "Collations up-to-date.\n" );
+
 				return;
 			}
-			$this->output( "Fixing collation for $count rows.\n" );
+			if ( $dryRun ) {
+				$this->output( "$count rows would be updated.\n" );
+			} else {
+				$this->output( "Fixing collation for $count rows.\n" );
+			}
+			MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
 		}
-
 		$count = 0;
-		$batchCount = 0;
-		$batchConds = array();
+		$batchConds = [];
 		do {
 			$this->output( "Selecting next " . self::BATCH_SIZE . " rows..." );
+
+			// cl_type must be selected as a number for proper paging because
+			// enums suck.
+			if ( $dbw->getType() === 'mysql' ) {
+				$clType = 'cl_type+0 AS "cl_type_numeric"';
+			} else {
+				$clType = 'cl_type';
+			}
 			$res = $dbw->select(
-				array( 'categorylinks', 'page' ),
-				array( 'cl_from', 'cl_to', 'cl_sortkey_prefix', 'cl_collation',
-					'cl_sortkey', 'cl_type', 'page_namespace', 'page_title'
-				),
-				array_merge( $collationConds, $batchConds, array( 'cl_from = page_id' ) ),
+				[ 'categorylinks', 'page' ],
+				[ 'cl_from', 'cl_to', 'cl_sortkey_prefix', 'cl_collation',
+					'cl_sortkey', $clType,
+					'page_namespace', 'page_title'
+				],
+				array_merge( $collationConds, $batchConds, [ 'cl_from = page_id' ] ),
 				__METHOD__,
 				$options
 			);
 			$this->output( " processing..." );
 
 			if ( !$dryRun ) {
-				$dbw->begin( __METHOD__ );
+				$this->beginTransaction( $dbw, __METHOD__ );
 			}
 			foreach ( $res as $row ) {
 				$title = Title::newFromRow( $row );
@@ -150,7 +171,8 @@ TEXT;
 					# This is an old-style row, so the sortkey needs to be
 					# converted.
 					if ( $row->cl_sortkey == $title->getText()
-						|| $row->cl_sortkey == $title->getPrefixedText() ) {
+						|| $row->cl_sortkey == $title->getPrefixedText()
+					) {
 						$prefix = '';
 					} else {
 						# Custom sortkey, use it as a prefix
@@ -161,52 +183,51 @@ TEXT;
 				}
 				# cl_type will be wrong for lots of pages if cl_collation is 0,
 				# so let's update it while we're here.
-				if ( $title->getNamespace() == NS_CATEGORY ) {
-					$type = 'subcat';
-				} elseif ( $title->getNamespace() == NS_FILE ) {
-					$type = 'file';
-				} else {
-					$type = 'page';
-				}
+				$type = MediaWikiServices::getInstance()->getNamespaceInfo()->
+					getCategoryLinkType( $title->getNamespace() );
 				$newSortKey = $collation->getSortKey(
 					$title->getCategorySortkey( $prefix ) );
 				if ( $verboseStats ) {
 					$this->updateSortKeySizeHistogram( $newSortKey );
 				}
 
-				if ( !$dryRun ) {
+				if ( $dryRun ) {
+					// Add 1 to the count if the sortkey was changed. (Note that this doesn't count changes in
+					// other fields, if any, those usually only happen when upgrading old MediaWikis.)
+					$count += ( $row->cl_sortkey !== $newSortKey );
+				} else {
 					$dbw->update(
 						'categorylinks',
-						array(
+						[
 							'cl_sortkey' => $newSortKey,
 							'cl_sortkey_prefix' => $prefix,
 							'cl_collation' => $collationName,
 							'cl_type' => $type,
 							'cl_timestamp = cl_timestamp',
-						),
-						array( 'cl_from' => $row->cl_from, 'cl_to' => $row->cl_to ),
+						],
+						[ 'cl_from' => $row->cl_from, 'cl_to' => $row->cl_to ],
 						__METHOD__
 					);
+					$count++;
 				}
 				if ( $row ) {
-					$batchConds = array( $this->getBatchCondition( $row, $dbw ) );
+					$batchConds = [ $this->getBatchCondition( $row, $dbw ) ];
 				}
 			}
 			if ( !$dryRun ) {
-				$dbw->commit( __METHOD__ );
+				$this->commitTransaction( $dbw, __METHOD__ );
 			}
 
-			$count += $res->numRows();
-			$this->output( "$count done.\n" );
-
-			if ( !$dryRun && ++$batchCount % self::SYNC_INTERVAL == 0 ) {
-				$this->output( "Waiting for slaves ... " );
-				wfWaitForSlaves();
-				$this->output( "done\n" );
+			if ( $dryRun ) {
+				$this->output( "$count rows would be updated so far.\n" );
+			} else {
+				$this->output( "$count done.\n" );
 			}
 		} while ( $res->numRows() == self::BATCH_SIZE );
 
-		$this->output( "$count rows processed\n" );
+		if ( !$dryRun ) {
+			$this->output( "$count rows processed\n" );
+		}
 
 		if ( $verboseStats ) {
 			$this->output( "\n" );
@@ -216,15 +237,28 @@ TEXT;
 
 	/**
 	 * Return an SQL expression selecting rows which sort above the given row,
-	 * assuming an ordering of cl_to, cl_type, cl_from
+	 * assuming an ordering of cl_collation, cl_to, cl_type, cl_from
+	 * @param stdClass $row
+	 * @param IDatabase $dbw
+	 * @return string
 	 */
-	function getBatchCondition( $row, $dbw ) {
-		$fields = array( 'cl_to', 'cl_type', 'cl_from' );
+	private function getBatchCondition( $row, $dbw ) {
+		if ( $this->hasOption( 'previous-collation' ) ) {
+			$fields = [ 'cl_to', 'cl_type', 'cl_from' ];
+		} else {
+			$fields = [ 'cl_collation', 'cl_to', 'cl_type', 'cl_from' ];
+		}
 		$first = true;
 		$cond = false;
 		$prefix = false;
 		foreach ( $fields as $field ) {
-			$encValue = $dbw->addQuotes( $row->$field );
+			if ( $dbw->getType() === 'mysql' && $field === 'cl_type' ) {
+				// Range conditions with enums are weird in mysql
+				// This must be a numeric literal, or it won't work.
+				$encValue = intval( $row->cl_type_numeric );
+			} else {
+				$encValue = $dbw->addQuotes( $row->$field );
+			}
 			$inequality = "$field > $encValue";
 			$equality = "$field = $encValue";
 			if ( $first ) {
@@ -236,10 +270,11 @@ TEXT;
 				$prefix .= " AND $equality";
 			}
 		}
+
 		return $cond;
 	}
 
-	function updateSortKeySizeHistogram( $key ) {
+	private function updateSortKeySizeHistogram( $key ) {
 		$length = strlen( $key );
 		if ( !isset( $this->sizeHistogram[$length] ) ) {
 			$this->sizeHistogram[$length] = 0;
@@ -247,14 +282,14 @@ TEXT;
 		$this->sizeHistogram[$length]++;
 	}
 
-	function showSortKeySizeHistogram() {
+	private function showSortKeySizeHistogram() {
 		$maxLength = max( array_keys( $this->sizeHistogram ) );
 		if ( $maxLength == 0 ) {
 			return;
 		}
 		$numBins = 20;
 		$coarseHistogram = array_fill( 0, $numBins, 0 );
-		$coarseBoundaries = array();
+		$coarseBoundaries = [];
 		$boundary = 0;
 		for ( $i = 0; $i < $numBins - 1; $i++ ) {
 			$boundary += $maxLength / $numBins;
@@ -266,11 +301,7 @@ TEXT;
 			if ( $raw !== '' ) {
 				$raw .= ', ';
 			}
-			if ( !isset( $this->sizeHistogram[$i] ) ) {
-				$val = 0;
-			} else {
-				$val = $this->sizeHistogram[$i];
-			}
+			$val = $this->sizeHistogram[$i] ?? 0;
 			for ( $coarseIndex = 0; $coarseIndex < $numBins - 1; $coarseIndex++ ) {
 				if ( $coarseBoundaries[$coarseIndex] > $i ) {
 					$coarseHistogram[$coarseIndex] += $val;
@@ -289,11 +320,7 @@ TEXT;
 		$scale = 60 / $maxBinVal;
 		$prevBoundary = 0;
 		for ( $coarseIndex = 0; $coarseIndex < $numBins; $coarseIndex++ ) {
-			if ( !isset( $coarseHistogram[$coarseIndex] ) ) {
-				$val = 0;
-			} else {
-				$val = $coarseHistogram[$coarseIndex];
-			}
+			$val = $coarseHistogram[$coarseIndex] ?? 0;
 			$boundary = $coarseBoundaries[$coarseIndex];
 			$this->output( sprintf( "%-10s %-10d |%s\n",
 				$prevBoundary . '-' . ( $boundary - 1 ) . ': ',
@@ -304,5 +331,5 @@ TEXT;
 	}
 }
 
-$maintClass = "UpdateCollation";
+$maintClass = UpdateCollation::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

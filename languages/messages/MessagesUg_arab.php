@@ -1,8 +1,7 @@
 <?php
 /** Uyghur (Arabic script) (ئۇيغۇرچە)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -19,7 +18,7 @@
 
 $rtl = true;
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'ۋاسىتە',
 	NS_SPECIAL          => 'ئالاھىدە',
 	NS_TALK             => 'مۇنازىرە',
@@ -35,15 +34,14 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'ياردەم_مۇنازىرىسى',
 	NS_CATEGORY         => 'تۈر',
 	NS_CATEGORY_TALK    => 'تۈر_مۇنازىرىسى',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'مۇنازىرىسى$1' => NS_PROJECT_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Allmessages'               => array( 'بارلىق_خەۋەرلەر' ),
-	'Allpages'                  => array( 'بارلىق_بەتلەر' ),
-	'Ancientpages'              => array( 'كونا_بەتلەر' ),
-);
-
+$specialPageAliases = [
+	'Allmessages'               => [ 'بارلىق_خەۋەرلەر' ],
+	'Allpages'                  => [ 'بارلىق_بەتلەر' ],
+	'Ancientpages'              => [ 'كونا_بەتلەر' ],
+];

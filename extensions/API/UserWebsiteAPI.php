@@ -2,7 +2,7 @@
 
 class UserWebsiteAPI extends API{
 
-    function UserWebsiteAccountAPI(){
+    function __construct(){
         $this->addPOST("website", true, "The url of a website", "http://www.mywebsite.com");
     }
 

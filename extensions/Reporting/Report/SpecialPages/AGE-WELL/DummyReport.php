@@ -2,7 +2,7 @@
 
 class DummyReport extends AbstractReport{
     
-    function DummyReport($reportType, $person, $project=null, $year=REPORTING_YEAR){
+    function __construct($reportType, $person, $project=null, $year=REPORTING_YEAR){
         global $config;
         if(is_numeric($reportType) || ReportXMLParser::findReport($reportType) != ""){
             $fileName = ReportXMLParser::findReport($reportType);

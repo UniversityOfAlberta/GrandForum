@@ -763,7 +763,7 @@ class Person extends BackboneModel {
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
-    function Person($data){
+    function __construct($data){
         global $wgUser;
         if(count($data) > 0){
             if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
@@ -2156,7 +2156,7 @@ class Person extends BackboneModel {
         if($user->mRights == null){
             $user->mRights = array();
         }
-        GrandAccess::setupGrandAccess($user, $user->mRights);
+        //GrandAccess::setupGrandAccess($user, $user->mRights);
         return $user->mRights;
     }
     
@@ -2255,10 +2255,10 @@ class Person extends BackboneModel {
             $roles = array();
             if(count($data) > 0){
                 foreach($data as $row){
-	            $role = new Role(array($row));
-		    if($role->id != null){
+                    $role = new Role(array($row));
+                    if($role->id != null){
                         $roles[] = new Role(array($row));
-		    }
+                    }
                 }
             }
             return $roles;
@@ -2267,7 +2267,7 @@ class Person extends BackboneModel {
         if($this->roles == null && $this->id != null){
             if(isset(self::$rolesCache[$this->id])){
                 foreach(self::$rolesCache[$this->id] as $row){
-		    $role = new Role(array($row));
+                    $role = new Role(array($row));
                     if($role->id != null){
                         $this->roles[] = $role;
                     }
@@ -2282,6 +2282,9 @@ class Person extends BackboneModel {
                                                            'end_date' => '0000-00-00 00:00:00',
                                                            'comment' => '')));
             }
+        }
+        else if($this->id == null){
+            $this->roles = array();
         }
         return $this->roles;
     }
@@ -2980,7 +2983,7 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRoles();
-        if(count($role_objs) > 0){
+        if(!empty($role_objs)){
             foreach($role_objs as $r){
                 $skip = false;
                 if($project != null && count($r->getProjects()) > 0){

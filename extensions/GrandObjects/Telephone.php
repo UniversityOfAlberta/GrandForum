@@ -20,7 +20,7 @@ class Telephone {
         return new Telephone($data);
     }
     
-    function Telephone($data) {
+    function __construct($data) {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->person = Person::newFromId($data[0]['user_id']);

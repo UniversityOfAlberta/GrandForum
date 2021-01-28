@@ -1,8 +1,10 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class CreateUserAPI extends API{
 
-    function CreateUserAPI(){
+    function __construct(){
         $this->addPOST("wpName",true,"The User Name of the user to add","UserName");
         $this->addPOST("wpPassword",false,"The Password of the user to add","Password");
         $this->addPOST("wpEmail",false,"The User's email address","me@email.com");
@@ -20,7 +22,7 @@ class CreateUserAPI extends API{
     }
 
     function doAction($doEcho=true){
-        global $wgRequest, $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail;
+        global $wgUser, $wgServer, $wgScriptPath, $wgOut, $wgMessage, $wgEnableEmail;
         $me = Person::newFromId($wgUser->getId());
         $oldWPNS = "";
         $oldWPType = "";
@@ -53,46 +55,19 @@ class CreateUserAPI extends API{
                     return $message;
                 }
             }
-            $wgRequest->setVal('wpName', $_POST['wpName']);
             // Actually create a new user
-            if(isset($_POST['wpSendMail']) && $wgEnableEmail){
-                if($_POST['wpSendMail'] === "true"){
-                    $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                    $wgRequest->setVal('wpCreateaccountMail', true);
-                }
-                else {
-                    $wgRequest->setVal('wpCreateaccount', true);
-                    $_POST['wpPassword'] = User::randomPassword();
-                    $_POST['wpRetype'] = $_POST['wpPassword'];
-                }
-            }
-            else{
-                $wgRequest->setVal('wpEmail', $_POST['wpEmail']);
-                $wgRequest->setVal('wpCreateaccount', true);
-                $_POST['wpPassword'] = User::randomPassword();
-                $_POST['wpRetype'] = $_POST['wpPassword'];
-            }
-            $wgRequest->setSessionData('wsCreateaccountToken', 'true');
-            $wgRequest->setVal('wpCreateaccountToken', 'true');
-            $wgRequest->setVal('type', 'signup');
-            if(isset($_POST['wpPassword'])){
-                $wgRequest->setVal('wpRetype', $_POST['wpPassword']);
-                $wgRequest->setVal('wpPassword', $_POST['wpPassword']);
-            }
+            DBFunctions::delete('mw_actor',
+                                array('actor_name' => EQ($_POST['wpName'])));
             $creator = self::getCreator($me);
-            LoginForm::setCreateaccountToken();
-            $wgRequest->setSessionData('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $wgRequest->setVal('wpCreateaccountToken', LoginForm::getCreateaccountToken());
-            $specialUserLogin = new LoginForm($wgRequest);
-            
-            $specialUserLogin->getUser()->mRights = null;
-            $specialUserLogin->getUser()->mEffectiveGroups = null;
             GrandAccess::$alreadyDone = array();
-            $tmpUser = User::newFromName($_POST['wpName']);
-            $oldWgEnableEmail = $wgEnableEmail;
-            $wgEnableEmail = true;
-            if($tmpUser->getID() == 0 && ($specialUserLogin->execute('signup') != false || $_POST['wpSendMail'] == true)){
-                $wgEnableEmail = $oldWgEnableEmail;
+            $passwd = PasswordFactory::generateRandomPasswordString();
+            $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
+                                                               'password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(), 
+                                                               'email' => $_POST['wpEmail']));
+            if($tmpUser != null){
+                if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
+                    $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
+                }
                 Person::$cache = array();
                 Person::$namesCache = array();
                 Person::$aliasCache = array();
@@ -185,7 +160,6 @@ class CreateUserAPI extends API{
                 }
             }
             else{
-                $wgEnableEmail = $oldWgEnableEmail;
                 if($doEcho){
                     echo "User not created successfully.\n";
                 }
@@ -207,6 +181,34 @@ class CreateUserAPI extends API{
             }
         }
     }
+    
+    /**
+     * Note: From TemporaryPasswordPrimaryAuthenticationProvider.php
+	 * Send an email about the new account creation and the temporary password.
+	 * @param User $user The new user account
+	 * @param User $creatingUser The user who created the account (can be anonymous)
+	 * @param string $password The temporary password
+	 * @return \Status
+	 */
+	protected function sendNewAccountEmail( User $user, User $creatingUser, $password ) {
+		$ip = $creatingUser->getRequest()->getIP();
+		// @codeCoverageIgnoreStart
+		if ( !$ip ) {
+			return \Status::newFatal( 'badipaddress' );
+		}
+		// @codeCoverageIgnoreEnd
+
+		$mainPageUrl = \Title::newMainPage()->getCanonicalURL();
+		$userLanguage = $user->getOption( 'language' );
+		$subjectMessage = wfMessage( 'createaccount-title' )->inLanguage( $userLanguage );
+		$bodyMessage = wfMessage( 'createaccount-text', $ip, $user->getName(), $password,
+			'<' . $mainPageUrl . '>', round( 7*24*3600 / 86400 ) )
+			->inLanguage( $userLanguage );
+
+		$status = $user->sendMail( $subjectMessage->text(), $bodyMessage->text() );
+
+		return $status;
+	}
     
     // Returns the creator of the role request.  
     // If the creator cannot be determined, then 'me' is returned

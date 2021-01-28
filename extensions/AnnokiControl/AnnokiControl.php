@@ -6,6 +6,7 @@ if (!defined('MEDIAWIKI')) {
 
 define('ANNOKI', true);
 
+require_once("UnknownAction.php");
 require_once("DBFunctions.php");
 require_once('AnnokiConfig.php');
 require_once($egAnnokiCommonPath.'/AnnokiArticleEditor.php');
@@ -28,10 +29,14 @@ function autoload_register($directory){
 }
 
 function redirect($url){
-    DBFunctions::commit();
+    try {
+        DBFunctions::commit();
+    } catch (exception $e){ }
     session_write_close();
     header("Location: $url");
-    DBFunctions::commit();
+    try {
+        DBFunctions::commit();
+    } catch (exception $e){ }
     exit;
 }
 
@@ -179,7 +184,6 @@ foreach($egAnnokiExtensions as $key => $extension){
 
 require_once("AnnokiControl_body.php");
 $wgHooks['BeforePageDisplay'][] = 'AnnokiControl::addCustomJavascript';
-$wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
 $wgHooks['UserGetLanguageObject'][] = 'AnnokiControl::onUserGetLanguageObject';
 
@@ -191,7 +195,7 @@ $wgExtensionCredits['specialpage'][] = array(
                          );
                          
 function getTableName($baseName) {
-    $dbr = wfGetDB(DB_READ);
+    $dbr = wfGetDB(DB_REPLICA);
     $tblName = $dbr->tableName("$baseName");
     $tblName = str_replace("`", "", "$tblName");
     return $tblName;
@@ -308,11 +312,6 @@ function orderSpecialPages(&$aSpecialPages){
         }
     }
     $aSpecialPages = array_merge($array1, $array2);
-    return true;
-}
-
-function showSpecialPageHeader($special, $subpage){
-    $special->setHeaders();
     return true;
 }
 

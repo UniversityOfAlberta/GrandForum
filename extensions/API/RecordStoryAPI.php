@@ -2,7 +2,7 @@
 
 class RecordStoryAPI extends API{
 
-    function RecordStoryAPI(){
+    function __construct(){
         $this->addPOST("story",true,"The array of stories","[{date: '', img: ''},{date: '', img: ''}]");
     }
 

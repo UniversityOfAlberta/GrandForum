@@ -39,11 +39,21 @@ class UpdateSearchIndex extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Script for periodic off-peak updating of the search index";
-		$this->addOption( 's', 'starting timestamp', false, true );
+		$this->addDescription( 'Script for periodic off-peak updating of the search index' );
+		$this->addOption( 's', 'Starting timestamp', false, true );
 		$this->addOption( 'e', 'Ending timestamp', false, true );
-		$this->addOption( 'p', 'File for saving/loading timestamps, searchUpdate.WIKI_ID.pos by default', false, true );
-		$this->addOption( 'l', 'How long the searchindex and revision tables will be locked for', false, true );
+		$this->addOption(
+			'p',
+			'File for saving/loading timestamps, searchUpdate.WIKI_ID.pos by default',
+			false,
+			true
+		);
+		$this->addOption(
+			'l',
+			'How long the searchindex and revision tables will be locked for',
+			false,
+			true
+		);
 	}
 
 	public function getDbType() {
@@ -51,7 +61,8 @@ class UpdateSearchIndex extends Maintenance {
 	}
 
 	public function execute() {
-		$posFile = $this->getOption( 'p', 'searchUpdate.' . wfWikiId() . '.pos' );
+		$dbDomain = WikiMap::getCurrentWikiDbDomain()->getId();
+		$posFile = $this->getOption( 'p', 'searchUpdate.' . rawurlencode( $dbDomain ) . '.pos' );
 		$end = $this->getOption( 'e', wfTimestampNow() );
 		if ( $this->hasOption( 's' ) ) {
 			$start = $this->getOption( 's' );
@@ -86,7 +97,7 @@ class UpdateSearchIndex extends Maintenance {
 
 		$wgDisableSearchUpdate = false;
 
-		$dbw = wfGetDB( DB_MASTER );
+		$dbw = $this->getDB( DB_MASTER );
 		$recentchanges = $dbw->tableName( 'recentchanges' );
 
 		$this->output( "Updating searchindex between $start and $end\n" );
@@ -101,15 +112,15 @@ class UpdateSearchIndex extends Maintenance {
 			WHERE rc_type != " . RC_LOG . " AND rc_timestamp BETWEEN '$start' AND '$end'";
 		$res = $dbw->query( $sql, __METHOD__ );
 
-		$this->updateSearchIndex( $maxLockTime, array( $this, 'searchIndexUpdateCallback' ), $dbw, $res );
+		$this->updateSearchIndex( $maxLockTime, [ $this, 'searchIndexUpdateCallback' ], $dbw, $res );
 
 		$this->output( "Done\n" );
 	}
 
-	public function searchIndexUpdateCallback( $dbw, $row ) {
-		$this->updateSearchIndexForPage( $dbw, $row->rc_cur_id );
+	public function searchIndexUpdateCallback( $row ) {
+		$this->updateSearchIndexForPage( $row->rc_cur_id );
 	}
 }
 
-$maintClass = "UpdateSearchIndex";
+$maintClass = UpdateSearchIndex::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

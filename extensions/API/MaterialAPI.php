@@ -2,7 +2,7 @@
 
 class MaterialAPI extends API{
 
-    function MaterialAPI(){
+    function __construct(){
         $this->addGET("title", false, "The title of the Material to get.", "My Material");
         $this->addGET("id", false, "The ID of the Material to get", "24");
         $this->addGET("type", false, "The type of the Material (can be either 'vimeo', 'youtube', 'img', 'video', 'audio', 'ppt', 'zip', 'pdf', 'other')", "img");

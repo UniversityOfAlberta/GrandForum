@@ -11,7 +11,7 @@ function runHelpfulResources($par) {
 
 class HelpfulResources extends SpecialPage{
 
-    function HelpfulResources() {
+    function __construct() {
         SpecialPage::__construct("HelpfulResources", null, false, 'runHelpfulResources');
     }
     

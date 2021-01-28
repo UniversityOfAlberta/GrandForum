@@ -2,7 +2,7 @@
 
 class ProjectMilestoneHistoryAPI extends API{
 
-    function ProjectMilestoneHistoryAPI(){
+    function __construct(){
         $this->addGET("milestone_id", true, "The id of the milestone", "90");
         $this->addGET("revision_id", false, "The revision id of the milestone", "8343");
         $this->addGET("back_until_date", false, "How far back in time to show (Default is to get all history)", "2011-10-15");

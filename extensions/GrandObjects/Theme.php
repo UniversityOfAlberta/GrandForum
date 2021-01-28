@@ -68,7 +68,7 @@ class Theme {
         return $themes;
     }
     
-    function Theme($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->acronym = $data[0]['acronym'];

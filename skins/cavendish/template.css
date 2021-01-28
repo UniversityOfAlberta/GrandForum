@@ -363,9 +363,9 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	#nav li a[href^="http://"] {
 	}
 
-	#nav li a:hover {
-		color: #FFFFFF;
-	}
+    #nav li > a:hover {
+        color: white;
+    }
 	
 	#nav li li span { /* used for un-linked menu items */
 		padding: 4px 8px 4px 20px;
@@ -448,15 +448,24 @@ body.page-Main_Page h1.firstHeading { display:none; }
 	        border-top-left-radius: 10px;
 	        font-size: larger;
     }
+    
+    #nav #userloginForm {
+        margin: 5px;
+    }
+    
+    #nav #userloginForm a {
+        font-weight: bold;
+        padding: 0;
+    }
 
-    #nav .loginText{
+    #nav input.loginText{
         border: none !important;
         background:#AADDD1;
         -webkit-box-shadow: 0 0 0px 1000px #AADDD1 inset;
         width: 160px !important;
     }
 
-    #nav .loginPassword{
+    #nav input.loginPassword{
         border: none !important;
         background:#A2D29C;
         -webkit-box-shadow: 0 0 0px 1000px #A2D29C inset;

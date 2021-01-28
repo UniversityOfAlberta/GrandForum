@@ -2,7 +2,7 @@
 
 class ThemeInfoAPI extends API{
 
-    function ResearcherAPI(){
+    function __construct(){
         $this->addGET("themeName", false, "The name of the Theme", "(Big) Data");
         $this->addGET("projectName", false, "The name of the project", "PROJ1");
         $this->addGET("subProjectName", false, "The name of the subProject", "SUB1");

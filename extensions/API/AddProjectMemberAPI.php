@@ -2,7 +2,7 @@
 
 class AddProjectMemberAPI extends API{
 
-    function AddProjectMemberAPI(){
+    function __construct(){
         $this->addPOST("name",true,"The User Name of the user to add","UserName");
         $this->addPOST("project",true,"The name of the project","Project");
         $this->addPOST("id",false,"The id of the role request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");

@@ -5,7 +5,7 @@
 	var $table;
 	var $visibility;
 
-	function PeopleTableTab($table, $visibility){
+	function __construct($table, $visibility){
 	     parent::AbstractTab($table);
 	     $this->table = $table;
 	     $this->visibility = $visibility;

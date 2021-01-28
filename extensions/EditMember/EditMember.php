@@ -15,7 +15,7 @@ function runEditMember($par) {
 
 class EditMember extends SpecialPage{
 
-    function EditMember() {
+    function __construct() {
         SpecialPage::__construct("EditMember", MANAGER.'+', true, 'runEditMember');
     }
 

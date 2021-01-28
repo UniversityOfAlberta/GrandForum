@@ -9,7 +9,7 @@ $wgHooks['ToolboxLinks'][] = 'ReferAColleague::createToolboxLinks';
 
 class ReferAColleague extends SpecialPage{
 
-    function ReferAColleague() {
+    function __construct() {
         parent::__construct("ReferAColleague", EXTERNAL.'+', true);
     }
 

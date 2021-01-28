@@ -28,7 +28,7 @@ class UploadCCVAPI extends API{
 
     var $structure = null;
 
-    function UploadCCVAPI(){
+    function __construct(){
         
     }
 

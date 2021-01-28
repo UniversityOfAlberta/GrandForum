@@ -82,23 +82,26 @@ class GrandAccess {
 	            $aRights[$i++] = $role->getRole().'During+';
 	        }
 	    }
-	    if(count($me->getRoles()) > 0){
+	    if(!empty($me->getRoles())){
 	        foreach($me->getRoles() as $role){
 	            $aRights[$i++] = $role->getRole();
-	            $user->mGroups[] = $role->getRole().'_Wiki';
+	            $aRights[$i++] = $role->getRole().'_Wiki';
+	            //$user->mGroups[] = $role->getRole().'_Wiki';
 	        }
 	    }
 	    foreach($aRights as $right){
-	        $user->mGroups[] = $right;
+	        //$user->mGroups[] = $right;
 	    }
 	    if($user->isLoggedIn()){
-	        $user->mGroups[] = "Poster";
-	        $user->mGroups[] = "Presentation";
+	        $aRights[$i++] = "Poster";
+	        $aRights[$i++] = "Presentation";
+	        //$user->mGroups[] = "Poster";
+	        //$user->mGroups[] = "Presentation";
 	    }
 	    return true;
 	}
 	
-	function changeGroups($user, &$aRights){
+	static function changeGroups($user, &$aRights){
         global $wgRoles;
         foreach($aRights as $key => $right){
             if($key >= 1000){

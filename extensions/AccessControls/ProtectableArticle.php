@@ -1,5 +1,5 @@
 <?php
-require_once("$IP/includes/Article.php");
+
 require_once("CustomProtectionForm.php");
 
 $wgHooks['ArticleFromTitle'][] = 'showProtectableArticle';

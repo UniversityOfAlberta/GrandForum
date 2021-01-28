@@ -19,12 +19,12 @@ class AnnokiDatabaseFunctions {
    * @param string $query The SQL query to be run.
    * @param string $fieldName If a single field is desired, rather than all of those listed in the query, place it here.  
    * Otherwise, leave this as false.
-   * @param Database $dbLink The database to use.  Leave as null to use DB_SLAVE.
+   * @param Database $dbLink The database to use.  Leave as null to use DB_REPLICA.
    * @return array The rows returned by the query in array form.
    */
   public static function getQueryResultsAsArray($query, $fieldName=false, $dbLink = null){
     if ($dbLink===null)
-      $dbLink =& wfGetDB(DB_SLAVE);
+      $dbLink = wfGetDB(DB_REPLICA);
 
     $res = $dbLink->query($query);
 
@@ -53,7 +53,7 @@ class AnnokiDatabaseFunctions {
       if ($wgDBtype != 'mysql')
 	  return false;
 
-      $dbr = wfGetDB(DB_READ);
+      $dbr = wfGetDB(DB_REPLICA);
       $query = "show tables like \"$tableName\"";
       $result = $dbr->query($query);
       $numRows = $dbr->numRows($results);

@@ -7,12 +7,12 @@ $wgSpecialPageGroups['AnnokiControl'] = 'other';
  
 class AnnokiControl extends SpecialPage {
 
-  function AnnokiControl() {
+  function __construct() {
     SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 
   // Can be used for custom CSS (if we have any) as well
-  function addCustomJavascript(&$out){
+  static function addCustomJavascript(&$out){
     global $wgScriptPath;
     //  $out->addScript("\n" . '<link rel="stylesheet" type="text/css" href="' .
     //                 $wgScriptPath . '/extensions/AnnokiControl/AnnokiCSS.css"' . " />");
@@ -23,7 +23,7 @@ class AnnokiControl extends SpecialPage {
     return true;
   }
 
-  function onMessagesPreLoad($title, &$message) {
+  static function onMessagesPreLoad($title, &$message) {
     switch(strtolower($title)){
         case "mediawarning": 
             $message = "";
@@ -50,7 +50,7 @@ You should log in and change your password now.';
     return true;
   }
   
-    function onUserGetLanguageObject($user, &$code){
+    static function onUserGetLanguageObject($user, &$code){
         if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
             if($user->isLoggedIn()){
                 $user->setOption("language", $_GET['lang']);

@@ -14,8 +14,9 @@ $wgSpecialPages['Duplicates'] = 'Duplicates'; # Let MediaWiki know about the spe
 $wgExtensionMessagesFiles['Duplicates'] = $dir . 'Duplicates.i18n.php';
 $wgSpecialPageGroups['Duplicates'] = 'other-tools';
 
-$wgHooks['UnknownAction'][] = 'handleDuplicates';
 $wgHooks['SubLevelTabs'][] = 'Duplicates::createSubTabs';
+
+UnknownAction::createAction('handleDuplicates');
 
 function handleDuplicates($action, $request){
     global $wgServer, $wgScriptPath;

@@ -21,6 +21,8 @@
  * @ingroup Upload
  */
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Implements uploading from previously stored file.
  *
@@ -36,34 +38,31 @@ class UploadFromStash extends UploadBase {
 	// an instance of UploadStash
 	private $stash;
 
-	//LocalFile repo
+	// LocalFile repo
 	private $repo;
 
 	/**
-	 * @param User|bool $user Default: false
+	 * @param User|bool $user Default: false Sometimes this won't exist, as when running from cron.
 	 * @param UploadStash|bool $stash Default: false
 	 * @param FileRepo|bool $repo Default: false
 	 */
 	public function __construct( $user = false, $stash = false, $repo = false ) {
-		// user object. sometimes this won't exist, as when running from cron.
-		$this->user = $user;
-
 		if ( $repo ) {
 			$this->repo = $repo;
 		} else {
-			$this->repo = RepoGroup::singleton()->getLocalRepo();
+			$this->repo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		}
 
 		if ( $stash ) {
 			$this->stash = $stash;
 		} else {
 			if ( $user ) {
-				wfDebug( __METHOD__ . " creating new UploadStash instance for " . $user->getId() . "\n" );
+				wfDebug( __METHOD__ . " creating new UploadStash instance for " . $user->getId() );
 			} else {
-				wfDebug( __METHOD__ . " creating new UploadStash instance with no user\n" );
+				wfDebug( __METHOD__ . " creating new UploadStash instance with no user" );
 			}
 
-			$this->stash = new UploadStash( $this->repo, $this->user );
+			$this->stash = new UploadStash( $this->repo, $user );
 		}
 	}
 
@@ -113,7 +112,7 @@ class UploadFromStash extends UploadBase {
 	}
 
 	/**
-	 * @param WebRequest $request
+	 * @param WebRequest &$request
 	 */
 	public function initializeFromRequest( &$request ) {
 		// sends wpSessionKey as a default when wpFileKey is missing
@@ -143,31 +142,6 @@ class UploadFromStash extends UploadBase {
 		return $this->mFileProps['sha1'];
 	}
 
-	/*
-	 * protected function verifyFile() inherited
-	 */
-
-	/**
-	 * Stash the file.
-	 *
-	 * @param User $user
-	 * @return UploadStashFile
-	 */
-	public function stashFile( User $user = null ) {
-		// replace mLocalFile with an instance of UploadStashFile, which adds some methods
-		// that are useful for stashed files.
-		$this->mLocalFile = parent::stashFile( $user );
-		return $this->mLocalFile;
-	}
-
-	/**
-	 * This should return the key instead of the UploadStashFile instance, for backward compatibility.
-	 * @return string
-	 */
-	public function stashSession() {
-		return $this->stashFile()->getFileKey();
-	}
-
 	/**
 	 * Remove a temporarily kept file stashed by saveTempUploadedFile().
 	 * @return bool Success
@@ -177,16 +151,10 @@ class UploadFromStash extends UploadBase {
 	}
 
 	/**
-	 * Perform the upload, then remove the database record afterward.
-	 * @param string $comment
-	 * @param string $pageText
-	 * @param bool $watch
-	 * @param User $user
-	 * @return Status
+	 * Remove the database record after a successful upload.
 	 */
-	public function performUpload( $comment, $pageText, $watch, $user ) {
-		$rv = parent::performUpload( $comment, $pageText, $watch, $user );
+	public function postProcessUpload() {
+		parent::postProcessUpload();
 		$this->unsaveUploadedFile();
-		return $rv;
 	}
 }

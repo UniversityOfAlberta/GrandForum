@@ -347,7 +347,7 @@ class TemplateEditor {
            AND s.page_id = p.page_id
            AND s.rev_id IN ($nestedQuery)";
            
-    $dbr = wfGetDB(DB_READ);
+    $dbr = wfGetDB(DB_REPLICA);
 	$result = $dbr->query($sql);
 
 	$rows = array();

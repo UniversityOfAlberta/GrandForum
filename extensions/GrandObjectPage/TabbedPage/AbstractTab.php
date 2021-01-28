@@ -6,7 +6,7 @@ abstract class AbstractTab {
     var $id;
     var $name;
 
-    function AbstractTab($name){
+    function __construct($name){
         $this->id = str_replace("'", "", str_replace(" ", "-", strtolower($name)));
         $this->name = $name;
         $this->html = "";

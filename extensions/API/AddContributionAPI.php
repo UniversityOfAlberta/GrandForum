@@ -2,7 +2,7 @@
 
 class AddContributionAPI extends API{
 
-    function AddContributionAPI(){
+    function __construct(){
         $this->addPOST("id", false, "The id of the contribution(only required if updating)","5");
         $this->addPOST("users", true, "The user names of the users involved with this contribution, separated by commas","First1.Last1, First2.Last2, First3.Last3");
         $this->addPOST("projects", true, "The projects involved with this contribution, separated by commas","MEOW, NAVEL");

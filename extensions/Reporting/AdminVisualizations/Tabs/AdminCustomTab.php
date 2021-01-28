@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'AdminCustomTab::showVisualization';
+UnknownAction::createAction('AdminCustomTab::showVisualization');
 
 class AdminCustomTab extends AbstractTab {
 	

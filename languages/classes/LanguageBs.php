@@ -27,19 +27,18 @@
  * @ingroup Language
  */
 class LanguageBs extends Language {
-
 	/**
 	 * Convert from the nominative form of a noun to some other case
 	 * Invoked with {{GRAMMAR:case|word}}
 	 *
 	 * Cases: genitiv, dativ, akuzativ, vokativ, instrumental, lokativ
 	 *
-	 * @param $word string
-	 * @param $case string
+	 * @param string $word
+	 * @param string $case
 	 *
 	 * @return string
 	 */
-	function convertGrammar( $word, $case ) {
+	public function convertGrammar( $word, $case ) {
 		global $wgGrammarForms;
 		if ( isset( $wgGrammarForms['bs'][$case][$word] ) ) {
 			return $wgGrammarForms['bs'][$case][$word];
@@ -47,12 +46,14 @@ class LanguageBs extends Language {
 		switch ( $case ) {
 			case 'instrumental': # instrumental
 				$word = 's ' . $word;
-			break;
+				break;
 			case 'lokativ': # locative
 				$word = 'o ' . $word;
-			break;
+				break;
 		}
 
-		return $word; # this will return the original value for 'nominativ' (nominative) and all undefined case values
+		# this will return the original value for 'nominativ' (nominative)
+		# and all undefined case values.
+		return $word;
 	}
 }

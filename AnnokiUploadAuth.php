@@ -14,7 +14,6 @@
 
 define( 'MW_NO_OUTPUT_COMPRESSION', 1 );
 require_once( dirname( __FILE__ ) . '/includes/WebStart.php' );
-wfProfileIn( 'AnnokiUploadAuth.php' );
 require_once( dirname( __FILE__ ) . '/includes/StreamFile.php' );
 
 $perms = User::getGroupPermissions( array( '*' ) );
@@ -79,7 +78,7 @@ if( preg_match( '!\d+px-(.*)!i', $name, $m ) )
 	$name = $m[1];
 wfDebugLog( 'AnnokiUploadAuth', "\$name is {$name}" );
 
-$title = Title::makeTitleSafe( NS_IMAGE, $name );
+$title = Title::makeTitleSafe( NS_FILE, $name );
 if( !$title instanceof Title ) {
 	wfDebugLog( 'AnnokiUploadAuth', "Unable to construct a valid Title from `{$name}`" );
 	wfForbidden();
@@ -92,10 +91,10 @@ if ($egAnProtectUploads){
   //Check to see if the file is not current (from the archive).
   if (strpos($filename, "$realUpload/archive/") === 0) {
     $match = substr(strstr($filename, '!'),1);
-    $unarchivedTitle =  Title::makeTitleSafe( NS_IMAGE, $match);
+    $unarchivedTitle =  Title::makeTitleSafe( NS_FILE, $match);
   }
   str_replace("File:", "", $unarchivedTitle);
-  if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
+  if (!$unarchivedTitle->userCan('read') || !$wgUser->isLoggedIn()){
     if((!is_array( $wgWhitelistRead ) || !in_array($title, $wgWhitelistRead))){
         wfDebugLog( 'AnnokiUploadAuth', 'User does not have access to '.$unarchivedTitle->getPrefixedText());
         $errorFile = 'extensions/AccessControls/images/errorFile.gif';

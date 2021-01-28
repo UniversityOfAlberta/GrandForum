@@ -9,7 +9,7 @@ $wgHooks['ToolboxLinks'][] = 'EmailList::createToolboxLinks';
 
 class EmailList extends SpecialPage{
 
-    function EmailList() {
+    function __construct() {
         parent::__construct("EmailList", STAFF.'+', true);
     }
 

@@ -2,7 +2,7 @@
 
 class ApproveStoryAPI extends API{
 
-    function ApproveStoryAPI(){
+    function __construct(){
         $this->addPOST("id",true,"The id of story to approve.","id");
     }
 

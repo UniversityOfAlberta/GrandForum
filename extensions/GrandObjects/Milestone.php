@@ -92,7 +92,7 @@ class Milestone {
         return $milestone;
     }
 
-    function Milestone($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->identifier = $data['0']['identifier'];

@@ -2,7 +2,7 @@
 
 class AddRoleAPI extends API{
 
-    function AddRoleAPI(){
+    function __construct(){
         $this->addPOST("name",true,"The User Name of the User","UserName");
         $this->addPOST("role",true,"The name of the role","Role");
         $this->addPOST("id",false,"The id of the role request(You probably should not touch this parameter unless you know exactly what you are doing)", "15");

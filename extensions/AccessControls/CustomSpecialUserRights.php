@@ -347,7 +347,7 @@ function implode_wrapped($before, $after, $glue, $array){
 			$user->addGroup( $group );
 		}
 
-		wfRunHooks( 'UserRights', array( &$user, $addgroup, $removegroup ) );
+		Hooks::run( 'UserRights', array( &$user, $addgroup, $removegroup ) );
 		$this->addLogEntry( $user, $currentGroups, $user->getGroups() );
 
 

@@ -2,8 +2,8 @@
 
 class NoSpacesValidation extends UIValidation {
 
-    function NoSpacesValidation($neg=false) {
-        parent::UIValidation($neg);
+    function __construct($neg=false) {
+        parent::__construct($neg);
     }
     
     function validateFn($value){

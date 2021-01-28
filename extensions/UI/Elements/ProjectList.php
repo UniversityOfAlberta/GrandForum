@@ -2,8 +2,8 @@
 
 class ProjectList extends MultiColumnVerticalCheckBox {
     
-    function ProjectList($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::MultiColumnVerticalCheckBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
         $this->attr('expand', false);
         $this->attr('reasons', true);
     }

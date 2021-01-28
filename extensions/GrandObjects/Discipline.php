@@ -44,7 +44,7 @@ class Discipline {
         return $cache[$name];
     }
     
-    function Discipline($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             $this->id = $row['id'];

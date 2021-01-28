@@ -2,7 +2,7 @@
 
 class AddHQPMovedOnAPI extends API{
 
-    function AddHQPMovedOnAPI(){
+    function __construct(){
         $this->addPOST("id",true,"The id of the moved On entry", 12);
         $this->addPOST("name",true,"The User Name of the user","UserName");
         $this->addPOST("studies",false,"Where the hqp does any further studies","University of British Columbia");

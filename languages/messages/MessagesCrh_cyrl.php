@@ -1,8 +1,7 @@
 <?php
-/** Crimean Turkish (Cyrillic script) (къырымтатарджа (Кирилл)‎)
+/** Crimean Tatar (Cyrillic script) (къырымтатарджа (Кирилл)‎)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -13,7 +12,7 @@ $fallback = 'ru';
 
 $fallback8bitEncoding = 'windows-1251';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Медиа',
 	NS_SPECIAL          => 'Махсус',
 	NS_TALK             => 'Музакере',
@@ -30,9 +29,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Ярдым_музакереси',
 	NS_CATEGORY         => 'Категория',
 	NS_CATEGORY_TALK    => 'Категория_музакереси',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	# Aliases of Latin (crh-latn) namespaces
 	"Media"                 => NS_MEDIA,
 	"Mahsus"                => NS_SPECIAL,
@@ -52,52 +51,51 @@ $namespaceAliases = array(
 	'Yardım_muzakeresi'     => NS_HELP_TALK,
 	'Kategoriya'            => NS_CATEGORY,
 	'Kategoriya_muzakeresi' => NS_CATEGORY_TALK
-);
+];
 
 // Remove Russian aliases
-$namespaceGenderAliases = array();
+$namespaceGenderAliases = [];
 
-$datePreferences = array(
-    'default',
-    'mdy',
-    'dmy',
-    'ymd',
-    'yyyy-mm-dd',
-    'ISO 8601',
-);
+$datePreferences = [
+	'default',
+	'mdy',
+	'dmy',
+	'ymd',
+	'yyyy-mm-dd',
+	'ISO 8601',
+];
 
 $defaultDateFormat = 'ymd';
 
-$datePreferenceMigrationMap = array(
-    'default',
-    'mdy',
-    'dmy',
-    'ymd'
-);
+$datePreferenceMigrationMap = [
+	'default',
+	'mdy',
+	'dmy',
+	'ymd'
+];
 
-$dateFormats = array(
-    'mdy time' => 'H:i',
-    'mdy date' => 'F j Y "с."',
-    'mdy both' => 'H:i, F j Y "с."',
+$dateFormats = [
+	'mdy time' => 'H:i',
+	'mdy date' => 'F j Y "с."',
+	'mdy both' => 'H:i, F j Y "с."',
 
-    'dmy time' => 'H:i',
-    'dmy date' => 'j F Y "с."',
-    'dmy both' => 'H:i, j F Y "с."',
+	'dmy time' => 'H:i',
+	'dmy date' => 'j F Y "с."',
+	'dmy both' => 'H:i, j F Y "с."',
 
-    'ymd time' => 'H:i',
-    'ymd date' => 'Y "с." xg j',
-    'ymd both' => 'H:i, Y "с." xg j',
+	'ymd time' => 'H:i',
+	'ymd date' => 'Y "с." xg j',
+	'ymd both' => 'H:i, Y "с." xg j',
 
-    'yyyy-mm-dd time' => 'xnH:xni:xns',
-    'yyyy-mm-dd date' => 'xnY-xnm-xnd',
-    'yyyy-mm-dd both' => 'xnH:xni:xns, xnY-xnm-xnd',
+	'yyyy-mm-dd time' => 'xnH:xni:xns',
+	'yyyy-mm-dd date' => 'xnY-xnm-xnd',
+	'yyyy-mm-dd both' => 'xnH:xni:xns, xnY-xnm-xnd',
 
-    'ISO 8601 time' => 'xnH:xni:xns',
-    'ISO 8601 date' => 'xnY.xnm.xnd',
-    'ISO 8601 both' => 'xnY.xnm.xnd"T"xnH:xni:xns',
-);
+	'ISO 8601 time' => 'xnH:xni:xns',
+	'ISO 8601 date' => 'xnY.xnm.xnd',
+	'ISO 8601 both' => 'xnY.xnm.xnd"T"xnH:xni:xns',
+];
 
-$separatorTransformTable = array( ','  => '.', '.' => ',' );
+$separatorTransformTable = [ ','  => '.', '.' => ',' ];
 $linkTrail = '/^([a-zâçğıñöşüа-яё“»]+)(.*)$/sDu';
 $linkPrefixCharset = 'a-zâçğıñöşüA-ZÂÇĞİÑÖŞÜa-яёА-ЯЁ«„';
-

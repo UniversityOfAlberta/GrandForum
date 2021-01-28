@@ -16,7 +16,7 @@ $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
 class Report extends AbstractReport {
     
-    function Report(){
+    function __construct(){
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;

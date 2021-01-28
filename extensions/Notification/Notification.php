@@ -14,7 +14,7 @@ class Notification{
 	var $history;
 	var $creator;
 	
-	function Notification($name, $description, $url, $time=null, $history=false){
+	function __construct($name, $description, $url, $time=null, $history=false){
 		$this->name = $name;
 		$this->description = $description;
 		$this->url = $url;
@@ -196,17 +196,16 @@ class Notification{
 		if($count > 0){
 		    echo "<li class='top-nav-element $selected'>\n";
 		    echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		    echo "	<a id='lnk-notifications' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' class='new'>My&nbsp;Notifications&nbsp;($count)</a>\n";
+		    echo "	<a id='lnk-notifications' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php?action=viewnotifications' class='new'>My&nbsp;Notifications&nbsp;($count)</a>\n";
 		    echo "	<span class='top-nav-right'>&nbsp;</span>\n";
 		}
 		else{
 		    echo "<li class='top-nav-element $selected'>\n";
 		    echo "	<span class='top-nav-left'>&nbsp;</span>\n";
-		    echo "	<a id='lnk-notifications' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php?action=viewNotifications' class='new'>My&nbsp;Notifications</a>\n";
+		    echo "	<a id='lnk-notifications' class='top-nav-mid' href='$wgServer$wgScriptPath/index.php?action=viewnotifications' class='new'>My&nbsp;Notifications</a>\n";
 		    echo "	<span class='top-nav-right'>&nbsp;</span>\n";
 		}
 	}
 }
-
 
 ?>

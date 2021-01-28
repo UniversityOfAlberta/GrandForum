@@ -23,28 +23,27 @@
  * @file
  * @ingroup Site
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SiteList extends GenericArrayObject {
-
 	/**
 	 * Internal site identifiers pointing to their sites offset value.
 	 *
 	 * @since 1.21
 	 *
-	 * @var array of integer
+	 * @var array Array of integer
 	 */
-	protected $byInternalId = array();
+	protected $byInternalId = [];
 
 	/**
 	 * Global site identifiers pointing to their sites offset value.
 	 *
 	 * @since 1.21
 	 *
-	 * @var array of string
+	 * @var array Array of string
 	 */
-	protected $byGlobalId = array();
+	protected $byGlobalId = [];
 
 	/**
 	 * Navigational site identifiers alias inter-language prefixes
@@ -52,9 +51,9 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @since 1.23
 	 *
-	 * @var array of string
+	 * @var array Array of string
 	 */
-	protected $byNavigationId = array();
+	protected $byNavigationId = [];
 
 	/**
 	 * @see GenericArrayObject::getObjectType
@@ -64,7 +63,7 @@ class SiteList extends GenericArrayObject {
 	 * @return string
 	 */
 	public function getObjectType() {
-		return 'Site';
+		return Site::class;
 	}
 
 	/**
@@ -75,7 +74,7 @@ class SiteList extends GenericArrayObject {
 	 * @param int|string $index
 	 * @param Site $site
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function preSetElement( $index, $site ) {
 		if ( $this->hasSite( $site->getGlobalId() ) ) {
@@ -136,7 +135,7 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @param string $globalSiteId
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSite( $globalSiteId ) {
 		return array_key_exists( $globalSiteId, $this->byGlobalId );
@@ -173,18 +172,18 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @since 1.21
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEmpty() {
-		return $this->byGlobalId === array();
+		return $this->byGlobalId === [];
 	}
 
 	/**
 	 * Returns if the list contains the site with the provided site id.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasInternalId( $id ) {
 		return array_key_exists( $id, $this->byInternalId );
@@ -196,7 +195,7 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @since 1.21
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Site
 	 */
@@ -210,7 +209,7 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @since 1.21
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function removeSiteByInternalId( $id ) {
 		$this->offsetUnset( $this->byInternalId[$id] );
@@ -221,7 +220,7 @@ class SiteList extends GenericArrayObject {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasNavigationId( $id ) {
 		return array_key_exists( $id, $this->byNavigationId );
@@ -278,7 +277,7 @@ class SiteList extends GenericArrayObject {
 		$group = new self();
 
 		/**
-		 * @var \Site $site
+		 * @var Site $site
 		 */
 		foreach ( $this as $site ) {
 			if ( $site->getGroup() === $groupName ) {
@@ -297,7 +296,7 @@ class SiteList extends GenericArrayObject {
 	 * @var string A string uniquely identifying the version of the serialization structure,
 	 *             not including any sub-structures.
 	 */
-	const SERIAL_VERSION_ID = '2014-03-17';
+	private const SERIAL_VERSION_ID = '2014-03-17';
 
 	/**
 	 * Returns the version ID that identifies the serialization structure used by
@@ -320,15 +319,15 @@ class SiteList extends GenericArrayObject {
 	 * @return array
 	 */
 	protected function getSerializationData() {
-		//NOTE: When changing the structure, either implement unserialize() to handle the
+		// NOTE: When changing the structure, either implement unserialize() to handle the
 		//      old structure too, or update SERIAL_VERSION_ID to kill any caches.
 		return array_merge(
 			parent::getSerializationData(),
-			array(
+			[
 				'internalIds' => $this->byInternalId,
 				'globalIds' => $this->byGlobalId,
 				'navigationIds' => $this->byNavigationId
-			)
+			]
 		);
 	}
 
@@ -350,10 +349,4 @@ class SiteList extends GenericArrayObject {
 
 		return $serializationData;
 	}
-
 }
-
-/**
- * @deprecated
- */
-class SiteArray extends SiteList {}

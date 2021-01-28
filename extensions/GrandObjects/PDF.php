@@ -57,7 +57,7 @@ class PDF extends BackboneModel {
         return $pdfs;
     }
     
-    function PDF($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['token'];
             $this->reportId = $data[0]['report_id'];
@@ -192,7 +192,7 @@ class PDF extends BackboneModel {
             return true;
         }
         $result = false;
-        wfRunHooks('CanUserReadPDF', array($me, $this, &$result));
+        Hooks::run('CanUserReadPDF', array($me, $this, &$result));
         return $result;
     }
     

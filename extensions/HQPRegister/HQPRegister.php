@@ -28,7 +28,7 @@ class HQPRegister extends SpecialPage{
         return true;
     }
 
-    function HQPRegister() {
+    function __construct() {
         SpecialPage::__construct("HQPRegister", null, false, 'runHQPRegister');
     }
     

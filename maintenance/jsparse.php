@@ -24,7 +24,7 @@
 require_once __DIR__ . '/Maintenance.php';
 
 /**
- * Maintenance script to do test JavaScript validity parses using jsmin+'s parser
+ * Maintenance script to test JavaScript validity using JsMinPlus' parser
  *
  * @ingroup Maintenance
  */
@@ -33,23 +33,25 @@ class JSParseHelper extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Runs parsing/syntax checks on JavaScript files";
+		$this->addDescription( 'Runs parsing/syntax checks on JavaScript files' );
 		$this->addArg( 'file(s)', 'JavaScript file to test', false );
 	}
 
 	public function execute() {
-		if ( $this->hasArg() ) {
+		if ( $this->hasArg( 0 ) ) {
 			$files = $this->mArgs;
 		} else {
-			$this->maybeHelp( true ); // @todo fixme this is a lame API :)
-			exit( 1 ); // it should exit from the above first...
+			// @todo fixme this is a lame API :)
+			$this->maybeHelp( true );
+			// it should exit from the above first...
+			exit( 1 );
 		}
 
 		$parser = new JSParser();
 		foreach ( $files as $filename ) {
-			wfSuppressWarnings();
+			Wikimedia\suppressWarnings();
 			$js = file_get_contents( $filename );
-			wfRestoreWarnings();
+			Wikimedia\restoreWarnings();
 			if ( $js === false ) {
 				$this->output( "$filename ERROR: could not read file\n" );
 				$this->errs++;
@@ -73,5 +75,5 @@ class JSParseHelper extends Maintenance {
 	}
 }
 
-$maintClass = "JSParseHelper";
+$maintClass = JSParseHelper::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

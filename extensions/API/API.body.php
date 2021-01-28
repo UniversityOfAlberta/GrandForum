@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['UnknownAction'][1000] = array($apiRequest, 'processRequest');
+UnknownAction::createAction(array($apiRequest, 'processRequest'));
 
 /**
  * @package API
@@ -94,7 +94,7 @@ class APIRequest{
 		return true;
 	}
 	
-	function doAction($api, $param=false){
+	static function doAction($api, $param=false){
 	    global $apiPaths;
 	    $api = $api."API";
 	    $obj = new $api();
@@ -426,7 +426,6 @@ abstract class RESTAPI extends API {
         header('Content-Type: application/json');
         ob_start("ob_gzhandler");
         echo $json;
-        DBFunctions::close();
         exit;
     }
     

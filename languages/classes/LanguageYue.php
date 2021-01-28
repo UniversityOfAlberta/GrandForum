@@ -31,7 +31,7 @@ class LanguageYue extends Language {
 	/**
 	 * @return bool
 	 */
-	function hasWordBreaks() {
+	public function hasWordBreaks() {
 		return false;
 	}
 
@@ -40,28 +40,25 @@ class LanguageYue extends Language {
 	 * for now just treat each character as a word.
 	 * @todo FIXME: Only do this for Han characters...
 	 *
-	 * @param $string string
+	 * @param string $string
 	 * @return string
 	 */
-	function segmentByWord( $string ) {
+	public function segmentByWord( $string ) {
 		$reg = "/([\\xc0-\\xff][\\x80-\\xbf]*)/";
 		$s = self::insertSpace( $string, $reg );
 		return $s;
 	}
 
 	/**
-	 * @param $string
+	 * @param string $string
 	 * @return string
 	 */
-	function normalizeForSearch( $string ) {
-		wfProfileIn( __METHOD__ );
-
+	public function normalizeForSearch( $string ) {
 		// Double-width roman characters
 		$s = self::convertDoubleWidth( $string );
 		$s = trim( $s );
 		$s = parent::normalizeForSearch( $s );
 
-		wfProfileOut( __METHOD__ );
 		return $s;
 	}
 }

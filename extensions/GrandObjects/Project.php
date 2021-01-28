@@ -387,7 +387,7 @@ class Project extends BackboneModel {
     
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
-    function Project($data){
+    function __construct($data){
         if(isset($data[0])){
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];

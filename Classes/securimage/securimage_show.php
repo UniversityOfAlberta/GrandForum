@@ -51,8 +51,6 @@ require_once dirname(__FILE__) . '/securimage.php';
 
 $img = new Securimage();
 
-$img->session_name = 'glyconet';
-
 // You can customize the image by making changes below, some examples are included - remove the "//" to uncomment
 
 //$img->ttf_file        = './Quiff.ttf';

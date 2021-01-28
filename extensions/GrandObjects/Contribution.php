@@ -87,7 +87,7 @@ class Contribution {
         return $contribution;
     }
 
-    function Contribution($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->rev_id = $data[0]['rev_id'];

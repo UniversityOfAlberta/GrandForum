@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicProjectClusterTab::getProjectClusterData';
+UnknownAction::createAction('PublicProjectClusterTab::getProjectClusterData');
 
 class PublicProjectClusterTab extends AbstractTab {
 	

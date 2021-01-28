@@ -6,8 +6,9 @@ $wgSpecialPages['AddContributionPage'] = 'AddContributionPage'; # Let MediaWiki 
 $wgExtensionMessagesFiles['AddContributionPage'] = $dir . 'AddContributionPage.i18n.php';
 $wgSpecialPageGroups['AddContributionPage'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'contributionSearch';
 $wgHooks['ToolboxLinks'][] = 'AddContributionPage::createToolboxLinks';
+
+UnknownAction::createAction('contributionSearch');
 
 function runAddContributionPage($par){
     AddContributionPage::execute($par);

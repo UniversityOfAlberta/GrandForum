@@ -125,7 +125,7 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
                 $this->doCopyFixtureToTest($test, $name, $value);
             }
         } else {
-            $object->$name =& $value;
+            $object->$name = $value;
         }
     }
 

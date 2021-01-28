@@ -23,6 +23,8 @@
 /**
  * Interface for configuration instances
  *
+ * @stable to implement
+ *
  * @since 1.23
  */
 interface Config {
@@ -37,11 +39,11 @@ interface Config {
 	public function get( $name );
 
 	/**
-	 * Set a configuration variable such a "Sitename" to something like "My Wiki"
+	 * Check whether a configuration option is set for the given name
 	 *
 	 * @param string $name Name of configuration option
-	 * @param mixed $value Value to set
-	 * @throws ConfigException
+	 * @return bool
+	 * @since 1.24
 	 */
-	public function set( $name, $value );
+	public function has( $name );
 }

@@ -284,7 +284,7 @@ class TemplateFunctions {
   static function getAllTemplates(){
     $pages = array();
     $nsId = NS_TEMPLATE;
-    $dbr =& wfGetDB( DB_READ );
+    $dbr = wfGetDB( DB_REPLICA );
     $result = $dbr->select('page', array('page_title'), array('page_namespace' => $nsId, 'page_is_redirect' => 0) );
     while ($row = $dbr->fetchRow($result)) {
       $pages[] = $row[0]; //str_replace('_', ' ', $row[0]);

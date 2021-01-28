@@ -1,7 +1,5 @@
 <?php
 /**
- * Resource loader module for populating language specific data.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -19,113 +17,65 @@
  *
  * @file
  * @author Santhosh Thottingal
- * @author Timo Tijhof
  */
+
+use MediaWiki\MediaWikiServices;
 
 /**
- * ResourceLoader module for populating language specific data.
+ * Module for populating language specific data, such as grammar forms.
+ *
+ * @ingroup ResourceLoader
+ * @internal
  */
-class ResourceLoaderLanguageDataModule extends ResourceLoaderModule {
-
-	protected $language;
-	protected $targets = array( 'desktop', 'mobile' );
-	/**
-	 * Get the grammar forms for the site content language.
-	 *
-	 * @return array
-	 */
-	protected function getSiteLangGrammarForms() {
-		return $this->language->getGrammarForms();
-	}
-
-	/**
-	 * Get the plural forms for the site content language.
-	 *
-	 * @return array
-	 */
-	protected function getPluralRules() {
-		return $this->language->getPluralRules();
-	}
-
-	/**
-	 * Get the digit groupin Pattern for the site content language.
-	 *
-	 * @return array
-	 */
-	protected function getDigitGroupingPattern() {
-		return $this->language->digitGroupingPattern();
-	}
-
-	/**
-	 * Get the digit transform table for the content language
-	 *
-	 * @return array
-	 */
-	protected function getDigitTransformTable() {
-		return $this->language->digitTransformTable();
-	}
-
-	/**
-	 * Get seperator transform table required for converting
-	 * the . and , sign to appropriate forms in site content language.
-	 *
-	 * @return array
-	 */
-	protected function getSeparatorTransformTable() {
-		return $this->language->separatorTransformTable();
-	}
+class ResourceLoaderLanguageDataModule extends ResourceLoaderFileModule {
+	protected $targets = [ 'desktop', 'mobile' ];
 
 	/**
 	 * Get all the dynamic data for the content language to an array.
 	 *
-	 * NOTE: Before calling this you HAVE to make sure $this->language is set.
-	 *
+	 * @internal Only public for use by GenerateJqueryMsgData (tests)
+	 * @param string $langCode
 	 * @return array
 	 */
-	protected function getData() {
-		return array(
-			'digitTransformTable' => $this->getDigitTransformTable(),
-			'separatorTransformTable' => $this->getSeparatorTransformTable(),
-			'grammarForms' => $this->getSiteLangGrammarForms(),
-			'pluralRules' => $this->getPluralRules(),
-			'digitGroupingPattern' => $this->getDigitGroupingPattern(),
-		);
+	public static function getData( $langCode ) : array {
+		$language = MediaWikiServices::getInstance()->getLanguageFactory()
+			->getLanguage( $langCode );
+		return [
+			'digitTransformTable' => $language->digitTransformTable(),
+			'separatorTransformTable' => $language->separatorTransformTable(),
+			'minimumGroupingDigits' => $language->minimumGroupingDigits(),
+			'grammarForms' => $language->getGrammarForms(),
+			'grammarTransformations' => $language->getGrammarTransformations(),
+			'pluralRules' => $language->getPluralRules(),
+			'digitGroupingPattern' => $language->digitGroupingPattern(),
+			'fallbackLanguages' => $language->getFallbackLanguages(),
+			'bcp47Map' => LanguageCode::getNonstandardLanguageCodeMapping(),
+		];
 	}
 
 	/**
-	 * @param $context ResourceLoaderContext
-	 * @return string: JavaScript code
+	 * @param ResourceLoaderContext $context
+	 * @return string JavaScript code
 	 */
 	public function getScript( ResourceLoaderContext $context ) {
-		$this->language = Language::factory( $context->getLanguage() );
-		return Xml::encodeJsCall( 'mw.language.setData', array(
-			$this->language->getCode(),
-			$this->getData()
-		) );
+		return parent::getScript( $context )
+			. 'mw.language.setData('
+			. $context->encodeJson( $context->getLanguage() ) . ','
+			. $context->encodeJson( self::getData( $context->getLanguage() ) )
+			. ');';
 	}
 
 	/**
-	 * @param $context ResourceLoaderContext
-	 * @return int: UNIX timestamp
+	 * @return bool
 	 */
-	public function getModifiedTime( ResourceLoaderContext $context ) {
-		return max( 1, $this->getHashMtime( $context ) );
+	public function enableModuleContentVersion() {
+		return true;
 	}
 
 	/**
-	 * @param $context ResourceLoaderContext
-	 * @return string: Hash
+	 * @return bool
 	 */
-	public function getModifiedHash( ResourceLoaderContext $context ) {
-		$this->language = Language::factory( $context->getLanguage() );
-
-		return md5( serialize( $this->getData() ) );
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getDependencies() {
-		return array( 'mediawiki.language.init' );
+	public function supportsURLLoading() {
+		return false;
 	}
 }

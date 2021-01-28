@@ -23,6 +23,10 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
+
 /**
  * Implements Special:ComparePages
  *
@@ -43,63 +47,66 @@ class SpecialComparePages extends SpecialPage {
 	/**
 	 * Show a form for filtering namespace and username
 	 *
-	 * @param $par String
-	 * @return String
+	 * @param string|null $par
 	 */
 	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
+		$this->getOutput()->addModuleStyles( 'mediawiki.special' );
+		$this->addHelpLink( 'Help:Diff' );
 
-		$form = new HTMLForm( array(
-			'Page1' => array(
-				'type' => 'text',
+		$form = HTMLForm::factory( 'ooui', [
+			'Page1' => [
+				'type' => 'title',
 				'name' => 'page1',
 				'label-message' => 'compare-page1',
 				'size' => '40',
 				'section' => 'page1',
-				'validation-callback' => array( $this, 'checkExistingTitle' ),
-			),
-			'Revision1' => array(
+				'validation-callback' => [ $this, 'checkExistingTitle' ],
+				'required' => false,
+			],
+			'Revision1' => [
 				'type' => 'int',
 				'name' => 'rev1',
 				'label-message' => 'compare-rev1',
 				'size' => '8',
 				'section' => 'page1',
-				'validation-callback' => array( $this, 'checkExistingRevision' ),
-			),
-			'Page2' => array(
-				'type' => 'text',
+				'validation-callback' => [ $this, 'checkExistingRevision' ],
+			],
+			'Page2' => [
+				'type' => 'title',
 				'name' => 'page2',
 				'label-message' => 'compare-page2',
 				'size' => '40',
 				'section' => 'page2',
-				'validation-callback' => array( $this, 'checkExistingTitle' ),
-			),
-			'Revision2' => array(
+				'validation-callback' => [ $this, 'checkExistingTitle' ],
+				'required' => false,
+			],
+			'Revision2' => [
 				'type' => 'int',
 				'name' => 'rev2',
 				'label-message' => 'compare-rev2',
 				'size' => '8',
 				'section' => 'page2',
-				'validation-callback' => array( $this, 'checkExistingRevision' ),
-			),
-			'Action' => array(
+				'validation-callback' => [ $this, 'checkExistingRevision' ],
+			],
+			'Action' => [
 				'type' => 'hidden',
 				'name' => 'action',
-			),
-			'Diffonly' => array(
+			],
+			'Diffonly' => [
 				'type' => 'hidden',
 				'name' => 'diffonly',
-			),
-			'Unhide' => array(
+			],
+			'Unhide' => [
 				'type' => 'hidden',
 				'name' => 'unhide',
-			),
-		), $this->getContext(), 'compare' );
+			],
+		], $this->getContext(), 'compare' );
 		$form->setSubmitTextMsg( 'compare-submit' );
 		$form->suppressReset();
 		$form->setMethod( 'get' );
-		$form->setSubmitCallback( array( __CLASS__, 'showDiff' ) );
+		$form->setSubmitCallback( [ __CLASS__, 'showDiff' ] );
 
 		$form->loadData();
 		$form->displayForm( '' );
@@ -111,10 +118,18 @@ class SpecialComparePages extends SpecialPage {
 		$rev2 = self::revOrTitle( $data['Revision2'], $data['Page2'] );
 
 		if ( $rev1 && $rev2 ) {
-			$revision = Revision::newFromId( $rev1 );
+			$revisionRecord = MediaWikiServices::getInstance()
+				->getRevisionLookup()
+				->getRevisionById( $rev1 );
 
-			if ( $revision ) { // NOTE: $rev1 was already checked, should exist.
-				$contentHandler = $revision->getContentHandler();
+			if ( $revisionRecord ) { // NOTE: $rev1 was already checked, should exist.
+				$contentModel = $revisionRecord->getSlot(
+					SlotRecord::MAIN,
+					RevisionRecord::RAW
+				)->getModel();
+				$contentHandler = MediaWikiServices::getInstance()
+					->getContentHandlerFactory()
+					->getContentHandler( $contentModel );
 				$de = $contentHandler->createDifferenceEngine( $form->getContext(),
 					$rev1,
 					$rev2,
@@ -159,8 +174,10 @@ class SpecialComparePages extends SpecialPage {
 		if ( $value === '' || $value === null ) {
 			return true;
 		}
-		$revision = Revision::newFromId( $value );
-		if ( $revision === null ) {
+		$revisionRecord = MediaWikiServices::getInstance()
+			->getRevisionLookup()
+			->getRevisionById( $value );
+		if ( $revisionRecord === null ) {
 			return $this->msg( 'compare-revision-not-exists' )->parseAsBlock();
 		}
 

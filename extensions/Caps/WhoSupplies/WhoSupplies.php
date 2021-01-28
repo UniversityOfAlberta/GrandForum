@@ -7,7 +7,7 @@ $wgSpecialPageGroups['WhoSupplies'] = 'network-tools';
 
 class WhoSupplies extends SpecialPage{
 
-    function WhoSupplies() {
+    function __construct() {
         parent::__construct("WhoSupplies", null, true);
     }
     

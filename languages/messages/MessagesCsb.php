@@ -1,8 +1,7 @@
 <?php
 /** Kashubian (kaszëbsczi)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -11,7 +10,7 @@
 
 $fallback = 'pl';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Specjalnô',
 	NS_TALK             => 'Diskùsëjô',
@@ -28,5 +27,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Diskùsëjô_Pòmòcë',
 	NS_CATEGORY         => 'Kategòrëjô',
 	NS_CATEGORY_TALK    => 'Diskùsëjô_Kategòrëji',
-);
-
+];

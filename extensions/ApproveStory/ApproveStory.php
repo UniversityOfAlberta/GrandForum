@@ -12,7 +12,7 @@ function runApproveStory($par) {
 
 class ApproveStory extends SpecialPage{
 
-    function ApproveStory() {
+    function __construct() {
             parent::__construct("ApproveStory", STAFF.'+', true);
     }
 

@@ -2,10 +2,10 @@
 
 class Label extends UIElement {
     var $colon = true; 
-    function Label($id, $name, $value,$validations=VALIDATE_NOTHING,$colon=true){
-        parent::UIElement($id, $name, $value, $validations);
+    function __construct($id, $name, $value,$validations=VALIDATE_NOTHING,$colon=true){
+        parent::__construct($id, $name, $value, $validations);
         $this->attr('class', 'label tooltip');
-	$this->colon = $colon;
+        $this->colon = $colon;
     }
     
     function render(){

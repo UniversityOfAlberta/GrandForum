@@ -14,7 +14,7 @@ class Story extends BackboneModel{
 
 //-----Static Functions/Constructor---//
         // Constructor
-        function Story($data){
+        function __construct($data){
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
                 $this->rev_id = $data[0]['rev_id'];

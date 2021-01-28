@@ -201,12 +201,3 @@ function transferGroups(selectBoxId,targetBoxId){
 
 // END ANNOKI EDIT 
 //////////////////////////////////////////////////////
- 
-//ANNOKIBLOOMS EDIT
-if (wgBreakFrames) {
-	// Un-trap us from framesets
-	if (window.top != window) {
-		window.top.location = window.location;
-	}
-}
-//END ANNOKIBLOOMS EDIT

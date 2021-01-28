@@ -2,8 +2,8 @@
 
 class MultiColumnVerticalCheckBox extends VerticalCheckBox {
     
-    function MultiColumnVerticalCheckBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::VerticalCheckBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
     }
     
     function render(){

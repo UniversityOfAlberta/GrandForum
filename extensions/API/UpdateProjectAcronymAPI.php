@@ -2,7 +2,7 @@
 
 class UpdateProjectAcronymAPI extends API{
 
-    function UpdateProjectAcronymAPI(){
+    function __construct(){
         $this->addPOST("old_acronym",true,"The old acronym for the project","NewProj");
 	    $this->addPOST("new_acronym",true,"The new acronym for the projeect","NewProject");
     }

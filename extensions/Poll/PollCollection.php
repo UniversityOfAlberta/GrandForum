@@ -198,7 +198,7 @@ class PollCollection {
 		return $users;
 	}
 	
-	function PollCollection($id, $author, $name, $selfVote, $polls, $groups, $created, $timeLimit){
+	function __construct($id, $author, $name, $selfVote, $polls, $groups, $created, $timeLimit){
 		$this->id = $id;
 		$this->author = $author;
 		$this->name = $name;

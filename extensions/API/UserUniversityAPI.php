@@ -2,7 +2,7 @@
 
 class UserUniversityAPI extends API{
 
-    function UserUniversityAPI(){
+    function __construct(){
         $this->addPOST("university", false, "The name of the university", "University of Alberta");
         $this->addPOST("department", false, "The department the user is in", "Computing Science");
         $this->addPOST("title", false, "The title of the user (ie. Professor)", "Professor");

@@ -2,7 +2,7 @@
 
 class AddThemeLeaderAPI extends API{
 
-    function AddThemeLeaderAPI(){
+    function __construct(){
         $this->addPOST("name",true,"The User Name of the user to add","UserName");
         $this->addPOST("theme",true,"The number of the theme","1");
         $this->addPOST("co_lead", false,"Whether or not this user should be a co leader or not.  If not provided, 'False' is assumed", "False");

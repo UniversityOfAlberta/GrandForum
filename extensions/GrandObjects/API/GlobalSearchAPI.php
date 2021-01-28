@@ -16,10 +16,10 @@ class GlobalSearchAPI extends RESTAPI {
         switch($group){
             case 'people':
                 $data = array();
-		if(!$me->isLoggedIn()){
-		    $results = $data;
-		    break;
-		}
+                if(!$me->isLoggedIn()){
+                    $results = $data;
+                    break;
+                }
                 $people = DBFunctions::select(array('mw_user'),
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
@@ -73,7 +73,7 @@ class GlobalSearchAPI extends RESTAPI {
                             $percent += 15;
                         }
                     }
-                    if(count($myRelations) > 0){
+                    if(!empty($myRelations)){
                         $relFound = false;
                         foreach($myRelations as $type){
                             if(!$relFound){
@@ -87,7 +87,7 @@ class GlobalSearchAPI extends RESTAPI {
                             }
                         }
                     }
-                    if(count($sups) > 0){
+                    if(!empty($sups)){
                         foreach($sups as $sup){
                             if($sup->getId() == $person->getId()){
                                 $percent += 50;
@@ -99,9 +99,9 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 asort($results);
                 $results = array_reverse($results, true);
-	            foreach($results as $key => $row){
-	                $ids[] = intval($key);
-	            }
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
                 break;
             case 'projects':
                 $data = array();
@@ -139,9 +139,9 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 asort($results);
                 $results = array_reverse($results, true);
-	            foreach($results as $key => $row){
-	                $ids[] = intval($key);
-	            }
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
                 break;
             case 'products':
                 $data = array();
@@ -186,9 +186,9 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 asort($results);
                 $results = array_reverse($results, true);
-	            foreach($results as $key => $row){
-	                $ids[] = intval($key);
-	            }
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
                 break;
         case 'stories':
                 $data = array();
@@ -264,7 +264,7 @@ class GlobalSearchAPI extends RESTAPI {
                     $ids[] = intval($key);
                 }   
                 break; 
-	case 'wikipage':
+        case 'wikipage':
                 $url1 = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=text&gsrsearch=".$search."&format=json";
                 $url2 = "{$wgServer}{$wgScriptPath}/api.php?action=query&generator=search&gsrwhat=title&gsrsearch=".$search."&format=json";
                 $ch = curl_init();
@@ -440,7 +440,7 @@ class GlobalSearchAPI extends RESTAPI {
                 }
                 asort($results);
                 $results = array_reverse($results, true);
-	            $ids = array_keys($results);
+                $ids = array_keys($results);
                 break;
         }
         $array['results'] = $ids;
@@ -458,7 +458,7 @@ class GlobalSearchAPI extends RESTAPI {
     function doDELETE(){
         return $this->doGet();
     }
-	
+
 }
 
 ?>

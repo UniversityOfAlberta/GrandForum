@@ -27,20 +27,22 @@
  * logs of patrol events
  */
 class PatrolLog {
+
 	/**
 	 * Record a log event for a change being patrolled
 	 *
-	 * @param mixed $rc Change identifier or RecentChange object
+	 * @param int|RecentChange $rc Change identifier or RecentChange object
 	 * @param bool $auto Was this patrol event automatic?
-	 * @param User $user User performing the action or null to use $wgUser
+	 * @param User|null $user User performing the action or null to use $wgUser
+	 *   (null to use $wgUser is deprecated since 1.35)
+	 * @param string|string[]|null $tags Change tags to add to the patrol log entry
+	 *   ($user should be able to add the specified tags before this is called)
 	 *
 	 * @return bool
 	 */
-	public static function record( $rc, $auto = false, User $user = null ) {
-		global $wgLogAutopatrol;
-
-		// do not log autopatrolled edits if setting disables it
-		if ( $auto && !$wgLogAutopatrol ) {
+	public static function record( $rc, $auto = false, User $user = null, $tags = null ) {
+		// Do not log autopatrol actions: T184485
+		if ( $auto ) {
 			return false;
 		}
 
@@ -52,18 +54,18 @@ class PatrolLog {
 		}
 
 		if ( !$user ) {
+			wfDeprecated( __METHOD__ . ' without passing a $user parameter', '1.35' );
 			global $wgUser;
 			$user = $wgUser;
 		}
 
 		$entry = new ManualLogEntry( 'patrol', 'patrol' );
 		$entry->setTarget( $rc->getTitle() );
-		$entry->setParameters( self::buildParams( $rc, $auto ) );
+		$entry->setParameters( self::buildParams( $rc ) );
 		$entry->setPerformer( $user );
+		$entry->addTags( $tags );
 		$logid = $entry->insert();
-		if ( !$auto ) {
-			$entry->publish( $logid, 'udp' );
-		}
+		$entry->publish( $logid, 'udp' );
 
 		return true;
 	}
@@ -72,14 +74,13 @@ class PatrolLog {
 	 * Prepare log parameters for a patrolled change
 	 *
 	 * @param RecentChange $change RecentChange to represent
-	 * @param bool $auto Whether the patrol event was automatic
 	 * @return array
 	 */
-	private static function buildParams( $change, $auto ) {
-		return array(
+	private static function buildParams( $change ) {
+		return [
 			'4::curid' => $change->getAttribute( 'rc_this_oldid' ),
 			'5::previd' => $change->getAttribute( 'rc_last_oldid' ),
-			'6::auto' => (int)$auto
-		);
+			'6::auto' => 0
+		];
 	}
 }

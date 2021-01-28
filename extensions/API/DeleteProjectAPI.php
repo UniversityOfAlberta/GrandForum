@@ -2,7 +2,7 @@
 
 class DeleteProjectAPI extends API{
 
-    function DeleteProjectAPI(){
+    function __construct(){
         $this->addPOST("project",true,"The name of the project to delete", "MEOW");
 	    $this->addPOST("effective_date",true, "The date that this action should take place", "2012-10-15");
     }

@@ -2,7 +2,7 @@
 
 class PublicationByTitleAPI extends API{
 
-    function PublicationByTitleAPI(){
+    function __construct(){
         $this->addGET("name", true, "The title of the Publication", "Pub Title");
         $this->addGET("category", false, "The category of the Publication", "Artifact");
         $this->addGET("type", false, "The type of Publication", "Proceedings Paper");

@@ -11,7 +11,7 @@ function runAcademicResources($par) {
 
 class AcademicResources extends SpecialPage{
 
-    function AcademicResources() {
+    function __construct() {
         SpecialPage::__construct("AcademicResources", null, false, 'runAcademicResources');
     }
     

@@ -1,15 +1,15 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
+UnknownAction::createAction('PersonVisualizationsTab::getTimelineData');
+UnknownAction::createAction('PersonVisualizationsTab::getDoughnutData');
+UnknownAction::createAction('PersonVisualizationsTab::getChordData');
 
 class PersonVisualizationsTab extends AbstractTab {
 
     var $person;
     var $visibility;
 
-    function PersonVisualizationsTab($person, $visibility){
+    function __construct($person, $visibility){
         parent::AbstractTab("Visualizations");
         $this->person = $person;
         $this->visibility = $visibility;
@@ -466,6 +466,7 @@ class PersonVisualizationsTab extends AbstractTab {
             echo json_encode($array);
             exit;
 	    }
+	    return true;
 	}
 	
 	static function getRootDiscipline($disc){

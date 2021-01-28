@@ -20,8 +20,16 @@
  * @file
  */
 
+use Wikimedia\Rdbms\DatabaseDomain;
+use Wikimedia\Rdbms\DBConnRef;
+use Wikimedia\Rdbms\DBUnexpectedError;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\LBFactory;
+use Wikimedia\Rdbms\MaintainableDBConnRef;
+
 /**
- * DB accessable external objects.
+ * DB accessible external objects.
  *
  * In this system, each store "location" maps to a database "cluster".
  * The clusters must be defined in the normal LBFactory configuration.
@@ -29,10 +37,28 @@
  * @ingroup ExternalStorage
  */
 class ExternalStoreDB extends ExternalStoreMedium {
+	/** @var LBFactory */
+	private $lbFactory;
+
+	/**
+	 * @see ExternalStoreMedium::__construct()
+	 * @param array $params Additional parameters include:
+	 *   - lbFactory: an LBFactory instance
+	 */
+	public function __construct( array $params ) {
+		parent::__construct( $params );
+		if ( !isset( $params['lbFactory'] ) || !( $params['lbFactory'] instanceof LBFactory ) ) {
+			throw new InvalidArgumentException( "LBFactory required in 'lbFactory' field." );
+		}
+		$this->lbFactory = $params['lbFactory'];
+	}
+
 	/**
 	 * The provided URL is in the form of DB://cluster/id
 	 * or DB://cluster/id/itemid for concatened storage.
 	 *
+	 * @param string $url
+	 * @return string|bool False if missing
 	 * @see ExternalStoreMedium::fetchFromURL()
 	 */
 	public function fetchFromURL( $url ) {
@@ -56,7 +82,7 @@ class ExternalStoreDB extends ExternalStoreMedium {
 	 *     are not represented.
 	 */
 	public function batchFetchFromURLs( array $urls ) {
-		$batched = $inverseUrlMap = array();
+		$batched = $inverseUrlMap = [];
 		foreach ( $urls as $url ) {
 			list( $cluster, $id, $itemID ) = $this->parseURL( $url );
 			$batched[$cluster][$id][] = $itemID;
@@ -64,7 +90,7 @@ class ExternalStoreDB extends ExternalStoreMedium {
 			// since we do === from the $itemID in $batched
 			$inverseUrlMap[$cluster][$id][$itemID] = $url;
 		}
-		$ret = array();
+		$ret = [];
 		foreach ( $batched as $cluster => $batchByCluster ) {
 			$res = $this->batchFetchBlobs( $cluster, $batchByCluster );
 			/** @var HistoryBlob $blob */
@@ -84,130 +110,224 @@ class ExternalStoreDB extends ExternalStoreMedium {
 	}
 
 	/**
-	 * @see ExternalStoreMedium::store()
+	 * @inheritDoc
 	 */
-	public function store( $cluster, $data ) {
-		$dbw = $this->getMaster( $cluster );
-		$id = $dbw->nextSequenceValue( 'blob_blob_id_seq' );
-		$dbw->insert( $this->getTable( $dbw ),
-			array( 'blob_id' => $id, 'blob_text' => $data ),
-			__METHOD__ );
+	public function store( $location, $data ) {
+		$dbw = $this->getMaster( $location );
+		$dbw->insert(
+			$this->getTable( $dbw, $location ),
+			[ 'blob_text' => $data ],
+			__METHOD__
+		);
 		$id = $dbw->insertId();
 		if ( !$id ) {
 			throw new MWException( __METHOD__ . ': no insert ID' );
 		}
-		if ( $dbw->getFlag( DBO_TRX ) ) {
-			$dbw->commit( __METHOD__ );
+
+		return "DB://$location/$id";
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function isReadOnly( $location ) {
+		if ( parent::isReadOnly( $location ) ) {
+			return true;
 		}
 
-		return "DB://$cluster/$id";
+		$lb = $this->getLoadBalancer( $location );
+		$domainId = $this->getDomainId( $lb->getServerInfo( $lb->getWriterIndex() ) );
+
+		return ( $lb->getReadOnlyReason( $domainId ) !== false );
 	}
 
 	/**
 	 * Get a LoadBalancer for the specified cluster
 	 *
-	 * @param string $cluster cluster name
-	 * @return LoadBalancer object
+	 * @param string $cluster Cluster name
+	 * @return ILoadBalancer
 	 */
-	function getLoadBalancer( $cluster ) {
-		$wiki = isset( $this->params['wiki'] ) ? $this->params['wiki'] : false;
-
-		return wfGetLBFactory()->getExternalLB( $cluster, $wiki );
+	private function getLoadBalancer( $cluster ) {
+		return $this->lbFactory->getExternalLB( $cluster );
 	}
 
 	/**
-	 * Get a slave database connection for the specified cluster
+	 * Get a replica DB connection for the specified cluster
 	 *
-	 * @param string $cluster cluster name
-	 * @return DatabaseBase object
+	 * @since 1.34
+	 * @param string $cluster Cluster name
+	 * @return DBConnRef
 	 */
-	function getSlave( $cluster ) {
-		global $wgDefaultExternalStore;
-
-		$wiki = isset( $this->params['wiki'] ) ? $this->params['wiki'] : false;
+	public function getReplica( $cluster ) {
 		$lb = $this->getLoadBalancer( $cluster );
 
-		if ( !in_array( "DB://" . $cluster, (array)$wgDefaultExternalStore ) ) {
-			wfDebug( "read only external store\n" );
-			$lb->allowLagged( true );
-		} else {
-			wfDebug( "writable external store\n" );
-		}
+		return $lb->getConnectionRef(
+			DB_REPLICA,
+			[],
+			$this->getDomainId( $lb->getServerInfo( $lb->getWriterIndex() ) ),
+			$lb::CONN_TRX_AUTOCOMMIT
+		);
+	}
 
-		return $lb->getConnection( DB_SLAVE, array(), $wiki );
+	/**
+	 * Get a replica DB connection for the specified cluster
+	 *
+	 * @param string $cluster Cluster name
+	 * @return DBConnRef
+	 * @deprecated since 1.34
+	 */
+	public function getSlave( $cluster ) {
+		wfDeprecated( __METHOD__, '1.34' );
+		return $this->getReplica( $cluster );
 	}
 
 	/**
 	 * Get a master database connection for the specified cluster
 	 *
-	 * @param string $cluster cluster name
-	 * @return DatabaseBase object
+	 * @param string $cluster Cluster name
+	 * @return MaintainableDBConnRef
 	 */
-	function getMaster( $cluster ) {
-		$wiki = isset( $this->params['wiki'] ) ? $this->params['wiki'] : false;
+	public function getMaster( $cluster ) {
 		$lb = $this->getLoadBalancer( $cluster );
 
-		return $lb->getConnection( DB_MASTER, array(), $wiki );
+		return $lb->getMaintenanceConnectionRef(
+			DB_MASTER,
+			[],
+			$this->getDomainId( $lb->getServerInfo( $lb->getWriterIndex() ) ),
+			$lb::CONN_TRX_AUTOCOMMIT
+		);
+	}
+
+	/**
+	 * @param array $server Master DB server configuration array for LoadBalancer
+	 * @return string|bool Database domain ID or false
+	 */
+	private function getDomainId( array $server ) {
+		if ( $this->isDbDomainExplicit ) {
+			return $this->dbDomain; // explicit foreign domain
+		}
+
+		if ( isset( $server['dbname'] ) ) {
+			// T200471: for b/c, treat any "dbname" field as forcing which database to use.
+			// MediaWiki/LoadBalancer previously did not enforce any concept of a local DB
+			// domain, but rather assumed that the LB server configuration matched $wgDBname.
+			// This check is useful when the external storage DB for this cluster does not use
+			// the same name as the corresponding "main" DB(s) for wikis.
+			$domain = new DatabaseDomain(
+				$server['dbname'],
+				$server['schema'] ?? null,
+				$server['tablePrefix'] ?? ''
+			);
+
+			return $domain->getId();
+		}
+
+		return false; // local LB domain
 	}
 
 	/**
 	 * Get the 'blobs' table name for this database
 	 *
-	 * @param $db DatabaseBase
-	 * @return String: table name ('blobs' by default)
+	 * @param IDatabase $db
+	 * @param string|null $cluster Cluster name
+	 * @return string Table name ('blobs' by default)
 	 */
-	function getTable( $db ) {
-		$table = $db->getLBInfo( 'blobs table' );
-		if ( is_null( $table ) ) {
-			$table = 'blobs';
+	public function getTable( $db, $cluster = null ) {
+		if ( $cluster !== null ) {
+			$lb = $this->getLoadBalancer( $cluster );
+			$info = $lb->getServerInfo( $lb->getWriterIndex() );
+			if ( isset( $info['blobs table'] ) ) {
+				return $info['blobs table'];
+			}
 		}
 
-		return $table;
+		return $db->getLBInfo( 'blobs table' ) ?? 'blobs'; // b/c
+	}
+
+	/**
+	 * Create the appropriate blobs table on this cluster
+	 *
+	 * @see getTable()
+	 * @since 1.34
+	 * @param string $cluster
+	 */
+	public function initializeTable( $cluster ) {
+		global $IP;
+
+		static $supportedTypes = [ 'mysql', 'sqlite' ];
+
+		$dbw = $this->getMaster( $cluster );
+		if ( !in_array( $dbw->getType(), $supportedTypes, true ) ) {
+			throw new DBUnexpectedError( $dbw, "RDBMS type '{$dbw->getType()}' not supported." );
+		}
+
+		$sqlFilePath = "$IP/maintenance/storage/blobs.sql";
+		$sql = file_get_contents( $sqlFilePath );
+		if ( $sql === false ) {
+			throw new RuntimeException( "Failed to read '$sqlFilePath'." );
+		}
+
+		$rawTable = $this->getTable( $dbw, $cluster ); // e.g. "blobs_cluster23"
+		$encTable = $dbw->tableName( $rawTable );
+		$dbw->query(
+			str_replace(
+				[ '/*$wgDBprefix*/blobs', '/*_*/blobs' ],
+				[ $encTable, $encTable ],
+				$sql
+			),
+			__METHOD__,
+			$dbw::QUERY_IGNORE_DBO_TRX
+		);
 	}
 
 	/**
 	 * Fetch a blob item out of the database; a cache of the last-loaded
 	 * blob will be kept so that multiple loads out of a multi-item blob
 	 * can avoid redundant database access and decompression.
-	 * @param $cluster
-	 * @param $id
-	 * @param $itemID
-	 * @return mixed
-	 * @private
+	 * @param string $cluster
+	 * @param string $id
+	 * @param string $itemID
+	 * @return HistoryBlob|bool Returns false if missing
 	 */
-	function fetchBlob( $cluster, $id, $itemID ) {
+	private function fetchBlob( $cluster, $id, $itemID ) {
 		/**
 		 * One-step cache variable to hold base blobs; operations that
 		 * pull multiple revisions may often pull multiple times from
 		 * the same blob. By keeping the last-used one open, we avoid
 		 * redundant unserialization and decompression overhead.
 		 */
-		static $externalBlobCache = array();
+		static $externalBlobCache = [];
 
 		$cacheID = ( $itemID === false ) ? "$cluster/$id" : "$cluster/$id/";
+		$cacheID = "$cacheID@{$this->dbDomain}";
+
 		if ( isset( $externalBlobCache[$cacheID] ) ) {
-			wfDebugLog( 'ExternalStoreDB-cache',
-				"ExternalStoreDB::fetchBlob cache hit on $cacheID" );
+			$this->logger->debug( "ExternalStoreDB::fetchBlob cache hit on $cacheID" );
 
 			return $externalBlobCache[$cacheID];
 		}
 
-		wfDebugLog( 'ExternalStoreDB-cache',
-			"ExternalStoreDB::fetchBlob cache miss on $cacheID" );
+		$this->logger->debug( "ExternalStoreDB::fetchBlob cache miss on $cacheID" );
 
-		$dbr = $this->getSlave( $cluster );
-		$ret = $dbr->selectField( $this->getTable( $dbr ),
-			'blob_text', array( 'blob_id' => $id ), __METHOD__ );
+		$dbr = $this->getReplica( $cluster );
+		$ret = $dbr->selectField(
+			$this->getTable( $dbr, $cluster ),
+			'blob_text',
+			[ 'blob_id' => $id ],
+			__METHOD__
+		);
 		if ( $ret === false ) {
-			wfDebugLog( 'ExternalStoreDB',
-				"ExternalStoreDB::fetchBlob master fallback on $cacheID" );
+			$this->logger->info( "ExternalStoreDB::fetchBlob master fallback on $cacheID" );
 			// Try the master
 			$dbw = $this->getMaster( $cluster );
-			$ret = $dbw->selectField( $this->getTable( $dbw ),
-				'blob_text', array( 'blob_id' => $id ), __METHOD__ );
+			$ret = $dbw->selectField(
+				$this->getTable( $dbw, $cluster ),
+				'blob_text',
+				[ 'blob_id' => $id ],
+				__METHOD__
+			);
 			if ( $ret === false ) {
-				wfDebugLog( 'ExternalStoreDB',
-					"ExternalStoreDB::fetchBlob master failed to find $cacheID" );
+				$this->logger->error( "ExternalStoreDB::fetchBlob master failed to find $cacheID" );
 			}
 		}
 		if ( $itemID !== false && $ret !== false ) {
@@ -215,7 +335,7 @@ class ExternalStoreDB extends ExternalStoreMedium {
 			$ret = unserialize( $ret );
 		}
 
-		$externalBlobCache = array( $cacheID => $ret );
+		$externalBlobCache = [ $cacheID => $ret ];
 
 		return $ret;
 	}
@@ -228,44 +348,52 @@ class ExternalStoreDB extends ExternalStoreMedium {
 	 * @return array A map from the blob_id's requested to their content.
 	 *   Unlocated ids are not represented
 	 */
-	function batchFetchBlobs( $cluster, array $ids ) {
-		$dbr = $this->getSlave( $cluster );
-		$res = $dbr->select( $this->getTable( $dbr ),
-			array( 'blob_id', 'blob_text' ), array( 'blob_id' => array_keys( $ids ) ), __METHOD__ );
-		$ret = array();
+	private function batchFetchBlobs( $cluster, array $ids ) {
+		$dbr = $this->getReplica( $cluster );
+		$res = $dbr->select(
+			$this->getTable( $dbr, $cluster ),
+			[ 'blob_id', 'blob_text' ],
+			[ 'blob_id' => array_keys( $ids ) ],
+			__METHOD__
+		);
+
+		$ret = [];
 		if ( $res !== false ) {
 			$this->mergeBatchResult( $ret, $ids, $res );
 		}
 		if ( $ids ) {
-			wfDebugLog( __CLASS__, __METHOD__ .
-				" master fallback on '$cluster' for: " .
-				implode( ',', array_keys( $ids ) ) );
+			$this->logger->info(
+				__METHOD__ . ": master fallback on '$cluster' for: " .
+				implode( ',', array_keys( $ids ) )
+			);
 			// Try the master
 			$dbw = $this->getMaster( $cluster );
-			$res = $dbw->select( $this->getTable( $dbr ),
-				array( 'blob_id', 'blob_text' ),
-				array( 'blob_id' => array_keys( $ids ) ),
+			$res = $dbw->select(
+				$this->getTable( $dbr, $cluster ),
+				[ 'blob_id', 'blob_text' ],
+				[ 'blob_id' => array_keys( $ids ) ],
 				__METHOD__ );
 			if ( $res === false ) {
-				wfDebugLog( __CLASS__, __METHOD__ . " master failed on '$cluster'" );
+				$this->logger->error( __METHOD__ . ": master failed on '$cluster'" );
 			} else {
 				$this->mergeBatchResult( $ret, $ids, $res );
 			}
 		}
 		if ( $ids ) {
-			wfDebugLog( __CLASS__, __METHOD__ .
-				" master on '$cluster' failed locating items: " .
-				implode( ',', array_keys( $ids ) ) );
+			$this->logger->error(
+				__METHOD__ . ": master on '$cluster' failed locating items: " .
+				implode( ',', array_keys( $ids ) )
+			);
 		}
 
 		return $ret;
 	}
 
 	/**
-	 * Helper function for self::batchFetchBlobs for merging master/slave results
+	 * Helper function for self::batchFetchBlobs for merging master/replica DB results
 	 * @param array &$ret Current self::batchFetchBlobs return value
 	 * @param array &$ids Map from blob_id to requested itemIDs
-	 * @param mixed $res DB result from DatabaseBase::select
+	 * @param mixed $res DB result from Database::select
 	 */
 	private function mergeBatchResult( array &$ret, array &$ids, $res ) {
 		foreach ( $res as $row ) {
@@ -282,13 +410,17 @@ class ExternalStoreDB extends ExternalStoreMedium {
 		}
 	}
 
+	/**
+	 * @param string $url
+	 * @return array
+	 */
 	protected function parseURL( $url ) {
 		$path = explode( '/', $url );
 
-		return array(
+		return [
 			$path[2], // cluster
 			$path[3], // id
-			isset( $path[4] ) ? $path[4] : false // itemID
-		);
+			$path[4] ?? false // itemID
+		];
 	}
 }

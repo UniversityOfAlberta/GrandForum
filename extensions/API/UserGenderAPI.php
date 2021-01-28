@@ -2,7 +2,7 @@
 
 class UserGenderAPI extends API{
 
-    function UserGenderAPI(){
+    function __construct(){
         $this->addPOST("gender", true, "The gender of this user (Male or Female)", "Male");
     }
 

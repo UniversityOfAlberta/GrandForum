@@ -110,7 +110,7 @@ function createExtraTables() {
 	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
          ";
 
-	$dbw =& wfGetDB(DB_MASTER);
+	$dbw = wfGetDB(DB_MASTER);
 	$dbw->query($pagePerm);	
 	$dbw->query($extraNS);
 	$dbw->query($uploadPerm);
@@ -186,7 +186,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
-    GrandAccess::setupGrandAccess($user, $user->getRights());
+    //GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
@@ -223,8 +223,8 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   // Check public sections of wiki page
   if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
-      if($article != null){
-          $text = $article->getText();
+      if($article != null && $article->exists()){
+          $text = $article->getContent()->getText();
           if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
             $result = true;
             return true;
@@ -284,7 +284,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	//Check to see if the title is for an uploaded file, and if the user has permission to view that file.
-	if ($egAnProtectUploads && $title->getNamespace() == NS_IMAGE){
+	if ($egAnProtectUploads && $title->getNamespace() == NS_FILE){
 	  require_once('UploadProtection.php');
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);
@@ -447,7 +447,7 @@ function isPublicNS($nsId) {
   if ($nsId == -1) //-1 is a placeholder for a public page that is not in a public namespace
     return true;
   
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
 	if (!($row = $dbr->fetchRow($result)) || ($row[0] == 0)) {
@@ -518,7 +518,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
   if ($pageID == 0) { //TODO error?
     return;
   }
-  $dbw =& wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_MASTER );
   $dbw->delete("${egAnnokiTablePrefix}pagepermissions", array("page_id" => $pageID));
   
   $newPermissions = array();
@@ -538,7 +538,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
 function getExtraPermissions($title) {
   global $egAnnokiTablePrefix;
 
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
 	while ($row = $dbr->fetchRow($result)) {
@@ -609,7 +609,7 @@ function listStragglers($action, $article){
 FROM `mw_page`
 WHERE `page_namespace` =0
 AND `page_is_redirect` =0";
-      $dbr =& wfGetDB( DB_SLAVE );
+      $dbr = wfGetDB( DB_REPLICA );
       $res = $dbr->query($query);
       print '<html>';
 
@@ -623,6 +623,21 @@ AND `page_is_redirect` =0";
       exit;
     }
 
+    return true;
+}
+
+function logout($action, $article){
+    global $wgUser, $wgServer, $wgScriptPath;
+    if($action == "logout" && $wgUser->isLoggedIn()){
+        $wgUser->logout();
+        if(isset($_GET['returnto'])){
+            redirect($_GET['returnto']);
+        }
+        else{
+            redirect("$wgServer$wgScriptPath");
+        }
+        return false;
+    }
     return true;
 }
 

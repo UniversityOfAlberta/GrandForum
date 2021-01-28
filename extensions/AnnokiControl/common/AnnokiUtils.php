@@ -18,7 +18,7 @@ class AnnokiUtils {
    * @return array An array of all users of the wiki.
    */
   static function getAllUsers() {
-    $dbr =& wfGetDB( DB_READ );
+    $dbr = wfGetDB( DB_REPLICA );
     $ipblocks = $dbr->tableName('ipblocks');
     $userTable = $dbr->tableName('user');
     $result = $dbr->select("$userTable LEFT JOIN $ipblocks ON user_id = ipb_user", 'user_name, ipb_user');
@@ -42,7 +42,7 @@ class AnnokiUtils {
   static function getAllAuthorsForTitle($title){
       $id = $title->getArticleID();
       
-      $dbr =& wfGetDB( DB_READ );
+      $dbr = wfGetDB( DB_REPLICA );
       $result = $dbr->select('revision', 'distinct rev_user_text', "rev_page='$id'");
       $authors = array();
       

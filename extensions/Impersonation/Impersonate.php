@@ -2,9 +2,9 @@
 
 require_once("SpecialImpersonate.php");
 
-$wgHooks['AuthPluginSetup'][] = 'impersonate';
+$wgHooks['UserLoadAfterLoadFromSession'][] = 'startImpersonate';
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
-$wgHooks['UnknownAction'][] = 'getUserMode';
+UnknownAction::createAction('getUserMode');
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating, $wgDelegating;
@@ -51,8 +51,8 @@ function getUserMode($action, $page){
     return true;
 }
 
-function impersonate(){
-    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
+function startImpersonate($wgUser){
+    global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgDelegating, $wgTitle;
     if(!$wgUser->isLoggedIn()){
         return true;
     }
@@ -121,7 +121,7 @@ function impersonate(){
         setcookie('urlBeforeImpersonate', '', time()-(60*60), '/'); // Delete Cookie
         redirect("{$wgServer}{$urlBeforeImpersonate}");
     }
-    if(isset($_COOKIE['impersonate'])){
+    if(isset($_COOKIE['impersonate']) && !$wgImpersonating && !$wgDelegating){
         $exploded = explode("|", $_COOKIE['impersonate']);
         $name = $exploded[0];
         $person = Person::newFromName($name);
@@ -137,7 +137,7 @@ function impersonate(){
             $pageAllowed = true;
         }
         else{
-            wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
+            Hooks::run('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
         }
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
@@ -201,7 +201,7 @@ function getImpersonatingMessage(){
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
         $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire once you navigate away from this page";
     }
-    wfRunHooks('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
+    Hooks::run('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
     return $message;
 }
 
