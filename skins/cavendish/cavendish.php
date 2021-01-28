@@ -1008,7 +1008,7 @@ class CavendishTemplate extends QuickTemplate {
                 box-shadow: 0 22px 22px -22px rgba(0,0,0,0.3) inset;
             }
         </style>
-        <a class="administration highlights-background-hover" href="Administation">Administration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:none !important;padding:0;display:inline-block;font-size:small;color:red !important;">New!</span></a>
+        <a class="administration highlights-background-hover" href="Administration">Administration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:none !important;padding:0;display:inline-block;font-size:small;color:red !important;">New!</span></a>
 <?php } ?>
 <?php
 	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
