@@ -31,10 +31,10 @@ class NewsPostingAPI extends PostingAPI {
             $this->throwError("The french title must be no longer than 300 characters");
         }
         if(strlen($this->POST('summary')) > $maxSummaryLength){
-            $this->throwError("The english summary must be no longer than 2000 characters");
+            $this->throwError("The english summary must be no longer than $maxSummaryLength characters");
         }
         if(strlen($this->POST('summaryFr')) > $maxSummaryLength){
-            $this->throwError("The french summary must be no longer than 2000 characters");
+            $this->throwError("The french summary must be no longer than $maxSummaryLength characters");
         }
         if(strlen($this->POST('imageCaption')) > 500){
             $this->throwError("The english image caption must be no longer than 500 characters");
