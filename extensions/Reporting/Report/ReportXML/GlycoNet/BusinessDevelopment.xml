@@ -686,7 +686,7 @@
             <![CDATA[
                 </div>
                 <script type='text/javascript'>
-                    $('.wikitable').DataTable({
+                    var tables = $('.wikitable').DataTable({
                         scrollX: true,
                         scrollY: ($(window).height() - 500) + "px",
                         searching: false,
@@ -719,6 +719,14 @@
                     $('select').change();
                     
                     $("#tabs").tabs();
+                    $('#tabs').bind('tabsselect', function(event, ui) {
+                        _.defer(function(){
+                            tables.draw();
+                            $(window).trigger('resize');
+                        });
+                    });
+                    tables.draw();
+                    $(window).trigger('resize');
                 </script>
                 <style>
                     .dataTables_scrollBody thead {
