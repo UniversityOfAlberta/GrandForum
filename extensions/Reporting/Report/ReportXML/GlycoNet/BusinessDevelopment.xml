@@ -6,10 +6,23 @@
         </Role>
     </Permissions>
     <ReportSection id="bd" tooltip="Business Development" name="Business Development" blobSection="BD" type="EditableReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1">Therapeutics</a></li>
+                        <li><a href="#tabs-2">Biomarker/Diagnostic</a></li>
+                        <li><a href="#tabs-3">Synthesis/Process</a></li>
+                        <li><a href="#tabs-4">NewCo</a></li>
+                        <li><a href="#tabs-5">Tools/Analytical Techniques</a></li>
+                    </ul>
+            ]]>
+        </Static>
+    
         <!-- Therapeutics -->
         <Static>
             <![CDATA[
-                <h3>Therapeutics</h3>
+                <div id="tabs-1">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -198,14 +211,14 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Biomarker/Diagnostic -->
         <Static>
             <![CDATA[
-                <h3>Biomarker/Diagnostic</h3>
+                <div id="tabs-2">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -214,7 +227,7 @@
                             <th rowspan='2'>Start</th>
                             <th rowspan='2'>End</th>
                             <th rowspan='2'>Product Type</th>
-                            <th colspan='2'>Identification / Proof of Concept</th>
+                            <th colspan='2' style='white-space:nowrap;'>Identification / Proof of Concept</th>
                             <th colspan='3'>Regulatory</th>
                             <th colspan='1'>Clinical</th>
                             <th rowspan='2'>Targets / Indication</th>
@@ -319,14 +332,14 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Synthesis/Process -->
         <Static>
             <![CDATA[
-                <h3>Synthesis/Process</h3>
+                <div id="tabs-3">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -416,14 +429,14 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- NewCo -->
         <Static>
             <![CDATA[
-                <h3>NewCo</h3>
+                <div id="tabs-4">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -561,14 +574,14 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Tools/Analytical Techniques -->
         <Static>
             <![CDATA[
-                <h3>Tools/Analytical Techniques</h3>
+                <div id="tabs-5">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -661,20 +674,19 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <Static>
             <![CDATA[
-                </tbody>
-                </table>
+                </div>
                 <script type='text/javascript'>
                     $('#aboveTabs').hide();
                     $('#reportTabs').hide();
                     $('.wikitable').DataTable({
                         scrollX: true,
-                        scrollY: ($(window).height() - 470) + "px",
+                        scrollY: ($(window).height() - 500) + "px",
                         searching: false,
                         aLengthMenu: [
                             [25, 50, 100, 200, -1],
@@ -703,6 +715,10 @@
                         }
                     });
                     $('select').change();
+                    
+                      $( function() {
+                        $( "#tabs" ).tabs();
+                      } );
                 </script>
                 <style>
                     .dataTables_scrollBody thead {
