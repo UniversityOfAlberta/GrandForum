@@ -8,6 +8,10 @@
     <ReportSection id="bd" tooltip="Business Development" name="Business Development" blobSection="BD" type="EditableReportSection" renderpdf="false">
         <Static>
             <![CDATA[
+                <script type='text/javascript'>
+                    $('#aboveTabs').hide();
+                    $('#reportTabs').hide();
+                </script>
                 <div id="tabs">
                     <ul>
                         <li><a href="#tabs-1">Therapeutics</a></li>
@@ -682,8 +686,6 @@
             <![CDATA[
                 </div>
                 <script type='text/javascript'>
-                    $('#aboveTabs').hide();
-                    $('#reportTabs').hide();
                     $('.wikitable').DataTable({
                         scrollX: true,
                         scrollY: ($(window).height() - 500) + "px",
@@ -716,9 +718,7 @@
                     });
                     $('select').change();
                     
-                      $( function() {
-                        $( "#tabs" ).tabs();
-                      } );
+                    $("#tabs").tabs();
                 </script>
                 <style>
                     .dataTables_scrollBody thead {
