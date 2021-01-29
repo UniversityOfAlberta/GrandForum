@@ -142,49 +142,49 @@
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <For array="PROOF_1|PROOF_2|PROOF_3|PROOF_5|PROOF_4|PRE_2|PRE_3|PRE_4|PRE_1|PRE_5">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td>{$item}</td>
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
                         ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="targets" type="Text" blobItem="TARGETS">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="ip" type="Text" blobItem="IP">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -263,49 +263,49 @@
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <For array="BIO_1|BIO_2|BIO_3|BIO_4|BIO_5|BIO_6">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td>{$item}</td>
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
                         ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="targets" type="Text" blobItem="TARGETS">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="ip" type="Text" blobItem="IP">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -365,44 +365,44 @@
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <For array="SYNTH_1|SYNTH_2|SYNTH_3|SYNTH_4">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td>{$item}</td>
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
                         ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="ip" type="Text" blobItem="IP">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -493,62 +493,62 @@
             </Static>
             <ReportItem id="incorporation" type="Text" blobItem="INCORPORATION" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="targets" type="Text" blobItem="TARGETS" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="co_1" type="Select" blobItem="CO_1" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
                 <![CDATA[
-                    <td>COMPANY{$index} {$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="co_2" type="Select" blobItem="CO_2" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
                 <![CDATA[
-                    <td>COMPANY{$index} {$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="legal" type="Text" blobItem="LEGAL" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="targeted" type="Text" blobItem="TARGETED" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" blobSubItem="COMPANY{$index}" height="75px" width="200px">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="strat" type="Textarea" blobItem="STRAT" blobSubItem="COMPANY{$index}" height="75px" width="200px">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="ip" type="Text" blobItem="IP" blobSubItem="COMPANY{$index}">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="clients" type="Textarea" blobItem="CLIENTS" blobSubItem="COMPANY{$index}" height="75px" width="200px">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <ReportItem id="next" type="Textarea" blobItem="NEXT" blobSubItem="COMPANY{$index}" height="75px" width="200px">
                 <![CDATA[
-                    <td>{$item}</td>
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
                 ]]>
             </ReportItem>
             <Static>
@@ -610,44 +610,44 @@
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <For array="TOOLS_1|TOOLS_2|TOOLS_3|TOOLS_4|TOOLS_5">
                     <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
                         <![CDATA[
-                            <td>{$item}</td>
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
                         ]]>
                     </ReportItem>
                 </For>
                 <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="ip" type="Text" blobItem="IP">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
                     <![CDATA[
-                        <td>{$item}</td>
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
                     ]]>
                 </ReportItem>
                 <Static>
@@ -685,11 +685,7 @@
                             leftColumns: 2
                         },
                         columnDefs: [
-                           {type: 'natural', targets: 0},
-                           {type: 'natural', targets: 1},
-                           {type: 'natural', targets: 2},
-                           {type: 'natural', targets: 3},
-                           {type: 'natural', targets: 4}
+                           {type: 'natural', targets: 0}
                         ],
                         iDisplayLength: -1
                     });
