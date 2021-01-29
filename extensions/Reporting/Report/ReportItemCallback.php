@@ -173,6 +173,8 @@ class ReportItemCallback {
             "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "replace" => "replace",
+            "strtolower" => "strtolower",
+            "strtoupper" => "strtoupper",
             "set" => "set",
             "get" => "get",
             "and" => "andCond",
@@ -1816,6 +1818,14 @@ class ReportItemCallback {
         return str_replace($pattern, $replacement, $string);
     }
     
+    function strtolower($str){
+        return strtolower($str);
+    }
+    
+    function strtoupper($str){
+        return strtoupper($str);
+    }
+    
     function set($key, $val){
         $this->reportItem->setVariable($key, $val);
     }
@@ -1886,8 +1896,11 @@ class ReportItemCallback {
         return "<div class='tinymce'>$blobValue</div>";
     }
     
-    function getExtra($index){
+    function getExtra($index=null){
         $set = $this->reportItem->extra;
+        if($index == null){
+            return $set;
+        }
         if(isset($set[$index])){
             return $set[$index];
         }
