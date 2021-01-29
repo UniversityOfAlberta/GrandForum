@@ -119,7 +119,7 @@
                               'ND-03'
                               'ND-05'
                               'ND-06'
-                              'RG-01'
+                              'RG-1'
                               'RG-2'
                               'RG-3'
                               'RG-6'
@@ -363,7 +363,7 @@
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
             <If if="{contains('CD-46'
-                              'TP-01'
+                              'TP-1'
                               'Project 2','{$project_name}')}">
                 <Static>
                     <![CDATA[
