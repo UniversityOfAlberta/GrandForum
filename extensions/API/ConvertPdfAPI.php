@@ -27,10 +27,11 @@ class ConvertPdfAPI extends API{
         $lines = $this->get_lines_between($string, "CERTIFICATE", "Learn more:&#160;<a href=\"https://englishtest.duolingo.com/scores\">englishtest.duolingo.com/scores</a>");
         if(count($lines) > 0){
             $duolingo['epl_test'] = "DUOL";
+            $lastline = "";
             foreach($lines as $line){
                 if(strstr($line, "Overall") !== false){
                     $line = @explode(" ", $line);
-                    $duolingo['epl_score'] = @$line[0];
+                    $duolingo['epl_score'] = (@$line[0] == "Overall") ? $lastline : @$line[0];
                 }
                 else if(strstr($line, "Literacy") !== false){
                     $line = @explode(" ", $line);
@@ -48,6 +49,7 @@ class ConvertPdfAPI extends API{
                     $line = @explode(" ", $line);
                     $duolingo['epl_write'] = @$line[0];
                 }
+                $lastline = $line;
             }
         }
         return $duolingo;
