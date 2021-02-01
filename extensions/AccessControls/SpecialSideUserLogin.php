@@ -30,6 +30,9 @@ class SpecialSideUserLogin extends SpecialUserLogin {
         $this->beforeExecute("");
         $this->execute("");
         echo $this->getOutput()->getHTML();
+        echo "<script type='text/javascript'>
+            $('#side form[name=userlogin]').attr('action', $('#side form[name=userlogin]').attr('action').replace('index.php?title=Special:UserLogin', 'index.php/Special:UserLogin?title=Special:UserLogin'));
+        </script>";
     }
 
 }
