@@ -26,6 +26,10 @@ class SpecialSideUserLogin extends SpecialUserLogin {
     }
     
     function render(){
+        global $wgTitle;
+        if($wgTitle->getText() == "UserLogin"){
+            return;
+        }
         $this->getOutput()->clearHTML();
         $this->beforeExecute("");
         $this->execute("");
