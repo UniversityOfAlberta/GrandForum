@@ -13,68 +13,71 @@ class ProjectBDTab extends AbstractTab {
     
     function generateBody(){
         global $wgUser, $wgServer, $wgScriptPath, $config;
-        $this->html .= "<table id='bd_table' class='wikitable' width='100%'>
-                            <thead>
-                                <tr>
-                                    <th rowspan='3'>Grant Type</th>
-                                    <th rowspan='3'>Research Theme</th>
-                                    <th rowspan='3'>Project Code</th>
-                                    <th rowspan='3'>Lead NI</th>
-                                    <th rowspan='3'>Product Type</th>
-                                    <th colspan='5'>Proof of Concept</th>
-                                    <th colspan='4'>Preclinical</th>
-                                    <th rowspan='3'>Targets / Indication</th>
-                                    <th rowspan='3'>where are they at ,  important milestone</th>
-                                    <th rowspan='3'>IP Filing</th>
-                                    <th rowspan='3'>next step</th>
-                                </tr>
-                                <tr>
-                                    <th>Target Validation</th>
-                                    <th>Candidate Generation / Screening</th>
-                                    <th>In vitro/ ex-vivo</th>
-                                    <th>In vivo</th>
-                                    <th>Candidate Selected</th>
-                                    <th>Large Scale Syntheis</th>
-                                    <th>Efficacy</th>
-                                    <th>Toxicology</th>
-                                    <th>Pharmacology</th>
-                                </tr>
-                                <tr>
-                                    <th>1</th>
-                                    <th>2</th>
-                                    <th>3</th>
-                                    <th>4</th>
-                                    <th>5</th>
-                                    <th>1</th>
-                                    <th>2</th>
-                                    <th>3</th>
-                                    <th>4</th>
-                                </tr>
-                            </thead>
-                            <tbody>";
+        $xml = simplexml_load_file(getcwd()."/extensions/Reporting/Report/ReportXML/{$config->getValue('networkName')}/BusinessDevelopment.xml");
+        $p1 = $xml->xpath("//If[@id='p1']/@if");
+        $p2 = $xml->xpath("//If[@id='p2']/@if");
+        $p3 = $xml->xpath("//If[@id='p3']/@if");
+        $p4 = $xml->xpath("//If[@id='p4']/@if");
+        
+        $p1 = explode("(", $p1[0]);
+        $p2 = explode("(", $p2[0]);
+        $p3 = explode("(", $p3[0]);
+        $p4 = explode("(", $p4[0]);
+        
+        $p1 = explode(",", $p1[1]);
+        $p2 = explode(",", $p2[1]);
+        $p3 = explode(",", $p3[1]);
+        $p4 = explode(",", $p4[1]);
+        
+        $p1 = explode("  ", trim(str_replace("'", "", preg_replace('/\s{2,}/', '  ', $p1[0]))));
+        $p2 = explode("  ", trim(str_replace("'", "", preg_replace('/\s{2,}/', '  ', $p2[0]))));
+        $p3 = explode("  ", trim(str_replace("'", "", preg_replace('/\s{2,}/', '  ', $p3[0]))));
+        $p4 = explode("  ", trim(str_replace("'", "", preg_replace('/\s{2,}/', '  ', $p4[0]))));
+        
+        $table_header = "";
+        $cells = array();
+        if(in_array($this->project->getName(), $p1)){
+            $table_header = $xml->xpath("//Static[@id='p1_table']");
+            $cells = $xml->xpath("//If[@id='p1']/ReportItem/@blobItem | //If[@id='p1']/For/@array");
+            $table_header = $table_header[0];
+        }
+        else if(in_array($this->project->getName(), $p2)){
+            $table_header = $xml->xpath("//Static[@id='p2_table']");
+            $cells = $xml->xpath("//If[@id='p2']/ReportItem/@blobItem| //If[@id='p2']/For/@array");
+            $table_header = $table_header[0];
+        }
+        else if(in_array($this->project->getName(), $p3)){
+            $table_header = $xml->xpath("//Static[@id='p3_table']");
+            $cells = $xml->xpath("//If[@id='p3']/ReportItem/@blobItem| //If[@id='p3']/For/@array");
+            $table_header = $table_header[0];
+        }
+        else if(in_array($this->project->getName(), $p4)){
+            $table_header = $xml->xpath("//Static[@id='p4_table']");
+            $cells = $xml->xpath("//If[@id='p4']/ReportItem/@blobItem| //If[@id='p4']/For/@array");
+            $table_header = $table_header[0];
+        }
+        if("{$table_header}" == ""){
+            return;
+        }
+        $this->html .= "{$table_header}";
         $leaders = array();
         foreach($this->project->getLeaders() as $leader){
             $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
         }
         $this->html .= "<tr>";
-        $this->html .= "<td>{$this->getBlobValue('GRANT_TYPE')}</td>";
-        $this->html .= "<td>{$this->project->getChallenge()->getAcronym()}</td>";
         $this->html .= "<td>{$this->project->getName()}</td>";
         $this->html .= "<td>".implode(", ", $leaders)."</td>";
-        $this->html .= "<td>{$this->getBlobValue('PRODUCT_TYPE')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PROOF_1')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PROOF_2')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PROOF_3')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PROOF_4')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PROOF_5')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PRE_1')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PRE_2')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PRE_3')}</td>";
-        $this->html .= "<td class='progress' align='center'>{$this->getBlobValue('PRE_4')}</td>";
-        $this->html .= "<td>{$this->getBlobValue('TARGETS')}</td>";
-        $this->html .= "<td>".nl2br($this->getBlobValue('MILESTONE'))."</td>";
-        $this->html .= "<td>{$this->getBlobValue('IP')}</td>";
-        $this->html .= "<td>".nl2br($this->getBlobValue('NEXT'))."</td>";
+        foreach($cells as $cell){
+            if(strstr($cell, "|")){
+                // Array
+                foreach(explode("|", $cell) as $progress){
+                    $this->html .= "<td align='center' class='progress'>".nl2br($this->getBlobValue($progress))."</td>";
+                }
+            }
+            else{
+                $this->html .= "<td>".nl2br($this->getBlobValue($cell))."</td>";
+            }
+        }
         $this->html .= "</tr>";
         $this->html .= "</tbody></table>";
         $this->html .= "<script type='text/javascript'>

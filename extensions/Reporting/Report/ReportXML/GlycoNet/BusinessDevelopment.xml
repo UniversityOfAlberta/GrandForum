@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is also used in the BDTab of the Project Table Special Page -->
 <Report name="Business Development" reportType="RP_BD_REPORT" personId="0" year="0" ajax="true">
     <Permissions>
         <Role role="STAFF+">
@@ -27,6 +28,10 @@
         <Static>
             <![CDATA[
                 <div id="tabs-1">
+            ]]>
+        </Static>
+        <Static id="p1_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -61,7 +66,8 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('Project 2'
+            <If id="p1" if="{contains(
+                              'Project 2'
                               'AM-1'
                               'AM-2'
                               'AM-3'
@@ -223,6 +229,10 @@
         <Static>
             <![CDATA[
                 <div id="tabs-2">
+            ]]>
+        </Static>
+        <Static id="p2_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -253,8 +263,9 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-7'
+            <If id="p2" if="{contains(
                               'Project 2'
+                              'CD-7'
                               'CD-24'
                               'CD-29'
                               'CD-35'
@@ -344,6 +355,10 @@
         <Static>
             <![CDATA[
                 <div id="tabs-3">
+            ]]>
+        </Static>
+        <Static id="p3_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -366,9 +381,10 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-46'
-                              'TP-1'
-                              'Project 2','{$project_name}')}">
+            <If id="p3" if="{contains(
+                              'Project 2'
+                              'CD-46'
+                              'TP-1','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>
@@ -586,6 +602,10 @@
         <Static>
             <![CDATA[
                 <div id="tabs-5">
+            ]]>
+        </Static>
+        <Static id="p4_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -609,11 +629,12 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-41'
+            <If id="p4" if="{contains(
+                              'Project 2'
+                              'CD-41'
                               'CD-62'
                               'DO-18'
-                              'TP-38'
-                              'Project 2','{$project_name}')}">
+                              'TP-38','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>
