@@ -32,7 +32,7 @@ class Thread extends BackboneModel{
                 $this->title = $data[0]['title'];
                 $this->category = $data[0]['category'];
                 $this->date_created = $data[0]['date_created'];
-		        $this->posts = $this->getPosts();
+		        //$this->posts = $this->getPosts();
                 $this->visibility = $data[0]['visibility'];
                 $this->public = $data[0]['public'];
                 $this->approved = $data[0]['approved'];
@@ -75,7 +75,7 @@ class Thread extends BackboneModel{
             $meName = str_replace(".", " ", $me->getName());
             if($me->isRoleAtLeast(MANAGER)){
                 $data = DBFunctions::select(array('grand_threads'),
-                                            array('id'));
+                                            array('*'));
             }
             else{
 		$statement = "SELECT * FROM `grand_threads` WHERE `users` LIKE '%\"$meId\"%' OR (`approved` = 1 AND `visibility` = 'question is visible to CAPS health care professionals')
@@ -83,8 +83,8 @@ class Thread extends BackboneModel{
                 $data = DBFunctions::execSQL($statement);
             }
             if(count($data) >0){
-                foreach($data as $threadId){
-                    $thread = Thread::newFromId($threadId['id']);
+                foreach($data as $threadData){
+                    $thread = new Thread(array($threadData));
                     $threads[] = $thread;
                 }
             }
@@ -93,8 +93,8 @@ class Thread extends BackboneModel{
                 $data = DBFunctions::execSQL($statement);
             }
             if(count($data) >0){
-                foreach($data as $threadId){
-                    $thread = Thread::newFromId($threadId['id']);
+                foreach($data as $threadData){
+                    $thread = new Thread(array($threadData));
                     $threads[] = $thread;
                 }
             }
@@ -139,10 +139,9 @@ class Thread extends BackboneModel{
 					        array('*'),
 					        array('thread_id'=>$this->getId()));
 	        foreach($data as $row){
-		    $posts[] = Post::newFromId($row['id']);
+                $posts[] = new Post(array($row));
 	        }
 	        return $posts;
-	
 	    }
 
         function getDateCreated(){

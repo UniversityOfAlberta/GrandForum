@@ -71,18 +71,18 @@ class Story extends BackboneModel{
             $me = Person::newFromWgUser();
             if($me->isRoleAtLeast(MANAGER)){
             	$data = DBFunctions::select(array('grand_user_stories'),
-                	                        array('rev_id'));
+                	                        array('*'));
             }
             else{
                 $data = DBFunctions::select(array('grand_user_stories'),
-                                            array('rev_id'),
+                                            array('*'),
                                             array('approved'=>EQ(COL(1))));
             }
             if(count($data) >0){
-                foreach($data as $storyId){
-                    $story = Story::newFromRevId($storyId['rev_id']);
+                foreach($data as $storyData){
+                    $story = new Story(array($storyData));
                     if($story->canView()){
-                        $stories[] = Story::newFromRevId($storyId['rev_id']);
+                        $stories[] = $story;
                     }
                 }
             }
@@ -97,10 +97,11 @@ class Story extends BackboneModel{
 	    }	
             $stories = array();
             $data = DBFunctions::select(array("grand_user_stories"),
-                                        array("rev_id"),
+                                        array("*"),
                                         array("approved"=>EQ(COL(0))));
             foreach($data as $row){
-                $stories[] = Story::newFromRevId($row['rev_id']);
+                $story = new Story(array($row));
+                $stories[] = $story;
             }
 
             return $stories;
