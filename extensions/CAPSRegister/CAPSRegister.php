@@ -659,30 +659,26 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                     $email_managers .= $manager->email .",";
                 }
 
-                if (mail($email_managers, "New CAPS registration", $nmessage, $header)) {
-                    $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-                    $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
-                    $_POST['wpSendMail'] = "true";
-                    $_POST['candidate'] = "1";
-                    
-                    if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
-                        $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+                $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
+                $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+                $_POST['wpSendMail'] = "true";
+                $_POST['candidate'] = "1";
+                
+                if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
+                    $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+                }
+                else if($_POST['wpFirstName'] == $_POST['wpLastName']){
+                    // Help filter out spam bots
+                    $wgMessage->addError("This is not a valid username");
+                }
+                else{
+                    $result = APIRequest::doAction('RequestUser', false);
+                    if($result){
+                        mail($email_managers, "New CAPS registration", $nmessage, $header);
+                        $form->reset();
+                        $wgMessage->addSuccess("A request has been sent.");
+                        redirect("$wgServer$wgScriptPath");
                     }
-                    else if($_POST['wpFirstName'] == $_POST['wpLastName']){
-                        // Help filter out spam bots
-                        $wgMessage->addError("This is not a valid username");
-                    }
-                    else{
-                        $result = APIRequest::doAction('RequestUser', false);
-                        if($result){
-                            $form->reset();
-                            $wgMessage->addSuccess("A request has been sent.");
-                            redirect("$wgServer$wgScriptPath");
-                        }
-                    }             
-                } 
-                else {
-                    return false;
                 }
             }
             else{
