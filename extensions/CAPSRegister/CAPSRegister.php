@@ -668,6 +668,10 @@ Votre participation est facultative et vous pouvez choisir de se retirer de l'é
                     if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
                         $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
                     }
+                    else if($_POST['wpFirstName'] == $_POST['wpLastName']){
+                        // Help filter out spam bots
+                        $wgMessage->addError("This is not a valid username");
+                    }
                     else{
                         $result = APIRequest::doAction('RequestUser', false);
                         if($result){
