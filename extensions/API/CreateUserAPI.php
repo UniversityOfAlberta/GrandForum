@@ -62,9 +62,12 @@ class CreateUserAPI extends API{
             GrandAccess::$alreadyDone = array();
             $passwd = PasswordFactory::generateRandomPasswordString();
             $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
-                                                               'password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(), 
                                                                'email' => $_POST['wpEmail']));
             if($tmpUser != null){
+                DBFunctions::update('mw_user',
+                                    array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
+                                          'user_newpass_time' => date('YmdHis')),
+                                    array('user_id' => EQ($tmpUser->getId())));
                 if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
                     $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
                 }
