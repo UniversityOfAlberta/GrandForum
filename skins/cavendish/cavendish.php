@@ -267,11 +267,6 @@ class CavendishTemplate extends QuickTemplate {
 		    ?>
 		    );
 		    
-		    productStructure = <?php
-		        $structure = Product::structure();
-		        echo json_encode($structure);
-		    ?>;
-		    
 		    function changeImg(el, img){
                 $(el).attr('src', img);
             }

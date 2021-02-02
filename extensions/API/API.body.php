@@ -55,11 +55,16 @@ class APIRequest{
 				            foreach($routeParams as $key => $param){
 				                $match = $match && (isset($params[$key]) && ($param == $params[$key] || 
 				                                    strstr($param, ":") !== false));
+				                if($match && is_string($a)){
+				                    $a = new $a();
+				                    $api = $a; // Set the API to this for now (params might not match exactly, but will use it as a fallback)
+				                }
 				                if($match && strstr($param, ":") !== false){
 				                    $a->params[str_replace(":", "", $param)] = $params[$key];
 				                }
 				                else if($match){
 				                    $a->params[$key] = $params[$key];
+				                    $a->params[$params[$key]] = $params[$key];
 				                }
 				            }
 				            foreach($params as $key => $param){
@@ -134,8 +139,7 @@ class APIRequest{
 		$this->addAction('User Accounts', 'deleteUserRole', new DeleteRoleAPI());
 		$this->addAction('User Accounts', 'deleteProjectLeader', new DeleteProjectLeaderAPI());
 		$this->addAction('User Accounts', 'deleteThemeLeader', new DeleteThemeLeaderAPI());
-                $this->addAction('User Accounts', 'updateUserCapsInfo', new UserCapsAPI());
-
+        $this->addAction('User Accounts', 'updateUserCapsInfo', new UserCapsAPI());
 		
 		//POST
 		$this->addAction('Contributions', 'addContribution', new AddContributionAPI());
@@ -160,10 +164,8 @@ class APIRequest{
 		$this->addAction('Hidden', 'getJung', new JungAPI());
 		$this->addAction('Hidden', 'addRecordStory', new RecordStoryAPI());
 		$this->addAction('Hidden', 'getProjectMilestoneHistory', new ProjectMilestoneHistoryAPI());
-                $this->addAction('Hidden', 'approvePage', new ApprovePageAPI());
-                $this->addAction('Hidden', 'approveStory', new ApproveStoryAPI());
-
-
+        $this->addAction('Hidden', 'approvePage', new ApprovePageAPI());
+        $this->addAction('Hidden', 'approveStory', new ApproveStoryAPI());
 	}
 }
 

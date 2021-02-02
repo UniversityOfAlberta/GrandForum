@@ -64,44 +64,4 @@ class PostAPI extends RESTAPI {
     }
 }
 
-class PostsAPI extends RESTAPI {
-
-    function doGET(){
-        return false;
-    }
-
-    function doPOST(){
-        return false;
-    }
-
-    function doPUT(){
-        return false;
-    }
-
-    function doDELETE(){
-        return false;
-    }
-
-}
-
-class PersonPostAPI extends RESTAPI {
-
-    function doGET(){
-        return false;
-
-    }
-
-    function doPOST(){
-        return false;
-    }
-
-    function doPUT(){
-        return $this->doGET();
-    }
-
-    function doDELETE(){
-        return false;
-    }
-
-}
 ?>

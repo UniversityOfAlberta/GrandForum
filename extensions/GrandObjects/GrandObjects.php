@@ -69,17 +69,8 @@ $apiRequest->addAction('Hidden','threads/:search', new ThreadsAPI());
 //Post
 $apiRequest->addAction('Hidden','post', new PostAPI());
 $apiRequest->addAction('Hidden','post/:id', new PostAPI());
-$apiRequest->addAction('Hidden','posts', new PostsAPI());
-// PDF
-$apiRequest->addAction('Hidden','pdf/:id', new PDFAPI());
-// MailingList
-$apiRequest->addAction('Hidden','mailingList', new MailingListAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId', new MailingListAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId/rules', new MailingListRuleAPI());
-$apiRequest->addAction('Hidden','mailingList/:listId/rules/:ruleId', new MailingListRuleAPI());
 // NewSearch
 $apiRequest->addAction('Hidden','globalSearch/:group/:search', new GlobalSearchAPI());
-$apiRequest->addAction('Hidden','virtu', new VirtuAPI());
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
@@ -93,9 +84,7 @@ function createModels(){
 	echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Project.js?".filemtime("extensions/GrandObjects/BackboneModels/Project.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Product.js?".filemtime("extensions/GrandObjects/BackboneModels/Product.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/University.js?".filemtime("extensions/GrandObjects/BackboneModels/University.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Virtu.js?".filemtime("extensions/GrandObjects/BackboneModels/Virtu.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/WikiPage.js?".filemtime("extensions/GrandObjects/BackboneModels/WikiPage.js")."'></script>\n";
-    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/PDF.js?".filemtime("extensions/GrandObjects/BackboneModels/PDF.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/MailingList.js?".filemtime("extensions/GrandObjects/BackboneModels/MailingList.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/Story.js?".filemtime("extensions/GrandObjects/BackboneModels/Story.js")."'></script>\n";
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/StoryComment.js?".filemtime("extensions/GrandObjects/BackboneModels/StoryComment.js")."'></script>\n";
