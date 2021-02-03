@@ -644,27 +644,6 @@ class Person extends BackboneModel {
                     $people[] = $person;
                 }
             }
-            if($filter == TL || $filter == TC || $filter == PL || $filter == APL){
-                self::generateThemeLeaderCache();
-                self::generateLeaderCache();
-                if(isset(self::$themeLeaderCache[$filter][$row]) ||
-                   (($filter == PL || $filter == APL) && isset(self::$leaderCache[$row]))){
-                    $person = Person::newFromId($row);
-                    if($filter == APL && !$person->isRole(APL)){
-                        continue;
-                    }
-                    if($person->getName() != "WikiSysop"){
-                        if($me->isLoggedIn() || $person->isRoleAtLeast(NI)){
-                            if($idOnly){
-                                $people[] = $row;
-                            }
-                            else{
-                                $people[] = $person;
-                            }
-                        }
-                    }
-                }
-            }
             if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
                 if($filter != null && $filter != "all"){
                     $found = false;
@@ -813,25 +792,6 @@ class Person extends BackboneModel {
                                  'role' => $role->getRole(),
                                  'title' => $role->getTitle());
             }
-        }
-        foreach($this->leadership() as $project){
-            $role = PL;
-            if($project->getType() == 'Administrative'){
-                $role = APL;
-            }
-            $roles[] = array('id' => '',
-                             'role' => $role,
-                             'title' => $project->getName());
-        }
-        foreach($this->getLeadThemes() as $theme){
-            $roles[] = array('id' => '',
-                             'role' => TL,
-                             'title' => $theme->getAcronym());
-        }
-        foreach($this->getCoordThemes() as $theme){
-            $roles[] = array('id' => '',
-                             'role' => TC,
-                             'title' => $theme->getAcronym());
         }
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
@@ -1016,9 +976,6 @@ class Person extends BackboneModel {
         return false;
         if(!$this->isRoleAtLeast(STAFF) && // Handles Staff+
            (($this->isRole(NI) && $person->isRoleAtLeast(COMMITTEE)) || // Handles regular NI
-            ($this->isProjectLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles PL
-            ($this->isThemeLeader() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TL
-            ($this->isThemeCoordinator() && $person->isRoleAtLeast(COMMITTEE) && !$person->isRole(NI) && $person->isRole(HQP)) || // Handles TC
             ($this->isRoleAtLeast(COMMITTEE) && $person->isRoleAtLeast(STAFF))  // Handles RMC-GOV
            )){
             return false;
@@ -2188,21 +2145,8 @@ class Person extends BackboneModel {
         foreach($roles as $role){
             $roleNames[] = $role->getRole();
         }
-        if($this->isProjectLeader()){
-            $roleNames[] = "PL";
-        }
-        if($this->isThemeLeader()){
-            $roleNames[] = TL;
-        }
-        if($this->isThemeCoordinator()){
-            $roleNames[] = TC;
-        }
         foreach($roleNames as $key => $role){
             if($role == INACTIVE){
-                if($this->isProjectLeader()){
-                    unset($roleNames[$key]);
-                    continue;
-                }
                 $lastRole = $this->getLastRole();
                 if($lastRole != null){
                     $roleNames[$key] = "Inactive-".$lastRole->getRole();
@@ -2302,20 +2246,17 @@ class Person extends BackboneModel {
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
-        if($this->isRoleOn(AR, $year, $project) && !$this->leadershipOf($project)){
+        if($this->isRoleOn(AR, $year, $project)){
             return AR;
         }
-        else if($this->isRoleOn(CI, $year, $project) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(CI, $year, $project)){
             return CI;
         }
-        else if($this->isRoleOn(NP, $year, $project) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(NP, $year, $project)){
             return NP;
         }
-        else if($this->isRoleOn(MW, $year, $project) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(MW, $year, $project)){
             return MW;
-        }
-        else if($this->leadershipOf($project)){
-            return PL;
         }
         else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
@@ -2362,16 +2303,6 @@ class Person extends BackboneModel {
     function getAllowedProjects(){
         $projects = array();
         foreach($this->getProjects() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->leadership() as $project){
-            if(!$project->isSubProject()){
-                $projects[$project->getId()] = $project->getName();
-            }
-        }
-        foreach($this->getThemeProjects() as $project){
             if(!$project->isSubProject()){
                 $projects[$project->getId()] = $project->getName();
             }
@@ -2962,25 +2893,6 @@ class Person extends BackboneModel {
                     $this->isRole(NP.'-Candidate', $project) ||
                     $this->isRole(MW.'-Candidate', $project));
         }
-        if($role == PL || $role == 'PL'){
-            return $this->isProjectLeader();
-        }
-        if($role == APL){
-            $leadership = $this->leadership(false, true, 'Administrative');
-            if(count($leadership) > 0){
-                return true;
-            }
-            return false;
-        }
-        if($role == TL || $role == 'TL'){
-            return $this->isThemeLeader();
-        }
-        if($role == TC || $role == 'TC'){
-            return $this->isThemeCoordinator();
-        }
-        if($role == EVALUATOR){
-            return $this->isEvaluator();
-        }
         $roles = array();
         $role_objs = $this->getRoles();
         if(!empty($role_objs)){
@@ -3033,12 +2945,6 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL || $role == "PL"){
-            $project_objs = $this->leadershipOn($date);
-            if(count($project_objs) > 0){
-                $roles[] = "PL";
-            }
-        }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
                 $skip = false;
@@ -3055,9 +2961,6 @@ class Person extends BackboneModel {
                     $roles[] = $r->getRole();
                 }
             }
-        }
-        if($role == EVALUATOR && $this->isEvaluator()){
-            $roles[] = EVALUATOR;
         }
         if(count($roles) == 0){
             return false;
@@ -3093,12 +2996,6 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL || $role == "PL"){
-            $project_objs = $this->leadershipDuring($startRange, $endRange);
-            if(count($project_objs) > 0){
-                $roles[] = "PL";
-            }
-        }
         if(count($role_objs) > 0){
             foreach($role_objs as $r){
                 $skip = false;
@@ -3126,9 +3023,6 @@ class Person extends BackboneModel {
                     $roles[] = $r->getRole();
                 }
             }
-        }
-        if($role == EVALUATOR && $this->isEvaluator()){
-            $roles[] = EVALUATOR;
         }
         if(count($roles) == 0){
             return false;
@@ -3209,21 +3103,6 @@ class Person extends BackboneModel {
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
-            }
-        }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
-                return true;
-            }
-        }
-        if($wgRoleValues[TL] >= $wgRoleValues[$role]){
-            if($this->isThemeLeader()){
-                return true;
-            }
-        }
-        if($wgRoleValues[TC] >= $wgRoleValues[$role]){
-            if($this->isThemeCoordinator()){
-                return true;
             }
         }
         return false;
