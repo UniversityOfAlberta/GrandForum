@@ -4,9 +4,9 @@ class PlusMinus extends UIElementArray {
     
     var $values;
     
-    function PlusMinus($id, $values=array()){
+    function __construct($id, $values=array()){
         $this->values = $values;
-        parent::UIElementArray($id);
+        parent::__construct($id);
     }
     
     function render(){
