@@ -56,7 +56,6 @@ class AddRoleAPI extends API{
             Cache::delete("personRolesDuring".$person->getId(), true);
             Person::$rolesCache = array();
             $person->roles = null;
-            //MailingList::subscribeAll($person);
             $sql = "SELECT CURRENT_TIMESTAMP";
             $data = DBFunctions::execSQL($sql);
             $effectiveDate = "'{$data[0]['CURRENT_TIMESTAMP']}'";

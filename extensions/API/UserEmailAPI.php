@@ -21,15 +21,11 @@ class UserEmailAPI extends API{
             @$wgMessage->addError("<b>{$_POST['email']}</b> is not a valid email address");
             return false;
         }
-        // Remove the person from previous mailing lists
-        MailingList::unsubscribeAll($person);
         DBFunctions::update('mw_user',
                             array('user_email' => $_POST['email']),
                             array('user_id' => EQ($person->getId())));
         $person->email = $_POST['email'];
-        // Re-Add the person to the mailing lists using their new email
-        MailingList::subscribeAll($person);
-	$person->getUser()->invalidateCache();
+        $person->getUser()->invalidateCache();
         if(!$noEcho){
             echo "Account email updated\n";
         }

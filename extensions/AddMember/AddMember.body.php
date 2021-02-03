@@ -1,10 +1,6 @@
 <?php
 require_once("AddMember.php");
 
-$userCreate = new UserCreate();
-
-$wgHooks['AddNewAccount'][] = array($userCreate, 'afterCreateUser');
-
 $notificationFunctions[] = 'UserCreate::createNotification';
 
 class UserCreate {
@@ -26,7 +22,7 @@ class UserCreate {
         }
     }
     
-    function afterCreateUser($wgUser, $byEmail=true){
+    static function afterCreateUser($wgUser){
         global $wgLocalTZoffset, $wgOut;
         $mUserType = $_POST['wpUserType'];
         $id = $wgUser->getId();
@@ -80,7 +76,6 @@ class UserCreate {
         Person::$namesCache = array();
         Person::$rolesCache = array();
         $person = Person::newFromId($wgUser->getId());
-        MailingList::subscribeAll($person);
         return true;
     }
     

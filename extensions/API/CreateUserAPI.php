@@ -71,6 +71,7 @@ class CreateUserAPI extends API{
                 if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
                     $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
                 }
+                UserCreate::afterCreateUser($tmpUser);
                 Person::$cache = array();
                 Person::$namesCache = array();
                 Person::$aliasCache = array();

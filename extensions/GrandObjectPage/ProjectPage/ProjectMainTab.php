@@ -55,7 +55,7 @@ class ProjectMainTab extends AbstractEditableTab {
             </div>";
         }
         
-        if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
+        if(!$project->isSubProject() && $wgUser->isLoggedIn()){
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }

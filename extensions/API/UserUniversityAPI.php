@@ -85,7 +85,6 @@ class UserUniversityAPI extends API{
                 DBFunctions::update('grand_user_university',
                                     array('end_date' => EQ(COL('CURRENT_TIMESTAMP'))),
                                     array('end_date' => EQ("0000-00-00 00:00:00")));
-                MailingList::unsubscribeAll($person);
                 //Insert New
                 DBFunctions::insert('grand_user_university',
                                     array('user_id' => $person->getId(),
@@ -112,7 +111,6 @@ class UserUniversityAPI extends API{
         }
         $person->university = false;
         Person::$universityCache = array();
-        MailingList::subscribeAll($person);
     }
     
     function isLoginRequired(){

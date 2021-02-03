@@ -259,22 +259,18 @@ class EditMember extends SpecialPage{
                 }
                 
                 if(isset($_POST['candidate']) && !$person->isCandidate()){
-                    MailingList::unsubscribeAll($person);
                     DBFunctions::update('mw_user',
                                         array('candidate' => '1'),
                                         array('user_id' => EQ($person->getId())));
                     $person->candidate = true;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a candidate user");
-                    MailingList::subscribeAll($person);
                 }
                 else if(!isset($_POST['candidate']) && $person->isCandidate()){
-                    MailingList::unsubscribeAll($person);
                     DBFunctions::update('mw_user',
                                         array('candidate' => '0'),
                                         array('user_id' => EQ($person->getId())));
                     $person->candidate = false;
                     $wgMessage->addSuccess("<b>{$person->getReversedName()}</b> is now a full user");
-                    MailingList::subscribeAll($person);
                 }
                 
                 // Project Leadership Changes
@@ -1276,7 +1272,6 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
         // Admin Accepted
         $person = Person::newFromId($_POST['user']);
         //Process Project Changes
-        MailingList::subscribeAll($person);
         if($_POST['type'] == "PROJECT"){
             $unsubscribed = array();
             $comments = explode("::", $_POST['comment']);
@@ -1396,7 +1391,6 @@ Trier par Prénom</span></a> | <a href='javascript:sortBy(\"last\");'><span clas
                                   'staff' => $me->getId(),
                                   'created' => 1),
                             array('id' => $_POST['id']));
-        MailingList::subscribeAll($person);
     }
     
     function parse($text){
