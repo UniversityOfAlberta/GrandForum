@@ -134,9 +134,9 @@ class LatestNews extends SpecialPage{
             </div><br /><br/>");
         }
         $data = DBFunctions::select(array('grand_latest_news'),
-                                    array('id','en', 'date','enTitle','frTitle','color','type','thumbnail','en','fr'),
+                                    array('id', 'date','enTitle','frTitle','color','type','thumbnail'),
                                     array(),
-                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC','thumbnail' => 'DESC','en' => 'DESC','fr'=>'DESC'));
+                                    array('date' => 'DESC', 'id' => 'DESC','enTitle' => 'DESC','frTitle' => 'DESC','type' => 'DESC','color' => 'DESC','thumbnail' => 'DESC'));
         
         if(isset($data[0])){
             $pdfId = (isset($_GET['pdf'])) ? $_GET['pdf'] : $data[0]['id'];
@@ -186,11 +186,16 @@ class LatestNews extends SpecialPage{
                 $wgOut->addHTML("<div><h2>$header</h2>");
                 $olddate = null;
                 foreach($data as $key => $row){
-                    if(!file_exists("thumbnails/{$row["id"]}temp.jpg")){
+                    if(!file_exists("thumbnails/{$row["id"]}temp.png")){
+                        $pdf = DBFunctions::select(array('grand_latest_news'),
+                                                   array('en'),
+                                                   array('id' => $row['id']));
                         @mkdir("thumbnails");
-                        file_put_contents("thumbnails/".$row["id"]."temp.pdf", $row['en']);
+                        file_put_contents("thumbnails/".$row["id"]."temp.pdf", $pdf[0]['en']);
                         
-                        exec("convert thumbnails/{$row["id"]}temp.pdf[0] thumbnails/{$row["id"]}temp.jpg"); 
+                        $imagick = new Imagick();
+                        $imagick->readImage("thumbnails/{$row["id"]}temp.pdf[0]");
+                        $imagick->writeImages("thumbnails/{$row["id"]}temp.png", true);
                         unlink("thumbnails/".$row["id"]."temp.pdf");
                     }
                     if($key > 0){
@@ -216,7 +221,7 @@ class LatestNews extends SpecialPage{
                         $olddate = $date;
                         $wgOut->addHTML("<tr>
                             <td>".substr($row['date'], 0, 10)."</td>
-                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/thumbnails/{$row["id"]}temp.jpg'"."style='width:150px;height:112.5px;' /></td>
+                            <td><a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'><img src='{$wgServer}{$wgScriptPath}/thumbnails/{$row["id"]}temp.png'"."style='width:150px;height:112.5px;' /></td>
                             <td>".$row['type']."</td>
                             <td>
                                 <a href='$wgServer$wgScriptPath/index.php/Special:LatestNews?pdf={$row['id']}' style='font-size: 1.25em; color:".$row['color'].";'>
