@@ -90,9 +90,6 @@ $egAnnokiExtensions['HQPRegister'] = array('name' => 'HQPRegister',
 $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
                                     'path' => "$IP/extensions/Poll/Poll.body.php");
 
-$egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
-                                              'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
-
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
 
