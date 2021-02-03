@@ -78,12 +78,6 @@ $egAnnokiExtensions['GrandObjectPage'] = array('name' => 'GrandObjectPage',
 $egAnnokiExtensions['IndexTables'] = array( 'name' => 'IndexTables',
                                             'path' => "$IP/extensions/IndexTables/IndexTable.body.php");
 
-/*$egAnnokiExtensions['TempEd'] = array('name' => 'Template Editor',
-                                      'path' => "$IP/extensions/TemplateEditor/TemplateEditor.php");*/
-
-$egAnnokiExtensions['MailingList'] = array('name' => 'MailingList',
-                                           'path' => "$IP/extensions/MailingList/mailingList.body.php");
-
 $egAnnokiExtensions['AddMember'] = array('name' => 'AddMember',
                                          'path' => "$IP/extensions/AddMember/AddMember.body.php");
 
@@ -99,12 +93,6 @@ $egAnnokiExtensions['Poll'] = array('name' => 'Poll',
 $egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
                                               'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
 
-$egAnnokiExtensions['NCETable'] = array('name' => 'NCETable',
-                                        'path' => "$IP/extensions/NCETable/NCETable.php");
-
-$egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
-                                         'path' => "$IP/extensions/Reporting/Reporting.php");
-
 $egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
                                               'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
 
@@ -119,30 +107,6 @@ $egAnnokiExtensions['Visualizations'] = array('name' => 'Visualizations',
                                               
 $egAnnokiExtensions['PublicVisualizations'] = array('name' => 'Public Visualizations',
                                                     'path' => "$IP/extensions/Visualizations/PublicVisualizations/PublicVisualizations.php");
-
-$egAnnokiExtensions['Survey'] = array('name' => 'Survey',
-                                      'path' => "$IP/extensions/Survey/Survey.php");
-
-$egAnnokiExtensions['Duplicates'] = array('name' => 'Duplicates',
-                                          'path' => "$IP/extensions/Duplicates/Duplicates.php");
-
-$egAnnokiExtensions['ProjectEvolution'] = array('name' => 'Project Evolution',
-                                                'path' => "$IP/extensions/ProjectEvolution/ProjectEvolution.php");
-
-$egAnnokiExtensions['ScreenCapture'] = array('name' => 'ScreenCapture',
-                                             'path' => "$IP/extensions/ScreenCapture/ScreenCapture.php");
-
-$egAnnokiExtensions['Solr'] = array('name' => 'Solr',
-                                    'path' => "$IP/extensions/Solr/Solr.php");
-
-$egAnnokiExtensions['TravelForm'] = array('name' => 'TravelForm',
-                                          'path' => "$IP/extensions/TravelForm/TravelForm.php");
-
-$egAnnokiExtensions['AdvancedSearch'] = array('name' => 'AdvancedSearch',
-                                              'path' => "$IP/extensions/AdvancedSearch/AdvancedSearch.php");
-
-$egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport', 
-                                         'path' => "$IP/extensions/CCVExport/CCVExport.php");
 
 $egAnnokiExtensions['Caps'] = array('name' => 'Caps',
                                          'path' => "$IP/extensions/Caps/Caps.php");
@@ -160,9 +124,6 @@ $egAnnokiExtensions['HelpfulResources'] = array('name' => 'HelpfulResources',
                                          'path' => "$IP/extensions/HelpfulResources/HelpfulResources.php");
 $egAnnokiExtensions['AcademicResources'] = array('name' => '    AcademicResources',
                                          'path' => "$IP/extensions/AcademicResources/AcademicResources.php");
-
-$egAnnokiExtensions['Cite'] = array('name' => 'Cite',
-                                         'path' => "$IP/extensions/Cite/Cite.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
