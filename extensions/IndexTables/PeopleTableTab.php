@@ -6,7 +6,7 @@
 	var $visibility;
 
 	function __construct($table, $visibility){
-	     parent::AbstractTab($table);
+	     parent::__construct($table);
 	     $this->table = $table;
 	     $this->visibility = $visibility;
 	}
