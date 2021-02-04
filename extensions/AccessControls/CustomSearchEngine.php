@@ -1,11 +1,14 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 $wgSearchType = "CustomSearchEngine";
 
 class CustomSearchEngine extends SearchMySQL {
 	public static function allowedSearchableNS() {
 		global $egAnnokiNamespaces, $wgUser, $wgExtraNamespaces;
 
-		$searchableNS = parent::searchableNamespaces();
+		$searchableNS = MediaWikiServices::getInstance()->getSearchEngineConfig()->searchableNamespaces();
 		$accessibleNS = array_flip(AnnokiNamespaces::getNamespacesForUser($wgUser));
 
 		$namespaces = array();
