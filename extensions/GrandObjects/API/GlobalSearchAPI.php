@@ -301,7 +301,7 @@ class GlobalSearchAPI extends RESTAPI {
                     // Prefer results with the search in the title
                     foreach($results2->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
-                        if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
+                        if($article->getTitle()->userCan('read') && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $ids[] = $page->pageid;
                         }
                     }
@@ -309,7 +309,7 @@ class GlobalSearchAPI extends RESTAPI {
                 if(isset($results1->query)){
                     foreach($results1->query->pages as $page){
                         $article = Article::newFromId($page->pageid);
-                        if($article->getTitle()->userCanRead() && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
+                        if($article->getTitle()->userCan('read') && array_search($article->getTitle()->getNSText(), $blacklistedNamespaces) === false){
                             $ids[] = $page->pageid;
                         }
                     }
