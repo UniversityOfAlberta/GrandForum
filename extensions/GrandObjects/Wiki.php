@@ -6,16 +6,23 @@
 
 class Wiki extends BackboneModel {
 
+    static $cache = array();
+
     var $id;
     var $ns;
     var $title;
     var $url;
     var $text;
     var $article;
+    var $canView = null;
     
     static function newFromId($id){
+        if(isset(self::$cache[$id])){
+            return self::$cache[$id];
+        }
         $article = Article::newFromId($id);
-        return new Wiki($article);
+        self::$cache[$id] = new Wiki($article);
+        return self::$cache[$id];
     }
     
     static function newFromTitle($text){
@@ -160,6 +167,9 @@ class Wiki extends BackboneModel {
     }
 
     function canView(){
+        if($this->canView != null){
+            return $this->canView;
+        }
         $me = Person::newFromWgUser();
         $data = DBFunctions::select(array("grand_page_approved"=>"a","mw_revision"=>"r", "mw_revision_actor_temp", "mw_actor"),
                                     array("a.approved", "actor_user"),
@@ -169,9 +179,12 @@ class Wiki extends BackboneModel {
                                           "revactor_actor" => EQ(COL("actor_id"))), 
                                     array("rev_id"=>"DESC"));
         if (count($data)>0){
-            return ($data[0]['approved'] || $me->getId() === $data[0]['actor_user'] || $me->isRoleAtLeast(STAFF));
+            $this->canView = ($data[0]['approved'] || $me->getId() === $data[0]['actor_user'] || $me->isRoleAtLeast(STAFF));
         }
-        return true;
+        else{
+            $this->canView = true;
+        }
+        return $this->canView;
     }
 }
 ?>

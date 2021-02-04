@@ -1,7 +1,6 @@
 <?php
 
 require_once('PersonPage/PersonProfileTab.php');
-require_once('PersonPage/PersonVisualizationsTab.php');
 autoload_register('GrandObjectPage/PersonPage');
 
 $personPage = new PersonPage();
@@ -125,26 +124,14 @@ class PersonPage {
                     $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                     $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
                 }
-                if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2030-00-00 00:00:00')){
-                   // $tabbedPage->addTab(new HQPExitTab($person, $visibility));
-                }
                 if($config->getValue('projectsEnabled')){
                     $tabbedPage->addTab(new PersonProjectTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                if(isExtensionEnabled('QueryableTable')){
-		    //$tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-		}
-                /*if(isExtensionEnabled('AllocatedBudgets') && $person->isRoleAtLeast(NI) && !$person->isRole(AR)){
-                    $tabbedPage->addTab(new PersonBudgetTab($person, $visibility));
-                }*/
-		if(isExtensionEnabled('Visualizations')){
-                    $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-		}
                 if(isExtensionEnabled('Duplicates')){
                     $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
-		}
+                }
                 $tabbedPage->showPage();
 
                 $this->showTitle($person, $visibility);

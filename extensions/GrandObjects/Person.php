@@ -2542,6 +2542,10 @@ class Person extends BackboneModel {
      * @return array The Projects that this Person is a part of
      */
     function getProjects($history=false, $allowProposed=false){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            return array();
+        }
         $projects = array();
         if(($this->projects == null || $history) && $this->id != null){
             $sql = "SELECT p.name
@@ -3979,158 +3983,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the allocated amount that this Person received for the specified $year and $project
-     * If no Project is specified, then the total amount for that year is returned.  If the data is not in the DB
-     * Then it falls back to checking the uploaded revised budgets
-     * @param int $year The allocation year
-     * @param Project $project Which project this person received funding for
-     * @param boolean $byProject Whether or not to return an array index by project with each allocation amount
-     * @return int The amount of allocation
-     */
-    function getAllocatedAmount($year, $project=null, $byProject=false){
-        if($byProject){
-            $alloc = array();
-        }
-        else{
-            $alloc = 0;
-        }
-        $data = DBFunctions::select(array('grand_allocations'),
-                                    array('amount', 'project_id'),
-                                    array('user_id' => EQ($this->getId()),
-                                          'year' => EQ($year)));
-        if(count($data) > 0){
-            foreach($data as $row){
-                if($project == null || $row['project_id'] == $project->getId()){
-                    if($byProject){
-                        $alloc[$row['project_id']] = $row['amount'];
-                    }
-                    else{
-                        $alloc += $row['amount'];
-                    }
-                }
-            }
-        }
-        else {
-            // Check if there was an allocated budget uploaded for this Person
-            $allocated = $this->getAllocatedBudget($year-1);
-            if($allocated != null){
-                if($project == null){
-                    if($byProject){
-                        $projects = $allocated->copy()->rasterize()->select(V_PROJ, array(".+"))->where(V_PROJ);
-                        
-                        
-                        foreach($projects->xls as $rowN => $row){
-                            foreach($row as $colN => $cell){
-                                $projectName = $cell->getValue();
-                                $proj = Project::newFromName($projectName);
-                                if($proj != null){
-                                    $alloc[$proj->getId()] = str_replace(",", "", 
-                                                             str_replace("$", "", $allocated->copy()->rasterize()->select(V_PROJ, array("$projectName"))->where(COL_TOTAL)->toString()));
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        $alloc = $allocated->copy()->rasterize()->where(COL_TOTAL)->select(ROW_TOTAL)->toString();
-                    }
-                }
-                else {
-                    $alloc = $allocated->copy()->rasterize()->select(V_PROJ, array("{$project->getName()}"))->where(COL_TOTAL)->toString();
-                }
-                if(!$byProject){
-                    $alloc = str_replace("$", "", $alloc);
-                    $alloc = str_replace(",", "", $alloc);
-                    $alloc = intval($alloc);
-                }
-            }
-        }
-        return $alloc;
-    }
-    
-    /**
-     * Returns the allocated Budget for this Person for the given year
-     * @param int $year The reporting year that the budget was requested
-     * @return Budget The allocated Budget for this Person for the given year
-     */
-    function getAllocatedBudget($year){
-        global $wgServer,$wgScriptPath;
-        return $this->getRequestedBudget($year, 'RES_ALLOC_BUDGET');
-    }
-    
-    /**
-     * Returns the requested Budget for this Person for the given year
-     * @param int $year The reporting year that the budget was requested
-     * @param int $type Can be either RES_BUDGET or RES_ALLOC_BUDGET
-     * @return Budget The requested Budget for this Person for the given year
-     */
-    function getRequestedBudget($year, $type='RES_BUDGET'){
-        global $wgServer,$wgScriptPath, $reporteeId;
-        if($type == 'RES_BUDGET'){
-            $index = 'r'.$year;
-        }
-        else{
-            $index = 's'.$year;
-        }
-        $uid = $this->id;
-       
-        $blob_type=BLOB_EXCEL;
-        $rptype = 'RP_RESEARCHER';
-        $section = $type;
-        $item = 0;
-        $subitem = 0;
-        $rep_addr = ReportBlob::create_address($rptype,$section,$item,$subitem);
-        $budget_blob = new ReportBlob($blob_type, $year, $uid, 0);
-        $budget_blob->load($rep_addr);
-        $lastChanged = $budget_blob->getLastChanged();
-        $fileName = CACHE_FOLDER."personBudget{$this->id}_$index";
-        if(Cache::exists($fileName)){
-            $contents = Cache::fetch($fileName);
-            if(strcmp($contents[0], $lastChanged) == 0){
-                return $contents[1];
-            }
-        }
-        if(file_exists($fileName)){
-            // Check file cache as backup
-            $contents = unserialize(implode("", gzfile($fileName)));
-            if(strcmp($contents[0], $lastChanged) == 0){
-                Cache::store($fileName, $contents);
-                return $contents[1];
-            }
-        }
-        $data = $budget_blob->getData();
-        if (! empty($data)) {
-            if($year != 2010 && $type == 'RES_BUDGET'){
-                $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-            }
-            else if($year == 2010 && $type == 'RES_BUDGET'){
-                $budget = new Budget("CSV", REPORT_STRUCTURE, $data);
-            }
-            else {
-                if($type == 'RES_ALLOC_BUDGET' && $this->isRoleDuring(NI, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH)){
-                    $budget = new Budget("XLS", REPORT2_STRUCTURE, $data);
-                }
-                else{
-                    $budget = new Budget("XLS", SUPPLEMENTAL_STRUCTURE, $data);
-                }
-            }
-            if($budget->nRows()*$budget->nCols() > 1){
-                $budget->xls[0][1]->setValue($this->getNameForForms());
-            }
-            $contents = array($lastChanged, $budget);
-            Cache::store($fileName, $contents);
-            if(is_writable(CACHE_FOLDER)){
-                $zp = gzopen($fileName, "w9");
-                gzwrite($zp, serialize($contents));
-                gzclose($zp);
-            }
-            return $budget;
-        }
-        else{
-            return null;
-        }
-    }
-    
-    /**
      * Returns the CCV XML that belongs to this Person
      * @return string The CCV XML that belongs to this Person
      */
@@ -4279,30 +4131,6 @@ class Person extends BackboneModel {
         }
         return $subs;
     }
-
-    /**
-     * Returns the allocation for this Person for year $year
-     * @param string $year The allocation year to use
-     * @return array The allocation information
-     */
-    function getAllocation($year) {
-        $allocation = array('allocated_amount' => null, 'overall_score'=>null, 'email_sent'=>null);
-
-        if (!is_numeric($year)) {
-            return $allocation;
-        }
-
-        $query = "SELECT * FROM grand_review_results WHERE user_id = '{$this->id}' AND year='{$year}'";
-        $res = DBFunctions::execSQL($query);
-
-        if (count($res) > 0) {
-            $allocation['allocated_amount'] = $res[0]['allocated_amount'];
-            $allocation['overall_score'] = $res[0]['overall_score'];
-            $allocation['email_sent'] = $res[0]['email_sent'];
-        }
-        
-        return $allocation;
-    }
     
     /**
      * Returns whether or not this Person is the author of the given Product
@@ -4353,45 +4181,6 @@ class Person extends BackboneModel {
         else{
             return false;
         }
-    }
-    
-    /**
-     * Returns whether or not this Person has the specified reporting ticket
-     * @param mised $project The report's Project (can also be an id or name)
-     * @param string $year The year of the report
-     * @param string $reportType The type of report
-     * @param string $ticket The ticket string
-     * @return boolean Whether or not this Person has the specified reporting ticket
-     */
-    function hasReportingTicket($project, $year, $reportType, $ticket){
-        $year = str_replace("'", "", $year);
-        $ticket = str_replace("'", "", $ticket);
-        if(!($project instanceof Project)){
-            if(is_numeric($project)){
-                $project = Project::newFromId($project);
-            }
-            else{
-                $project = Project::newFromName($project);
-            }
-            if($project == null){
-                $project = new Project(array());
-                $project->id = 0;
-            }
-        }
-        $sql = "SELECT *
-                FROM `grand_reporting_year_ticket`
-                WHERE `year` = '$year'
-                AND `report_type` = '$reportType'
-                AND `ticket` = '$ticket'
-                AND `user_id` = '{$this->id}'
-                AND `project_id` = '{$project->getId()}'
-                AND `expires` >= CURRENT_TIMESTAMP
-                LIMIT 1";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        return false;
     }
   
     function getCapsPersonalInformation(){

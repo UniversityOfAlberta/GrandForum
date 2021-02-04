@@ -205,19 +205,19 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   }
  
 
-  if($title->getNamespace() >= 0){
-      $article = Wiki::newFromId($title->getArticleID());
-      if($article->canView()){
-	if(!$article->isApproved() && $action=='delete'){
-	    $wgMessage->addInfo("This article is awaiting approval.");
-	}
-	$result=true;
-      }
-      else{
-	$result=false;
-	return false;
-      }
-  }
+    if($title->getNamespace() >= 0){
+        $article = Wiki::newFromId($title->getArticleID());
+        if($article->canView()){
+            if($action=='delete' && !$article->isApproved()){
+	            $wgMessage->addInfo("This article is awaiting approval.");
+            }
+            $result=true;
+        }
+        else{
+            $result=false;
+            return false;
+        }
+    }
 
 
   // Check public sections of wiki page
