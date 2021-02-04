@@ -84,7 +84,7 @@ class Wiki extends BackboneModel {
     }
 
     function getText(){
-        return $this->article->getContent();
+        return $this->article->getPage()->getContent();
     }
 
     function getTitle(){
