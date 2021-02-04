@@ -2301,6 +2301,10 @@ class Person extends BackboneModel {
      * @returns array A list of projects (strings) which this Person is allowed to edit
      */
     function getAllowedProjects(){
+        global $config;
+        if(!$config->getValue('projectsEnabled')){
+            return array();
+        }
         $projects = array();
         foreach($this->getProjects() as $project){
             if(!$project->isSubProject()){
