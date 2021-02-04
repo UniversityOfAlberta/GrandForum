@@ -9,8 +9,8 @@ class Story extends BackboneModel{
 	var $user;
 	var $title;
 	var $story;
-    	var $date_submitted;
-    	var $approved = false;
+    var $date_submitted;
+    var $approved = false;
 
 //-----Static Functions/Constructor---//
         // Constructor
@@ -59,7 +59,7 @@ class Story extends BackboneModel{
 	    $data = DBFunctions::select(array('grand_user_stories'),
 					array('*'),
 					array('title' => $title),
-                                        array('rev_id' => 'DESC'));
+                    array('rev_id' => 'DESC'));
             if(count($data)>0){
                 $story = new Story($data);
             }
@@ -71,12 +71,15 @@ class Story extends BackboneModel{
             $me = Person::newFromWgUser();
             if($me->isRoleAtLeast(MANAGER)){
             	$data = DBFunctions::select(array('grand_user_stories'),
-                	                        array('*'));
+                	                        array('*'),
+                	                        array(),
+                	                        array('rev_id' => 'DESC'));
             }
             else{
                 $data = DBFunctions::select(array('grand_user_stories'),
                                             array('*'),
-                                            array('approved'=>EQ(COL(1))));
+                                            array('approved'=>EQ(COL(1))),
+                                            array('rev_id' => 'DESC'));
             }
             if(count($data) >0){
                 foreach($data as $storyData){
@@ -92,13 +95,14 @@ class Story extends BackboneModel{
         static function getAllUnapprovedStories(){
             $me = Person::newFromWgUser();
 
-	    if(!$me->isRoleAtLeast(MANAGER)){
-		permissionError();
-	    }	
+	        if(!$me->isRoleAtLeast(MANAGER)){
+                permissionError();
+	        }
             $stories = array();
             $data = DBFunctions::select(array("grand_user_stories"),
                                         array("*"),
-                                        array("approved"=>EQ(COL(0))));
+                                        array("approved"=>EQ(COL(0))),
+                                        array('rev_id' => 'DESC'));
             foreach($data as $row){
                 $story = new Story(array($row));
                 $stories[] = $story;
@@ -282,22 +286,22 @@ class Story extends BackboneModel{
 	}
 
 	function canView(){
-            $me = Person::newFromWgUser();
-	    $bool = false;
+        $me = Person::newFromWgUser();
+        $bool = false;
 	    if($me->isLoggedIn() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER) || $this->getApproved())){
-		$bool = true;
-	    }
-	    return $bool;
+            $bool = true;
+        }
+        return $bool;
 	}
 
-        function canEdit(){
-            $me = Person::newFromWgUser();
-            $bool = false;
-            if($me->isLoggedIn() && !$this->getApproved() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER))){
-                $bool = true;
-            }
-            return $bool;
+    function canEdit(){
+        $me = Person::newFromWgUser();
+        $bool = false;
+        if($me->isLoggedIn() && !$this->getApproved() && ($me->getId() === $this->getUser()->getId() || $me->isRoleAtLeast(MANAGER))){
+            $bool = true;
         }
+        return $bool;
+    }
 
 
 	function approve(){
