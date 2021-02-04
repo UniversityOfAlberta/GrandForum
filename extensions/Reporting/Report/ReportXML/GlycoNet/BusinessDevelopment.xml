@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is also used in the BDTab of the Project Table Special Page -->
 <Report name="Business Development" reportType="RP_BD_REPORT" personId="0" year="0" ajax="true">
     <Permissions>
         <Role role="STAFF+">
@@ -6,10 +7,31 @@
         </Role>
     </Permissions>
     <ReportSection id="bd" tooltip="Business Development" name="Business Development" blobSection="BD" type="EditableReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#aboveTabs').hide();
+                    $('#reportTabs').hide();
+                </script>
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1">Therapeutics</a></li>
+                        <li><a href="#tabs-2">Biomarker/Diagnostic</a></li>
+                        <li><a href="#tabs-3">Synthesis/Process</a></li>
+                        <li><a href="#tabs-4">NewCo</a></li>
+                        <li><a href="#tabs-5">Tools/Analytical Techniques</a></li>
+                    </ul>
+            ]]>
+        </Static>
+    
         <!-- Therapeutics -->
         <Static>
             <![CDATA[
-                <h3>Therapeutics</h3>
+                <div id="tabs-1">
+            ]]>
+        </Static>
+        <Static id="p1_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -44,7 +66,8 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('Project 2'
+            <If id="p1" if="{contains(
+                              'Project 2'
                               'AM-1'
                               'AM-2'
                               'AM-3'
@@ -106,7 +129,7 @@
                               'ND-03'
                               'ND-05'
                               'ND-06'
-                              'RG-01'
+                              'RG-1'
                               'RG-2'
                               'RG-3'
                               'RG-6'
@@ -198,14 +221,18 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Biomarker/Diagnostic -->
         <Static>
             <![CDATA[
-                <h3>Biomarker/Diagnostic</h3>
+                <div id="tabs-2">
+            ]]>
+        </Static>
+        <Static id="p2_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -214,7 +241,7 @@
                             <th rowspan='2'>Start</th>
                             <th rowspan='2'>End</th>
                             <th rowspan='2'>Product Type</th>
-                            <th colspan='2'>Identification / Proof of Concept</th>
+                            <th colspan='2' style='white-space:nowrap;'>Identification / Proof of Concept</th>
                             <th colspan='3'>Regulatory</th>
                             <th colspan='1'>Clinical</th>
                             <th rowspan='2'>Targets / Indication</th>
@@ -236,8 +263,9 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-7'
+            <If id="p2" if="{contains(
                               'Project 2'
+                              'CD-7'
                               'CD-24'
                               'CD-29'
                               'CD-35'
@@ -319,14 +347,18 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Synthesis/Process -->
         <Static>
             <![CDATA[
-                <h3>Synthesis/Process</h3>
+                <div id="tabs-3">
+            ]]>
+        </Static>
+        <Static id="p3_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -349,9 +381,10 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-46'
-                              'TP-01'
-                              'Project 2','{$project_name}')}">
+            <If id="p3" if="{contains(
+                              'Project 2'
+                              'CD-46'
+                              'TP-1','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>
@@ -416,14 +449,14 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- NewCo -->
         <Static>
             <![CDATA[
-                <h3>NewCo</h3>
+                <div id="tabs-4">
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -561,14 +594,18 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <!-- Tools/Analytical Techniques -->
         <Static>
             <![CDATA[
-                <h3>Tools/Analytical Techniques</h3>
+                <div id="tabs-5">
+            ]]>
+        </Static>
+        <Static id="p4_table">
+            <![CDATA[
                 <table class='wikitable' width='100%'>
                     <thead>
                         <tr>
@@ -592,11 +629,12 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
-            <If if="{contains('CD-41'
+            <If id="p4" if="{contains(
+                              'Project 2'
+                              'CD-41'
                               'CD-62'
                               'DO-18'
-                              'TP-38'
-                              'Project 2','{$project_name}')}">
+                              'TP-38','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>
@@ -661,20 +699,17 @@
             <![CDATA[
                     </tbody>
                 </table>
-                <br />
+                </div>
             ]]>
         </Static>
         
         <Static>
             <![CDATA[
-                </tbody>
-                </table>
+                </div>
                 <script type='text/javascript'>
-                    $('#aboveTabs').hide();
-                    $('#reportTabs').hide();
-                    $('.wikitable').DataTable({
+                    var tables = $('.wikitable').DataTable({
                         scrollX: true,
-                        scrollY: ($(window).height() - 470) + "px",
+                        scrollY: ($(window).height() - 500) + "px",
                         searching: false,
                         aLengthMenu: [
                             [25, 50, 100, 200, -1],
@@ -703,6 +738,16 @@
                         }
                     });
                     $('select').change();
+                    
+                    $("#tabs").tabs();
+                    $('#tabs').bind('tabsselect', function(event, ui) {
+                        _.defer(function(){
+                            tables.draw();
+                            $(window).trigger('resize');
+                        });
+                    });
+                    tables.draw();
+                    $(window).trigger('resize');
                 </script>
                 <style>
                     .dataTables_scrollBody thead {

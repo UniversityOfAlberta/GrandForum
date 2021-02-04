@@ -210,7 +210,7 @@
         <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Knowledge and Technology Exchange and Exploitation</h2>
-                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders.<br />
+                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders. The summary should include the translation of research into clinical setting and the expected outcomes of the grant (e.g. importance and impact of disease treatment, increase clinician awareness of the role of glycomics in disease, knowledge exchange between NIs, etc.).<br />
                 <small><b>Knowledge Mobilization:</b> A continual strategy involving bi-directional learning with partners and end-users using communication and education events each year.</small></p>
                 {$item}
             ]]>
@@ -220,10 +220,10 @@
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Training Potential</h2>
-                <p>A summary of the project’s training plan.</p>
+                <p>A summary of the project’s training plan. </p>
                 <ul>
-                    <li>Provide information on the number and type (i.e., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project.</li>
-                    <li>List the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</li>
+                    <li>Provide information on the number and type (e.g., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel (HQP) trained each year of the project.</li>
+                    <li>List the desired type of professional development training that GlycoNet could provide to NIs or HQP (e.g. cross-training of investigators or trainees, lab rotations, communication and writing skills improvement, etc.).</li>
                 </ul>
                 {$item}
             ]]>
