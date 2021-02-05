@@ -1,4 +1,5 @@
-<a id="addContact" href="#/new" class="button" id="add">Add Contact</a>
+<div id="editDialog" style="display:none;"></div>
+<button id="addContact">Add Contact</button>
 <table id="contacts" frame="box" rules="all">
     <thead>
         <tr>
@@ -13,7 +14,7 @@
         <% this.model.each(function(contact){ %>
             <tr>
                 <td align="center">
-                    <span class="edit-icon"></span>
+                    <span class="edit-icon" data-id="<%= contact.get('id') %>"></span>
                 </td>
                 <td>
                     <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />

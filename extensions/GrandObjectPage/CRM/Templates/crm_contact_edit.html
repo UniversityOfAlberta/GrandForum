@@ -1,5 +1,7 @@
-<a class="button backButton" href="#">Back to Contacts</a>
-<h3>Contact Details</h3>
+<% if(!this.isDialog){ %>
+    <a class="button backButton" href="#">Back to Contacts</a>
+    <h3>Contact Details</h3>
+<% } %>
 <table>
     <tr>
         <td class="label">First Name:</td>
@@ -23,11 +25,13 @@
 <button id="addOpportunity">Add Opportunity</button>
 <br />
 <br />
-<div style="width:180px;display:inline-block;">
-    <button id="save">
-        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contact
-    </button><span class="throbber" style="display:none;"></span>
-</div>
-<div style="width:180px;display:inline-block;">
-    <button id="cancel">Cancel</button>
-</div>
+<% if(!this.isDialog){ %>
+    <div style="width:180px;display:inline-block;">
+        <button id="save">
+            <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Contact
+        </button><span class="throbber" style="display:none;"></span>
+    </div>
+    <div style="width:180px;display:inline-block;">
+        <button id="cancel">Cancel</button>
+    </div>
+<% } %>

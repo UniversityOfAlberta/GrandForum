@@ -52,6 +52,7 @@ pageRouter.on('route:newCRMContact', function(){
         var contact = new CRMContact();
         this.closeCurrentView();
         this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+        _.defer(this.currentView.render);
     }
 });
 
