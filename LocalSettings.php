@@ -129,9 +129,6 @@ $wgDBprefix         = "mw_";
 # MySQL table options to use during installation or update
 $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
-# Experimental charset support for MySQL 4.1/5.0.
-$wgDBmysql5 = true;
-
 ## Cache settings
 $wgSessionCacheType = CACHE_DB;
 $wgPasswordAttemptThrottle = false;
