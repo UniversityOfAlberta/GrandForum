@@ -63,16 +63,16 @@ class ProjectFESReportTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>1. Explain the research progress made during the past fiscal year (Apr $y-Mar".($y+1).") towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring).</h3>
+            $this->html .= "<h3>1. Explain the research progress made during the past fiscal year (Apr$y-Mar".($y+1).") towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring).</h3>
                             {$q1}
                             
-                            <h3>2. What challenges did you face over the past fiscal year (Apr $y-Mar".($y+1).") in addressing your research objectives, and what measures did you adopt in response to these challenges?</h3>
+                            <h3>2. What challenges did you face over the past fiscal year (Apr$y-Mar".($y+1).") in addressing your research objectives, and what measures did you adopt in response to these challenges?</h3>
                             {$q4}
                             
-                            <h3>3. What specific research objectives do you plan to complete during the current fiscal year (Apr ".($y+1)."-Mar".($y+2)."), and how will these help you advance in achieving your overarching objectives?</h3>
+                            <h3>3. What specific research objectives do you plan to complete during the current fiscal year (Apr".($y+1)."-Mar".($y+2)."), and how will these help you advance in achieving your overarching objectives?</h3>
                             {$q5}
                             
-                            <h3>4. Did you modify your project milestones for the current fiscal year (Apr ".($y+1)."-Mar".($y+2).") and any future years? If so, provide a rationale that supports the changes made.</h3>
+                            <h3>4. Did you modify your project milestones for the current fiscal year (Apr".($y+1)."-Mar".($y+2).") and any future years? If so, provide a rationale that supports the changes made.</h3>
                             {$q2}
                             
                             <h3>5. Explain how equity, diversity, and inclusivity have been considered in the following aspects, and mention specific issues in your research field as applicable:</h3>
@@ -83,7 +83,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
                             <h4>Formation of the training plan for your HQP</h4>
                             {$q9}
                             
-                            <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr $y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
+                            <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr$y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
                             {$q6}
                             
                             <h3>7. Are there any resources or opportunities that would help to better support EDI within your team?</h3>
@@ -123,16 +123,16 @@ class ProjectFESReportTab extends AbstractEditableTab {
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
-            $this->html .= "<h3>1. Explain the research progress made during the past fiscal year (Apr $y-Mar".($y+1).") towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring). <small>(300 words)</small></h3>
+            $this->html .= "<h3>1. Explain the research progress made during the past fiscal year (Apr$y-Mar".($y+1).") towards achieving your project’s overarching objectives. Which of your short term objectives were met? Focus your answers on research (not administrative progress such as personnel hiring). <small>(300 words)</small></h3>
                             <textarea name='report_q1[$y]' style='height:200px;resize: vertical;'>{$q1}</textarea>
                             
-                            <h3>2. What challenges did you face over the past fiscal year (Apr $y-Mar".($y+1).") in addressing your research objectives, and what measures did you adopt in response to these challenges? <small>(250 words)</small></h3>
+                            <h3>2. What challenges did you face over the past fiscal year (Apr$y-Mar".($y+1).") in addressing your research objectives, and what measures did you adopt in response to these challenges? <small>(250 words)</small></h3>
                             <textarea name='report_q4[$y]' style='height:200px;resize: vertical;'>{$q4}</textarea>
                             
-                            <h3>3. What specific research objectives do you plan to complete during the current fiscal year (Apr ".($y+1)."-Mar".($y+2)."), and how will these help you advance in achieving your overarching objectives? <small>(250 words)</small></h3>
+                            <h3>3. What specific research objectives do you plan to complete during the current fiscal year (Apr".($y+1)."-Mar".($y+2)."), and how will these help you advance in achieving your overarching objectives? <small>(250 words)</small></h3>
                             <textarea name='report_q5[$y]' style='height:200px;resize: vertical;'>{$q5}</textarea>
                             
-                            <h3>4. Did you modify your project milestones for the current fiscal (Apr ".($y+1)."-Mar".($y+2).") year and any future years? If so, provide a rationale that supports the changes made. <small>(250 words)</small></h3>
+                            <h3>4. Did you modify your project milestones for the current fiscal (Apr".($y+1)."-Mar".($y+2).") year and any future years? If so, provide a rationale that supports the changes made. <small>(250 words)</small></h3>
                             <textarea name='report_q2[$y]' style='height:200px;resize: vertical;'>{$q2}</textarea>
                             
                             <h3>5. Explain how equity, diversity, and inclusivity have been considered in the following aspects, and mention specific issues in your research field as applicable:</h3>
@@ -143,7 +143,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
                             <h4>Formation of the training plan for your HQP</h4>
                             <textarea name='report_q9[$y]' style='height:100px;resize: vertical;'>{$q9}</textarea>
                             
-                            <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr $y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
+                            <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr$y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
                             <textarea name='report_q6[$y]' style='height:200px;resize: vertical;'>{$q6}</textarea>
                             
                             <h3>7. Are there any resources or opportunities that would help to better support EDI within your team?</h3>
