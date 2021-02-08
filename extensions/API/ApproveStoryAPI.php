@@ -11,11 +11,12 @@ class ApproveStoryAPI extends API{
     }
 
     function doAction($doEcho=true){
-        if(isset($_POST['id'])){
+        $me = Person::newFromWgUser();
+        if(isset($_POST['id']) && $me->isRoleAtLeast(STAFF)){
             $story = Story::newFromId($_POST['id']);
             DBFunctions::update('grand_user_stories',
                                 array('approved' => 1),
-                                array('rev_id' => EQ(COL($story->getRevId()))));
+                                array('id' => EQ(COL($story->getId()))));
             Notification::addNotification(null, $story->getUser(), "Story Approved", "Your story \"{$story->getTitle()}\" was approved", $story->getUrl(), true);
         }
     }

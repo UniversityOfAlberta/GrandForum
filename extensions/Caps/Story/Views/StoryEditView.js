@@ -56,7 +56,7 @@ StoryEditView = Backbone.View.extend({
                 this.$(".throbber").hide();
                 this.$("#saveStory").prop('disabled', false);
                 clearAllMessages();
-                document.location = this.model.get('url');
+                document.location = this.model.get('story_url');
             }, this),
             error: $.proxy(function(m, e){
                 this.$(".throbber").hide();
