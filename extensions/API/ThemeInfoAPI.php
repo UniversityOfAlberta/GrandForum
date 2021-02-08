@@ -100,7 +100,7 @@ class ThemeInfoAPI extends API{
                     $json['projects'][] = array('name' => $project->getName(),
                                                 'fullName' => $project->getFullName());
                 }
-                if($theme->getAcronym() == "Strategic" && $project->isBigBet()){
+                if($theme->getAcronym() == "Strategic"){
                     $json['projects'][] = array('name' => $project->getName(),
                                                 'fullName' => $project->getFullName());
                 }
@@ -128,7 +128,7 @@ class ThemeInfoAPI extends API{
                         $data['projects'][] = array('name' => $project->getName(),
                                                     'fullName' => $project->getFullName());
                     }
-                    if($theme->getAcronym() == "Strategic" && $project->isBigBet()){
+                    if($theme->getAcronym() == "Strategic"){
                         $data['projects'][] = array('name' => $project->getName(),
                                                     'fullName' => $project->getFullName());
                     }

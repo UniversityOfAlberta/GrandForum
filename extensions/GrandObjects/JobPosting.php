@@ -331,7 +331,7 @@ class JobPosting extends BackboneModel {
     
     function isAllowedToEdit(){
         $me = Person::newFromWgUser();
-        return ($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF));
+        return ($me->getId() == $this->getUserId() || $me->isRoleAtLeast(STAFF) || $me->isRole(PL,$this->getProject()) || $me->isRole(PA,$this->getProject()));
     }
     
     function isAllowedToView(){

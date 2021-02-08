@@ -48,7 +48,6 @@ class ProjectSubprojectsTab extends AbstractTab {
                     //$create->getElementById("new_status_row")->hide();
                     $create->getElementById("new_type_row")->hide();
                     $create->getElementById("new_phase_row")->hide();
-                    $create->getElementById("new_bigbet_row")->hide();
                     $create->getElementById("new_challenges_set")->hide();
                     $this->html .= "<input type='hidden' name='new_subproject' value='Yes' />";
                     $this->html .= "<input type='hidden' name='new_parent_id' value='{$project->getId()}' />";
