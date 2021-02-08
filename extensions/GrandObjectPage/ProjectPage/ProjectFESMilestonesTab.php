@@ -417,7 +417,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $commentsHeader = "<th></th>";
         }
         else{
-            $commentsHeader = "<th>Comments</th>";
+            $commentsHeader = "<th style='width:35%;'>Comments</th>";
         }
         $statusColspan+=2;
 
@@ -486,7 +486,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $uni = University::newFromName($leader->getUni());
                 $uniText = " ({$uni->getShortName()})";
             }
-            $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            if(!$pdf){
+                $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
+            }
             $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
                                 <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1-2+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title} {$uniText}</td>
                             </tr>";
