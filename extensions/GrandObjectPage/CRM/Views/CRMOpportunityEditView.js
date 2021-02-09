@@ -20,24 +20,16 @@ CRMOpportunityEditView = Backbone.View.extend({
         "click #addTask": "addTask"
     },
     
-    renderTasks: function(){
-        _.each(this.subViews, function(view){
-            view.remove();
-        }.bind(this));
-        this.subViews = new Array();
-        this.$("#tasks").empty();
-        this.model.tasks.each(function(model){
-            var view = new CRMTaskEditView({model: model});
-            this.$("#tasks").append(view.render());
-            this.subViews.push(view);
-        }.bind(this));
+    renderTasks: function(model){
+        var view = new CRMTaskEditView({model: model});
+        this.$("#tasks").append(view.render());
+        this.subViews.push(view);
     },
     
     render: function(){
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.addClass("opportunity");
-            this.renderTasks();
         }
         return this.$el;
     }

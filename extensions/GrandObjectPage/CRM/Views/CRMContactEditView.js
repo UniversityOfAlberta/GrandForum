@@ -129,17 +129,10 @@ CRMContactEditView = Backbone.View.extend({
         document.location = this.model.get('url');
     },
         
-    renderOpportunities: function(){
-        _.each(this.subViews, function(view){
-            view.remove();
-        }.bind(this));
-        this.subViews = new Array();
-        this.$("#opportunities").empty();
-        this.model.opportunities.each(function(model){
-            var view = new CRMOpportunityEditView({model: model});
-            this.$("#opportunities").append(view.render());
-            this.subViews.push(view);
-        }.bind(this));
+    renderOpportunities: function(model){
+        var view = new CRMOpportunityEditView({model: model});
+        this.$("#opportunities").append(view.render());
+        this.subViews.push(view);
     },
     
     render: function(){
