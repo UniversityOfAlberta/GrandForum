@@ -266,7 +266,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             
             $labelIndicies = array();
             $index = 0;
-            /*foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
+            foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
                 $projects = $paper->getProjects();
                 foreach($projects as $proj){
                     if($project->getId() != $proj->getId()){
@@ -278,7 +278,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                         @$levels[1]['values'][$labelIndicies[$proj->getName()]]++;
                     }
                 }
-            }*/
+            }
             
             if(!isset($levels[1])){
                 @$levels[1]['labels'][] = "No other Projects";

@@ -172,7 +172,7 @@ class Chord extends Visualization {
             $("#vis{$this->index} path.outer").qtip({
                 position: {
                     target: 'mouse', // Track the mouse as the positioning target
-                    adjust: { x: 5, y: 5 } // Offset it slightly from under the mouse
+                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
                 },
                 style: {
                     classes: 'qtip-tipsy'
@@ -230,8 +230,8 @@ class Chord extends Visualization {
                     $("#visOptions{$this->index}").append("<tr><td><b>Date Range:</b><br /><div style='margin-top:5px;margin-left:1px;width:200px;' id='visDateSlider{$this->index}'></div><div id='visDateSliderLabels{$this->index}' class='steps'></td></tr>");
                     var dateOptions = data.dateOptions;
                     $("#visDateSlider{$this->index}").slider({
-                        min: dateOptions[0].date,
-                        max: dateOptions[dateOptions.length-1].date,
+                        min: parseInt(dateOptions[0].date),
+                        max: parseInt(dateOptions[dateOptions.length-1].date),
                         step: 1,
                         range: "max",
                         slide: function( event, ui ) {

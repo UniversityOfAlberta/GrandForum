@@ -211,6 +211,24 @@ class Inflect
             return self::pluralize($string);
         }
     }
+    
+    /**
+     * Determins whether to use 'a' or 'an' given a string (noun)
+     */
+    public static function an($string){
+        switch(strtolower($string[0])){
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                return "an";
+                break;
+            default:
+                return "a";
+                break;
+        }
+    }
 }
 
 ?>

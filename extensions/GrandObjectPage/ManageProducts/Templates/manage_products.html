@@ -24,7 +24,7 @@
     </div>
 <% } %>
 <div id="ccvDialog" style="display:none;" title="Upload Canadian CCV">
-    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  A <%= productsTerm.toLowerCase() %> will not get added twice into the forum, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
+    <p>You can upload your Canadian CCV (in XML format) using the form below.  Any <%= productsTerm.toLowerCase() %> that can be read into the Forum will automatically imported, but will not be visible to anyone else on the forum except you.  The <%= productsTerm.toLowerCase() %> will be placed in a separate "private" queue, and can be released to the rest of the Forum by unchecking the "private" checkbox in the <%= productsTerm %> Management table.  This way any unwanted <%= productsTerm.pluralize().toLowerCase() %> will not get added to the forum, and also gives you a chance to make changes to the <%= productsTerm.toLowerCase() %> and associate it with projects before releasing it.  <%= productsTerm.an().titleize() %> will not get added twice into the forum, so uploading the CCV a second time will generally not result in duplicate entries.  If the "overwrite" option is selected, previously uploaded <%= productsTerm.toLowerCase().pluralize() %> will be updated, and if they were deleted they will be re-created.</p>
     <iframe name="fileUpload" style="display:none;"></iframe>
     <form target="fileUpload" action="<%= wgServer + wgScriptPath %>/index.php?action=api.uploadCCV" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="publications" value="true" />
@@ -68,11 +68,11 @@ This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase
     <li>One of your HQP is listed as being one of the authors (only applicable to Supervisors)</li>
     <li>You were the person that created the <%= productsTerm.toLowerCase() %></li>
 </ul>
-<p>If the authors cell of a <%= productsTerm.toLowerCase() %> is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.
+<p>If the authors cell of <%= productsTerm.toLowerCase().an() %> is highlighted yellow, then it means that you (or one of your HQP) is not listed as an author of that <%= productsTerm.toLowerCase() %> and that it may need to be manually edited.
 </p>
 <% if(projectsEnabled){ %>
 <p>
-    If the projects cell of a <%= productsTerm.toLowerCase() %> is highlighted yellow, then it means that it is not associated with any projects.
+    If the projects cell of <%= productsTerm.toLowerCase().an() %> is highlighted yellow, then it means that it is not associated with any projects.
 </p>
 <% } %>
 <p>
