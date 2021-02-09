@@ -172,7 +172,7 @@ class Chord extends Visualization {
             $("#vis{$this->index} path.outer").qtip({
                 position: {
                     target: 'mouse', // Track the mouse as the positioning target
-                    adjust: { x: 5, y: 5 } // Offset it slightly from under the mouse
+                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
                 },
                 style: {
                     classes: 'qtip-tipsy'
