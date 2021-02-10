@@ -16,3 +16,17 @@
     padding: 15px;
     margin-bottom: 15px;
 }
+
+#tasks {
+    margin-left: 1.5em;
+}
+
+#tasks > li::marker {
+    font-weight: bold;
+}
+
+#tasks > li:not(:last-child) {
+    border-bottom: 1px solid #dfdfdf;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}

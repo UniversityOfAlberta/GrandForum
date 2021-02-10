@@ -11,4 +11,11 @@
     <tr>
         <td><b>Status:</b></td><td><%= status %></td>
     </tr>
+    <tr>
+        <td><b>Transactions:</b></td><td>
+        <% _.each(transactions, function(transaction){ %>
+            <%= transaction.type %> <%= transaction.date %><br />
+        <% }) %>
+        </td>
+    </tr>
 </table>

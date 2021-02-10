@@ -1,12 +1,18 @@
-<%= HTML.TextArea(this, 'task', {style: 'height: 70px; width:615px; vertical-align:baseline;'}) %><br />
+<%= HTML.TextBox(this, 'task', {style: 'width:423px;'}) %><br />
 <table>
     <tr>
-        <td><b>Assignee:</b></td><td><%= HTML.Select(this, 'assignee.id', {options: _.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} })}) %></td>
+        <td><b>Assignee:</b></td><td><%= HTML.Select(this, 'assignee.id', {style: 'width:342px;', options: _.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} })}) %></td>
     </tr>
     <tr>
         <td><b>Due Date:</b></td><td><%= HTML.DatePicker(this, 'dueDate', {format: 'yy-mm-dd', style: 'width:5em'}) %></td>
     </tr>
     <tr>
         <td><b>Status:</b></td><td><%= HTML.Select(this, 'status', {options: ['Active', 'Completed', 'Aborted']}) %></td>
+    </tr>
+    <tr>
+        <td><b>Transactions:</b></td><td>
+            <%= HTML.Select(this, 'transactions.0.type', {options: ['GN Funding', 'Licensing', 'Project Funding','Core Services','Others']}) %>
+            <%= HTML.DatePicker(this, 'transactions.0.date', {format: 'yy-mm-dd', style: 'width:5em'}) %>
+        </td>
     </tr>
 </table>
