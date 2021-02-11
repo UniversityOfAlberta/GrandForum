@@ -10,9 +10,12 @@
         <td><b>Status:</b></td><td><%= HTML.Select(this, 'status', {options: ['Active', 'Completed', 'Aborted']}) %></td>
     </tr>
     <tr>
-        <td><b>Transactions:</b></td><td>
-            <%= HTML.Select(this, 'transactions.0.type', {options: ['GN Funding', 'Licensing', 'Project Funding','Core Services','Others']}) %>
-            <%= HTML.DatePicker(this, 'transactions.0.date', {format: 'yy-mm-dd', style: 'width:5em'}) %>
+        <td valign="top" style="padding-top:5px;"><b>Transactions:</b></td>
+        <td>
+            <div id="transactions">
+                
+            </div>
+            <button type="button" id="addTransaction">+</button>
         </td>
     </tr>
 </table>

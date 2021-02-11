@@ -179,6 +179,12 @@ class Posting extends BackboneModel {
         return $this->image;
     }
     
+    function getImageMime(){
+        $exploded = explode(";", $this->image);
+        $mime = @str_replace("data:", "", $exploded[0]);
+        return $mime;
+    }
+    
     function getImageUrl(){
         global $wgServer, $wgScriptPath;
         $image = $this->getImage();
@@ -272,6 +278,7 @@ class Posting extends BackboneModel {
                       'summary' => $this->getSummary(),
                       'summaryFr' => $this->getSummaryFr(),
                       'image' => $this->getImageUrl(),
+                      'imageMime' => $this->getImageMime(),
                       'imageCaption' => $this->getImageCaption(),
                       'imageCaptionFr' => $this->getImageCaptionFr(),
                       'created' => $this->getCreated(),
