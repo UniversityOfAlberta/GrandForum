@@ -10,6 +10,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         $this->project = $project;
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){
+            QueryableTable::$idCounter = 1000;
             echo $this->showDashboard($this->project, $this->visibility);
             exit;
         }
