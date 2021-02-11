@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="IFP Final Project Report" reportType="RP_IFP_FINAL_PROJECT" pdfFiles="IFP2020FinalReportPDF" year="2020" ajax="true">
+    <Permissions>
+        <Role role="HQP" subType="IFP">
+            <SectionPermission id="milestones" permissions="rw" />
+            <SectionPermission id="ktee" permissions="rw" />
+            <SectionPermission id="external" permissions="rw" />
+            <SectionPermission id="mentorship" permissions="rw" />
+            <SectionPermission id="collab" permissions="rw" />
+            <SectionPermission id="dissemination" permissions="rw" />
+            <SectionPermission id="partners" permissions="rw" />
+            <SectionPermission id="network" permissions="rw" />
+            <SectionPermission id="comments" permissions="rw" />
+            <SectionPermission id="supervisor1" permissions="r" />
+            <SectionPermission id="supervisor2" permissions="--" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI">
+            <SectionPermission id="milestones" permissions="" />
+            <SectionPermission id="ktee" permissions="" />
+            <SectionPermission id="external" permissions="" />
+            <SectionPermission id="mentorship" permissions="" />
+            <SectionPermission id="collab" permissions="" />
+            <SectionPermission id="dissemination" permissions="" />
+            <SectionPermission id="partners" permissions="" />
+            <SectionPermission id="network" permissions="" />
+            <SectionPermission id="comments" permissions="" />
+            <SectionPermission id="supervisor1" permissions="" />
+            <SectionPermission id="supervisor2" permissions="rw" />
+            <SectionPermission id="review" permissions="" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+    </Permissions>
+    <ReportSection id="milestones" name="Project Progress" title="1. Fellowship Project Deliverables" blobSection="IFP_FINAL_MILESTONES" tooltip="1. Fellowship Project Deliverables" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <b>Name:&nbsp;</b>{$user_name}<br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <b>CFN File#:&nbsp;</b>{$user_tvn_file_number}<br />
+            ]]>
+        </Static>
+        <ReportItem id="start" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_START" width="100px">
+            <![CDATA[
+                <b>Reporting Period:&nbsp;</b>{$item}&nbsp;to&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="end" type="CalendarReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_END" width="100px">
+            <![CDATA[
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELIVERABLES1" labels="Project Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Deliverable Completed,Incomplete,Deleted,New)" sizes="200|300|150" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Deliverables</h2>
+                <p>List all milestones as approved in your original proposal/learning plan and their status of completion.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="deleted" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_DELETED" labels="List Deleted or New Deliverable|Reason(s) for Deleted or New Deliverable(s)" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable" optional="true">
+            <![CDATA[
+                <h2>New or Delayed Deliverables</h2>
+                <p>If applicable, explain why a deliverable is delayed, or why new deliverables were added.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_CHALLENGE" labels="Challenge|Solution/Way Forward" types="Text|Textarea" sizes="150|400" multiple="true" class="wikitable">
+            <![CDATA[
+                <h2>Other Challenges</h2>
+                <p>If applicable, describe any challenges (research, management, partnership, training, etc.) encountered by you during the fellowship and briefly describe identified solutions/ways forward.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="completion" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_COMPLETION" rich="true">
+            <![CDATA[
+                <h3>Describe how completion of the CFN training activities has impacted your research project.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="key" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_MIL_KEY" labels="Key Findings" types="Textarea" sizes="400" multiple="true" class="wikitable">
+            <![CDATA[
+                <h3>Key Findings & Achievements</h3>
+                <p>Please provide the key findings and achievements of your research project in one or two sentences.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_SUMMARY" rich="true" limit="500">
+            <![CDATA[
+                <h3>Executive Summary</h3>
+                <p>Provide a non-confidential Executive Summary in <b>lay terms</b> of your project findings to date and its importance to the care of the seriously ill, frail elderly and their caregivers.  This information may be shared publicly in external communications (e.g., press releases, websites).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MIL_REVIEW" rich="true">
+            <![CDATA[
+                <h3>Scientific Summary</h3>
+                <p>Please provide a scientific summary of your research project findings to date, description and justification of your research methodology, and discussion and conclusion(s) (if any).  In particular please discuss how these research findings have addressed/analyzed a previous knowledge gap(s) and discuss any future KT opportunities that might be investigated as a result of any novel research findings.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="themes" type="RadioReportItem" blobItem="IFP_FINAL_MIL_THEMES" orientation="vertical" options="Improvement of End of Life Care/Advance Care Planning Trajectories of Care|Improvement of Acute/Critical Care|Optimization of Community &amp; Residential Care|Optimization of Transitions of Care">
+            <![CDATA[
+                <h3>Network Planning Information</h3>
+                <p>For Network metrics and planning purposes, we would appreciate your assessment of your project against various categories.</p>
+                <h3>Research Themes</h3>
+                <p><small>Which CFN research themes does your project most closely fall under?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="priorities" type="RadioReportItem" blobItem="IFP_FINAL_MIL_PRIORITIES" orientation="vertical" options="Matching care to values|Engaging, empowering and supporting patients and family/caregivers|Improving clinical outcomes|Improving care across the continuum">
+            <![CDATA[
+                <h3>Strategic Priorities</h3>
+                <p><small>Which CFN strategic priorities does your project most closely fall under?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="care" type="RadioReportItem" blobItem="IFP_FINAL_MIL_CARE" orientation="vertical" options="Palliative/EOL|Acute/critical care in hospital|Long-term care facility|Home care|All settings of care">
+            <![CDATA[
+                <h3>Setting of Care</h3>
+                <p><small>Which of the following settings of care will your project most significantly impact?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="impact" type="RadioReportItem" blobItem="IFP_FINAL_MIL_IMPACT" orientation="vertical" options="Health care system|Health care facilities|Health care professionals and caregivers (paid)|Patients, their families and informal caregivers/support systems (volunteer)">
+            <![CDATA[
+                <h3>Focus of Impact</h3>
+                <p><small>What is the primary focus of impact for your project?</small></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_synth" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_SYNTH" width="30px">
+            <![CDATA[
+                <h3>Knowledge Continuum</h3>
+                <p><small>Please indicate the percentage of your project that addresses the following activities on the knowledge continuum:</small></p>
+                {$item}% Knowledge synthesis<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_creation" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_CREATION" width="30px">
+            <![CDATA[
+                {$item}% Knowledge creation<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="know_trans" type="IntegerReportItem" min="0" max="100" blobItem="IFP_FINAL_MIL_TRANS" width="30px">
+            <![CDATA[
+                {$item}% Knowledge translation/mobilization
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ktee" name="KTEE" tooltip="2. Knowledge and Technology Exchange and Exploitation" title="2. Knowledge and Technology Exchange and Exploitation" blobSection="IFP_FINAL_KTEE" type="EditableReportSection">
+        <ReportItem id="success" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_KTEE_SUCCESS" rich="true">
+            <![CDATA[
+                <h3>Successes in KTEE</h3>
+                <p>Please skip this section if not applicable.  Describe the successes in the domain of KTEE achieved during the fellowship program. Provide specific examples (e.g. new products, processes or services with commercial potential; social innovations that have contributed to public policy in Canada; collaborations in technology, market development and/or public policy development)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="external" name="External Placement" tooltip="3. External Placement" title="3. External Placement" blobSection="IFP_FINAL_EXTERNAL" type="EditableReportSection">
+        <ReportItem id="success" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_EXTERNAL_PLACEMENT" labels="Placement Deliverables|Description of Deliverable|Status" types="Text|Textarea|Select(Complete, Incomplete)" sizes="175|200|125" multiple="true">
+            <![CDATA[
+                <p>List the activities or deliverables completed for your external placement. (If you and your placement supervisor have completed the external placement evaluations, please include as deliverables.)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="mentorship" name="Mentorship Program" tooltip="4. Mentorship Program" title="4. Mentorship Program" blobSection="IFP_FINAL_MENTORSHIP" type="EditableReportSection">
+        <ReportItem id="mentorship" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_MENTORSHIP_PROGRAM" rich="true" limit="1000">
+            <![CDATA[
+                <h3>Key ideas</h3>
+                <p>Describe key ideas that have resulted from the meetings with your mentor(s) (Interdisciplinary Mentor, Patient Family Support System Mentor)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="collab" name="Collaborative Project" tooltip="5. Online Collaborative Project" title="5. Online Collaborative Project" blobSection="IFP_FINAL_COLLAB" type="EditableReportSection">
+        <ReportItem id="milestones" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_COLLAB_MILESTONE" labels="OCP Output|Description&lt;br /&gt;&lt;small&gt;(details may be provided in the next section)&lt;/small&gt;|Status" types="Text|Textarea|Select(Completed,On Track,Delayed,Not Started,New,Removed,Deleted)" sizes="175|200|125" multiple="true">
+            <![CDATA[
+                <h3>List OCP Milestones</h3>
+                <p>Describe the milestones and outputs as indicated in the project proposal, and their status of completion. (All completed outputs need to be uploaded on to Desire2Learn)</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="progress" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_PROGRESS" rich="true" limit="500">
+            <![CDATA[
+                <h3>Individual Progress with the OCP</h3>
+                <p>Please describe your progress with the online collaborative project and completed learning outcomes as indicated in the individual learning plan.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="benefits" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COLLAB_BENEFITS" rich="true" limit="500">
+            <![CDATA[
+                <h3>Benefits & Challenges of Interdisciplinary Collaboration</h3>
+                <p>Please outline how multidisciplinary collaboration has enhanced this project. Summarize any challenges encountered in working together and briefly describe any identified solutions/way forward.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="dissemination" name="Dissemination" tooltip="6. Dissemination of Fellowship Work" blobSection="IFP_FINAL_DISS" title="6. Dissemination of Fellowship Work" type="EditableReportSection">
+        <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="HQP_REPORT_STRUCTURE" table="false" details="true" totalOnly="true"
+                    start="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_START,0,{$user_id},0)}" 
+                    end="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_END,0,{$user_id},0)}">
+            <![CDATA[
+                <p>Please provide ALL bibliographical references completed during your fellowship.</p>
+                <p>To add products (Publications, Abstracts, Patents etc.), go to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'>Manage Products</a>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="materials" type="UploadReportItem" blobItem="IFP_FINAL_DISS_UPLOAD" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                <h3>Research Documents</h3>
+                <p>If you would like to include any research documents, please attach them below as a zip archive</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_DISS_OTHER" rich="true">
+            <![CDATA[
+                <h2>Other Accomplishments</h2>
+                <p>Please list other accomplishments not captured above. These may include technology exchange, commercialization and knowledge exploitation and exchange activities (e.g.  work related to policy changes).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partners" name="Partnerships" tooltip="7. Partnerships and other Funding" title="7. Partnerships and other Funding" blobSection="IFP_FINAL_PARTNERS" type="EditableReportSection">
+        <ReportItem id="funding" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="IFP_FINAL_PARTNERS_FUNDING" labels="Source of Funding&lt;br /&gt;&lt;small&gt;(organization)&lt;/small&gt;|Potential Conflict of Interest|Specific Use of Funding in Project of by Fellow&lt;br /&gt;&lt;small&gt;List each item/use separately, even if from the same organization&lt;/small&gt;|Nature of Funding|Was this funding received as a result of your TVN funding?|Year*|Amount" types="Text|Select(Yes,No)|TextArea|ComboBox(Cash, In-Kind, Scholarship, Salary, Research Grant)|Select(Yes,No)|Integer|Integer" sizes="150|50|150|100|50|50|75" multiple="true">
+            <![CDATA[
+                <p>The CFN Interdisciplinary Fellowship Program provides funds for Fellow income. Fellows are not prohibited from receiving other funding, however CFN funding is subject to <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE stacking provisions and other guidelines</a>.  Fellows are required to identify all other sources of support that relate to the Fellow, or to the personal Fellowship project, including fellowship or scholarship revenues, and research or other grants – no matter what the status, i.e. whether planned to be applied for, being applied for, about to be submitted, submitted, pending, etc... – for the entire period covered by the Fellowship.</p>
+                <p>Details on in-kind and financial partnership contributions must also be identified. Partnership contributions must be from NCE-eligible partners and cover NCE-eligible expenses. Please consult the <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a> regarding eligibility and valuation of in-kind contributions and then consult with your supervisor’s host institution’s research services unit for assistance if you still have questions.  Calculation of in-kind contribution amounts must adhere to <a href='http://www.nserc-crsng.gc.ca/NSERC-CRSNG/Policies-Politiques/orgpartners-orgpartenaires_eng.asp' target='_blank'>Tri-Council guidelines</a>.</p>
+                <p>If you are listing a partner with cash or in-kind contributions that was not included in your application, please provide a letter from the partner detailing the extent of collaboration and cash/in-kind contributions. The letter must specifically identify your project, reference CFN funding, and detail the type and amount of contributions. The letter should be on official letterhead from the partner, and must be signed by someone from the partner with the authority to make such a commitment.</p>
+                <p>Please note that where an applicant has a “financial interest” (as defined by <a href='http://www.nce-rce.gc.ca/ReportsPublications-RapportsPublications/NCE-RCE/ProgramGuide-GuideProgramme_eng.asp' target='_blank'>NCE Conflict of Interest Guidelines</a>) in a partner, the potential conflict of interest should be declared.  These partnerships are not precluded, but declaring this financial interest provides transparency to the administration and review process.  Applicants are also governed by CFN Conflict of Interest Policy and Guidelines.</p>
+                {$item}
+                <small>* Fiscal Year runs from Apr.1 to Mar.31.</small>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="network" name="Networking/Collaborations" tooltip="8. Networking/Collaborations" title="8. Networking/Collaborations" blobSection="IFP_FINAL_NETWORK" type="EditableReportSection">
+        <ReportItem id="network" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_MEETING" rich="true">
+            <![CDATA[
+                <h3>Meeting and Exchange</h3>
+                <p>Describe any networking activities you undertook during the fellowship program.  These activities should include project team meetings with academic or industry collaborators, inside or outside of your institution.  These activities should also include meetings that have led to any additional partnerships described above or anticipated partnerships or collaborations that you anticipate might result in the future.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="collab" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_NETWORK_COLLAB" rich="true">
+            <![CDATA[
+                <p>Provide details on any international collaborations that have resulted, and how it has benefited from the network approach</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="comments" name="Comments and Feedback" tooltip="9. Status Update, Comments and Feedback" title="9. Status Update, Comments and Feedback" blobSection="IFP_FINAL_COMMENTS" type="EditableReportSection">
+        <ReportItem id="academic" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Has your academic status changed (i.e. degree awarded or completed, switched to part-time, etc.)?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="academic_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_ACADEMIC_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Have you obtained employment? If so, please provide details.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_details" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_EMPLOYMENT_DETAILS" rich="true" optional="true">
+            <![CDATA[
+                <p><b>If so, please provide details</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="feedback" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_COMMENTS_FEEDBACK" rich="true">
+            <![CDATA[
+                <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist CFN in improving the program in the future.</p>
+                <p>In addition, we are introducing the Fellowship Program to various stakeholders and would greatly appreciate any comments on any aspect of the program that we can use for our promotional materials.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supervisor1" name="Supervisor Review" tooltip="10. Supervisor Review" title="10. Supervisor Review" blobSection="IFP_FINAL_SUPERVISOR" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <i style='font-size:1.2em;'>This section is to be completed by the Fellowship Supervisor</i>
+            ]]>
+        </Static>
+        <ReportItemSet id="supervisors" type="PersonSupervisorsReportItemSet" 
+                       startDate="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_START,0,{$user_id},0)}" 
+                       endDate="{getText(RP_IFP_FINAL_PROJECT,IFP_FINAL_MILESTONES,IFP_FINAL_MIL_END,0,{$user_id},0)}">
+            <Static>
+                <![CDATA[
+                    <h2>{$user_name}</h2>
+                    <h3>How has CFN training modules (frailty assessment, citizen engagement, interdisciplinary collaboration, and professional development) enhanced the fellow’s learning?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_TRAIN,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_MULTI,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_SOCIAL,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_LEADER,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                    <i>{getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ASSESSMENT,{$parent_id},{$user_id},0)}</i>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>Please elaborate:</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_ELABORATE,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <h3>Comments & Feedback</h3>
+                    {getHTML(RP_IFP_FINAL_PROJECT,IFP_FINAL_SUPERVISOR,IFP_FINAL_SUP_COMMENTS,{$parent_id},{$user_id},0)}
+                ]]>
+            </Static>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="supervisor2" name="IFP Reviews" tooltip="IFP Reviews" title="IFP Reviews" blobSection="IFP_FINAL_SUPERVISOR" type="EditableReportSection">
+        <ReportItemSet id="students" type="PersonSupervisesReportItemSet" subType="IFP">
+            <If id="if" if="{or({contains({$getProjects},IFP2020)}, {contains({$getProjects},IFA2020)})}">
+                <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                    <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_TRAIN" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How has CFN training modules (frailty assessment, citizen engagement, interdisciplinary collaboration, and professional development) enhanced the fellow’s learning?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="multidisciplinary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_MULTI" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How has multidisciplinary and/or multisectoral collaborations enhanced the fellow’s research?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="social" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_SOCIAL" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How has (or will) the fellow’s research address new and emerging ethical, legal, regulatory and social challenges?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="leadership" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_LEADER" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>How will the fellow’s research contribute to Canada’s visibility and reputation for international leadership?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="assessment" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ASSESSMENT" blobSubItem="{$user_id}" orientation="horizontal" options="Excellent|Very good|Good|Inadequate">
+                        <![CDATA[
+                            <h3>What is your overall assessment of the Fellow’s progress during the past six months?</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="elaborate" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_ELABORATE" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>Please elaborate:</h3>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                    <ReportItem id="comments" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="IFP_FINAL_SUP_COMMENTS" blobSubItem="{$user_id}" rich="true">
+                        <![CDATA[
+                            <h3>Comments & Feedback</h3>
+                            <p>Please provide comments and feedback that describe what you perceive as the positive and negative aspects of the current fellowship program.  This information will assist CFN in improving the program in the future.</p>
+                            <p>In addition, we are introducing the Fellowship Program to various stakeholders and would greatly appreciate any comments on any aspect of the program that we can use for our promotional materials.</p>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                <br />
+                <p><b>Note:</b> Once you have completed your comments for each IFP, remind the IFP to generate a PDF of their report since your comments will now appear in them.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="IFP_SUBMIT" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="survey" type="CheckboxReportItem" blobItem="IFP_SURVEY" blobType="BLOB_ARRAY" options="Completed exit survey">
+            <![CDATA[
+                <h3>Exit Survey</h3>
+                <div id="check">{$item}</div>
+                <script type='text/javascript'>
+                    $('div#check input').change(function(){
+                        $('input[name=submit]').click();
+                    });
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="perry@cfn-nce.ca,mat@cfn-nce.ca,amanda@cfn-nce.ca,training@cfn-nce.ca" />
+    </ReportSection>
+</Report>

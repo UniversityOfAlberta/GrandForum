@@ -37,6 +37,7 @@ class ReportStatusTable extends SpecialPage{
         $ifp2017HQP = array();
         $ifp2018HQP = array();
         $ifp2019HQP = array();
+        $ifp2020HQP = array();
         $ifp2016Final = array(
             Person::newFromId(235),
             Person::newFromId(308),
@@ -55,12 +56,17 @@ class ReportStatusTable extends SpecialPage{
                 $ifp2017 = false;
                 $ifp2018 = false;
                 $ifp2019 = false;
+                $ifp2020 = false;
                 foreach($hqp->leadershipDuring("0000-00-00", "2100-00-00") as $project){
                     $ifpDeleted = ($ifpDeleted || ($project->isDeleted() && (strstr($project->getName(), "IFP") !== false || strstr($project->getName(), "IFA") !== false)));
                     $ifp2016 = ($ifp2016 || strstr($project->getName(), "IFP2016") !== false || strstr($project->getName(), "IFA2016") !== false);
                     $ifp2017 = ($ifp2017 || strstr($project->getName(), "IFP2017") !== false || strstr($project->getName(), "IFA2017") !== false);
                     $ifp2018 = ($ifp2018 || strstr($project->getName(), "IFP2018") !== false || strstr($project->getName(), "IFA2018") !== false);
                     $ifp2019 = ($ifp2019 || strstr($project->getName(), "IFP2019") !== false || strstr($project->getName(), "IFA2019") !== false);
+                    $ifp2020 = ($ifp2020 || strstr($project->getName(), "IFP2020") !== false || strstr($project->getName(), "IFA2020") !== false);
+                }
+                if($ifp2020){
+                    $ifp2020HQP[] = $hqp;
                 }
                 if($ifp2019){
                     $ifp2019HQP[] = $hqp;
@@ -122,6 +128,8 @@ class ReportStatusTable extends SpecialPage{
                                 <li><a href='#ifp2018_final_2018'>IFP2018 Final</a></li>
                                 <li><a href='#ifp_progress_2019'>IFP2019 Progress</a></li>
                                 <li><a href='#ifp2019_final_2019'>IFP2019 Final</a></li>
+                                <li><a href='#ifp_progress_2020'>IFP2020 Progress</a></li>
+                                <li><a href='#ifp2020_final_2020'>IFP2020 Final</a></li>
                                 <li><a href='#ssa'>SSA2015</a></li>
                                 <li><a href='#ssa2016'>SSA2016</a></li>
                                 <li><a href='#ssa2017'>SSA2017</a></li>
@@ -142,6 +150,8 @@ class ReportStatusTable extends SpecialPage{
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2018_final_2018', $ifp2018HQP, 2018);
         $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2019',  $ifp2019HQP, 2019);
         $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2019_final_2019', $ifp2019HQP, 2019);
+        $this->addTable(RP_IFP_PROGRESS,            'ifp_progress_2020',  $ifp2020HQP, 2020);
+        $this->addTable(RP_IFP_FINAL_PROJECT,       'ifp2020_final_2020', $ifp2020HQP, 2020);
         $this->addTable('HQPReport',                'ssa',                $ssa, 2015);
         $this->addProjectTable('SSAReport',         'ssa2016',            2016, $ssa2016);
         $this->addProjectTable('SSAReport',         'ssa2017',            2017, $ssa2017);
