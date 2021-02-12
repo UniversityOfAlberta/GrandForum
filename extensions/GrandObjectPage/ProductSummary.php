@@ -30,11 +30,11 @@ class ProductSummary extends SpecialPage{
 		$structure = Product::structure();
 		$wgOut->addHTML("<div id='tabs'><ul>");
 		// Tabs
-		for($y=YEAR; $y>=substr($phaseDates[1],0,4); $y--){
+		for($y=date('Y')-1; $y>=substr($phaseDates[1],0,4); $y--){
 		    $wgOut->addHTML("<li><a href='#tabs-$y'>{$y}-".($y+1)."</a></li>");
 		}
 		$wgOut->addHTML("</ul>");
-		for($y=YEAR; $y>=substr($phaseDates[1],0,4); $y--){
+		for($y=date('Y')-1; $y>=substr($phaseDates[1],0,4); $y--){
 		    $start = "$y-04-01";
 		    $end = ($y+1)."-03-31";
 		    $projects = Project::getAllProjectsDuring($start, $end);
