@@ -62,11 +62,9 @@ class ProductSummary extends SpecialPage{
 		                <td style='white-space:nowrap;'>{$project->getName()}</td>");
 		        $products = $project->getPapers('all', $start, $end);
 		        foreach($structure['categories'] as $cat => $category){
+		            $subProducts = array_filter($products, function($product) use($cat) { return ($product->getCategory() == $cat); });
 		            foreach($category['types'] as $key => $type){
-		                $count = count(array_filter($products, function($product) use($cat, $key) {
-		                                                            return ($product->getCategory() == $cat && 
-		                                                                    $product->getType() == $key); 
-		                                                        }));
+		                $count = count(array_filter($subProducts, function($product) use($key) { return ($product->getType() == $key); }));
 		                $wgOut->addHTML("<td align='right'>{$count}</td>");
 		            }
 		        }
