@@ -11,6 +11,7 @@
     require_once("ManageProducts/ManageProducts.php");
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
+    require_once("ProductSummary.php");
     if($config->getValue("contributionsEnabled")){
         require_once("Contributions/Contributions.php");
     }
