@@ -14,12 +14,18 @@ CRMTaskEditView = Backbone.View.extend({
     initialize: function(){
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
-        this.listenTo(this.model, "change:transactions", this.renderTransaction);
         this.template = _.template($('#crm_task_edit_template').html());
     },
     
     events: {
-        "click #addTransaction": "addTransaction"
+        "click #addTransaction": "addTransaction",
+        "click .delete-icon": "deleteTransaction"
+    },
+    
+    deleteTransaction: function(el){
+        var id = $(el.currentTarget).attr('data-id');
+        this.model.get('transactions').splice(id, 1);
+        this.renderTransactions();
     },
     
     addTransaction: function(){
@@ -36,6 +42,7 @@ CRMTaskEditView = Backbone.View.extend({
             this.$("#transactions").append("<div>");
             this.$("#transactions div").last().append(HTML.Select(this, 'transactions.' + i + '.type', {options: this.transactionTree[this.model.opportunity.get('category')] }));
             this.$("#transactions div").last().append(HTML.DatePicker(this, 'transactions.' + i + '.date', {format: 'yy-mm-dd', style: 'width:5em'}));
+            this.$("#transactions div").last().append("<span data-id='" + i + "' class='delete-icon' style='vertical-align: middle; margin-left:5px;' title='Delete Transaction'></span>");
         }.bind(this));
         this.delegateEvents();
         this.afterRender();
