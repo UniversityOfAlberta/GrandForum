@@ -9,6 +9,7 @@ CRMOpportunityEditView = Backbone.View.extend({
         //this.listenTo(this.model.tasks, "sync", this.renderTasks);
         this.listenTo(this.model.tasks, "add", this.renderTasks);
         this.listenTo(this.model.tasks, "remove", this.renderTasks);
+        this.listenTo(this.model, "change:category", this.updateTasks);
         this.template = _.template($('#crm_opportunity_edit_template').html());
     },
     
@@ -18,6 +19,12 @@ CRMOpportunityEditView = Backbone.View.extend({
     
     events: {
         "click #addTask": "addTask"
+    },
+    
+    updateTasks: function(){
+        _.each(this.subViews, function(view){
+            view.render();
+        }.bind(this));
     },
     
     renderTasks: function(model){

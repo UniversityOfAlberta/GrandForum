@@ -8,6 +8,9 @@ CRMContact = Backbone.Model.extend({
                 this.opportunities.fetch();
             }.bind(this));
         }
+        this.opportunities.on("add", function(model){
+            model.contact = this;
+        }.bind(this));
         this.on("create", function(){
             this.opportunities.each(function(opportunity){
                 opportunity.set('contact', this.get('id'));

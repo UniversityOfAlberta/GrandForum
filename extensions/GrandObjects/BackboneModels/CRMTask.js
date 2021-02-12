@@ -1,5 +1,7 @@
 CRMTask = Backbone.Model.extend({
 
+    opportunity: null, // Parent obj
+
     initialize: function(){
     
     },
