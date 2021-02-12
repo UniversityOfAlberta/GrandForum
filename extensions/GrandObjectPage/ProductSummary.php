@@ -69,18 +69,6 @@ class ProductSummary extends SpecialPage{
 		        }
 		        $wgOut->addHTML("</tr>");
 		    }
-		    foreach($projects as $project){
-		        $wgOut->addHTML("<tr>
-		                <td style='white-space:nowrap;'>{$project->getName()}</td>");
-		        foreach($structure['categories'] as $cat => $category){
-		            $products = $project->getPapers($cat, $start, $end);
-		            foreach($category['types'] as $key => $type){
-		                $count = count(array_filter($products, function($product) use($key) { return ($product->getType() == $key); }));
-		                $wgOut->addHTML("<td align='right'>{$count}</td>");
-		            }
-		        }
-		        $wgOut->addHTML("</tr>");
-		    }
 		    $wgOut->addHTML("</tbody></table></div>");
 		}
 		$wgOut->addHTML("</div>
