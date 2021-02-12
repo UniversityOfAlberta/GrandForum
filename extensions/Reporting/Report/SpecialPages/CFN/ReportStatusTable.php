@@ -215,7 +215,7 @@ class ReportStatusTable extends SpecialPage{
         $showAll = true;
         if($projects === null){
             $showAll = false;
-            $projects = Project::getAllProjects();
+            $projects = Project::getAllProjectsEver();
         }
         $wgOut->addHTML("
             <div id='{$type}'>
