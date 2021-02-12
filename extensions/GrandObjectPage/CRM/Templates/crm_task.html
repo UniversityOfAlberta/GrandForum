@@ -15,11 +15,15 @@
         <tr>
             <td valign="top"><b>Transactions:</b></td>
             <td>
-                <div id="transactions">
+                <table id="transactions" cellspacing="0" cellpadding="0">
+                    
                     <% _.each(transactions, function(transaction){ %>
-                        <%= transaction.type %> <%= transaction.date %><br />
+                        <tr>
+                            <td style="padding-right:15px;"><%= transaction.type %></td>
+                            <td><%= transaction.date %></td>
+                        </tr>
                     <% }) %>
-                </div>
+                </table>
             </td>
         </tr>
     <% } %>
