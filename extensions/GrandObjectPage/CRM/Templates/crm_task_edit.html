@@ -1,4 +1,4 @@
-<%= HTML.TextBox(this, 'task', {style: 'width:423px;'}) %><br />
+<%= HTML.TextBox(this, 'task', {style: 'width:423px;'}) %><span id="deleteTask" class="delete-icon" style="vertical-align:middle;margin-left:5px;" title="Delete Task"></span><br />
 <table>
     <tr>
         <td><b>Assignee:</b></td><td><%= HTML.Select(this, 'assignee.id', {style: 'width:342px;', options: _.map(allPeople.toJSON(), function(person){ return {option: person.fullName, value: person.id} })}) %></td>

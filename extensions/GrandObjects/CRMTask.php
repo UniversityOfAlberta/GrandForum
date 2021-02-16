@@ -112,29 +112,37 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function create(){
-	    DBFunctions::insert('grand_crm_task',
-	                        array('opportunity' => $this->opportunity,
-	                              'assignee' => $this->assignee,
-	                              'task' => $this->task,
-	                              'due_date' => $this->dueDate,
-	                              'transactions' => json_encode($this->transactions),
-	                              'status' => $this->status));
-	    $this->id = DBFunctions::insertId();
+	    if(self::isAllowedToCreate()){
+	        DBFunctions::insert('grand_crm_task',
+	                            array('opportunity' => $this->opportunity,
+	                                  'assignee' => $this->assignee,
+	                                  'task' => $this->task,
+	                                  'due_date' => $this->dueDate,
+	                                  'transactions' => json_encode($this->transactions),
+	                                  'status' => $this->status));
+	        $this->id = DBFunctions::insertId();
+	    }
 	}
 	
 	function update(){
-	    DBFunctions::update('grand_crm_task',
-	                        array('opportunity' => $this->opportunity,
-	                              'assignee' => $this->assignee,
-	                              'task' => $this->task,
-	                              'due_date' => $this->dueDate,
-	                              'transactions' => json_encode($this->transactions),
-	                              'status' => $this->status),
-	                        array('id' => $this->id));
+	    if($this->isAllowedToEdit()){
+	        DBFunctions::update('grand_crm_task',
+	                            array('opportunity' => $this->opportunity,
+	                                  'assignee' => $this->assignee,
+	                                  'task' => $this->task,
+	                                  'due_date' => $this->dueDate,
+	                                  'transactions' => json_encode($this->transactions),
+	                                  'status' => $this->status),
+	                            array('id' => $this->id));
+	    }
 	}
 	
 	function delete(){
-	    
+	    if($this->isAllowedToEdit()){
+	        DBFunctions::delete('grand_crm_task',
+	                            array('id' => $this->id));
+	        $this->id = "";
+	    }
 	}
 	
 	function exists(){

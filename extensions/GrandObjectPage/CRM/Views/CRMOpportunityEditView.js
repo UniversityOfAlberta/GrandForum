@@ -8,7 +8,7 @@ CRMOpportunityEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         //this.listenTo(this.model.tasks, "sync", this.renderTasks);
         this.listenTo(this.model.tasks, "add", this.renderTasks);
-        this.listenTo(this.model.tasks, "remove", this.renderTasks);
+        this.listenTo(this.model.tasks, "change:toDelete", this.updateTasks);
         this.listenTo(this.model, "change:category", this.updateTasks);
         this.template = _.template($('#crm_opportunity_edit_template').html());
     },
@@ -23,7 +23,16 @@ CRMOpportunityEditView = Backbone.View.extend({
     
     updateTasks: function(){
         _.each(this.subViews, function(view){
-            view.render();
+            if(view.model.toDelete){
+                // To be deleted, remove from dom
+                _.defer(function(){
+                    view.$el.slideUp(200, view.remove.bind(view));
+                }.bind(this));
+            }
+            else{
+                // Render
+                view.render();
+            }
         }.bind(this));
     },
     

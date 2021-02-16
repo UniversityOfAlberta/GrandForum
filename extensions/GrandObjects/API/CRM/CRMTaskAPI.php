@@ -49,7 +49,14 @@ class CRMTaskAPI extends RESTAPI {
     }
     
     function doDELETE(){
-
+        $task = CRMTask::newFromId($this->getParam('id'));
+        if($task->isAllowedToEdit()){
+            $task->delete();
+            return $task->toJSON();
+        }
+        else{
+            $this->throwError("You are not allowed to delete this Task");
+        }
     }
 	
 }

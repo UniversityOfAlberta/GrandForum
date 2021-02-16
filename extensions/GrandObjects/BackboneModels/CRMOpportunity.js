@@ -1,5 +1,6 @@
 CRMOpportunity = Backbone.Model.extend({
 
+    toDelete: false,
     contact: null, // Parent obj
 
     initialize: function(){

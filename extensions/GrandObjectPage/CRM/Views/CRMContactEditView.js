@@ -94,18 +94,25 @@ CRMContactEditView = Backbone.View.extend({
             model.tasks.each(function(task){
                 task.set('opportunity', model.get('id'));
                 task.saving = true;
-                xhrs.push(task.save(null, {
-                    success: function(){
-                        _.defer(function(){
-                            task.saving = false;
-                        }.bind(this));
-                    },
-                    error: function(){
-                        _.defer(function(){
-                            task.saving = false;
-                        }.bind(this));
-                    }
-                }));
+                if(!task.toDelete){
+                    // Create or Update
+                    xhrs.push(task.save(null, {
+                        success: function(){
+                            _.defer(function(){
+                                task.saving = false;
+                            }.bind(this));
+                        },
+                        error: function(){
+                            _.defer(function(){
+                                task.saving = false;
+                            }.bind(this));
+                        }
+                    }));
+                }
+                else if(!task.isNew()){
+                    // Delete as long as it isn't new (if it's new, and set for deletion, just do nothing)
+                    xhrs.push(task.destroy({wait: true}));
+                }
             });
         });
         if(!this.isDialog){

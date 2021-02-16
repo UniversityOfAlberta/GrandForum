@@ -18,14 +18,9 @@ CRMTaskEditView = Backbone.View.extend({
     },
     
     events: {
+        "click #deleteTask": "deleteTask",
         "click #addTransaction": "addTransaction",
-        "click .delete-icon": "deleteTransaction"
-    },
-    
-    deleteTransaction: function(el){
-        var id = $(el.currentTarget).attr('data-id');
-        this.model.get('transactions').splice(id, 1);
-        this.renderTransactions();
+        "click #transactions .delete-icon": "deleteTransaction"
     },
     
     addTransaction: function(){
@@ -33,6 +28,17 @@ CRMTaskEditView = Backbone.View.extend({
         transactions[this.model.get('transactions').length] = {type: '', date: ''};
         
         this.model.set('transactions', transactions);
+        this.renderTransactions();
+    },
+    
+    deleteTask: function(){
+        this.model.toDelete = true;
+        this.model.trigger("change:toDelete");
+    },
+    
+    deleteTransaction: function(el){
+        var id = $(el.currentTarget).attr('data-id');
+        this.model.get('transactions').splice(id, 1);
         this.renderTransactions();
     },
     

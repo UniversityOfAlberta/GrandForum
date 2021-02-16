@@ -1,5 +1,7 @@
 CRMContact = Backbone.Model.extend({
 
+    toDelete: false,
+
     initialize: function(){
         this.opportunities = new CRMOpportunities();
         this.opportunities.contact = this;
