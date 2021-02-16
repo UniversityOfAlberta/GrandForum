@@ -43,7 +43,14 @@ class CRMOpportunityAPI extends RESTAPI {
     }
     
     function doDELETE(){
-
+        $opportunity = CRMOpportunity::newFromId($this->getParam('id'));
+        if($opportunity->isAllowedToEdit()){
+            $opportunity->delete();
+            return $opportunity->toJSON();
+        }
+        else{
+            $this->throwError("You are not allowed to delete this Opportunity");
+        }
     }
 	
 }

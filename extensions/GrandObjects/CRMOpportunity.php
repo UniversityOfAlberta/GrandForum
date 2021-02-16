@@ -86,23 +86,33 @@ class CRMOpportunity extends BackboneModel {
 	}
 	
 	function create(){
-	    DBFunctions::insert('grand_crm_opportunity',
-	                        array('contact' => $this->contact,
-	                              'description' => $this->description,
-	                              'category' => $this->category));
-	    $this->id = DBFunctions::insertId();
+	    if(self::isAllowedToCreate()){
+	        DBFunctions::insert('grand_crm_opportunity',
+	                            array('contact' => $this->contact,
+	                                  'description' => $this->description,
+	                                  'category' => $this->category));
+	        $this->id = DBFunctions::insertId();
+	    }
 	}
 	
 	function update(){
-	    DBFunctions::update('grand_crm_opportunity',
-	                        array('contact' => $this->contact,
-	                              'description' => $this->description,
-	                              'category' => $this->category),
-	                        array('id' => $this->id));
+	    if($this->isAllowedToEdit()){
+	        DBFunctions::update('grand_crm_opportunity',
+	                            array('contact' => $this->contact,
+	                                  'description' => $this->description,
+	                                  'category' => $this->category),
+	                            array('id' => $this->id));
+	    }
 	}
 	
 	function delete(){
-	    
+	    if($this->isAllowedToEdit()){
+	        DBFunctions::delete('grand_crm_opportunity',
+	                            array('id' => $this->id));
+	        DBFunctions::delete('grand_crm_task',
+	                            array('opportunity' => $this->id));
+	        $this->id = "";
+	    }
 	}
 	
 	function exists(){

@@ -12,7 +12,7 @@ CRMContactEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         //this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
-        this.listenTo(this.model.opportunities, "remove", this.renderOpportunities);
+        this.listenTo(this.model.opportunities, "change:toDelete", this.updateOpportunities);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -67,18 +67,24 @@ CRMContactEditView = Backbone.View.extend({
         this.model.opportunities.each(function(model){
             model.set('contact', this.model.get('id'));
             model.saving = true;
-            xhrs.push(model.save(null, {
-                success: function(){
-                    _.defer(function(){
-                        model.saving = false;
-                    }.bind(this));
-                },
-                error: function(){
-                    _.defer(function(){
-                        model.saving = false;
-                    }.bind(this));
-                }
-            }));
+            if(!model.toDelete){
+                xhrs.push(model.save(null, {
+                    success: function(){
+                        _.defer(function(){
+                            model.saving = false;
+                        }.bind(this));
+                    },
+                    error: function(){
+                        _.defer(function(){
+                            model.saving = false;
+                        }.bind(this));
+                    }
+                }));
+            }
+            else if(!model.isNew()){
+                // Delete as long as it isn't new (if it's new, and set for deletion, just do nothing)
+                xhrs.push(model.destroy({wait: true}));
+            }
         }.bind(this));
         if(!this.isDialog){
             $.when.apply(null, xhrs).done(function(){
@@ -134,6 +140,21 @@ CRMContactEditView = Backbone.View.extend({
     
     cancel: function(){
         document.location = this.model.get('url');
+    },
+    
+    updateOpportunities: function(){
+        _.each(this.subViews, function(view){
+            if(view.model.toDelete){
+                // To be deleted, remove from dom
+                _.defer(function(){
+                    view.$el.slideUp(200, view.remove.bind(view));
+                }.bind(this));
+            }
+            else{
+                // Render
+                view.render();
+            }
+        }.bind(this));
     },
         
     renderOpportunities: function(model){

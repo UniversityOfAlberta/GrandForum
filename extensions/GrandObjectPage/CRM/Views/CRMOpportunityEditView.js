@@ -17,7 +17,13 @@ CRMOpportunityEditView = Backbone.View.extend({
         this.model.tasks.add(new CRMTask({opportunity: this.model.get('id')}));
     },
     
+    deleteOpportunity: function(){
+        this.model.toDelete = true;
+        this.model.trigger("change:toDelete");
+    },
+    
     events: {
+        "click #deleteOpportunity": "deleteOpportunity",
         "click #addTask": "addTask"
     },
     
