@@ -6,49 +6,52 @@
             <th width="1%">Edit</th>
             <th>Contact</th>
             <th>Owner</th>
-            <th width="1%">Opportunities</th>
-            <th width="1%">Tasks</th>
+            <th>Opportunity</th>
+            <th width="1%">Category</th>
+            <th>Assignee</th>
+            <th>Task</th>
+            <th width="1%">Status</th>
+            <th width="1%">Due Date</th>
         </tr>
     </thead>
     <tbody>
-        <% this.model.each(function(contact){ %>
-            <tr>
-                <td align="center">
-                    <span class="edit-icon" data-id="<%= contact.get('id') %>"></span>
-                </td>
-                <td>
-                    <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
-                    <%= contact.get('details').email %>
-                </td>
-                <td>
-                    <a href="<%= contact.get('owner').url %>"><%= contact.get('owner').name %></a>
-                </td>
-                <td align="right">
-                    <div style="display:none;">
-                        <% _.each(contact.get('opportunities'), function(opportunity){ %>
-                            <span class="category"><%= opportunity.category %></span>
-                            <span class="description"><%= opportunity.description %></span>
-                        <% }) %>
-                    </div>
-                    <%= contact.get('opportunities').length %>
-                </td>
-                <td align="right">
-                    <div style="display:none;">
-                        <% var sum = 0;
-                            _.each(contact.get('opportunities'), function(opportunity){
-                                sum += opportunity.tasks.length;
-                                _.each(opportunity.tasks, function(task){ %>
-                                    <span class="task"><%= task.task %></span>
-                                    <span class="assignee"><%= task.assignee.name %></span>
-                                    <span class="dueDate"><%= task.dueDate %></span>
-                                    <span class="status"><%= task.status %></span>
-                                    <span class="transactions"><%= task.transactions %></span>
-                        <%      })
-                            }) %>
-                    </div>
-                    <%= sum %>
-                </td>
-            </tr>
-        <% }) %>
+        <% this.model.each(function(contact){ 
+            _.each(contact.get('opportunities'), function(opportunity){
+                _.each(opportunity.tasks, function(task){ %>
+                    <tr>
+                        <td align="center">
+                            <span class="edit-icon" data-id="<%= contact.get('id') %>"></span>
+                            <span style="display:none;"><%= contact.id %></span>
+                        </td>
+                        <td>
+                            <a href="<%= contact.get('url') %>"><%= contact.get('title') %></a><br />
+                            <%= contact.get('details').email %>
+                            <span style="display:none;"><%= contact.id %></span>
+                        </td>
+                        <td>
+                            <a href="<%= contact.get('owner').url %>"><%= contact.get('owner').name %></a><span style="display:none;"><%= contact.id %></span>
+                        </td>
+                        <td>
+                            <%= opportunity.description %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td style="white-space:nowrap;">
+                            <%= opportunity.category %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td>
+                            <%= task.assignee.name %><span style="display:none;"><%= opportunity.id %></span>
+                        </td>
+                        <td>
+                            <%= task.task %>
+                        </td>
+                        <td style="white-space:nowrap;">
+                            <%= task.status %>
+                        </td>
+                        <td align="center">
+                            <%= task.dueDate %>
+                        </td>
+                    </tr>
+        <%      })
+            })
+          }) %>
     </tbody>
 </table>

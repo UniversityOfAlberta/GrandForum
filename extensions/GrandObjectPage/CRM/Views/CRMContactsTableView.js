@@ -55,7 +55,8 @@ CRMContactsTableView = Backbone.View.extend({
             'bPaginate': false,
             'iDisplayLength': -1,
             'order': [[ 1, "asc" ]],
-            'aLengthMenu': [[-1], ['All']]
+            'aLengthMenu': [[-1], ['All']],
+            'rowsGroup': [0,1,2,3,4,5]
         });
         this.table.order(order);
 	    this.table.search(searchStr);
