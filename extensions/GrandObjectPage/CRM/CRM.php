@@ -5,7 +5,8 @@ BackbonePage::register('CRM', 'CRM', 'network-tools', dirname(__FILE__));
 class CRM extends BackbonePage {
     
     function userCanExecute($user){
-        return $user->isLoggedIn();
+        $me = Person::newFromUser($user);
+        return $me->isRoleAtLeast(STAFF);
     }
     
     function getTemplates(){
