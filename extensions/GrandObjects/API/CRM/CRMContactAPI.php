@@ -42,7 +42,14 @@ class CRMContactAPI extends RESTAPI {
     }
     
     function doDELETE(){
-
+        $contact = CRMContact::newFromId($this->getParam('id'));
+        if($contact->isAllowedToEdit()){
+            $contact->delete();
+            return $contact->toJSON();
+        }
+        else{
+            $this->throwError("You are not allowed to delete this Contact");
+        }
     }
 	
 }

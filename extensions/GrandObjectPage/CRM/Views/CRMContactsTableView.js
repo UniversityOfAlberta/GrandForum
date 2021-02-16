@@ -2,18 +2,20 @@ CRMContactsTableView = Backbone.View.extend({
 
     table: null,
     editDialog: null,
+    deleteDialog: null,
 
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "remove", function(){ _.defer(this.render); }.bind(this) );
         this.template = _.template($('#crm_contacts_table_template').html());
         main.set('title', 'Manage CRM');
-        this.listenTo(this.model, "remove", this.render);
     },
        
     events: {
         "click #addContact": "addContact",
-        "click .edit-icon": "editContact"
+        "click .edit-icon": "editContact",
+        "click .delete-icon": "deleteContact",
     },
     
     addContact: function(e){
@@ -38,6 +40,12 @@ CRMContactsTableView = Backbone.View.extend({
             title: "Edit Contact"
         });
         this.editDialog.dialog('open');
+    },
+    
+    deleteContact: function(e){
+        var id = $(e.currentTarget).attr("data-id");
+        this.deleteDialog.model = this.model.get(id);
+        this.deleteDialog.dialog('open');
     },
     
     render: function(){
@@ -101,6 +109,44 @@ CRMContactsTableView = Backbone.View.extend({
                     }.bind(this));
                 }.bind(this)
             }]
+	    });
+	    
+	    this.deleteDialog = this.$("#deleteDialog").dialog({
+	        autoOpen: false,
+	        modal: true,
+	        show: 'fade',
+	        resizable: false,
+	        draggable: false,
+	        open: function(){
+	            $("html").css("overflow", "hidden");
+	        },
+	        beforeClose: function(){
+	            $("html").css("overflow", "auto");
+	        },
+	        buttons: {
+	            "Delete": function(){
+	                var model = this.deleteDialog.model;
+                    $("div.throbber", this.deleteDialog).show();
+                    model.destroy({
+                        success: function(model, response) {
+                            this.deleteDialog.dialog('close');
+                            clearSuccess();
+                            clearError();
+                            addSuccess('The contact was deleted sucessfully');
+                        }.bind(this),
+                        error: function(model, response) {
+                            this.deleteDialog.dialog('close');
+                            clearSuccess();
+                            clearError();
+                            addError('The contact was not deleted sucessfully');
+                        }.bind(this),
+                        wait: true
+                    });
+	            }.bind(this),
+	            "Cancel": function(){
+	                this.deleteDialog.dialog('close');
+	            }.bind(this)
+	        }
 	    });
 	    
         return this.$el;

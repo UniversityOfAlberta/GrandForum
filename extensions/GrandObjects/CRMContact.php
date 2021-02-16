@@ -148,7 +148,12 @@ class CRMContact extends BackboneModel {
 	
 	function delete(){
 	    if($this->isAllowedToEdit()){
-	    
+	        foreach($this->getOpportunities() as $opportunity){
+	            $opportunity->delete();
+	        }
+	        DBFunctions::delete('grand_crm_contact',
+	                            array('id' => $this->id));
+	        $this->id = "";
 	    }
 	}
 	
