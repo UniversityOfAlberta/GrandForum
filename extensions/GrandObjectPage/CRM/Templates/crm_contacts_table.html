@@ -38,7 +38,7 @@
                             <%= opportunity.category %><span style="display:none;"><%= opportunity.id %></span>
                         </td>
                         <td>
-                            <%= task.assignee.name %><span style="display:none;"><%= opportunity.id %></span>
+                            <a href="<%= task.assignee.url %>"><%= task.assignee.name %></a><span style="display:none;"><%= opportunity.id %></span>
                         </td>
                         <td>
                             <%= task.task %>
