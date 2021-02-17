@@ -12,7 +12,7 @@ CRMContactEditView = Backbone.View.extend({
         this.listenTo(this.model, "sync", this.render);
         //this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
         this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
-        this.listenTo(this.model.opportunities, "change:toDelete", this.updateOpportunities);
+        this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
         this.listenTo(this.model, "change:title", function(){
             if(!this.isDialog){
                 main.set('title', this.model.get('title'));
@@ -142,7 +142,7 @@ CRMContactEditView = Backbone.View.extend({
         document.location = this.model.get('url');
     },
     
-    updateOpportunities: function(){
+    removeOpportunities: function(){
         _.each(this.subViews, function(view){
             if(view.model.toDelete){
                 // To be deleted, remove from dom
@@ -150,7 +150,15 @@ CRMContactEditView = Backbone.View.extend({
                     view.$el.slideUp(200, view.remove.bind(view));
                 }.bind(this));
             }
-            else{
+        }.bind(this));
+    },
+    
+    updateOpportunities: function(){
+        // Do deletions first
+        this.removeOpportunities();
+        // Now render the rest
+        _.each(this.subViews, function(view){
+            if(!view.model.toDelete){
                 // Render
                 view.render();
             }
