@@ -914,17 +914,17 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOf($this)){
+                    if($person->isRoleDuring(PL, $startRange, $endRange, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                        ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
                         ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
-                        if(strstr($filter, "Former-") !== false && $person->isRole(str_replace("Former-", "", $filter))){
-                            // Exclude people if they are still a member of the role if $filter contains 'Former-'
-                            continue;
-                        }
+                    if(strstr($filter, "Former-") !== false && $person->isRole(str_replace("Former-", "", $filter))){
+                        // Exclude people if they are still a member of the role if $filter contains 'Former-'
+                        continue;
+                    }
                     $people[$person->getId()] = $person;
                 }
             }

@@ -3455,12 +3455,6 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL){
-            $project_objs = $this->leadershipOn($date);
-            if(count($project_objs) > 0){
-                $roles[] = PL;
-            }
-        }
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
@@ -3525,12 +3519,6 @@ class Person extends BackboneModel {
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL){
-            $project_objs = $this->leadershipDuring($startRange, $endRange);
-            if(count($project_objs) > 0){
-                $roles[] = PL;
-            }
-        }
         if($role == TL){
             if($this->isThemeLeaderDuring($startRange, $endRange)){
                 $roles[] = TL;
