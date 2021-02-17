@@ -37,6 +37,7 @@ class ReportItemCallback {
             "project_leaders" => "getProjectLeaders",
             "project_leader_names" => "getProjectLeaderNames",
             "project_leader_ids" => "getProjectLeaderIds",
+            "project_past_leader_names" => "getPastProjectLeaderNames",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
@@ -350,6 +351,21 @@ class ReportItemCallback {
             }
         }
         return implode($delim, $leads);
+    }
+    
+    function getPastProjectLeaderNames(){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $leaders = $project->getAllPeopleDuring(PL, "0000-00-00", EOT);
+            foreach($leaders as $lead){
+                $leads[$lead->getReversedName()] = "{$lead->getNameForForms()}";
+            }
+        }
+        if(count($leads) == 0){
+            $leads[] = "N/A";
+        }
+        return implode(", ", $leads);
     }
     
     function getProjectProblem(){

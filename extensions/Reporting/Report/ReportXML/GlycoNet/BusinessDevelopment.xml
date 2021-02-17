@@ -124,11 +124,13 @@
                               'ID-03'
                               'ID-04'
                               'ID-05'
+                              'ID-07'
                               'ND-01'
                               'ND-02'
                               'ND-03'
                               'ND-05'
                               'ND-06'
+                              'ND-09'
                               'RG-1'
                               'RG-2'
                               'RG-3'
@@ -160,7 +162,7 @@
                 <Static>
                     <![CDATA[
                         <td>{$project_name}</td>
-                        <td>{$project_leader_names}</td>
+                        <td>{$project_past_leader_names}</td>
                     ]]>
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
@@ -286,7 +288,7 @@
                 <Static>
                     <![CDATA[
                         <td>{$project_name}</td>
-                        <td>{$project_leader_names}</td>
+                        <td>{$project_past_leader_names}</td>
                     ]]>
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
@@ -384,6 +386,7 @@
             <If id="p3" if="{contains(
                               'Project 2'
                               'CD-46'
+                              'CD-81'
                               'TP-1','{$project_name}')}">
                 <Static>
                     <![CDATA[
@@ -393,7 +396,7 @@
                 <Static>
                     <![CDATA[
                         <td>{$project_name}</td>
-                        <td>{$project_leader_names}</td>
+                        <td>{$project_past_leader_names}</td>
                     ]]>
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
@@ -643,7 +646,7 @@
                 <Static>
                     <![CDATA[
                         <td>{$project_name}</td>
-                        <td>{$project_leader_names}</td>
+                        <td>{$project_past_leader_names}</td>
                     ]]>
                 </Static>
                 <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
