@@ -41,7 +41,6 @@ class ReportItemCallback {
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
-            "project_champions" => "getProjectChampions",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_collaborators" => "getNCollaborators",
@@ -116,15 +115,6 @@ class ReportItemCallback {
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
-            "user_subproject_comments" => "getUserSubProjectComments",
-            "user_subproject_champs" => "getUserSubProjectChamps",
-            // Champions
-            "champ_org" => "getChampOrg",
-            "champ_title" => "getChampTitle",
-            "champ_subtitle" => "getChampSubTitle",
-            "champ_subprojects" => "getChampSubProjects",
-            "champ_full_project" => "getChampFullProject",
-            "champ_is_still_champion" => "getChampIsStillChampion",
             // Sub-PL (SPL)
             "spl_subprojects" => "getSPLSubProjects",
             // SAB
@@ -401,21 +391,6 @@ class ReportItemCallback {
             $nis[] = "N/A";
         }
         return implode(", ", $nis);
-    }
-    
-    function getProjectChampions(){
-        $champions = array();
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromHistoricId($this->reportItem->projectId);
-            $champs = $project->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
-            foreach($champs as $champ){
-                $champions[] = "<a href='{$champ['user']->getUrl()}' target='_blank'>{$champ['user']->getNameForForms()}</a>";
-            }
-        }
-        if(count($champions) == 0){
-            $champions[] = "N/A";
-        }
-        return implode(", ", $champions);
     }
     
     function getProjectEvolvedInto(){
@@ -1391,90 +1366,6 @@ class ReportItemCallback {
             return $fileNumbers[$id];
         }
         return "";
-    }
-    
-    function getUserSubProjectChamps(){
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
-        $item = $report->getSectionById("report")->getReportItemById("sub_project_champs");
-        
-        return $item->getHTMLForPDF();
-    }
-    
-    function getUserSubProjectComments(){
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
-        $item = $report->getSectionById("report")->getReportItemById("sub_project_comments");
-        
-        return $item->getHTMLForPDF();
-    }
-    
-    function getChampOrg(){
-        return $this->getUserUni();
-    }
-    
-    function getChampTitle(){
-        return $this->getUserLevel();
-    }
-    
-    function getChampSubTitle(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $org = $person->getUni();
-        $title = $person->getPosition();
-        if($org != "" && $title != ""){
-            return "$org, $title";
-        }
-        else if($org != "" && $title == ""){
-            return $org;
-        }
-        else if($org == "" && $title != ""){
-            return $title;
-        }
-        return "";
-    }
-    
-    function getChampSubProjects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $subs = array();
-        foreach($project->getSubProjects() as $sub){
-            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                if($champ['user']->getId() == $person->getId()){
-                    $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
-                }
-            }
-        }
-        return implode(", ", $subs);
-    }
-    
-    function getChampFullProject(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        foreach($project->getSubProjects() as $sub){
-            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                if($champ['user']->getId() == $person->getId()){
-                    return "";
-                }
-            }
-        }
-        return "Full Project";
-    }
-    
-    function getChampIsStillChampion(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $result = $person->isChampionOfOn($project, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59');
-        if(!$result && !$project->isSubProject()){
-            foreach($project->getSubProjects() as $sub){
-                $result = ($result || $person->isChampionOfOn($sub, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59'));
-            }
-        }
-        return (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
     }
     
     function getSPLSubProjects(){

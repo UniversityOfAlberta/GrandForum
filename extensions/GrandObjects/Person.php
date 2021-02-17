@@ -1456,54 +1456,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether or not this Person is a champion of the given Project
-     * @param Project $project The Project to check
-     * @return boolean Whether or not this Person is a champion of the given Project
-     */
-    function isChampionOf($project){
-        $champs = $project->getChampions();
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a champion of the given Project on the given date
-     * @param Project $project The Project to check
-     * @param string $date The date that the Person was on the Project
-     * @return boolean Whether or not this Person is a champion of the Project
-     */
-    function isChampionOfOn($project, $date){
-        $champs = $project->getChampionsOn($date);
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a champion of the given Project between the given dates
-     * @param Project $project The Project to check
-     * @param string $start The start date that the Person was on the Project
-     * @param string $end The end date that the Person was on the Project
-     * @return boolean Whether or not this Person is a champion of the Project
-     */
-    function isChampionOfDuring($project, $start, $end){
-        $champs = $project->getChampionsDuring($start, $end);
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
      * Returns the id of this Person.  
      * Returns 0 if the user doesn't exist or if is an HQP and the current user is not logged in 
      * @return int The id of this Person
@@ -3868,33 +3820,6 @@ class Person extends BackboneModel {
         }
         $this->hqps = $hqps;
         return $this->hqps;
-    }
-    
-    /**
-     * Returns this Person's Champions between the given dates (based on the Works With relation)
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return array This Person's Champions
-     */
-    function getChampionsDuring($startRange, $endRange){
-        $champions = array();
-        $relations = $this->getRelations(WORKS_WITH, true);
-        foreach($relations as $relation){
-            $start = $relation->getStartDate();
-            $end = $relation->getEndDate();
-            if((strcmp($end, $startRange) >= 0 && strcmp($end, $endRange) <= 0 && strcmp($end, "0000-00-00 00:00:00") != 0) ||
-                (strcmp($start, $startRange) >= 0 && (strcmp($end, $endRange) >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0))){
-                $user1 = $relation->getUser1();
-                $user2 = $relation->getUser2();
-                if($user1->getId() != $this->id && $user1->isRoleDuring(CHAMP, $startRange, $endRange)){
-                    $champions[] = $user1;
-                }
-                else if($user2->getId() != $this->id && $user2->isRoleDuring(CHAMP, $startRange, $endRange)){
-                    $champions[] = $user2;
-                }
-            }
-        }
-        return $champions;
     }
     
     /**

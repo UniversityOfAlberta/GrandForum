@@ -1052,57 +1052,6 @@ EOF;
         }
         return $multimedia;
     }
-    
-    /**
-     * Returns all the current Champions
-     * @param array The current Champions array(user, org, title, dept)
-     */
-    function getChampions(){
-        $champs = array();
-        $people = $this->getAllPeople(CHAMP);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
-    
-    /**
-     * Returns all the Champions between the given time frame
-     * @param string $start the starting date of the range
-     * @param string $end the ending date of the range
-     * @param array The People who were Champions during the given date array(user, org, title, dept)
-     */
-    function getChampionsDuring($start, $end){
-        $champs = array();
-        $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
-    
-    /**
-     * Returns all the People who were Champions on the given date
-     * @param string $date The date to check
-     * @return array The People who were Champions on the given date array(user, org, title, dept)
-     */
-    function getChampionsOn($date){
-        $champs = array();
-        $people = $this->getAllPeopleOn(CHAMP, $date);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
 
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
