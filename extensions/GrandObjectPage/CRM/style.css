@@ -18,15 +18,15 @@
 }
 
 #tasks {
-    margin-left: 1.5em;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-#tasks > li::marker {
-    font-weight: bold;
+#transactions {
+    width: 100%;
 }
 
-#tasks > li:not(:last-child) {
-    border-bottom: 1px solid #dfdfdf;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
+#transactions td {
+    width: 50%;
 }

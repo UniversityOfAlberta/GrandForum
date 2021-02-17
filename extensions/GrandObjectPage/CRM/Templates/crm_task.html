@@ -1,30 +1,14 @@
-<%= task %><br />
-<table>
-    <% if(assignee.id != null && assignee.id != 0){ %>
-        <tr>
-            <td><b>Assignee:</b></td><td><a href="<%= assignee.url %>"><%= assignee.name %></a></td>
-        </tr>
-    <% } %>
-    <tr>
-        <td><b>Due Date:</b></td><td><%= dueDate %></td>
-    </tr>
-    <tr>
-        <td><b>Status:</b></td><td><%= status %></td>
-    </tr>
-    <% if(_.size(transactions) > 0){ %>
-        <tr>
-            <td valign="top"><b>Transactions:</b></td>
-            <td>
-                <table id="transactions" cellspacing="0" cellpadding="0">
-                    
-                    <% _.each(transactions, function(transaction){ %>
-                        <tr>
-                            <td style="padding-right:15px;"><%= transaction.type %></td>
-                            <td><%= transaction.date %></td>
-                        </tr>
-                    <% }) %>
-                </table>
-            </td>
-        </tr>
-    <% } %>
-</table>
+<td><%= task %></td>
+<td><a href="<%= assignee.url %>"><%= assignee.name %></td>
+<td align="center"><%= dueDate %></td>
+<td><%= status %></td>
+<td>
+    <table id="transactions" cellspacing="0" cellpadding="0">
+        <% _.each(transactions, function(transaction){ %>
+            <tr>
+                <td style="padding-right:15px;"><%= transaction.type %></td>
+                <td><%= transaction.date %></td>
+            </tr>
+        <% }) %>
+    </table>
+</td>

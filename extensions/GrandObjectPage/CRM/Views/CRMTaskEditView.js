@@ -1,6 +1,6 @@
 CRMTaskEditView = Backbone.View.extend({
 
-    tagName: "li",
+    tagName: "tr",
     
     transactionTree: {
         '': [''],

@@ -7,10 +7,10 @@ CRMOpportunityView = Backbone.View.extend({
     },
     
     renderTasks: function(){
-        this.$("#tasks").empty();
+        this.$("#tasks > tbody").empty();
         this.model.tasks.each(function(model){
             var view = new CRMTaskView({model: model});
-            this.$("#tasks").append(view.render());
+            this.$("#tasks > tbody").append(view.render());
         }.bind(this));
     },
     

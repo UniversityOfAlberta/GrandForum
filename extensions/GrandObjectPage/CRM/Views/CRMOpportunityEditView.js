@@ -31,9 +31,7 @@ CRMOpportunityEditView = Backbone.View.extend({
         _.each(this.subViews, function(view){
             if(view.model.toDelete){
                 // To be deleted, remove from dom
-                _.defer(function(){
-                    view.$el.slideUp(200, view.remove.bind(view));
-                }.bind(this));
+                view.remove();
             }
             else{
                 // Render
@@ -44,7 +42,7 @@ CRMOpportunityEditView = Backbone.View.extend({
     
     renderTasks: function(model){
         var view = new CRMTaskEditView({model: model});
-        this.$("#tasks").append(view.render());
+        this.$("#tasks tbody").append(view.render());
         this.subViews.push(view);
     },
     

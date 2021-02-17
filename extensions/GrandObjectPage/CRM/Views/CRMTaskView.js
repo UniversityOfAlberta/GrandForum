@@ -1,6 +1,6 @@
 CRMTaskView = Backbone.View.extend({
 
-    tagName: "li",
+    tagName: "tr",
 
     initialize: function(){
         this.listenTo(this.model, "sync", this.render);

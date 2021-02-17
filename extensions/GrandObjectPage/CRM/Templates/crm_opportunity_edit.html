@@ -1,7 +1,20 @@
 <span id="deleteOpportunity" class="delete-icon" style="float: right;" title="Delete Opportunity"></span>
 <b class="label">Category:</b> <%= HTML.Select(this, 'category', {value: category, options: ['Industry', 'Government', 'Not-for-Profit', 'NIs/Board/Committees', 'Media']}) %><br />
-<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:724px;'}) %>
+<%= HTML.TextArea(this, 'description', {style: 'height: 100px; resize: none; width:100%; margin-left:0;margi-right:0;'}) %>
 <h4>Tasks</h4>
-<ol id="tasks"></ol>
-<hr style="margin-bottom: 15px;" />
-<button id="addTask">Add Task</button>
+<table id="tasks" class="wikitable" style="width:100%;">
+    <thead>
+        <tr>
+            <th style="width:25px;"></th>
+            <th>Task</th>
+            <th style="width:200px;">Assignee</th>
+            <th style="width:100px;">Due&nbsp;Date</th>
+            <th style="width:100px;">Status</th>
+            <th style="width:230px;">Transactions</th>
+        </tr>
+    </thead>
+    <tbody>
+    
+    </tbody>
+</table>
+<button id="addTask" style="margin-top:15px;">Add Task</button>
