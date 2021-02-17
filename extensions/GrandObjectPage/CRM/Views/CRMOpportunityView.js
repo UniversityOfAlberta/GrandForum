@@ -7,6 +7,9 @@ CRMOpportunityView = Backbone.View.extend({
     },
     
     renderTasks: function(){
+        if(this.model.tasks.length > 0){
+            this.$("#taskContainer").show();
+        }
         this.$("#tasks > tbody").empty();
         this.model.tasks.each(function(model){
             var view = new CRMTaskView({model: model});
