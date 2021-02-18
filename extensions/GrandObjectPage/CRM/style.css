@@ -1,9 +1,13 @@
 /* Any custom styles should go here */
 
+#backbone_main {
+    position: relative;
+}
+
 .backButton {
     position: absolute !important;
-    top: 5px !important;
-    right: 5px !important;
+    top: 0;
+    right: 0;
 }
 
 #opportunities {

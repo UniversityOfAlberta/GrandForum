@@ -8,6 +8,7 @@ class CRMOpportunity extends BackboneModel {
 
     var $id;
     var $contact;
+    var $owner;
     var $description;
     var $category;
 	
@@ -37,6 +38,7 @@ class CRMOpportunity extends BackboneModel {
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->contact = $data[0]['contact'];
+		    $this->owner = $data[0]['owner'];
 		    $this->description = $data[0]['description'];
 		    $this->category = $data[0]['category'];
 		}
@@ -48,6 +50,14 @@ class CRMOpportunity extends BackboneModel {
 	
 	function getContact(){
 	    return CRMContact::newFromId($this->contact);
+	}
+	
+	function getPerson(){
+	    return Person::newFromId($this->owner);
+	}
+	
+	function getOwner(){
+	    return $this->owner;
 	}
 	
 	function getDescription(){
@@ -76,8 +86,13 @@ class CRMOpportunity extends BackboneModel {
 	
 	function toArray(){
 	    if($this->isAllowedToView()){
+	        $person = $this->getPerson();
+	        $owner = array('id' => $person->getId(),
+	                       'name' => $person->getNameForForms(),
+	                       'url' => $person->getUrl());
 	        $json = array('id' => $this->getId(),
 	                      'contact' => $this->getContact()->getId(),
+	                      'owner' => $owner,
 	                      'description' => $this->getDescription(),
 	                      'category' => $this->getCategory());
 	        return $json;
@@ -89,6 +104,7 @@ class CRMOpportunity extends BackboneModel {
 	    if(self::isAllowedToCreate()){
 	        DBFunctions::insert('grand_crm_opportunity',
 	                            array('contact' => $this->contact,
+	                                  'owner' => $this->owner,
 	                                  'description' => $this->description,
 	                                  'category' => $this->category));
 	        $this->id = DBFunctions::insertId();
@@ -99,6 +115,7 @@ class CRMOpportunity extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        DBFunctions::update('grand_crm_opportunity',
 	                            array('contact' => $this->contact,
+	                                  'owner' => $this->owner,
 	                                  'description' => $this->description,
 	                                  'category' => $this->category),
 	                            array('id' => $this->id));

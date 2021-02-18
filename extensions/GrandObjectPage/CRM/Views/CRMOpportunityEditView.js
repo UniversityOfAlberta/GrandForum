@@ -58,6 +58,9 @@ CRMOpportunityEditView = Backbone.View.extend({
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.addClass("opportunity");
+            _.defer(function(){
+                this.$('select[name=owner_id]').chosen();
+            }.bind(this));
         }
         return this.$el;
     }

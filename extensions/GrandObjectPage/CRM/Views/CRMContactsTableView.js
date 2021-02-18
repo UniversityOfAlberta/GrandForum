@@ -106,6 +106,10 @@ CRMContactsTableView = Backbone.View.extend({
                                     addSuccess("The Contact has been saved sucessfully");
                                 }.bind(this));
                             }.bind(this));
+                        }.bind(this)).fail(function(e){
+                            $(buttons).prop('disabled', false);
+                            clearAllMessages("#dialogMessages");
+                            addError(e.responseText, true, "#dialogMessages");
                         }.bind(this));
                     }.bind(this)
                 },

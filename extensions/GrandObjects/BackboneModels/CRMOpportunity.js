@@ -27,6 +27,9 @@ CRMOpportunity = Backbone.Model.extend({
         return{
             id: null,
             contact: "",
+            owner: {id: "",
+                    name: "",
+                    url: ""},
             description: "",
             category: ""
         };

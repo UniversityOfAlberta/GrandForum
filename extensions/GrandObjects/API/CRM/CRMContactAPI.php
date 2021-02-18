@@ -20,6 +20,16 @@ class CRMContactAPI extends RESTAPI {
             $contact->title = $this->POST('title');
             $contact->owner = $me->getId();
             $contact->details = $this->POST('details');
+            // Trim the details
+            foreach($contact->details as $key => $value){
+                $contact->details->{$key} = trim($value);
+            }
+            // Validate first
+            $validation = $contact->validate();
+            if($validation !== true){
+                $this->throwError($validation);
+            }
+            // Now create
             $contact->create();
             return $contact->toJSON();
         }
@@ -33,6 +43,16 @@ class CRMContactAPI extends RESTAPI {
         if($contact->isAllowedToEdit()){
             $contact->title = $this->POST('title');
             $contact->details = $this->POST('details');
+            // Trim the details
+            foreach($contact->details as $key => $value){
+                $contact->details->{$key} = trim($value);
+            }
+            // Validate first
+            $validation = $contact->validate();
+            if($validation !== true){
+                $this->throwError($validation);
+            }
+            // Now update
             $contact->update();
             return $contact->toJSON();
         }

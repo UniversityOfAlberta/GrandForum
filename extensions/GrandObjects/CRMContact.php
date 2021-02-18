@@ -92,6 +92,25 @@ class CRMContact extends BackboneModel {
         $me = Person::newFromWgUser();
         return $me->isLoggedIn();
     }
+    
+    /**
+     * Verifies that the Contact is unique
+     */
+    function validate(){
+        $details = $this->getDetails();
+        $data = DBFunctions::select(array('grand_crm_contact'),
+                                    array('id'),
+                                    array('details' => LIKE('%"firstName":"'.DBFunctions::escape($details->firstName).'"%'),
+                                          WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::escape($details->lastName).'"%'),
+                                          WHERE_AND('id') => NEQ($this->id)));
+        if($details->firstName == "" || $details->lastName == ""){
+            return "The first name and last name cannot be empty";
+        }
+        else if(count($data) > 0){
+            return "A contact with the name '{$details->firstName} {$details->lastName}' already exists";
+        }
+        return true;
+    }
 	
 	function toArray(){
 	    if($this->isAllowedToView()){

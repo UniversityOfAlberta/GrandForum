@@ -19,9 +19,9 @@ CRMContact = Backbone.Model.extend({
             }.bind(this));
         }.bind(this));
         this.on("change:details", function(){
-            var title = (this.get('details')['firstName'] || '') + ' ' + (this.get('details')['lastName'] || '');
-            if(this.get('details')['institution'] != undefined && this.get('details')['firstName'].trim() != ""){
-                title += " (" +  this.get('details')['institution'] + ")";           
+            var title = (this.get('details')['firstName'] || '').trim() + ' ' + (this.get('details')['lastName'] || '').trim();
+            if(this.get('details')['institution'] != '' && this.get('details')['firstName'].trim() != ""){
+                title += " (" +  this.get('details')['institution'].trim() + ")";           
             }
             this.set('title', title);
         }.bind(this));
@@ -36,7 +36,10 @@ CRMContact = Backbone.Model.extend({
             id: null,
             title: "",
             owner: "",
-            details: {},
+            details: {firstName: "",
+                      lastName: "",
+                      email: "",
+                      institution: ""},
             url: "",
             isAllowedToEdit: true
         };
