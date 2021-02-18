@@ -152,18 +152,6 @@ CRMContactEditView = Backbone.View.extend({
             }
         }.bind(this));
     },
-    
-    updateOpportunities: function(){
-        // Do deletions first
-        this.removeOpportunities();
-        // Now render the rest
-        _.each(this.subViews, function(view){
-            if(!view.model.toDelete){
-                // Render
-                view.render();
-            }
-        }.bind(this));
-    },
         
     renderOpportunities: function(model){
         var view = new CRMOpportunityEditView({model: model});
