@@ -100,8 +100,8 @@ class CRMContact extends BackboneModel {
         $details = $this->getDetails();
         $data = DBFunctions::select(array('grand_crm_contact'),
                                     array('id'),
-                                    array('details' => LIKE('%"firstName":"'.DBFunctions::escape($details->firstName).'"%'),
-                                          WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::escape($details->lastName).'"%'),
+                                    array('details' => LIKE('%"firstName":"'.DBFunctions::like($details->firstName).'"%'),
+                                          WHERE_AND('details') => LIKE('%"lastName":"'.DBFunctions::like($details->lastName).'"%'),
                                           WHERE_AND('id') => NEQ($this->id)));
         if($details->firstName == "" || $details->lastName == ""){
             return "The first name and last name cannot be empty";

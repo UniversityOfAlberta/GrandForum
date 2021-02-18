@@ -147,6 +147,11 @@ class DBFunctions {
 	    DBFunctions::initDB();
 	    return DBFunctions::$dbr->strencode($string);
 	}
+	
+	// Returns an escaped version of the $string for use in LIKE queries
+	static function like($string){
+	    return str_replace('_', '\_', str_replace('%', '\%', $string));
+	}
     
     // Executes an sql statement.  By default a query is assumed, and processes the resultset into an array.
     // If $update is set to true, then an update is performed instead.
