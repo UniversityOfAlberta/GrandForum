@@ -93,26 +93,6 @@ EOF;
         $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NI));
         
-        $names = array("");
-        $people = Person::getAllPeople(CHAMP);
-        foreach($people as $person){
-            $names[$person->getName()] = $person->getNameForForms();
-        }
-        asort($names);
-        
-        // Champion
-        $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
-        
-        $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
-        $champTable = new FormTable("{$pre}_champ_table");
-        
-        $champTableNameRow = new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
-        
-        $champTable->append($champTableNameRow);
-        $champPlusMinus->append($champTable);
-        $champRow->append($champPlusMinus);
-        
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
         $descRow->append(new TextareaField("{$pre}_description", "Overview", "", VALIDATE_NOTHING));
@@ -149,7 +129,6 @@ EOF;
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        //$table->append($champRow);
         $table->append($descRow);
         $table->append($longDescRow);
         
@@ -201,18 +180,6 @@ EOF;
                     
                     $api = new RoleAPI();
                     $api->doPOST();
-                }
-                // Adding New Champions
-                if(isset($_POST['new_champ_name'])){
-                    foreach($_POST['new_champ_name'] as $key => $name){
-                        if($name != ""){
-                            $_POST['role'] = $_POST['role'] = $_POST['acronym'];
-                            $_POST['user'] = $name;
-                            $champ = Person::newFromName($name);
-                            APIRequest::doAction('AddProjectMember', true);
-                            MailingList::subscribeAll($champ);
-                        }
-                    }
                 }
                 $form->reset();
             }
