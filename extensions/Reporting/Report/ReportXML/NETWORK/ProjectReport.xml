@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Report" reportType="RP_PR_TEST" pdfType="RPTP_PR_TEST" pdfFiles="Report" project="0" year="0" ajax="true">
+    <Permissions>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+            <SectionPermission id="section1" permissions="rw" />
+            <SectionPermission id="section2" permissions="rw" />
+            <SectionPermission id="section3" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CI">
+            <SectionPermission id="section1" permissions="" />
+            <SectionPermission id="section2" permissions="rw" />
+            <SectionPermission id="section3" permissions="rw" />
+        </Role>
+        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+            <SectionPermission id="section1" permissions="" />
+            <SectionPermission id="section2" permissions="" />
+            <SectionPermission id="section3" permissions="rw" />
+        </Role>
+        <Project />
+    </Permissions>
+    <ReportSection id="section1" type="EditableReportSection" blobSection="SEC1" name="PL Section" title="PL Section">
+        
+    </ReportSection>
+    <ReportSection id="section2" type="EditableReportSection" blobSection="SEC2" name="NI Section" title="NI Section">
+        
+    </ReportSection>
+    <ReportSection id="section3" type="EditableReportSection" blobSection="SEC3" name="HQP Section" title="HQP Section">
+        
+    </ReportSection>
+</Report>
