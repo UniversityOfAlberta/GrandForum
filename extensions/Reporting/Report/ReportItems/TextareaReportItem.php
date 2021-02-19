@@ -111,6 +111,8 @@ class TextareaReportItem extends AbstractReportItem {
                                 });
                                 ed.on('init', updateCount);
                                 ed.on('paste', updateCount);
+                                ed.on('undo', saveAll);
+                                ed.on('redo', saveAll);
                             }
                             else{
                                 var updateCount = function(e){
@@ -120,12 +122,13 @@ class TextareaReportItem extends AbstractReportItem {
                                 ed.on('keydown', updateCount);
                                 ed.on('keyup', updateCount);
                                 ed.on('change', function(e){
-                                    console.log('change');
                                     updateCount(e);
                                     saveAll();
                                 });
                                 ed.on('init', updateCount);
                                 ed.on('paste', updateCount);
+                                ed.on('undo', saveAll);
+                                ed.on('redo', saveAll);
                             }
                         }
                     });
