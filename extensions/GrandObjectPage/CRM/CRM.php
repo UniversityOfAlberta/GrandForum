@@ -2,6 +2,8 @@
 
 BackbonePage::register('CRM', 'CRM', 'network-tools', dirname(__FILE__));
 
+$wgHooks['ToolboxLinks'][] = 'CRM::createSideBarLink';
+
 class CRM extends BackbonePage {
     
     function userCanExecute($user){
@@ -33,6 +35,15 @@ class CRM extends BackbonePage {
     
     function getModels(){
         return array('Backbone/*');
+    }
+    
+    static function createSideBarLink(&$toolbox){
+        global $wgServer, $wgScriptPath, $wgUser;
+        if(self::userCanExecute($wgUser)){
+            $link = TabUtils::createToolboxLink("CRM", "$wgServer$wgScriptPath/index.php/Special:CRM");
+            $toolbox['Other']['links'][] = $link;
+        }
+        return true;
     }
 
 }
