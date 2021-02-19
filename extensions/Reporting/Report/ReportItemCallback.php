@@ -382,7 +382,7 @@ class ReportItemCallback {
             $project = Project::newFromHistoricId($this->reportItem->projectId);
             $year = $this->reportItem->getReport()->year;
             foreach($project->getAllPeopleDuring(null, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
+                if(!$ni->isRole(PL, $project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -1000,12 +1000,7 @@ class ReportItemCallback {
         if(is_array($roles)){
             foreach($roles as $role){
                 if($project != null && $project->getId() != 0){
-                    if($role->getRole() == PL){
-                        if($person->leadershipOf($project)){
-                            $roleNames[$role->getRole()] = $role->getRole();
-                        }
-                    }
-                    else if($role->hasProject($project)){
+                    if($role->hasProject($project)){
                         $roleNames[$role->getRole()] = $role->getRole();
                     }
                 }
@@ -1022,7 +1017,7 @@ class ReportItemCallback {
         $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getMyRoles();
         if($project != null && $project->getId() != 0){
-            if($person->leadershipOf($project)){
+            if($person->isRole(PL, $project)){
                 if($roles != ""){
                     $roles .= ", ".PL;
                 }
@@ -1031,7 +1026,7 @@ class ReportItemCallback {
                 }
             }
         }
-        else if($person->isProjectLeader()){
+        else if($person->isRole(PL)){
             if($roles != ""){
                 $roles .= ", ".PL;
             }
@@ -1141,7 +1136,7 @@ class ReportItemCallback {
         $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getUserRoles($start, $end);
         if($project != null && $project->getId() != 0){
-            if($person->leadershipOf($project)){
+            if($person->isRole(PL, $project)){
                 if($roles != ""){
                     $roles .= ", ".PL;
                 }
@@ -1150,7 +1145,7 @@ class ReportItemCallback {
                 }
             }
         }
-        else if($person->isProjectLeader()){
+        else if($person->isRole(PL)){
             if($roles != ""){
                 $roles .= ", ".PL;
             }
@@ -1374,7 +1369,7 @@ class ReportItemCallback {
         
         $subs = array();
         foreach($project->getSubProjects() as $sub){
-            if($person->leadershipOf($sub)){
+            if($person->isRole(PL, $sub)){
                 $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
             }
         }

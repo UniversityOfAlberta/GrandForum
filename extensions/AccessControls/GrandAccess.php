@@ -38,28 +38,11 @@ class GrandAccess {
 	        $aRights[$i++] = TL;
 	        $aRights[$i++] = TC;
 	    }
-	    $leadership = $me->leadership();
-	    if(count($leadership) > 0){
-	        $aRights[$i++] = "Leadership";
-	        $aRights[$i++] = "Leadership+";
-	        if($me->isProjectLeader()){
-	            $aRights[$i++] = PL;
-	            $aRights[$i++] = PL.'+';
-	        }
-	        foreach($leadership as $lead){
-	            if($lead->isSubProject()){
-	                $aRights[$i++] = "SUB-PL";
-	                break;
-	            }
-	        }
-	    }
 	    if($me->isEvaluator()){
 	        $aRights[$i++] = "Evaluator";
 	        $aRights[$i++] = "Evaluator+";
 	    }
 	    if($me->isRole(NI)){
-	        $aRights[$i++] = "Researcher";
-	        $aRights[$i++] = "Researcher+";
 	        $aRights[$i++] = "NI";
 	        $aRights[$i++] = "NI+";
 	    }
@@ -70,22 +53,9 @@ class GrandAccess {
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
-	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Leadership+', $aRights) === false){
-	                $aRights[$i++] = 'Leadership+';
-	            }
 	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
 	                $aRights[$i++] = 'Evaluator+';
 	            }
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Researcher+', $aRights) === false){
-	                $aRights[$i++] = 'Researcher+';
-	            }
-	        }
-	    }
-	    foreach($me->getRolesDuring(CYCLE_START, CYCLE_END) as $role){
-	        if(!$me->isCandidate()){
-	            $aRights[$i++] = $role->getRole().'During';
-	            $aRights[$i++] = $role->getRole().'During+';
 	        }
 	    }
 	    if(count($me->getRoles()) > 0){

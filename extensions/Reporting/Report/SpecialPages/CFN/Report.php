@@ -80,7 +80,7 @@ class Report extends AbstractReport{
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);
         }
         foreach($projects as $project){
-            if($person->isRole(CI, $project) && !$person->leadershipOf($project) && !$project->isDeleted()){
+            if($person->isRole(CI, $project) && !$person->isRole(PL, $project) && !$project->isDeleted()){
                 if(strstr($project->getName(), "SSA20") === false){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FinalProjectReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Final)", "{$url}FinalProjectReport&project={$project->getName()}", $selected);

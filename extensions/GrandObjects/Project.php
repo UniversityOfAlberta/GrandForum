@@ -857,13 +857,13 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOf($this)){
+                    if($person->isRole(PL, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
-                         ($person->isRole($filter."-Candidate", $this) && !$person->leadershipOf($this) && $this->getStatus() == "Proposed")) && 
+                         ($person->isRole($filter, $this) && !$person->isRole(PL, $this)) || 
+                         ($person->isRole($filter."-Candidate", $this) && !$person->isRole(PL, $this) && $this->getStatus() == "Proposed")) && 
                         !$person->isRole(ADMIN)){
                     $people[$person->getId()] = $person;
                 }
@@ -919,7 +919,7 @@ EOF;
                     }
                 }
                 else if(($filter == null || 
-                        ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                        ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->isRole(PL, $this))) && 
                         ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
                     if(strstr($filter, "Former-") !== false && $person->isRole(str_replace("Former-", "", $filter))){
                         // Exclude people if they are still a member of the role if $filter contains 'Former-'
@@ -955,12 +955,12 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOfOn($this, $date)){
+                    if($person->isRoleOn(PL, $date, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOfOn($this, $date))) && 
+                         ($person->isRoleOn($filter, $date, $this) && !$person->isRoleOn(PL, $date, $this))) && 
                         ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                     $people[$person->getId()] = $person;
                 }
@@ -1084,16 +1084,16 @@ EOF;
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&
-             !$me->leadershipOf($this->getParent()) &&
+             !$me->isRole(PL, $this->getParent()) &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this) &&
+             !$me->isRole(PL, $this) &&
              !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this) &&
+             !$me->isRole(PL, $this) &&
              !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)))){
             return false;

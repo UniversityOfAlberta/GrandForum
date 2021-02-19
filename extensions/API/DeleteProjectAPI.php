@@ -17,8 +17,8 @@ class DeleteProjectAPI extends API{
 	    $me = Person::newFromUser($wgUser);
 	    $project = Project::newFromName($_POST['project']);
 	    if(!$me->isRoleAtLeast(STAFF) && 
-	       (!$me->leadershipOf($project) ||
-	        ($project->isSubProject() && !$me->leadershipOf($project->getParent()))
+	       (!$me->isRole(PL, $project) ||
+	        ($project->isSubProject() && !$me->isRole(PL, $project->getParent()))
 	       )){
 	        return;
 	    }

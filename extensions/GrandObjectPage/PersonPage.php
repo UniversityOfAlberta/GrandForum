@@ -79,7 +79,7 @@ class PersonPage {
                         }
                     }
                     foreach($person->getProjects() as $project){
-                        if(($project->isSubProject() && $me->leadershipOf($project->getParent())) || $me->leadershipOf($project)){
+                        if(($project->isSubProject() && $me->isRole(PL, $project->getParent())) || $me->isRole(PL, $project)){
                             $isSupervisor = true;
                         }
                     }

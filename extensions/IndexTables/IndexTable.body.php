@@ -399,7 +399,7 @@ class IndexTable {
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
-        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
+        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRole(PL) || $me->isRoleAtLeast(STAFF))){
             $activityPlans = "<th>Activity Plans</th>";
         }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
@@ -416,7 +416,7 @@ class IndexTable {
                                     <td><a href='{$project->getUrl()}'>{$project->getName()}<a></td>
                                     <td>{$project->getFullName()}</td>
                                     <td>{$leaderString}</td>");
-                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
+                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRole(PL) || $me->isRoleAtLeast(STAFF))){
                     $wgOut->addHTML("<td>");
                     $projs = array();
                     $projects = array();
@@ -431,7 +431,7 @@ class IndexTable {
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
+                    if($me->isRole(PL, $project) || $me->isRoleAtLeast(STAFF)){
                         $report = "";
                         switch($project->getName()){
                             case "CC1 K-MOB":

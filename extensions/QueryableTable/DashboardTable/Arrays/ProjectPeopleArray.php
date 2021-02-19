@@ -9,7 +9,7 @@
             $people = $project->getAllPeopleDuring(null, $start, $end);
 
             foreach($people as $person){
-                if($person->isRoleDuring(NI, $start, $end) || $person->leadershipOf($project)){
+                if($person->isRoleDuring(NI, $start, $end) || $person->isRole(PL, $project)){
                     if(!$person->isRole(CHAMP)){
                         $this->array[] = $person->getName();
                     }

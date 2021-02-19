@@ -309,9 +309,9 @@ class Collaboration extends BackboneModel{
         $this->projects = $oldProjects;
         $this->projectsWaiting = $oldProjectsWaiting;
         foreach($projects as $project){
-            if($me->leadershipOf($project) || 
-               $me->isThemeLeaderOf($project) ||
+            if($me->isThemeLeaderOf($project) ||
                $me->isThemeCoordinatorOf($project) ||
+               $me->isRole(PL, $project) || 
                $me->isRole(PA, $project) ||
                $me->isRole(PS, $project)){
                 return true;

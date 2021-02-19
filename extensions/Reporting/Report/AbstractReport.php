@@ -713,7 +713,7 @@ abstract class AbstractReport extends SpecialPage {
                                 (($me->getId() == $this->person->getId() && $me->isSupervisor()) || $me->relatedTo($this->person, SUPERVISES))){
                             $rResult = true;
                         }
-                        else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
+                        else if($this->project != null && ($perm['perm']['role'] == PL)){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -802,7 +802,6 @@ abstract class AbstractReport extends SpecialPage {
                                 $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
                             if($pResult && !($me->isMemberOf($this->project) || 
-                                             $me->leadershipOf($this->project) || 
                                              $me->isThemeLeaderOf($this->project) || 
                                              $me->isThemeCoordinatorOf($this->project) ||
                                              $me->isRoleAtLeast(SD))){

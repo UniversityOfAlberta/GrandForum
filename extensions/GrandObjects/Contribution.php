@@ -915,7 +915,6 @@ class Contribution extends BackboneModel {
         if($me->isRoleAtLeast(NI)){
             foreach($projects as $project){
                 if($me->isMemberOf($project) ||
-                   $me->leadershipOf($project) || 
                    $me->isThemeLeaderOf($project) ||
                    $me->isThemeCoordinatorOf($project)){
                     return true;

@@ -63,7 +63,6 @@ class Person extends BackboneModel {
     var $projects;
     var $university;
     var $universityDuring;
-    var $isProjectLeader;
     var $groups;
     var $roles;
     var $rolesDuring;
@@ -1191,7 +1190,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isRole(PL) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
@@ -1525,7 +1524,7 @@ class Person extends BackboneModel {
         else{
             // Check Project Leadership
             foreach($this->getProjects(true) as $project){
-                if($me->leadershipOf($project)){
+                if($me->isRole(PL, $project)){
                     return $this->gender;
                 }
             }
@@ -2391,7 +2390,7 @@ class Person extends BackboneModel {
             }
         }
         if($maxRole == INACTIVE){
-            if($this->isProjectLeader()){
+            if($this->isRole(PL)){
                 return PL;
             }
             if($this->isThemeLeader()){
@@ -2537,14 +2536,11 @@ class Person extends BackboneModel {
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
-        if($this->isRoleOn(AR, $year, $project) && !$this->leadershipOf($project)){
+        if($this->isRoleOn(AR, $year, $project) && !$this->isRoleOn(PL, $year, $project)){
             return AR;
         }
-        else if($this->isRoleOn(CI, $year, $project) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(CI, $year, $project) && !$this->isRoleOn(PL, $year, $project)){
             return CI;
-        }
-        else if($this->leadershipOf($project)){
-            return PL;
         }
         else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
@@ -3299,6 +3295,19 @@ class Person extends BackboneModel {
      * @return boolean Whether or not the Person is the given role
      */
     function isRole($role, $project=null){
+        if($project != null){
+            // Check Project type
+            if($project instanceof Project){
+                $project = $project;
+            }
+            else if(is_string($project)){
+                $project = Project::newFromHistoricName($project);
+            }
+            else{
+                // Not a valid type (ie. Theme)
+                return false;
+            }
+        }
         if($role == NI){
             return ($this->isRole(AR, $project) || 
                     $this->isRole(CI, $project) ||
@@ -3313,9 +3322,6 @@ class Person extends BackboneModel {
             return ($this->isRole('Former-'.AR, $project) || 
                     $this->isRole('Former-'.CI, $project) ||
                     $this->isRole('Former-'.PL, $project));
-        }
-        if($role == PL){
-            return ($project != null) ? $this->leadershipOf($project) : $this->isProjectLeader();
         }
         if($role == APL){
             $leadership = $this->leadership(false, true, 'Administrative');
@@ -3578,11 +3584,6 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeaderDuring($startRange, $endRange)){
-                return true;
-            }
-        }
         return false;
     }
     
@@ -3618,11 +3619,6 @@ class Person extends BackboneModel {
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
-            }
-        }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
-                return true;
             }
         }
         if($wgRoleValues[TL] >= $wgRoleValues[$role]){
@@ -3666,11 +3662,6 @@ class Person extends BackboneModel {
         }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] > $wgRoleValues[$role]){
-                return false;
-            }
-        }
-        if($wgRoleValues[PL] > $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
                 return false;
             }
         }
@@ -4340,128 +4331,6 @@ class Person extends BackboneModel {
         }
         $this->leadershipCache[$startRange.$endRange] = $projects;
         return $projects;
-    }
-    
-    /**
-     * Returns an array of Projects that this Person is a leader of on the given date
-     * @param string $date The date this Person was a leader of
-     * @return The Projects that this Person is a leader of
-     */
-    function leadershipOn($date){
-        if(isset($this->leadershipCache[$date])){
-            return $this->leadershipCache[$date];
-        }
-        $sql = "SELECT DISTINCT rp.project_id
-                FROM grand_roles r, grand_role_projects rp
-                WHERE rp.role_id = r.id
-                AND r.role = '".PL."'
-                AND r.user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date ) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if($project != null && 
-               ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $date)))){
-                $projects[] = $project;
-            }
-        }
-        $this->leadershipCache[$date] = $projects;
-        return $projects;
-    } 
-    
-    /**
-     * Returns whether or not this Person is a leader of a given Project
-     * @param mixed $project The Project object (or name)
-     * @param string $type The type of leadership (depricated)
-     * @return boolean Whether or not this Person is a leader of a given Project
-     */
-    function leadershipOf($project, $type=null){
-        if($project instanceof Project ||
-           $project instanceof Theme){
-            $p = $project;
-        }
-        else{
-            $p = Project::newFromHistoricName($project);
-        }
-        if($p == null || $p->getName() == ""){
-            return false;
-        }
-        self::generateLeaderCache();
-        if(isset(self::$leaderCache[$this->getId()][$p->getId()])){
-            return true;
-        }
-        if($p instanceof Project && !$p->clear){
-            foreach($p->getPreds() as $pred){
-                if($this->leadershipOf($pred, $type)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether this Person was a leader of the given project on the specified date
-     * @param mixed $project The Project object (or name)
-     * @param string $date The date this Person was a leader of
-     * @return boolean Whether or not this Person is a leader of a given Project
-     */
-    function leadershipOfOn($project, $date){
-        $projects = $this->leadershipOn($date);
-        foreach($projects as $p){
-            if($p->getName() == $project->getName()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a leader of at least one Project
-     * @return boolean Whether or not this Person is a leader
-     */
-    function isProjectLeader(){
-        if($this->isProjectLeader != null){
-            return $this->isProjectLeader;
-        }
-        self::generateLeaderCache();
-        if(isset(self::$leaderCache[$this->id])){
-            $this->isProjectLeader = true;
-        }
-        else{
-            $this->isProjectLeader = false;
-        }
-        return $this->isProjectLeader;
-    }
-    
-    /**
-     * Returns whether or not this Person was a leader between the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return boolean Whether or not this Person was a leader
-     */
-    function isProjectLeaderDuring($startRange, $endRange){
-        $sql = "SELECT DISTINCT rp.project_id
-                FROM grand_roles r, grand_role_projects rp
-                WHERE rp.role_id = r.id
-                AND r.role = '".PL."'
-                AND r.user_id = '{$this->id}'
-                AND ( 
-                ( (r.end_date != '0000-00-00 00:00:00') AND
-                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
-                OR
-                ( (r.end_date = '0000-00-00 00:00:00') AND
-                ((r.start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
     }
     
     /**
