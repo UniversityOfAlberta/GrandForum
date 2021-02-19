@@ -290,6 +290,13 @@ class SOP extends AbstractSop{
     }
     
     function getReviewComments($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $comments = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_RankExplain", $user, $gsms->id);
+        if($comments != null){
+            return $comments;
+        }
         return "";
    }
 }

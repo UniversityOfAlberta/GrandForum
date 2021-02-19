@@ -413,6 +413,7 @@ class GsmsData extends BackboneModel{
                                       'url' => $other->getUrl(),
                                       'decision' => $sop->getAdmitResult($other->getId()),
                                       'willingToSupervise' => $sop->getWillingToSupervise($other->getId()),
+                                      'comments' => $sop->getReviewComments($other->getId()),
                                       'rank' => $sop->getReviewRanking($other->getId()),
                                       'hidden' => $sop->getHiddenStatus($other->getId()));
         }

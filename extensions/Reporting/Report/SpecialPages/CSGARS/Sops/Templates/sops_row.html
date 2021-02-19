@@ -134,7 +134,7 @@
         <% if (reviewers[i].rank == "-1" && !_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN])) { %>
             <!--%= reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
-            <%= reviewers[i].name %> (<%= reviewers[i].rank %>)
+            <span title="<%= reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= reviewers[i].name %> (<%= reviewers[i].rank %>)</span>
         <% } %>
   <br />
   <% } %>
@@ -165,7 +165,7 @@
         <% if (other_reviewers[i].rank == "-1" || other_reviewers[i].rank == "--") { %>
             <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
-            <%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)<br />
+            <span title="<%= other_reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)</span><br />
         <% } %>
   <% } %>
 </td>
