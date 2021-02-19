@@ -66,14 +66,10 @@ body {
 	background: #fff;
 	line-height: 1.5em; /* value other than 'normal' needed for WinIE */
 	color: #333333;
-	
-	box-shadow: 0 0 3px #D8D8D8;
-    -moz-box-shadow: 0 0 3px #D8D8D8;
-    -webkit-box-shadow: 0 0 3px #D8D8D8;
 }
 
 #side {
-    font-size: 12px;
+    font-size: 14px;
     position:absolute;
     top:0;
     height: 100%;
@@ -98,21 +94,19 @@ body {
 
 #sideToggle {
     width: 30px;
-    height: 71px;
-    line-height: 65px;
+    height: 67px;
+    line-height: 62px;
     top: 46px;
     bottom: 0;
     left: 0;
     position: absolute;
     text-align: center;
     font-weight: bold;
+    font-size: 18px;
     cursor: pointer;
     color: #888888;
     z-index: 100;
     background: #FFFFFF;
-    border-width: 0 1px 0 1px;
-    border-style: solid;
-    border-color: #E0E0E0;
     z-index: 1000;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -120,6 +114,8 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border-left: 1px solid rgba(0,0,0,0.10);
+    border-right: 1px solid rgba(0,0,0,0.10);
 }
 
 #sideToggle:hover {
@@ -133,31 +129,48 @@ body {
 }
 
 #bodyContent {
-    left: 230px;
-    right: 30px;
-    top: 145px;
+    left: 200px;
+    right: 0;
+    top: 116px;
+    bottom: 0;
     position:absolute;
-    padding: 10px;
-
-    border: 1px solid #E0E0E0;
+    padding: 10px 20px;
+    overflow-y: auto;
+    border-width: 3px 0 0 3px;
+    border-style: solid;
 }
 
 #bodyContent.menu-in {
-    left: 30px;
+    left: -3px;
 }
 
 .deepLevel #bodyContent {
 	line-height: 1.4em;
 }
 
+@keyframes shake {
+  0% { transform: rotate(-5deg); }
+  5% { transform: rotate(5deg); }
+  10% { transform: rotate(5deg); }
+  15% { transform: rotate(-5deg); }
+  20% { transform: rotate(-5deg); }
+  25% { transform: rotate(5deg); }
+  30% { transform: rotate(5deg); }
+  35% { transform: rotate(-5deg); }
+  40% { transform: rotate(0); }
+}
+
 #nav {
-	
+	top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100% - 240px);
 }
 
 #nav hr {
     margin-top: 0;
     margin-bottom: 8px;
-    background-color: #E0E0E0;
+    background-color: rgba(0,0,0,0.10);
 }
 
 /* Random HTML Styles */
@@ -179,14 +192,14 @@ input[type="submit"] {
 
 /* General Structure */
 body,td,th,input { /* redundant rules for bad browsers  */
-	font-family: Verdana, sans-serif;
+	font-family: "Roboto", Verdana, sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6 {
 	margin-top: 0.5em;
 	margin-bottom: 0.3em;
 	border-bottom: 1px solid #ccc;
-	font-family: Verdana, sans-serif;
+	font-family: "Roboto", Verdana, sans-serif;
 }
 
 li h1,li h2,li h3,li h4,li h5,li h6 {
@@ -417,21 +430,16 @@ address {
 }
 
 input {
-    border: 1px solid #AAA;
+    border: 1px solid #CCC;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	border-radius:4px;
 	display:inline-block;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10pt;
-	line-height: 15px;
-	padding:3px 3px;
+	font-family: "Roboto", Verdana, Arial, sans-serif;
+	font-size: 14px;
+	padding: 3px 5px 3px 5px;
 	margin:2px;
-}
-
-input[type=text] {
-    height: 16px;
 }
 
 input[type=checkbox], 
@@ -453,7 +461,7 @@ input[type=radio][disabled]:hover {
 	-moz-border-radius-bottomright: 0;
 	-webkit-border-bottom-right-radius: 0;
 	border-bottom-right-radius: 0;
-	border: 1px solid #AAA !important;
+	border: 1px solid #CCC !important;
 	margin-right: 0 !important;
 	max-height: 15px !important;
 	min-width: 100px;
@@ -485,18 +493,17 @@ input[type=radio][disabled]:hover {
 }
 
 input.dark {
-    border: 1px solid #AAA;
+    border: none;
 	background: #ffffff;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
 	display:inline-block;
-	font-family: Verdana, Arial, sans-serif;
-	padding:3px 3px;
+	font-family: "Roboto", Verdana, Arial, sans-serif;
 }
 
 select {
-	border: 1px solid #AAA !important;
+	border: 1px solid #CCC !important;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
@@ -506,6 +513,11 @@ select {
 	margin: 2px;
 	font-weight: bold;
 	outline: none;
+	font-family: "Roboto", Verdana, Arial, sans-serif;
+}
+
+option {
+    font-family: "Roboto", Verdana, Arial, sans-serif;
 }
 
 input.custom-combobox-input {
@@ -524,12 +536,12 @@ input[type=button], input[type=submit], .button, .button:visited, .dt-button, .u
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
     border-radius:3px;
-    border:1px solid #AAAAAA !important;
+    border:1px solid #CCC !important;
     display:inline-block;
-    font-family: Arial, Verdana, sans-serif !important;
-    font-size:13px;
+    font-family: "Roboto", Arial, Verdana, sans-serif !important;
+    font-size:14px;
     line-height:15px;
-    padding:5px 20px;
+    padding: 6px 20px 6px 20px;
     text-decoration:none;
     font-weight: bold !important;
     text-shadow:1px 1px 0px #FFFFFF;
@@ -545,10 +557,19 @@ input[type=button], input[type=submit], .button, .button:visited, .dt-button, .u
     user-select: none;
 }
 
+input[type=button].dark, input[type=submit].dark, button.dark {
+    border:1px solid #CCC !important;
+}
+
+input[type=button].dark:focus, input[type=submit].dark:focus, button.dark:focus {
+    border:1px solid #CCC !important;
+}
+
 :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
-    font-family: Arial, Verdana, sans-serif !important;
-    font-size:13px !important;
+    font-family: "Roboto", Arial, Verdana, sans-serif !important;
+    font-size:14px !important;
     white-space:nowrap;
+    margin:2px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -564,30 +585,31 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#E8E8E8');
     background: -ms-linear-gradient(top, #f8f8f8 0%, #E8E8E8 100%);
     background-color:#E8E8E8;
-    font-family: Arial, Verdana, sans-serif;
-    font-size:13px;
+    font-family: "Roboto", Arial, Verdana, sans-serif;
+    font-size:14px;
     line-height:15px;
     display:inline-block;
     border-color:#888888;
     font-weight: bold;
-    -moz-box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
-    box-shadow:inset 0 0 3px 0 #f8f8f8, 0 0 2px rgba(0, 0, 0, 0.25);
     text-decoration:none; 
     cursor:pointer;
-    padding:5px 20px;
+    padding:6px 20px;
 	margin:2px;
 	white-space:nowrap;
 }
 
+input[type=button]:active, input[type=submit]:active, button:active, a.button:active {
+    position: relative;
+    top: 1px;
+}
+
 input[type=button]:active, input[type=submit]:active, .button:active, .dt-button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
     position:relative;
-    top:1px;
     text-decoration:none;
     border-color:#888888;
-    font-family: Arial, Verdana, sans-serif;
+    font-family: "Roboto", Arial, Verdana, sans-serif;
     font-weight: bold;
-    font-size:13px;
+    font-size:14px;
     cursor:pointer;
     white-space:nowrap;
     outline: none;
@@ -596,14 +618,14 @@ input[type=button]:active, input[type=submit]:active, .button:active, .dt-button
 textarea {
     width: 99%;
     height: 400px;
-    border: 1px solid #AAA !important;
+    border: 1px solid #CCC !important;
 	background: #ffffff;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	border-radius:4px;
 	display:inline-block;
 	padding:6px 6px !important;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: "Roboto", Verdana, Arial, sans-serif;
 	font-size: 10pt;
 	margin:2px;
 	-webkit-box-sizing: border-box;
@@ -629,15 +651,15 @@ button[disabled], a.disabledButton, a.disabledButton:hover, a.disabledButton:act
     background: #cccccc !important;
     color: #777777 !important;
     top:0;
-    border:1px solid #AAAAAA !important;
+    border:1px solid #CCC !important;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
     border-radius:3px;
     display:inline-block;
-    font-family: Arial, Verdana, sans-serif !important;
-    font-size:13px;
+    font-family: "Roboto", Arial, Verdana, sans-serif !important;
+    font-size:14px;
     line-height:15px;
-    padding:5px 20px;
+    padding:6px 20px;
     text-decoration:none;
     font-weight: bold !important;
     text-shadow:1px 1px 0px #FFFFFF;
@@ -659,7 +681,7 @@ select[disabled] {
     background: #cccccc !important;
     color: #777777 !important;
     top:0;
-    border:1px solid #AAAAAA !important;
+    border:1px solid #CCC !important;
     font-weight: bold !important;
     text-shadow:1px 1px 0px #FFFFFF;
     box-shadow:inset 0 0 1px 0 #f8f8f8;
@@ -953,7 +975,7 @@ div#person .ui-tabs-panel {
 }
 
 .ui-progressbar .ui-progressbar-value {
-    border: 1px solid #aaaaaa;
+    border: 1px solid #CCC;
     height: 22px; 
     color: #222222; 
     font-weight: bold;
@@ -980,7 +1002,7 @@ div#person .ui-tabs-panel {
 }
 
 .ui-slider {
-    background: #aaa;
+    background: #CCC;
 }
 
 .tick {
@@ -1003,7 +1025,7 @@ div#person .ui-tabs-panel {
 .toggleHeader, .ui-accordion-header {
     background-color: #EEEEEE !important;
     background-image: url('../black_gradient.png') !important;
-	border: 1px solid #AAAAAA !important;
+	border: 1px solid #CCC !important;
 	color: #000000;
     text-shadow: #FFFFFF 1px 1px 0;
 	padding: 4px !important;
@@ -1031,7 +1053,7 @@ div#person .ui-tabs-panel {
 
 ul.ui-autocomplete {
     background: #FFFFFF !important;
-    border: 1px solid #AAA !important;
+    border: 1px solid #CCC !important;
     padding: 5px 0 5px 0 !important;
     
     -moz-border-radius: 5px !important;
@@ -1102,7 +1124,6 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }*/
 
 h1.custom-title{
-    padding: 0.8em 0.8em 0 0.8em;
     border: none;
 }
 
@@ -1131,6 +1152,18 @@ del {
     vertical-align: top;
     line-height: 25px;
     white-space:nowrap;
+}
+
+.left-align {
+    text-align: left !important;
+}
+
+.center-align {
+    text-align: center !important;
+}
+
+.right-align {
+    text-align: right !important;
 }
 
 .field {
@@ -1267,7 +1300,7 @@ td.budgetError {
 }
 
 .ui-dialog-buttonpane {
-    border-top: 1px solid #AAAAAA;
+    border-top: 1px solid #CCC;
 }
 
 .ui-dialog .ui-dialog-titlebar {
@@ -1384,8 +1417,6 @@ select span.noshow {
     vertical-align:top;
     overflow: hidden;
     text-overflow: ellipsis;
-    /*min-width: 285px;*/
-    max-width: 325px;
 }
 
 .small_card .card_description {
@@ -1395,11 +1426,12 @@ select span.noshow {
 .large_card .card_description {
     margin-left:  5px;
     margin-right: 5px;
-    line-height: 16px;
+    line-height: 1.25em;
 }
 
 .large_card .card_description h1 {
     line-height: 18px;
+    margin-bottom: 3px;
 }
 
 .large_card #roles {
@@ -1421,34 +1453,29 @@ select span.noshow {
 
 /* Global Search */
 #globalSearchInput {
-    font-size: 12px !important;
+    font-size: 14px !important;
     padding: 6px;
     margin: 0;
+    margin-left: 2px;
     width: 250px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     -moz-border-radius: 5px 0 0 5px;
 	-webkit-border-radius: 5px 0 0 5px;
-	border-radius: 5px 0 0 5px;
-	border-width: 1px 0 1px 1px;
-	border-style: solid;
-	border-color: #E0E0E0;
+	border: none;
 	height:16px;
 	color: #555555;
 	font-weight: bold;
+	text-overflow: ellipsis;
 }
 
 #globalSearchInput:focus {
-    border-width: 1px 0 1px 1px !important;
-	border-style: solid !important;
-	border-color: #E0E0E0 !important;
+    border: none !important;
 }
 
 #globalSearchThrobber {
-	border-width: 1px 0 1px 0;
-	border-style: solid;
-	border-color: #E0E0E0;
+	border: none;
 	display: inline-block;
 	width: 22px;
 	height:22px;
@@ -1462,9 +1489,7 @@ select span.noshow {
     filter: none;
     background: #fff !important;
     margin: 0;
-    border-width: 1px 1px 1px 0;
-	border-style: solid;
-	border-color: #E0E0E0;
+    border: none;
     font-size: 12px;
     padding: 4px;
     -moz-box-shadow: none;
@@ -1479,24 +1504,19 @@ select span.noshow {
 }
 
 #globalSearchResults {
-    border: 1px solid #D8D8D8;
-    border-bottom: 0;
+    border: 3px solid #D8D8D8;
     background: #FFFFFF;
     width: 428px;
     z-index: 1000;
     position:relative;
     color: #555;
-    font-size: 10px;
+    font-size: 12px;
     overflow-y: auto;
     overflow-x: hidden;
-    
-    -moz-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    -webkit-box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
-    box-shadow: 3px 3px 4px rgba(0,0,0, 0.25) !important;
 }
 
-#globalSearchResults > div > div {
-    border-bottom: 1px #D8D8D8 solid;
+#showMoreResults{
+    color: #333333 !important;
 }
 
 .globalSearchResultsGroup {
@@ -1587,7 +1607,7 @@ select span.noshow {
     padding: 10px;
     margin-bottom: 10px;
     background: #EEEEEE;
-    border: 1px solid #AAA;
+    border: 1px solid #CCC;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -1598,7 +1618,7 @@ select span.noshow {
 }
 
 .inner-message {
-    border-top: 1px solid #aaaaaa;
+    border-top: 1px solid #CCC;
     padding: 10px;
 }
 
@@ -1614,12 +1634,12 @@ select span.noshow {
     color: #555555;
     font-style: normal;
     font-size: 1.0em;
-    font-family: 'Verdana', sans-serif;
+    font-family: "Roboto", 'Verdana', sans-serif;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 8px;
     padding-left: 15px;
-    border-left: 3px solid #AAA;
+    border-left: 3px solid #CCC;
 }
 
 /*qtip*/
@@ -1694,7 +1714,7 @@ div.popupBox {
     top: -1px;
     left: 100%;
     margin-bottom: 3px;
-    border: 1px solid #AAAAAA;
+    border: 1px solid #CCC;
     border-bottom: none;
     background: #FFFFFF;
     z-index: 1001;
@@ -1707,7 +1727,7 @@ div.popupHeader {
     padding: 3px;
     border-width: 0 0 1px 0;
     border-style: solid;
-    border-color: #AAAAAA;
+    border-color: #CCC;
     text-align: center;
 }
 
@@ -1717,7 +1737,7 @@ div.popupBlock {
     max-height: 158px;
     overflow-y: auto;
     overflow-x: hidden;
-    border-bottom: 1px solid #AAAAAA;
+    border-bottom: 1px solid #CCC;
 }
 
 input.popupBlockSearch {
@@ -1728,7 +1748,13 @@ input.popupBlockSearch {
 /* Dashboard */
 
 table.dashboard, table.dashboard tr, table.dashboard tr td, table.dashboard tr th {
+    border-color: #CCCCCC;
+    color: #555555;
+}
+
+table.milestones, table.milestones tr, table.milestones tr td, table.milestones tr th {
     border-color: #555555;
+    color: #555555;
 }
 
 /* TinyMCE */

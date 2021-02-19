@@ -2,9 +2,9 @@ $(document).ready(function(){
     
     var dataToSend = {};
     
-    $("div#header").append("<div id='reportIssue'><button>Report Issue</button><span class='throbber' style='display:none;'></span></div>");
-    if(networkName == "AI4Society"){
-        $("div#side").append("<div id='contactUs' style='text-align:center;'><button>Contact Us</button></div>");
+    $("div#side").append("<div id='reportIssue'><button>Report Issue</button><span class='throbber' style='display:none;'></span></div>");
+    if(isExtensionEnabled("ContactUs")){
+        $("div#side").append("<div id='contactUs'><button>Contact Us</button></div>");
     }
     
     $("div#contactUsDialog input[type=file]").change(function(e){

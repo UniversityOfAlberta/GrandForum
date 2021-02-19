@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" ajax="true" year="2020" allowIdProjects="true" disabled="false">
+<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" ajax="true" year="2021" allowIdProjects="true" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
@@ -59,7 +59,7 @@
         <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
             <![CDATA[
-                <p><b><u>Equity and Diversity</u></b></p>
+                <p><b><u>Equity, Diversity and Inclusion</u></b></p>
                 {$item}<br />
             ]]>
         </ReportItem>

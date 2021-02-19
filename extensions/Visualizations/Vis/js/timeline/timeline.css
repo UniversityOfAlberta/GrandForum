@@ -23,11 +23,11 @@
     cursor: pointer;
     position: absolute;
     z-index: 2;
-    padding: 0;
+    padding: 2px;
     font-size: 12px;
     line-height: 12px;
     font-weight: bold;
-    border-width: 0 0 2px 0;
+    border-width: 1px;
     border-style: solid;
     border-radius: 0 !important;
     background: none;
@@ -37,80 +37,86 @@
     padding: 0 !important;
 }
 
-.vis-item.vis-selected {
-    background: none !important;
-}
-
 .vis-item.vis-dot {
     border-radius: 4px !important;
+}
+
+.vis-point {
+    background: none !important;
 }
 
 .vis-item.vis-point {
     border: none;
 }
 
-.visRed {
+.visRed, .visRed .vis-point {
     color: #EC2528 !important;
     font-weight: bold;
 }
 
-.visBlue {
+.visBlue, .visBlue .vis-point {
     color: #21A3DC !important;
     font-weight: bold;
 }
 
-.visGreen {
+.visGreen, .visGreen .vis-point {
     color: #12A551 !important;
     font-weight: bold;
 }
 
-.visOrange {
+.visOrange, .visOrange .vis-point {
     color: #F47F20 !important;
     font-weight: bold;
 }
 
-.visPurple {
+.visPurple, .visPurple .vis-point {
     color: #723C96 !important;
     font-weight: bold;
 }
 
-.visYellow {
+.visYellow, .visYellow .vis-point {
     color: #FCB722 !important;
     font-weight: bold;
 }
 
-.visRed .vis-item {
-    color: #EC2528;
+.visRed .vis-item, .visRed .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #EC2528;
+    background: #EC2528;
 }
 
-.visBlue .vis-item {
-    color: #21A3DC;
+.visBlue .vis-item, .visBlue .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #21A3DC;
+    background: #21A3DC;
 }
 
-.visGreen .vis-item {
-    color: #12A551;
+.visGreen .vis-item, .visGreen .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #12A551;
+    background: #12A551;
 }
 
-.visOrange .vis-item {
-    color: #F47F20;
+.visOrange .vis-item, .visOrange .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #F47F20;
+    background: #F47F20;
 }
 
-.visPurple .vis-item {
-    color: #723C96;
+.visPurple .vis-item, .visPurple .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #723C96;
+    background: #723C96;
 }
 
-.visYellow .vis-item {
-    color: #FCB722;
+.visYellow .vis-item, .visYellow .vis-selected {
+    color: #FFFFFF;
     font-weight: bold;
     border-color: #FCB722;
+    background: #FCB722;
 }

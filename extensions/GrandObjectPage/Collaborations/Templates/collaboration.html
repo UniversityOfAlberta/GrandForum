@@ -22,6 +22,12 @@
                         <td><b>Position</b></td>
                         <td><%= position %></td>
                     </tr>
+                    <% if(email != ''){ %>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td><a href="mailto:<%= email %>"><%= email %></a></td>
+                        </tr>
+                    <% } %>
                 </table>
             </fieldset>
         </div>
@@ -124,7 +130,7 @@
 </div>
 <br />
 
-<% if(me.isLoggedIn()){ %>
+<% if(me.isLoggedIn() && !collaborationsFrozen){ %>
     </br>
     <button id="editCollaboration">Edit <%= formType %></button>
     <button id="deleteCollaboration">Delete <%= formType %></button>

@@ -13,17 +13,21 @@
 <div id="alumniDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Recruitment/Alumni">
     
 </div>
-<div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Sub-Roles">
+<div id="subRolesDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit <%= subRolesTerm.pluralize() %>">
     
 </div>
 <div id="themeLeadershipDialog" style="display:none; max-height: 500px; overflow-y: auto" title="Edit Theme Leadership">
     
 </div>
 <td align="center">
-    <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+    <% if(!frozen){ %>
+        <span id="editRoles" class="edit-icon" title="Edit Roles"></span>
+    <% } %>
 </td>
 <td align="center">
-    <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+    <% if(!frozen){ %>
+        <span id="editProjects" class="edit-icon" title="Edit Projects"></span>
+    <% } %>
 </td>
 <td align="center">
     <% if(me.get('id') != id){ %>
@@ -39,7 +43,7 @@
     </td>
 <% } %>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
-    <td style="border-left: 2px solid #AAAAAA;" align="center">
+    <td style="border-left: 2px solid #CCCCCC;" align="center">
         <% if(me.get('id') != id){ %>
             <div style="position: relative; width:100%;">
                 <span style="display:none;"><%= candidate %></span><%= HTML.CheckBox(this, 'candidate', {value: 1, style: "margin: 0;vertical-align:middle;"}) %>
@@ -48,12 +52,12 @@
         <% } %>
     </td>
     <td align="center">
-        <span id="editSubRoles" class="edit-icon" title="Edit Sub-Roles"></span>
+        <span id="editSubRoles" class="edit-icon" title="Edit <%= subRolesTerm.pluralize() %>"></span>
     </td>
     <td align="center">
         <span id="editThemeLeadership" class="edit-icon" title="Edit Theme Leadership"></span>
     </td>
 <% } %>
-<td style="border-left: 2px solid #AAAAAA;" align="left">
+<td style="border-left: 2px solid #CCCCCC;" align="left">
     <a href="<%= url %>"><%= fullName %></a>
 </td>

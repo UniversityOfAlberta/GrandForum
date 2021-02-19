@@ -159,7 +159,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
         var selectedProject = this.$("#selectedProject option:selected");
         var name = selectedProject.text();
         var projects = this.model.get('projects').slice();
-        if(_.where(projects, {name: name}).length == 0){
+        if(name != '---' && _.where(projects, {name: name}).length == 0){
             projects.push({id: null, name: name});
             this.model.set('projects', projects);
             this.model.trigger('change:projects');
@@ -177,7 +177,8 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     events: {
         "click #infinity": "setInfinite",
         "click .roleProject": "deleteProject",
-        "click #addProject": "addProject"
+        "click #addProject": "addProject",
+        "change #selectedProject": "addProject"
     },
     
     update: function(){

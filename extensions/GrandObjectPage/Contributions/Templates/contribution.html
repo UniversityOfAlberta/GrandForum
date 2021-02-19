@@ -25,76 +25,114 @@
         <td><%= dateTimeHelpers.formatDate(end.substr(0, 10), 'yyyy-MM-dd', 'MMMM d, yyyy') %></td>
     </tr>
 </table>
-<h2>Partners</h2>
+<h2>Contributing Partners</h2>
+<table class="partners">
 <% _.each(partners, function(partner){ %>
-    <h3><%= partner.name %></h3>
-    <table>
-        <% if(partner.contact != '' && partner.contact != null && _.values(partner.contact).join('') != ''){ %>
-            <tr>
-                <td valign="top" align="right"><b>Contact:</b></td>
-                <td>
-                    <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(!_.isEmpty(partner.contact.email)){ %> (<%= partner.contact.email %>) <% } %>
-                    <% if(!_.isEmpty(partner.contact.address)) { %>
-                        <br /><%= partner.contact.address %>
-                    <% } if (!_.isEmpty(partner.contact.phone)) { %>
-                        <br /><%= partner.contact.phone %>
-                    <% } %>
-                </td>
-            </tr>
-        <% } %>
-        <% if(partner.industry != '' && partner.industry != null){ %>
-            <tr>
-                <td align="right"><b>Sector:</b></td>
-                <td><%= partner.industry %></td>
-            </tr>
-        <% } %>
-        <% if(partner.level != '' && partner.level != null){ %>
-            <tr>
-                <td align="right"><b>Level:</b></td>
-                <td><%= partner.level %></td>
-            </tr>
-        <% } %>
+    <tr>
+        <td colspan="2"><h3><%= partner.name %></h3></td>
+    </tr>
+    <% if(partner.contact != '' && partner.contact != null && _.values(partner.contact).join('') != ''){ %>
         <tr>
-            <td align="right"><b>Type:</b></td>
-            <td><%= partner.type %></td>
+            <td valign="top" align="right"><b>Contact:</b></td>
+            <td>
+                <%= partner.contact.honorific %> <%= partner.contact.first %> <%= partner.contact.last %> <% if(!_.isEmpty(partner.contact.email)){ %> (<%= partner.contact.email %>) <% } %>
+                <% if(!_.isEmpty(partner.contact.address)) { %>
+                    <br /><%= partner.contact.address %>
+                <% } if (!_.isEmpty(partner.contact.phone)) { %>
+                    <br /><%= partner.contact.phone %>
+                <% } %>
+            </td>
         </tr>
-        <% if(partner.subtype != '' && partner.subtype != 'None'){ %>
-            <tr>
-                <td align="right"><b>SubType:</b></td>
-                <td>
-                    <% if(partner.other_subtype != ""){ %>
-                        <%= partner.other_subtype %>
-                    <% } else { %>
-                        <%= partner.subtype %>
+    <% } %>
+    <% if(partner.signatory != '' && partner.signatory != null){ %>
+        <tr>
+            <td align="right" style="white-space:nowrap;"><b>Network Signatory:</b></td>
+            <td><%= partner.signatory %></td>
+        </tr>
+    <% } %>
+    <% if(partner.industry != '' && partner.industry != null){ %>
+        <tr>
+            <td align="right"><b>Sector:</b></td>
+            <td><%= partner.industry %></td>
+        </tr>
+    <% } %>
+    <% if(partner.level != '' && partner.level != null){ %>
+        <tr>
+            <td align="right"><b>Level:</b></td>
+            <td><%= partner.level %></td>
+        </tr>
+    <% } %>
+    <% if(partner.type == "Grant" || 
+          partner.type == "Chair" || 
+          partner.type == "Scholarship" || 
+          partner.type == "Fellowship" || 
+          partner.type == "Contract"){ %>
+        <tr>
+            <td align="right" valign="top"><b><%= partner.type %>:</b></td>
+            <td valign="top" align="right">
+                $<%= number_format(partner.amounts['none']) %>
+            </td>
+        </tr>
+    <% } %>
+    <% if(partner.type == "Cash" ||
+          partner.type == "Cash and In-Kind" ||
+          partner.type == "None"){ %>
+        <tr>
+            <td align="right" valign="top"><b>Cash:</b></td>
+            <td valign="top">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                <% _.each(partner.amounts, function(amount, subId){ %>
+                    <% if((cashMap[subId] != undefined || subId == "none") && amount > 0){ %>
+                        <tr>
+                            <td><%= cashMap[subId] %>&nbsp;&nbsp;&nbsp;</td>
+                            <td width="1%" align="right" style="white-space:nowrap;">$<%= number_format(amount) %></td>
+                        </tr>
                     <% } %>
-                </td>
-            </tr>
-        <% } %>
-        <% if(partner.type == "Cash" || 
-              partner.type == "Grant" || 
-              partner.type == "Chair" || 
-              partner.type == "Scholarship" || 
-              partner.type == "Fellowship" || 
-              partner.type == "Contract" ||
-              partner.type == "Cash and In-Kind" ||
-              partner.type == "None"){ %>
-            <tr>
-                <td align="right"><b>Cash:</b></td>
-                <td>$<%= number_format(partner.cash) %></td>
-            </tr>
-        <% } %>
-        <% if(partner.type == "In-Kind" || 
-              partner.type == "Cash and In-Kind"){ %>
-            <tr>
-                <td align="right"><b>In-Kind:</b></td>
-                <td>$<%= number_format(partner.inkind) %></td>
-            </tr>
-        <% } %>
-    </table>
+                <% }); %>
+                </table>
+            </td>
+        </tr>
+    <% } %>
+    <% if(partner.type == "In-Kind" || 
+          partner.type == "Cash and In-Kind"){ %>
+        <tr>
+            <td align="right" valign="top"><b>In-Kind:</b></td>
+            <td valign="top">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                <% _.each(partner.amounts, function(amount, subId){ %>
+                    <% if((inkindMap[subId] != undefined) && amount > 0){ %>
+                        <tr>
+                            <% if(subId != "othe" || partner.amounts["inkind_other"] == undefined || 
+                                                     partner.amounts["inkind_other"].trim() == ""){ %>
+                                <td><%= inkindMap[subId] %>&nbsp;&nbsp;&nbsp;</td>
+                            <% } else { %>
+                                <td><%= partner.amounts["inkind_other"] %>&nbsp;&nbsp;&nbsp;</td>
+                            <% } %>
+                            <td width="1%" align="right" style="white-space:nowrap;">$<%= number_format(amount) %></td>
+                        </tr>
+                    <% } %>
+                <% }); %>
+                </table>
+            </td>
+        </tr>
+    <% } %>
 <% }) %>
-<div style="background:#EEE;padding:5px;">
-    <h3 style="padding-top:0;">Total: $<span id="contributionTotal"><%= number_format(total) %></span></h3>
-</div>
+    <tr>
+        <td colspan="2" style="height:1em;"></td>
+    </tr>
+    <tr style="background: #EEE;">
+        <td colspan="2">
+            <div style="display: flex; width:100%;">
+                <div style="width:100%;">
+                    <h3 style="padding-top:0; font-size:1em;">Total</h3>
+                </div>
+                <div style="">
+                    <h3 style="padding-top:0; font-size:1em;">$<span id="contributionTotal"><%= number_format(total) %></span></h3>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 <h2>Projects</h2>
 <div id="contributionProjects">
     <ul>

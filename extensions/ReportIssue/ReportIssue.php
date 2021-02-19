@@ -28,7 +28,7 @@
             <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
         </div>");
         
-        $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none;'>
+        $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none; width: 112px;'>
             {$loggedIn}
             <table>
                 <tr>

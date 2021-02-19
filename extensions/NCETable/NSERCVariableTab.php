@@ -72,14 +72,16 @@ function showDiv(div_id, details_div_id){
                 case 'grand':
                     $wgOut->addScript($foldscript);
                     $this->html .= "<a id='Grand'></a><h2>NCE tables</h2>";
-                    $this->html .= "<a id='Table2.1'></a><h3>Table 2.1: Contributions</h3>";
+                    $this->html .= "<a id='Table1'></a><h3>Table 1: Organizations participating and contributing to the network and its projects</h3>";
+                    self::showContributions();
+                    $this->html .= "<a id='Table1.1'></a><h3>Table 1.1: Contributions</h3>";
                     self::showContributionsTable();
-                    $this->html .= "<a id='Table2.2'></a><h3>Table 2.2: Contributions by Project</h3>";
+                    $this->html .= "<a id='Table1.2'></a><h3>Table 1.2: Contributions by Project</h3>";
                     self::showContributionsByProjectTable();
                     self::showGrandTables();
                     self::showDisseminations();
-                    self::showArtDisseminations();
-                    self::showActDisseminations();
+                    //self::showArtDisseminations();
+                    //self::showActDisseminations();
                     self::showPublicationList();
                     break;
             }
@@ -91,65 +93,70 @@ function showDiv(div_id, details_div_id){
     function showContentsTable(){
         global $wgServer, $wgScriptPath;
         $label = $this->label;
-
+        $lastYear = $this->year - 1;
+        $url = "$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$lastYear}-{$this->year}&year=tabs_{$this->year}_{$label}&summary=grand";
         $this->html .=<<<EOF
             <table class='toc' summary='Contents'>
             <tr><td>
             <div id='toctitle'><h2>Contents</h2></div>
             <ul>
-            <li class='toclevel-1'><a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
+            <li class='toclevel-1'><a href='{$url}#Grand'><span class='tocnumber'></span> <span class='toctext'>NCE tables</span></a>
                 <ul>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.0'>
-                        <span class='tocnumber'>Table 2.1: </span>
-                        <span class='toctext'>Contributions</span>
+                    <a href='{$url}#Table1'>
+                        <span class='tocnumber'>Table 1: </span>
+                        <span class='toctext'>Organizations participating and contributing to the network and its projects</span>
+                    </a>
+                    <ul>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table1.1'>
+                                <span class='tocnumber'>Table 1.1: </span>
+                                <span class='toctext'>Contributions</span>
+                            </a>
+                        </li>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table1.2'>
+                                <span class='tocnumber'>Table 1.2: </span>
+                                <span class='toctext'>Contributions by Project</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class='toclevel-2'>
+                    <a href='{$url}#Table2'>
+                        <span class='tocnumber'>Table 2: </span>
+                        <span class='toctext'>Number of network Research Personnel providing time to network research projects with NCE funds or other funds</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table2.2'>
-                        <span class='tocnumber'>Table 2.2: </span>
-                        <span class='toctext'>Contributions by Project</span>
+                    <a href='{$url}#Table3'>
+                        <span class='tocnumber'>Table 3: </span>
+                        <span class='toctext'>Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</span>
                     </a>
+                    <ul>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table3.1'>
+                                <span class='tocnumber'>Table 3.1: </span>
+                                <span class='toctext'>Number of HQP Involved in the Network</span>
+                            </a>
+                        </li>
+                        <li class='toclevel-3'>
+                            <a href='{$url}#Table3.2'>
+                                <span class='tocnumber'>Table 3.2: </span>
+                                <span class='toctext'>Post Network employment of graduate students</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4'>
-                        <span class='tocnumber'></span>
-                        <span class='toctext'>Table 4: Number of Graduate Students Working on Network Research</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2a'>
-                        <span class='tocnumber'>Table 4.2a: </span>
-                        <span class='toctext'>HQP Breakdown by University</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.2b'>
-                        <span class='tocnumber'>Table 4.2b: </span>
-                        <span class='toctext'>HQP Breakdown by Project</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table4.3'>
-                        <span class='tocnumber'>Table 4.3: </span>
-                        <span class='toctext'>NI Breakdown by University</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table5'>
-                        <span class='tocnumber'>Table 5: </span>
-                        <span class='toctext'>Post Network employment of graduate students</span>
-                    </a>
-                </li>
-                <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table6'>
-                        <span class='tocnumber'>Table 6: </span>
+                    <a href='{$url}#Table4'>
+                        <span class='tocnumber'>Table 4: </span>
                         <span class='toctext'>Dissemination of Network Research Results and Collaborations</span>
                     </a>
                 </li>
                 <li class='toclevel-2'>
-                    <a href='$wgServer$wgScriptPath/index.php/Special:NCETable?tab={$this->year}&year=tabs_{$this->year}_{$label}&summary=grand#Table7'>
-                        <span class='tocnumber'>Table 7: </span>
+                    <a href='{$url}#Table5'>
+                        <span class='tocnumber'>Table 5: </span>
                         <span class='toctext'>Publications list</span>
                     </a>
                 </li>
@@ -161,6 +168,150 @@ function showDiv(div_id, details_div_id){
 EOF;
 
     }
+    
+    function showContributions() {
+        $contributions = Contribution::getContributionsDuring(null, $this->from, $this->to);
+        $partners = array();
+        foreach ($contributions as $contr) {
+            $people = $contr->getPeople();
+            $projects = $contr->getProjects();
+            if(count($people) > 0){
+                foreach($contr->getPartners() as $partner){
+                    $partners[$partner->getOrganization()][] = array('partner' => $partner,
+                                                                     'contribution' => $contr);
+                }
+            }
+        }
+        
+        $html = "<table id='table1' class='wikitable' cellpadding='2' frame='box' rules='all' width='100%'>
+                    <thead>
+                    <tr>
+                        <th>Participating organizations</th>
+                        <th>Sector</th>
+                        <th>Country</th>
+                        <th>Province</th>
+                        <th>City</th>
+                        <th>Network Agreement Signatories</th>
+                        <th>Total Cash Contributions</th>
+                        <th>Total In-Kind Contributions</th>
+                        <th>a) Equipment, software</th>
+                        <th>b) Materials</th>
+                        <th>c) Logistical support of field work</th>
+                        <th>d) Provision of services</th>
+                        <th>e) Use of company facilities</th>
+                        <th>f) Salaries of scientific staff</th>
+                        <th>g) Salaries of managerial and administrative staff</th>
+                        <th>h) Project-related travel</th>
+                        <th>i) Other (Justify in Column R)</th>
+                        <th>Justification for 'Other' Category</th>
+                    </tr>
+                    </thead>
+                    <tbody>";
+
+        $nSignatory = 0;
+        $totalCash = 0;
+        $totalInkind = 0;
+        foreach($partners as $org => $partner){
+            $sector = "";
+            $country = "";
+            $prov = "";
+            $city = "";
+            $signatory = "";
+            $cash = 0;
+            $inkind = 0;
+            $a = 0;
+            $b = 0;
+            $c = 0;
+            $d = 0;
+            $e = 0;
+            $f = 0;
+            $g = 0;
+            $h = 0;
+            $i = 0;
+            $other = array();
+            foreach($partner as $part){
+                $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
+                if($signatory == "Yes"){
+                    $nSignatory++;
+                    break;
+                }
+            }
+            foreach($partner as $part){
+                $sector = ($sector == "") ? $part['partner']->getIndustry() : $sector;
+                $country = ($country == "") ? $part['partner']->getCountry() : $country;
+                $prov = ($prov == "") ? $part['partner']->getProv() : $prov;
+                $city = ($city == "") ? $part['partner']->getCity() : $city;
+                $signatory = ($signatory == "") ? $part['partner']->getSignatory() : $signatory;
+                $cash += $part['contribution']->getCashFor($part['partner']);
+                $inki = $part['contribution']->getKindFor($part['partner']);
+                $inkind += $inki;
+                
+                if($inki > 0){
+                    $a += $part['contribution']->getKindFor($part['partner'], "equi");
+                    $b += $part['contribution']->getKindFor($part['partner'], "mate");
+                    $c += $part['contribution']->getKindFor($part['partner'], "logi");
+                    $d += $part['contribution']->getKindFor($part['partner'], "srvc");
+                    $e += $part['contribution']->getKindFor($part['partner'], "faci");
+                    $f += $part['contribution']->getKindFor($part['partner'], "sifi");
+                    $g += $part['contribution']->getKindFor($part['partner'], "mngr");
+                    $h += $part['contribution']->getKindFor($part['partner'], "trvl");
+                    $i += $part['contribution']->getKindFor($part['partner'], "othe");
+                    $other[] = $part['contribution']->getKindFor($part['partner'], "inkind_other");
+                }
+            }
+            $totalInkind += $inkind;
+            $totalCash += $cash;
+            $html .= "<tr>
+                <td>{$org}</td>
+                <td>{$sector}</td>
+                <td>{$country}</td>
+                <td>{$prov}</td>
+                <td>{$city}</td>
+                <td>{$signatory}</td>
+                <td align='right'>$".number_format($cash, 2)."</td>
+                <td align='right'>$".number_format($inkind, 2)."</td>
+                <td align='right'>$".number_format($a, 2)."</td>
+                <td align='right'>$".number_format($b, 2)."</td>
+                <td align='right'>$".number_format($c, 2)."</td>
+                <td align='right'>$".number_format($d, 2)."</td>
+                <td align='right'>$".number_format($e, 2)."</td>
+                <td align='right'>$".number_format($f, 2)."</td>
+                <td align='right'>$".number_format($g, 2)."</td>
+                <td align='right'>$".number_format($h, 2)."</td>
+                <td align='right'>$".number_format($i, 2)."</td>
+                <td>".implode("; ", $other)."</td>
+            </tr>";
+        }
+        $html .= "</tbody>
+                  <tfoot>
+                    <tr>
+                        <td><b>Total:</b></td>
+                        <td colspan='4'></td>
+                        <td align='right'>{$nSignatory}</td>
+                        <td align='right'>$".number_format($totalCash, 2)."</td>
+                        <td align='right'>$".number_format($totalInkind, 2)."</td>
+                        <td colspan='10'>
+                    </tr>
+                  </tfoot>
+                </table>";
+                
+        $html .= "<script type='text/javascript'>
+            $(document).ready(function(){
+                $('#table1').dataTable({
+                    'aLengthMenu': [[100,-1], [100,'All']],
+                    'iDisplayLength': 100,
+                    'bFilter': true,
+                    'aaSorting': [[0,'asc']],
+                    'dom': 'Blfrtip',
+                    'buttons': [
+                        'excel'
+                    ]
+                });
+            });
+        </script>"; 
+               
+        $this->html .= $html;
+    }
 
     function showContributionsTable() {
         $html =<<<EOF
@@ -171,11 +322,14 @@ EOF;
                 'iDisplayLength': 100,
                 'bFilter': true,
                 'aaSorting': [[0,'asc']],
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel'
+                ]
             });
             $('span.contribution_descr').qtip({ style: { name: 'cream', tip: true } });
         });
         </script>
-        <a id='Table4.0'></a>
         <table id='contributionsTable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
         <thead>
         <tr>
@@ -229,43 +383,15 @@ EOF;
                 $hrType = $contr->getHumanReadableTypeFor($p);
                 $hrSubType = $contr->getHumanReadableSubTypeFor($p);
                 
-                if($hrSubType != "None"){
-                    $subType_array[] = "{$hrType} ({$hrSubType})";
-                }
-                else{
+                //if($hrSubType != "None"){
+                //    $subType_array[] = "{$hrType} ({$hrSubType})";
+                //}
+                //else{
                     $subType_array[] = "{$hrType}";
-                }
-
-                if(!$contr->getUnknownFor($p)){
-                    $tmp_cash = "\$".number_format($contr->getCashFor($p), 2);
-                    $tmp_kind = "\$".number_format($contr->getKindFor($p), 2);
-                    $details .= "<h4>{$org}</h4><table>";
-                    $details .="<tr><td align='right'><b>Type:</b></td><td>{$hrType}</td></tr>";
-
-                    if($tmp_type == "inki" || $tmp_type == "caki"){
-                        $details .="<tr><td align='right'><b>Sub-Type:</b></td><td>{$hrSubType}</td></tr>";
-                    }
-                    if($tmp_type == "inki"){
-                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
-                    }
-                    else if($tmp_type == "cash"){
-                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    else if($tmp_type == "caki"){
-                        $details .="<tr><td align='right'><b>In-Kind:</b></td><td>{$tmp_kind}</td></tr>";
-                        $details .="<tr><td align='right'><b>Cash:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    else{
-                        $details .="<tr><td align='right'><b>Estimated Value:</b></td><td>{$tmp_cash}</td></tr>";
-                    }
-                    $details .= "</table>";
-                }
+                //}
             }
-            if(empty($details)){
-                $details .= "<h4>Other</h4>";
-            }
+            
             $tmp_total = number_format($total, 2);
-            $details .= "<h4>Total: \$<span id='contributionTotal'>{$tmp_total}</span></h4>";
             $partner_names = implode(', ', $partners_array);
 
             $people_names = array();
@@ -312,16 +438,11 @@ EOF;
                         <td align='center'>{$start}</td>
                         <td align='center'>{$end}</td>
                         <td align='center'>{$date}</td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$cash}</a></td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$kind}</a></td>
-                        <td align='right'><a href='#' onclick='$( "#contr_details-{$con_id}" ).dialog( "open" ); return false;'>\${$total}</a>
-                        <div id="contr_details-{$con_id}" title="{$name_plain}">
-                        {$details}
-                        </div>
-                        </td>
+                        <td align='right'>\${$cash}</td>
+                        <td align='right'>\${$kind}</td>
+                        <td align='right'>\${$total}</td>
                     </tr>
 EOF;
-                $dialog_js .= "$( '#contr_details-{$con_id}' ).dialog({autoOpen: false});";
             }
         }
 
@@ -411,70 +532,13 @@ EOF;
 
     function showGrandTables() {
         global $wgOut, $_pdata, $_projects;
-        $this->html .= "<a id='Table4'></a><h3>Table 4: Number of HQP Involved in the Network</h3>";
-        $this->html .= self::getHQPStats();
 
-        $canadian = array();
-        $foreign = array();
-        $unknown = array();
+        $movedons = Person::getAllMovedOnDuring($this->from, $this->to);  
 
-        $unique = array();
-        $movedons = Person::getAllMovedOnDuring($this->from, $this->to);
-        foreach($movedons as $m){
-            if(in_array($m->getName(), $unique)) {
-                continue;
-            }
-            $unique[] = $m->getName();
-
-            $m_nation = $m->getNationality();
-            if($m_nation == "Canadian" || $m_nation == "Landed Immigrant"){
-                $canadian[] = $m;
-            }
-            else if($m_nation == "Foreign" || $m_nation == "Visa Holder" || $m_nation == "American"){
-                $foreign[] = $m;
-            }
-            else{
-                $unknown[] = $m;
-            }
-        }    
-
-        //additional people may still be on the forum, we find them through their theses
-        /*$papers = Paper::getAllPapersDuring("all", "Publication", "grand", $this->from, $this->to);
-        foreach($papers as $paper){
-            $type = $paper->getType();
-            if($type == "PhD Thesis" || $type == "Masters Thesis"){
-                $author = $paper->getAuthors();
-                if(count($author) < 1){
-                    continue;
-                }
-
-                $author = $author[0];
-                if(in_array($author->getName(), $unique)) {
-                    continue;
-                }
-                $unique[] = $author->getName();
-                $movedons[] = $author;
-
-                $author_nation = $author->getNationality();
-                if($author_nation == "Canadian" || $author_nation == "Landed Immigrant"){
-                    $canadian[] = $author;
-                }
-                else if($author_nation == "Foreign" || $author_nation == "Visa Holder"){
-                    $foreign[] = $author;
-                }
-                else{
-                    $unknown[] = $author;
-                }
-            }   
-        }*/
-
-        $this->html .= "<a id='Table4.2a'></a><h3>Table 4.2a: HQP Breakdown by University</h3>" .self::getHQPUniStats();
-        $this->html .= "<a id='Table4.2b'></a><h3>Table 4.2b: HQP Breakdown by Project</h3>" .self::getHQPProjStats();
-        $this->html .= "<a id='Table4.3'></a><h3>Table 4.3: NI Breakdown by University</h3>" .self::getNiUniStats();
-        $this->html .= "<a id='Table5'></a><h3>Table 5: Post Network employment of graduate students</h3>" . self::getHQPEmployment($movedons, "all");
-        $this->html .= "<h4>Canadian</h4>". self::getHQPEmployment($canadian, "canada");
-        $this->html .= "<h4>Foreign</h4>". self::getHQPEmployment($foreign, "foreign");
-        $this->html .= "<h4>Unknown</h4>". self::getHQPEmployment($unknown, "unknown");
+        $this->html .= "<a id='Table2'></a><h3>Table 2:  Number of network Research Personnel providing time to network research projects with NCE funds or other funds</h3>" .self::getUniStats();
+        $this->html .= "<a id='Table3'></a><h3>Table 3: Number of HQP Involved in the Network (including KM activities) and Post-Network Employment</h3>";
+        $this->html .= "<a id='Table3.1'></a><h3>Table 3.1: Number of HQP Involved in the Network</h3>" . self::getHQPStats();
+        $this->html .= "<a id='Table3.2'></a><h3>Table 3.2: Post Network employment of HQP who left the network during the fiscal year</h3>" . self::getHQPEmployment($movedons, "all");
     }
 
     function getHQPStats(){
@@ -742,33 +806,43 @@ EOF;
         return $html;
     }
 
-    function getHQPUniStats(){
+    function getUniStats(){
         $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
+        $nis  = Person::getAllPeopleDuring(NI,  $this->from, $this->to);
 
         //Setup the table structure
         $universities = array();
-        $unknown = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+        $empty = array("Researchers" => array(), 
+                       "Research Associates" => array(),
+                       "Post-Doctoral Fellows" => array(),
+                       "Technical Staff" => array(),
+                       "Graduates" => array(),
+                       "Undergrad" => array(), 
+                       "Professional End Users" => array(), 
+                       "Other" => array());
+        $unknown = $empty;
 
-        $positions = array( "Undergraduate Student"=>"Ugrad",
-                            "Graduate Student - Master's"=>"Masters",
-                            "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
-                            "Technician"=> "Technicians / Research Associates",
-                            "Research Associate" => "Technicians / Research Associates",
-                            "Professional End User" => "Professional End Users",
-                            "Other"=>"Other");
+        $positions = array("Undergraduate Student" => "Undergrad",
+                           "Graduate Student - Master's" => "Graduates",
+                           "Graduate Student - Doctoral" => "Graduates",
+                           "Post-Doctoral Fellow" => "Post-Doctoral Fellows",
+                           "Technician" => "Technical Staff",
+                           "Research Associate" => "Research Associates",
+                           "Professional End User" => "Professional End Users",
+                           "Other" => "Other");
 
-        //Fill the table
+        //Fill the table for HQP
         foreach ($hqps as $hqp){
             $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
             if(!isset($uniobj['university'])){
                 $uniobj = $hqp->getUniversity();
             }
             $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
+            if($uni == ""){
+                continue;
+            }
             if($uni != "Unknown" && !array_key_exists($uni, $universities)){
-                $universities[$uni] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                            "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
+                $universities[$uni] = $empty;
             }
 
             $pos = (isset($uniobj['position']))? $uniobj['position'] : "Other";
@@ -779,7 +853,29 @@ EOF;
             }
             else{
                 $universities[$uni][$pos][] = $hqp;
-            }       
+            }
+        }
+        
+        // Fill the table for NI
+        foreach($nis as $ni){
+            $uniobj = $ni->getUniversityDuring($this->from, $this->to);
+            if(!isset($uniobj['university'])){
+                $uniobj = $ni->getUniversity();
+            }
+            $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
+            if($uni == ""){
+                continue;
+            }
+            if($uni != "Unknown" && !array_key_exists($uni, $universities)){
+                $universities[$uni] = $empty;
+            }
+
+            if($uni == "Unknown"){
+                $unknown["Researchers"][] = $ni;
+            }
+            else{
+                $universities[$uni]["Researchers"][] = $ni;
+            }
         }
 
         ksort($universities);
@@ -789,22 +885,32 @@ EOF;
         $html =<<<EOF
          <table id='table_hqp2' class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
          <tr>
-         <th>University</th>
-         <th>Ugrad</th>
-         <th>Masters</th>
-         <th>PhD</th>
-         <th>Post-Doctoral Fellows</th>
-         <th>Technicians / Research Associates</th>
-         <th>Professional End Users</th>
-         <th>Other</th>
-         <th>Total</th>
+            <td colspan='2'></td>
+            <th colspan='8'>Research Personnel (HQP)</th>
+         </tr>
+         <tr>
+             <th rowspan='2'>Organization</th>
+             <th rowspan='2'>Researchers</th>
+             <th rowspan='2'>Research Associates</th>
+             <th rowspan='2'>Postdoctoral fellows</th>
+             <th rowspan='2'>Technical staff</th>
+             <th colspan='2'>Students</th>
+             <th rowspan='2'>Professional End Users</th>
+             <th rowspan='2'>Other</th>
+             <th rowspan='2'>Total (HQP)</th>
+         </tr>
+         <tr>
+            <th>Graduates</th>
+            <th>Undergrad</th>
          </tr>
 EOF;
 
+        $totals = $empty;
+        
         foreach ($universities as $uni=>$data){
             $html .=<<<EOF
                 <tr>
-                <th align="left">{$uni}</th>
+                <td align="left">{$uni}</td>
 EOF;
             $total_uni = array();
             foreach($data as $posi => $hqpa){
@@ -812,13 +918,14 @@ EOF;
                 $pos_id = str_replace("/", "_", str_replace(" ", "_", $posi));
                 $lnk_id = "lnk_" . $uni_id . "_" . $pos_id;
                 $div_id = "div_" . $uni_id . "_" . $pos_id;
-
-                $total_uni = array_merge($total_uni, $hqpa);
+                if($posi != "Researchers"){
+                    $total_uni = array_merge($total_uni, $hqpa);
+                }
                 $num_students = count($hqpa);   
                 $student_details = Dashboard::hqpDetails($hqpa);
                 if($num_students > 0){
                     $html .=<<<EOF
-                        <td>
+                        <td align='right'>
                         <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                         $num_students
                         </a>
@@ -831,8 +938,9 @@ EOF;
 EOF;
                 }
                 else{
-                    $html .= "<td>0</td>";
+                    $html .= "<td align='right'>0</td>";
                 }
+                $totals[$posi][] = $num_students;
             }
 
             //Row Total
@@ -843,7 +951,7 @@ EOF;
             $student_details = Dashboard::hqpDetails($total_uni);
             if($num_students > 0){
                 $html .=<<<EOF
-                    <td>
+                    <td align='right'>
                     <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
                     $num_students
                     </a>
@@ -856,243 +964,19 @@ EOF;
 EOF;
             }
             else{
-                $html .= "<td>0</td>";
+                $html .= "<td align='right'>0</td>";
             }
-
+            $totals["HQP"][] = $num_students;
             $html .= "</tr>";
         }
-            
-        $html .= "</table>";
-        $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
-        
-        return $html;
-    }
-    
-    function getHQPProjStats(){
-        $hqps = Person::getAllPeopleDuring(HQP, $this->from, $this->to);
-
-        //Setup the table structure
-        $projects = array();
-        $positions = array( "Undergraduate Student"=>"Ugrad",
-                            "Graduate Student - Master's"=>"Masters",
-                            "Graduate Student - Doctoral"=>"PhD",
-                            "Post-Doctoral Fellow"=>"Post-Doctoral Fellows",
-                            "Technician"=> "Technicians / Research Associates",
-                            "Research Associate" => "Technicians / Research Associates",
-                            "Professional End User" => "Professional End Users",
-                            "Other"=>"Other");
-
-        //Fill the table
-        foreach ($hqps as $hqp){
-            $projs = $hqp->getProjectsDuring($this->from, $this->to);
-            $univ = $hqp->getUniversityDuring($this->from, $this->to);
-            if(!isset($positions[$univ['position']])){
-                $univ = $hqp->getUniversity();
-            }
-            
-            $pos = @$univ['position'];
-            $uni = @$univ['university'];
-            $pos = (isset($positions[$pos])) ? $positions[$pos] : "Other";
-            
-            foreach($projs as $project){
-                if(!isset($projects[$project->getName()])){
-                    $projects[$project->getName()] = array("Ugrad"=>array(), "Masters"=>array(), "PhD"=>array(), "Post-Doctoral Fellows"=>array(), 
-                                                         "Technicians / Research Associates"=>array(), "Professional End Users" => array(), "Other"=>array());
-                }
-                $projects[$project->getName()][$pos][] = $hqp;
-            }
+        $html .= "<tfoot>
+                    <tr><td><b>Total:</b></td>";
+        foreach($totals as $total){
+            $sum = array_sum($total);
+            $html .= "<td align='right'>{$sum}</td>";
         }
-
-        ksort($projects);
-
-        $details_div_id = "hqp_proj_details";
-        $html =<<<EOF
-         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-         <tr>
-         <th>Project</th>
-         <th>Ugrad</th>
-         <th>Masters</th>
-         <th>PhD</th>
-         <th>Post-Doctoral Fellows</th>
-         <th>Technicians / Research Associates</th>
-         <th>Professional End Users</th>
-         <th>Other</th>
-         <th>Total</th>
-         </tr>
-EOF;
-        foreach ($projects as $projName => $data){
-            $html .=<<<EOF
-                <tr>
-                <th align="left">{$projName}</th>
-EOF;
-            $total_proj = array();
-            foreach($data as $posi => $hqpa){
-                $proj_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $projName)));
-                $lnk_id = "lnk_" . $proj_id . "_" . $posi;
-                $div_id = "div_" . $proj_id . "_" . $posi;
-                
-                $lnk_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $lnk_id)));
-                $div_id = str_replace(".", "_", str_replace("/", "_", str_replace(" ", "_", $div_id)));
-
-                $total_proj = array_merge($total_proj, $hqpa);
-                $num_students = count($hqpa);   
-                $student_details = Dashboard::hqpDetails($hqpa);
-                if($num_students > 0){
-                    $html .=<<<EOF
-                        <td>
-                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                        $num_students
-                        </a>
-                        <div style="display: none;" id="$div_id" class="cell_details_div">
-                            <p><span class="label">{$projName} / {$posi}:</span> 
-                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                            <ul>$student_details</ul>
-                        </div>
-                        </td>
-EOF;
-                }
-                else{
-                    $html .= "<td>0</td>";
-                }
-
-            }
-
-            //Row Total
-            $lnk_id = "lnk_" . $proj_id . "_total";
-            $div_id = "div_" . $proj_id . "_total";
-
-            $num_students = count($total_proj);   
-            $student_details = Dashboard::hqpDetails($total_proj);
-            if($num_students > 0){
-                $html .=<<<EOF
-                    <td>
-                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                    $num_students
-                    </a>
-                    <div style="display: none;" id="$div_id" class="cell_details_div">
-                        <p><span class="label">{$projName} / {$posi}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                        <ul>$student_details</ul>
-                    </div>
-                    </td>
-EOF;
-            }
-            else{
-                $html .= "<td>0</td>";
-            }
-
-
-            $html .= "</tr>";
-
-        }
-            
-        $html .= "</table>";
-        $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
-        
-        return $html;
-    }
-
-    function getNIUniStats(){
-        global $config;
-        $people = Person::getAllPeopleDuring(NI, $this->from, $this->to);
-
-        $nis = array();
-        $unique_ids = array();
-        foreach($people as $n){
-            $nid = $n->getId();
-            if(!in_array($nid, $unique_ids)){
-                $unique_ids[] = $nid;
-                $nis[] = $n;
-            }
-        }
-
-        //Setup the table structure
-        $universities = array();
-        $unknown = array(array(), 0);
-
-        //Fill the table
-        foreach ($nis as $hqp){
-            $uid = $hqp->getId();
-
-            $uniobj = $hqp->getUniversityDuring($this->from, $this->to);
-            if(!isset($uniobj['university'])){
-                $uniobj = $hqp->getUniversity();
-            }
-            $uni = (isset($uniobj['university']))? $uniobj['university'] : "Unknown";
-            if($uni != "Unknown" && !array_key_exists($uni, $universities)){
-                $universities[$uni] = array(array(), 0);
-            }
-
-            if($uni == "Unknown"){
-                $unknown[0][] = $hqp;
-            }
-            else{
-                $universities[$uni][0][] = $hqp;
-            }
-        }
-
-        ksort($universities);
-        $universities["Unknown"] = $unknown;
-
-        $details_div_id = "ni_uni_details";
-        $html = "
-         <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
-         <tr>
-         <th>University</th>
-         <th>Researchers</th>
-         <th>Names</th>";
-        $html .= "</tr>";
-
-        foreach ($universities as $uni=>$data){
-            $html .=<<<EOF
-                <tr>
-                <th align="left">{$uni}</th>
-EOF;
-            
-            //foreach($data as $posi => $hqpa){
-            $hqpa = $data[0];
-            $distr = $data[1];
-            $uni_id = preg_replace('/ /', '', $uni);
-            $lnk_id = "lnk_ni_" . $uni_id;
-            $div_id = "div_ni_" . $uni_id;
-
-            //$total_uni = array_merge($total_uni, $hqpa);
-            $num_students = count($hqpa);   
-            $student_details = Dashboard::niDetails($hqpa, $this->to);
-            if($num_students > 0){
-                $names = array();
-                foreach($hqpa as $hqp){
-                    $names[] = $hqp->getNameForForms();
-                }
-                $names = implode(", ", $names);
-                $html .=<<<EOF
-                    <td>
-                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                    $num_students
-                    </a>
-                    <div style="display: none;" id="$div_id" class="cell_details_div">
-                        <p><span class="label">{$uni}:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                        <ul>$student_details</ul>
-                    </div>
-                    </td>
-                    <td>
-                        {$names}
-                    </td>
-EOF;
-            }
-            else{
-                $html .= "<td>0</td>
-                          <td></td>";
-            }
-
-            //}
-
-
-            $html .= "</tr>";
-
-        }
-            
+        $html .= "</tr>
+        </tfoot>";
         $html .= "</table>";
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         
@@ -1111,14 +995,18 @@ EOF;
                             "Professional End User" => "Professional End Users",
                             "Other"=>"Other");
         
+        $nationalities = array("Canadian", "Foreign", "Unknown");
+        
         $intkeys = array(
-            'Canadian' => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
-            'Foreign'  => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()),
-            'Other'    => array('university'=>array(), 'industry'=>array(), 'unknown'=>array()));
+            'Canadian' => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
+            'Foreign'  => array('University'=>array(), 'Industry'=>array(), 'Government'=>array(), 'Hospital'=>array(), 'Other'=>array()),
+            'Other'    => array('Unknown'=>array(), 'Unemployed'=>array()));
 
         $hqp_table = array();
         foreach($positions as $key=>$val){
-            $hqp_table[$val] = $intkeys;
+            foreach($nationalities as $nationality){
+                $hqp_table[$val][$nationality] = $intkeys;
+            }
         }
 
         $totals_arr = $intkeys;
@@ -1126,12 +1014,19 @@ EOF;
         $details_div_id = "movedon_details_".$type;
 
         foreach ($movedons as $m){
-
             $movedon_data = $m->getMovedOn();
-
+            $nationality = $m->getNationality();
+            if($nationality == "Canadian" || $nationality == "Landed Immigrant"){
+                $nationality = "Canadian";
+            }
+            else if($nationality == ""){
+                $nationality = "Unknown";
+            }
+            else{
+                $nationality = "Foreign";
+            }
             //Theses data
             if(isset($movedon_data['works']) && $movedon_data['works']==""){
-
                 $thesis = $m->getThesis();
                 if(!is_null($thesis) && $thesis->getType() == "PhD Thesis"){
                     $m_pos = "PhD";
@@ -1143,7 +1038,7 @@ EOF;
                     continue;
                 }
                 
-                $hqp_table[$m_pos]["Canadian"]['university'][] = $m;
+                $hqp_table[$m_pos][$nationality]["Canadian"]['University'][] = $m;
             }
             //Movedon data
             else{
@@ -1156,113 +1051,141 @@ EOF;
                 }
 
                
-                if($movedon_data['country'] == ""){
-                    $m_nation = "Other";
-                }
-                else if($movedon_data['country'] == "Canada"){
+                if(trim(strtolower($movedon_data['country'])) == "canada"){
                     $m_nation = "Canadian";
-                }else{
+                }
+                else if($movedon_data['country'] != ""){
                     $m_nation = "Foreign";
                 }
-
-                if(!empty($movedon_data['studies']) || $m->isActive() ){
-                    $hqp_table[$positions[$m_pos]][$m_nation]['university'][] = $m;
+                else{
+                    $m_nation = "";
                 }
-                else if(!empty($movedon_data['employer'])){
-                    $hqp_table[$positions[$m_pos]][$m_nation]['industry'][] = $m;
+                
+                if($m_nation != ""){
+                    if($movedon_data['employment_type'] != ""){
+                        // Use specified employment type
+                        if($movedon_data['employment_type'] == "Unemployed"){
+                            $hqp_table[$positions[$m_pos]][$nationality]["Other"][$movedon_data['employment_type']][] = $m;
+                        }
+                        else{
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation][$movedon_data['employment_type']][] = $m;
+                        }
+                    }
+                    else{
+                        // Guess the type of employment
+                        if(!empty($movedon_data['studies']) || $m->isActive() ){
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['University'][] = $m;
+                        }
+                        else if(!empty($movedon_data['employer'])){
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['Industry'][] = $m;
+                        }
+                        else{
+                            $hqp_table[$positions[$m_pos]][$nationality][$m_nation]['Other'][] = $m;
+                        }
+                    }
                 }
                 else{
-                    $hqp_table[$positions[$m_pos]][$m_nation]['unknown'][] = $m;
+                    $hqp_table[$positions[$m_pos]][$nationality]["Other"]["Unknown"][] = $m;
                 }
             }
-        }   
+        }
 
         $html =<<<EOF
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all' width='100%'>
             <tr>
-            <th rowspan='2'>Position /<br />Degree completed</th>
-            <th colspan='3'>Canadian</th>
-            <th colspan='3'>Foreign</th>
-            <th colspan='3'>Other</th>
+                <th rowspan='2'>Position /<br />Degree completed</th>
+                <th rowspan='2'>Nationality</th>
+                <th colspan='5'>Canadian Employment</th>
+                <th colspan='5'>Foreign Employment</th>
+                <th colspan='2'>Other</th>
             </tr>
             <tr>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>University</th>
-            <th>Industry</th>
-            <th>Unknown</th>
-            <th>Total</th>
+                <th>University</th>
+                <th>Industry</th>
+                <th>Government</th>
+                <th>Hospital</th>
+                <th>Other</th>
+                <th>University</th>
+                <th>Industry</th>
+                <th>Government</th>
+                <th>Hospital</th>
+                <th>Other</th>
+                <th>Unknown</th>
+                <th>Unemployed</th>
+                <th>Total</th>
             </tr>
 EOF;
         $all_total = array();
         foreach($hqp_table as $pos => $data){
-            $html .= "<tr><td>{$pos}</td>";
-            $pos_total = array();
-            foreach ($data as $nation => $area){
-                foreach ($area as $name => $val){
-                    $lnk_id = "lnk_" .$pos. "_" .$nation. "_". $name ."_tbl5_".$type;
-                    $div_id = "div_" .$pos. "_" .$nation. "_". $name ."_tbl5_".$type;
-                    
-                    $num_students = count($val);
-                    $student_details = Dashboard::hqpDetails($val);
-                    if($num_students > 0){
-                        $html .=<<<EOF
-                            <td>
-                            <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                            $num_students
-                            </a>
-                            <div style="display: none;" id="$div_id" class="cell_details_div">
-                                <p><span class="label">{$pos} / {$nation} / {$name}:</span> 
-                                <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                                <ul>$student_details</ul>
-                            </div>
-                            </td>
-EOF;
-                    }
-                    else{
-                        $html .= "<td>0</td>";
-                    }
-
-                    //$html .= "<td>{$val}</td>";
-                    $pos_total = array_merge($pos_total, $val);
-                    $totals_arr[$nation][$name] = array_merge($totals_arr[$nation][$name], $val);
-                    //$all_total += $num_students;
-                    $all_total = array_merge($all_total, $val);
+            $html .= "<tr><td rowspan='3'>{$pos}</td>";
+            foreach($nationalities as $i => $nationality){
+                $pos_total = array();
+                if($i != 0){
+                    $html .= "<tr>";
                 }
-            }
-
-            //Totals
-            $html .= "<td style='font-weight:bold;'>";
-            $lnk_id = "lnk_" .$pos. "_total_tbl5_".$type;
-            $div_id = "div_" .$pos. "_total_tbl5_".$type;
-            
-            $num_students = count($pos_total);
-            $student_details = Dashboard::hqpDetails($pos_total);
-            if($num_students > 0){
-                $html .=<<<EOF
-                    <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
-                    $num_students
-                    </a>
-                    <div style="display: none;" id="$div_id" class="cell_details_div">
-                        <p><span class="label">{$pos} / Total:</span> 
-                        <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
-                        <ul>$student_details</ul>
-                    </div>
-                    </td>
+                $row = @$data[$nationality];
+                $html .= "<td>{$nationality}</td>";
+                foreach ($row as $nation => $area){
+                    foreach ($area as $name => $val){
+                        $lnk_id = "lnk_" .$pos. "_" .$nationality. "_" .$nation. "_". $name ."_tbl5_".$type;
+                        $div_id = "div_" .$pos. "_" .$nationality. "_" .$nation. "_". $name ."_tbl5_".$type;
+                        
+                        $num_students = count($val);
+                        $student_details = Dashboard::hqpDetails($val);
+                        if($num_students > 0){
+                            $html .=<<<EOF
+                                <td>
+                                <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                                $num_students
+                                </a>
+                                <div style="display: none;" id="$div_id" class="cell_details_div">
+                                    <p><span class="label">{$pos} / {$nation} / {$name}:</span> 
+                                    <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                                    <ul>$student_details</ul>
+                                </div>
+                                </td>
 EOF;
-            }
-            else{
-                $html .= "0</td>";
-            }
+                        }
+                        else{
+                            $html .= "<td>0</td>";
+                        }
 
-            $html .= "</td></tr>";
+                        //$html .= "<td>{$val}</td>";
+                        $pos_total = array_merge($pos_total, $val);
+                        $totals_arr[$nation][$name] = array_merge($totals_arr[$nation][$name], $val);
+                        //$all_total += $num_students;
+                        $all_total = array_merge($all_total, $val);
+                    }
+                }
 
+                //Totals
+                $html .= "<td style='font-weight:bold;'>";
+                $lnk_id = "lnk_" .$pos. "_" .$nationality. "_total_tbl5_".$type;
+                $div_id = "div_" .$pos. "_" .$nationality. "_total_tbl5_".$type;
+                
+                $num_students = count($pos_total);
+                $student_details = Dashboard::hqpDetails($pos_total);
+                if($num_students > 0){
+                    $html .=<<<EOF
+                        <a id="$lnk_id" onclick="showDiv('#$div_id','$details_div_id');" href="#$details_div_id">
+                        $num_students
+                        </a>
+                        <div style="display: none;" id="$div_id" class="cell_details_div">
+                            <p><span class="label">{$pos} / Total:</span> 
+                            <button class="hide_div" onclick="$('#$details_div_id').hide();return false;">x</button></p> 
+                            <ul>$student_details</ul>
+                        </div>
+                        </td>
+EOF;
+                }
+                else{
+                    $html .= "0</td>";
+                }
+
+                $html .= "</td></tr>";
+            }
         }
-        $html .= "<tr style='font-weight:bold;'><td>Total:</td>";
+        $html .= "<tr style='font-weight:bold;'><td>Total:</td><td></td>";
         
         foreach($totals_arr as $nation => $data){
             foreach($data as $k=>$v){
@@ -1319,461 +1242,93 @@ EOF;
         $html .= "<div class='pdf_hide details_div' id='$details_div_id' style='display: none;'></div><br />";
         return $html;
     }
-
+    
     function showDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
-
-        $dissem = array("a1_r1"=>array(), "a1_r2"=>array(), "a2_r1"=>array(), "a2_r2"=>array(), "b_r1"=>array(), "b_r2"=>array());
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            if($status == "Rejected"){
-                continue;
+        $html = "<a id='Table4'></a><h3>Table 4: Dissemination of Network Research Results and Collaborations</h3>";
+        
+        $innovations = array();
+        $copyrights = array();
+        $licences = array();
+        $startups = array();
+        $patents = array();
+        $other = array();
+        
+        $allProducts = Paper::getAllPapersDuring('all', 'all', "grand", $this->from, $this->to);
+        foreach($allProducts as $product){
+            $category = strtolower($product->getCategory());
+            $type = strtolower($product->getType());
+            if(strstr($category, "product/innovation") !== false){
+                $innovations[] = $product;
             }
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                //echo "sdsd".$author->isSupervisor();
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
+            else if(strstr($type, "copyright") !== false){
+                $copyrights[] = $product;
             }
-            $key = "_r2";
-
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
+            else if(strstr($type, "licence") !== false || 
+                    strstr($type, "license") !== false){
+                $licences[] = $product;
             }
-            
-            switch ($pub->getType()) {
-                // A1: Articles in refereed publications
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    if($pub->getData('peer_reviewed') == "Yes"){
-                        $dissem["a1".$key][] = $pub;
-                    }
-                    else{
-                        $dissem["b".$key][] = $pub;
-                    }
-                    break;
-                // A2: Other refereed contributions
-                case 'Book':
-                case 'Book Chapter':
-                case 'Edited Book':
-                case 'Collections Paper':
-                case 'Conference Paper':
-                case 'Proceedings Paper':
-                    if($pub->getData('peer_reviewed') == "Yes"){
-                        $dissem["a2".$key][] = $pub;
-                    }
-                    else{
-                        $dissem["b".$key][] = $pub;
-                    }
-                    break;
-                // B: Non-refereed contributions
-                //case 'Misc':
-                //case 'Poster':
-                //case 'Book Review':
-                case 'Review Article':
-                //case 'Invited Presentation':
-                //default:
-                    if($pub->getData('peer_reviewed') == "No" || $pub->getData('peer_reviewed') == ""){
-                            if($pub->getCategory() == "Publication" ||
-                               $pub->getCategory() == "Scientific Excellence - Advancing Knowledge" ||
-                               ($pub->getCategory() == "Scientific Excellence - Leadership" && $pub->getType() == "Invited Presentation")){
-                            $dissem["b".$key][] = $pub;
-                        }
-                    }
-                    break;
-                // C: Specialized Publications
-                case 'Bachelors Thesis':
-                case 'Masters Thesis':
-                case 'Masters Dissertation':
-                case 'PHD Thesis':
-                case 'PHD Dissertation':
-                case 'Tech Report':
-                case 'Abstract':
-                case 'Journal Abstract':
-                case 'Conference Abstract':
-                case 'White Paper':
-                case 'Symposium Record':
-                case 'Industrial Report':
-                case 'Internal Report':
-                case 'Manual':
-                    $dissem["c".$key][] = $pub;   
-                    break;
+            else if(strstr($type, "startup") !== false || 
+                    strstr($type, "start-up") !== false){
+                $startups[] = $product;
+            }
+            else if(strstr($type, "patent") !== false){
+                $patents[] = $product;
+            }
+            else if(strstr($category, "commercialization") !== false || 
+                    strstr($category, "product") !== false){
+                $other[] = $product;
             }
         }
         
-        $n_a1_r1 = count($dissem['a1_r1']);
-        $n_a1_r2 = count($dissem['a1_r2']);
-        $n_a2_r1 = count($dissem['a2_r1']);
-        $n_a2_r2 = count($dissem['a2_r2']);
-        $n_b_r1 = count($dissem['b_r1']);
-        $n_b_r2 = count($dissem['b_r2']);
-
-        $d_a1_r1 = self::getDisseminationDetails($dissem['a1_r1']);
-        $d_a1_r2 = self::getDisseminationDetails($dissem['a1_r2']);
-        $d_a2_r1 = self::getDisseminationDetails($dissem['a2_r1']);
-        $d_a2_r2 = self::getDisseminationDetails($dissem['a2_r2']);
-        $d_b_r1 = self::getDisseminationDetails($dissem['b_r1']);
-        $d_b_r2 = self::getDisseminationDetails($dissem['b_r2']);
-
-        $html =<<<EOF
-            <a id='Table6'></a><h3>Table 6: Dissemination of Network Research Results and Collaborations</h3>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'>Articles in refereed publications</th><th>Number of publications</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_a1_r1} {$d_a1_r1}</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_a1_r2} {$d_a1_r2}</td>
-            </tr>
-            <tr>
-                <th align='left' colspan='2'>Other refereed contributions</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_a2_r1}  {$d_a2_r1}</td>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_a2_r2}  {$d_a2_r2}</td>
-            </tr>
-            <tr>
-                <th align='left' colspan='2'>Non-refereed contributions</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>{$n_b_r1} {$d_b_r1}</td>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>{$n_b_r2} {$d_b_r2}</td>
-            </tr>
-            </table>
-EOF;
-
+        $html .= "<table class='wikitable'>
+                    <tr>
+                        <th>Category</th><th>Number</th>
+                    </tr>
+                    <tr>
+                        <td>Products and innovations</td><td align='right'>{$this->productDetails($innovations, 'innovations', 'Products and innovations')}</td>
+                    </tr>
+                    <tr>
+                        <td>Copyrights</td><td align='right'>{$this->productDetails($copyrights, 'copyrights', 'Copyrights')}</td>
+                    </tr>
+                    <tr>
+                        <td>Licences</td><td align='right'>{$this->productDetails($licences, 'licences', 'Licences')}</td>
+                    </tr>
+                    <tr>
+                        <td>New start-up companies</td><td align='right'>{$this->productDetails($startups, 'startups', 'New start-up companies')}</td>
+                    </tr>
+                    <tr>
+                        <td>Patents</td><td align='right'>{$this->productDetails($patents, 'patents', 'Patents')}</td>
+                    </tr>
+                    <tr>
+                        <td>Other</td><td align='right'>{$this->productDetails($other, 'other', 'Others')}</td>
+                    </tr>
+                  </table>
+                  <div id='tbl4_details' class='pdf_hide details_div' style='display:none;'></div>";
+        
         $this->html .= $html;
     }
-
-    function showArtDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Artifact', "grand", $this->from, $this->to);
-        
-        if(count($publications) == 0){
-            return;
-        }
-
-        $types = Paper::getCategoryTypes("Artifact");
-
-        $dissem = array();
-        foreach($types as $t){
-            $t = preg_replace('/ /', '_', $t);
-            $dissem["{$t}_r1"] = array();
-            $dissem["{$t}_r2"] = array();
-        }
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                //echo "sdsd".$author->isSupervisor();
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
-
-
-            }
-            
-            $key = "_r2";
-            
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
-            }
-            
-
-            $pub_type = preg_replace('/ /', '_', $pub->getType());
-                
-            $dissem["{$pub_type}{$key}"][] = $pub;
-            
-        }
-      
-        $html =<<<EOF
-            <h4>Artifacts</h4>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'></th><th>Number of artifacts</th>
-            </tr>
-EOF;
-
-        foreach($types as $t){
-            $t_key = preg_replace('/ /', '_', $t);
-            $html .= "
-            <tr>
-                <th align='left' colspan='2'>{$t}</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>".count($dissem["{$t_key}_r1"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r1"])."</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>".count($dissem["{$t_key}_r2"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r2"])."</td>
-            </tr>
-            ";
-        }    
-        
-        $html .= "</table>";
-
-        $this->html .= $html;
-    }
-
-    function showActDisseminations(){
-        global $wgOut;
-        $publications = Paper::getAllPapersDuring('all', 'Activity', "grand", $this->from, $this->to);
-        
-        if(count($publications) == 0){
-            return;
+    
+    function productDetails($products, $category, $title){
+        if(count($products) == 0){
+            return 0;
         }
         
-        //echo (sizeof($publications ));
-        $types = Paper::getCategoryTypes("Activity");
-
-        $dissem = array();
-        foreach($types as $t){
-            $t = preg_replace('/ /', '_', $t);
-            $dissem["{$t}_r1"] = array();
-            $dissem["{$t}_r2"] = array();
-        }
-
-        foreach($publications as $pub){
-            $authors = $pub->getAuthors();
-            $pub_projects = array();
-            $status = $pub->getStatus();
-            
-            $groups = array();
-            $author_ids = array();
-            foreach($authors as $author){
-                
-                $author_ids[] = $author->getId();
-                if($author->getId() == ""){
-                    break;
-                }
-                if($author->isSupervisor()){
-                    if(!isset($groups[$author->getId()])){
-                        $groups[$author->getId()] = array($author->getId());
-                    }
-                }else{
-                    $supervisors = $author->getSupervisors();
-                    foreach($supervisors as $sup){
-                        if(isset($groups[$sup->getId()])){
-                            $groups[$sup->getId()][] = $author->getId();
-                        }else{
-                            $groups[$sup->getId()] = array($sup->getId(), $author->getId());
-                        }
-                    }
-
-                }
-
-
-            }
-            
-            $key = "_r2";
-            
-            foreach($groups as $k=>$sup){
-                if(in_array($k, $author_ids) && count($sup) == count($authors) ){
-                    $key = "_r1";
-                }
-            }
-            
-
-            $pub_type = preg_replace('/ /', '_', $pub->getType());
-                
-            $dissem["{$pub_type}{$key}"][] = $pub;
-            
-        }
-      
-        $html =<<<EOF
-            <h4>Activities</h4>
-            <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
-            <tr>
-                <th align='left'></th><th>Number of activities</th>
-            </tr>
-EOF;
-
-        foreach($types as $t){
-            $t_key = preg_replace('/ /', '_', $t);
-            $html .= "
-            <tr>
-                <th align='left' colspan='2'>{$t}</th>
-            </tr>
-            <tr>
-                <td valign='top'>&emsp;All authors from one research group</td>
-                <td align='center'>".count($dissem["{$t_key}_r1"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r1"])."</td>
-            <tr>
-                <td valign='top'>&emsp;The authors from two or more research groups</td>
-                <td align='center'>".count($dissem["{$t_key}_r2"])." ".self::getDisseminationDetails2($dissem["{$t_key}_r2"])."</td>
-            </tr>
-            ";
-        }    
+        $div_id = "tbl4_$category";
+        $lnk_id = "lnk4_$category";
+        $details_div_id = "tbl4_details";
         
-        $html .= "</table>";
-
-        $this->html .= $html;
-    }
-
-    private function getDisseminationDetails($arr) {
-        if (empty($arr))
-            return "";
-
-        // Grab a random identifier to name this <div>.
-        $id = "dis" . mt_rand();
-        $ret = "<small><a href=\"javascript:ShowOrHide('{$id}','')\">Details</a></small><div id='{$id}' style='display:none;text-align:left'><ol>";
-        foreach ($arr as $publ) {
-            $title = $publ->getTitle();
-            $type = $publ->getType();
-            $authors = $publ->getAuthors();
-            $yr = substr($publ->getDate(), 0, 4);
-            $pg = $publ->getData('pages');
-            if (strlen($pg) > 0){
-                $pg = "{$pg}pp.";
-            }
-            else{
-                $pg = "(no pages)";
-            }
-            $pb = $publ->getData('publisher', '(no publisher)');
-
-            switch ($publ->getType()) {
-                case 'Book':
-                case 'Book Chapter':
-                case 'Collections Paper':
-                case 'Proceedings Paper':
-                    $vn = $publ->getData('book_title', 'no venue');
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
-                    break;
-
-                case 'Journal Paper':
-                case 'Magazine/Newspaper Article':
-                    $vn = $publ->getData('journal_title', 'no venue');
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}. {$pg} {$pb}\n";
-                    break;
-
-                case 'Masters Thesis':
-                case 'PhD Thesis':
-                case 'Tech Report':
-                    break;
-
-                case 'Misc':
-                case 'Poster':
-                default:
-                    $vn = $publ->getData('book_title', $publ->getData('eventname', 'no venue'));
-                    $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;{$type}: {$vn}\n";
-            }
-
-            $ret .= "\n<ul>";
-            foreach ($authors as $auth) {
-                $name = ($auth->getId())? "<strong>". $auth->getName() ."</strong>" : $auth->getName();
-                $projs = $auth->getProjects();
-                $proj_names = array();
-                if(!empty($projs)){
-                    foreach($projs as $p){
-                        $proj_names[] = $p->getName();
-                    }
-
-
-                }
-                $ret .= "\n<li>{$name} <small>(" . implode(', ', $proj_names) . ")</small></li>";
-            }
-            $ret .= "\n</ul></li>";
+        $details = array();
+        foreach($products as $product){
+            $details[] = "<li>{$product->getCitation()}</li>";
         }
 
-        $ret .= "\n</ol></div>";
-
-        return $ret;
-    }
-
-    private function getDisseminationDetails2($arr) {
-        if (empty($arr))
-            return "";
-
-        // Grab a random identifier to name this <div>.
-        $id = "dis" . mt_rand();
-        $ret = "<small><a href=\"javascript:ShowOrHide('{$id}','')\">Details</a></small><div id='{$id}' style='display:none;text-align:left'><ol>";
-        foreach ($arr as $publ) {
-            $title = $publ->getTitle();
-            $type = $publ->getType();
-            $authors = $publ->getAuthors();
-            $yr = substr($publ->getDate(), 0, 4);
-
-            $ret .= "<li>{$yr}. <i>{$title}</i>.&emsp;\n";            
-
-            $ret .= "\n<ul>";
-            foreach ($authors as $auth) {
-                $name = ($auth->getId())? "<strong>". $auth->getName() ."</strong>" : $auth->getName();
-                $projs = $auth->getProjects();
-                $proj_names = array();
-                if(!empty($projs)){
-                    foreach($projs as $p){
-                        $proj_names[] = $p->getName();
-                    }
-
-
-                }
-                $ret .= "\n<li>{$name} <small>(" . implode(', ', $proj_names) . ")</small></li>";
-            }
-            $ret .= "\n</ul></li>";
-        }
-
-        $ret .= "\n</ol></div>";
-
-        return $ret;
+        $html = "<a id='$lnk_id' onclick='showDiv(\"#$div_id\",\"$details_div_id\");' href='#$details_div_id'>".count($products)."</a>
+                 <div id='{$div_id}' style='display:none;' class='cell_details_div'>
+                    <p><span class='label'>$title:</span> 
+                    <button class='hide_div' onclick='$(\"#$details_div_id\").hide();return false;'>x</button></p>
+                    <ul>".implode("\n", $details)."</ul>
+                 </div>";
+        return $html;
     }
 
     function showPublicationList(){
@@ -1809,6 +1364,9 @@ EOF;
                 case 'Collections Paper':
                 case 'Conference Paper':
                 case 'Proceedings Paper':
+                    if($pub->getCategory() == "Product/Innovation"){
+                        break;
+                    }
                     if($pub->getData('peer_reviewed') == "Yes"){
                         $pub_count["a2"][] = $pub;
                     }
@@ -2069,7 +1627,7 @@ EOF;
         }   
 
         $html =<<<EOF
-            <a id='Table7'></a><h3>Table 7: Publications List</h3>
+            <a id='Table5'></a><h3>Table 5: Publications List</h3>
             <table class='wikitable' cellspacing='1' cellpadding='2' frame='box' rules='all'>
             <tr><th align='left'>A) Refereed Contributions</th><th>Number of publications</th></tr>
             <tr><td>&emsp;1. Articles in refereed publications</td><td align='center'>{$a1}</td></tr>

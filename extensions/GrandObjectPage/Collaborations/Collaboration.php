@@ -26,6 +26,16 @@ class CollaborationPage extends BackbonePage {
     }
     
     function getViews(){
+        global $wgOut;
+        $emptyProject = new Project(array());
+        $leveragesFrozen = json_encode($emptyProject->isFeatureFrozen("Leverages"));
+        $collaborationsFrozen = json_encode($emptyProject->isFeatureFrozen("Collaborations"));
+        
+        $wgOut->addScript("<script type='text/javascript'>
+            var leveragesFrozen = $leveragesFrozen;
+            var collaborationsFrozen = $collaborationsFrozen;
+        </script>");
+        
         return array('Backbone/*',
                      'MyThreads/*',
                      'Products/ProductView',

@@ -11,6 +11,7 @@ define("MENTORS", 'Mentors');
 define('FREEZE_DESCRIPTION', 'Description');
 define('FREEZE_MILESTONES', 'Schedule/Milestones');
 define('FREEZE_BUDGET', 'Budget');
+define('FREEZE_PROJECTIONS', 'Projections');
 
 // Autoloads
 autoload_register('GrandObjects');
@@ -31,6 +32,7 @@ autoload_register('GrandObjects/API/Diversity');
 autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
+autoload_register('GrandObjects/API/CRM');
 
 global $apiRequest;
 // Person
@@ -106,6 +108,7 @@ $apiRequest->addAction('Hidden','bibliography/person/:person_id', 'BibliographyA
 $apiRequest->addAction('Hidden','collaboration', 'CollaborationAPI');
 $apiRequest->addAction('Hidden','collaboration/leverages', 'CollaborationAPI');
 $apiRequest->addAction('Hidden','collaboration/:id', 'CollaborationAPI');
+$apiRequest->addAction('Hidden','collaborationFile/:id/:file', 'CollaborationAPI');
 
 // Contribution
 $apiRequest->addAction('Hidden','contribution', 'ContributionAPI');
@@ -178,6 +181,25 @@ $apiRequest->addAction('Hidden','eventposting/new/:date/:start/:count', 'EventPo
 $apiRequest->addAction('Hidden','eventposting/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/deleted', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/current', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/current/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/new/:date', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/new/:date/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:start/:count', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:id', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:id/image', 'BSIPostingAPI');
+
+// CRM
+$apiRequest->addAction('Hidden','crmcontact', 'CRMContactAPI');
+$apiRequest->addAction('Hidden','crmcontact/:id', 'CRMContactAPI');
+$apiRequest->addAction('Hidden','crmcontact/:contact_id/crmopportunities', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity/:id', 'CRMOpportunityAPI');
+$apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTaskAPI');
+$apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
+$apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
 
 function createModels(){
 
@@ -212,6 +234,10 @@ function createModels(){
     addScript("Posting");
     addScript("NewsPosting");
     addScript("EventPosting");
+    addScript("BSIPosting");
+    addScript("CRMContact");
+    addScript("CRMOpportunity");
+    addScript("CRMTask");
     
     return true;
 }

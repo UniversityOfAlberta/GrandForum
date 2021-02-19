@@ -14,7 +14,7 @@ class ProjectMilestoneAPI extends API{
         $this->addPOST("problem",true,"The problem of this milestone","Show that MEOW is great");
 	    $this->addPOST("description",true,"The description for this milestone","Show that MEOW is great");
 	    $this->addPOST("assessment",true,"The assessment for this milestone","Use surveys to determine MEOW\'s greatness");
-	    $this->addPOST("status",true,"The status of this milestone. Can be one of either ('New','Revised','Continuing','Closed','Abandoned')","New");
+	    //$this->addPOST("status",true,"The status of this milestone. Can be one of either ('New','Revised','Continuing','Closed','Abandoned')","New");
 	    $this->addPOST("modification",false,"The modification of this milestone","Revised");
 	    $this->addPOST("people",false,"The people involved with this milestone, people separated by commas.", "First1.Last1, First2.Last2");
 	    $this->addPOST("end_date",true,"The projected end date of this milestone, in the form YYYY-MM","2012-10");
@@ -170,7 +170,6 @@ class ProjectMilestoneAPI extends API{
 		    if($milestone->getTitle() == $_POST['new_title'] &&
 		       $milestone->getPeopleText() == $_POST['people'] &&
 		       $milestone->quarters == $_POST['quarters'] &&
-		       $milestone->getStatus() == $_POST['status'] &&
 		       $milestone->getModification() == @$_POST['modification'] &&
 		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
 		       $milestone->getComment() == $_POST['comment'] &&
@@ -196,7 +195,7 @@ class ProjectMilestoneAPI extends API{
 		                              'project_id'          => $project->getId(),
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['new_title'],
-		                              'status'              => $_POST['status'],
+		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
@@ -228,7 +227,7 @@ class ProjectMilestoneAPI extends API{
 		                              'project_id'          => $project->getId(),
 		                              'leader'              => $leader,
 		                              'title'               => $_POST['title'],
-		                              'status'              => $_POST['status'],
+		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],
 		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],

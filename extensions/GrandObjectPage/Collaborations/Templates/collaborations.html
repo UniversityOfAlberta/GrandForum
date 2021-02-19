@@ -1,6 +1,8 @@
 <% if(me.isLoggedIn()){ %>
-    <a href="#/new" class="button" id="add">Add Collaboration</a>
-    <a href="#/newKnowledgeUser" class="button" id="addKU">Add Knowledge User</a><br />
+    <% if(!collaborationsFrozen){ %>
+        <a href="#/new" class="button" id="add">Add Collaboration</a>
+        <a href="#/newKnowledgeUser" class="button" id="addKU">Add Knowledge User</a><br />
+    <% } %>
     To add Collaborations and Knowledge Users, please refer to the following definitions:
     <ul>
         <li>A <b>Collaborator</b> refers to the involvement of an individual (from academia or from other sectors) who plays an active role in the research and research-related activities of the CFREF (FES) initiative, but is not a CFREF participant.</li>
@@ -15,6 +17,7 @@
             <th>Type</th>
             <th>Contact Name</th>
             <th>Position</th>
+            <th>Email</th>
             <th>Sector</th>
             <th>Country</th>
             <th>Exists Prior to FES</th>
@@ -27,7 +30,9 @@
             <th>End Year</th>
             <th>Description</th>
             <th>Last Changed</th>
-            <th width="1%"></th>
+            <% if(!collaborationsFrozen){ %>
+                <th width="1%"></th>
+            <% } %>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +52,9 @@
                 </td>
                 <td>
                     <%= collab.get('position') %>
+                </td>
+                <td>
+                    <%= collab.get('email') %>
                 </td>
                 <td>
                     <%= collab.get('sector') %>
@@ -101,9 +109,11 @@
                 <td>
                     <%= collab.get('changed').substr(0, 10) %>
                 </td>
-                <td>
-                    <span id="<%= collab.get('id') %>" class="delete-icon"></span>
-                </td>
+                <% if(!collaborationsFrozen){ %>
+                    <td>
+                        <span id="<%= collab.get('id') %>" class="delete-icon"></span>
+                    </td>
+                <% } %>
             </tr>
         <% }) %>
     </tbody>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" personId="0" ajax="true" disabled="false" year="2019">
+<Report name="Project Milestones Report" reportType="RP_MILE_REPORT" pdfType="MILE_REPORT" personId="0" ajax="true" disabled="false" year="2020">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                 <div style="float:left;"><h4 style='font-size:1.5em;'>Project Milestones Report {$this_year}</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
                 <br />
                 <br />
                 <br />
@@ -48,11 +49,18 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="covid" type="Textarea" blobType="BLOB_TEXT" blobItem="COVID" rich="true">
+            <![CDATA[
+                <h2>Describe the impact of the COVID-19 pandemic on your project</h2>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="info" type="Textarea" blobType="BLOB_TEXT" blobItem="INFO" rich="true">
             <![CDATA[
                 <h2>Any other additional info</h2>
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="presentation" type="UploadPDF" blobType="BLOB_RAW" blobItem="PRESENTATION" fileSize="5" mimeType="application/pdf" />
     </ReportSection>
 </Report>

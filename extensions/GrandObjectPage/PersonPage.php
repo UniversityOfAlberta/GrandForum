@@ -79,14 +79,15 @@ class PersonPage {
                         }
                     }
                     foreach($person->getProjects() as $project){
-                        if(($project->isSubProject() && $me->leadershipOf($project->getParent())) || $me->leadershipOf($project)){
+                        if(($project->isSubProject() && $me->isRole(PL, $project->getParent())) || $me->isRole(PL, $project)){
                             $isSupervisor = true;
                         }
                     }
                 }
                 foreach($person->getProjects() as $project){
                     // Allow Project Assistants to edit
-                    if($me->isRole(PA, $project)){
+                    if($me->isRole(PA, $project) ||
+                       $me->isRole(PS, $project)){
                         $isSupervisor = true;
                         break;
                     }
@@ -119,6 +120,7 @@ class PersonPage {
                 self::showTitle($person, $visibility);
 
                 $tabbedPage = new TabbedPage("person");
+                $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 if($config->getValue('networkName') != 'AI4Society'){
                     if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){
@@ -130,7 +132,12 @@ class PersonPage {
                     }
                     if($config->getValue('networkName') == 'AGE-WELL' && 
                        $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
-                        $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                        if($person->isEpic2()){
+                            $tabbedPage->addTab(new HQPEpicTab2($person, $visibility));
+                        }
+                        else{
+                            $tabbedPage->addTab(new HQPEpicTab($person, $visibility));
+                        }
                         $tabbedPage->addTab(new HQPDocsTab($person, $visibility));
                     }
                     if($wgUser->isLoggedIn() && $person->isRoleDuring(HQP, '0000-00-00 00:00:00', '2100-00-00 00:00:00')){
@@ -145,9 +152,15 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                     $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
                 }
+                if(isExtensionEnabled("UofANews")){
+                    $tabbedPage->addTab(new PersonUofANewsTab($person, $visibility));
+                }
                 if($config->getValue('networkName') == 'AI4Society'){
                     $tabbedPage->addTab(new PersonPostersTab($person, $visibility));
                     $tabbedPage->addTab(new PersonMetricsTab($person, $visibility));
+                }
+                if($config->getValue('networkName') == 'GlycoNet'){
+                    $tabbedPage->addTab(new PersonCertificatesTab($person, $visibility));
                 }
                 $tabbedPage->showPage();
 

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="OPEN CALL - SECOND ROUND" reportType="RP_OPEN2" pdfType="RPTP_OPEN2" pdfFiles="OpenRound2PDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+    <Permissions>
+        <Role role="" />
+    </Permissions>
+    <ReportSection id="background" tooltip="OPEN CALL - SECOND ROUND" name="Background" title="OPEN CALL - SECOND ROUND" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <span style='color: red;'>Before starting your application, please ensure you have selected the right Call</span>
+                <h2>BACKGROUND AND OBJECTIVES</h2>
+                <p>Making the Shift (MtS) has extended the first open call for proposals, which took place in summer and fall 2019, to include a second round of funding. This additional round will focus on addressing gaps within the existing <a href="http://makingtheshiftinc.ca/research/" target="_blank">MtS research agenda</a>, as identified in  gap analysis conducted in consultation with network members and affiliates in the summer of 2020. More than themes were identified to enhance our research agenda, including, Mapping such as mapping international research in the area of early intervention prevention and promoting Indigenous-designed and Indigenous-led research activity.</p>
+
+                Applications that didn't receive funding in the first round and who meet the following criteria have been asked to revise and resubmit their proposals for consideration by the MtS Research Management Committee:
+                <ul>
+                    <li>Received positive peer review comments but there were elements of the proposal that require refinement and clarity; and</li>
+                    <li>The project demonstrated promise and addresses an immediate gap within the MtS research agenda.</li>
+                </ul>
+                <br />
+                Selected applicants are required to revise and resubmit their proposals and address the following:
+                <ul>
+                    <li>Revise proposal to respond to detailed feedback provided by Making the Shift</li>
+                    <li>Demonstrate that the project addresses a gap in the MtS research agenda</li>
+                    <li>Demonstrate a clear link to youth homelessness prevention, as outlined in the Roadmap for the <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">Prevention of Youth Homelessness</a>.</li>
+                    <li>Articulate a clear research-to-impact plan (i.e. how will research findings be translated and disseminated to support program, practice, policy, and systems transformation).</li>
+                    <li>Propose a clear, realistic project budget, including a detailed accounting of cash and in-kind support.</li>
+                </ul>
+                <br />
+                <p>This invitation does not guarantee funding. Research Management Committee will review all applications and recommend proposals that the Board of Directors fund. Please review <a href="{$wgServer}{$wgScriptPath}/data/MtS_Second_Round_Applicant_Guide.pdf" target="_blank">application guide</a> for submission instructions.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="survey" tooltip="Project Information" name="Project Information" title="Project Information" blobSection="SURVEY" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Proposal Title</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="applicant" type="Text" blobItem="APPLICANT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Applicant Name</b><br />
+                    <small>First and last name of the principal investigator</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="position" type="Text" blobItem="POSITION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Position</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="dept" type="Text" blobItem="DEPT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Department and/or Faculty</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <!--ReportItem id="telephone" type="Text" blobItem="TELEPHONE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Telephone</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Email address</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem-->
+        <ReportItem id="tri_council" type="Select" blobItem="TRI_COUNCIL" width="400px" options="|Yes|No|Currently applying for status|I don't know">
+            <![CDATA[
+                <p>
+                    <b>Is your institution eligible to hold TriCouncil Funding?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sign_off" type="Select" blobItem="SIGN_OFF" width="400px" options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Do you have sign-off from your institution?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_funding" type="Select" blobItem="OTHER_FUNDING" width="400px" options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Do you have other types of funding for this project?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sources" type="Textarea" blobItem="SOURCES">
+            <![CDATA[
+                <p>
+                    <b>If you do have other types of funding, please identify the source and amount</b><br />
+                    <small>E.g. SSHRC Partnership grant, $300,000). Otherwise please enter N/A.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1" type="Text" blobItem="CI1" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Name Co-Investigator 1</b><br />
+                    <small>List all participating co-investigators/collaborators (eligible to receive TriCouncil funding). Do NOT include graduate students, postdoctoral fellows, research associates, research assistants, summer students or any person whose stipend is eligible for funding from the budget.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1_institution" type="Text" blobItem="CI1_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution of Co-Investigator 1</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2" type="Text" blobItem="CI2" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Name Co-Investigator 2 (if applicable)</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2_institution" type="Text" blobItem="CI2_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Institution of Co-Investigator 2</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="involve" type="Checkbox" blobItem="INVOLVE" blobType="BLOB_ARRAY" width="400px" options="Research involving humans|Research involving human pluripotent stem cells|Research requiring the use of animals|Research involving biohazards|Research involving infections agents|Research involving radioactive materials|Research activities having potential effects on the environment|Research involving controlled information|Research performed in the Yukon, the Northwest Territories, and Nunavut|None of the above">
+            <![CDATA[
+                <p>
+                    <b>Does your project involve any of the following:</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="amount" type="Text" blobItem="AMOUNT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Add the overall amount requested from MtS for your project</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <!--ReportItem id="comments" type="Textarea" blobItem="COMMENTS">
+            <![CDATA[
+                <p>
+                    <b>Additional Comments</b><br />
+                    <small>Please include any additional comments or clarification needed to submit your proposal. You can always contact mtsfunding@yorku.ca with questions and for support.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem-->
+    </ReportSection>
+    <ReportSection id="proposal" tooltip="Proposal" title="Proposal" name="Proposal" blobSection="PROPOSAL" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                <h3>I. Project Title</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true" limit="150">
+            <![CDATA[
+                <h3>II. Project Description</h3>
+                <h4>Abstract</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="250">
+            <![CDATA[
+                <h4>Research question and Objectives</h4>
+                <small>What do you expect to accomplish within the timeframe of the project and how do you plan to do it?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="350">
+            <![CDATA[
+                <h4>Methodology</h4>
+                <small>How are you going to execute the project and accomplish the objectives. If you plan to do research involving human subjects, please outline how you plan to address ethics approval and the overall engagement process and identify the step you will take to mitigate any disruption in operations due to COVID-19.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="650">
+            <![CDATA[
+                <h4>Detailed description of project</h4>
+                <small>What areas of focus does your research address, and why is it important? How does this project address the specific objectives and/or sub-objectives of the project? How does it correspond with the MtS research agenda (i.e. what is the link to youth homelessness prevention)? How will you engage community members in project? How will the experiences of persons with lived experience be included in your research?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="200">
+            <![CDATA[
+                <h4>Community engagement and partnerships</h4>
+                <small>How will you engage community members in the proposed project (e.g., the process, roles, and/or compensation)? How will the experiences of persons with lived experience be incorporated into your research? How are you ensuring your project complies with the principles of equity, diversity, and inclusion?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="200">
+            <![CDATA[
+                <h4>Anticipated outcomes and impact</h4>
+                <small>Who will benefit from your research? What are the anticipated outcomes (e.g., how is this project filling a gap within the existing evidence base or supporting community and policy decision-making)? What is your plan for translating research findings into resources, tools, training, presentations etc that can assist policy makers, practitioners, advocates, and other researchers in their efforts to advance prevention approaches to youth homelessness?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="200">
+            <![CDATA[
+                <h4>Project team</h4>
+                <small>How are the roles, experiences, and skills of team members (including community partners) well position the team to execute the project? How are you engaging existing or new partnerships, including people with lived experiences?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="members" type="MultiText" blobItem="MEMBERS" blobType="BLOB_ARRAY" labels="Full Name|Institution|Email|Project Role" types="Text|Text|Text|Select(Co-Investigator,Collaborator)" multiple="true">
+            <![CDATA[
+                <h3>III. List of all Co-Investigators/Collaborators</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <h3>IV. References (up to 20 resources)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <![CDATA[
+                <h3>V. Budget</h3>
+                <p>Please download the <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx">Budget Template</a> and upload using the following file naming [PILastName_First5WordsOfTitle]_Budget_MtSDataCall_[YYYYMMDD]</p> 
+                
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+    </ReportSection>
+</Report>

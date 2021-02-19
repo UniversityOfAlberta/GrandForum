@@ -5,10 +5,16 @@ You can use the table below to manage people on the Forum.  By default you will 
     <li>You have a <i>Works With</i> relation with that member</li>
     <li>You are the project leader of a project that the member is on</li>
 </ul>
-If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Edit Existing Member' button.  If the person does not exist, then you will need to add them by clicking the 'Add New Member' button.<br />
+If you would like to manage additional people who already exist on the Forum, then you can add them by clicking the 'Edit Existing Member' button.  
+<% if(isExtensionEnabled('AddMember')){ %>
+    If the person does not exist, then you will need to add them by clicking the 'Add New Member' button.
+<% } %>
+<br />
 <i>Candidate</i> users may also appear in the list, however editing capabilities may be limited.
 <p>
-    <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
+    <% if(isExtensionEnabled('AddMember')){ %>
+        <a id="addNewMember" class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:AddMember' %>" title="Creates a new member">Add New Member</a>
+    <% } %>
     <button id="addExistingMember" title="Adds an existing member to the list below">Edit Existing Member</button>
 </p>
 <div id="addExistingMemberDialog" style="display:none; overflow:visible;" title="Edit Existing Member">
@@ -26,11 +32,11 @@ If you would like to manage additional people who already exist on the Forum, th
                 <th width="1%">Recruitment<br />/ Alumni</th>
             <% } %>
             <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
-                <th style="border-left: 2px solid #AAAAAA;" width="1%">Candidate</th>
-                <th style="white-space: nowrap;" width="1%">Sub-Roles</th>
+                <th style="border-left: 2px solid #CCCCCC;" width="1%">Candidate</th>
+                <th style="white-space: nowrap;" width="1%"><%= subRolesTerm.pluralize() %></th>
                 <th style="white-space: nowrap;" width="1%">Theme<br />Leadership</th>
             <% } %>
-            <th style="border-left: 2px solid #AAAAAA;">Name</th>
+            <th style="border-left: 2px solid #CCCCCC;">Name</th>
         </tr>
     </thead>
     <tbody id="personRows">

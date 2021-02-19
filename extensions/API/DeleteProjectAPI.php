@@ -17,8 +17,8 @@ class DeleteProjectAPI extends API{
 	    $me = Person::newFromUser($wgUser);
 	    $project = Project::newFromName($_POST['project']);
 	    if(!$me->isRoleAtLeast(STAFF) && 
-	       (!$me->leadershipOf($project) ||
-	        ($project->isSubProject() && !$me->leadershipOf($project->getParent()))
+	       (!$me->isRole(PL, $project) ||
+	        ($project->isSubProject() && !$me->isRole(PL, $project->getParent()))
 	       )){
 	        return;
 	    }
@@ -26,9 +26,10 @@ class DeleteProjectAPI extends API{
 	    $nsId = $project->getId();
 	        
 	    $status = $project->getStatus();
+	    $startDate = $project->getStartDate();
+	    $endDate = $project->getEndDate();
 	    
 	    $type = $project->getType();
-	    $bigbet = $project->isBigBet();
 	    $effective_date = (isset($_POST['effective_date'])) ? $_POST['effective_date'] : 'CURRENT_TIMESTAMP';
 	    DBFunctions::begin();
 	    $stat = true;
@@ -36,9 +37,14 @@ class DeleteProjectAPI extends API{
 	            VALUES ('{$project->evolutionId}','{$project->getId()}','{$nsId}','DELETE','{$effective_date}')";
 	    $stat = DBFunctions::execSQL($sql, true, true);
 	    if($stat){
-	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`type`,`bigbet`)
-	            VALUES ((SELECT MAX(id) FROM grand_project_evolution),'{$nsId}','Ended','{$type}',{$bigbet})";
+	        $evoId = DBFunctions::insertId();
+	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`start_date`,`end_date`,`type`)
+	                VALUES ('{$evoId}','{$nsId}','Ended','{$startDate}','{$endDate}','{$type}')";
 	        $stat = DBFunctions::execSQL($sql, true, true);
+	        DBFunctions::update('grand_project_members',
+	                            array('end_date' => $effective_date),
+	                            array('project_id' => EQ($nsId),
+	                                  'end_date' => EQ('0000-00-00 00:00:00')));
 	    }
 	    if($stat){
 	        Project::$cache = array();

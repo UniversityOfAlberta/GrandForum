@@ -1,7 +1,21 @@
-div#reportIssue {
-    position: absolute;
-    top: 7px;
-    right: 45px;
+#reportIssue, #contactUs {
     text-align: center;
-    z-index: 90;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#reportIssue .throbber {
+    position: absolute;
+    right: 5px;
+    top: 6px;
+}
+
+#reportIssue button {
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#reportIssue button, #contactUs button {
+    width: 112px;
 }

@@ -95,6 +95,10 @@ PostingEditView = Backbone.View.extend({
         }.bind(this));
     },
     
+    postRender: function(){
+    
+    },
+    
     render: function(){
         if(this.model.isNew()){
             main.set('title', 'New Posting');
@@ -105,6 +109,7 @@ PostingEditView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         //this.renderTinyMCE();
         this.characterCount();
+        this.postRender();
         return this.$el;
     }
 

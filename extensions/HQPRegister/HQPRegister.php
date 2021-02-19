@@ -38,6 +38,9 @@ class HQPRegister extends SpecialPage{
                 else if($config->getValue('networkName') == "IntComp"){
                     $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the LOI then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
                 }
+                else if($config->getValue('networkName') == "MtS"){
+                    $parseroutput->mText .= "<h2>New Applicant Registration</h2><p>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
                 }
@@ -54,12 +57,18 @@ class HQPRegister extends SpecialPage{
     }
     
     function userCanExecute($user){
-        $person = Person::newFromUser($user);
-        return !$person->isLoggedIn();
+        return true;
     }
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $wgOut->clearHTML();
+            $wgOut->setPageTitle("Account already exists");
+            $wgOut->addHTML("Your account already exists.");
+            return;
+        }
         if(!isset($_POST['submit'])){
             HQPRegister::generateFormHTML($wgOut);
         }
@@ -112,13 +121,18 @@ class HQPRegister extends SpecialPage{
      function generateFormHTML($wgOut){
         global $wgServer, $wgScriptPath, $wgRoles, $config;
         $user = Person::newFromWgUser();
-        if($config->getValue('networkName') == "ADA" || "CFN"){
+        if($config->getValue('networkName') == "ADA" || $config->getValue('networkName') == "CFN"){
             $wgOut->setPageTitle("Member Registration");
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == "IntComp"){
             $wgOut->setPageTitle("Member Registration");
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of PI-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        }
+        else if($config->getValue('networkName') == "MtS"){
+            $wgOut->setPageTitle("New Applicant Registration");
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Applicant.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br />
+            Applicants may register using their institutional email address only. For permission to use a non .ca email address, please contact <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a>.<br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
@@ -146,7 +160,8 @@ class HQPRegister extends SpecialPage{
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
             $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             if($config->getValue('networkName') == "ADA" || 
-               $config->getValue('networkName') == "CFN"){
+               $config->getValue('networkName') == "CFN" ||
+               $config->getValue('networkName') == "MtS"){
                 // No Role
             }
             else if($config->getValue('networkName') == "IntComp"){

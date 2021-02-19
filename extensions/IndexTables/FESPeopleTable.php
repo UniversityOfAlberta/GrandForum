@@ -28,6 +28,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Roles</th>
+                    <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                     <th>Projects</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -36,6 +37,26 @@ class FESPeopleTable extends SpecialPage {
                     <th>Alumni</th>
                     <th>Alumni Country</th>
                     <th>Alumni Sector</th>
+                    <th>Institution</th>
+                    <th>Department</th>
+                    <th>Gender</th>");
+        if($config->getValue('crcEnabled')){
+            $wgOut->addHTML("<th>CRC</th>");
+        }
+        if($config->getValue('ecrEnabled')){
+            $wgOut->addHTML("<th>ECR</th>");
+        }
+        if($config->getValue('mitacsEnabled')){
+            $wgOut->addHTML("<th>MITACS</th>");
+        }
+        $wgOut->addHTML("
+                    <th style='display:none;'>Indigenous</th>
+                    <th style='display:none;'>Disability</th>
+                    <th style='display:none;'>Minority</th>
+                    <th>Nationality</th>
+                    <th>Status</th>
+                    <th>Bio</th>
+                    <th>Keywords</th>
                 </tr>
             </thead>
             <tbody>");
@@ -59,11 +80,27 @@ class FESPeopleTable extends SpecialPage {
                     $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
                 }
             }
+            $universities = $person->getUniversities();
+            $positions = array();
+            foreach($universities as $uni){
+                $positions[$uni['position']] = $uni['position'];
+            }
             $projectsRow = implode("<br />", $projs);
+            if($person->isActive()){
+                $status = "Active";
+            }
+            else{
+                $status = "Inactive";                
+            }
+            $profile = $person->getProfile(true);
+            if($profile == ""){
+                $profile = $person->getProfile(false);
+            }
             $wgOut->addHTML("<tr>
                              <td>{$person->getReversedName()}</td>
                              <td>{$person->getEmail()}</td>
                              <td>{$person->getRoleString()}</td>
+                             <td>".implode(", ", $positions)."</td>
                              <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
                              <td>{$earliestDate}</td>
                              <td>{$latestDate}</td>
@@ -72,6 +109,26 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$alumni->alumni}</td>
                              <td>{$alumni->alumni_country}</td>
                              <td>{$alumni->alumni_sector}</td>
+                             <td>{$person->getUni()}</td>
+                             <td>{$person->getDepartment()}</td>
+                             <td>{$person->getGender()}</td>");
+            if($config->getValue('crcEnabled')){
+                $crcObj = $person->getCanadaResearchChair();
+                $wgOut->addHTML("<td>".@implode("<br />\n", $crcObj)."</td>");
+            }
+            if($config->getValue('ecrEnabled')){
+                $wgOut->addHTML("<td>{$person->getEarlyCareerResearcher()}</td>");
+            }
+            if($config->getValue('mitacsEnabled')){
+                $wgOut->addHTML("<td>{$person->getMitacs()}</td>");
+            }
+            $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
+                             <td style='display:none;'>{$person->getDisabilityStatus()}</td>
+                             <td style='display:none;'>{$person->getMinorityStatus()}</td>
+                             <td>{$person->getNationality()}</td>
+                             <td>{$status}</td>
+                             <td>{$profile}</td>
+                             <td>{$person->getKeywords(', ')}</td>
                             </tr>");
         }
         

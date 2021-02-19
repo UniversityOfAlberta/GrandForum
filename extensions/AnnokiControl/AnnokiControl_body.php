@@ -28,8 +28,14 @@ Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
 "$2" has been created and was set to "$3".  Your temporary password will expire in {{PLURAL:$5|one day|$5 days}}.';
             break;
         case "createaccount-text":
-            $message = 'An account has been created for your e-mail address on {{SITENAME}} ($4) named "$2", with password "$3".
+            $message = 'An account has been created for your e-mail address on {{SITENAME}} ($4) named "$2"';
+            if(!isExtensionEnabled('Shibboleth')){
+                $message .= ', with password "$3".
 You should log in and change your password now.';
+            }
+            else{
+                $message .= '.';
+            }
             break;
         case "readonlytext":
             $message = '$1';

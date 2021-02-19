@@ -2,7 +2,9 @@
 
 require_once("SpecialImpersonate.php");
 
-$wgHooks['AuthPluginSetup'][] = 'impersonate';
+if(!isExtensionEnabled('Shibboleth')){
+    $wgHooks['AuthPluginSetup'][] = 'impersonate';
+}
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 $wgHooks['UnknownAction'][] = 'getUserMode';
 

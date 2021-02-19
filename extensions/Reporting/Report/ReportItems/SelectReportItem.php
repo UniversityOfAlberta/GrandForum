@@ -38,10 +38,11 @@ class SelectReportItem extends AbstractReportItem {
 	    global $wgOut;
 	    $attr = strtolower($this->getAttr("onlyShowIfNotEmpty"));
 	    $val = $this->getBlobValue();
-	    if($attr == "true" && empty($val)){
+
+	    if($attr == "true" && ($val === "" || $val === null)){
 	        return "";
 	    }
-	    else if(empty($val)){
+	    else if(($val === "" || $val === null)){
 	    	$val = "N/A";
 	    }
 

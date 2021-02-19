@@ -658,3 +658,24 @@ if (!String.prototype.ordinalize)
         return str;
     };
 }
+
+if (!String.prototype.an)
+{
+    String.prototype.an = function()
+    {
+        var str = this;
+        switch(str[0].toLowerCase()){
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                return "an " + str;
+                break;
+            default:
+                return "a " + str;
+                break;
+        }
+        return str;
+    };
+}

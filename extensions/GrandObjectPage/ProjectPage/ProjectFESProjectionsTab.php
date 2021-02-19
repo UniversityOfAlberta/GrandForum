@@ -15,6 +15,10 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
     function generatePDFBody(){
         $this->generateBody();
     }
+    
+    function canEdit(){
+        return (!$this->project->isFeatureFrozen(FREEZE_PROJECTIONS) && parent::canEdit());
+    }
 
     function generateBody(){
         global $wgOut, $config;
@@ -221,9 +225,8 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
                     }
                 }
             }
-        
-        header("Location: {$this->project->getUrl()}?tab=projections");
-        exit;
+        Messages::addSuccess("'Projections' updated successfully.");
+        redirect("{$this->project->getUrl()}?tab=projections");
     }
     
 }

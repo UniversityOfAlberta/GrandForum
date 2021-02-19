@@ -20,17 +20,28 @@ class PersonSubRolesAPI extends RESTAPI {
     }
     
     function doPUT(){
+        global $config;
         $me = Person::newFromWgUser();
         $person = Person::newFromId($this->getParam('id'));
         if($me->isRoleAtLeast(STAFF) && $person->getId() != 0){
             MailingList::unsubscribeAll($person);
             $subRoles = $this->POST('subroles');
             DBFunctions::begin();
-            DBFunctions::delete('grand_role_subtype',
-                                array('user_id' => EQ($person->getId())));
             foreach($subRoles as $key => $subRole){
                 if($subRole == 1 || $subRole == true){
-                    DBFunctions::insert('grand_role_subtype',
+                    if(count(DBFunctions::select(array('grand_role_subtype'),
+                                                 array('*'),
+                                                 array('user_id' => EQ($person->getId()),
+                                                       'sub_role' => EQ($key)))) == 0){
+                        // Add if doesn't exist yet
+                        DBFunctions::insert('grand_role_subtype',
+                                            array('user_id' => EQ($person->getId()),
+                                                  'sub_role' => EQ($key)));
+                    }
+                }
+                else{
+                    // Delete
+                    DBFunctions::delete('grand_role_subtype',
                                         array('user_id' => EQ($person->getId()),
                                               'sub_role' => EQ($key)));
                 }
@@ -40,7 +51,7 @@ class PersonSubRolesAPI extends RESTAPI {
             return $this->doGET();
         }
         else{
-            $this->throwError("Could not modify Sub-Roles");
+            $this->throwError("Could not modify ".Inflect::pluralize($config->getValue('subRoleTerm')));
         }
     }
     

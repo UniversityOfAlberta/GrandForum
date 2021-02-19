@@ -52,12 +52,49 @@ Feature: Reporting
         
     Scenario: Guest tries to access report
         Given I am on "index.php/Special:Report?report=LoggedIn"
-        Then I should see "Permission Error"
+        Then I should see "Not logged in"
         
     Scenario: HQP tries to access report
         Given I am logged in as "HQP.User1" using password "HQP.Pass1"
         When I go to "index.php/Special:Report?report=LoggedIn"
         Then I should see "Section 1"
+        
+    Scenario: PL Accessing Project Report
+        Given I am logged in as "PL.User4" using password "PL.Pass4"
+        When I go to "index.php/Special:Report?report=ProjectReport&project=Phase1Project1"
+        Then I should see "PL Section"
+        And I should see "NI Section"
+        And I should see "HQP Section"
+        
+    Scenario: NI Accessing Project Report
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=ProjectReport&project=Phase1Project1"
+        Then I should not see "PL Section"
+        And I should see "NI Section"
+        And I should see "HQP Section"
+        
+    Scenario: HQP Accessing Project Report
+        Given I am logged in as "HQP.User4" using password "HQP.Pass4"
+        When I go to "index.php/Special:Report?report=ProjectReport&project=Phase1Project1"
+        Then I should not see "PL Section"
+        And I should not see "NI Section"
+        And I should see "HQP Section"
+        
+    Scenario: PL Accessing Project Report for a project they don't belong to
+        Given I am logged in as "PL.User4" using password "PL.Pass4"
+        When I go to "index.php/Special:Report?report=ProjectReport&project=Phase1Project2"
+        Then I should not see "PL Section"
+        And I should not see "NI Section"
+        And I should not see "HQP Section"
+        And I should see "Permission error"
+        
+    Scenario: PL Accessing Project Report but no project is specified
+        Given I am logged in as "PL.User4" using password "PL.Pass4"
+        When I go to "index.php/Special:Report?report=ProjectReport"
+        Then I should not see "PL Section"
+        And I should not see "NI Section"
+        And I should not see "HQP Section"
+        And I should see "Permission error"
         
     Scenario: NI edits a field in the report
         Given I am logged in as "NI.User1" using password "NI.Pass1"

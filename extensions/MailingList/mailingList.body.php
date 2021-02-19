@@ -3,6 +3,10 @@
 require_once("MyMailingLists.php");
 require_once("MailingListRules/MailingListRules.php");
 
+if($config->getValue("networkName") == "AI4Society"){
+    require_once("Newsletter/Newsletter.php");
+}
+
 $wgHooks['ArticleViewHeader'][] = 'MailList::createMailListTable';
 $wgHooks['userCan'][] = 'MailList::userCanExecute';
 

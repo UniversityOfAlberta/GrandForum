@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Cycle II Clinical Partnerships RFP" reportType="RP_CLINICAL" pdfType="RPTP_CLINICAL" pdfFiles="ClinicalReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2020">
+<Report name="Cycle II Clinical Partnerships RFP" reportType="RP_CLINICAL" pdfType="RPTP_CLINICAL" pdfFiles="ClinicalReportPDF" ajax="true" allowIdProjects="true" disabled="false" year="2021">
     <Permissions>
-        <Role role="" subRole="Clinical2020">
+        <Role role="" subRole="Clinical2021">
 
         </Role>
         <Role role="Staff">
@@ -36,16 +36,10 @@
                 <p>Questions about project suitability can be directed to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>
                 
                 <h3>Application Form and Submission</h3>
-                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Applications will be reviewed on a quarterly basis. Funding is anticipated to begin on July 2, 2020 until the funds are fully allocated.</p>
+                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, and list of investigators involved in the project. This information is not binding and can change when the application is submitted. Upon registration, applicants will receive instructions for completing the application. Applications will be reviewed on a quarterly basis.</p>
                 
                 <h3>Deadline</h3>
-                <p>This is a rolling call. There are quarterly reviews until the funds are fully allocated. Applicants can submit their proposals when they are ready. Application review will be performed as follow:</p>
-                <ul>
-                    <li>April 10 deadline: Results expected by July 2</li>
-                    <li>July 2 deadline: Results expected by October 1</li>
-                    <li>October 1 deadline: Results expected by January 2</li>
-                    <li>January 2 deadline: Results expected by April 1</li>
-                </ul>
+                <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability. Please check the website for the next deadline.</p>
                 
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to Claude Larrivee Aboussafy (<a href='mailto:clarrivee@glyconet.ca'>clarrivee@glyconet.ca</a>).</p>
@@ -102,8 +96,8 @@
         <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
-                <h2>Equity and Diversity</h2>
-                <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
+                <h2>Equity, Diversity and Inclusion</h2>
+                <p>Demonstrate how equity, diversity and inclusion (EDI) has been incorporated into the project (see application instructions for more details).</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -216,7 +210,7 @@
         <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Knowledge and Technology Exchange and Exploitation</h2>
-                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders.<br />
+                <p>A summary of a knowledge mobilization plan to communicate results to partners and stakeholders. The summary should include the translation of research into clinical setting and the expected outcomes of the grant (e.g. importance and impact of disease treatment, increase clinician awareness of the role of glycomics in disease, knowledge exchange between NIs, etc.).<br />
                 <small><b>Knowledge Mobilization:</b> A continual strategy involving bi-directional learning with partners and end-users using communication and education events each year.</small></p>
                 {$item}
             ]]>
@@ -226,10 +220,10 @@
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Training Potential</h2>
-                <p>A summary of the project’s training plan.</p>
+                <p>A summary of the project’s training plan. </p>
                 <ul>
-                    <li>Provide information on the number and type (i.e., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project.</li>
-                    <li>List the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</li>
+                    <li>Provide information on the number and type (e.g., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel (HQP) trained each year of the project.</li>
+                    <li>List the desired type of professional development training that GlycoNet could provide to NIs or HQP (e.g. cross-training of investigators or trainees, lab rotations, communication and writing skills improvement, etc.).</li>
                 </ul>
                 {$item}
             ]]>

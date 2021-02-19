@@ -145,14 +145,7 @@ BibliographyEditView = Backbone.View.extend({
     
     renderEditorsWidget: function(){
         var model = this.model;
-        if(headerColor != "#333333"){
-            // Headers were changed, use this color
-            this.$("#editors .sortable-header").css("background", headerColor);
-        }
-        else{
-            // Otherwise use the highlight color
-            this.$("#editors .sortable-header").css("background", highlightColor);
-        }
+        this.$("#editors .sortable-header").css("background", hyperlinkColor);
 
         if(this.allPeople.length == 0){
             return;
@@ -226,14 +219,7 @@ BibliographyEditView = Backbone.View.extend({
     
     renderProductsWidget: function(){
         var model = this.model;
-        if(headerColor != "#333333"){
-            // Headers were changed, use this color
-            this.$("#products .sortable-header").css("background", headerColor);
-        }
-        else{
-            // Otherwise use the highlight color
-            this.$("#products .sortable-header").css("background", highlightColor);
-        }
+        this.$("#products .sortable-header").css("background", hyperlinkColor);
         
         if(this.allProducts.length == 0){
             this.spinner = spinner("products", 20, 40, 10, 6, '#888');

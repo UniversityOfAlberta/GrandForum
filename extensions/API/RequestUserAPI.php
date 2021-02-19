@@ -8,6 +8,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpSendEmail", true, "Whether or not to send a registration email", "true");
         $this->addPOST("wpRealName", false, "The User's real name", "Real Name");
         $this->addPOST("wpFirstName", false, "The User's first name", "First Name");
+        $this->addPOST("wpMiddleName", false, "The User's middle name", "Middle Name");
         $this->addPOST("wpLastName", false, "The User's last name", "Last Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
@@ -101,6 +102,7 @@ class RequestUserAPI extends API{
 		$wpSendEmail = isset($_POST['wpSendEmail']) ? $_POST['wpSendEmail'] : "";
 		$wpRealName = isset($_POST['wpRealName']) ? $_POST['wpRealName'] : "";
 		$wpFirstName = isset($_POST['wpFirstName']) ? $_POST['wpFirstName'] : "";
+		$wpMiddleName = isset($_POST['wpMiddleName']) ? $_POST['wpMiddleName'] : "";
 		$wpLastName = isset($_POST['wpLastName']) ? $_POST['wpLastName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
@@ -121,6 +123,7 @@ class RequestUserAPI extends API{
 		                          'wpSendEmail' => $wpSendEmail,
 		                          'wpRealName' => $wpRealName,
 		                          'wpFirstName' => $wpFirstName,
+		                          'wpMiddleName'=> $wpMiddleName,
 		                          'wpLastName' => $wpLastName,
 		                          'wpUserType' => $wpUserType,
 		                          'wpNS' => $wpNS,

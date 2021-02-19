@@ -21,6 +21,11 @@ class Contributions extends BackbonePage {
     }
     
     function getViews(){
+        global $wgOut;
+        $wgOut->addScript("<script type='text/javascript'>
+            var cashMap = ".json_encode(Contribution::$cashMap).";
+            var inkindMap = ".json_encode(Contribution::$inkindMap).";
+        </script>");
         return array('Backbone/*',
                      'ContributionsView',
                      'ContributionView',

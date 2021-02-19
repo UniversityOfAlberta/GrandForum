@@ -7,8 +7,17 @@ class PeopleTableTab extends AbstractTab {
     var $past;
 
     function PeopleTableTab($table, $visibility, $past=false){
+        global $config, $wgOut;
+        if($table != "Candidate"){
+            $tabTitle = Inflect::pluralize($config->getValue('roleDefs', $table));
+        }
+        else{
+            $tabTitle = Inflect::pluralize($table);
+        }
+        $tabTitle = ucwords($tabTitle);
+        $wgOut->setPageTitle($tabTitle);
         if(!$past){
-            parent::AbstractTab("Current");
+            parent::AbstractTab($tabTitle);
         } 
         else if(is_numeric($past)){
             parent::AbstractTab("$past-".($past+1));
@@ -54,9 +63,11 @@ class PeopleTableTab extends AbstractTab {
         $emailHeader = "";
         $idHeader = "";
         $epicHeader = "";
+        $hqpHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
+        $uniHeader = "";
         $committees = $config->getValue('committees');
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>";
@@ -69,25 +80,31 @@ class PeopleTableTab extends AbstractTab {
             $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
         }
         if($this->table == HQP){
-            $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
+            $subRoleHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
             if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRoleAtLeast(STAFF) || $me->isThemeLeader() || $me->isThemeCoordinator())){
                 $epicHeader = "<th id='epicHeader' style='white-space: nowrap;'>EPIC Due Date</th>
                                <th style='white-space: nowrap;'>Appendix A</th>
                                <th style='white-space: nowrap;'>COI</th>
                                <th style='white-space: nowrap;'>NDA</th>";
             }
+            $hqpHeader = "<th>Supervisors</th>";
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
-            $statusHeader .= "<th>Gender</th>";
+            if($config->getValue("genderEnabled")){
+                $statusHeader .= "<th>Gender</th>";
+            }
             if($config->getValue('crcEnabled')){
                 $statusHeader .= "<th>CRC</th>";
             }
             if($config->getValue('ecrEnabled')){
                 $statusHeader .= "<th>ECR</th>";
+            }
+            if($config->getValue('agenciesEnabled')){
+                $statusHeader .= "<th>Agencies</th>";
             }
             if($config->getValue('mitacsEnabled')){
                 $statusHeader .= "<th>MITACS</th>";
@@ -97,25 +114,32 @@ class PeopleTableTab extends AbstractTab {
                                   <th style='display:none;'>Disability</th>
                                   <th style='display:none;'>Minority</th>";
             }
-            $statusHeader .= "<th>Nationality</th>
-                              <th>Status</th>";
+            if($config->getValue("nationalityEnabled")){
+                $statusHeader .= "<th>Nationality</th>";
+            }
+            $statusHeader .= "<th>Status</th>";
         }
         $role = "{$this->table} members";
         if($this->table == "Member"){
             $role = "Members";
         }
-        $this->html .= "Below are all of the ".strtolower($this->id)." {$role} in {$config->getValue('networkName')}.  To search for someone in particular, use the search box below.  You can search by name, project or institution.<br /><br />";
+        if(!isExtensionEnabled("Shibboleth")){
+            $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
+        }
+        $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
         $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
                             <thead>
                                 <tr>
-                                    <th style='white-space: nowrap;'>Name</th>
+                                    <th style='white-space: nowrap; width:20%;'>Name</th>
                                     <th style='display:none;'>First Name</th>
                                     <th style='display:none;'>Last Name</th>
                                     {$subRoleHeader}
                                     {$projectsHeader}
-                                    <th style='white-space: nowrap;'>Institution</th>
-                                    <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
-                                    <th style='white-space: nowrap;'>Title</th>
+                                    {$uniHeader}
+                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
+                                    {$hqpHeader}
+                                    <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
                                     {$statusHeader}
                                     {$epicHeader}
                                     {$contactHeader}
@@ -148,7 +172,8 @@ class PeopleTableTab extends AbstractTab {
             $count++;
             $this->html .= "
                 <tr>
-                    <td align='left' style='white-space: nowrap;'>
+                    <td align='center' style='white-space: nowrap;'>
+                        <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='max-width:100px;max-height:132px; border-radius: 5px;' /></a><br />
                         <a href='{$person->getUrl()}'>{$person->getReversedName()}</a>
                     </td>
                     <td align='left' style='white-space: nowrap;display:none;'>
@@ -187,9 +212,32 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             $university = $person->getUniversity();
-            $this->html .= "<td align='left'>{$university['university']}</td>";
-            $this->html .= "<td align='left'>{$university['department']}</td>";
+            if($uniHeader != ''){
+                $this->html .= "<td align='left'>{$university['university']}</td>";
+            }
+            if($person->getFaculty() != ""){
+                $this->html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
+            }
+            else{
+                $this->html .= "<td align='left'>{$person->getDepartment()}</td>";
+            }
             $this->html .= "<td align='left'>{$university['position']}</td>";
+            if($hqpHeader != ''){
+                $supervisors = array();
+                foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
+                    $supervisors[$supervisor->id] = "<a href='{$supervisor->getUrl()}'>{$supervisor->getNameForForms()}</a>";
+                }
+                $this->html .= "<td>".implode("; ", $supervisors)."</td>";
+            }
+            $keywords = $person->getKeywords(', ');
+            $bio = strip_tags(trim($person->getProfile()));
+            if($bio != ""){
+                $bio = "<div style='display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;'>{$bio}</div>";
+            }
+            if($keywords != "" && $bio != ""){
+                $keywords .= "<br /><br />";
+            }
+            $this->html .= "<td align='left'>{$keywords}{$bio}</td>";
             if($statusHeader != ''){
                 if($person->isRole($this->table)){
                     $status = "Active";
@@ -198,13 +246,18 @@ class PeopleTableTab extends AbstractTab {
                     $lastRole = $person->getRole(HQP, true);
                     $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
-                $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                if($config->getValue("genderEnabled")){
+                    $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                }
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
                     $this->html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                }
+                if($config->getValue('agenciesEnabled')){
+                    $this->html .= "<td align='left'>{$person->getAgencies(', ')}</td>";
                 }
                 if($config->getValue('mitacsEnabled')){
                     $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
@@ -214,7 +267,9 @@ class PeopleTableTab extends AbstractTab {
                     $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
                     $this->html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
                 }
-                $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                if($config->getValue("nationalityEnabled")){
+                    $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                }
                 $this->html .= "<td align='left'>{$status}</td>";
             }
             if($epicHeader != ''){
@@ -256,7 +311,7 @@ class PeopleTableTab extends AbstractTab {
             'iDisplayLength': 100, 
             'autoWidth':false,
             'columnDefs': [
-                {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))}
+                ($('.indexTable.{$this->id} th').index($('#epicHeader')) != -1) ? {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))} : {}
             ],
             'dom': 'Blfrtip',
             'buttons': [

@@ -1,13 +1,14 @@
 /* Any custom styles should go here */
 
-span#infinity {
+a#infinity {
     margin: 5px;
     font-size: 18px;
     font-weight: bold;
 }
 
-span#infinity:hover {
+a#infinity:hover {
     cursor: pointer;
+    text-decoration: none;
 }
 
 div.ui-dialog-content {

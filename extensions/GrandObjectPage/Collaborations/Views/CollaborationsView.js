@@ -46,6 +46,7 @@ CollaborationsView = Backbone.View.extend({
             "autoWidth": true,
             'iDisplayLength': 100,
             'dom': 'Blfrtip',
+            'scrollX': true,
             'buttons': [
                 'excel', 'pdf'
             ]

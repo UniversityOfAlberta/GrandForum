@@ -284,7 +284,7 @@ class BudgetReportItem extends AbstractReportItem {
                     $budget->xls[1][1+$i]->error = "'{$proj->toString()}' has already been used in another column";
                 }
                 $alreadyUsed[$proj->toString()] = true;
-                if($project != null && !$project->isBigBet()){
+                if($project != null){
                     $total += intval(str_replace("$", "", $budget->copy()->rasterize()->select(V_PROJ, array($proj->toString()))->where(COL_TOTAL)->toString()));
                 }
                 $i++;

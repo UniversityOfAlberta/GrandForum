@@ -14,30 +14,30 @@
                 {$project_full_name}<br /><br />
             ]]>
         </Static>
-        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Proposed Project Period:</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="fundsAvailable" type="Calendar" blobItem="FUNDS_AVAILABLE" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Funds Available Date:</h4>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Reporting Period:</h4>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="80px">
+        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}<br /><br />
             ]]>
@@ -107,10 +107,22 @@
             ]]>
         </ReportItem>
         <ReportItem id="project_dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" table="false" details="true" totalOnly="true" showAll="true"
-                    start="{getText(RP_PROGRESS,DETAILS,REPORT_START,0,0,{$project_id})}" 
-                    end="{getText(RP_PROGRESS,DETAILS,REPORT_END,0,0,{$project_id})}">
+                    start="{getText(RP_PROGRESS_REPORT,DETAILS,REPORT_START,0,0,{$project_id})}" 
+                    end="{getText(RP_PROGRESS_REPORT,DETAILS,REPORT_END,0,0,{$project_id})}">
             <![CDATA[
                 <h2>Publications and Presentations</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interaction" type="Textarea" blobItem="INTERACTION" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Interactions between PI and Huawei Technical Leads</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="matching" type="Textarea" blobItem="MATCHING" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h2>Are matching funds in place or intended to be obtained for this project</h2>
                 {$item}
             ]]>
         </ReportItem>

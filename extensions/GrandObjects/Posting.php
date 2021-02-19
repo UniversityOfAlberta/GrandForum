@@ -69,6 +69,27 @@ class Posting extends BackboneModel {
     }
     
     /**
+     * Returns an array of Postings which have been deleted
+     */
+    static function getDeletedPostings(){
+        $data = DBFunctions::select(array(static::$dbTable),
+                                    array('*'),
+                                    array('deleted' => EQ(1)));
+        $postings = array();
+        foreach($data as $row){
+            $posting = new static(array($row));
+            if(isset($_GET['apiKey']) && $posting->visibility != "Publish"){
+                // Accessed using API Key, so restrict to Published only
+                continue;
+            }
+            if($posting->isAllowedToView()){
+                $postings[] = $posting;
+            }
+        }
+        return $postings;
+    }
+    
+    /**
      * Returns an array of Postings that have been modified since the specified date
      */
     static function getNewPostings($date){
@@ -156,6 +177,12 @@ class Posting extends BackboneModel {
     
     function getImage(){
         return $this->image;
+    }
+    
+    function getImageMime(){
+        $exploded = explode(";", $this->image);
+        $mime = @str_replace("data:", "", $exploded[0]);
+        return $mime;
     }
     
     function getImageUrl(){
@@ -251,6 +278,7 @@ class Posting extends BackboneModel {
                       'summary' => $this->getSummary(),
                       'summaryFr' => $this->getSummaryFr(),
                       'image' => $this->getImageUrl(),
+                      'imageMime' => $this->getImageMime(),
                       'imageCaption' => $this->getImageCaption(),
                       'imageCaptionFr' => $this->getImageCaptionFr(),
                       'created' => $this->getCreated(),

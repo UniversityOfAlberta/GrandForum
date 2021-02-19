@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is also used in the BDTab of the Project Table Special Page -->
+<Report name="Business Development" reportType="RP_BD_REPORT" personId="0" year="0" ajax="true">
+    <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="bd" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="bd" tooltip="Business Development" name="Business Development" blobSection="BD" type="EditableReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#aboveTabs').hide();
+                    $('#reportTabs').hide();
+                </script>
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1">Therapeutics</a></li>
+                        <li><a href="#tabs-2">Biomarker/Diagnostic</a></li>
+                        <li><a href="#tabs-3">Synthesis/Process</a></li>
+                        <li><a href="#tabs-4">NewCo</a></li>
+                        <li><a href="#tabs-5">Tools/Analytical Techniques</a></li>
+                    </ul>
+            ]]>
+        </Static>
+    
+        <!-- Therapeutics -->
+        <Static>
+            <![CDATA[
+                <div id="tabs-1">
+            ]]>
+        </Static>
+        <Static id="p1_table">
+            <![CDATA[
+                <table class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2'>Project Code</th>
+                            <th rowspan='2'>Lead NI</th>
+                            <th rowspan='2'>Start</th>
+                            <th rowspan='2'>End</th>
+                            <th rowspan='2'>Product Type</th>
+                            <th colspan='4'>Proof of Concept</th>
+                            <th colspan='4'>Preclinical</th>
+                            <th colspan='2'>Clinical</th>
+                            <th rowspan='2'>Targets / Indication</th>
+                            <th rowspan='2'>Where are they at, important milestone</th>
+                            <th rowspan='2'>IP Filing</th>
+                            <th rowspan='2'>Partners</th>
+                            <th rowspan='2'>Next step</th>
+                        </tr>
+                        <tr>
+                            <th>Target Validation</th>
+                            <th>Lead Generation / Screening</th>
+                            <th>In vitro / ex-vivo</th>
+                            <th>Lead Selected</th>
+                            <th>In vivo</th>
+                            <th>Efficacy</th>
+                            <th>Toxicology</th>
+                            <th>Pharmacology</th>
+                            <th>Large Scale Synthesis</th>
+                            <th>Trial</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
+            <If id="p1" if="{contains(
+                              'Project 2'
+                              'AM-1'
+                              'AM-2'
+                              'AM-3'
+                              'AM-4'
+                              'AM-5'
+                              'AM-6'
+                              'AM-7'
+                              'AM-12'
+                              'AM-15'
+                              'AM-21'
+                              'AM-22'
+                              'AM-25'
+                              'AM-32'
+                              'CD-1'
+                              'CD-2'
+                              'CD-3'
+                              'CD-9'
+                              'CD-10'
+                              'CD-13'
+                              'CD-15'
+                              'CD-17'
+                              'CD-20'
+                              'CD-21'
+                              'CD-25'
+                              'CD-30'
+                              'CD-31'
+                              'CD-32'
+                              'CD-33'
+                              'CD-40'
+                              'CD-43'
+                              'CD-44'
+                              'CD-45'
+                              'CD-47'
+                              'CD-50'
+                              'CD-57'
+                              'CD-58'
+                              'CD-60'
+                              'CD-61'
+                              'CD-65'
+                              'CD-66'
+                              'CD-67'
+                              'CD-68'
+                              'CD-70'
+                              'CD-72'
+                              'CD-73'
+                              'CD-76'
+                              'CD-77'
+                              'DO-2'
+                              'DO-6'
+                              'DO-16'
+                              'DO-19'
+                              'ID-01'
+                              'ID-02'
+                              'ID-03'
+                              'ID-04'
+                              'ID-05'
+                              'ID-07'
+                              'ND-01'
+                              'ND-02'
+                              'ND-03'
+                              'ND-05'
+                              'ND-06'
+                              'ND-09'
+                              'RG-1'
+                              'RG-2'
+                              'RG-3'
+                              'RG-6'
+                              'RG-9'
+                              'RG-11'
+                              'RG-12'
+                              'RG-14'
+                              'TP-2'
+                              'TP-4'
+                              'TP-6'
+                              'TP-11'
+                              'TP-13'
+                              'TP-17'
+                              'TP-18'
+                              'TP-20'
+                              'TP-22'
+                              'TP-24'
+                              'TP-25'
+                              'TP-27'
+                              'TP-31'
+                              'TP-35'
+                              'TP-36','{$project_name}')}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <td>{$project_name}</td>
+                        <td>{$project_past_leader_names}</td>
+                    ]]>
+                </Static>
+                <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <For array="PROOF_1|PROOF_2|PROOF_3|PROOF_5|PROOF_4|PRE_2|PRE_3|PRE_4|PRE_1|PRE_5">
+                    <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
+                        <![CDATA[
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+                <ReportItem id="targets" type="Text" blobItem="TARGETS">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ip" type="Text" blobItem="IP">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <!-- Biomarker/Diagnostic -->
+        <Static>
+            <![CDATA[
+                <div id="tabs-2">
+            ]]>
+        </Static>
+        <Static id="p2_table">
+            <![CDATA[
+                <table class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2'>Project Code</th>
+                            <th rowspan='2'>Lead NI</th>
+                            <th rowspan='2'>Start</th>
+                            <th rowspan='2'>End</th>
+                            <th rowspan='2'>Product Type</th>
+                            <th colspan='2' style='white-space:nowrap;'>Identification / Proof of Concept</th>
+                            <th colspan='3'>Regulatory</th>
+                            <th colspan='1'>Clinical</th>
+                            <th rowspan='2'>Targets / Indication</th>
+                            <th rowspan='2'>Where are they at, important milestone</th>
+                            <th rowspan='2'>IP Filing</th>
+                            <th rowspan='2'>Partners</th>
+                            <th rowspan='2'>Next step</th>
+                        </tr>
+                        <tr>
+                            <th>Discovery (diseased vs control)</th>
+                            <th>Qualification</th>
+                            <th>Verification</th>
+                            <th>Sensitivity/Specificity</th>
+                            <th>Optimization</th>
+                            <th>Validation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
+            <If id="p2" if="{contains(
+                              'Project 2'
+                              'CD-7'
+                              'CD-24'
+                              'CD-29'
+                              'CD-35'
+                              'CD-36'
+                              'CD-37'
+                              'CD-63'
+                              'CD-78'
+                              'CR-01'
+                              'CR-03'
+                              'CR-06'
+                              'CR-07'
+                              'TP-18','{$project_name}')}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <td>{$project_name}</td>
+                        <td>{$project_past_leader_names}</td>
+                    ]]>
+                </Static>
+                <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <For array="BIO_1|BIO_2|BIO_3|BIO_4|BIO_5|BIO_6">
+                    <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
+                        <![CDATA[
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+                <ReportItem id="targets" type="Text" blobItem="TARGETS">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ip" type="Text" blobItem="IP">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <!-- Synthesis/Process -->
+        <Static>
+            <![CDATA[
+                <div id="tabs-3">
+            ]]>
+        </Static>
+        <Static id="p3_table">
+            <![CDATA[
+                <table class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th rowspan='1'>Project Code</th>
+                            <th rowspan='1'>Lead NI</th>
+                            <th rowspan='1'>Start</th>
+                            <th rowspan='1'>End</th>
+                            <th rowspan='1'>Product Type</th>
+                            <th rowspan='1'>Discovery</th>
+                            <th rowspan='1'>Screening</th>
+                            <th rowspan='1'>Optimization</th>
+                            <th rowspan='1'>Scale up</th>
+                            <th rowspan='1'>Where are they at, important milestone</th>
+                            <th rowspan='1'>IP Filing</th>
+                            <th rowspan='1'>Partners</th>
+                            <th rowspan='1'>Next step</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
+            <If id="p3" if="{contains(
+                              'Project 2'
+                              'CD-46'
+                              'CD-81'
+                              'TP-1','{$project_name}')}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <td>{$project_name}</td>
+                        <td>{$project_past_leader_names}</td>
+                    ]]>
+                </Static>
+                <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <For array="SYNTH_1|SYNTH_2|SYNTH_3|SYNTH_4">
+                    <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
+                        <![CDATA[
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+                <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ip" type="Text" blobItem="IP">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <!-- NewCo -->
+        <Static>
+            <![CDATA[
+                <div id="tabs-4">
+                <table class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th rowspan='2'>Company Name</th>
+                            <th rowspan='2'>Lead NI</th>
+                            <th rowspan='2'>Incorporation</th>
+                            <th rowspan='2'>Product Type / Services</th>
+                            <th rowspan='2'>Targets / Indication</th>
+                            <th rowspan='2'>Preclinical / Regulatory</th>
+                            <th rowspan='2'>Clinical</th>
+                            <th colspan='2'>Funding Received</th>
+                            <th rowspan='2'>Where are they at, important milestone</th>
+                            <th rowspan='2'>Business Strategy</th>
+                            <th rowspan='2'>IP Strategy</th>
+                            <th rowspan='2'>Potential clients</th>
+                            <th rowspan='2'>Next step</th>
+                        </tr>
+                        <tr>
+                            <th>Legal & IP cost</th>
+                            <th>Targeted Development</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <For from="1" to="4">
+            <Static>
+                <![CDATA[
+                    {set(company,}
+                    {set(leaders,)}
+                ]]>
+            </Static>
+            <If if="{==({$index},1)}">
+                <![CDATA[
+                    {set(company, 48Hour Discovery}
+                    {set(leaders, Ratmir Derda)}
+                ]]>
+            </If>
+            <If if="{==({$index},2)}">
+                <![CDATA[
+                    {set(company, PanTHERA CryoSolutions}
+                    {set(leaders, Robert Ben and Jason Acker)}
+                ]]>
+            </If>
+            <If if="{==({$index},3)}">
+                <![CDATA[
+                    {set(company, GlyCa BioSciences}
+                    {set(leaders, Hon Sing Leong and Karla Williams)}
+                ]]>
+            </If>
+            <If if="{==({$index},4)}">
+                <![CDATA[
+                    {set(company, Carbaform Bioscience}
+                    {set(leaders, Robert Britton and David Vocadlo)}
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <tr>
+                ]]>
+            </Static>
+            <Static>
+                <![CDATA[
+                    <td>{get(company)}</td>
+                    <td>{get(leaders)}</td>
+                ]]>
+            </Static>
+            <ReportItem id="incorporation" type="Text" blobItem="INCORPORATION" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="targets" type="Text" blobItem="TARGETS" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="co_1" type="Select" blobItem="CO_1" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="co_2" type="Select" blobItem="CO_2" blobSubItem="COMPANY{$index}" options="|Completed|In Progress|N/A">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="legal" type="Text" blobItem="LEGAL" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="targeted" type="Text" blobItem="TARGETED" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" blobSubItem="COMPANY{$index}" height="75px" width="200px">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="strat" type="Textarea" blobItem="STRAT" blobSubItem="COMPANY{$index}" height="75px" width="200px">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="ip" type="Text" blobItem="IP" blobSubItem="COMPANY{$index}">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="clients" type="Textarea" blobItem="CLIENTS" blobSubItem="COMPANY{$index}" height="75px" width="200px">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="next" type="Textarea" blobItem="NEXT" blobSubItem="COMPANY{$index}" height="75px" width="200px">
+                <![CDATA[
+                    <td><span style="display:none;">{$value}</span>{$item}</td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </For>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <!-- Tools/Analytical Techniques -->
+        <Static>
+            <![CDATA[
+                <div id="tabs-5">
+            ]]>
+        </Static>
+        <Static id="p4_table">
+            <![CDATA[
+                <table class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th rowspan='1'>Project Code</th>
+                            <th rowspan='1'>Lead NI</th>
+                            <th rowspan='1'>Start</th>
+                            <th rowspan='1'>End</th>
+                            <th rowspan='1'>Product Type</th>
+                            <th rowspan='1'>Discovery</th>
+                            <th rowspan='1'>POC</th>
+                            <th rowspan='1'>Optimization and Benchmarking</th>
+                            <th rowspan='1'>Service</th>
+                            <th rowspan='1'>User validation</th>
+                            <th rowspan='1'>Where are they at, important milestone</th>
+                            <th rowspan='1'>IP Filing</th>
+                            <th rowspan='1'>Partners</th>
+                            <th rowspan='1'>Next step</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjectsReportItemSet" ever="true">
+            <If id="p4" if="{contains(
+                              'Project 2'
+                              'CD-41'
+                              'CD-62'
+                              'DO-18'
+                              'TP-38','{$project_name}')}">
+                <Static>
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </Static>
+                <Static>
+                    <![CDATA[
+                        <td>{$project_name}</td>
+                        <td>{$project_past_leader_names}</td>
+                    ]]>
+                </Static>
+                <ReportItem id="start_date" type="Calendar" blobItem="P_START_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="end_date" type="Calendar" blobItem="P_END_DATE" width="75px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="product_type" type="Text" blobItem="PRODUCT_TYPE">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <For array="TOOLS_1|TOOLS_2|TOOLS_3|TOOLS_4|TOOLS_5">
+                    <ReportItem id="{strtolower({getExtra()})}" type="Select" blobItem="{getExtra()}" options="|Completed|In Progress|N/A">
+                        <![CDATA[
+                            <td><span style="display:none;">{$value}</span>{$item}</td>
+                        ]]>
+                    </ReportItem>
+                </For>
+                <ReportItem id="milestone" type="Textarea" blobItem="MILESTONE" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ip" type="Text" blobItem="IP">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="next" type="Textarea" blobItem="NEXT" height="75px" width="200px">
+                    <![CDATA[
+                        <td><span style="display:none;">{$value}</span>{$item}</td>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </tr>
+                    ]]>
+                </Static>
+            </If>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                </div>
+            ]]>
+        </Static>
+        
+        <Static>
+            <![CDATA[
+                </div>
+                <script type='text/javascript'>
+                    var tables = $('.wikitable').DataTable({
+                        scrollX: true,
+                        scrollY: ($(window).height() - 500) + "px",
+                        searching: false,
+                        aLengthMenu: [
+                            [25, 50, 100, 200, -1],
+                            [25, 50, 100, 200, "All"]
+                        ],
+                        fixedColumns:   
+                        {
+                            leftColumns: 2
+                        },
+                        columnDefs: [
+                           {type: 'natural', targets: 0}
+                        ],
+                        iDisplayLength: -1
+                    });
+                    
+                    $('select').change(function(){
+                        var val = $(this).val();
+                        if(val == "In Progress"){
+                            $(this).closest("td").css("background-color", "#3399ff");
+                        }
+                        else if(val == "Completed"){
+                            $(this).closest("td").css("background-color", "#55bb55");
+                        }
+                        else {
+                            $(this).closest("td").css("background-color", "");
+                        }
+                    });
+                    $('select').change();
+                    
+                    $("#tabs").tabs();
+                    $('#tabs').bind('tabsselect', function(event, ui) {
+                        _.defer(function(){
+                            tables.draw();
+                            $(window).trigger('resize');
+                        });
+                    });
+                    tables.draw();
+                    $(window).trigger('resize');
+                </script>
+                <style>
+                    .dataTables_scrollBody thead {
+                        opacity: 0;
+                    }
+                </style>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

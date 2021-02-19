@@ -6,14 +6,14 @@ table.dataTable {
 	margin: 0 auto;
 	clear: both;
 	width: 100%;
-	border-color: #AAAAAA;
+	border-color: #DDDDDD;
 	border-width: 0 1px 0 1px;
 	color: #222;
 }
 
 table.dataTable thead th {
 	padding: 5px 18px 5px 10px;
-	border: 1px solid #AAAAAA;
+	border: 1px solid #DDDDDD;
 	border-collapse: collapse;
 	border-top: 0;
 	font-weight: bold;
@@ -23,21 +23,26 @@ table.dataTable thead th {
 }
 
 table.dataTable thead tr {
-    background: #e6e6e6 url(../../../skins/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+    background: #F0F0F0;
 }
 
 table.dataTable tfoot th {
 	padding: 3px 18px 3px 10px;
-	border-top: 1px solid #AAAAAA;
+	border-top: 1px solid #DDDDDD;
 	font-weight: bold;
-	border-color: #AAAAAA;
+	border-color: #DDDDDD;
 	border-bottom: none;
 }
 
 table.dataTable td {
 	padding: 3px 10px;
-	border: 1px solid #AAAAAA;
+	border: 1px solid #DDDDDD;
 	border-bottom: 0;
+}
+
+table.dataTable.indexTable td {
+    border: none;
+    border-bottom: 1px solid #DDDDDD;
 }
 
 table.dataTable td.center,
@@ -45,15 +50,15 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd { background-color: #F3F3F3; }
-table.dataTable tr.even { background-color: white; }
+table.dataTable tr.odd { background-color: #FBFBFB; }
+table.dataTable tr.even { background-color: #FFFFFF; }
 
-table.dataTable tr.odd td.sorting_1 { background-color: #EAEAEA; }
-table.dataTable tr.odd td.sorting_2 { background-color: #EAEAEA; }
-table.dataTable tr.odd td.sorting_3 { background-color: #EAEAEA; }
-table.dataTable tr.even td.sorting_1 { background-color: #F3F3F3; }
-table.dataTable tr.even td.sorting_2 { background-color: #F3F3F3; }
-table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
+table.dataTable tr.odd td.sorting_1 { background-color: #F5F5F5; }
+table.dataTable tr.odd td.sorting_2 { background-color: #F5F5F5; }
+table.dataTable tr.odd td.sorting_3 { background-color: #F5F5F5; }
+table.dataTable tr.even td.sorting_1 { background-color: #F8F8F8; }
+table.dataTable tr.even td.sorting_2 { background-color: #F8F8F8; }
+table.dataTable tr.even td.sorting_3 { background-color: #F8F8F8; }
 
 
 /*
@@ -62,9 +67,6 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-	-moz-box-shadow:    0 0 3px 1px #ccc;
-    -webkit-box-shadow: 0 0 3px 1px #ccc;
-    box-shadow:         0 0 3px 1px #ccc;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -77,19 +79,15 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
  */
 .dataTables_length {
 	padding: 5px;
-	height: 30px;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #E2E2E2), color-stop(1, #CCCCCC) ) !important;
-    background:-moz-linear-gradient( center top, #E2E2E2 5%, #CCCCCC 100% ) !important;
-    background: -o-linear-gradient(top, #E2E2E2, #CCCCCC) !important;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#E2E2E2', endColorstr='#CCCCCC');
-    background: -ms-linear-gradient(top, #E2E2E2 0%, #CCCCCC 100%);
+	height: 31px;
+	background: #E2E2E2;
     -moz-border-radius-topright: 4px;
     -moz-border-radius-topleft: 4px;
     -webkit-border-top-left-radius: 4px;
     -webkit-border-top-right-radius: 4px;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
-    border:1px solid #AAAAAA !important;
+    border:1px solid #DDDDDD !important;
 }
 
 .dataTables_length * {
@@ -115,18 +113,14 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
 .dataTables_info {
 	clear: both;
 	padding: 5px;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #E2E2E2), color-stop(1, #CCCCCC) ) !important;
-    background:-moz-linear-gradient( center top, #E2E2E2 5%, #CCCCCC 100% ) !important;
-    background: -o-linear-gradient(top, #E2E2E2, #CCCCCC) !important;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#E2E2E2', endColorstr='#CCCCCC');
-    background: -ms-linear-gradient(top, #E2E2E2 0%, #CCCCCC 100%);
+	background: #E2E2E2;
     -moz-border-radius-bottomright: 4px;
     -moz-border-radius-bottomleft: 4px;
     -webkit-border-bottom-left-radius: 4px;
     -webkit-border-bottom-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
-    border:1px solid #AAAAAA !important;
+    border:1px solid #DDDDDD !important;
     height: 30px;
     line-height: 30px;
 }
@@ -139,7 +133,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
 	position:absolute;
 	right:0;
 	bottom:0;
-	padding: 5px;
+	padding: 3px;
 	text-align: right;
 }
 
@@ -210,19 +204,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F3F3F3; }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
   color: #333333 !important;
   border: 1px solid #cacaca;
-  background-color: white;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, gainsboro));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, white 0%, gainsboro 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -moz-linear-gradient(top, white 0%, gainsboro 100%);
-  /* FF3.6+ */
-  background: -ms-linear-gradient(top, white 0%, gainsboro 100%);
-  /* IE10+ */
-  background: -o-linear-gradient(top, white 0%, gainsboro 100%);
-  /* Opera 11.10+ */
-  background: linear-gradient(to bottom, white 0%, gainsboro 100%);
-  /* W3C */
+  background: #F0F0F0;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
   cursor: default;
@@ -347,8 +329,8 @@ table.dataTable th:active {
    left: 1px;
    border-width: 0 1px 0 0;
    border-style: solid;
-   border-color: #AAAAAA;
-   background: #e6e6e6 url(../../../skins/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+   border-color: #DDDDDD;
+   background: #F0F0F0;
    width: 100%;
    height: 100%;
 }

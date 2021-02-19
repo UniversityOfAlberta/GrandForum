@@ -61,7 +61,7 @@ class ApplicationsTable extends SpecialPage{
         $this->ihs = array();
         $this->catalyst = array();
         $this->platform = array();
-        $this->projects = Project::getAllProjectsEver();
+        $this->projects = Project::getAllProjectsEver(false, true);
         foreach($this->projects as $project){
             if($project->getType() == 'Administrative'){
                 $this->ccs[] = $project;            
@@ -288,6 +288,8 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2021', $this->fullHQPs, 2021, "2021-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2021', $this->fullHQPs, 2021, "2021-01"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2020', $this->fullHQPs, 2020, "2020-07"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2020', $this->fullHQPs, 2020, "2020-04"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2020', $this->fullHQPs, 2020, "2020-01"));
@@ -524,6 +526,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_PROJ_PLAN_UPDATE', $this->projects, 2020, "Project Plan Update"));
         $tabbedPage->addTab(new ApplicationTab('RP_CRP_REPORT', $this->projects, 2019, "CRP End of Term"));
         $tabbedPage->addTab(new ApplicationTab('RP_PROJ_EVALUATION', $this->projects, 2019, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_PLAT_REPORT', $this->platform, 2019, "PLAT-2019 Report"));

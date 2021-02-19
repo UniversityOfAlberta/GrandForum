@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="GlycoNet Departmental Seminar Series" reportType="RP_SEMINAR_SERIES" pdfType="SEMINAR_SERIES" pdfFiles="SeminarSeriesPDF" ajax="true" disabled="false" year="2018">
+<Report name="GlycoNet Departmental Seminar Series" reportType="RP_SEMINAR_SERIES" pdfType="SEMINAR_SERIES" pdfFiles="SeminarSeriesPDF" ajax="true" disabled="true" year="2018">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="background" permissions="rw" />

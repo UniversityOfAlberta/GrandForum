@@ -6,9 +6,30 @@
             <% _.each(Freeze.features, function(feature){ %>
                 <th><%= feature %><br /><a style="cursor:pointer;" data-feature="<%= feature %>" class="check">Check All</a>&nbsp;|&nbsp;<a style="cursor:pointer;" data-feature="<%= feature %>" class="uncheck">Uncheck All</a></th>
             <% }) %>
+            <% _.each(Freeze.globalFeatures, function(feature){ %>
+                <th><%= feature %><br /><a style="cursor:pointer;" data-feature="<%= feature %>" class="check">Check All</a>&nbsp;|&nbsp;<a style="cursor:pointer;" data-feature="<%= feature %>" class="uncheck">Uncheck All</a></th>
+            <% }) %>
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>Global</td>
+            <% _.each(Freeze.features, function(feature){ %>
+                <td></td>
+            <% }.bind(this)) %>
+            <% _.each(Freeze.globalFeatures, function(feature){ %>
+                <td align="center">
+                    <% if(this.model.findWhere({'projectId': '0', 'feature': feature}) != undefined){ %>
+                        <input data-id="<%= this.model.findWhere({'projectId': '0', 'feature': feature}).get('id') %>" 
+                               data-projectId="0" 
+                               data-feature="<%= feature %>" type="checkbox" checked />
+                    <% } else { %>
+                        <input data-projectId="0"
+                               data-feature="<%= feature %>" type="checkbox" />
+                    <% } %>
+                </td>
+            <% }.bind(this)) %>
+        </tr>
         <% this.projects.each(function(project){ %>
         <tr>
             <td><%= project.get('name') %></td>
@@ -23,6 +44,9 @@
                                data-feature="<%= feature %>" type="checkbox" />
                     <% } %>
                 </td>
+            <% }.bind(this)) %>
+            <% _.each(Freeze.globalFeatures, function(feature){ %>
+                <td></td>
             <% }.bind(this)) %>
         </tr>
         <% }.bind(this)) %> 

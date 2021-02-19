@@ -123,8 +123,10 @@ class IndexTable {
                 $selected = ($wgTitle->getText() == "ALL Candidates") ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab("Candidates", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Candidates", "$selected");
             }
-            $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
+            if(NI != null){
+                $selected = ($wgTitle->getText() == "ALL Manager ".NI) ? "selected" : "";
+                $tabs['Manager']['subtabs'][] = TabUtils::createSubTab(NI, "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_Manager_".NI, "$selected");
+            }
         }
         
         if($config->getValue('projectsEnabled')){
@@ -252,21 +254,18 @@ class IndexTable {
                 default:
                     foreach($wgAllRoles as $role){
                         if(($role != HQP || $me->isLoggedIn()) && $wgTitle->getText() == "ALL {$role}"){//Here we can get role
-                            $wgOut->setPageTitle(str_replace("Member", "Members", $config->getValue('roleDefs', $role)));
                             self::generatePersonTable($role);
                             break;
                         }
                     }
                     if($wgTitle->getText() == "ALL Manager ".NI && $me->isRoleAtLeast(STAFF)){
-                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
                         self::generateNITable();
                     }
                     if($wgTitle->getText() == "ALL ".NI){
-                        $wgOut->setPageTitle($config->getValue('roleDefs', NI));
+                        $wgOut->setPageTitle("");
                         self::generatePersonTable(NI);
                     }
                     if($wgTitle->getText() == "ALL Candidates" && $me->isRoleAtLeast(STAFF)){
-                        $wgOut->setPageTitle("Candidates");
                         self::generatePersonTable("Candidate");
                     }
                     break;
@@ -400,7 +399,7 @@ class IndexTable {
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
-        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
+        if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRole(PL) || $me->isRoleAtLeast(STAFF))){
             $activityPlans = "<th>Activity Plans</th>";
         }
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
@@ -417,7 +416,7 @@ class IndexTable {
                                     <td><a href='{$project->getUrl()}'>{$project->getName()}<a></td>
                                     <td>{$project->getFullName()}</td>
                                     <td>{$leaderString}</td>");
-                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isProjectLeader() || $me->isRoleAtLeast(STAFF))){
+                if($config->getValue('networkName') == 'AGE-WELL' && ($me->isRole(PL) || $me->isRoleAtLeast(STAFF))){
                     $wgOut->addHTML("<td>");
                     $projs = array();
                     $projects = array();
@@ -432,7 +431,7 @@ class IndexTable {
                             $projs[] = "<a href='$wgServer$wgScriptPath/index.php/Special:Report?report=CCPlanning&project={$proj->getName()}&section={$project->getName()}'>{$proj->getName()}</a>";
                         }
                     }
-                    if($me->leadershipOf($project) || $me->isRoleAtLeast(STAFF)){
+                    if($me->isRole(PL, $project) || $me->isRoleAtLeast(STAFF)){
                         $report = "";
                         switch($project->getName()){
                             case "CC1 K-MOB":
@@ -474,7 +473,7 @@ class IndexTable {
      * table.
      */
     private function generatePersonTable($table){
-        global $config;
+        global $config, $wgOut;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
@@ -487,11 +486,12 @@ class IndexTable {
                     $tabbedPage->addTab(new PeopleTableTab($table, $visibility, $y));
                 }
             }
-            if($me->isRole($table) || $me->isRoleAtLeast(ADMIN)){
+            if($config->getValue('wikiEnabled') && ($me->isRole($table) || $me->isRoleAtLeast(ADMIN))){
                 $tabbedPage->addTab(new PeopleWikiTab($table, $visibility));
             }
         }
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>$('.custom-title').hide();</script>");
         return true;
     }
     

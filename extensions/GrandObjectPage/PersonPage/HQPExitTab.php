@@ -31,6 +31,7 @@ class HQPExitTab extends AbstractEditableTab {
             $employer = $_POST['employer'];
             $city = $_POST['city'];
             $country = $_POST['country'];
+            $employment_type = $_POST['employment_type'];
             $thesis = @$_POST['thesis'];
             $effective_date = $_POST['effective_date'];
             foreach($_POST['reason'] as $key => $reason){
@@ -44,6 +45,7 @@ class HQPExitTab extends AbstractEditableTab {
                 $_POST['employer'] = @str_replace("'", "&#39;", $employer[$key]);
                 $_POST['city'] = @str_replace("'", "&#39;", $city[$key]);
                 $_POST['country'] = @str_replace("'", "&#39;", $country[$key]);
+                $_POST['employment_type'] = @str_replace("'", "&#39;", $employment_type[$key]);
                 $_POST['effective_date'] = @str_replace("'", "&#39;", $effective_date[$key]);
                 APIRequest::doAction('AddHQPMovedOn', true);
                 if($reason == "graduated"){
@@ -119,6 +121,14 @@ class HQPExitTab extends AbstractEditableTab {
         else {
             $movedOnChecked = "checked='checked'";
         }
+        $employmentSelect = new SelectBox("employment_type[{$id}]", "Employment Type", $row['employment_type'], 
+                                          array("",
+                                                "University",
+                                                "Industry", 
+                                                "Government",
+                                                "Hospital",
+                                                "Other",
+                                                "Unemployed"));
         $html = <<<EOF
             <div id='movedOn_{$id}' style="$display">
                 <fieldset>
@@ -142,6 +152,12 @@ class HQPExitTab extends AbstractEditableTab {
                         <tr>
                             <td align='right'><b>Further Studies at:</b></td>
                             <td><input id='studies' type='text' name='studies[{$id}]' value='{$row['studies']}' /></td>
+                        </tr>
+                        <tr>
+                            <td align='right'><b>Employment Type:</b></td>
+                            <td>
+                                {$employmentSelect->render()}  
+                            </td>
                         </tr>
                         <tr>
                             <td align='right'><b>Employed By:</b></td>
@@ -257,6 +273,7 @@ EOF;
                                                                "employer" => "", 
                                                                "city" => "", 
                                                                "country" => "",
+                                                               "employment_type" => "",
                                                                "thesis" => null,
                                                                "reason" => "graduated"), true);
                 if($config->getValue('networkName') == 'FES'){
@@ -283,6 +300,7 @@ EOF;
                             $this->html .= "<tr><td align='right'><b>Thesis:</b></td><td><a href='{$row['thesis']->getUrl()}'>{$row['thesis']->getTitle()}</a></td></tr>";
                         }
                         if($row['studies'] != "") $this->html .= "<tr><td align='right'><b>Further Studies at:</b></td><td>{$row['studies']}</td></tr>";
+                        if($row['employment_type'] != "") $this->html .= "<tr><td align='right'><b>Employment Type:</b></td><td>{$row['employment_type']}</td></tr>";
                         if($row['employer'] != "") $this->html .= "<tr><td align='right'><b>Employed By:</b></td><td>{$row['employer']}</td></tr>";
                         if($row['city'] != "") $this->html .= "<tr><td align='right'><b>City:</b></td><td>{$row['city']}</td></tr>";
                         if($row['country'] != "") $this->html .= "<tr><td align='right'><b>Country:</b></td><td>{$row['country']}</td></tr>";

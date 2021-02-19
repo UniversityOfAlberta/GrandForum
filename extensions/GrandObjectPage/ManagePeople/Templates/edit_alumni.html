@@ -1,5 +1,5 @@
 <div style="padding:5px;">
-    <h3 style="margin-top:0; margin-bottom:0;">Recruitment</h3>
+    <h3 style="margin-top:0; margin-bottom:0;">Recruitment for <%= networkName %> project</h3>
     <%= HTML.Select(this, 'recruited', {options: ['',
                                                   'Recruited from within UAlberta',
                                                   'Recruited from within Canada (outside UAlberta)',
@@ -10,7 +10,8 @@
     </div>
     
     <h3 style="margin-bottom:0;">Alumni</h3>
-    <b>Has this person moved on to a job in Canada or abroad?</b><br />
+    <b>Has this member moved on from their <%= networkName %> project(s)?</b><br />
+    <small>i.e. appointment ended, graduated, moved on to a job in Canada or abroad, etc.</small><br />
     <%= HTML.Select(this, 'alumni', {options: ['',
                                                'No',
                                                'Yes, in Canada',

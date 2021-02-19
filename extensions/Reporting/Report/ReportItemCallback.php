@@ -35,11 +35,12 @@ class ReportItemCallback {
             "project_theme" => "getProjectTheme",
             "project_start" => "getProjectStart",
             "project_leaders" => "getProjectLeaders",
+            "project_leader_names" => "getProjectLeaderNames",
             "project_leader_ids" => "getProjectLeaderIds",
+            "project_past_leader_names" => "getPastProjectLeaderNames",
             "project_problem" => "getProjectProblem",
             "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
-            "project_champions" => "getProjectChampions",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_collaborators" => "getNCollaborators",
@@ -98,6 +99,7 @@ class ReportItemCallback {
             "user_gender" => "getUserGender",
             "user_twitter" => "getUserTwitter",
             "user_reversed_name" => "getUserReversedName",
+            "user_stakeholder" => "getUserStakeholder",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
             "user_id" => "getUserId",
@@ -113,15 +115,6 @@ class ReportItemCallback {
             "user_projects" => "getUserProjects",
             "user_project_end_date" => "getUserProjectEndDate",
             "user_tvn_file_number" => "getTVNFileNumber", // hard-coded strings
-            "user_subproject_comments" => "getUserSubProjectComments",
-            "user_subproject_champs" => "getUserSubProjectChamps",
-            // Champions
-            "champ_org" => "getChampOrg",
-            "champ_title" => "getChampTitle",
-            "champ_subtitle" => "getChampSubTitle",
-            "champ_subprojects" => "getChampSubProjects",
-            "champ_full_project" => "getChampFullProject",
-            "champ_is_still_champion" => "getChampIsStillChampion",
             // Sub-PL (SPL)
             "spl_subprojects" => "getSPLSubProjects",
             // SAB
@@ -151,6 +144,7 @@ class ReportItemCallback {
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
+            "getDepartments" => "getDepartments",
             "getProjects" => "getProjects",
             "getProjectNames" => "getProjectNames",
             "getProjectTitles" => "getProjectTitles",
@@ -170,6 +164,8 @@ class ReportItemCallback {
             "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "replace" => "replace",
+            "strtolower" => "strtolower",
+            "strtoupper" => "strtoupper",
             "set" => "set",
             "get" => "get",
             "and" => "andCond",
@@ -291,7 +287,7 @@ class ReportItemCallback {
         if($this->reportItem->projectId != 0){
             $project = Project::newFromHistoricId($this->reportItem->projectId);
             $challenges = new Collection($project->getChallenges());
-            $project_theme = $challenges->pluck('getAcronym()');
+            $project_theme = implode(", ", $challenges->pluck('getAcronym()'));
         }
         return $project_theme;
     }
@@ -320,6 +316,21 @@ class ReportItemCallback {
         return implode(", ", $leads);
     }
     
+    function getProjectLeaderNames(){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $leaders = $project->getLeaders();
+            foreach($leaders as $lead){
+                $leads[$lead->getReversedName()] = "{$lead->getNameForForms()}";
+            }
+        }
+        if(count($leads) == 0){
+            $leads[] = "N/A";
+        }
+        return implode(", ", $leads);
+    }
+    
     function getProjectLeaderIds($delim=", "){
         $leads = array();
         if($this->reportItem->projectId != 0 ){
@@ -330,6 +341,21 @@ class ReportItemCallback {
             }
         }
         return implode($delim, $leads);
+    }
+    
+    function getPastProjectLeaderNames(){
+        $leads = array();
+        if($this->reportItem->projectId != 0 ){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $leaders = $project->getAllPeopleDuring(PL, "0000-00-00", EOT);
+            foreach($leaders as $lead){
+                $leads[$lead->getReversedName()] = "{$lead->getNameForForms()}";
+            }
+        }
+        if(count($leads) == 0){
+            $leads[] = "N/A";
+        }
+        return implode(", ", $leads);
     }
     
     function getProjectProblem(){
@@ -356,7 +382,7 @@ class ReportItemCallback {
             $project = Project::newFromHistoricId($this->reportItem->projectId);
             $year = $this->reportItem->getReport()->year;
             foreach($project->getAllPeopleDuring(null, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59") as $ni){
-                if(!$ni->leadershipOf($project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
+                if(!$ni->isRole(PL, $project) && ($ni->isRoleDuring(NI, $year."-04-01 00:00:00", ($year+1)."-03-31 23:59:59"))){
                     $nis[] = "<a href='{$ni->getUrl()}' target='_blank'>{$ni->getNameForForms()}</a>";
                 }
             }
@@ -365,21 +391,6 @@ class ReportItemCallback {
             $nis[] = "N/A";
         }
         return implode(", ", $nis);
-    }
-    
-    function getProjectChampions(){
-        $champions = array();
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromHistoricId($this->reportItem->projectId);
-            $champs = $project->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH);
-            foreach($champs as $champ){
-                $champions[] = "<a href='{$champ['user']->getUrl()}' target='_blank'>{$champ['user']->getNameForForms()}</a>";
-            }
-        }
-        if(count($champions) == 0){
-            $champions[] = "N/A";
-        }
-        return implode(", ", $champions);
     }
     
     function getProjectEvolvedInto(){
@@ -989,12 +1000,7 @@ class ReportItemCallback {
         if(is_array($roles)){
             foreach($roles as $role){
                 if($project != null && $project->getId() != 0){
-                    if($role->getRole() == PL){
-                        if($person->leadershipOf($project)){
-                            $roleNames[$role->getRole()] = $role->getRole();
-                        }
-                    }
-                    else if($role->hasProject($project)){
+                    if($role->hasProject($project)){
                         $roleNames[$role->getRole()] = $role->getRole();
                     }
                 }
@@ -1011,7 +1017,7 @@ class ReportItemCallback {
         $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getMyRoles();
         if($project != null && $project->getId() != 0){
-            if($person->leadershipOf($project)){
+            if($person->isRole(PL, $project)){
                 if($roles != ""){
                     $roles .= ", ".PL;
                 }
@@ -1020,7 +1026,7 @@ class ReportItemCallback {
                 }
             }
         }
-        else if($person->isProjectLeader()){
+        else if($person->isRole(PL)){
             if($roles != ""){
                 $roles .= ", ".PL;
             }
@@ -1080,6 +1086,11 @@ class ReportItemCallback {
         return $person->getReversedName();
     }
     
+    function getUserStakeholder(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getStakeholder();
+    }
+    
     function getUserLastName(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getLastName();
@@ -1125,7 +1136,7 @@ class ReportItemCallback {
         $project = Project::newFromHistoricId($this->reportItem->projectId);
         $roles = $this->getUserRoles($start, $end);
         if($project != null && $project->getId() != 0){
-            if($person->leadershipOf($project)){
+            if($person->isRole(PL, $project)){
                 if($roles != ""){
                     $roles .= ", ".PL;
                 }
@@ -1134,7 +1145,7 @@ class ReportItemCallback {
                 }
             }
         }
-        else if($person->isProjectLeader()){
+        else if($person->isRole(PL)){
             if($roles != ""){
                 $roles .= ", ".PL;
             }
@@ -1233,6 +1244,12 @@ class ReportItemCallback {
         return "N/A";
     }
     
+    function getDepartments($delim=", "){
+        $departments = Person::getAllDepartments();
+        sort($departments);
+        return implode($delim, $departments);
+    }
+    
     function getProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $projects = array();
@@ -1277,9 +1294,9 @@ class ReportItemCallback {
     function getUserProjectEndDate(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromHistoricId($this->reportItem->projectId);
-        $date = $project->getEndDate($person);
+        $date = $project->getLeaveDate($person);
         if($date != "0000-00-00 00:00:00"){
-            return time2date($project->getEndDate($person));
+            return time2date($project->getLeaveDate($person));
         }
         return "";
     }
@@ -1346,97 +1363,13 @@ class ReportItemCallback {
         return "";
     }
     
-    function getUserSubProjectChamps(){
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
-        $item = $report->getSectionById("report")->getReportItemById("sub_project_champs");
-        
-        return $item->getHTMLForPDF();
-    }
-    
-    function getUserSubProjectComments(){
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $report = new DummyReport(RP_SUBPROJECT, new Person(array()), $project, $this->reportItem->getReport()->year);
-        $item = $report->getSectionById("report")->getReportItemById("sub_project_comments");
-        
-        return $item->getHTMLForPDF();
-    }
-    
-    function getChampOrg(){
-        return $this->getUserUni();
-    }
-    
-    function getChampTitle(){
-        return $this->getUserLevel();
-    }
-    
-    function getChampSubTitle(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $org = $person->getUni();
-        $title = $person->getPosition();
-        if($org != "" && $title != ""){
-            return "$org, $title";
-        }
-        else if($org != "" && $title == ""){
-            return $org;
-        }
-        else if($org == "" && $title != ""){
-            return $title;
-        }
-        return "";
-    }
-    
-    function getChampSubProjects(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $subs = array();
-        foreach($project->getSubProjects() as $sub){
-            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                if($champ['user']->getId() == $person->getId()){
-                    $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
-                }
-            }
-        }
-        return implode(", ", $subs);
-    }
-    
-    function getChampFullProject(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        foreach($project->getSubProjects() as $sub){
-            foreach($sub->getChampionsOn(($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH) as $champ){
-                if($champ['user']->getId() == $person->getId()){
-                    return "";
-                }
-            }
-        }
-        return "Full Project";
-    }
-    
-    function getChampIsStillChampion(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $project = Project::newFromHistoricId($this->reportItem->projectId);
-        
-        $result = $person->isChampionOfOn($project, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59');
-        if(!$result && !$project->isSubProject()){
-            foreach($project->getSubProjects() as $sub){
-                $result = ($result || $person->isChampionOfOn($sub, ($this->reportItem->getReport()->year+1).REPORTING_RMC_MEETING_MONTH.' 23:59:59'));
-            }
-        }
-        return (!$result) ? "style='color:red;text-decoration:line-through;'" : "";
-    }
-    
     function getSPLSubProjects(){
         $person = Person::newFromId($this->reportItem->personId);
         $project = Project::newFromHistoricId($this->reportItem->projectId);
         
         $subs = array();
         foreach($project->getSubProjects() as $sub){
-            if($person->leadershipOf($sub)){
+            if($person->isRole(PL, $sub)){
                 $subs[] = "<a href='{$sub->getUrl()}' target='_blank'>{$sub->getName()}</a>";
             }
         }
@@ -1682,7 +1615,10 @@ class ReportItemCallback {
         return 0;
     }
     
-    function getBlobMD5($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+    function getBlobMD5($rp="", $section="", $blobId="", $subId="", $personId="", $projectId="", $year=null){
+        if($rp == ""){
+            return $this->reportItem->getMD5();
+        }
         if($year == null){
             $year = $this->reportItem->getReport()->year;
         }
@@ -1784,6 +1720,14 @@ class ReportItemCallback {
         return str_replace($pattern, $replacement, $string);
     }
     
+    function strtolower($str){
+        return strtolower($str);
+    }
+    
+    function strtoupper($str){
+        return strtoupper($str);
+    }
+    
     function set($key, $val){
         $this->reportItem->setVariable($key, $val);
     }
@@ -1854,8 +1798,11 @@ class ReportItemCallback {
         return "<div class='tinymce'>$blobValue</div>";
     }
     
-    function getExtra($index){
+    function getExtra($index=null){
         $set = $this->reportItem->extra;
+        if($index == null){
+            return $set;
+        }
         if(isset($set[$index])){
             return $set[$index];
         }

@@ -6,8 +6,8 @@ class IsPLReportItemSet extends ReportItemSet {
         $data = array();
         $me = Person::newFromWgUser();
         $not = (strtolower($this->getAttr("not", "false")) == "true");
-        if(($me->leadershipOf($this->getReport()->project) && !$not) ||
-           (!$me->leadershipOf($this->getReport()->project) && $not)){
+        if(($me->isRole(PL, $this->getReport()->project) && !$not) ||
+           (!$me->isRole(PL, $this->getReport()->project) && $not)){
             $tuple = self::createTuple();
             $data[] = $tuple;
         }

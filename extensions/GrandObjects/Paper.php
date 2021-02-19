@@ -1150,6 +1150,28 @@ class Paper extends BackboneModel{
     }
     
     /**
+     * Returns the journal entry in the db that matches up with this Product
+     * @return array The journal entry in the db that matches up with this Product
+     */
+    function getJournal(){
+        $journal_title = DBFunctions::escape($this->getVenue());
+        $issn = DBFunctions::escape($this->getData('issn'));
+        if($journal_title == "" && $issn == ""){
+            return array();
+        }
+        $data = DBFunctions::execSQL("SELECT * FROM `grand_journals` 
+                                      WHERE (`title` = '{$journal_title}' 
+                                             AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      OR ((`issn` = '{$issn}' OR `eissn` = '{$issn}')
+                                          AND CONCAT(`ranking_numerator`, '/', `ranking_denominator`) = '{$this->getData('category_ranking')}')
+                                      LIMIT 1");
+        if(count($data) > 0){
+            return $data[0];
+        }
+        return array();
+    }
+    
+    /**
      * Returns the Universities which are associated with this Paper
      * @return array The Universities which are associated with this Paper
      */
@@ -1326,20 +1348,34 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $wrapAuthors=false){
         $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
         $that = $this;
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $that) {
-            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink);
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $wrapAuthors, $that) {
+            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $wrapAuthors);
         }, $format);
         
         $peerDiv = "";
         if($showPeerReviewed){
             $status = ($showStatus) ? $this->getStatus() : "";
             $peer_rev = "";
+            $reported = "";
+            $ifranking = array();
+            $ranking = $this->getData(array('category_ranking'));
+            $if = $this->getData(array('impact_factor'));
+            $ranking_override = $this->getData(array('category_ranking_override'));
+            $if_override = $this->getData(array('impact_factor_override'));
+            $ratio = $this->getData(array('acceptance_ratio'));
+            
+            if($if_override != ""){
+                $if = "<i>$if_override</i>";
+            }
+            if($ranking_override != ""){
+                $ranking = "<i>$ranking_override</i>";
+            }
             
             if($this->getCategory() == "Publication"){
                 if($this->getData('peer_reviewed') == "Yes"){
@@ -1349,12 +1385,38 @@ class Paper extends BackboneModel{
                     $peer_rev = "&nbsp;/&nbsp;Not Peer Reviewed";
                 }
             }
-            $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$status}{$peer_rev}</div>";
+            if($if != "" || $ranking != ""){
+                if($if != ""){
+                    $ifranking[] = "IF: {$if}";
+                }
+                
+                if($ranking != ""){
+                    $fraction = explode("/", $ranking);
+                    $numerator = preg_replace("/[^0-9,.]/", "", @$fraction[0]);
+                    $denominator = preg_replace("/[^0-9,.]/", "", @$fraction[1]);
+                    $percent = number_format(($numerator/max(1, $denominator))*100, 2);
+                    $ranking = $ranking." = {$percent}%";
+                    $journal = $this->getJournal();
+                    $jType = "";
+                    if(isset($journal['description'])){
+                        $jType = " ({$journal['description']})";
+                    }
+                    $ifranking[] = "Ranking: {$ranking}{$jType}";
+                }
+                $ifranking = implode("; ", $ifranking)."<br />";
+            }
+            else if(str_replace("/", "", $ratio) != ""){
+                $ifranking = "Acceptance Rate: {$ratio}<br />";
+            }
+            else{
+                $ifranking = "";
+            }
+            $peerDiv = "<div style='width:85%;margin-left:15%;text-align:right;'>{$ifranking}{$status}{$peer_rev}</div>";
         }
         return trim("{$format}{$peerDiv}");
     }
     
-    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true){
+    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $wrapAuthors=false){
         $match1 = $matches[0];
         $match2 = $matches[0];
         $match = strtolower($matches[0]);
@@ -1385,6 +1447,9 @@ class Paper extends BackboneModel{
                 }
             }
             $authors = implode(", ", $authors);
+            if($wrapAuthors){
+                $authors = "<div class='authors'>{$authors}</div>";
+            }
             $match1 = str_ireplace("%authors",   $authors,   $match1);
             $match2 = str_ireplace("%authors",   "",         $match2);
         }
@@ -1861,7 +1926,8 @@ class Paper extends BackboneModel{
                           'access_id' => $this->getAccessId(),
                           'created_by' => $this->getCreatedBy(),
                           'access' => $this->getAccess(),
-                          'topProjects' => $topProjects);
+                          'topProjects' => $topProjects,
+                          'citation' => $this->getCitation(false,false,false));
             if($me->isLoggedIn()){
                 Cache::store($this->getCacheId(), $json, 60*60);
             }

@@ -10,7 +10,7 @@
             <td>
                 <select name="type">
                     <option value="ROLE" <% if(r.get('type') == "ROLE"){ %>selected<% } %>>Role</option>
-                    <option value="SUB-ROLE" <% if(r.get('type') == "SUB-ROLE"){ %>selected<% } %>>Sub-Role</option>
+                    <option value="SUB-ROLE" <% if(r.get('type') == "SUB-ROLE"){ %>selected<% } %>><%= subRolesTerm %></option>
                     <option value="PROJ" <% if(r.get('type') == "PROJ"){ %>selected<% } %>>Project</option>
                     <option value="PHASE" <% if(r.get('type') == "PHASE"){ %>selected<% } %>>Phase</option>
                     <option value="LOC" <% if(r.get('type') == "LOC"){ %>selected<% } %>>Location</option>

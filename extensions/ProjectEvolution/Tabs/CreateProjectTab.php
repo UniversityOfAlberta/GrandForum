@@ -74,10 +74,6 @@ EOF;
         $typeRow->append(new Label("{$pre}_type_label", "Type", "The type of this project", VALIDATE_NOT_NULL));
         $typeRow->append(new VerticalRadioBox("{$pre}_type", "Type", "Research", array("Research", "Administrative", "Strategic", "Innovation Hub"), VALIDATE_NOT_NULL));
         
-        $bigbetRow = new FormTableRow("{$pre}_bigbet_row");
-        $bigbetRow->append(new Label("{$pre}_bigbet_label", "Big-Bet", "Whether or not this project is considered to be a 'Big-Bet' project", VALIDATE_NOT_NULL));
-        $bigbetRow->append(new VerticalRadioBox("{$pre}_bigbet", "Big-Bet", "No", array("No", "Yes"), VALIDATE_NOT_NULL));
-        
         $phaseRow = new FormTableRow("{$pre}_phase_row");
         $phaseRow->append(new Label("{$pre}_phase_label", "Phase", "What project phase the new project belongs to", VALIDATE_NOT_NULL));
         $phaseRow->append(new SelectBox("{$pre}_phase", "Phase", PROJECT_PHASE, array_combine(range(PROJECT_PHASE, 1, -1), range(PROJECT_PHASE, 1, -1)) + array("Research" => "Research"), VALIDATE_NOT_NULL));
@@ -96,26 +92,6 @@ EOF;
         $plRow = new FormTableRow("{$pre}_pl_row");
         $plRow->append(new Label("{$pre}_pl_label", "Project Leader", "The leader of this Project.  The person should be a valid person on this project.", VALIDATE_NOTHING));
         $plRow->append(new ComboBox("{$pre}_pl", "Project Leader", "", $names, VALIDATE_NI));
-        
-        $names = array("");
-        $people = Person::getAllPeople(CHAMP);
-        foreach($people as $person){
-            $names[$person->getName()] = $person->getNameForForms();
-        }
-        asort($names);
-        
-        // Champion
-        $champRow = new FormTableRow("{$pre}_champ_row");
-        $champRow->append(new Label("{$pre}_champ_label", "Project Champion(s)", "The champions of this project.  Each champion must be an already existing member in the Champion role.  If the user is not created yet, then request a new member and you will be notified on the forum when the user gets created.", VALIDATE_NOTHING));
-        
-        $champPlusMinus = new PlusMinus("{$pre}_champ_plusminus");
-        $champTable = new FormTable("{$pre}_champ_table");
-        
-        $champTableNameRow = new ComboBox("{$pre}_champ_name[]", "Name", "", $names, VALIDATE_CHAMPION);
-        
-        $champTable->append($champTableNameRow);
-        $champPlusMinus->append($champTable);
-        $champRow->append($champPlusMinus);
         
         $descRow = new FormTableRow("{$pre}_description_row");
         $descRow->append(new Label("{$pre}_description_label", "Overview", "The overview of the project", VALIDATE_NOTHING));
@@ -143,9 +119,6 @@ EOF;
         if(!$config->getValue("projectStatus")){
             $statusRow->hide();
         }
-        if(!$config->getValue("bigBetProjects")){
-            $bigbetRow->hide();
-        }
 
         $table->append($acronymRow);
         $table->append($fullNameRow);
@@ -153,11 +126,9 @@ EOF;
         $table->append($subprojectDDRow);
         $table->append($statusRow);
         $table->append($typeRow);
-        $table->append($bigbetRow);
         $table->append($phaseRow);
         $table->append($effectiveRow);
         $table->append($plRow);
-        //$table->append($champRow);
         $table->append($descRow);
         $table->append($longDescRow);
         
@@ -185,7 +156,6 @@ EOF;
             $form->getElementById("new_full_name")->setPOST("fullName");
             $form->getElementById("new_status")->setPOST("status");
             $form->getElementById("new_type")->setPOST("type");
-            $form->getElementById("new_bigbet")->setPOST("bigbet");
             $form->getElementById("new_phase")->setPOST("phase");
             $form->getElementById("new_effective")->setPOST("effective_date");
             $form->getElementById("new_pl")->setPOST("pl");
@@ -210,18 +180,6 @@ EOF;
                     
                     $api = new RoleAPI();
                     $api->doPOST();
-                }
-                // Adding New Champions
-                if(isset($_POST['new_champ_name'])){
-                    foreach($_POST['new_champ_name'] as $key => $name){
-                        if($name != ""){
-                            $_POST['role'] = $_POST['role'] = $_POST['acronym'];
-                            $_POST['user'] = $name;
-                            $champ = Person::newFromName($name);
-                            APIRequest::doAction('AddProjectMember', true);
-                            MailingList::subscribeAll($champ);
-                        }
-                    }
                 }
                 $form->reset();
             }

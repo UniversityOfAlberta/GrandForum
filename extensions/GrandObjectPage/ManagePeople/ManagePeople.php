@@ -35,6 +35,7 @@ class ManagePeople extends BackbonePage {
     
     function getViews(){
         global $wgOut;
+        $me = Person::newFromWgUser();
         $universities = new Collection(University::getAllUniversities());
         $uniNames = $universities->pluck('name');
         $positions = json_encode(array_values(Person::getAllPositions()));
@@ -44,11 +45,15 @@ class ManagePeople extends BackbonePage {
         sort($organizations);
         
         $organizations = json_encode($organizations);
+        $emptyProject = new Project(array());
+        $frozen = json_encode((!$me->isRoleAtLeast(STAFF) && $emptyProject->isFeatureFrozen("Manage People")));
         
         $wgOut->addScript("<script type='text/javascript'>
             var allUniversities = $organizations;
             var allPositions = $positions;
             var allDepartments = $departments;
+            
+            var frozen = $frozen;
         </script>");
         
         return array('Backbone/*',

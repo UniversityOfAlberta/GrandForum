@@ -1,12 +1,26 @@
-<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'name', {size: '50'}) %>
-<h2>People</h2>
-<div id="contributionAuthors">
+<div class="small">
+    For CASH and IN-KIND Contributions, DO NOT include:
+    <ul>
+        <li>grants from federal granting agencies, such as NSERC, CIHR, SSHRC, CFI or Genome Canada and its provincial centres (except Genome BC) for research, equipment, etc.;</li>
+        <li>contributions from partners who are funded by federal granting agencies, such as NCE, NSERC, CIHR, SSHRC, CFI or Genome Canada.</li>
+        <li>salaries of individuals who are eligible to receive funds directly from the granting agencies (e.g. faculty members of postsecondary institutions) and any associated administrative overhead costs.</li>
+        <li>contributions or contracts outside of the scope of the network’s activities.</li>
+        <li>time on committees and boards.</li>
+    </ul>
 </div>
-<h2>Description</h2>
-<%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+<span class="label" style="display:inline-block;">Title:</span> <%= HTML.TextBox(this, 'name', {size: '50'}) %>
+<% if(networkName != 'MtS'){ %>
+    <h2>People</h2>
+    <div id="contributionAuthors">
+    </div>
+<% } %>
+<% if(networkName != 'MtS'){ %>
+    <h2>Description</h2>
+    <%= HTML.TextArea(this, 'description', {style: 'height:175px;width:650px;'}) %>
+<% } %>
 <table>
     <tr class="tooltip" title="The institution where the contribution was used">
-        <td align="right"><b>Institution:</b></td>
+        <td align="right"><b>PI Institution:</b></td>
         <td><%= HTML.TextBox(this, 'institution', {size: '40'}) %><br /></td>
     </tr>
     <tr class="tooltip" title="The province in which that institution is located">
@@ -23,10 +37,10 @@
     </tr>
     <tr>
 </table>
-<table width="100%">
+<table id="partners" width="100%">
     <tr>
         <td valign="top" width="50%">
-            <h2>Partners</h2>
+            <h2>Contributing Partners</h2>
             <% _.each(partners, function(partner, i){ %>
                 <div class="warning" style="display:none;" id="warning<%= i %>"></div>
                 <table id="partner<%= i %>">
@@ -34,7 +48,7 @@
                         <td align="right"><b>Partner:</b></td>
                         <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50', class: 'partner_name'}) %></td>
                     </tr>
-                    <tr>
+                    <tr style="<% if(networkName == 'MtS'){ %> display:none; <% } %>">
                         <td valign="top" style="padding-top:11px;width:100px;" align="right"><b>Contact:</b><br /><small style="line-height: 1em;">This information is for reporting purposes only. Partners will not be contacted.</small></td>
                         <td>
                             <table>
@@ -66,8 +80,31 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align="right" style="white-space:nowrap;"><b>Network Signatory:</b></td>
+                        <td><%= HTML.Select(this, 'partners.' + i + '.signatory', {options: ['','Yes',
+                                                                                                'No']}) %></td>
+                    </tr>
+                    <tr>
                         <td align="right"><b>Sector:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','Industry','Community/Not for profit','University']}) %></td>
+                        <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','University',
+                                                                                               'Industry',
+                                                                                               'Federal Departments and Agencies',
+                                                                                               'Provincial Departments and Agencies',
+                                                                                               'Hospitals and Care Centres',
+                                                                                               'Community/Not for profit',
+                                                                                               'Other']}) %></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>Country:</b></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.country') %></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>Province:</b></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.prov') %></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><b>City:</b></td>
+                        <td><%= HTML.TextBox(this, 'partners.' + i + '.city') %></td>
                     </tr>
                     <tr>
                         <td align="right"><b>Level:</b></td>
@@ -86,54 +123,32 @@
                                                                                         'Contract'],
                                                                               class: 'partner_type'}) %></td>
                     </tr>
-                    <tr id="subtype_inkind">
-                        <td align="right"><b>Sub-Type:</b></td>
+                    <tr id="amount">
+                        <td class="label" align="right"><b>Amount:</b></td>
                         <td>
-                            <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
-                                                                                           'Equipment, Software',
-                                                                                           'Materials',
-                                                                                           'Logistical Support of Field Work',
-                                                                                           'Provision of Services',
-                                                                                           'Use of Company Facilites',
-                                                                                           'Salaries of Scientific Staff',
-                                                                                           'Salaries of Managerial and Administrative Staff',
-                                                                                           'Project-related Travel',
-                                                                                           'Other'],
-                                                                                 id: 'partners_' + i + '_subtype_inkind',
-                                                                                 class: 'partner_subtype'}) %>
-                            <span id="other_subtype"><%= HTML.TextBox(this, 'partners.' + i + '.other_subtype') %></span>
-                        </td>
-                    </tr>
-                    <tr id="subtype_cash">
-                        <td align="right"><b>Sub-Type:</b></td>
-                        <td>
-                            <%= HTML.Select(this, 'partners.' + i + '.subtype', {options: [{value: '', option: '[Select Contribution Sub-Type]'},
-                                                                                           'Salaries: Bachelors - Canadian and Permanent Residents',
-                                                                                           'Salaries: Bachelors - Foreign',
-                                                                                           'Salaries: Masters - Canadian and Permanent Residents',
-                                                                                           'Salaries: Masters - Foreign',
-                                                                                           'Salaries: Doctorate - Canadian and Permanent Residents',
-                                                                                           'Salaries: Doctorate - Foreign',
-                                                                                           'Salaries: Post-doctoral Canadian and Permanent residents',
-                                                                                           'Salaries: Postdoctoral',
-                                                                                           'Salaries: Other',
-                                                                                           'Salary and benefits of incumbent (Canada Research Chairs only)',
-                                                                                           'Professional and technical services/contracts',
-                                                                                           'Equipment (incl. powered vehicles)',
-                                                                                           'Materials, supplies and other expenditures',
-                                                                                           'Travel',
-                                                                                           'Other expenditures'],
-                                                                                 id: 'partners_' + i + '_subtype_cash',
-                                                                                 class: 'partner_subtype'}) %>
+                            <%= HTML.TextBox(this, 'partners.' + i + '.amounts.none', {style: 'width: 75px', class: 'amount'}) %>
                         </td>
                     </tr>
                     <tr id="cash">
-                        <td align="right"><b>Cash:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.cash', {style: 'width: 75px'}) %>$</td>
+                        <td class="label" align="right"><b>Cash Amounts:</b></td>
+                        <td>
+                            <% _.each(cashMap, function(subType, subId){ %>
+                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px', class: 'amount'}) %>&nbsp;<%= subType %>
+                                <br />
+                            <% }.bind(this)); %>
+                        </td>
                     </tr>
                     <tr id="inkind">
-                        <td align="right"><b>In-Kind:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.inkind', {style: 'width: 75px'}) %>$</td>
+                        <td class="label" align="right"><b>In-Kind Amounts:</b></td>
+                        <td>
+                            <% _.each(inkindMap, function(subType, subId){ %>
+                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px', class: 'amount'}) %>&nbsp;<%= subType %>
+                                <% if(subId == "othe"){ %>
+                                    <%= HTML.TextBox(this, 'partners.' + i + '.amounts.inkind_other', {style: 'width: 250px', placeholder: 'Description'}) %>
+                                <% } %>
+                                <br />
+                            <% }.bind(this)); %>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>

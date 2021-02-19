@@ -364,8 +364,11 @@ class Milestone {
         $quarters = explode(",", $this->quarters);
         foreach($quarters as $quarter){
             $exp = explode(":", $quarter);
-            if(count($exp) >= 2){
-                $years[$exp[0]][$exp[1]] = $exp[1];
+            if(count($exp) == 2){
+                $years[$exp[0]][$exp[1]] = $this->getStatus();
+            } 
+            else if(count($exp) == 3){
+                $years[$exp[0]][$exp[1]] = $exp[2];
             }
         }
         return $years;

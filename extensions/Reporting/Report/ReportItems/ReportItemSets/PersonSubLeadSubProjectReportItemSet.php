@@ -8,7 +8,7 @@ class PersonSubLeadSubProjectReportItemSet extends ReportItemSet {
         $projects = array();
         $project = Project::newFromHistoricId($this->projectId);
         foreach($project->getSubProjects() as $sub){
-            if($person->leadershipOf($sub)){
+            if($person->isRole(PL, $sub)){
                 $projects[] = $sub;
             }
         }

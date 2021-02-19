@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="SAB Collaborative Report" reportType="RP_SAB_COLLAB_REPORT" personId="0" ajax="true" disabled="false" year="2017">
+    <Permissions>
+        <Role role="SD">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="STAFF+">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="RMC">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="table" permissions="" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Role>
+        <Role role="MANAGER">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Person id="2513">
+            <SectionPermission id="materials" permissions="r" />
+            <SectionPermission id="table" permissions="" />
+            <SectionPermission id="review" permissions="r" />
+            <SectionPermission id="submit" permissions="" />
+        </Person>
+    </Permissions>
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+            <table align="left" class='wikitable'>
+                <tr>
+                    <th style="min-width:110px;">PI Name</th>
+                    <th style="min-width:110px;">Project Name</th>
+                    <th style="min-width:125px;">Project Proposal PDF</th>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport082017" project="false">
+                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="table" name="Summary Table" blobSection="SEC_NONE" tooltip="Summary Table" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table width="100%" class="wikitable" rules="all" frame="box">
+                    <thead>
+                        <tr>
+                            <th style="white-space: nowrap;">Applicant</th>
+                            <th style="white-space: nowrap;">Project</th>
+                            <th style="white-space: nowrap;">Reviewer 1</th>
+                            <th style="white-space: nowrap;">Reviewer 2</th>
+                            <th style="white-space: nowrap;">Reviewer 3</th>
+                            <th style="white-space: nowrap;">Reviewer 4</th>
+                            <th style="white-space: nowrap;">Reviewer 5</th>
+                            <th style="white-space: nowrap;">Reviewer 6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$user_name}</td>
+                        <td title="{getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
+                            {getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}
+                        </td>
+                ]]>
+            </Static>
+            <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative082017" includeSelf="true">
+                <Static>
+                    <![CDATA[
+                        {set(rank,{getText(RP_SAB_COLLAB_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)})}
+                        {set(highlight,)}
+                    ]]>
+                </Static>
+                <If id="high_if" if="{==({get(rank)},High)}">
+                    <![CDATA[
+                        {set(highlight,background:#00CC00)}
+                    ]]>
+                </If>
+                <If id="medium_if" if="{==({get(rank)},Medium)}">
+                    <![CDATA[
+                        {set(highlight,background:#FF8800)}
+                    ]]>
+                </If>
+                <If id="low_if" if="{==({get(rank)},Low)}">
+                    <![CDATA[
+                        {set(highlight,background:#FF0000)}
+                    ]]>
+                </If>
+                <Static>
+                    <![CDATA[
+                        <td style="{get(highlight)}">{$user_name}</td>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Collaborative082017">
+            <If id="if" if="{!=({$user_id},{$my_id})}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_COLLAB_08_2017,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
+                    <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Collaborative082017" includeSelf="true">
+                        <Static>
+                            <![CDATA[
+                                <h2>Reviewer {$index}</h2>
+                                <div style='margin-left:15px;'>
+                                    <h3>Project Strengths</h3>
+                                    <p>{getText(RP_SAB_COLLAB_REVIEW,SAB_REVIEW,SAB_REVIEW_STRENGTH,{$parent_id},{$user_id},0)}</p>
+                                    <h3>Project Weaknesses</h3>
+                                    <p>{getText(RP_SAB_COLLAB_REVIEW,SAB_REVIEW,SAB_REVIEW_WEAKNESS,{$parent_id},{$user_id},0)}</p>
+                                    <h3>Project Ranking</h3>
+                                    <p>{getText(RP_SAB_COLLAB_REVIEW,SAB_REVIEW,SAB_REVIEW_RANKING,{$parent_id},{$user_id},0)}</p>
+                                </div>
+                            ]]>
+                        </Static>
+                    </ReportItemSet>
+                    <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REPORT_SUMMARY">
+                        <![CDATA[
+                            <h2>Summary Statement</h2>
+                            {$item}
+                        ]]>
+                    </ReportItem>
+                </ReportItemSet>
+            </If>
+        </ReportItemSet>
+    </ReportSection>
+    <!--ReportSection id="submit" tooltip="PDF generation of the Review" name="Generate PDF" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection-->
+</Report>

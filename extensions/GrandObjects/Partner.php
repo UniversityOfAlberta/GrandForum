@@ -10,8 +10,10 @@ class Partner {
     var $organization;
     var $contact;
     var $industry;
+    var $signatory;
     var $level;
     var $type;
+    var $amounts = array();
     var $city;
     var $prov;
     var $country;
@@ -91,6 +93,14 @@ class Partner {
     }
     
     /**
+     * Returns whether this is a network signatory or not
+     * @return String Whether this is a network signatory or not
+     */
+    function getSignatory(){
+        return $this->signatory;
+    }
+    
+    /**
      * Returns whether this is an Industry or Community/Not for profit Partner
      * @return String Whether this is an Industry or Community/Not for profit Partner
      */
@@ -109,6 +119,10 @@ class Partner {
     // Returns the type of this Partner
     function getType(){
         return $this->type;
+    }
+    
+    function getAmounts(){
+        return $this->amounts;
     }
     
     // Returns the city of this Partner

@@ -130,6 +130,9 @@ $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue',
 $egAnnokiExtensions['MyThreads'] = array('name' => 'MyThreads',
                                          'path' => "$IP/extensions/MyThreads/MyThreads.php");
                                          
+$egAnnokiExtensions['UofANews'] = array('name' => 'UofANews',
+                                        'path' => "$IP/extensions/UofANews/UofANews.php");
+                                         
 $egAnnokiExtensions['Freeze'] = array('name' => 'Freeze',
                                       'path' => "$IP/extensions/Freeze/Freeze.php");
 

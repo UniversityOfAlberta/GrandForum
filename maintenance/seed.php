@@ -208,6 +208,7 @@ User::createNew("Staff.User1", array('password' => User::crypt("Staff.Pass1"), '
 User::createNew("PL.User1", array('password' => User::crypt("PL.Pass1"), 'email' => "pl.user1@behat-test.com"));
 User::createNew("PL.User2", array('password' => User::crypt("PL.Pass2"), 'email' => "pl.user2@behat-test.com"));
 User::createNew("PL.User3", array('password' => User::crypt("PL.Pass3"), 'email' => "pl.user3@behat-test.com"));
+User::createNew("PL.User4", array('password' => User::crypt("PL.Pass4"), 'email' => "pl.user4@behat-test.com"));
 User::createNew("TL.User1", array('password' => User::crypt("TL.Pass1"), 'email' => "tl.user1@behat-test.com"));
 User::createNew("TC.User1", array('password' => User::crypt("TC.Pass1"), 'email' => "tc.user1@behat-test.com"));
 User::createNew("RMC.User1", array('password' => User::crypt("RMC.Pass1"), 'email' => "rmc.user1@behat-test.com"));
@@ -293,6 +294,7 @@ addUserProject("NI.User4", "Phase2Project3");
 addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User2", "Phase2Project3");
 addUserProject("HQP.User3", "Phase2Project1");
+addUserProject("HQP.User4", "Phase1Project1");
 
 addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");
 addUserUniversity("NI.User2", "University of Calgary", "Computing Science", "Professor");
@@ -300,6 +302,7 @@ addUserUniversity("NI.User3", "University of Saskatchewan", "Computing Science",
 addUserUniversity("HQP.User1", "University of Alberta", "Computing Science", "Graduate Student");
 addUserUniversity("HQP.User2", "University of Calgary", "Computing Science", "PhD Student");
 
+addProjectLeader("PL.User4", "Phase1Project1");
 addProjectLeader("PL.User1", "Phase2Project1");
 addProjectLeader("PL.User2", "Phase2Project3");
 

@@ -1,0 +1,28 @@
+<a class="button backButton" href="#">Back to Contacts</a>
+<!-- <b>Owner:</b> <a href="<%= owner.url %>"><%= owner.name %></a> -->
+<h3>Contact Details</h3>
+<table>
+    <tr>
+        <td class="label left-align">First Name:</td>
+        <td><%= details.firstName %></td>
+    </tr>
+    <tr>
+        <td class="label left-align">Last Name:</td>
+        <td><%= details.lastName %></td>
+    </tr>
+    <tr>
+        <td class="label left-align">Email:</td>
+        <td><%= details.email %></td>
+    </tr>
+    <tr>
+        <td class="label left-align">Institution:</td>
+        <td><%= details.institution %></td>
+    </tr>
+</table>
+<h3>Opportunities</h3>
+<div id="opportunities"></div>
+
+<% if(isAllowedToEdit){ %>
+    <br />
+    <button id='edit'>Edit Contact</button>
+<% } %>

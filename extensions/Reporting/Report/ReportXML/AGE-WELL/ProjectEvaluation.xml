@@ -214,7 +214,7 @@
                     });
                 </script>
                 <br /><br /><b>Note:</b> Textboxes have been prefilled with the text entered from last year's planning table.<br />
-                <table rules="all" frame="box" class="small">
+                <table rules="all" frame="box" class="small wikitable">
                     <tr>
                         <th align="left" width="5%">Category</th>
                         <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
@@ -476,7 +476,7 @@
                     });
                 </script>
                 <br /><br /><b>Note:</b> Textboxes have been prefilled with the text entered from last year's planning table.<br />
-                <table rules="all" frame="box" class="small">
+                <table rules="all" frame="box" class="small wikitable">
                     <tr>
                         <th align="left" width="5%">Category</th>
                         <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
@@ -604,7 +604,7 @@
                     });
                 </script>
                 <br /><br /><b>Note:</b> Textboxes have been prefilled with the text entered from last year's planning table.<br />
-                <table rules="all" frame="box" class="small">
+                <table rules="all" frame="box" class="small wikitable">
                     <tr>
                         <th align="left" width="5%">Category</th>
                         <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>
@@ -780,7 +780,7 @@
                     });
                 </script>
                 <br /><br /><b>Note:</b> Textboxes have been prefilled with the text entered from last year's planning table.<br />
-                <table rules="all" frame="box" class="small">
+                <table rules="all" frame="box" class="small wikitable">
                     <tr>
                         <th align="left" width="5%">Category</th>
                         <th align="left" width="25%">Completed Objectives - main objectives of project over last year</th>

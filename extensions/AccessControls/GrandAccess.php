@@ -7,9 +7,11 @@ class GrandAccess {
     static function setupGrandAccess($user, &$aRights){
         global $wgRoleValues;
         if(isset(self::$alreadyDone[$user->getId()])){
+            $user->mGroups = self::$alreadyDone[$user->getId()];
+            $aRights = $user->mGroups;
             return true;
         }
-        self::$alreadyDone[$user->getId()] = true;
+        
 	    $me = Person::newFromId($user->getId());
 	    $i = 1000;
 	    $oldRights = $aRights;
@@ -36,50 +38,24 @@ class GrandAccess {
 	        $aRights[$i++] = TL;
 	        $aRights[$i++] = TC;
 	    }
-	    $leadership = $me->leadership();
-	    if(count($leadership) > 0){
-	        $aRights[$i++] = "Leadership";
-	        $aRights[$i++] = "Leadership+";
-	        if($me->isProjectLeader()){
-	            $aRights[$i++] = PL;
-	            $aRights[$i++] = PL.'+';
-	        }
-	        foreach($leadership as $lead){
-	            if($lead->isSubProject()){
-	                $aRights[$i++] = "SUB-PL";
-	                break;
-	            }
-	        }
-	    }
 	    if($me->isEvaluator()){
 	        $aRights[$i++] = "Evaluator";
 	        $aRights[$i++] = "Evaluator+";
 	    }
 	    if($me->isRole(NI)){
-	        $aRights[$i++] = "Researcher";
-	        $aRights[$i++] = "Researcher+";
 	        $aRights[$i++] = "NI";
 	        $aRights[$i++] = "NI+";
+	    }
+	    if($me->isRole(ADMIN)){
+	        $aRights[$i++] = "sysop";
+	        $aRights[$i++] = "bureaucrat";
 	    }
 	    foreach(array_keys($wgRoleValues) as $role){
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
-	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Leadership+', $aRights) === false){
-	                $aRights[$i++] = 'Leadership+';
-	            }
 	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
 	                $aRights[$i++] = 'Evaluator+';
 	            }
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Researcher+', $aRights) === false){
-	                $aRights[$i++] = 'Researcher+';
-	            }
-	        }
-	    }
-	    foreach($me->getRolesDuring(CYCLE_START, CYCLE_END) as $role){
-	        if(!$me->isCandidate()){
-	            $aRights[$i++] = $role->getRole().'During';
-	            $aRights[$i++] = $role->getRole().'During+';
 	        }
 	    }
 	    if(count($me->getRoles()) > 0){
@@ -95,10 +71,11 @@ class GrandAccess {
 	        $user->mGroups[] = "Poster";
 	        $user->mGroups[] = "Presentation";
 	    }
+	    self::$alreadyDone[$user->getId()] = $aRights;
 	    return true;
 	}
 	
-	function changeGroups($user, &$aRights){
+	static function changeGroups($user, &$aRights){
         global $wgRoles;
         foreach($aRights as $key => $right){
             if($key >= 1000){

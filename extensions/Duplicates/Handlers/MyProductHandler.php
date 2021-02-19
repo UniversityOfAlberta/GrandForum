@@ -18,7 +18,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     
     function getArray(){
         $me = Person::newFromWgUser();
-        $papers = $me->getPapers($this->type, false, 'both');
+        $papers = $me->getPapers($this->type, false, 'both', true, 'Public');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[$paper->getId()] = $paper;
@@ -27,7 +27,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     }
     
     function getArray2(){
-        $papers = Paper::getAllPapers('all', $this->type, 'both');
+        $papers = Paper::getAllPapers('all', $this->type, 'both', true, 'Public');
         $paperArray = array();
         foreach($papers as $paper){
             $paperArray[$paper->getId()] = $paper;
@@ -38,8 +38,20 @@ class MyProductHandler extends AbstractDuplicatesHandler {
     function showResult($paper1, $paper2){
         global $wgServer, $wgScriptPath;
         if(!$this->areIgnored($paper1->getId(), $paper2->getId())){
-            similar_text($paper1->getTitle(), $paper2->getTitle(), $percent);
-            $percent = round($percent);
+            $title1 = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $paper1->getTitle()));
+            $title2 = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $paper2->getTitle()));
+            if($title1 == $title2){
+                $percent = 100;
+            }
+            else if(substr($title1, 0, 1) != substr($title2, 0, 1) && 
+                    substr($title1, -1) != substr($title2, -1)){
+                // If both the first and last character are differen then the two papers are probably different
+                $percent = 0;        
+            }
+            else{
+                similar_text($title1, $title2, $percent);
+                $percent = round($percent);
+            }
             if($percent >= 85){
                 $projs1 = $paper1->getProjects();
                 $projs2 = $paper2->getProjects();

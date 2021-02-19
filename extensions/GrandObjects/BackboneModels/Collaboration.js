@@ -18,6 +18,7 @@ Collaboration = Backbone.Model.extend({
             creator: {},
             personName: "",
             position: "",
+            email: "",
             projects: new Array(),
             url: "",
             sector: "",
@@ -33,8 +34,11 @@ Collaboration = Backbone.Model.extend({
             projectedCash: 0,
             projectedInkind: 0,
             existed: "",
+            extra: {},
             year: YEAR,
             endYear: "0",
+            fileCount: 0,
+            files: new Array(),
             knowledgeUser: 0, // true or false
             leverage: 0, // true or false
             changed: ""

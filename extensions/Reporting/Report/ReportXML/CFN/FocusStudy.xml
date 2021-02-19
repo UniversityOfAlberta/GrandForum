@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="FOCUS Delphi Study" reportType="RP_FOCUS_STUDY" ajax="true" disabled="true" year="2020">
+    <Permissions>
+        <Role role="INACTIVE+" subRole="FOCUS">
+            <SectionPermission id="study" permissions="rw" />
+        </Role>
+        <Role role="STAFF+">
+            <SectionPermission id="study" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="study" name="FOCUS Delphi Study" title="FOCUS Delphi Study" tooltip="FOCUS Delphi Study" blobSection="STUDY" type="EditableReportSection" autosave="false">
+        <Static>
+            <![CDATA[
+                <p>Thank you for your participation in the FOCUS Delphi Study. Following three rounds of voting with an aim to reach consensus on a core set of data elements and outcomes, the following data elements and outcomes met consensus criteria across all three stakeholder groups.  In order to narrow the core set further to a number of data elements and outcomes which one could reasonably expect to be measured in research studies, we are asking you to identify your <b>top 2 data elements and outcomes within each category</b>.  Within each category, the data element or outcome which ranks highest will form part of the core set to be measured, while the data element or outcome which ranks second highest will form part of an additional ‘optional’ set.</p>
+            ]]>
+        </Static>
+        <!-- Element Categories -->
+        <ReportItem id="el_characteristics_1" type="Radio" blobItem="EL_CHARACTERISTICS_1" labels="|" options="Age|Medications">
+            <![CDATA[
+                <p style='font-size:1.25em;'>Please identify your <b>first and second choice in each data element category</b>.</p>
+                <table>
+                    <tr>
+                        <td colspan='2'><b>1. Data Element Category: Participant Characteristics</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'><input type='hidden' name='{$post_id}' value='' />{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_characteristics_2" type="Radio" blobItem="EL_CHARACTERISTICS_2" labels="Age|Medications" options="Age|Medications">
+            <![CDATA[
+                        <td style='white-space:nowrap;'><input type='hidden' name='{$post_id}' value='' />{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="el_performance_1" type="Radio" blobItem="EL_PERFORMANCE_1" labels="|" options="Balance|Mobility">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>2. Data Element Category: Physical Performance</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_performance_2" type="Radio" blobItem="EL_PERFORMANCE_2" labels="Balance|Mobility" options="Balance|Mobility">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="el_function_1" type="Radio" blobItem="EL_FUNCTION_1" labels="|||||||" options="ADLs|Disability|Falls|Function – lower body|Function – upper body|IADLs|Overall function|Physical activity">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>3. Data Element Category: Physical Function</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_function_2" type="Radio" blobItem="EL_FUNCTION_2" labels="ADLs|Disability|Falls|Function – lower body|Function – upper body|IADLs|Overall function|Physical activity" options="ADLs|Disability|Falls|Function – lower body|Function – upper body|IADLs|Overall function|Physical activity">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="el_health_1" type="Radio" blobItem="EL_HEALTH_1" labels="|||" options="Comorbidities|Nutritional status|Sensory impairment|Visual impairment">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>4. Data Element Category: Physical Health</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_health_2" type="Radio" blobItem="EL_HEALTH_2" labels="Comorbidities|Nutritional status|Sensory impairment|Visual impairment" options="Comorbidities|Nutritional status|Sensory impairment|Visual impairment">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="el_cognition_1" type="Radio" blobItem="EL_COGNITION_1" labels="||||" options="Anxiety|Cognitive impairment|Delirium|Depression|Psychosocial function">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>5. Data Element Category: Cognition and Mental Health</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_cognition_2" type="Radio" blobItem="EL_COGNITION_2" labels="Anxiety|Cognitive impairment|Delirium|Depression|Psychosocial function" options="Anxiety|Cognitive impairment|Delirium|Depression|Psychosocial function">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="el_socio_1" type="Radio" blobItem="EL_SOCIO_1" labels="|||" options="Formal care services|Informal care and support|Physical isolation|Social engagement">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>6. Data Element Category: Socioenvironmental Circumstances</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="el_socio_2" type="Radio" blobItem="EL_SOCIO_2" labels="Formal care services|Informal care and support|Physical isolation|Social engagement" options="Formal care services|Informal care and support|Physical isolation|Social engagement">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Outcome Categories -->
+        <ReportItem id="out_function_1" type="Radio" blobItem="OUT_FUNCTION_1" labels="|||||" options="ADLs|Disability|Falls|IADLs|Overall function|Physical activity">
+            <![CDATA[
+                <p style='font-size:1.25em;'>Please identify your <b>first and second choice in each outcome category</b>.</p>
+                <table>
+                    <tr>
+                        <td colspan='2'><b>1. Outcome Category: Physical Function</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="out_function_2" type="Radio" blobItem="OUT_FUNCTION_2" labels="ADLs|Disability|Falls|IADLs|Overall function|Physical activity" options="ADLs|Disability|Falls|IADLs|Overall function|Physical activity">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="out_cognition_1" type="Radio" blobItem="OUT_COGNITION_1" labels="|" options="Cognitive impairment|Depression">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>2. Outcome Category: Cognition and Mental Health</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="out_cognition_2" type="Radio" blobItem="OUT_COGNITION_2" labels="Cognitive impairment|Depression" options="Cognitive impairment|Depression">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="out_socio_1" type="Radio" blobItem="OUT_SOCIO_1" labels="|" options="Informal care and support|Physical isolation">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>3. Outcome Category: Socioenvironmental Circumstances</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="out_socio_2" type="Radio" blobItem="OUT_SOCIO_2" labels="Informal care and support|Physical isolation" options="Informal care and support|Physical isolation">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="out_frailty_1" type="Radio" blobItem="OUT_FRAILTY_1" labels="||" options="Cumulative deficit|Multi-dimensional|Physical performance">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>4. Outcome Category: Frailty Measures</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="out_frailty_2" type="Radio" blobItem="OUT_FRAILTY_2" labels="Cumulative deficit|Multi-dimensional|Physical performance" options="Cumulative deficit|Multi-dimensional|Physical performance">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="out_other_1" type="Radio" blobItem="OUT_OTHER_1" labels="||" options="Burden of intervention received|Quality of life|Caregiver characteristics">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td colspan='2'><b>5. Outcome Category: Other</b></td>
+                    </tr>
+                    <tr>
+                        <td width='1%'><b>1st</b></td>
+                        <td><b>2nd</b></td>
+                    </tr>
+                    <tr>
+                        <td style='white-space:nowrap;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="out_other_2" type="Radio" blobItem="OUT_OTHER_2" labels="Burden of intervention received|Quality of life|Caregiver characteristics" options="Burden of intervention received|Quality of life|Caregiver characteristics">
+            <![CDATA[
+                        <td style='white-space:nowrap;'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#optionsDiv").hide();
+                
+                    $("#reportBody input[type=radio]").click(function(e){
+                        var name = $(this).attr('name');
+                        var value = $(this).attr('value');
+                        var otherName = "";
+                        if(name.indexOf("_1") != -1){
+                            otherName = name.replace("_1", "_2");
+                        }
+                        else{
+                            otherName = name.replace("_2", "_1");
+                        }
+                        var other = $("#reportBody input[type=radio][name=" + otherName + "]:checked");
+                        var otherValue = $(other).attr('value');
+                        if(value == otherValue){
+                            $(other).prop('checked', false);
+                        }
+                    });
+                    
+                    $("#reportBody input[type=radio]").change(function(e){
+                        if($('#reportBody input[type=radio]:checked').length == 22){
+                            $('#reportFooter button[type=submit]').prop('disabled', false);
+                            $('#reportFooter input#submit').prop('disabled', false);
+                        }
+                        else{
+                            $('#reportFooter button[type=submit]').prop('disabled', true);
+                            $('#reportFooter input#submit').prop('disabled', true);
+                        }
+                    });
+                    $(document).ready(function(){
+                        $("#reportFooter button").after("<input id='submit' type='button' value='Submit' />");
+                        var callBack = function(){
+                            alert('Thank you for submitting the FOCUS Survey');
+                        }
+                        
+                        $("#submit").click(function(e){
+                            saveAll(callBack);
+                        });
+                        
+                        $("#reportBody input[type=radio]").change();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

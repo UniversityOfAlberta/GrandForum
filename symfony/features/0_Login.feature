@@ -5,8 +5,8 @@ Feature: Login
 
     Scenario: Viewing page as guest
         Given I am on "index.php"
-        Then I should see "Username:"
-        And I should see "Password:"
+        Then I should see "Login"
+        And I should see "Remember my login"
 
     Scenario: Logging in as a valid user
         Given I am logged in as "Admin.User1" using password "Admin.Pass1"

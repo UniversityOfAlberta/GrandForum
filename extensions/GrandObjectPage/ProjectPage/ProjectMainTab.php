@@ -21,7 +21,12 @@ class ProjectMainTab extends AbstractEditableTab {
         if(count($preds) > 0 && !isset($_GET['generatePDF'])){
             $predLinks = array();
             foreach($preds as $pred){
-                $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+                if($pred->getName() != $project->getName()){
+                    $predLinks[] = "<a href='{$pred->getUrl()}'><b>{$pred->getName()}</b></a>";
+                }
+            }
+            if(count($predLinks) > 0){
+                $this->html .= "<div style='margin-left: 5px; margin-top: -20px;'>&#10551;<small> Evolved from ".implode(", ", $predLinks)."</small></div>";
             }
         }
         if(!$project->isSubProject() && $wgUser->isLoggedIn() && MailingList::isSubscribed($project, $me)){
@@ -30,7 +35,6 @@ class ProjectMainTab extends AbstractEditableTab {
         }
         
         $website = $this->project->getWebsite();
-        $bigbet = ($this->project->isBigBet()) ? "Yes" : "No";
         $title = "";
         if($edit){
             if($project->isSubProject()){
@@ -48,18 +52,19 @@ class ProjectMainTab extends AbstractEditableTab {
         if($config->getValue("projectTypes")){
             $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
-        if($config->getValue("bigBetProjects") && !$this->project->isSubProject()){
-            $this->html .= "<tr><td><b>Big-Bet:</b></td><td>{$bigbet}</td></tr>";
-        }
         if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
-                $endedhtml = ($this->project->getStatus() == "Ended") ? "(".substr($this->project->getEffectiveDate(), 0, 10).")" : "";
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()} {$endedhtml}</td></tr>";
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$this->project->getStatus()}</td></tr>";
+                $this->html .= "<tr><td><b>Start Date:</b></td><td>".substr($this->project->getStartDate(), 0, 10)."</td></tr>";
+                $this->html .= "<tr><td><b>End Date:</b></td><td>".substr($this->project->getEndDate(), 0, 10)."</td></tr>";
             }
             else{
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
-                $dateField = new CalendarField("effective_date", "Effective Date", substr($this->project->getEffectiveDate(), 0, 10));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()} {$dateField->render()}</td></tr>";
+                $startField = new CalendarField("start_date", "Start Date", substr($this->project->getStartDate(), 0, 10));
+                $endField = new CalendarField("effective_date", "End Date", substr($this->project->getEndDate(), 0, 10));
+                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
+                $this->html .= "<tr><td><b>Start Date:</b></td><td>{$startField->render()}</td></tr>";
+                $this->html .= "<tr><td><b>End Date:</b></td><td>{$endField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
@@ -68,18 +73,7 @@ class ProjectMainTab extends AbstractEditableTab {
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>
-            <script type='text/javascript'>
-                $('[name=status]').change(function(){
-                    if($('[name=status]').val() == 'Ended'){
-                        $('[name=effective_date]').show();
-                    }
-                    else{
-                        $('[name=effective_date]').hide();
-                    }
-                });
-                $('[name=status]').change();
-            </script>";
+        $this->html .= "</table>";
 
         $this->showPeople();
         //$this->showChampions();
@@ -123,17 +117,35 @@ class ProjectMainTab extends AbstractEditableTab {
             if($_POST['status'] == "Ended"){
                 $_POST['project'] = $this->project->getName();
                 APIRequest::doAction('DeleteProject', true);
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
             }
             else{
                 DBFunctions::update('grand_project_status',
                                     array('status' => $_POST['status']),
                                     array('evolution_id' => EQ($this->project->getEvolutionId()),
                                           'project_id' => EQ($this->project->getId())));
-                Project::$cache = array();
-                $this->project = Project::newFromId($this->project->getId());
             }
+            Project::$cache = array();
+            // Update Dates
+            $this->project = Project::newFromId($this->project->getId());
+            $startDate = @DBFunctions::escape($_POST['start_date']);
+            $endDate = @DBFunctions::escape($_POST['effective_date']);
+            DBFunctions::update('grand_project_status',
+                                array('start_date' => $startDate,
+                                      'end_date' => $endDate),
+                                array('evolution_id' => EQ($this->project->getEvolutionId()),
+                                      'project_id' => EQ($this->project->getId())));
+            DBFunctions::execSQL("UPDATE `grand_project_evolution`
+                                  SET `effective_date` = '$endDate'
+                                  WHERE `new_id` = '{$this->project->getId()}'
+                                  ORDER BY `date` DESC
+                                  LIMIT 1", true);
+            DBFunctions::execSQL("UPDATE `grand_project_evolution`
+                                  SET `effective_date` = '$startDate'
+                                  WHERE `new_id` = '{$this->project->getId()}'
+                                  ORDER BY `date` ASC
+                                  LIMIT 1", true);
+            Project::$cache = array();
+            $this->project = Project::newFromId($this->project->getId());
         }
         
         if(isset($_POST['acronym'])){
@@ -206,7 +218,10 @@ class ProjectMainTab extends AbstractEditableTab {
         $project = $this->project;
 
         if(!$edit){
-            $this->html .= "<table width='100%'><tr><td valign='top' width='50%'>";
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "<div class='small'>";
+            }
+            $this->html .= "<table width='100%'><tr><td valign='top' width='33%'>";
             $this->showRole(PL);
             $this->showRole(PA);
             if($this->project->getType() == "Innovation Hub"){
@@ -218,28 +233,38 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
                 $this->showRole(CI);
                 $this->showRole(AR);
-                $this->html .= "</td><td width='50%' valign='top'>";
+                $this->html .= "</td><td width='33%' valign='top'>";
                 if($wgUser->isLoggedIn()){
                     $this->showRole(HQP);
                 }
+                $this->html .= "</td><td width='33%' valign='top'>";
+                if($wgUser->isLoggedIn()){
+                    $this->showRole(HQP, "Alumni ".HQP, true);
+                }
                 $this->html .= "</td></tr>";
-                $this->html .= "<tr><td valign='top' width='50%'>";
+                $this->html .= "<tr><td valign='top' width='33%'>";
                 $this->showRole(CHAMP);
+                $this->html .= "</td><td width='33%' valign='top'>";
                 $this->showRole(PARTNER);
-                $this->html .= "</td><td width='50%' valign='top'>";
+                $this->html .= "</td><td width='33%' valign='top'>";
                 $this->showRole(EXTERNAL);
             }
             $this->html .= "</td></tr></table>";
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "</div>";
+            }
         }
     }
     
-    function showRole($role, $text=null){
+    function showRole($role, $text=null, $past=false){
         global $config;
         $me = Person::newFromWgUser();
-        if(isset($this->shownRoles[$role])){
-            return;
+        if(!$past){
+            if(isset($this->shownRoles[$role])){
+                return;
+            }
+            $this->shownRoles[$role] = true;
         }
-        $this->shownRoles[$role] = true;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 
@@ -249,6 +274,25 @@ class ProjectMainTab extends AbstractEditableTab {
         else{
             $people = $project->getAllPeopleOn($role, $project->getEffectiveDate());
         }
+        // Filter for Alumni people
+        if($past){
+            $allPeople = $project->getAllPeopleDuring($role, "0000-00-00", EOT);
+            $alumnis = array();
+            foreach($allPeople as $p1){
+                $found = false;
+                foreach($people as $p2){
+                    if($p1->getId() == $p2->getId()){
+                        $found = true;
+                        break;
+                    }
+                }
+                if(!$found){
+                    $alumnis[] = $p1;
+                }
+            }
+            $people = $alumnis;
+        }
+        
         if(count($people) > 0){
             if($text != null){
                 $this->html .= "<h2><span class='mw-headline'>{$text}</span></h2>";
@@ -320,7 +364,7 @@ class ProjectMainTab extends AbstractEditableTab {
     function showTable(){
         global $config;
         $me = Person::newFromWgUser();
-        $products = $this->project->getPapers("all", "0000-00-00", "2100-00-00");
+        $products = $this->project->getPapers("all", "0000-00-00", EOT);
         $string = "";
         if(count($products) > 0){
             $string = "<div class='pdfnodisplay'>";
@@ -328,7 +372,10 @@ class ProjectMainTab extends AbstractEditableTab {
             $string .= "<table id='projectProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -345,7 +392,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()} ".implode(", ", $paper->getUniversities())."</span></td>";
+                $string .= "<td><span class='productTitle' data-id='{$paper->getId()}' data-href='{$paper->getUrl()}'>{$paper->getTitle()}</span><span style='display:none'>{$paper->getDescription()} ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td>{$paper->getCategory()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
                 $string .= "<td>".implode(", ", $names)."</td>";
@@ -356,8 +403,9 @@ class ProjectMainTab extends AbstractEditableTab {
                 </table>
                 <script type='text/javascript'>
                     var projectProducts = $('#projectProducts').dataTable({
-                        'order': [[ 2, 'desc' ]],
-                        'autoWidth': false
+                        order: [[ 2, 'desc' ]],
+                        autoWidth: false,
+                        drawCallback: renderProductLinks
                     });
                 </script>
             </div>";

@@ -181,14 +181,14 @@ class ProjectVisualizationsTab extends AbstractTab {
                                   'className' => 'visOrange'));
             foreach($project->getAllPeopleDuring(null, '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $person){
                 $start = substr($project->getJoinDate($person), 0, 10);
-                $end = substr($project->getEndDate($person), 0, 10);
+                $end = substr($project->getLeaveDate($person), 0, 10);
                 if($end == "0000-00-00"){
                     $end = $today;
                 }
                 if(strcmp($start, $end) > 0){
                     $start = $end;
                 }
-                if($person->isRoleDuring(NI, $start, $end, $project) || $person->leadershipOf($project)){
+                if($person->isRoleDuring(NI, $start, $end, $project) || $person->isRole(PL, $project)){
                     $content = "<a href='{$person->getUrl()}' style='color: white;' target='_blank'>View Member's Page</a>";
                     $items[] = array('content' => $person->getNameForForms(),
                                      'description' => array('title' => $person->getNameForForms(),
@@ -266,7 +266,7 @@ class ProjectVisualizationsTab extends AbstractTab {
             
             $labelIndicies = array();
             $index = 0;
-            /*foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
+            foreach($project->getPapers('all', '0000-00-00 00:00:00', '2100-00-00 00:00:00') as $paper){
                 $projects = $paper->getProjects();
                 foreach($projects as $proj){
                     if($project->getId() != $proj->getId()){
@@ -278,7 +278,7 @@ class ProjectVisualizationsTab extends AbstractTab {
                         @$levels[1]['values'][$labelIndicies[$proj->getName()]]++;
                     }
                 }
-            }*/
+            }
             
             if(!isset($levels[1])){
                 @$levels[1]['labels'][] = "No other Projects";

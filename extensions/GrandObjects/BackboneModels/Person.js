@@ -141,7 +141,11 @@ Person = Backbone.Model.extend({
             }
         }
         if(this.get('department') != ''){
-            university.push(this.get('department'));
+            var deptStr = this.get('department');
+            if(this.get('faculty') != ''){
+                deptStr += " / " + this.get('faculty');
+            }
+            university.push(deptStr);
         }
         if(this.get('university') != ''){
             university.push(this.get('university'));
@@ -179,6 +183,7 @@ Person = Backbone.Model.extend({
         position: '',
         roles: new Array(),
         department: '',
+        faculty: '',
         keywords: '',
         publicProfile: '',
         privateProfile: '',

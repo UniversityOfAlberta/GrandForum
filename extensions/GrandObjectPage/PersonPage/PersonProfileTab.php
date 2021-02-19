@@ -186,12 +186,12 @@ class PersonProfileTab extends AbstractEditableTab {
             // Insert the new data into the DB
             $_POST['user_name'] = $this->person->getName();
             $_POST['phone'] = @$_POST['phone'];
-            $_POST['email'] = @$_POST['email'];
 
             $api = new UserPhoneAPI();
             $api->doAction(true);
             
             $this->person->firstName = @$_POST['first_name'];
+            $this->person->middleName = @$_POST['middle_name'];
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
             $this->person->gender = @$_POST['gender'];
@@ -206,6 +206,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->nationality = @$_POST['nationality'];
             $this->person->stakeholder = @$_POST['stakeholder'];
             $this->person->earlyCareerResearcher = @$_POST['earlyCareerResearcher'];
+            $this->person->agencies = @$_POST['agencies'];
             $this->person->mitacs = @$_POST['mitacs'];
             if($config->getValue('crcEnabled')){
                 $this->person->canadaResearchChair = array(
@@ -215,8 +216,10 @@ class PersonProfileTab extends AbstractEditableTab {
                 );
             }
             $this->person->update();
-            $api = new UserEmailAPI();
-            $api->doAction(true);
+            if(isset($_POST['email'])){
+                $api = new UserEmailAPI();
+                $api->doAction(true);
+            }
         }
         
         //Reset the cache to use the changed data
@@ -260,7 +263,7 @@ EOF;
         global $config;
         $this->html .= "
                 <h3>Keywords:</h3>
-                <input class='keywords' type='text' name='keywords' value='".str_replace("'", "#39;", $person->getKeywords(","))."' />";
+                <input class='keywords' type='text' name='keywords' value='' />";
         if($config->getValue("publicProfileOnly")){
             $this->html .= "
                 <h3>Profile:</h3>
@@ -276,6 +279,7 @@ EOF;
              ";
          }
          $this->html .= "<script type='text/javascript'>
+            $('input.keywords').val('".addslashes($person->getKeywords(","))."');
             $('input.keywords').tagit({
                 allowSpaces: true
             });
@@ -322,6 +326,12 @@ EOF;
             foreach($products as $product){
                 $text .= $product->getTitle()."\n";
                 $text .= $product->getDescription()."\n";
+            }
+            if(isExtensionEnabled('UofANews')){
+                $news = UofANews::getNewsForPerson($person);
+                foreach($news as $article){
+                    $text .= "{$article->getPartialTitle()}\n";
+                }
             }
             CommonWords::$commonWords[] = strtolower($person->getFirstName());
             CommonWords::$commonWords[] = strtolower($person->getLastName());
@@ -429,7 +439,10 @@ EOF;
             $string .= "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
-                        <th>Title</th><th>Category</th><th>Date</th><th>Authors</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Authors</th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -450,10 +463,10 @@ EOF;
                 }
                 
                 $string .= "<tr>";
-                $string .= "<td><a href='{$paper->getUrl()}'>{$paper->getTitle()}</a><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
+                $string .= "<td><span class='productTitle' data-id='{$paper->getId()}' data-href='{$paper->getUrl()}'>{$paper->getTitle()}</span><span style='display:none'>{$paper->getDescription()}".implode(", ", $projects)." ".implode(", ", $paper->getUniversities())."</span></td>";
                 $string .= "<td>{$paper->getCategory()}</td>";
                 $string .= "<td style='white-space: nowrap;'>{$paper->getDate()}</td>";
-                $string .= "<td>".implode(", ", $names)."</td>";
+                $string .= "<td><div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>".implode(", ", $names)."</div></td>";
                 
                 $string .= "</tr>";
             }
@@ -461,8 +474,9 @@ EOF;
                 </table>
                 <script type='text/javascript'>
                     var personProducts = $('#personProducts').dataTable({
-                        'order': [[ 2, 'desc' ]],
-                        'autoWidth': false
+                        order: [[ 2, 'desc' ]],
+                        autoWidth: false,
+                        drawCallback: renderProductLinks
                     });
                 </script>";
         }
@@ -578,26 +592,29 @@ EOF;
         $nationality = "";
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
-            $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-            $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-            $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-            $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-            $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
-            $nationality = "<tr>
-                <td align='right'><b>Nationality:</b></td>
-                <td>
-                    <select name='nationality'>
-                        <option value=''>---</option>
-                        <option value='Canadian' $canSelected>Canadian</option>
-                        <option value='American' $amerSelected>American</option>
-                        <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                        <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                        <option value='International' $interSelected>International</option>
-                    </select>
-                </td>
-            </tr>";
+            $nationality = "";
+            if($config->getValue("nationalityEnabled")){
+                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
+                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
+                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
+                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
+                $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
+                $nationality = "<tr>
+                    <td align='right'><b>Nationality:</b></td>
+                    <td>
+                        <select name='nationality'>
+                            <option value=''>---</option>
+                            <option value='Canadian' $canSelected>Canadian</option>
+                            <option value='American' $amerSelected>American</option>
+                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
+                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
+                            <option value='International' $interSelected>International</option>
+                        </select>
+                    </td>
+                </tr>";
+            }
             $gender = "";
-            if($person->isMe() || $me->isRoleAtLeast(STAFF)){
+            if($config->getValue("genderEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
                 $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
                 $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
                 $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
@@ -701,9 +718,22 @@ EOF;
                 $ecr = "<tr>
                             <td colspan='2'>
                                 <fieldset>
-                                    <legend title='CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves'>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
+                                    <legend>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
                                     <input type='checkbox' name='earlyCareerResearcher' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
                                     <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
+                                </fieldset>
+                            </td>
+                        </tr>";
+            }
+            $agencies = "";
+            if($config->getValue('agenciesEnabled')){
+                $checkbox = new VerticalCheckBox("agencies", "agencies", $person->getAgencies(), array("CFI","CIHR","NSERC","SSHRC"));
+                $checked = ($person->getAgencies() == "Yes") ? "checked" : "";
+                $agencies = "<tr>
+                            <td colspan='2'>
+                                <fieldset>
+                                    <legend>From which agencies or organizations do you apply for funding?</legend>
+                                    {$checkbox->render()}
                                 </fieldset>
                             </td>
                         </tr>";
@@ -728,18 +758,28 @@ EOF;
                                 <td><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
                             </tr>
                             <tr>
+                                <td align='right'><b>Middle Name:</b></td>
+                                <td><input type='text' name='middle_name' value='".str_replace("'", "&#39;", $person->getMiddleName())."'></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>Last Name:</b></td>
                                 <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Email:</b></td>
-                                <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
-                            </tr>
+                                <td align='right'><b>Email:</b></td>";
+        if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
+            $this->html .= "<td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
+        }
+        else{
+            $this->html .= "<td>{$person->getEmail()}</td>";
+        }
+        $this->html .= "</tr>
                             {$nationality}
                             {$gender}
                             {$stakeholder}
                             {$crc}
                             {$ecr}
+                            {$agencies}
                             {$mitacs}";
         
         $roles = $person->getRoles();
@@ -769,7 +809,7 @@ EOF;
         $managePeople->loadHelpers();
         $managePeople->loadViews();
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
-        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #AAAAAA;'></div><input type='button' id='addUniversity' value='Add Institution' />
+        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input type='button' id='addUniversity' value='Add Institution' />
         <script type='text/javascript'>
             var model = new Person({id: {$this->person->getId()}});
             var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});

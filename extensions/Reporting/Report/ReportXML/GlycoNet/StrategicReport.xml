@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2020" allowIdProjects="true" disabled="false">
+<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2021" allowIdProjects="true" disabled="false">
     <Permissions>
-        <Role role="" subRole="Strat2020">
+        <Role role="" subRole="Strat2021">
 
         </Role>
         <Role role="STAFF+">
@@ -28,18 +28,14 @@
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>GlycoNet has set aside up to $600,000 for Strategic Initiatives in 2020–2021. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee.</p>
+                <p>GlycoNet has set aside up to $900,000 for Strategic Initiatives in 2021–2022. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization Committee.</p>
                 
                 <h3>Eligibility</h3>
                 <p>This opportunity is open only to individuals eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
                 
                 <h3>Application Form and Submission</h3>
-                <p>This is a rolling competition until the funding lasts. Applicants can submit their proposals when they are ready. Application review will be performed as follow:</p>
-                <ul>
-                    <li>LOI approved in February 2020, Applications due April 10, 2020: Results expected by June 30, 2020</li>
-                    <li>June 15, 2020 deadline: Results expected by October 31, 2020</li>
-                    <li>September 15, 2020 deadline: Results expected by January 31, 2020</li>
-                </ul>
+                <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability. Please check the website for the next deadline.</p>
+
                 <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
                 <h3>Additional Information</h3>
@@ -96,8 +92,8 @@
         <!-- EDI -->
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
-                <h2>Equity and Diversity</h2>
-                <p>Demonstrate how equity, diversity and inclusion (EDI) has been taken into account when selecting members of the Project Team.</p>
+                <h2>Equity, Diversity and Inclusion</h2>
+                <p>Demonstrate how equity, diversity and inclusion (EDI) has been incorporated into the project (see application instructions for more details).</p>
                 {$item}
             ]]>
         </ReportItem>

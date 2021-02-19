@@ -20,7 +20,7 @@ tbody#productRows td:not(.checkboxCell) {
 }
 
 #editDialog {
-    font-size: 9pt;
+    
 }
 
 #availableTagsDiv {
@@ -28,7 +28,7 @@ tbody#productRows td:not(.checkboxCell) {
     width: 220px;
     background: #F7F7F7;
     padding: 8px;
-    border: 1px solid #AAAAAA;
+    border: 1px solid #CCCCCC;
     border-radius: 5px;
     max-height: 300px;
     overflow-y: auto;

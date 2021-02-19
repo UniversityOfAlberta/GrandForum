@@ -64,6 +64,9 @@
     // Shibboleth default role
     $config->setValue("shibDefaultRole", "");
     
+    // Whether to auto create a user from single sign on
+    $config->setValue('shibCreateUser', false);
+    
     // Skin
     $config->setValue("skin", "cavendish");
     
@@ -76,10 +79,23 @@
     // Icon path (highlighted)
     $config->setValue("iconPathHighlighted", "skins/icons/gray_dark/");
     
+    // Top Header color for skin
+    $config->setValue("topHeaderColor", "#777777");
+    
+    // Sidebar color for skin
+    $config->setValue("sideColor", "#999999");
+    
     // Highlight color for skin
     $config->setValue("highlightColor", "#555555");
     
+    // Highlight color for skin
+    $config->setValue("hyperlinkColor", "#555555");
+    
+    // Highlight color for fonts
     $config->setValue("highlightFontColor", "#FFFFFF");
+    
+    // Border color for the #bodyContent div
+    $config->setValue("mainBorderColor", "#555555");
     
     // Highlight color for headers
     $config->setValue("headerColor", "#333333");
@@ -99,6 +115,9 @@
     // The Default productVisibility
     $config->setValue("productVisibility", "Forum");
     
+    // The terminology to use for "Sub-Role"
+    $config->setValue("subRoleTerm", "Sub-Role");
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
 
@@ -109,8 +128,17 @@
     // Whether or not to show outputs unrelated to projects or not.
     $config->setValue("showNonNetwork", true);
     
+    // Whether or not the gender field is enabled
+    $config->setValue("genderEnabled", true);
+    
+    // Whether or not the Nationality field is enabled
+    $config->setValue("nationalityEnabled", true);
+    
     // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
+    
+    // Whether or not Agencies field is enabled
+    $config->setValue("agenciesEnabled", false);
     
     // Whether or not Canada Research Chair is enabled
     $config->setValue("crcEnabled", false);
@@ -126,6 +154,9 @@
     
     // Whether or not Project Technology Evaluation/Adoption is enabled
     $config->setValue("alumniEnabled", false);
+    
+    // Whether or not wiki features are enabled
+    $config->setValue("wikiEnabled", true);
     
     // A list of api keys
     $config->setValue("apiKeys", array());
@@ -153,9 +184,6 @@
     
     // Whether or not to include HQP Products for supervisors
     $config->setValue("includeHQPProducts", true);
-    
-    // Whether or not to allow bigBetProjects
-    $config->setValue("bigBetProjects", false);
     
     // Whether or not to allow projectTypes
     $config->setValue("projectTypes", false);
@@ -200,9 +228,11 @@
         'CCVExport',
         //'CrossForumExport',
         'ReportIssue',
+        //'ContactUs',
         'MyThreads',
         'Freeze',
-        //'Postings'
+        //'Postings',
+        //'CRM'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,

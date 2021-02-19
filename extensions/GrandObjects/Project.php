@@ -14,10 +14,11 @@ class Project extends BackboneModel {
     var $fullName;
     var $name;
     var $status;
+    var $startDate;
+    var $endDate;
     var $type;
     var $private;
     var $parentId;
-    var $bigbet;
     var $people;
     var $phase;
     var $contributions;
@@ -57,7 +58,7 @@ class Project extends BackboneModel {
             self::$cache[$project->name] = &$project;
             return $project;
         }
-        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
+        $sql = "(SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.start_date, s.end_date, s.private
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE e.`project_id` = '{$id}'
                  AND e.`new_id` != '{$id}'
@@ -66,7 +67,7 @@ class Project extends BackboneModel {
                  AND e.clear != 1
                  ORDER BY `date` DESC LIMIT 1)
                 UNION 
-                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.private, s.bigbet
+                (SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.status, s.type, s.start_date, s.end_date, s.private
                  FROM grand_project p, grand_project_evolution e, grand_project_status s
                  WHERE p.id = '$id'
                  AND e.new_id = p.id
@@ -121,7 +122,8 @@ class Project extends BackboneModel {
                                           's.type',
                                           's.private',
                                           's.status',
-                                          's.bigbet'),
+                                          's.start_date',
+                                          's.end_date'),
                                     array('LOWER(p.name)' => strtolower(trim($name)),
                                           'e.new_id' => EQ(COL('p.id')),
                                           's.evolution_id' => EQ(COL('e.id'))),
@@ -181,7 +183,8 @@ class Project extends BackboneModel {
                                           's.type',
                                           's.private',
                                           's.status',
-                                          's.bigbet'),
+                                          's.start_date',
+                                          's.end_date'),
                                     array('LOWER(d.full_name)' => strtolower(trim($title)),
                                           'p.id' => EQ(COL('d.project_id')),
                                           'e.new_id' => EQ(COL('p.id')),
@@ -227,7 +230,7 @@ class Project extends BackboneModel {
             return Project::newFromId($id);
         }
         $sqlExtra = ($evolutionId != null) ? $sqlExtra = "AND e.id = $evolutionId" : "";
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.id = '$id'
                 AND e.new_id = p.id
@@ -260,7 +263,7 @@ class Project extends BackboneModel {
             return Project::newFromName($name);
         }
         $name = DBFunctions::escape($name);
-        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.private, s.bigbet
+        $sql = "SELECT p.id, p.name, p.phase, p.parent_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                 FROM grand_project p, grand_project_evolution e, grand_project_status s
                 WHERE p.name = '$name'
                 AND e.new_id = p.id
@@ -342,7 +345,7 @@ class Project extends BackboneModel {
     }
     
     // Same as getAllProjects, but will also return deleted projects
-    static function getAllProjectsEver($subProjects=false){
+    static function getAllProjectsEver($subProjects=false, $historic=false){
         $me = Person::newFromWgUser();
         if($subProjects == false){
             $subProjects = EQ(0);
@@ -356,7 +359,12 @@ class Project extends BackboneModel {
                                     array('name' => 'ASC'));
         $projects = array();
         foreach($data as $row){
-            $project = Project::newFromId($row['id']);
+            if($historic){
+                $project = Project::newFromHistoricId($row['id']);
+            }
+            else{
+                $project = Project::newFromId($row['id']);
+            }
             if($project != null && $project->getName() != ""){
                 if(!isset($projects[$project->name]) && (($me->isLoggedIn() && !$me->isCandidate()) || ($project->getStatus() != 'Proposed' && !$project->isPrivate()))){
                     $projects[$project->getName()] = $project;
@@ -441,9 +449,10 @@ class Project extends BackboneModel {
             $this->name = $data[0]['name'];
             $this->evolutionId = $data[0]['evolutionId'];
             $this->status = $data[0]['status'];
+            $this->startDate = $data[0]['start_date'];
+            $this->endDate = $data[0]['end_date'];
             $this->type = $data[0]['type'];
             $this->private = $data[0]['private'];
-            $this->bigbet = $data[0]['bigbet'];
             $this->phase = $data[0]['phase'];
             $this->parentId = $data[0]['parent_id'];
             $this->succ = false;
@@ -495,7 +504,6 @@ class Project extends BackboneModel {
                        'private' => $this->isPrivate(),
                        'theme' => $theme,
                        'themeName' => $themeName,
-                       'bigbet' => $this->isBigBet(),
                        'phase' => $this->getPhase(),
                        'url' => $this->getUrl(),
                        'deleted' => $this->isDeleted(),
@@ -642,10 +650,6 @@ EOF;
     
     function isPrivate(){
         return $this->private;
-    }
-    
-    function isBigBet(){
-        return $this->bigbet;
     }
     
     /**
@@ -805,6 +809,22 @@ EOF;
         return $this->effectiveDate;
     }
     
+    function getStartDate(){
+        $date = $this->startDate;
+        if($date == "0000-00-00 00:00:00"){
+            $date = $this->getCreated();
+        }
+        return $date;
+    }
+    
+    function getEndDate(){
+        $date = $this->endDate;
+        if($date == "0000-00-00 00:00:00"){
+            $date = $this->getEffectiveDate();
+        }
+        return $date;
+    }
+    
     // Returns an array of Person objects which represent
     // The researchers who are in this project.
     // If $filter is included, only users of that type will be selected
@@ -837,13 +857,13 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOf($this)){
+                    if($person->isRole(PL, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRole($filter, $this) && !$person->leadershipOf($this)) || 
-                         ($person->isRole($filter."-Candidate", $this) && !$person->leadershipOf($this) && $this->getStatus() == "Proposed")) && 
+                         ($person->isRole($filter, $this) && !$person->isRole(PL, $this)) || 
+                         ($person->isRole($filter."-Candidate", $this) && !$person->isRole(PL, $this) && $this->getStatus() == "Proposed")) && 
                         !$person->isRole(ADMIN)){
                     $people[$person->getId()] = $person;
                 }
@@ -894,17 +914,17 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOf($this)){
+                    if($person->isRoleDuring(PL, $startRange, $endRange, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->leadershipOf($this))) && 
+                        ($person->isRoleDuring(str_replace("Former-", "", $filter), $startRange, $endRange, $this) && !$person->isRole(PL, $this))) && 
                         ($includeManager || !$person->isRoleDuring(MANAGER, $startRange, $endRange))){
-                        if(strstr($filter, "Former-") !== false && $person->isRole(str_replace("Former-", "", $filter))){
-                            // Exclude people if they are still a member of the role if $filter contains 'Former-'
-                            continue;
-                        }
+                    if(strstr($filter, "Former-") !== false && $person->isRole(str_replace("Former-", "", $filter))){
+                        // Exclude people if they are still a member of the role if $filter contains 'Former-'
+                        continue;
+                    }
                     $people[$person->getId()] = $person;
                 }
             }
@@ -935,12 +955,12 @@ EOF;
             $person = Person::newFromId($id);
             if($person->getId() != 0){
                 if($filter == PL){
-                    if($person->leadershipOfOn($this, $date)){
+                    if($person->isRoleOn(PL, $date, $this)){
                         $people[$person->getId()] = $person;
                     }
                 }
                 else if(($filter == null || 
-                         ($person->isRoleOn($filter, $date, $this) && !$person->leadershipOfOn($this, $date))) && 
+                         ($person->isRoleOn($filter, $date, $this) && !$person->isRoleOn(PL, $date, $this))) && 
                         ($includeManager || !$person->isRoleOn(MANAGER, $date))){
                     $people[$person->getId()] = $person;
                 }
@@ -1032,57 +1052,6 @@ EOF;
         }
         return $multimedia;
     }
-    
-    /**
-     * Returns all the current Champions
-     * @param array The current Champions array(user, org, title, dept)
-     */
-    function getChampions(){
-        $champs = array();
-        $people = $this->getAllPeople(CHAMP);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
-    
-    /**
-     * Returns all the Champions between the given time frame
-     * @param string $start the starting date of the range
-     * @param string $end the ending date of the range
-     * @param array The People who were Champions during the given date array(user, org, title, dept)
-     */
-    function getChampionsDuring($start, $end){
-        $champs = array();
-        $people = $this->getAllPeopleDuring(CHAMP, $start, $end);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
-    
-    /**
-     * Returns all the People who were Champions on the given date
-     * @param string $date The date to check
-     * @return array The People who were Champions on the given date array(user, org, title, dept)
-     */
-    function getChampionsOn($date){
-        $champs = array();
-        $people = $this->getAllPeopleOn(CHAMP, $date);
-        foreach($people as $champ){
-            $champs[] = array('user' => $champ,
-                              'org' => $champ->getUni(),
-                              'title' => $champ->getPosition(),
-                              'dept' => $champ->getDepartment());
-        }
-        return $champs;
-    }
 
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
@@ -1115,16 +1084,16 @@ EOF;
            (($this->isSubProject() &&
              !$me->isThemeLeaderOf($this->getParent()) && 
              !$me->isThemeCoordinatorOf($this->getParent()) &&
-             !$me->leadershipOf($this->getParent()) &&
+             !$me->isRole(PL, $this->getParent()) &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this) &&
+             !$me->isRole(PL, $this) &&
              !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)) ||
             (!$this->isSubProject() &&
              !$me->isThemeLeaderOf($this) &&
              !$me->isThemeCoordinatorOf($this) &&
-             !$me->leadershipOf($this) &&
+             !$me->isRole(PL, $this) &&
              !$me->isRole(PS, $this) &&
              !$me->isRole(PA, $this)))){
             return false;
@@ -1502,7 +1471,7 @@ EOF;
     }
     
     // Returns the endDate for the given Person
-    function getEndDate($person){
+    function getLeaveDate($person){
         if($person != null && $person instanceof Person){
             $this->getEndDates();
             if(isset($this->endDates[$person->getId()])){

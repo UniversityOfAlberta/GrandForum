@@ -3,6 +3,14 @@
 /**
  * @package GrandObjects
  */
+ 
+/* Faculty map isn't required but can be used to map Department -> Faculty if needed
+ *
+ * should set a variable $facultyMap that equals:
+ * $facultyMap = array('faculty' => array('dept1', 'dept2', 'dept3'));
+ */
+
+@include_once("facultyMap.php");
 
 class Person extends BackboneModel {
 
@@ -16,6 +24,7 @@ class Person extends BackboneModel {
     static $namesCache = array();
     static $idsCache = array();
     static $allPeopleCache = array();
+    static $facultyMap = array();
 
     var $user = null;
     var $name;
@@ -24,6 +33,7 @@ class Person extends BackboneModel {
     var $nationality;
     var $stakeholder;
     var $earlyCareerResearcher;
+    var $agencies;
     var $mitacs;
     var $canadaResearchChair;
     var $gender;
@@ -53,7 +63,6 @@ class Person extends BackboneModel {
     var $projects;
     var $university;
     var $universityDuring;
-    var $isProjectLeader;
     var $groups;
     var $roles;
     var $rolesDuring;
@@ -325,6 +334,7 @@ class Person extends BackboneModel {
                                               'user_nationality',
                                               'user_stakeholder',
                                               'user_ecr',
+                                              'user_agencies',
                                               'user_mitacs',
                                               'user_crc',
                                               'user_gender',
@@ -636,7 +646,8 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllPeople(AR);
             $cis = self::getAllPeople(CI);
-            $merged = array_merge($ars, $cis);
+            $pls = self::getAllPeople(PL);
+            $merged = array_merge($ars, $cis, $pls);
             $people = array();
             foreach($merged as $person){
                 $people[$person->getName()] = $person;
@@ -763,7 +774,8 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidates(AR);
             $cis = self::getAllCandidates(CI);
-            $merged = array_merge($ars, $cis);
+            $pls = self::getAllCandidates(PL);
+            $merged = array_merge($ars, $cis, $pls);
             $people = array();
             foreach($merged as $person){
                 $people[$person->getName()] = $person;
@@ -798,7 +810,8 @@ class Person extends BackboneModel {
         if($filter == NI){
             $ars = self::getAllCandidatesDuring(AR, $startDate, $endDate);
             $cis = self::getAllCandidatesDuring(CI, $startDate, $endDate);
-            $merged = array_merge($ars, $cis);
+            $pls = self::getAllCandidatesDuring(PL, $startDate, $endDate);
+            $merged = array_merge($ars, $cis, $pls);
             $people = array();
             foreach($merged as $person){
                 $people[$person->getName()] = $person;
@@ -852,6 +865,7 @@ class Person extends BackboneModel {
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
             $this->earlyCareerResearcher = @$data[0]['user_ecr'];
+            $this->agencies = @json_decode($data[0]['user_agencies']);
             $this->mitacs = @$data[0]['user_mitacs'];
             $this->canadaResearchChair = @json_decode($data[0]['user_crc'], true);
             $this->university = false;
@@ -933,6 +947,7 @@ class Person extends BackboneModel {
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
                       'earlyCareerResearcher' => $this->getEarlyCareerResearcher(),
+                      'agencies' => $this->getAgencies(),
                       'mitacs' => $this->getMitacs(),
                       'canadaResearchChair' => $this->getCanadaResearchChair(),
                       'twitter' => $this->getTwitter(),
@@ -947,6 +962,7 @@ class Person extends BackboneModel {
                       'cachedPhoto' => $this->getPhoto(true),
                       'university' => $this->getUni(),
                       'department' => $this->getDepartment(),
+                      'faculty' => $this->getFaculty(),
                       'position' => $this->getPosition(),
                       'roles' => $roles,
                       'keywords' => $this->getKeywords(),
@@ -1014,6 +1030,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1079,6 +1096,7 @@ class Person extends BackboneModel {
                                           'user_nationality' => $this->getNationality(),
                                           'user_stakeholder' => $this->getStakeholder(),
                                           'user_ecr' => $this->getEarlyCareerResearcher(),
+                                          'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
                                           'user_public_profile' => $this->getProfile(false),
@@ -1172,7 +1190,7 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($this->isProjectLeader() && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
+        if($this->isRole(PL) && (!$person->isRoleAtLeast(COMMITTEE) || $person->isRole(NI) || $person->isRole(HQP))){
             // User is a Project Leader, therefore can edit anyone who is not in a committee or higher unless they are also an NI or HQP
             return true;
         }
@@ -1437,54 +1455,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether or not this Person is a champion of the given Project
-     * @param Project $project The Project to check
-     * @return boolean Whether or not this Person is a champion of the given Project
-     */
-    function isChampionOf($project){
-        $champs = $project->getChampions();
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a champion of the given Project on the given date
-     * @param Project $project The Project to check
-     * @param string $date The date that the Person was on the Project
-     * @return boolean Whether or not this Person is a champion of the Project
-     */
-    function isChampionOfOn($project, $date){
-        $champs = $project->getChampionsOn($date);
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a champion of the given Project between the given dates
-     * @param Project $project The Project to check
-     * @param string $start The start date that the Person was on the Project
-     * @param string $end The end date that the Person was on the Project
-     * @return boolean Whether or not this Person is a champion of the Project
-     */
-    function isChampionOfDuring($project, $start, $end){
-        $champs = $project->getChampionsDuring($start, $end);
-        foreach($champs as $champ){
-            if($champ['user']->getId() == $this->getId()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
      * Returns the id of this Person.  
      * Returns 0 if the user doesn't exist or if is an HQP and the current user is not logged in 
      * @return int The id of this Person
@@ -1543,6 +1513,10 @@ class Person extends BackboneModel {
      * @return string The gender of this Person
      */
     function getGender(){
+        global $config;
+        if(!$config->getValue("genderEnabled")){
+            return "";
+        }
         $me = Person::newFromWgUser();
         if($this->isMe() || $me->isRoleAtLeast(STAFF)){
             return $this->gender;
@@ -1550,7 +1524,7 @@ class Person extends BackboneModel {
         else{
             // Check Project Leadership
             foreach($this->getProjects(true) as $project){
-                if($me->leadershipOf($project)){
+                if($me->isRole(PL, $project)){
                     return $this->gender;
                 }
             }
@@ -1563,6 +1537,10 @@ class Person extends BackboneModel {
      * @return string The nationality of this Person
      */
     function getNationality(){
+        global $config;
+        if(!$config->getValue("nationalityEnabled")){
+            return "";
+        }
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
             return $this->nationality;
@@ -1600,6 +1578,24 @@ class Person extends BackboneModel {
             return $this->earlyCareerResearcher;
         }
         return "";
+    }
+    
+    /**
+     * Returns the agencieis array for this Person
+     * @return string The agencies array for this Person
+     */
+    function getAgencies($delim=null){
+        $me = Person::newFromWgUser();
+        $agencies = array();
+        if($me->isLoggedIn()){
+            if(is_array($this->agencies)){
+                $agencies = $this->agencies;
+            }
+        }
+        if($delim != null){
+            return implode($delim, $agencies);
+        }
+        return $agencies;
     }
     
     /**
@@ -1984,7 +1980,8 @@ class Person extends BackboneModel {
         if($this->movedOn == null){
             $sql = "SELECT *
                     FROM `grand_movedOn`
-                    WHERE `user_id` = '{$this->getId()}'";
+                    WHERE `user_id` = '{$this->getId()}'
+                    ORDER BY `effective_date` DESC";
             $data = DBFunctions::execSQL($sql);
             if(DBFunctions::getNRows() > 0){
                 $this->movedOn = $data[0];
@@ -1995,6 +1992,7 @@ class Person extends BackboneModel {
                                        "employer" => "",
                                        "city" => "",
                                        "country" => "",
+                                       "employment_type" => "",
                                        "effective_date" => "");
             }
         }
@@ -2045,7 +2043,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::execSQL($sql);
         $people = array();
         foreach($data as $row){
-            $people[] = Person::newFromId($row['user_id']);
+            $people[$row['user_id']] = Person::newFromId($row['user_id']);
         }
         return $people;
     }
@@ -2143,6 +2141,18 @@ class Person extends BackboneModel {
     function getUni(){
         $university = $this->getUniversity();
         return (isset($university['university'])) ? $university['university'] : "Unknown";
+    }
+    
+    /**
+     * Tries to map the department to a faculty
+     * @return string The name of the faculty
+     */
+    function getFaculty(){
+        $department = $this->getDepartment();
+        if(isset(Person::$facultyMap[$department])){
+            return Person::$facultyMap[$department];
+        }
+        return "";
     }
     
     /**
@@ -2380,7 +2390,7 @@ class Person extends BackboneModel {
             }
         }
         if($maxRole == INACTIVE){
-            if($this->isProjectLeader()){
+            if($this->isRole(PL)){
                 return PL;
             }
             if($this->isThemeLeader()){
@@ -2526,14 +2536,11 @@ class Person extends BackboneModel {
         if($year == null){
             $year = date('Y-m-d H:i:s');
         }
-        if($this->isRoleOn(AR, $year, $project) && !$this->leadershipOf($project)){
+        if($this->isRoleOn(AR, $year, $project) && !$this->isRoleOn(PL, $year, $project)){
             return AR;
         }
-        else if($this->isRoleOn(CI, $year, $project) && !$this->leadershipOf($project)){
+        else if($this->isRoleOn(CI, $year, $project) && !$this->isRoleOn(PL, $year, $project)){
             return CI;
-        }
-        else if($this->leadershipOf($project)){
-            return PL;
         }
         else if($this->isRoleOn(HQP, $year, $project)){
             return HQP;
@@ -2648,7 +2655,8 @@ class Person extends BackboneModel {
     function wasLastRole($role){
         if($role == NI){
             return ($this->wasLastRole(AR) || 
-                    $this->wasLastRole(CI));
+                    $this->wasLastRole(CI) ||
+                    $this->wasLastRole(PL));
         }
         $lastRole = $this->getLastRole();
         if($lastRole != null && $lastRole->getRole() == $role){
@@ -2666,7 +2674,8 @@ class Person extends BackboneModel {
         global $wgRoleValues;
         if($role == NI){
             return ($this->wasLastRoleAtLeast(AR) || 
-                    $this->wasLastRoleAtLeast(CI));
+                    $this->wasLastRoleAtLeast(CI) ||
+                    $this->wasLastRoleAtLeast(PL));
         }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
@@ -2686,7 +2695,8 @@ class Person extends BackboneModel {
         global $wgRoleValues;
         if($role == NI){
             return ($this->wasLastRoleAtMost(AR) || 
-                    $this->wasLastRoleAtMost(CI));
+                    $this->wasLastRoleAtMost(CI) ||
+                    $this->wasLastRoleAtMost(PL));
         }
         if($this->getRoles() != null){
             $r = $this->getLastRole();
@@ -2784,7 +2794,22 @@ class Person extends BackboneModel {
         $roles = $this->getSubRoles();
         return (array_search($subRole, $roles) !== false);
     }
-
+    
+    function isSubRoleBefore($subRole, $date){
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'changed' => LT($date)));
+        return (count($data) > 0);
+    }
+    
+    function isSubRoleSince($subRole, $date){
+        $data = DBFunctions::select(array('grand_role_subtype'),
+                                    array('sub_role'),
+                                    array('user_id' => EQ($this->getId()),
+                                          'changed' => GT($date)));
+        return (count($data) > 0);
+    }
     
     /**
      * Returns all of the Projects that this Person has been a member of
@@ -3270,20 +3295,33 @@ class Person extends BackboneModel {
      * @return boolean Whether or not the Person is the given role
      */
     function isRole($role, $project=null){
+        if($project != null){
+            // Check Project type
+            if($project instanceof Project){
+                $project = $project;
+            }
+            else if(is_string($project)){
+                $project = Project::newFromHistoricName($project);
+            }
+            else{
+                // Not a valid type (ie. Theme)
+                return false;
+            }
+        }
         if($role == NI){
             return ($this->isRole(AR, $project) || 
-                    $this->isRole(CI, $project));
+                    $this->isRole(CI, $project) ||
+                    $this->isRole(PL, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRole(AR.'-Candidate', $project) || 
-                    $this->isRole(CI.'-Candidate', $project));
+                    $this->isRole(CI.'-Candidate', $project) ||
+                    $this->isRole(PL.'-Candidate', $project));
         }
         if($role == 'Former-'.NI){
             return ($this->isRole('Former-'.AR, $project) || 
-                    $this->isRole('Former-'.CI, $project));
-        }
-        if($role == PL){
-            return ($project != null) ? $this->leadershipOf($project) : $this->isProjectLeader();
+                    $this->isRole('Former-'.CI, $project) ||
+                    $this->isRole('Former-'.PL, $project));
         }
         if($role == APL){
             $leadership = $this->leadership(false, true, 'Administrative');
@@ -3365,20 +3403,16 @@ class Person extends BackboneModel {
     function isRoleOn($role, $date, $project=null){
         if($role == NI){
             return ($this->isRoleOn(AR, $date, $project) || 
-                    $this->isRoleOn(CI, $date, $project));
+                    $this->isRoleOn(CI, $date, $project) ||
+                    $this->isRoleOn(PL, $date, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleOn(AR.'-Candidate', $date, $project) || 
-                    $this->isRoleOn(CI.'-Candidate', $date, $project));
+                    $this->isRoleOn(CI.'-Candidate', $date, $project) ||
+                    $this->isRoleOn(PL.'-Candidate', $date, $project));
         }
         $roles = array();
         $role_objs = $this->getRolesOn($date);
-        if($role == PL){
-            $project_objs = $this->leadershipOn($date);
-            if(count($project_objs) > 0){
-                $roles[] = PL;
-            }
-        }
         if(count($role_objs) > 0){
             $defaultSkip = false;
             foreach($role_objs as $r){
@@ -3433,20 +3467,16 @@ class Person extends BackboneModel {
     function isRoleDuring($role, $startRange, $endRange, $project=null){
         if($role == NI){
             return ($this->isRoleDuring(AR, $startRange, $endRange, $project) || 
-                    $this->isRoleDuring(CI, $startRange, $endRange, $project));
+                    $this->isRoleDuring(CI, $startRange, $endRange, $project) ||
+                    $this->isRoleDuring(PL, $startRange, $endRange, $project));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleDuring(AR.'-Candidate', $startRange, $endRange, $project) || 
-                    $this->isRoleDuring(CI.'-Candidate', $startRange, $endRange, $project));
+                    $this->isRoleDuring(CI.'-Candidate', $startRange, $endRange, $project) ||
+                    $this->isRoleDuring(PL.'-Candidate', $startRange, $endRange, $project));
         }
         $roles = array();
         $role_objs = $this->getRolesDuring($startRange, $endRange);
-        if($role == PL){
-            $project_objs = $this->leadershipDuring($startRange, $endRange);
-            if(count($project_objs) > 0){
-                $roles[] = PL;
-            }
-        }
         if($role == TL){
             if($this->isThemeLeaderDuring($startRange, $endRange)){
                 $roles[] = TL;
@@ -3529,11 +3559,13 @@ class Person extends BackboneModel {
         global $wgRoleValues;
         if($role == NI){
             return ($this->isRoleAtLeastDuring(AR, $startRange, $endRange) || 
-                    $this->isRoleAtLeastDuring(CI, $startRange, $endRange));
+                    $this->isRoleAtLeastDuring(CI, $startRange, $endRange) ||
+                    $this->isRoleAtLeastDuring(PL, $startRange, $endRange));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtLeastDuring(AR.'-Candidate', $startRange, $endRange) || 
-                    $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange));
+                    $this->isRoleAtLeastDuring(CI.'-Candidate', $startRange, $endRange) ||
+                    $this->isRoleAtLeastDuring(PL.'-Candidate', $startRange, $endRange));
         }
         if($this->isCandidate() && strstr($role, "-Candidate") === false){
             return false;
@@ -3552,11 +3584,6 @@ class Person extends BackboneModel {
                 }
             }
         }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeaderDuring($startRange, $endRange)){
-                return true;
-            }
-        }
         return false;
     }
     
@@ -3569,11 +3596,13 @@ class Person extends BackboneModel {
         global $wgRoleValues;
         if($role == NI){
             return ($this->isRoleAtLeast(AR) || 
-                    $this->isRoleAtLeast(CI));
+                    $this->isRoleAtLeast(CI) ||
+                    $this->isRoleAtLeast(PL));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtLeast(AR.'-Candidate') || 
-                    $this->isRoleAtLeast(CI.'-Candidate'));
+                    $this->isRoleAtLeast(CI.'-Candidate') ||
+                    $this->isRoleAtLeast(PL.'-Candidate'));
         }
         $me = Person::newFromWgUser();
         if($this->isCandidate() && strstr($role, "-Candidate") === false){
@@ -3590,11 +3619,6 @@ class Person extends BackboneModel {
                 if($r->getRole() != "" && $wgRoleValues[$r->getRole()] >= $wgRoleValues[$role]){
                     return true;
                 }
-            }
-        }
-        if($wgRoleValues[PL] >= $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
-                return true;
             }
         }
         if($wgRoleValues[TL] >= $wgRoleValues[$role]){
@@ -3619,11 +3643,13 @@ class Person extends BackboneModel {
         global $wgRoleValues;
         if($role == NI){
             return ($this->isRoleAtMost(AR) || 
-                    $this->isRoleAtMost(CI));
+                    $this->isRoleAtMost(CI) ||
+                    $this->isRoleAtMost(PL));
         }
         if($role == NI.'-Candidate'){
             return ($this->isRoleAtMost(AR.'-Candidate') || 
-                    $this->isRoleAtMost(CI.'-Candidate'));
+                    $this->isRoleAtMost(CI.'-Candidate') ||
+                    $this->isRoleAtMost(PL.'-Candidate'));
         }
         if($this->isCandidate() && strstr($role, "-Candidate") === false){
             return false;
@@ -3636,11 +3662,6 @@ class Person extends BackboneModel {
         }
         foreach($this->getRoles() as $r){
             if($r->getRole() != "" && $wgRoleValues[$r->getRole()] > $wgRoleValues[$role]){
-                return false;
-            }
-        }
-        if($wgRoleValues[PL] > $wgRoleValues[$role]){
-            if($this->isProjectLeader()){
                 return false;
             }
         }
@@ -3663,6 +3684,23 @@ class Person extends BackboneModel {
                 $this->isSubRole("SIP/CAT HQP") ||
                 $this->isSubRole("Alumni HQP") ||
                 $this->isSubRole("EPIC grad"));
+    }
+    
+    function isEpic2(){
+        $date = "2020-09-01";
+        $university = $this->getUniversity();
+        $position = $university['position'];
+        $uniDate = $university['date'];
+        if($this->isSubRoleBefore("Affiliate HQP", $date) || 
+           $this->isSubRoleBefore("Project Funded HQP", $date) ||
+           $this->isSubRoleBefore("WP/CC Funded HQP", $date) ||
+           $this->isSubRoleBefore("SIP/CAT HQP", $date) ||
+           $this->isSubRoleBefore("Award HQP", $date) ||
+           $this->isSubRoleBefore("Alumni HQP", $date) ||
+           $this->isSubRoleBefore("EPIC grad", $date)){
+            return false;
+        }
+        return true;
     }
     
     /**
@@ -3773,33 +3811,6 @@ class Person extends BackboneModel {
         }
         $this->hqps = $hqps;
         return $this->hqps;
-    }
-    
-    /**
-     * Returns this Person's Champions between the given dates (based on the Works With relation)
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return array This Person's Champions
-     */
-    function getChampionsDuring($startRange, $endRange){
-        $champions = array();
-        $relations = $this->getRelations(WORKS_WITH, true);
-        foreach($relations as $relation){
-            $start = $relation->getStartDate();
-            $end = $relation->getEndDate();
-            if((strcmp($end, $startRange) >= 0 && strcmp($end, $endRange) <= 0 && strcmp($end, "0000-00-00 00:00:00") != 0) ||
-                (strcmp($start, $startRange) >= 0 && (strcmp($end, $endRange) >= 0 || strcmp($end, "0000-00-00 00:00:00") == 0))){
-                $user1 = $relation->getUser1();
-                $user2 = $relation->getUser2();
-                if($user1->getId() != $this->id && $user1->isRoleDuring(CHAMP, $startRange, $endRange)){
-                    $champions[] = $user1;
-                }
-                else if($user2->getId() != $this->id && $user2->isRoleDuring(CHAMP, $startRange, $endRange)){
-                    $champions[] = $user2;
-                }
-            }
-        }
-        return $champions;
     }
     
     /**
@@ -4323,128 +4334,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns an array of Projects that this Person is a leader of on the given date
-     * @param string $date The date this Person was a leader of
-     * @return The Projects that this Person is a leader of
-     */
-    function leadershipOn($date){
-        if(isset($this->leadershipCache[$date])){
-            return $this->leadershipCache[$date];
-        }
-        $sql = "SELECT DISTINCT rp.project_id
-                FROM grand_roles r, grand_role_projects rp
-                WHERE rp.role_id = r.id
-                AND r.role = '".PL."'
-                AND r.user_id = '{$this->id}'
-                AND (('$date' BETWEEN start_date AND end_date ) OR (start_date <= '$date' AND end_date = '0000-00-00 00:00:00'))";
-        $data = DBFunctions::execSQL($sql);
-        $projects = array();
-        foreach($data as $row){
-            $project = Project::newFromId($row['project_id']);
-            if($project != null && 
-               ((!$project->isDeleted()) || 
-               ($project->isDeleted() && !($project->effectiveDate < $date)))){
-                $projects[] = $project;
-            }
-        }
-        $this->leadershipCache[$date] = $projects;
-        return $projects;
-    } 
-    
-    /**
-     * Returns whether or not this Person is a leader of a given Project
-     * @param mixed $project The Project object (or name)
-     * @param string $type The type of leadership (depricated)
-     * @return boolean Whether or not this Person is a leader of a given Project
-     */
-    function leadershipOf($project, $type=null){
-        if($project instanceof Project ||
-           $project instanceof Theme){
-            $p = $project;
-        }
-        else{
-            $p = Project::newFromHistoricName($project);
-        }
-        if($p == null || $p->getName() == ""){
-            return false;
-        }
-        self::generateLeaderCache();
-        if(isset(self::$leaderCache[$this->getId()][$p->getId()])){
-            return true;
-        }
-        if($p instanceof Project && !$p->clear){
-            foreach($p->getPreds() as $pred){
-                if($this->leadershipOf($pred, $type)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether this Person was a leader of the given project on the specified date
-     * @param mixed $project The Project object (or name)
-     * @param string $date The date this Person was a leader of
-     * @return boolean Whether or not this Person is a leader of a given Project
-     */
-    function leadershipOfOn($project, $date){
-        $projects = $this->leadershipOn($date);
-        foreach($projects as $p){
-            if($p->getName() == $project->getName()){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Returns whether or not this Person is a leader of at least one Project
-     * @return boolean Whether or not this Person is a leader
-     */
-    function isProjectLeader(){
-        if($this->isProjectLeader != null){
-            return $this->isProjectLeader;
-        }
-        self::generateLeaderCache();
-        if(isset(self::$leaderCache[$this->id])){
-            $this->isProjectLeader = true;
-        }
-        else{
-            $this->isProjectLeader = false;
-        }
-        return $this->isProjectLeader;
-    }
-    
-    /**
-     * Returns whether or not this Person was a leader between the given dates
-     * @param string $startRange The start date
-     * @param string $endRange The end date
-     * @return boolean Whether or not this Person was a leader
-     */
-    function isProjectLeaderDuring($startRange, $endRange){
-        $sql = "SELECT DISTINCT rp.project_id
-                FROM grand_roles r, grand_role_projects rp
-                WHERE rp.role_id = r.id
-                AND r.role = '".PL."'
-                AND r.user_id = '{$this->id}'
-                AND ( 
-                ( (r.end_date != '0000-00-00 00:00:00') AND
-                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
-                OR
-                ( (r.end_date = '0000-00-00 00:00:00') AND
-                ((r.start_date <= '$endRange')))
-                )";
-        $data = DBFunctions::execSQL($sql);
-        if(count($data) > 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
-    /**
      * Returns the Themes that this Person is a leader of
      * @return array The Themes that this Person is a leader of
      */
@@ -4804,5 +4693,12 @@ class Person extends BackboneModel {
         }
         return "";
     }    
+}
+if(isset($facultyMap)){
+    Person::$facultyMap = array_flip(array_flatten($facultyMap));
+    foreach(Person::$facultyMap as $key => $val){
+        $exploded = explode(".", $val);
+        Person::$facultyMap[$key] = $exploded[0];
+    }
 }
 ?>

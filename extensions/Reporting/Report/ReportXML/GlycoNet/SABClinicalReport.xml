@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Clinical Report" reportType="RP_CLINICAL_REPORT" pdfType="RPTP_CLINICAL_REPORT" pdfFiles="SABClinicalReportPDF" personId="0" ajax="true" disabled="false" year="2020">
+<Report name="Clinical Report" reportType="RP_CLINICAL_REPORT" pdfType="RPTP_CLINICAL_REPORT" pdfFiles="SABClinicalReportPDF" personId="0" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />
@@ -32,11 +32,12 @@
             <SectionPermission id="submit" permissions="" />
         </Person>
     </Permissions>
-    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="MATERIALS" type="EditableReportSection" renderpdf="false">
         <Static>
             <![CDATA[
             <table align="left" class='wikitable'>
                 <tr>
+                    <th style="min-width:110px;">Project Code</th>
                     <th style="min-width:110px;">PI Name</th>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Proposal PDF</th>
@@ -44,8 +45,13 @@
             ]]>
         </Static>
         <ReportItemSet id="projects" type="AllMaterialsReportItemSet" subType="SAB-Clinical">
+            <ReportItem id="code" type="Text" width="100px" blobItem="CODE" blobSubItem="{$user_id}_{$project_id}">
+                <![CDATA[
+                    <tr><td>{$item}</td>
+                ]]>
+            </ReportItem>
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="ClinicalReport" project="true">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -60,6 +66,7 @@
                 <table width="100%" class="wikitable" rules="all" frame="box">
                     <thead>
                         <tr>
+                            <th style="white-space: nowrap;">Project Code</th>
                             <th style="white-space: nowrap;">Applicant</th>
                             <th style="white-space: nowrap;">Project</th>
                             <th style="white-space: nowrap;">Reviewer 1</th>
@@ -76,6 +83,7 @@
             <Static>
                 <![CDATA[
                     <tr>
+                        <td>{getText(RP_CLINICAL_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td>
                         <td>{$user_name}</td>
                         <td title="{getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width:200px;">
                             {getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}
@@ -126,7 +134,7 @@
     <ReportSection id="review" name="Project Review" blobSection="SAB_REPORT" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="SAB-Clinical">
             <If id="if" if="{!=({$user_id},{$my_id})}">
-                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+                <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_CLINICAL_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_CLINICAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                     <ReportItemSet id="evaluators" type="SABReportItemSet" subType="SAB-Clinical" includeSelf="true">
                         <Static>
                             <![CDATA[

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" pdfFiles="HQPApplications/CSPCPDF" ajax="true" disabled="false" year="2019">
+<Report name="Canadian Science Policy Conference (CSPC) Competition" reportType="RP_CSPC" pdfType="CSPC" pdfFiles="HQPApplications/CSPCPDF" ajax="true" disabled="false" year="2020">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -20,21 +20,22 @@
         <Static>
             <![CDATA[
                 <h3>Background</h3>
-                <p>Delivering on the GlycoNet vision, to find solutions to important health issues and improve the quality of life of Canadians through glycomics, requires an understanding of how fundamental scientific discoveries are translated into health innovations and how these innovations can most positively impact the health and well-being of the nation. In order to introduce GlycoNet HQP to these concepts, the Network will sponsor two graduate students or postdoctoral fellows annually to attend the Canadian Science Policy Conference and then share their experience broadly with the GlycoNet community.</p>
+                <p>The ways in which society benefits from science, technology, and innovation are determined through effective policy. Have you ever wondered how such policies are developed? Consider applying for the GlycoNet CSPC Competition to learn more about careers in science policy, or networking with like-minded trainees from across Canada. GlycoNet will sponsor trainees to attend the virtual 2020 Canadian Science Policy Conference in November. For more information about the conference, visit the website: <a href='https://sciencepolicyconference.ca/' target='_blank'>https://sciencepolicyconference.ca/</a>.</p>
 
-                <p>More information about the conference can be found on the CSPC website: <a target="_blank" href='https://sciencepolicyconference.ca/'>https://sciencepolicyconference.ca/</a></p>
+                <h3>Eligibility</h3>
+                <p>This competition is open to graduate students, postdoctoral fellows, research technicians, and research associates supervised by GlycoNet Network Investigators. Applicants do not currently need to be working on a GlycoNet-funded project. To check if your supervisor is a GlycoNet Investigator, visit <a href='https://bit.ly/glyconet' target='_blank'>https://bit.ly/glyconet</a>.</p>
 
-                <h3>Guidelines and Process</h3>
+                <h3>Funding Available</h3>
+                <p>GlycoNet will sponsor 10 trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to attend the virtual Canadian Science Policy Pre-Conference from November 1st - 14th, 2020 and the Canadian Science Policy Conference from November 16th - 20th, 2020.</p>
+
+                <h3>Instructions</h3>
                 <ul>
-                    <li>This competition is open to graduate students and postdoctoral fellows supervised by GlycoNet Network investigators. Applicants do not need to currently be working on a GlycoNet-funded project.</li>
-                    <li>Applicants will submit an application through the GlycoNet Forum by the specified deadline (below).</li>
-                    <li>Applications will be reviewed by the Training Committee, and applicants notified of their application status by mid-October.</li>
-                    <li>Funding will support the travel, accommodation, and registration fee for the conference-only option. These reservations will be made by the GlycoNet administrative office directly. Meals outside of those supplied by the conference are not included. The gala dinner is not included.</li>
-                    <li>Award recipients must submit a blog article to the GlycoNet Communications Associate no later than December 15. In the article, the award recipient will reflect on their experience and what they learned as well as discuss what they found impactful about the conference and how it may influence their studies and career goals. These submissions will be shared publicly through the GlycoNet CuriOSEity blog. Articles must adhere to the blog quality standards requested by the Communications Associate.</li>
+                    <li>Applicants to submit an application through the GlycoNet Forum by 11:59 pm MDT, October 18, 2020.</li>
+                    <li>Applications will be reviewed by the Training Committee, and applicants will be notified of their application status no later than October 23, 2020.</li>
+                    <li>Funding will support the registration fee for the pre-conference and conference.</li>
+                    <li>Award recipients will be contacted by the GlycoNet Communications Associate before December 15, 2020 regarding their experience at the conference. In the interview, award recipients will be ask to reflect on their conference experience, what they learned, as well as discuss what they found impactful about the conference and how it may influence their studies and career goals.</li>
                 </ul>
-
-                <h3>Deadline</h3>
-                <p>Application deadline is <b>September 15th</b>. Network management will strive to notify successful applicants by mid-October.</p>
+                <p><b>Award Application Deadline:</b> October 18, 2020 at 11:59 PM MDT</p>
             ]]>
         </Static>
     </ReportSection>
@@ -54,7 +55,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow">
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow|Research Technician|Research Associate">
             <![CDATA[
                     <tr>
                         <td valign="top" align="right" style="padding-top:3px;"><b>Academic Program/Status:</b></td>
@@ -74,7 +75,28 @@
         <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
             <![CDATA[
                 <h3>Description</h3>
-                <p>Describe why you are interested in participating in the CSPC, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                <p>Describe why you are interested in participating the CSPC, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="theme" type="Textarea" blobItem="THEME" rich="true" limit="300" recommended="true">
+            <![CDATA[
+                <br />
+                <br />
+                <p>Based on the <a href='https://sciencepolicyconference.ca/program-2020-2/' target='_blank'>Program</a>, which theme are you most interested in and which sessions do you plan to attend?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload your CV</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="Upload" blobItem="CONSENT" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload supervisor consent/support letter</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/supervisor support letter-fillable.pdf' target='_blank'>Template</a>
                 {$item}
             ]]>
         </ReportItem>
@@ -84,9 +106,8 @@
             <![CDATA[
                 <p>By submitting this CSPC Competition Application Form I agree with GlycoNet that:</p>
                 <ol>
-                    <li>the information contained in this form is true, complete, and accurate;</li>
-                    <li>I will immediately notify the GlycoNet Training Coordinator of any substantive changes to my program status or conflicts that may affect my participation in this program;</li>
-                    <li>I consent to being identified by name as a recipient of funding under the CSPC Competition program on the GlycoNet website and in GlycoNet publications.</li>
+                    <li>I agree to be contacted by the GlycoNet Communications Associate regarding my experience after the conference.</li>
+                    <li>I agree to represent GlycoNet as a Network trainee throughout the CSPC conference. (i.e. introduce yourself as a GlycoNet trainee in addition to your affiliated academic institution during conference sessions and in your conference profile)</li>
                 </ol>
                 {$item}
             ]]>

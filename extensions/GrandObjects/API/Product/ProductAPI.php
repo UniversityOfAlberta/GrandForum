@@ -26,7 +26,7 @@ class ProductAPI extends RESTAPI {
                     echo base64_decode($exploded[1]);
                 }
                 else{
-                    $this->throwError("The product <i>{$paper->getTitle()}</i> could does not have a file by the id of {$this->getParam('file')}");
+                    $this->throwError("The product <i>{$paper->getTitle()}</i> does not have a file by the id of {$this->getParam('file')}");
                 }
                 exit;
             }

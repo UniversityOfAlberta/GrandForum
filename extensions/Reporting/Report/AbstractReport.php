@@ -209,6 +209,7 @@ abstract class AbstractReport extends SpecialPage {
     
     function execute(){
         global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
+        $me = Person::newFromWgUser();
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
                 $managerImpersonating = false;
@@ -222,6 +223,16 @@ abstract class AbstractReport extends SpecialPage {
                 }
             }
             if(!$this->checkPermissions()){
+                if(!$me->isLoggedIn()){
+                    $register = "";
+                    if(isExtensionEnabled('HQPRegister')){
+                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:HQPRegister'>register</a>";
+                    }
+                    $wgOut->clearHTML();
+                    $wgOut->setPageTitle("Not logged in");
+                    $wgOut->addHTML("Please login {$register} in order to access this page.");
+                    return;
+                }
                 permissionError();
             }
             if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
@@ -622,7 +633,7 @@ abstract class AbstractReport extends SpecialPage {
      * Returns whether or not the Person has started the report yet
      * @return boolean Whether or not the Person has started the report yet
      */
-    function hasStarted(){
+    function hasStarted($deep=false){
         $personId = $this->person->getId();
         $projectId = ($this->project != null) ? $this->project->getId() : 0;
         $data = DBFunctions::select(array('grand_report_blobs'),
@@ -631,6 +642,33 @@ abstract class AbstractReport extends SpecialPage {
                                           'proj_id' => EQ($projectId),
                                           'rp_type' => EQ($this->reportType),
                                           'year' => EQ($this->year)));
+        if($data[0]['count'] > 0 && $deep){
+            $data = DBFunctions::select(array('grand_report_blobs'),
+                                        array('*'),
+                                        array('user_id' => EQ($personId),
+                                              'proj_id' => EQ($projectId),
+                                              'rp_type' => EQ($this->reportType),
+                                              'year' => EQ($this->year),
+                                              'blob_type' => NEQ(BLOB_RAW)));
+            foreach($data as $row){
+                $blobData = @unserialize(trim($row['data']));
+                if($blobData === false){
+                    $blobData = trim($row['data']);
+                }
+                if(is_array($blobData)){
+                    $blobData = implode("", array_flatten($blobData));
+                    if($blobData != ""){
+                        return true;
+                    }
+                }
+                else {
+                    if($blobData != ""){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         return ($data[0]['count'] > 0);
     }
     
@@ -675,19 +713,7 @@ abstract class AbstractReport extends SpecialPage {
                                 (($me->getId() == $this->person->getId() && $me->isSupervisor()) || $me->relatedTo($this->person, SUPERVISES))){
                             $rResult = true;
                         }
-                        else if($this->project != null && $perm['perm']['role'] == CHAMP && $me->isRole(CHAMP)){
-                            if($me->isChampionOfOn($this->project, $perm['end']) && !$this->project->isSubProject()){
-                                $rResult = true;
-                            }
-                            else {
-                                foreach($this->project->getSubProjects() as $sub){
-                                    if($me->isChampionOfOn($sub, $perm['end'])){
-                                        $rResult = true;
-                                    }
-                                }
-                            }
-                        }
-                        else if($this->project != null && ($perm['perm']['role'] == PL || $perm['perm']['role'] == "Leadership")){
+                        else if($this->project != null && ($perm['perm']['role'] == PL)){
                             $project_objs = $me->leadershipDuring($perm['start'], $perm['end']);
                             if(count($project_objs) > 0){
                                 foreach($project_objs as $project){
@@ -776,7 +802,6 @@ abstract class AbstractReport extends SpecialPage {
                                 $pResult = ($pResult || $this->project->getName() == $perm['perm']['project']);
                             }
                             if($pResult && !($me->isMemberOf($this->project) || 
-                                             $me->leadershipOf($this->project) || 
                                              $me->isThemeLeaderOf($this->project) || 
                                              $me->isThemeCoordinatorOf($this->project) ||
                                              $me->isRoleAtLeast(SD))){
@@ -995,7 +1020,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addStyle("../extensions/Reporting/Report/style/{$config->getValue("skin")}/report.css");
+        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css"));
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");

@@ -110,6 +110,7 @@ ProductView = Backbone.View.extend({
     
     render: function(){
         main.set('title', this.model.get('title'));
+        $("#pageTitle").css("margin-right", "115px");
         this.$el.empty();
         var data = this.model.toJSON();
         _.extend(data, dateTimeHelpers);

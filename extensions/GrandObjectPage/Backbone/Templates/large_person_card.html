@@ -1,7 +1,28 @@
 <div class="large_card" style="margin-bottom:10px;">
     <div class="card_photo">
         <img src="<%= photo %>" alt="" style="max-width:100px;max-height:132px;margin-bottom:8px;" />
-        <div class="links" style="margin-left: 5px;">
+    </div>
+    <div class="card_description">
+        <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
+        <span style="display: inline-block; white-space: normal;"><%= this.model.getUniversityString() %></span><br />
+        <div id="contact" style="margin-top: 8px; margin-bottom:10px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; display:inline-block;">
+            <% if(email != ""){ %>
+                <span style="color:#333333;"><a href="mailto:<%= email %>"><%= email %></a></span><br />
+            <% } %>
+            <% if(nationality != ""){ %>
+                <span style="color:#333333;"><%= nationality %></span><br />
+            <% } %>
+            <% if(gender != ""){ %>
+                <span style="color:#333333;"><%= gender %></span><br />
+            <% } %>
+            <% if(office != ""){ %>
+                <span style="color:#333333;"><%= office %></span><br />
+            <% } %>
+            <% if(phone != ""){ %>
+                <span style="color:#333333;"><%= phone %></span>
+            <% } %>
+        </div>
+        <div class="links" style="margin-left: 15px; margin-top: 8px; margin-bottom:10px; display:inline-block; vertical-align: top;">
             <% if(website != "" && website != "http://"){ %>
                 <a href="<%= website %>" target="_blank">Website</a><br />
             <% } %>
@@ -21,41 +42,5 @@
                 <a href="https://publons.com/researcher/<%= researcherId %>" target="_blank">ResearcherID</a><br />
             <% } %>
         </div>
-    </div>
-    <div class="card_description">
-        <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullName %>&nbsp;<span id="roles" style="display:none;"></span></h1> <br />
-        <span style="display: inline-block; white-space: normal;"><%= this.model.getUniversityString() %></span><br />
-        <table id="contact" cellpadding="0" cellspacing="0" style="margin-top: 8px;margin-bottom:10px;">
-            <% if(email != ""){ %>
-                <tr>
-                    <td width="100">Email&nbsp;</td>
-                    <td style="color:#333333;"><a href="mailto:<%= email %>"><%= email %></a></td>
-                </tr>
-            <% } %>
-            <% if(nationality != ""){ %>
-                <tr>
-                    <td width="100">Nationality&nbsp;</td>
-                    <td style="color:#333333;"><%= nationality %></td>
-                </tr>
-            <% } %>
-            <% if(gender != ""){ %>
-                <tr>
-                    <td width="100">Gender&nbsp;</td>
-                    <td style="color:#333333;"><%= gender %></td>
-                </tr>
-            <% } %>
-            <% if(office != ""){ %>
-                <tr>
-                    <td width="100">Office Address&nbsp;</td>
-                    <td style="color:#333333;"><%= office %></td>
-                </tr>
-            <% } %>
-            <% if(phone != ""){ %>
-                <tr>
-                    <td width="100">Phone Number&nbsp;</td>
-                    <td style="color:#333333;"><%= phone %></td>
-                </tr>
-            <% } %>
-        </table>
     </div>
 </div>

@@ -7,18 +7,19 @@
         <hr style="background-color:#aaa;" />
         <div style="white-space: nowrap;">
             <select id="selectedProject">
+                <option value="" selected disabled hidden>---</option>
                 <% _.each(allowedProjects, function(project){ %>
                     <option><%= project %></option>
                 <% }) %>
             </select>
-            <span id="addProject" class="highlights-text-hover" style="font-size: 1.5em; font-weight:bold;cursor:pointer;">
+            <span id="addProject" style="font-size: 1.5em; font-weight:bold;cursor:pointer;">
                 &#65291;
             </span>
         </div>
         <div class="projError" style="display:none;"></div>
     </td>
-    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %></td>
-    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 6em;'}) %><span id="infinity" class="highlights-text" title="Continuing">&#8734;</span></td>
+    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width: 5em;'}) %></td>
+    <td style="white-space: nowrap;"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width: 5em;'}) %><a id="infinity" title="Continuing">&#8734;</a></td>
     <td><%= HTML.TextArea(this, 'comment', {style: 'max-height: 56px; resize: none; margin:0; width:100%;'}) %></td>
     <td align="center"><%= HTML.CheckBox(this, 'deleted', {value: 'true', default: 'false'}) %></td>
 <% } else { %>

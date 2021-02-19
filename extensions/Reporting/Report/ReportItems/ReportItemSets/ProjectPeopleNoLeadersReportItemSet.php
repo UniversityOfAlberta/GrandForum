@@ -19,7 +19,7 @@ class ProjectPeopleNoLeadersReportItemSet extends ReportItemSet {
                     continue;
                 }
                 $alreadySeen[$m->getId()] = true;
-                if($m->leadershipOf($proj->getName())){
+                if($m->isRole(PL, $proj->getName())){
                     continue;
                 }   
                 $tuple = self::createTuple();

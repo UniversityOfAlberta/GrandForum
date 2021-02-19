@@ -15,7 +15,7 @@
             foreach($people as $person){
                 if((isset($params[1]) && isset($params[2]) && $person->isRoleDuring(NI, $start, $end)) || 
                    ($person->isRole(NI))){
-                    if(!$person->leadershipOf($project->getName())){
+                    if(!$person->isRole(PL, $project->getName())){
                         $this->array[] = $person->getName();
                     }
                 }

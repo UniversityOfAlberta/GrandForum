@@ -90,6 +90,7 @@ class ProjectPage {
                 }
                 
                 $tabbedPage = new TabbedPage("project");
+                $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new ProjectMainTab($project, $visibility));
                 if($config->getValue('projectLongDescription')){
                     if($config->getValue('networkName') == "FES"){
@@ -117,7 +118,12 @@ class ProjectPage {
                 if($project->getStatus() != 'Proposed' && $project->getType() != 'Administrative'){
                     $tabbedPage->addTab(new ProjectVisualizationsTab($project, $visibility));
                 }
-                $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                if($config->getValue('wikiEnabled')){
+                    $tabbedPage->addTab(new ProjectWikiTab($project, $visibility));
+                }
+                if($config->getValue('networkName') == "GlycoNet"){
+                    $tabbedPage->addTab(new ProjectReportsTab($project, $visibility));
+                }
                 if($visibility['isLead'] && isExtensionEnabled('Reporting')){
                     $tabbedPage->addTab(new ProjectSummaryTab($project, $visibility));
                 }

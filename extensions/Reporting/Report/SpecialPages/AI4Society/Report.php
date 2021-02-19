@@ -7,6 +7,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
+$wgHooks['ToolboxHeaders'][] = 'Report::createToolboxHeaders';
 $wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
 class Report extends AbstractReport{
@@ -36,9 +37,18 @@ class Report extends AbstractReport{
         return true;
     }
     
+    static function createToolboxHeaders(&$toolbox){
+        global $wgServer, $wgScriptPath, $config;
+        $toolbox['AcademicPrograms'] = TabUtils::createToolboxHeader("Academic Programs");
+        return true;
+    }
+    
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $config;
-
+        $other = $toolbox['Other'];
+        unset($toolbox['Other']);
+        $toolbox['AcademicPrograms']['links'][] = TabUtils::createToolboxLink("Course Catalogue", "$wgServer$wgScriptPath/index.php/Courses");
+        $toolbox['Other'] = $other;
         return true;
     }
 }
