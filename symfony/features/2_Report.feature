@@ -74,7 +74,7 @@ Feature: Reporting
         And I should see "HQP Section"
         
     Scenario: HQP Accessing Project Report
-        Given I am logged in as "HQP.User1" using password "HQP.Pass1"
+        Given I am logged in as "HQP.User4" using password "HQP.Pass4"
         When I go to "index.php/Special:Report?report=ProjectReport&project=Phase1Project1"
         Then I should not see "PL Section"
         And I should not see "NI Section"

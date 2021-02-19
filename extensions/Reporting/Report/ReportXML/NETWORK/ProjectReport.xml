@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Report" reportType="RP_PR_TEST" pdfType="RPTP_PR_TEST" pdfFiles="Report" project="0" year="0" ajax="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="PL">
+        <Role role="PL">
             <SectionPermission id="section1" permissions="rw" />
             <SectionPermission id="section2" permissions="rw" />
             <SectionPermission id="section3" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="CI">
+        <Role role="CI">
             <SectionPermission id="section1" permissions="" />
             <SectionPermission id="section2" permissions="rw" />
             <SectionPermission id="section3" permissions="rw" />
         </Role>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="HQP">
+        <Role role="HQP">
             <SectionPermission id="section1" permissions="" />
             <SectionPermission id="section2" permissions="" />
             <SectionPermission id="section3" permissions="rw" />

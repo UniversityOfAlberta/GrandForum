@@ -294,6 +294,7 @@ addUserProject("NI.User4", "Phase2Project3");
 addUserProject("HQP.User1", "Phase1Project1");
 addUserProject("HQP.User2", "Phase2Project3");
 addUserProject("HQP.User3", "Phase2Project1");
+addUserProject("HQP.User4", "Phase1Project1");
 
 addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");
 addUserUniversity("NI.User2", "University of Calgary", "Computing Science", "Professor");
