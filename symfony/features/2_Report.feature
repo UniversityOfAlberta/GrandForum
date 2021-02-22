@@ -129,6 +129,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in TinyMCE "Section2_textarea" with "Hello &11; World"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+2"
         Then I should see "Hello &11; World"
         
@@ -147,6 +148,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in TinyMCE "Section2_textarea" with "Hello &asdf; World"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+2"
         Then I should see "Hello &asdf; World"
         
@@ -165,6 +167,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in TinyMCE "Section2_textarea" with "Hello &amp;amp; World"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+2"
         Then I should see "Hello &amp; World"
         
@@ -183,6 +186,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in "Section3_textarea" with "<p>Hello &11; <b>World</b></p>"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+3"
         Then I should see "Hello &11; World"
         
@@ -201,6 +205,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in "Section3_textarea" with "<p>Hello &asdf; <b>World</b></p>"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+3"
         Then I should see "Hello &asdf; World"
         
@@ -219,6 +224,7 @@ Feature: Reporting
         And I wait "1000"
         And I fill in "Section3_textarea" with "<p>Hello &amp;amp; <b>World</b></p>"
         And I press "Save"
+        And I wait "1000"
         And I go to "index.php/Special:Report?report=Report&section=Section+3"
         Then I should see "Hello &amp; World"
         
