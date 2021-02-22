@@ -228,6 +228,7 @@ EOF;
         if($rich){
             // Work-around for TinyMCE handling of &amp;amp;
             $value = str_replace("&amp;amp;", "&amp;amp;amp;", $value);
+            $value = str_replace("&amp;#", "&amp;amp;#", $value);
         }
         
         $item .= <<<EOF
@@ -356,6 +357,7 @@ EOF;
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
             // Work-around for TinyMCE handling of &amp;amp;
             $value = str_replace("&amp;amp;amp;", "&amp;amp;", $value);
+            $value = str_replace("&amp;amp;#", "&amp;#", $value);
         }
         return $value;
     }

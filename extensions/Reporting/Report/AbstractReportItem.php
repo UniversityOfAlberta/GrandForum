@@ -266,7 +266,7 @@ abstract class AbstractReportItem {
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            if(strtolower($this->getAttr('default', '')) == ''){
+            /*if(strtolower($this->getAttr('default', '')) == ''){
                 if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                    $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
                     if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
@@ -294,7 +294,7 @@ abstract class AbstractReportItem {
                         }
                     }
                 }
-            }
+            }*/
             $this->setBlobValue($_POST[$this->getPostId()]);
         }
         return array();
