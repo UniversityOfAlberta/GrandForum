@@ -203,6 +203,12 @@ EOF;
             $divHeight = "height:{$height};";
             $hidden = "";
         }
+        
+        if($rich){
+            // Work-around for TinyMCE handling of &amp;amp;
+            $value = str_replace("&amp;amp;", "&amp;amp;amp;", $value);
+        }
+        
         $item .= <<<EOF
             <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
                 <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};{$hidden}resize: vertical;margin:0;" 
@@ -322,6 +328,15 @@ EOF;
             $html .= nl2br($blobValue);
         }
         return $html;
+    }
+    
+    protected function stripBlob($value){
+        $value = parent::stripBlob($value);
+        if(strtolower($this->getAttr('rich', 'false')) == 'true'){
+            // Work-around for TinyMCE handling of &amp;amp;
+            $value = str_replace("&amp;amp;amp;", "&amp;amp;", $value);
+        }
+        return $value;
     }
     
     function getBlobValue(){
