@@ -153,6 +153,24 @@ Feature: Reporting
     Scenario: Checking for edge case html entities 3
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Report?report=Report"
+        And I click "Section 2"
+        And I wait "1000"
+        And I fill in TinyMCE "Section2_textarea" with "Hello &amp;amp;"
+        And I press "Save"
+        And I wait "1000"
+        And I go to "index.php/Special:Report?report=Report&section=Section+2"
+        Then I should see "Hello &amp;"
+        When I go to "index.php/Special:Report?report=Report"
+        And I click "Section 2"
+        And I wait "1000"
+        And I fill in TinyMCE "Section2_textarea" with "Hello &amp;amp; World"
+        And I press "Save"
+        And I go to "index.php/Special:Report?report=Report&section=Section+2"
+        Then I should see "Hello &amp; World"
+        
+    Scenario: Checking for edge case html entities 4
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report"
         And I click "Section 3"
         And I wait "1000"
         And I fill in "Section3_textarea" with "<p>Hello &11;</p>"
@@ -168,7 +186,7 @@ Feature: Reporting
         And I go to "index.php/Special:Report?report=Report&section=Section+3"
         Then I should see "Hello &11; World"
         
-    Scenario: Checking for edge case html entities 4
+    Scenario: Checking for edge case html entities 5
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Report?report=Report"
         And I click "Section 3"
@@ -185,6 +203,24 @@ Feature: Reporting
         And I press "Save"
         And I go to "index.php/Special:Report?report=Report&section=Section+3"
         Then I should see "Hello &asdf; World"
+        
+    Scenario: Checking for edge case html entities 6
+        Given I am logged in as "NI.User1" using password "NI.Pass1"
+        When I go to "index.php/Special:Report?report=Report"
+        And I click "Section 3"
+        And I wait "1000"
+        And I fill in "Section3_textarea" with "<p>Hello &amp;amp;</p>"
+        And I press "Save"
+        And I wait "1000"
+        And I go to "index.php/Special:Report?report=Report&section=Section+3"
+        Then I should see "Hello &amp;"
+        When I go to "index.php/Special:Report?report=Report"
+        And I click "Section 3"
+        And I wait "1000"
+        And I fill in "Section3_textarea" with "<p>Hello &amp;amp; <b>World</b></p>"
+        And I press "Save"
+        And I go to "index.php/Special:Report?report=Report&section=Section+3"
+        Then I should see "Hello &amp; World"
         
     Scenario: NI generates and submits the report
         Given I am logged in as "NI.User1" using password "NI.Pass1"
