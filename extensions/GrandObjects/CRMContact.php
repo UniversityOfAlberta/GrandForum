@@ -90,7 +90,7 @@ class CRMContact extends BackboneModel {
     
     static function isAllowedToCreate(){
         $me = Person::newFromWgUser();
-        return $me->isLoggedIn();
+        return $me->isRoleAtLeast(STAFF);
     }
     
     /**

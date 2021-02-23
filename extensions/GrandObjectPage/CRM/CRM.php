@@ -8,7 +8,7 @@ class CRM extends BackbonePage {
     
     function userCanExecute($user){
         $me = Person::newFromUser($user);
-        return $me->isRoleAtLeast(STAFF);
+        return $me->isLoggedIn();
     }
     
     function getTemplates(){
@@ -39,7 +39,9 @@ class CRM extends BackbonePage {
     
     static function createSideBarLink(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF)){
+        //if(self::userCanExecute($wgUser)){ // TODO: Uncomment when everything is ready to go
             $link = TabUtils::createToolboxLink("CRM", "$wgServer$wgScriptPath/index.php/Special:CRM");
             $toolbox['Other']['links'][] = $link;
         }

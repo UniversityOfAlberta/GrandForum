@@ -91,6 +91,10 @@ class CRMTask extends BackboneModel {
     static function isAllowedToCreate(){
         return CRMOpportunity::isAllowedToCreate();
     }
+    
+    function sendMail(){
+        
+    }
 	
 	function toArray(){
 	    if($this->isAllowedToView()){
@@ -121,6 +125,7 @@ class CRMTask extends BackboneModel {
 	                                  'transactions' => json_encode($this->transactions),
 	                                  'status' => $this->status));
 	        $this->id = DBFunctions::insertId();
+	        // Send mail to assignee
 	    }
 	}
 	
@@ -134,6 +139,9 @@ class CRMTask extends BackboneModel {
 	                                  'transactions' => json_encode($this->transactions),
 	                                  'status' => $this->status),
 	                            array('id' => $this->id));
+	        // If Date was changed, send another email to the assignee
+	        
+	        // If the assignee was changed, send email to new assignee
 	    }
 	}
 	

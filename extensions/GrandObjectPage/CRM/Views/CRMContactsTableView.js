@@ -56,13 +56,17 @@ CRMContactsTableView = Backbone.View.extend({
         }
         
         this.$el.html(this.template(this.model.toJSON()));
+        var rowsGroup = [0,1,2,3,4];
+        if(isAllowedToCreateCRMContacts){
+            rowsGroup = [0,1,2,3,4,5];
+        }
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,
             'bPaginate': false,
             'iDisplayLength': -1,
             'order': [[ 1, "asc" ]],
             'aLengthMenu': [[-1], ['All']],
-            'rowsGroup': [0,1,2,3,4,5]
+            'rowsGroup': rowsGroup
         });
         this.table.order(order);
 	    this.table.search(searchStr);
