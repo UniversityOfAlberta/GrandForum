@@ -150,7 +150,7 @@ SopsView = Backbone.View.extend({
                                                      'scrollCollapse': true,
                                                      'scroller': {
                                                         loadingIndicator: true,
-                                                        rowHeight: 158,
+                                                        rowHeight: 159,
                                                         displayBuffer: 2
                                                      },
                                                      'fixedColumns':   

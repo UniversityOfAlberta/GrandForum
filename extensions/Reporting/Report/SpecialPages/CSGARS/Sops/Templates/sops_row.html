@@ -131,17 +131,12 @@
 <!-- reviewer info -->
 <td style="white-space: nowrap;">
     <% for(var i=0; i < reviewers.length;i++){ %>
-        <% if (reviewers[i].rank == "-1" && !_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN])) { %>
-            <!--%= reviewers[i].name %> (<span style="color: red;">-1</span>)-->
-        <% } else { %>
-            <span title="<%= reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= reviewers[i].name %> (<%= reviewers[i].rank %>)</span>
-        <% } %>
-  <br />
-  <% } %>
-  <% if(this.parent.model.year == ''){ %>
-    <span class="assign_button" style="display:none"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
-  <% } %>
-  
+        <span title="<%= reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= reviewers[i].name %> (<%= reviewers[i].rank.replace("-1", "--") %>)</span>
+        <br />
+    <% } %>
+    <% if(this.parent.model.year == ''){ %>
+        <span class="assign_button" style="display:none"><a class="button" href="<%= wgServer+wgScriptPath %>/index.php/Special:AssignReviewer?student=<%= user_id %>">+</a></span>
+    <% } %>
 </td>
 
 <!-- reviewer average -->
@@ -165,7 +160,7 @@
         <% if (other_reviewers[i].rank == "-1" || other_reviewers[i].rank == "--") { %>
             <!--%= other_reviewers[i].name %> (<span style="color: red;">-1</span>)-->
         <% } else { %>
-            <span title="<%= other_reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= other_reviewers[i].name %> (<%= other_reviewers[i].rank %>)</span><br />
+            <span title="<%= other_reviewers[i].comments.replaceAll('"', '&quot;') %>"><%= other_reviewers[i].name %> (<%= other_reviewers[i].rank.replace("-1", "--") %>)</span><br />
         <% } %>
   <% } %>
 </td>
