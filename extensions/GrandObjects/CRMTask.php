@@ -81,7 +81,7 @@ class CRMTask extends BackboneModel {
 	}
 	
 	function isAllowedToEdit(){
-        return $this->getOpportunity()->isAllowedToEdit();
+        return ($this->getOpportunity()->isAllowedToEdit() || $this->getPerson()->isMe());
     }
     
     function isAllowedToView(){
@@ -109,7 +109,8 @@ class CRMTask extends BackboneModel {
 	                      'task' => $this->getTask(),
 	                      'dueDate' => $this->getDueDate(),
 	                      'transactions' => $this->getTransactions(),
-	                      'status' => $this->getStatus());
+	                      'status' => $this->getStatus(),
+	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
 	    }
 	    return array();

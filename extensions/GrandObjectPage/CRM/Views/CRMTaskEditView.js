@@ -14,7 +14,18 @@ CRMTaskEditView = Backbone.View.extend({
     initialize: function(){
         this.model.saving = false;
         this.listenTo(this.model, "sync", this.render);
-        this.template = _.template($('#crm_task_edit_template').html());
+        this.selectTemplate();
+    },
+    
+    selectTemplate: function(){
+        if(!this.model.get('isAllowedToEdit')){
+            // Not allowed to edit, use read-only version
+            this.template = _.template($('#crm_task_template').html());
+        }
+        else{
+            // Use Edit version
+            this.template = _.template($('#crm_task_edit_template').html());
+        }
     },
     
     events: {
@@ -60,7 +71,9 @@ CRMTaskEditView = Backbone.View.extend({
             _.defer(function(){
                 this.$('select[name=assignee_id]').chosen();
             }.bind(this));
-            this.renderTransactions();
+            if(this.model.get('isAllowedToEdit')){
+                this.renderTransactions();
+            }
         }
         return this.$el;
     }

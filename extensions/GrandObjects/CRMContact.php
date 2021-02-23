@@ -80,12 +80,12 @@ class CRMContact extends BackboneModel {
 	
 	function isAllowedToEdit(){
         $me = Person::newFromWgUser();
-        return ($me->getId() == $this->getOwner() || $me->isRoleAtLeast(STAFF));
+        return ($this->getPerson()->isMe() || $me->isRoleAtLeast(STAFF));
     }
     
     function isAllowedToView(){
         $me = Person::newFromWgUser();
-        return $me->isLoggedIn();
+        return $me->isRoleAtLeast(STAFF);
     }
     
     static function isAllowedToCreate(){

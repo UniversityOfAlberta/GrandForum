@@ -21,7 +21,8 @@ CRMTask = Backbone.Model.extend({
             task: "",
             dueDate: "",
             transactions: new Array(),
-            status: ""
+            status: "",
+            isAllowedToEdit: true
         };
     }
 

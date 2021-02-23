@@ -31,6 +31,7 @@ var pageRouter = new PageRouter;
 
 allPeople = new People();
 allPeople.simple = true;
+allPeople.roles = [STAFF,MANAGER,ADMIN];
 allPeopleXHR = allPeople.fetch();
 
 pageRouter.on('route:showCRMContactsTable', function(){

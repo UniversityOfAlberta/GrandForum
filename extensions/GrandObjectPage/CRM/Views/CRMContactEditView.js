@@ -9,8 +9,10 @@ CRMContactEditView = Backbone.View.extend({
         if(!this.model.isNew()){
             this.model.fetch();
         }
-        this.listenTo(this.model, "sync", this.render);
-        //this.listenTo(this.model.opportunities, "sync", this.renderOpportunities);
+        this.listenTo(this.model, "sync", function(){
+            this.selectTemplate();
+            this.render();
+        }.bind(this));
         this.listenTo(this.model.opportunities, "add", this.renderOpportunities);
         this.listenTo(this.model.opportunities, "change:toDelete", this.removeOpportunities);
         this.listenTo(this.model, "change:title", function(){
@@ -21,7 +23,18 @@ CRMContactEditView = Backbone.View.extend({
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
         }
-        this.template = _.template($('#crm_contact_edit_template').html());
+        this.selectTemplate();
+    },
+    
+    selectTemplate: function(){
+        if(!this.model.get('isAllowedToEdit')){
+            // Not allowed to edit, use read-only version
+            this.template = _.template($('#crm_contact_template').html());
+        }
+        else{
+            // Use Edit version
+            this.template = _.template($('#crm_contact_edit_template').html());
+        }
     },
     
     addOpportunity: function(){
