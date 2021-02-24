@@ -92,8 +92,47 @@ class CRMTask extends BackboneModel {
         return CRMOpportunity::isAllowedToCreate();
     }
     
-    function sendMail(){
-        
+    /**
+     * Sends an email to the assignee
+     * @param Person $assignee The Person to send the email to
+     * @param string $type The type of message to send (one of 'new', 'assignee', 'due_date', 'reminder')
+     */
+    function sendMail($assignee, $type){
+        global $config, $wgScriptPath;
+        if($wgScriptPath != ""){
+            // Don't send any mail if in a test environment
+            return;
+        }
+        if($assignee == null){
+            // This shouldn't be null, but just incase fail silently
+            return;
+        }
+        $message = "";
+        $title = "";
+        $url = $this->getOpportunity()->getContact()->getUrl();
+        switch($type){
+            case 'new':
+                $title = "New CRM Task";
+                $message = "<p>A new CRM task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
+                break;
+            case 'assignee':
+                $title = "CRM Task Assigned";
+                $message = "<p>A CRM task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
+                break;
+            case 'due_date':
+                $title = "CRM Task Changed";
+                $message = "<p>The CRM task <a href='{$url}'>{$this->getTask()}</a> now has a due date of {$this->getDueDate()}.</p>";
+                break;
+            case 'reminder':
+                $title = "CRM Task Reminder";
+                $message = "<p>This is a reminder that the CRM task <a href='{$url}'>{$this->getTask()}</a> is due tomorrow.</p>";
+                break;
+        }
+        if($assignee->getEmail() != "" && $title != "" && $message != ""){
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail("dwt@ualberta.ca", $title, $message, $headers);
+        }
     }
 	
 	function toArray(){
@@ -127,11 +166,26 @@ class CRMTask extends BackboneModel {
 	                                  'status' => $this->status));
 	        $this->id = DBFunctions::insertId();
 	        // Send mail to assignee
+	        $assignee = Person::newFromId($this->assignee);
+	        $this->sendMail($assignee, 'new');
 	    }
 	}
 	
 	function update(){
 	    if($this->isAllowedToEdit()){
+	        $data = DBFunctions::select(array('grand_crm_task'),
+	                                    array('*'),
+	                                    array('id' => $this->id));
+	        if(@$data[0]['assignee'] != $this->assignee){
+	            // If the assignee was changed, send email to new assignee
+	            $assignee = Person::newFromId($this->assignee);
+	            $this->sendMail($assignee, 'assignee');
+	        }
+	        else if(@substr($data[0]['due_date'],0,10) != $this->getDueDate()){
+	            // If Date was changed, send another email to the assignee
+	            $assignee = Person::newFromId($this->assignee);
+	            $this->sendMail($assignee, 'due_date');
+	        }
 	        DBFunctions::update('grand_crm_task',
 	                            array('opportunity' => $this->opportunity,
 	                                  'assignee' => $this->assignee,
@@ -140,9 +194,6 @@ class CRMTask extends BackboneModel {
 	                                  'transactions' => json_encode($this->transactions),
 	                                  'status' => $this->status),
 	                            array('id' => $this->id));
-	        // If Date was changed, send another email to the assignee
-	        
-	        // If the assignee was changed, send email to new assignee
 	    }
 	}
 	
