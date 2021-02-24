@@ -111,10 +111,16 @@ class Person extends BackboneModel {
         if(isset(self::$cache[$id])){
             return self::$cache[$id];
         }
-        self::generateNamesCache();
-        $data = array();
-        if(isset(self::$idsCache[$id])){
-            $data[] = self::$idsCache[$id];
+        if(!Cache::exists("idsCache_$id")){
+            self::generateNamesCache();
+            $data = array();
+            if(isset(self::$idsCache[$id])){
+                $data[] = self::$idsCache[$id];
+            }
+            Cache::store("idsCache_$id", $data);
+        }
+        else{
+            $data = Cache::fetch("idsCache_$id");
         }
         $person = new Person($data);
         if(count($data) == 0){
@@ -404,29 +410,41 @@ class Person extends BackboneModel {
                 if(isset($phoneNumbers[$row['user_id']])){
                     $row['phone'] = $phoneNumbers[$row['user_id']];
                 }
-                $exploded = explode(".", unaccentChars($row['user_name']));
-                
-                $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
-                $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
-                $middleName = $row['middle_name'];
-                
                 self::$idsCache[$row['user_id']] = $row;
-                self::$namesCache[strtolower($row['user_name'])] = $row;
-                self::$namesCache[strtolower("$firstName $lastName")] = $row;
-                self::$namesCache[strtolower("$lastName $firstName")] = $row;
-                self::$namesCache[strtolower("$firstName ".substr($lastName, 0, 1))] = $row;
-                self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1))] = $row;
-                self::$namesCache[strtolower(substr($firstName, 0, 1)." $lastName")] = $row;
-                if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
-                    self::$namesCache[unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])))] = $row;
+                
+                $keys = array();
+                if(!Cache::exists("nameCache_{$row['user_id']}")){
+                    $exploded = explode(".", unaccentChars($row['user_name']));
+                    $firstName = ($row['first_name'] != "") ? unaccentChars($row['first_name']) : @$exploded[0];
+                    $lastName = ($row['last_name'] != "") ? unaccentChars($row['last_name']) : @$exploded[1];
+                    $middleName = $row['middle_name'];
+                    $keys = array(
+                        strtolower($row['user_name']),
+                        strtolower(str_replace(".", " ", $row['user_name'])),
+                        strtolower("$firstName $lastName"),
+                        strtolower("$lastName $firstName"),
+                        strtolower("$firstName ".substr($lastName, 0, 1)),
+                        strtolower("$lastName ".substr($firstName, 0, 1)),
+                        strtolower(substr($firstName, 0, 1)." $lastName")
+                    );
+                    if(trim($row['user_real_name']) != '' && $row['user_name'] != trim($row['user_real_name'])){
+                        $keys[] = unaccentChars(strtolower(str_replace("&nbsp;", " ", $row['user_real_name'])));
+                    }
+                    if($middleName != ""){
+                        $middleName = unaccentChars($middleName);
+                        $keys[] = strtolower("$firstName $middleName $lastName");
+                        $keys[] = strtolower("$firstName ".substr($middleName, 0, 1)." $lastName");
+                        $keys[] = strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName");
+                        $keys[] = strtolower(substr($firstName, 0, 1)."".substr($middleName, 0, 1)." $lastName");
+                        $keys[] = strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1));
+                    }
+                    Cache::store("nameCache_{$row['user_id']}", $keys);
                 }
-                if($middleName != ""){
-                    $middleName = unaccentChars($middleName);
-                    self::$namesCache[strtolower("$firstName $middleName $lastName")] = $row;
-                    self::$namesCache[strtolower("$firstName ".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower(substr($firstName, 0, 1)." ".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower(substr($firstName, 0, 1)."".substr($middleName, 0, 1)." $lastName")] = $row;
-                    self::$namesCache[strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1))] = $row;
+                else{
+                    $keys = Cache::fetch("nameCache_{$row['user_id']}");
+                }
+                foreach($keys as $key){
+                    self::$namesCache[$key] = $row;
                 }
             }
         }
@@ -925,25 +943,7 @@ class Person extends BackboneModel {
                                  'title' => $role->getTitle());
             }
         }
-        foreach($this->leadership() as $project){
-            $role = PL;
-            if($project->getType() == 'Administrative'){
-                $role = APL;
-            }
-            $roles[] = array('id' => '',
-                             'role' => $role,
-                             'title' => $project->getName());
-        }
-        foreach($this->getLeadThemes() as $theme){
-            $roles[] = array('id' => '',
-                             'role' => TL,
-                             'title' => $theme->getAcronym());
-        }
-        foreach($this->getCoordThemes() as $theme){
-            $roles[] = array('id' => '',
-                             'role' => TC,
-                             'title' => $theme->getAcronym());
-        }
+
         $json = array('id' => $this->getId(),
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
@@ -1014,6 +1014,7 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("idsCache_{$this->getId()}");
             $person = Person::newFromName($_POST['wpName']);
             if($person->exists()){
                 return $status;
@@ -1057,6 +1058,8 @@ class Person extends BackboneModel {
             Person::$namesCache = array();
             Person::$aliasCache = array();
             Person::$idsCache = array();
+            Cache::delete("nameCache_{$this->getId()}");
+            Cache::delete("idsCache_{$this->getId()}");
             return $status;
         }
         return false;
@@ -1065,6 +1068,8 @@ class Person extends BackboneModel {
     function delete(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(MANAGER)){
+            Cache::delete("nameCache_{$this->getId()}");
+            Cache::delete("idsCache_{$this->getId()}");
             return DBFunctions::update('mw_user',
                                  array('deleted' => 1),
                                  array('user_id' => EQ($this->getId())));

@@ -71,36 +71,6 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                     if($continue) continue;
                     similar_text(unaccentChars(str_replace(".", " ", $person->getName())), unaccentChars($origSearch), $percent);
-                    if(!$person->isActive()){
-                        $percent -= 10;
-                    }
-                    foreach($person->getProjects() as $project){
-                        if($me->isMemberOf($project)){
-                            $percent += 15;
-                        }
-                    }
-                    if(count($myRelations) > 0){
-                        $relFound = false;
-                        foreach($myRelations as $type){
-                            if(!$relFound){
-                                foreach($type as $relation){
-                                    if($relation->getUser2()->getId() == $person->getId()){
-                                        $percent += 50;
-                                        $relFound = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if(count($sups) > 0){
-                        foreach($sups as $sup){
-                            if($sup->getId() == $person->getId()){
-                                $percent += 50;
-                                break;
-                            }
-                        }
-                    }
                     $results[$person->getId()] = $percent;
                 }
                 asort($results);

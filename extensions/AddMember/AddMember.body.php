@@ -77,6 +77,8 @@ class UserCreate {
         Person::$idsCache = array();
         Person::$namesCache = array();
         Person::$rolesCache = array();
+        Cache::delete("nameCache_{$wgUser->getId()}");
+        Cache::delete("idsCache_{$wgUser->getId()}");
         $person = Person::newFromId($wgUser->getId());
         MailingList::subscribeAll($person);
         return true;
