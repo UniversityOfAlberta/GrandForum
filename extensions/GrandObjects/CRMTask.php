@@ -131,7 +131,7 @@ class CRMTask extends BackboneModel {
         if($assignee->getEmail() != "" && $title != "" && $message != ""){
             $headers  = "Content-type: text/html\r\n"; 
             $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
-            mail("dwt@ualberta.ca", $title, $message, $headers);
+            mail($assignee->getEmail(), $title, $message, $headers);
         }
     }
 	
