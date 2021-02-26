@@ -109,7 +109,7 @@ class ProjectMainTab extends AbstractEditableTab {
                     }
                     $this->html .= "<tr>
                                         <td align='right' style='white-space: nowrap; width: 1%;'><b>Image {$n}:</b></td>
-                                        <td><input type='file' style='width:300px;' name='file{$n}' /></td>
+                                        <td><input type='file' style='width:300px;' accept='image/*' name='file{$n}' /></td>
                                         <td rowspan='2' style='white-space:nowrap;'>{$delete}{$image}</td>
                                     </tr>
                                     <tr>
@@ -218,11 +218,15 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
-            $this->uploadFile($n);
+            $error = $this->uploadFile($n);
+            if($error != ""){
+                return $error;
+            }
         }
     }
     
     function uploadFile($n){
+        $error = "";
         $fileName = "Photos/{$this->project->getId()}_{$n}.jpg";
         // Do Deleting First
         if(isset($_POST["file_delete{$n}"]) && $_POST["file_delete{$n}"] == "1"){
@@ -319,6 +323,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg.<br />";
             }
         }
+        return $error;
     }
     
     function generatePDFBody(){
