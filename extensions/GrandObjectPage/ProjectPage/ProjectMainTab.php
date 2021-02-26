@@ -95,7 +95,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         if($config->getValue('allowPhotoUpload')){
             if($edit){
-                $this->html .= "<table style='margin:0 auto; width:0%;'>
+                $this->html .= "<table style='margin:0 auto; width:1%;'>
                                     <tr>
                                         <th colspan='2'></th>
                                         <th>Delete?</th>
