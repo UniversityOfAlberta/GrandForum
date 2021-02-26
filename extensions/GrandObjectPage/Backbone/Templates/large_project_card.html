@@ -1,0 +1,60 @@
+<div class="large_card" style="margin-bottom:10px;">
+    <div class="card_description" style="width:100%;">
+        <h1 style="display:inline-block;margin:0;padding:0;vertical-align:top;border:none;"><%= fullname %> (<%= name %>)</h1>
+        <div style="display:flex;">
+            <div id="contact" style="margin-top: 8px; margin-bottom:10px; min-width:250px; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+                <table>
+                    <% if(theme != ""){ %>
+                        <tr>
+                            <td><b>Theme:</b></td>
+                            <td><%= theme %></td>
+                        </tr>
+                    <% } %>
+                    <% if(type != ""){ %>
+                        <tr>
+                            <td><b>Type:</b></td>
+                            <td><%= type %></td>
+                        </tr>
+                    <% } %>
+                    <% if(status != ""){ %>
+                        <tr>
+                            <td><b>Status:</b></td>
+                            <td><%= status %></td>
+                        </tr>
+                    <% } %>
+                    <% if(startDate != "" && startDate != "0000-00-00 00:00:00"){ %>
+                        <tr>
+                            <td><b>Start Date:</b></td>
+                            <td><%= formatDate(startDate) %></td>
+                        </tr>
+                    <% } %>
+                    <% if(endDate != "" && endDate != "0000-00-00 00:00:00"){ %>
+                        <tr>
+                            <td><b>End Date:</b></td>
+                            <td><%= formatDate(endDate) %></td>
+                        </tr>
+                    <% } %>
+                    <% if(website != "" && website != "http://" && website != "https://"){ %>
+                        <tr>
+                            <td><b>Website:</b></td>
+                            <td><div style="display:block;max-width:175px;overflow:hidden;text-overflow:ellipsis;"><a href="<%= website %>" target="_blank"><%= website %></a></div></td>
+                        </tr>
+                    <% } %>
+                    <% if(leaders.length > 0){ %>
+                        <tr>
+                            <td><b>Leaders:</b></td>
+                            <td><%= _.pluck(leaders, 'name').join(', ') %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
+            <div style="width:100%;margin-left: 15px; margin-top: 8px; margin-bottom:10px; vertical-align: top;">
+                <div style="width:100%;text-align:center;">
+                    <% _.each(images, function(image){ %>
+                        <img style="max-width:calc(<%= 100/images.length %>% - 20px);px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;" src="<%= image %>" />
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

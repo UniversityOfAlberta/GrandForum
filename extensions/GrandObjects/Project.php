@@ -3,6 +3,8 @@
 /**
  * @package GrandObjects
  */
+ 
+define('PROJECT_FILE_COUNT', 3);
 
 class Project extends BackboneModel {
 
@@ -493,6 +495,13 @@ class Project extends BackboneModel {
         $challenges = new Collection($this->getChallenges());
         $theme = implode(", ", $challenges->pluck('getAcronym()'));
         $themeName = implode(", ", $challenges->pluck('getName()'));
+        $images = array();
+        for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+            $image = $this->getImage($n);
+            if($image != ""){
+                $images[] = $image;
+            }
+        }
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -510,7 +519,8 @@ class Project extends BackboneModel {
                        'leaders' => $leads,
                        'subprojects' => $subs,
                        'startDate' => $this->getCreated(),
-                       'endDate' => $this->getDeleted());
+                       'endDate' => $this->getDeleted(),
+                       'images' => $images);
         return $array;
     }
     
@@ -967,6 +977,19 @@ EOF;
             }
         }
         return $people;
+    }
+    
+    /**
+     * Returns the path to a photo of this Project if it exists
+     * @param integer $n Which image to get
+     * @return string The path to a photo of this Project
+     */
+    function getImage($n){
+        global $wgServer, $wgScriptPath;
+        if(file_exists("Photos/{$this->getId()}_{$n}.jpg")){
+            return "$wgServer$wgScriptPath/Photos/{$this->getId()}_{$n}.jpg?".filemtime("Photos/{$this->getId()}_{$n}.jpg");
+        }
+        return "";
     }
     
     // Returns the contributions this relevant to this project

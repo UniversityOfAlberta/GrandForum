@@ -33,7 +33,7 @@ class ProjectMainTab extends AbstractEditableTab {
             // Show a mailing list link if the person is subscribed
             $this->html .="<h3><a href='$wgServer$wgScriptPath/index.php/Mail:{$project->getName()}'>{$project->getName()} Mailing List</a></h3>";
         }
-        
+
         $website = $this->project->getWebsite();
         $title = "";
         if($edit){
@@ -44,7 +44,9 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
             $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
-        $this->html .= "<table>
+        $this->html .= "<div style='display:flex;white-space:nowrap;'>
+                            <div>
+                                <table>
                             $title";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
@@ -68,13 +70,16 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
-            $this->html .= "<tr><td><b>Website:</b></td><td><a href='{$website}' target='_blank'>{$website}</a></td></tr>";
+            $this->html .= "<tr><td><b>Website:</b></td><td><div style='display:block;max-width:200px;overflow:hidden;text-overflow:ellipsis;'><a href='{$website}' target='_blank'>{$website}</a></div></td></tr>";
         }
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table>";
-
+        $this->html .= "</table></div>";
+        $this->html .= "<div style='width:100%;'>";
+        $this->showFiles();
+        $this->html .= "</div></div>";
+        
         $this->showPeople();
         //$this->showChampions();
         $this->showDescription();
@@ -83,6 +88,41 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<span class='pdfnodisplay'><a class='button' href='{$this->project->getUrl()}?generatePDF'>Download PDF</a></span>";
         }
         return $this->html;
+    }
+    
+    function showFiles(){
+        global $config;
+        $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
+        if($config->getValue('allowPhotoUpload')){
+            if($edit){
+                $this->html .= "<table style='margin:0 auto; width:0%;'>";
+                for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+                    $this->html .= "<tr>
+                                        <td align='right' style='white-space: nowrap; width: 1%;'><b>Image {$n}:</b></td>
+                                        <td><input type='file' style='width:300px;' name='file{$n}' /></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><input type='text' name='file_url{$n}' style='width:300px;' placeholder='Enter image URL here instead of file upload' /></td>
+                                    </tr>";
+                }
+                $this->html .= "</table>";
+            }
+            else{
+                $this->html .= "<div style='width:100%;text-align:center;'>";
+                $images = array();
+                for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+                    $image = $this->project->getImage($n);
+                    if($image != ""){
+                        $images[] = $image;
+                    }
+                }
+                foreach($images as $image){
+                    $this->html .= "<img style='max-width:calc(".(100/count($images))."% - 20px);px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;' src='{$image}' />";
+                }
+                $this->html .= "</div>";
+            }
+        }
     }
     
     function handleEdit(){
@@ -163,6 +203,103 @@ class ProjectMainTab extends AbstractEditableTab {
                     $wgMessage->addSuccess("The project acronym was changed to '{$_POST['acronym']}'");
                     redirect($this->project->getUrl());
                 }
+            }
+        }
+        for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+            $this->uploadFile($n);
+        }
+    }
+    
+    function uploadFile($n){
+        if((isset($_FILES["file{$n}"]) && $_FILES["file{$n}"]['tmp_name'] != "") ||
+           (isset($_POST["file_url{$n}"]) && $_POST["file_url{$n}"] != "")){
+            $fileName = "Photos/{$this->project->getId()}_{$n}.jpg";
+            if(isset($_POST["file_url{$n}"]) && $_POST["file_url{$n}"] != ""){
+                $type = "";
+                if(strstr(@$_POST["file_url{$n}"], ".gif") !== false){
+                    $type = "image/gif";
+                }
+                else if(strstr(@$_POST["file_url{$n}"], ".png") !== false){
+                    $type = "image/png";
+                }
+                else if(strstr(@$_POST["file_url{$n}"], ".jpg") !== false ||
+                        strstr(@$_POST["file_url{$n}"], ".jpeg") !== false){
+                    $type = "image/jpeg";
+                }
+                // create curl resource
+                $ch = curl_init();
+
+                // set url
+                curl_setopt($ch, CURLOPT_URL, $_POST["file_url{$n}"]);
+
+                //return the transfer as a string
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+                // $output contains the output string
+                $file = curl_exec($ch);
+
+                // close curl resource to free up system resources
+                curl_close($ch);
+                $size = strlen($file);
+            }
+            else{
+                $type = $_FILES["file{$n}"]['type'];
+                $size = $_FILES["file{$n}"]['size'];
+                $tmp = $_FILES["file{$n}"]['tmp_name'];
+            }
+            if($type == "image/jpeg" ||
+               $type == "image/pjpeg" ||
+               $type == "image/gif" || 
+               $type == "image/png"){
+                if($size <= 1024*1024*20){
+                    //File is OK to upload
+                    if(isset($_POST["file_url{$n}"]) && $_POST["file_url{$n}"] != ""){
+                        file_put_contents($fileName, $file);
+                    }
+                    else{
+                        move_uploaded_file($tmp, $fileName);
+                    }
+                    
+                    if($type == "image/jpeg" || $type == "image/pjpeg"){
+                        $src_image = @imagecreatefromjpeg($fileName);
+                    }
+                    else if($type == "image/png"){
+                        $src_image = @imagecreatefrompng($fileName);
+                    }
+                    else if($type == "image/gif"){
+                        $src_image = @imagecreatefromgif($fileName);
+                    }
+                    if($src_image != false){
+                        imagealphablending($src_image, true);
+                        imagesavealpha($src_image, true);
+                        $src_width = imagesx($src_image);
+                        $src_height = imagesy($src_image);
+                        $dst_width = $src_width;
+                        $dst_height = $src_height;
+                        $dst_image = imagecreatetruecolor($dst_width, $dst_height);
+                        imagealphablending($dst_image, true);
+                        
+                        imagesavealpha($dst_image, true);
+                        imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+                        imagedestroy($src_image);
+                        
+                        imagejpeg($dst_image, $fileName, 100);
+                        imagedestroy($dst_image);
+                    }
+                    else{
+                        //File is not an ok filetype
+                        $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg";
+                    }
+                }
+                else{
+                    //File size is too large
+                    $error .= "The file you uploaded is too large.  It should be smaller than 20MB.<br />";
+                }
+            }
+            else{
+                //File is not an ok filetype
+                $error .= "The file you uploaded is not of the right type.  It should be either gif, png or jpeg.<br />";
             }
         }
     }

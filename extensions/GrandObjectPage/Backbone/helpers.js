@@ -8,6 +8,10 @@ dateTimeHelpers = {
     }
 }
 
+function formatDate(date, inputFormat, outputFormat){
+    return dateTimeHelpers.formatDate(date, inputFormat, outputFormat);
+}
+
 function number_format(n, c, t){
     var c = isNaN(c = Math.abs(c)) ? 2 : c, 
     d = ".", 
