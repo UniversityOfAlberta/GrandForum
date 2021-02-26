@@ -44,8 +44,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
             $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
-        $this->html .= "<div style='display:flex;white-space:nowrap;'>
-                            <div>
+        $this->html .= "<div style='display:flex;flex-wrap:wrap;'>
+                            <div style='white-space:nowrap;'>
                                 <table>
                             $title";
         if($project->getType() != "Administrative"){
@@ -76,7 +76,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
         $this->html .= "</table></div>";
-        $this->html .= "<div style='width:100%;'>";
+        $this->html .= "<div style='flex-grow:10;'>";
         $this->showFiles();
         $this->html .= "</div></div>";
         
@@ -95,21 +95,33 @@ class ProjectMainTab extends AbstractEditableTab {
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         if($config->getValue('allowPhotoUpload')){
             if($edit){
-                $this->html .= "<table style='margin:0 auto; width:0%;'>";
+                $this->html .= "<table style='margin:0 auto; width:0%;'>
+                                    <tr>
+                                        <th colspan='2'></th>
+                                        <th>Delete?</th>
+                                    </tr>";
                 for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+                    $image = $this->project->getImage($n);
+                    $delete = "";
+                    if($image != ""){
+                        $image = "<img style='max-height:70px;max-width:100px;border-radius:5px;' src='{$image}' />";
+                        $delete = "<input style='position:absolute;' type='checkbox' name='file_delete{$n}' value='1' />";
+                    }
                     $this->html .= "<tr>
                                         <td align='right' style='white-space: nowrap; width: 1%;'><b>Image {$n}:</b></td>
                                         <td><input type='file' style='width:300px;' name='file{$n}' /></td>
+                                        <td rowspan='2' style='white-space:nowrap;'>{$delete}{$image}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td><input type='text' name='file_url{$n}' style='width:300px;' placeholder='Enter image URL here instead of file upload' /></td>
+                                        <td></td>
                                     </tr>";
                 }
                 $this->html .= "</table>";
             }
             else{
-                $this->html .= "<div style='width:100%;text-align:center;'>";
+                $this->html .= "<div style='text-align:center;'>";
                 $images = array();
                 for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
                     $image = $this->project->getImage($n);
@@ -211,9 +223,14 @@ class ProjectMainTab extends AbstractEditableTab {
     }
     
     function uploadFile($n){
+        $fileName = "Photos/{$this->project->getId()}_{$n}.jpg";
+        // Do Deleting First
+        if(isset($_POST["file_delete{$n}"]) && $_POST["file_delete{$n}"] == "1"){
+            unlink($fileName);
+        }
+        // Then Try Upload
         if((isset($_FILES["file{$n}"]) && $_FILES["file{$n}"]['tmp_name'] != "") ||
            (isset($_POST["file_url{$n}"]) && $_POST["file_url{$n}"] != "")){
-            $fileName = "Photos/{$this->project->getId()}_{$n}.jpg";
             if(isset($_POST["file_url{$n}"]) && $_POST["file_url{$n}"] != ""){
                 $type = "";
                 if(strstr(@$_POST["file_url{$n}"], ".gif") !== false){
