@@ -112,19 +112,19 @@ class CRMTask extends BackboneModel {
         $url = $this->getOpportunity()->getContact()->getUrl();
         switch($type){
             case 'new':
-                $title = "New CRM Task";
+                $title = "{$config->getValue('networkName')} CRM: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (new)";
                 $message = "<p>A new CRM task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
                 break;
             case 'assignee':
-                $title = "CRM Task Assigned";
+                $title = "{$config->getValue('networkName')} CRM: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (assigned)";
                 $message = "<p>A CRM task has been assigned to you entitled <a href='{$url}'>{$this->getTask()}</a> with a due date of {$this->getDueDate()}.</p>";
                 break;
             case 'due_date':
-                $title = "CRM Task Changed";
+                $title = "{$config->getValue('networkName')} CRM: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (changed)";
                 $message = "<p>The CRM task <a href='{$url}'>{$this->getTask()}</a> now has a due date of {$this->getDueDate()}.</p>";
                 break;
             case 'reminder':
-                $title = "CRM Task Reminder";
+                $title = "{$config->getValue('networkName')} CRM: {$this->getOpportunity()->getContact()->getTitle()}, {$this->getDueDate()} (reminder)";
                 $message = "<p>This is a reminder that the CRM task <a href='{$url}'>{$this->getTask()}</a> is due tomorrow.</p>";
                 break;
         }
