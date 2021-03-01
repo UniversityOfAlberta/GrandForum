@@ -227,6 +227,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
                                                         SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
                                                         SopsView.filtersSelected.filterDoB = this.filterDoB.val();
+                                                        SopsView.filtersSelected.filterGend = this.filterGend.val();
                                                         SopsView.filtersSelected.filterSubmitted = this.filterSubmitted.val();
                                                         SopsView.filtersSelected.filterValEPLScoreMin = this.filterValEPLScoreMin.val();
                                                         SopsView.filtersSelected.filterValEPLScoreMax = this.filterValEPLScoreMax.val();
@@ -546,6 +547,11 @@ SopsView = Backbone.View.extend({
         return operation[operator](birthday, filterdate);
     },
     
+    filterGender: function(settings,data,dataIndex){
+        var cell = data[0];
+        return (cell.indexOf(")" + this.filterGend.val()) != -1);
+    },
+    
     filterSub: function(settings,data,dataIndex){
         var birthday = new Date(data[20]);
         var operator = this.filterSubmittedSpan.find(":selected").text();
@@ -735,6 +741,7 @@ SopsView = Backbone.View.extend({
         this.appliedNSERC = this.$('#appliedNSERC');
         this.filterDoB = this.$('#filterDoB');
         this.filterDoBSpan = this.$('#filterDoBSpan');
+        this.filterGend = this.$('#filterGend');
         this.filterSubmitted = this.$('#filterSubmitted');
         this.filterSubmittedSpan = this.$('#filterSubmittedSpan');
         this.filterSelectEPLTest = this.$('#filterSelectEPLTest');
@@ -782,6 +789,7 @@ SopsView = Backbone.View.extend({
         fnField('referenceGPAInputMin');
         fnField('referenceGPAInputMax');
         fnField('filterDoB');
+        fnField('filterGend');
         fnField('filterSubmitted');
         fnField('filterValEPLScoreMin');
         fnField('filterValEPLScoreMax');
@@ -833,6 +841,7 @@ SopsView = Backbone.View.extend({
             this.filterScholHeld.bind(this),
             this.filterScholApplied.bind(this),
             this.filterBirthday.bind(this),
+            this.filterGender.bind(this),
             this.filterSub.bind(this),
             this.filterGREVerbal.bind(this),
             this.filterGREQuantitative.bind(this),
@@ -886,6 +895,7 @@ SopsView.filtersSelected = {
     appliedNSERC: null,
     filterDoB: null,
     filterDoBSpan: null,
+    filterGend: null,
     filterSubmitted: null,
     filterSubmittedSpan: null,
     filterSelectEPLTest: null,
