@@ -51,8 +51,8 @@
                     <b>Areas of Study:</b><br/>
                     <%= additional.areas_of_study %><br/>
                     <b>Supervisors:</b><br/>
-                    <% var supers = additional.supervisors.replace(/<br \/>/g, ''); %>
-                    <%= supers %><br/><br/>
+                    <%= _.map(additional.supervisors, function(sup){ return "<span style='display:none;'>" + sup.last + " " + sup.first + " </span>" + sup.last; }).join(", ") %>
+                    <br /><br />
 
                     <b>Courses:</b><br/>
                     <% if (additional.courses == "") { %>No courses were listed<% } else { %>

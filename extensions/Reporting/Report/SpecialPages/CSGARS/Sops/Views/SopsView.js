@@ -429,10 +429,11 @@ SopsView = Backbone.View.extend({
 
    filterSupervisors: function(settings,data,dataIndex){
         var filtersupervisors = this.filterSelectSupervisors.chosen().val();
-        var studentsupervisors = unaccentChars(data[13]).split(", ");
+        var studentsupervisors = unaccentChars(data[13]).trim();
         if (!_.isEmpty(filtersupervisors)) {
             for (var i = 0; i < filtersupervisors.length; ++i) {
-                if ($.inArray(unaccentChars(filtersupervisors[i]), studentsupervisors) != -1) {
+                var sup = unaccentChars(filtersupervisors[i]);
+                if(studentsupervisors.trim().indexOf(sup) != -1){
                     return true;
                 }
             }

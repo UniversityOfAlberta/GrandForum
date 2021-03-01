@@ -505,10 +505,11 @@ class GsmsData extends BackboneModel{
         if (isset($blob['q14'])) {
           foreach ($blob['q14'] as $el) {
             $sup_array = explode(" ", $el);
-            $supervisors[] = $sup_array[1];
+            $supervisors[] = array("first" => @$sup_array[0], 
+                                   "last"  => @$sup_array[1]);
           }
         }
-        $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));
+        $moreJson['supervisors'] = $supervisors;
 
         $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
         $moreJson['scholarships_held'] = @implode(", ", $blob['q16']);

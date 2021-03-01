@@ -23,11 +23,12 @@ class SOP extends AbstractSop{
             $sup_array = explode(",", $el);
             foreach($sup_array as $sup){
                 $sup = explode(" ", $sup);
-                $supervisors[] = (isset($sup[1])) ? $sup[1] : $sup[0];
+                $supervisors[] = array("first" => @$sup[0], 
+                                       "last"  => @$sup[1]);
             }
           }
         }
-        $moreJson['supervisors'] = @nl2br(implode(",\n", $supervisors));
+        $moreJson['supervisors'] = $supervisors;
 
         $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q16");
         $moreJson['scholarships_held'] = @implode(", ", $blob['q16']);

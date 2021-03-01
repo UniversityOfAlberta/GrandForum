@@ -95,7 +95,9 @@
 </td>
 
 <td id='supervisors' class="scrollableCell">
-    <div class="scrollableCell"><%= additional.supervisors %></div>
+    <div class="scrollableCell">
+        <%= _.map(additional.supervisors, function(sup){ return "<span style='display:none;'>" + sup.last + " " + sup.first + " </span>" + sup.last; }).join(", <br />") %>
+    </div>
 </td>
 
 <td id='scholarships'>
