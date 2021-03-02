@@ -336,6 +336,7 @@ class GsmsData extends BackboneModel{
     */
     function toArray(){
         global $wgUser, $config;
+        $me = Person::newFromWgUser();
         $year = ($this->year != "") ? $this->year : YEAR;
         $student = Person::newFromId($this->user_id);
         $student_data = array('id' => $student->getId(),
@@ -420,6 +421,8 @@ class GsmsData extends BackboneModel{
         
         $json['other_reviewers'] = $otherReviewers;
         
+        $json['hidden'] = $sop->getHiddenStatus($me->getId());
+        $json['favorited'] = $sop->getFavoritedStatus($me->getId());
 
         //adding decisions by boards
         $json['admit'] = $sop->getFinalAdmit();

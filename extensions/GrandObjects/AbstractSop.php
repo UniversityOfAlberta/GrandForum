@@ -73,6 +73,10 @@ abstract class AbstractSop extends BackboneModel{
     function getHiddenStatus(){
         return false;
     }
+    
+    function getFavoritedStatus(){
+        return false;
+    }
 
   /**
    * newFromId Returns an SOP object from a given id

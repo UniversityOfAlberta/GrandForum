@@ -7,7 +7,8 @@ SopsView = Backbone.View.extend({
     expanded: false,
     expanded2: false,
     filtersSelected: null,
-    hidden: true,
+    hidden: false,
+    favorites: false,
     defaultSearch: "",
     scrollValue: 0,
     
@@ -68,24 +69,13 @@ SopsView = Backbone.View.extend({
         
         // Filter the Sops
         var sops = new Sops(this.sops.filter(function(sop) {
-            sop.hidden = !this.hidden;
-            var reviewers = sop.attributes.reviewers;
-            var other_reviewers = sop.attributes.other_reviewers;
-            for (var i = 0; i < reviewers.length; i++) {
-                if ((reviewers[i].id == me.id) && (reviewers[i].rank == "-1" || reviewers[i].hidden == true)) {
-                    sop.hidden = !this.hidden;
-                    return !this.hidden;
-                }
-            }
-
-            for (var i = 0; i < other_reviewers.length; i++) {
-                if ((other_reviewers[i].id == me.id) && (other_reviewers[i].rank == "-1" || other_reviewers[i].hidden == true)) {
-                    sop.hidden = !this.hidden;
-                    return !this.hidden;
-                }
-            }
-            return this.hidden;
+            return (sop.get('hidden') == this.hidden);
         }.bind(this)));
+        if(this.favorites){
+            sops = new Sops(sops.filter(function(sop) {
+                return (sop.get('favorited') == this.favorites);
+            }.bind(this)));
+        }
         
         // Render the SopsRows
         var fragment = document.createDocumentFragment();
@@ -265,7 +255,7 @@ SopsView = Backbone.View.extend({
     events: {
         "keyup .filter_option": "reloadTable",
         "change .filter_option" : "reloadTable",
-        "click input[type=checkbox]:not([name=hidden])": "reloadTable",
+        "click input[type=checkbox]:not([name=hidden]):not([name=favorited])": "reloadTable",
         "click #clearFiltersButton" : "clearFilters",
         "click #filterMeOnly": "reloadTable",
         "click #selectTagBox" : "showCheckboxes",

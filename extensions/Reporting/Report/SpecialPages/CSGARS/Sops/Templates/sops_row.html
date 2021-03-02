@@ -28,7 +28,8 @@
   <% if(student_id != 0){ %>
     <%= student_id %><br />
   <% } %>
-  <input type="checkbox" name="hidden" value="Hidden by me" <% if(this.model.hidden){ %> checked <% } %> /> Hidden by me <span id="hiddenThrobber" style="display:none;vertical-align:top;" class="throbber"></span>
+  <input type="checkbox" style="vertical-align: text-bottom;" name="hidden" value="Hidden by me" <% if(hidden){ %> checked <% } %> /> Hidden by me <span id="hiddenThrobber" style="display:none;vertical-align:top;" class="throbber"></span><br />
+  <input type="checkbox" style="vertical-align: text-bottom;" name="favorited" value="Favorited" <% if(favorited){ %> checked <% } %> /> Favorited <span id="favoritedThrobber" style="display:none;vertical-align:top;" class="throbber"></span>
 </td>
 
 <td style="white-space: nowrap; display:none;" id="gsms_pdf">

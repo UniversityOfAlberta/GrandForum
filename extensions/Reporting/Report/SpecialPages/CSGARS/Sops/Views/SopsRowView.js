@@ -13,19 +13,23 @@ SopsRowView = Backbone.View.extend({
 
     events: {
         'click #additionalNotes': 'addNotes',
-        'change input[name=hidden]': 'changeHidden'
+        'change input[name=hidden]': 'changeHidden',
+        'change input[name=favorited]': 'changeFavorited'
     },
     
     changeHidden: function(){
-        if(this.$("input[name=hidden]").is(":checked")){
-            this.model.hidden = true;
-        }
-        else{
-            this.model.hidden = false;
-        }
+        this.model.set('hidden', this.$("input[name=hidden]").is(":checked"));
         this.$("#hiddenThrobber").show();
-        $.post(wgServer + wgScriptPath + '/index.php?action=api.sophidden/' + this.model.get('user_id') + '/' + this.model.get('year'), {hidden: this.model.hidden}, function(response){
+        $.post(wgServer + wgScriptPath + '/index.php?action=api.sophidden/' + this.model.get('user_id') + '/' + this.model.get('year'), {hidden: this.model.get('hidden')}, function(response){
             this.$("#hiddenThrobber").hide();
+        }.bind(this));
+    },
+    
+    changeFavorited: function(){
+        this.model.set('favorited', this.$("input[name=favorited]").is(":checked"));
+        this.$("#favoritedThrobber").show();
+        $.post(wgServer + wgScriptPath + '/index.php?action=api.sopfavorited/' + this.model.get('user_id') + '/' + this.model.get('year'), {favorited: this.model.get('favorited')}, function(response){
+            this.$("#favoritedThrobber").hide();
         }.bind(this));
     },
 

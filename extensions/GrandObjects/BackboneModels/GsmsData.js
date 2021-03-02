@@ -38,6 +38,8 @@ GsmsData = Backbone.Model.extend({
             additional: new Array(),
             gsms_url: "",
             submitted_date: "",
+            hidden: false,
+            favorited: false,
             sop_url: "",
             sop_pdf: ""
         };

@@ -130,6 +130,7 @@ $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','gsmsdatas/:folder/:program/:decision/:year', 'GsmsDataAllAPI');
 $apiRequest->addAction('Hidden','sophidden/:id/year', 'SOPHiddenAPI');
+$apiRequest->addAction('Hidden','sopfavorited/:id/year', 'SOPFavoritedAPI');
 
 function createModels(){
     global $wgServer, $wgScriptPath, $wgOut;
