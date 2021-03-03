@@ -69,6 +69,10 @@ class EventPostingFields extends AbstractMigration
         $table = $this->table('grand_bsi_postings');
         $table->removeColumn('image')
               ->save();
+              
+        $table = $this->table('grand_event_postings');
+        $table->addColumn('website', 'string', array('limit' => 256, 'after' => 'article_link'))
+              ->save();
     }
 
     /**
