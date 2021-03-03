@@ -999,7 +999,7 @@ class CavendishTemplate extends QuickTemplate {
 	function toolbox() {
 ?>
 	<li class="portlet" id="p-tb">
-<?php global $config;
+<?php global $config, $wgServer, $wgScriptPath;
     if($config->getValue('networkName') == "FES"){ ?>
         <style>
             a.administration {
@@ -1010,7 +1010,7 @@ class CavendishTemplate extends QuickTemplate {
                 box-shadow: 0 22px 22px -22px rgba(0,0,0,0.3) inset;
             }
         </style>
-        <a class="administration highlights-background-hover" href="Administration">Administration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:none !important;padding:0;display:inline-block;font-size:small;color:red !important;">New!</span></a>
+        <a class="administration highlights-background-hover" href="<?php echo "$wgServer$wgScriptPath/index.php/"; ?>Administration">Administration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:none !important;padding:0;display:inline-block;font-size:small;color:red !important;">New!</span></a>
 <?php } ?>
 <?php
 	global $wgServer, $wgScriptPath, $wgUser, $wgRequest, $wgAuth, $wgTitle, $config;
