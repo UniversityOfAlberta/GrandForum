@@ -69,6 +69,17 @@ class CRMContact extends BackboneModel {
 	    return $this->details;
 	}
 	
+	function getProjects(){
+	    $projects = array();
+	    $data = DBFunctions::select(array('grand_crm_projects'),
+	                                array('project_id'),
+	                                array('contact_id' => $this->getId()));
+	    foreach($data as $row){
+	        $projects[] = Project::newFromId($row['project_id']);
+	    }
+	    return $projects;
+	}
+	
 	function getUrl(){
 	    global $wgServer, $wgScriptPath;
 	    return "{$wgServer}{$wgScriptPath}/index.php/Special:CRM#/{$this->getId()}";
@@ -157,6 +168,8 @@ class CRMContact extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
+	        DBFunctions::delete('grand_crm_projects',
+	                            array('contact_id' => $this->id));
 	        DBFunctions::update('grand_crm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
@@ -170,6 +183,8 @@ class CRMContact extends BackboneModel {
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opportunity->delete();
 	        }
+	        DBFunctions::delete('grand_crm_projects',
+	                            array('contact_id' => $this->id));
 	        DBFunctions::delete('grand_crm_contact',
 	                            array('id' => $this->id));
 	        $this->id = "";

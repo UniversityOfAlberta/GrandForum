@@ -1,6 +1,7 @@
 <div>
     <h3>News Title <small>(max 300 characters)</small>:</h3>
-    <table>
+    <%= HTML.TextBox(this, 'title', {size: '50', style:'margin-bottom:7px;'}) %>
+    <!--table>
         <tr>
             <td class="label">English:</td>
             <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
@@ -9,18 +10,18 @@
             <td class="label">French:</td>
             <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
         </tr>
-    </table>
+    </table-->
     <table>
         <tr>
             <td class="label">Visibility:</td>
             <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
         </tr>
-        <tr>
+        <!--tr>
             <td class="label">Language:</td>
             <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
                                                              {value: 'fr', option: 'Français'},
                                                              {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
-        </tr>
+        </tr-->
         <tr>
             <td class="label">Posted Date:</td>
             <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
@@ -38,7 +39,9 @@
             <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
         </tr>
     </table>
-    <h3>Summary <small>(max <% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters, plain text only / texte brut seulement)</small>:</h3>
+    <h3>Summary</h3>
+    <%= HTML.TextArea(this, 'summary', {style: 'height: 300px; width:100%;'}) %><br />
+    <!--h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>
     <u><b>English</b></u><br />
     <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
         <small><span id="characterCount"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
@@ -49,13 +52,13 @@
     <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
         <small><span id="characterCountFr"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
         <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
-    </div>
+    </div-->
 </div>
 <div style="width:180px;display:inline-block;">
     <button id="savePosting">
         <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> News Posting
     </button><span class="throbber" style="display:none;"></span>
 </div>
-<div style="width:180px;display:inline-block;">
+<div style="width:180px;display:inline-block;vertical-align:top;">
     <button id="cancel">Cancel</button>
 </div>

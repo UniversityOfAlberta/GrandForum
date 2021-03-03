@@ -1,91 +1,129 @@
-<div>
-    <h3>Event Title <small>(max 300 characters)</small>:</h3>
-    <table>
-        <tr>
-            <td class="label">English:</td>
-            <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
-        </tr>
-        <tr>
-            <td class="label">French:</td>
-            <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td class="label">Visibility:</td>
-            <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Language:</td>
-            <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
-                                                             {value: 'fr', option: 'Français'},
-                                                             {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Article Link:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Start Date:</td>
-            <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
-        </tr>
-        <tr>
-            <td class="label">End Date:</td>
-            <td valign="top"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Address:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'address', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">City:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'city', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Province:</td>
-            <td valign="top"><%= HTML.Select(this, 'province', {options: ['',
-                                                                          'Alberta',
-                                                                          'British Columbia',
-                                                                          'Manitoba',
-                                                                          'New Brunswick',
-                                                                          'Newfoundland and Labrador',
-                                                                          'Northwest Territories',
-                                                                          'Nova Scotia',
-                                                                          'Nunavut',
-                                                                          'Ontario',
-                                                                          'Prince Edward Island',
-                                                                          'Quebec',
-                                                                          'Saskatchewan',
-                                                                          'Yukon']}) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">Country:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'country', {}) %></td>
-        </tr>
-        <tr>
-            <td class="label">Attachment:</td>
-            <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
-        </tr>
-    </table>
-    <h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>
-    <u><b>English</b></u><br />
-    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
-        <small><span id="characterCount"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
-        <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
-    </div><br /><br />
-    
-    <u><b>French</b></u><br />
-    <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
-        <small><span id="characterCountFr"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
-        <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
+<div style='display:flex;flex-wrap:wrap;'>
+    <div style='white-space:nowrap;'>
+        <!--h3>Event Title <small>(max 300 characters)</small>:</h3>
+        <table>
+            <tr>
+                <td class="label">English:</td>
+                <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">French:</td>
+                <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
+            </tr>
+        </table-->
+        <table>
+            <tr>
+                <td class="label">Title:</td>
+                <td><%= HTML.TextBox(this, 'title', {size: '50', style:'margin-bottom:7px;'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Visibility:</td>
+                <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
+            </tr>
+            <!--tr>
+                <td class="label">Language:</td>
+                <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
+                                                                 {value: 'fr', option: 'Français'},
+                                                                 {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
+            </tr-->
+            <tr>
+                <td class="label">Article Link:</td>
+                <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Website:</td>
+                <td valign="top"><%= HTML.TextBox(this, 'website', {}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Start Date:</td>
+                <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">End Date:</td>
+                <td valign="top"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Address:</td>
+                <td valign="top"><%= HTML.TextBox(this, 'address', {}) %></td>
+            </tr>
+            <tr>
+                <td class="label">City:</td>
+                <td valign="top"><%= HTML.TextBox(this, 'city', {}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Province:</td>
+                <td valign="top"><%= HTML.Select(this, 'province', {options: ['',
+                                                                              'Alberta',
+                                                                              'British Columbia',
+                                                                              'Manitoba',
+                                                                              'New Brunswick',
+                                                                              'Newfoundland and Labrador',
+                                                                              'Northwest Territories',
+                                                                              'Nova Scotia',
+                                                                              'Nunavut',
+                                                                              'Ontario',
+                                                                              'Prince Edward Island',
+                                                                              'Quebec',
+                                                                              'Saskatchewan',
+                                                                              'Yukon']}) %>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Country:</td>
+                <td valign="top"><%= HTML.TextBox(this, 'country', {}) %></td>
+            </tr>
+            <tr>
+                <td class="label">Attachment:</td>
+                <td valign="top"><%= HTML.File(this, 'image', {}) %></td>
+            </tr>
+        </table>
+    </div>
+    <div style='flex-grow:10;'>
+        <table style='margin:0 auto; width:1%;'>
+            <tr>
+                <th colspan='2'></th>
+                <th>Delete?</th>
+            </tr>
+            <% var images = [image1,image2,image3];
+                for(i = 1; i <= 3; i++){ %>
+                <tr>
+                    <td align="right" style="white-space: nowrap; width: 1%;"><b>Image <%= i %>:</b></td>
+                    <td><%= HTML.File(this, 'image' + i, {accept:'image/*',style:'width:300px;'}) %></td>
+                    <td rowspan="2" style="white-space:nowrap;">
+                    <% if(images[i-1] != ""){ %>
+                        <%= HTML.CheckBox(this, 'image_delete' + i, {style:'position:absolute;'}) %>
+                        <img style="max-height:70px;max-width:100px;border-radius:5px;" src="<%= images[i-1] %>" />
+                    <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><%= HTML.TextBox(this, 'image_url' + i, {style:'width:300px;',placeholder:'Enter image URL here instead of file upload'}) %></td>
+                    <td></td>
+                </tr>
+            <% } %>
+        </table>
     </div>
 </div>
+<h3>Summary</h3>
+        <%= HTML.TextArea(this, 'summary', {style: 'height: 300px; width:100%;'}) %><br />
+        <!--h3>Summary <small>(max 2000 characters, plain text only / texte brut seulement)</small>:</h3>
+        <u><b>English</b></u><br />
+        <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
+            <small><span id="characterCount"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
+            <%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %><br />
+        </div><br /><br />
+        
+        <u><b>French</b></u><br />
+        <div style="display:inline-block; text-align:right; margin-top: -1.5em;">
+            <small><span id="characterCountFr"></span>/<% if(networkName == "AI4Society"){ %> 4000 <% } else { %> 2000 <% } %> characters</small><br />
+            <%= HTML.TextArea(this, 'summaryFr', {style: 'height: 150px; width:685px;'}) %><br />
+        </div-->
 <div style="width:180px;display:inline-block;">
     <button id="savePosting">
         <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> Event Posting
     </button><span class="throbber" style="display:none;"></span>
 </div>
-<div style="width:180px;display:inline-block;">
+<div style="width:180px;display:inline-block;vertical-align:top;">
     <button id="cancel">Cancel</button>
 </div>

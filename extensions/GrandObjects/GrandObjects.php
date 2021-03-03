@@ -172,7 +172,7 @@ $apiRequest->addAction('Hidden','newsposting/new/:date', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/new/:date/:start/:count', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:start/:count', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','newsposting/:id', 'NewsPostingAPI');
-$apiRequest->addAction('Hidden','newsposting/:id/image', 'NewsPostingAPI');
+$apiRequest->addAction('Hidden','newsposting/:id/image/:image_id/:md5', 'NewsPostingAPI');
 $apiRequest->addAction('Hidden','eventposting', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/current', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/current/:start/:count', 'EventPostingAPI');
@@ -180,7 +180,7 @@ $apiRequest->addAction('Hidden','eventposting/new/:date', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/new/:date/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:start/:count', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','eventposting/:id', 'EventPostingAPI');
-$apiRequest->addAction('Hidden','eventposting/:id/image', 'EventPostingAPI');
+$apiRequest->addAction('Hidden','eventposting/:id/image/:image_id/:md5', 'EventPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/deleted', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/current', 'BSIPostingAPI');
@@ -189,7 +189,7 @@ $apiRequest->addAction('Hidden','bsiposting/new/:date', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/new/:date/:start/:count', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/:start/:count', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/:id', 'BSIPostingAPI');
-$apiRequest->addAction('Hidden','bsiposting/:id/image', 'BSIPostingAPI');
+$apiRequest->addAction('Hidden','bsiposting/:id/image/:image_id/:md5', 'BSIPostingAPI');
 
 // CRM
 $apiRequest->addAction('Hidden','crmcontact', 'CRMContactAPI');

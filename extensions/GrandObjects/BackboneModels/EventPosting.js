@@ -22,7 +22,18 @@ EventPosting = Posting.extend({
         address: "",
         city: "",
         province: "",
-        country: "Canada"
+        country: "Canada",
+        website: "",
+        image1: "", // For Uploads
+        image2: "", // For Uploads
+        image3: "", // For Uploads
+        image_url1: "", // For Uploads
+        image_url2: "", // For Uploads
+        image_url3: "", // For Uploads
+        image_delete1: "", // For Uploads
+        image_delete2: "", // For Uploads
+        image_delete3: "", // For Uploads
+        images: []
     })
     
 });

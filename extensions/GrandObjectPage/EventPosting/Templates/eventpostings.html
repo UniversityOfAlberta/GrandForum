@@ -5,7 +5,7 @@
     <thead>
         <tr>
             <th width="25%" style="white-space: nowrap;">Event Date</th>
-            <th width="5%" style="white-space: nowrap;">Language</th>
+            <!--th width="5%" style="white-space: nowrap;">Language</th-->
             <th width="15%">Address</th>
             <th width="54%">Posting</th>
             <% if(isAllowedToCreateEventPostings){ %>
@@ -21,9 +21,9 @@
                     <%= dateTimeHelpers.formatDate(event.get('startDate')) %><br />
                     (Posted: <%= dateTimeHelpers.formatDate(event.get('created')) %> by <a href="<%= event.get('user').url %>"><%= event.get('user').fullName %></a>)
                 </td>
-                <td align="center">
+                <!--td align="center">
                     <%= event.getLanguage() %>
-                </td>
+                </td-->
                 <td>
                     <%= event.get('address') %><br />
                     <%= event.get('city') %>, <% if(event.get('province') != ''){ %> <%= event.get('province') %>, <% } %> <%= event.get('country') %>
