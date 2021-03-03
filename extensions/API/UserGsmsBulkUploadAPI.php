@@ -53,6 +53,7 @@ class UserGsmsBulkUploadAPI extends API{
                 continue;
             }
             if(isset($data_array[$gsms_id]) &&
+               ($row[20] != "Admit") && // <- These are the top priority ones, so don't overwrite them
                (strstr($data_array[$gsms_id]['folder'], "Evaluator") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Coder") !== false ||
                 strstr($data_array[$gsms_id]['folder'], "Offer Accepted") !== false ||
