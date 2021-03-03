@@ -1053,6 +1053,10 @@ class CavendishTemplate extends QuickTemplate {
 	                echo "</ul>";
 	                $i++;
 	            }
+	            if($key == "People" && $config->getValue('networkName') == "AI4Society"){
+	                echo "<hr />";
+	                echo "<a class='administration highlights-background-hover' style='padding: 5px 8px 5px 10px;' href='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects'>Projects</a>";
+	            }
 	        }
 		}
 		else {
