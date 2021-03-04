@@ -22,6 +22,12 @@ $wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Pharmac
 $wgWhitelistRead[] = "File:Canadian Resource 2 FRENCH - Medical Abortion Prescriber Reference Guide 2018-07-11.pdf";
 $wgWhitelistRead[] = "File:Canadian Medical Abortion Pharmacy Checklist 2018-10-10.pdf";
 $wgWhitelistRead[] = "File:Canadian Medical Abortion Dispensing Guide V8 2018-10-18.pdf";
+$wgWhitelistRead[] = "File:Canadian EN Resource 1 - Pharmacist Checklist for Medical Abortion 2020.pdf";
+$wgWhitelistRead[] = "File:Canadian EN Resource 2 - Pharmacist Resource Guide for Medical Abortion 2020.pdf";
+$wgWhitelistRead[] = "File:Canadian FR Resource 1 - Pharmacist Checklist for Medical Abortion 2020.pdf";
+$wgWhitelistRead[] = "File:Canadian FR Resource 2 - Pharmacist Resource Guide for Medical Abortion 2020.pdf";
+$wgWhitelistRead[] = "File:Clinical SOGC Induced Abortion- Updated Guidance during Pandemics and Periods of Social Disruption.pdf";
+$wgWhitelistRead[] = "File:Clinical SOGC Canadian Protocol for the Provision of Medical Abortion via Telemedicine.pdf";
 
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
