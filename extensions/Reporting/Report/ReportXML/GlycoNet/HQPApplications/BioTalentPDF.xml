@@ -3,7 +3,7 @@
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <span style='font-size: 1.5em;font-weight:bold'>BioTalent Course Competition Competition</span>
+                <span style='font-size: 1.5em;font-weight:bold'>BioTalent Course Competition</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
