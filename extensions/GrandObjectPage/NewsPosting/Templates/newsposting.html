@@ -17,13 +17,14 @@
         <% } %>
         
     </table>
-    <% if(imageMime.indexOf("image") != -1){ %>
-        <img src="<%= image %>" style="max-width: 400px; max-height: 400px;" alt="Attachment" />
-        
-    <% } else if(imageMime.indexOf("application/pdf") != -1){ %>
-        <iframe class="certificate_frame" src="<%= wgServer + wgScriptPath %>/scripts/ViewerJS/#<%= image %>&/" style="width:100%; max-width: 550px; height:450px;" frameborder="0" allowfullscreen="true"></iframe>
-    <% } else { %>
-        <h3><a href="<%= image %>" target="_blank">Attachment</a></h3>
+    <% if(image != ""){ %>
+        <% if(imageMime.indexOf("image") != -1){ %>
+            <img src="<%= image %>" style="max-width: 400px; max-height: 400px;" alt="Attachment" />
+        <% } else if(imageMime.indexOf("application/pdf") != -1){ %>
+            <iframe class="certificate_frame" src="<%= wgServer + wgScriptPath %>/scripts/ViewerJS/#<%= image %>&/" style="width:100%; max-width: 550px; height:450px;" frameborder="0" allowfullscreen="true"></iframe>
+        <% } else { %>
+            <h3><a href="<%= image %>" target="_blank">Attachment</a></h3>
+        <% } %>
     <% } %>
     <h3>Summary</h3>
     <%= showLanguage(language, summary, summaryFr, "<br /><br />") %>

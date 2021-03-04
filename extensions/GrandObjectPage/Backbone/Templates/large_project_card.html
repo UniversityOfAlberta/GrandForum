@@ -51,7 +51,7 @@
             <div style="width:100%;margin-left: 15px; margin-top: 8px; margin-bottom:10px; vertical-align: top;">
                 <div style="width:100%;text-align:center;">
                     <% _.each(images, function(image){ %>
-                        <img style="max-width:calc(<%= 100/images.length %>% - 20px);px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;" src="<%= image %>" />
+                        <a href="<%= image %>" data-lightbox="images"><img style="max-width:calc(<%= 100/images.length %>% - 20px);px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;" src="<%= image %>" /></a>
                     <% }) %>
                 </div>
             </div>

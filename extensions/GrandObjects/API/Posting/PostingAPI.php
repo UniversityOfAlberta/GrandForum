@@ -92,6 +92,9 @@ abstract class PostingAPI extends RESTAPI {
         if($className::isAllowedToCreate()){
             $this->validate();
             $image = "";
+            if($this->POST('image_delete') != ""){
+                $image = "";
+            }
             if($this->POST('image') != "" && is_object($this->POST('image'))){
                 $image = $this->POST('image')->data;
             }
@@ -125,6 +128,9 @@ abstract class PostingAPI extends RESTAPI {
             if($posting->isAllowedToEdit()){
                 $this->validate();
                 $image = $posting->getImage();
+                if($this->POST('image_delete') != ""){
+                    $image = "";
+                }
                 if($this->POST('image') != "" && is_object($this->POST('image'))){
                     $image = $this->POST('image')->data;
                 }

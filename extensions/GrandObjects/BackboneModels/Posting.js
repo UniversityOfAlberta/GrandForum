@@ -28,6 +28,7 @@ Posting = Backbone.Model.extend({
         summary: "",
         summaryFr: "",
         image: "",
+        image_delete: "",
         imageMime: "",
         imageCaption: "",
         imageCaptionFr: "",
