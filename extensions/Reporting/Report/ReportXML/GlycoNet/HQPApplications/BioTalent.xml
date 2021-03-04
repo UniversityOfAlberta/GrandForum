@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="BioTalent Course Competition" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2021">
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -16,7 +16,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Background and Description of Opportunity" type="ReportSection">
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Technical Skills Fundamentals Training Program" type="ReportSection">
         <Static>
             <![CDATA[
                 <h3>Eligibility</h3>

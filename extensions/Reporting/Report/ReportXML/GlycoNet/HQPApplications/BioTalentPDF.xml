@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="BioTalent Course Competition Competition" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" ajax="true" disabled="false" year="2021">
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" ajax="true" disabled="false" year="2021">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <span style='font-size: 1.5em;font-weight:bold'>BioTalent Course Competition</span>
+                <span style='font-size: 1.5em;font-weight:bold'>Technical Skills Fundamentals Training Program</span>
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
