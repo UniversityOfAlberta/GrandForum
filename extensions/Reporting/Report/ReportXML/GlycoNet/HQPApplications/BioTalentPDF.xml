@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="BioTalent Course Competition Competition" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" ajax="true" disabled="false" year="2021">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static>
+            <![CDATA[
+                <span style='font-size: 1.5em;font-weight:bold'>BioTalent Course Competition Competition</span>
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" name="Application" tooltip="Application" type="HeaderReportSection" blobSection="APPLICATION" pagebreak="false">
+        <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" class="wikitable">
+            <![CDATA[
+                <h3>Applicant Information</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="project" type="Text" blobItem="PROJECT" blotType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td align="right"><b>GlycoNet Project (if applicable):</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow|Research Technician|Research Associate">
+            <![CDATA[
+                    <tr>
+                        <td valign="top" align="right" style="padding-top:3px;"><b>Academic Program/Status:</b></td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
+            <![CDATA[
+                <h3>Description</h3>
+                <p><b>Describe why you are interested in taking BioTalent’s Technical Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadPDF" blobItem="CV" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload your CV</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="UploadPDF" blobItem="CONSENT" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload supervisor consent/support letter</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/supervisor support letter-fillable.pdf' target='_blank'>Template</a>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
