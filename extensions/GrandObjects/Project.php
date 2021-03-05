@@ -1334,6 +1334,38 @@ EOF;
         $blb->store($this->technology['response4'], $addr);
     }
     
+    /**
+     * Returns an array containing responses for Government Policy
+     */
+    function getPolicy(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY', 0);
+        $result = $blb->load($addr);
+        $p = $blb->getData();
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY_YES', 0);
+        $result = $blb->load($addr);
+        $p_yes = $blb->getData();
+        
+        $this->policy = array('policy'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $p))),
+                              'policy_yes'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $p_yes))));
+        return $this->policy;
+    }
+    
+    /**
+     * Saves the array containing responses for Government Policy
+     */
+    function savePolicy(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY', 0);
+        $blb->store($this->policy['policy'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY_YES', 0);
+        $blb->store($this->policy['policy_yes'], $addr);
+    }
+    
     // Returns an array of papers relating to this project
     function getPapers($category="all", $startRange = false, $endRange = false){
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);

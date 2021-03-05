@@ -19,9 +19,9 @@ class ProjectDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
-            $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
-            $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
-            $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption)').css('display', 'none');
+            $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption):not(#editPolicy)').css('display', 'none');
+            $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption):not(#editPolicy)').css('display', 'none');
+            $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption):not(#cancelPolicy)').css('display', 'none');
         });";
     }
     
@@ -52,7 +52,12 @@ class ProjectDashboardTab extends AbstractEditableTab {
                     'response3'      => $_POST['response3'],
                     'response4'      => $_POST['response4']
                 );
+                $this->project->policy = array(
+                    'policy'         => $_POST['policy'],
+                    'policy_yes'     => $_POST['policy_yes']
+                );
                 $this->project->saveTechnology();
+                $this->project->savePolicy();
             }
         }
     }
@@ -73,6 +78,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $this->showTopProducts($this->project, $this->visibility);
                 if($config->getValue('projectTechEnabled')){
                     $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
+                    $this->showPolicy($this->project, $this->visibility);
                 }
             }
         }
@@ -86,6 +92,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $this->showTopProducts($this->project, $this->visibility);
                 if($config->getValue('projectTechEnabled')){
                     $this->showTechnologyEvaluationAdoption($this->project, $this->visibility);
+                    $this->showPolicy($this->project, $this->visibility);
                 }
             }
             $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
@@ -94,7 +101,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $('#ajax_dashboard').html(response);
             });
             _.defer(function(){
-                $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
+                $('button[value=\"Edit Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption):not(#editPolicy)').css('display', 'none');
             });</script>";
         }
         return $this->html;
@@ -106,6 +113,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
             $this->showEditTopProducts($this->project, $this->visibility);
             if($config->getValue('projectTechEnabled')){
                 $this->showEditTechnologyEvaluationAdoption($this->project, $this->visibility);
+                $this->showEditPolicy($this->project, $this->visibility);
             }
         }
         $this->html .= "<div id='ajax_dashboard'><br /><span class='throbber'></span></div>";
@@ -133,8 +141,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
-                $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption)').css('display', 'none');
-                $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption)').css('display', 'none');
+                $('button[value=\"Save Dashboard\"]:not(#editTopResearchOutcomes):not(#editTechnologyEvaluationAdoption):not(#editPolicy)').css('display', 'none');
+                $('div#dashboard input[value=\"Cancel\"]:not(#cancelTopResearchOutcomes):not(#cancelTechnologyEvaluationAdoption):not(#cancelPolicy)').css('display', 'none');
             });
         </script>";
     }
@@ -302,6 +310,51 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         <input id='cancelTechnologyEvaluationAdoption' type='submit' value='Cancel' name='submit' /><br /><br />";
     }
     
+    function showEditPolicy($project, $visibility){
+        if(!$visibility['isLead']){
+            return;
+        }
+        $policy = $project->getPolicy();
+        $options = array("Yes",
+                         "No");
+        $blankSelected = ($policy['policy'] == "") ? "selected='selected'" : "";
+        $select = "<select name='policy'>
+                        <option value='' $blankSelected>---</option>";
+                        foreach($options as $option){
+                            $selected = @($policy['policy'] == $option) ? "selected='selected'" : "";
+                            $select .= "<option value='$option' $selected>$option</option>";
+                        }
+        $select .= "</select>";
+        $this->html .= "<h2>Contributions to Government Policy or Regulation</h2>
+                        <p><small>The CFREF definition of a contribution to policy or regulation is as follows: &quot;A contribution is defined as a direct, structured engagement with policy makers at a municipal, provincial, or federal level, and in Aboriginal governments, for the purposes of informing policy or regulatory development, such as testimony before a parliamentary committee, service on a government appointed panel, partnership in a research activity, or adoption of a policy or regulation that explicitly draws upon a research outcome. It does not include lobbying, publication in policy journals (regardless of stated impacts of those journals), or op-eds.&quot;</small></p>
+                        <b>Have you made contributions at any level to government policy or regulation?</b><br />
+                        {$select}<br />
+                        <br />
+                        <div id='policy_yes' style='display:none;'>
+                            <b>Contribution Description:</b>
+                            <textarea style='height:100px;' name='policy_yes'>{$policy['policy_yes']}</textarea>
+                            <br />
+                            <br />
+                        </div>
+                        <script type='text/javascript'>
+                            $('[name=policy]').change(function(){
+                                var val = $(this).val();
+                                if(val != 'No' && val != ''){
+                                    $('#policy_yes').show();
+                                    if(val == 'Yes'){
+                                        $('#policy_yes').show();
+                                    }
+                                }
+                                else{
+                                    $('#policy_yes').hide();
+                                }
+                            });
+                            $('[name=policy]').change();
+                        </script>";
+        $this->html .= "<button id='editPolicy' type='submit' value='Save Dashboard' name='submit'>Save</button>
+                        <input id='cancelPolicy' type='submit' value='Cancel' name='submit' /><br /><br />";
+    }
+    
     function showTopProducts($project, $visibility){
         global $config;
         $products = $project->getTopProducts();
@@ -391,6 +444,28 @@ class ProjectDashboardTab extends AbstractEditableTab {
         }
         if($this->canEdit()){
             $this->html .= "<button id='editTechnologyEvaluationAdoption' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Technology</button><br />";
+        }
+    }
+    
+    function showPolicy($project, $visibility){
+        if(!$visibility['isLead']){
+            return;
+        }
+        $policy = $project->getPolicy();
+        $this->html .= "<br /><br />
+                        <h2>Contributions to Government Policy or Regulation</h2>
+                        <div>
+                            <b>Have you made contributions at any level to government policy or regulation?</b><br />
+                            {$policy['policy']}
+                        </div><br />";
+        if($policy['policy'] == "Yes"){
+            $this->html .= "<div>
+                                <b>Contribution Description:</b><br />
+                                ".nl2br($policy['policy_yes'])."
+                            </div><br />";
+        }
+        if($this->canEdit()){
+            $this->html .= "<button id='editPolicy' class='pdfnodisplay' type='submit' value='Edit Dashboard' name='submit'>Edit Policy</button><br />";
         }
     }
     
