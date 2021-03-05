@@ -130,7 +130,7 @@ class ProjectMainTab extends AbstractEditableTab {
                     }
                 }
                 foreach($images as $image){
-                    $this->html .= "<a href='{$image}' data-lightbox='images' style='display:inline-block;max-width: calc(".(100/count($images))."% - 20px);margin:0 10px;box-sizing:border-box;'><img style='width:100%;max-width:350px;max-height:200px;border-radius:5px;object-fit: contain;' src='{$image}' /></a>";
+                    $this->html .= "<a href='{$image}' data-lightbox='images' style='display:inline-block;max-width: calc(".(100/count($images))."% - 20px);margin:0 10px;box-sizing:border-box;'><img style='width:min(100%, 350px);max-width:350px;max-height:200px;border-radius:5px;object-fit: contain;' src='{$image}' /></a>";
                 }
                 $this->html .= "</div>";
             }
