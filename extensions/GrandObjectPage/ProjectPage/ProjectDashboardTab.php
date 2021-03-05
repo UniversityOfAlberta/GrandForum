@@ -325,8 +325,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
                             $select .= "<option value='$option' $selected>$option</option>";
                         }
         $select .= "</select>";
-        $this->html .= "<br /><br />
-                        <h2>Contributions to Government Policy or Regulation</h2>
+        $this->html .= "<h2>Contributions to Government Policy or Regulation</h2>
+                        <p><small>The CFREF definition of a contribution to policy or regulation is as follows: &quot;A contribution is defined as a direct, structured engagement with policy makers at a municipal, provincial, or federal level, and in Aboriginal governments, for the purposes of informing policy or regulatory development, such as testimony before a parliamentary committee, service on a government appointed panel, partnership in a research activity, or adoption of a policy or regulation that explicitly draws upon a research outcome. It does not include lobbying, publication in policy journals (regardless of stated impacts of those journals), or op-eds.&quot;</small></p>
                         <b>Have you made contributions at any level to government policy or regulation?</b><br />
                         {$select}<br />
                         <br />
