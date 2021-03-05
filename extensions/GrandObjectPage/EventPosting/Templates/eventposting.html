@@ -50,7 +50,7 @@
         <div style="width:100%;text-align:center;white-space:nowrap;">
             <% var images = _.compact([image1, image2, image3]);
                _.each(images, function(image){ %>
-                <a href="<%= image %>" data-lightbox="images"><img style="max-width:200px;width:calc(<%= 100/images.length %>% - 20px);px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;" src="<%= image %>" /></a>
+                <a href="<%= image %>" data-lightbox="images"><img style="width:calc(<%= 100/images.length %>% - 20px);max-width:350px;max-height:200px;margin:0 auto;border-radius:5px;margin:0 10px;box-sizing:border-box;" src="<%= image %>" /></a>
             <% }) %>
         </div>
     </div>
