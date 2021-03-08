@@ -162,6 +162,10 @@ class IndexTable {
 
     function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
+        if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
+            $result = false;
+            return true;
+        }
         if($title->getNSText() == "{$config->getValue('networkName')}"){
             $me = Person::newFromUser($user);
             $text = $title->getText();
