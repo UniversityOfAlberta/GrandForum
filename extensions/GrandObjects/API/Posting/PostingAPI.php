@@ -10,6 +10,7 @@ abstract class PostingAPI extends RESTAPI {
         $deleted = ($this->getParam('deleted') != "");
         $new = ($this->getParam('new') != "");
         $image = ($this->getParam('image') != "");
+        $image_id = $this->getParam('image_id');
         $className = static::$className;
         if($id != ""){
             $previewCode = explode("-", $id);
@@ -19,12 +20,20 @@ abstract class PostingAPI extends RESTAPI {
             if(($previewCode != "" && $previewCode == $posting->getPreviewCode()) || 
                ($previewCode == "" && $previewCode == $posting->getPreviewCode())){
                 $posting->visibility = "Publish";
-                $posting->generatePreviewCode();  
+                $posting->generatePreviewCode();
             }
             if($image){
-                $exploded = explode("base64,", $posting->getImage());
-                header('Content-Type: '.$posting->getImageMime());
-                echo base64_decode($exploded[1]);
+                header('Content-Type: '.$posting->getImageMime($image_id));
+                header('Cache-Control: max-age=86400');
+                header('Cache-Control: public');
+                header('Last-Modified: '.gmdate(DATE_RFC1123, mktime(0, 0, 0, 1, 1, 2000)));
+                if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && $this->getParam('md5') == $posting->getImageMD5($image_id)){
+                    header('HTTP/1.1 304 Not Modified');
+                    exit;
+                }
+                $img = $posting->getImage($image_id);
+                $exploded = explode("base64,", $img);
+                echo base64_decode(@$exploded[1]);
                 exit;
             }
             return $posting->toJSON();
@@ -57,9 +66,9 @@ abstract class PostingAPI extends RESTAPI {
     
     abstract function validate();
     
-    function checkFile(){
+    function checkFile($n=""){
         global $wgFileExtensions;
-        $file = $this->POST('image');
+        $file = $this->POST("image{$n}");
         if(isset($file->data)){
             list($partname, $ext) = UploadBase::splitExtensions($file->filename);
             if(count($ext)){
@@ -83,6 +92,9 @@ abstract class PostingAPI extends RESTAPI {
         if($className::isAllowedToCreate()){
             $this->validate();
             $image = "";
+            if($this->POST('image_delete') != ""){
+                $image = "";
+            }
             if($this->POST('image') != "" && is_object($this->POST('image'))){
                 $image = $this->POST('image')->data;
             }
@@ -116,6 +128,9 @@ abstract class PostingAPI extends RESTAPI {
             if($posting->isAllowedToEdit()){
                 $this->validate();
                 $image = $posting->getImage();
+                if($this->POST('image_delete') != ""){
+                    $image = "";
+                }
                 if($this->POST('image') != "" && is_object($this->POST('image'))){
                     $image = $this->POST('image')->data;
                 }

@@ -7,6 +7,7 @@
 class Posting extends BackboneModel {
     
     static $dbTable = "";
+    static $imageCache = null;
     
     var $id;
     var $userId;
@@ -30,7 +31,7 @@ class Posting extends BackboneModel {
     static function newFromId($id){
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
-                                    array('id' => EQ($id)));
+                                    array('id' => $id));
         $posting = new static($data);
         if($posting->isAllowedToView()){
             return $posting;
@@ -46,7 +47,7 @@ class Posting extends BackboneModel {
     static function getAllPostings(){
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
-                                    array('deleted' => EQ(0)));
+                                    array('deleted' => '0'));
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
@@ -74,7 +75,7 @@ class Posting extends BackboneModel {
     static function getDeletedPostings(){
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
-                                    array('deleted' => EQ(1)));
+                                    array('delete' => 1));
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
@@ -117,7 +118,6 @@ class Posting extends BackboneModel {
             $this->endDate = $row['end_date'];
             $this->summary = $row['summary'];
             $this->summaryFr = $row['summary_fr'];
-            $this->image = $row['image'];
             $this->imageCaption = $row['image_caption'];
             $this->imageCaptionFr = $row['image_caption_fr'];
             $this->previewCode = $row['preview_code'];
@@ -175,23 +175,59 @@ class Posting extends BackboneModel {
         return $this->summaryFr;
     }
     
-    function getImage(){
-        return $this->image;
+    static function generateImageCache(){
+        if(self::$imageCache == null){
+            self::$imageCache = array();
+            $data = DBFunctions::select(array('grand_posting_images'),
+                                        array('id',
+                                              'tbl',
+                                              'posting_id',
+                                              '`index`',
+                                              'mime'));
+            foreach($data as $row){
+                self::$imageCache[$row['tbl']][$row['posting_id']][$row['index']] = $row;
+            }
+        }
     }
     
-    function getImageMime(){
-        $exploded = explode(";", $this->image);
-        $mime = @str_replace("data:", "", $exploded[0]);
-        return $mime;
+    function getImage($n=0){
+        self::generateImageCache();
+        $data = DBFunctions::select(array('grand_posting_images'),
+                                    array('data'),
+                                    array('tbl' => static::$dbTable,
+                                          'posting_id' => $this->getId(),
+                                          '`index`' => $n));
+        if(count($data) > 0){
+            return $data[0]['data'];
+        }
+        return "";
     }
     
-    function getImageUrl(){
+    function getImageMime($n=0){
+        self::generateImageCache();
+        if(isset(self::$imageCache[static::$dbTable][$this->getId()][$n])){
+            return self::$imageCache[static::$dbTable][$this->getId()][$n]['mime'];
+        }
+        return "";
+    }
+    
+    function getImageMD5($n=0){
+        // Not really the md5 of the image, just a code for the id
+        self::generateImageCache();
+        if(isset(self::$imageCache[static::$dbTable][$this->getId()][$n])){
+            $row = self::$imageCache[static::$dbTable][$this->getId()][$n];
+            return md5("{$row['id']}");
+        }
+        return "";
+    }
+    
+    function getImageUrl($n=0){
         global $wgServer, $wgScriptPath;
-        $image = $this->getImage();
-        if($image != ""){
-            $md5 = md5($this->getImage());
+        self::generateImageCache();
+        if(isset(self::$imageCache[static::$dbTable][$this->getId()][$n])){
+            $row = self::$imageCache[static::$dbTable][$this->getId()][$n];
             $class = strtolower(get_class($this));
-            return "{$wgServer}{$wgScriptPath}/index.php?action=api.{$class}/{$this->getId()}/image/$md5";
+            return "{$wgServer}{$wgScriptPath}/index.php?action=api.{$class}/{$this->getId()}/image/$n/{$this->getImageMD5($n)}";
         }
         return "";
     }
@@ -264,6 +300,24 @@ class Posting extends BackboneModel {
         return ($me->isLoggedIn() && ($me->isRoleAtLeast(STAFF)));
     }
     
+    function saveImage($n, $image){
+        DBFunctions::delete('grand_posting_images',
+                            array('tbl' => static::$dbTable,
+                                  'posting_id' => $this->getId(),
+                                  '`index`' => $n));
+        if($image != ""){
+            $exploded = explode(";", $image);
+            $mime = @str_replace("data:", "", $exploded[0]);
+            DBFunctions::insert('grand_posting_images',
+                                array('tbl' => static::$dbTable,
+                                      'posting_id' => $this->getId(),
+                                      '`index`' => $n,
+                                      'mime' => $mime,
+                                      'data' => $image));
+        }
+        self::$imageCache = null;
+    }
+    
     function toArray(){
         $json = array('id' => $this->getId(),
                       'userId' => $this->getUserId(),
@@ -303,7 +357,6 @@ class Posting extends BackboneModel {
                                                 'end_date' => $this->endDate,
                                                 'summary' => $this->summary,
                                                 'summary_fr' => $this->summaryFr,
-                                                'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
                                                 'modified' => EQ(COL('CURRENT_TIMESTAMP')),
@@ -312,6 +365,7 @@ class Posting extends BackboneModel {
                 $this->id = DBFunctions::insertId();
                 $this->generatePreviewCode();
             }
+            $this->saveImage(0, $this->image);
             return $status;
         }
         return false;
@@ -330,13 +384,13 @@ class Posting extends BackboneModel {
                                                 'end_date' => $this->endDate,
                                                 'summary' => $this->summary,
                                                 'summary_fr' => $this->summaryFr,
-                                                'image' => $this->image,
                                                 'image_caption' => $this->imageCaption,
                                                 'image_caption_fr' => $this->imageCaptionFr,
                                                 'modified' => EQ(COL('CURRENT_TIMESTAMP')),
                                                 'deleted' => $this->deleted),
                                           array('id' => $this->id));
             $this->generatePreviewCode();
+            $this->saveImage(0, $this->image);
             return $status;
         }
         return false;

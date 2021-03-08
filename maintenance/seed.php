@@ -229,6 +229,7 @@ User::createNew("Already.Existing", array('password' => User::crypt("Already.Exi
 User::createNew("Üšër.WìthÁççénts", array('password' => User::crypt("Üšër WìthÁççénts"), 'email' => "ÜšërWìthÁççénts@behat-test.com"));
 User::createNew("HQP.ToBeInactivated", array('password' => User::crypt("HQP.ToBeInactivated"), 'email' => "HQP.ToBeInactivated@behat-test.com"));
 User::createNew("Inactive.User1", array('password' => User::crypt("Inactive.User1"), 'email' => "Inactive.User1@behat-test.com"));
+User::createNew("External.User1", array('password' => User::crypt("External.User1"), 'email' => "External.User1@behat-test.com"));
 
 DBFunctions::insert('grand_roles',
                     array('user_id' => 1,
@@ -282,6 +283,7 @@ addUserRole("HQP.User3", HQP);
 addUserRole("HQP.User4", HQP);
 addUserRole("HQP-Candidate.User1", HQP);
 addUserRole("HQP.ToBeInactivated", HQP);
+addUserRole("External.User1", EXTERNAL);
 
 addUserProject("NI.User1", "Phase1Project1");
 addUserProject("NI.User1", "Phase1Project5");

@@ -1,53 +1,76 @@
-<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:EventPostingPage#" style="float: right;">Back to Event Postings</a>
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:EventPostingPage#" style="position:absolute; top:10px;right:20px;">Back to Event Postings</a>
+<div style="display:flex;flex-wrap:wrap;">
+    <div>
+        <table style="max-width:550px;">
+            <tr>
+                <td class="label">Visibility:</td>
+                <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
+            </tr>
+            <% if(articleLink != ""){ %>
+                <tr>
+                    <td class="label">Online Event Address:</td>
+                    <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
+                </tr>
+            <% } %>
+            <% if(website != ""){ %>
+                <tr>
+                    <td class="label">Video URL:</td>
+                    <td><a href="<%= website %>" target="_blank"><%= website %></a></td>
+                </tr>
+            <% } %>
+            <tr>
+                <td class="label">Start Date:</td>
+                <td><%= startDate %></td>
+            </tr>
+            <tr>
+                <td class="label">End Date:</td>
+                <td><%= endDate %></td>
+            </tr>
+            <tr>
+                <td class="label">Address:</td>
+                <td><%= address %></td>
+            </tr>
+            <tr>
+                <td class="label">City:</td>
+                <td><%= city %></td>
+            </tr>
+            <% if(province != ""){ %>
+                <tr>
+                    <td class="label">Province:</td>
+                    <td><%= province %></td>
+                </tr>
+            <% } %>
+            <tr>
+                <td class="label">Country:</td>
+                <td><%= country %></td>
+            </tr>
+        </table>
+    </div>
+    <div style="flex-grow:10;margin-bottom:10px;">
+        <div style="width:100%;text-align:center;white-space:nowrap;">
+            <% var images = _.compact([image1, image2, image3]);
+               _.each(images, function(image){ %>
+                <a href="<%= image %>" data-lightbox="images" style="display:inline-block;max-width:calc(<%= 100/images.length %>% - 20px);margin:0 10px;box-sizing:border-box;">
+                    <div style="max-width:350px;max-height:200px;">
+                        <img style="max-width:min(100%, 350px);max-height:200px;border-radius:5px;object-fit: cover;" src="<%= image %>" />
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+</div>
 <div>
-    <table>
-        <tr>
-            <td class="label">Visibility:</td>
-            <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
-        </tr>
-        <% if(articleLink != ""){ %>
-            <tr>
-                <td class="label">Article Link:</td>
-                <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
-            </tr>
+    <% if(image != ""){ %>
+        <% if(imageMime.indexOf("image") != -1){ %>
+            <img src="<%= image %>" style="max-width: 400px; max-height: 400px;" alt="Attachment" />
+        <% } else if(imageMime.indexOf("application/pdf") != -1){ %>
+            <iframe class="certificate_frame" src="<%= wgServer + wgScriptPath %>/scripts/ViewerJS/#<%= image %>&/" style="width:100%; max-width: 550px; height:450px;" frameborder="0" allowfullscreen="true"></iframe>
+        <% } else { %>
+            <h3><a href="<%= image %>" target="_blank">Attachment</a></h3>
         <% } %>
-        <tr>
-            <td class="label">Start Date:</td>
-            <td><%= startDate %></td>
-        </tr>
-        <tr>
-            <td class="label">End Date:</td>
-            <td><%= endDate %></td>
-        </tr>
-        <tr>
-            <td class="label">Address:</td>
-            <td><%= address %></td>
-        </tr>
-        <tr>
-            <td class="label">City:</td>
-            <td><%= city %></td>
-        </tr>
-        <% if(province != ""){ %>
-            <tr>
-                <td class="label">Province:</td>
-                <td><%= province %></td>
-            </tr>
-        <% } %>
-        <tr>
-            <td class="label">Country:</td>
-            <td><%= country %></td>
-        </tr>
-    </table>
-    <% if(imageMime.indexOf("image") != -1){ %>
-        <img src="<%= image %>" style="max-width: 400px; max-height: 400px;" alt="Attachment" />
-        
-    <% } else if(imageMime.indexOf("application/pdf") != -1){ %>
-        <iframe class="certificate_frame" src="<%= wgServer + wgScriptPath %>/scripts/ViewerJS/#<%= image %>&/" style="width:100%; max-width: 550px; height:450px;" frameborder="0" allowfullscreen="true"></iframe>
-    <% } else { %>
-        <h3><a href="<%= image %>" target="_blank">Attachment</a></h3>
     <% } %>
     <h3>Summary</h3>
-    <%= showLanguage(language, nl2br(summary), nl2br(summaryFr), "<br /><br />") %>
+    <%= showLanguage(language, summary, summaryFr, "<br /><br />") %>
 </div>
 <% if(isAllowedToEdit){ %>
     <br />

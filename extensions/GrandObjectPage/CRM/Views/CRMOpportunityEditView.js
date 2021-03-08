@@ -10,7 +10,18 @@ CRMOpportunityEditView = Backbone.View.extend({
         this.listenTo(this.model.tasks, "add", this.renderTasks);
         this.listenTo(this.model.tasks, "change:toDelete", this.removeTasks);
         this.listenTo(this.model, "change:category", this.updateTasks);
-        this.template = _.template($('#crm_opportunity_edit_template').html());
+        this.selectTemplate();
+    },
+    
+    selectTemplate: function(){
+        if(!this.model.get('isAllowedToEdit')){
+            // Not allowed to edit, use read-only version
+            this.template = _.template($('#crm_opportunity_template').html());
+        }
+        else{
+            // Use Edit version
+            this.template = _.template($('#crm_opportunity_edit_template').html());
+        }
     },
     
     addTask: function(){
@@ -50,7 +61,7 @@ CRMOpportunityEditView = Backbone.View.extend({
     
     renderTasks: function(model){
         var view = new CRMTaskEditView({model: model});
-        this.$("#tasks tbody").append(view.render());
+        this.$("#tasks > tbody").append(view.render());
         this.subViews.push(view);
     },
     
@@ -58,6 +69,7 @@ CRMOpportunityEditView = Backbone.View.extend({
         if(!this.model.saving){
             this.$el.html(this.template(this.model.toJSON()));
             this.$el.addClass("opportunity");
+            this.$("#taskContainer").show();
             _.defer(function(){
                 this.$('select[name=owner_id]').chosen();
             }.bind(this));

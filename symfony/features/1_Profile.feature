@@ -3,6 +3,10 @@ Feature: User Profile
     As a User
     I need to be able to edit my profile
 
+    Scenario: Guest accessing profile of External
+        Given I am on "index.php/External:External.User1"
+        Then I should not see "Edit Bio"
+
     Scenario: Editing University information
         Given I am logged in as "NI.User2" using password "NI.Pass2"
         When I follow "My Profile"

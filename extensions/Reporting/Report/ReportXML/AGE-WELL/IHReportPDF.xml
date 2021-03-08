@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL National Innovation Hub Report" extends="WPReportPDF">
+<Report name="AGE-WELL National Innovation Hub Report" extends="WPReportPDF" year="2020">
     <ReportSection id="status">
         <ReportItem id="report_info_head">
             <![CDATA[

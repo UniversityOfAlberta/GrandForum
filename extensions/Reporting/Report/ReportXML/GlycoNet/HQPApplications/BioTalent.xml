@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2021">
+    <Permissions>
+        <Role role="HQP">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="background" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="declaration" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="Technical Skills Fundamentals Training Program" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Background</h3>
+                <p>GlycoNet is holding a competition for HQP to attend BioTalent Canada's bilingual "Technical Skills Fundamentals" Training Program specifically designed for careers in industry and academia. HQP will learn the introductory knowledge of key technical skills that help them stand out from the crowd when entering the workforce. The BioTalent Canada’s Technical Skills Fundamentals online series include:</p>
+
+                <ul>
+                    <li>Five 1-hour courses</li>
+                    <li>Pre- and post-assessment for the Scientific Report Writing Fundamentals, GLP, GMP, QA/QC and GCP courses</li>
+                    <li>BioReady™ certificate</li>
+                </ul>
+
+                <p>For more information about the Technical Skills Fundamentals courses and BioTalent Canada, please visit their website: <a href='https://www.biotalent.ca/applied-technical-skills-training-for-the-bio-economy/' target='_blank'>https://www.biotalent.ca/applied-technical-skills-training-for-the-bio-economy/</a>.<p>
+                
+                <h3>Eligibility</h3>
+                <p>This competition is open to graduate students, postdoctoral fellows, research technicians, and research associates supervised by GlycoNet Network Investigators. Applicants do not currently need to be working on a GlycoNet-funded project.</p>
+
+                <h3>Funding Available</h3>
+                <p>GlycoNet will sponsor 25 trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to take BioTalent’s Technical Skills Fundamentals online series. The series consist of five online courses. The series must be completed before September 30, 2021.</p>
+
+                <h3>Instructions</h3>
+                <ul>
+                    <li>Applicants to submit an application through the GlycoNet Forum by 11:59 pm PDT, March 28, 2021.</li>
+                    <li>Applications will be reviewed by GlycoNet Management and applicants will be notified of their application status no later than March 31, 2021.</li>
+                    <li>HQP participating in this competition must complete the <a href='https://forum.glyconet.ca/index.php/EDITraining'>GlycoNet Diversity and Inclusion Bootcamp</a> and upload the certificates of completion to their profile on the Forum prior to accepting the award.</li>
+                    <li>Awardees will then be given an access code to BioTalent Canada Technical Skills Fundamentals courses.</li>
+                    <li>After completion of the Training Program, award recipients must complete a survey available in the GlycoNet Forum no later than October 31, 2021. In the survey, award recipients will be asked to reflect on what they learned and how the course may influence their studies and career goals. This survey will be used to evaluate the interest of GlycoNet HQP in the course.</li>
+                </ul>
+                <p><b>Award Application Deadline:</b> March 28, 2021 at 11:59 pm PDT</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" name="Application" tooltip="Application" type="EditableReportSection" blobSection="APPLICATION">
+        <ReportItem id="applicant" type="MultiText" blobType="BLOB_ARRAY" blobItem="APPLICANT" labels="Name|Supervisor|Department|Institution|City|Province|Email" types="Text|Text|Text|Text|Text|Text|Text" sizes="125|125|150|150|100|100|125">
+            <![CDATA[
+                <h3>Applicant Information</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="project" type="Text" blobItem="PROJECT" blotType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td align="right"><b>GlycoNet Project (if applicable):</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="program" type="Radio" blobItem="PROGRAM" blotType="BLOB_TEXT" options="M.Sc.|Ph.D.|Postdoctoral Fellow|Research Technician|Research Associate">
+            <![CDATA[
+                    <tr>
+                        <td valign="top" align="right" style="padding-top:3px;"><b>Academic Program/Status:</b></td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="300" recommended="true">
+            <![CDATA[
+                <h3>Description</h3>
+                <p>Describe why you are interested in taking BioTalent’s Technical Skills Fundamentals Training Program, what you hope to gain from the experience, and how your participation will benefit your current studies and/or your future career.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload your CV</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="consent" type="Upload" blobItem="CONSENT" blobType="BLOB_RAW" fileSize="5" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Upload supervisor consent/support letter</h3>
+                <a href='{$wgServer}{$wgScriptPath}/data/Supervisor Support Letter Template.pdf' target='_blank'>Template</a>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="declaration" name="Applicant Declaration" type="EULA" blobSection="DECLARATION">
+        <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the declaration" no="No, I do not agree to the declaration">
+            <![CDATA[
+                <p>By submitting this BioTalent’s Training Program Competition Application Form, I agree that:</p>
+                <ol>
+                    <li>I will complete the GlycoNet Diversity and Inclusion Bootcamp and upload the Certificates to my account in the Forum.</li>
+                    <li>I will complete the BioTalent Technical Skills Fundamentals courses by September 30, 2021.</li>
+                    <li>I will answer the survey before October 31, 2021.</li>
+                    <li>I may be contacted by GlycoNet for sharing my experience in communications materials such as the website, social media, newsletter, and/or annual corporate report.</li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If id="if_eula" if="{==({getText(RP_BIO_TALENT,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+        </If>
+        <If id="if_not_eula" if="{!=({getText(RP_BIO_TALENT,DECLARATION,EULA,0,{$user_id},0)},Yes)}">
+            <![CDATA[
+                <p>You need to accept the declaration before you can submit your application.</p>
+            ]]>
+        </If>
+    </ReportSection>
+</Report>

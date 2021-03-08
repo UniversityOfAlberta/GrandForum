@@ -3,6 +3,8 @@
 /**
  * @package GrandObjects
  */
+ 
+define('PROJECT_FILE_COUNT', 3);
 
 class Project extends BackboneModel {
 
@@ -493,6 +495,13 @@ class Project extends BackboneModel {
         $challenges = new Collection($this->getChallenges());
         $theme = implode(", ", $challenges->pluck('getAcronym()'));
         $themeName = implode(", ", $challenges->pluck('getName()'));
+        $images = array();
+        for($n=1;$n<=PROJECT_FILE_COUNT;$n++){
+            $image = $this->getImage($n);
+            if($image != ""){
+                $images[] = $image;
+            }
+        }
         $array = array('id' => $this->getId(),
                        'name' => $this->getName(),
                        'fullname' => $this->getFullName(),
@@ -510,7 +519,8 @@ class Project extends BackboneModel {
                        'leaders' => $leads,
                        'subprojects' => $subs,
                        'startDate' => $this->getCreated(),
-                       'endDate' => $this->getDeleted());
+                       'endDate' => $this->getDeleted(),
+                       'images' => $images);
         return $array;
     }
     
@@ -969,6 +979,19 @@ EOF;
         return $people;
     }
     
+    /**
+     * Returns the path to a photo of this Project if it exists
+     * @param integer $n Which image to get
+     * @return string The path to a photo of this Project
+     */
+    function getImage($n){
+        global $wgServer, $wgScriptPath;
+        if(file_exists("Photos/{$this->getId()}_{$n}.jpg")){
+            return "$wgServer$wgScriptPath/Photos/{$this->getId()}_{$n}.jpg?".filemtime("Photos/{$this->getId()}_{$n}.jpg");
+        }
+        return "";
+    }
+    
     // Returns the contributions this relevant to this project
     function getContributions(){
         if($this->contributions == null){
@@ -1309,6 +1332,38 @@ EOF;
         $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
         $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'TECH4', 0);
         $blb->store($this->technology['response4'], $addr);
+    }
+    
+    /**
+     * Returns an array containing responses for Government Policy
+     */
+    function getPolicy(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY', 0);
+        $result = $blb->load($addr);
+        $p = $blb->getData();
+        
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY_YES', 0);
+        $result = $blb->load($addr);
+        $p_yes = $blb->getData();
+        
+        $this->policy = array('policy'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $p))),
+                              'policy_yes'      => str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace("'", "&#39", $p_yes))));
+        return $this->policy;
+    }
+    
+    /**
+     * Saves the array containing responses for Government Policy
+     */
+    function savePolicy(){
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY', 0);
+        $blb->store($this->policy['policy'], $addr);
+            
+        $blb = new ReportBlob(BLOB_TEXT, 0, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'POLICY_YES', 0);
+        $blb->store($this->policy['policy_yes'], $addr);
     }
     
     // Returns an array of papers relating to this project

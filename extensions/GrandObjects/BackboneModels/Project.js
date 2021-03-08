@@ -39,7 +39,8 @@ Project = Backbone.Model.extend({
         leaders: new Array(),
         subprojects: new Array(),
         startDate: '',
-        endDate: ''
+        endDate: '',
+        images: new Array()
     },
 });
 

@@ -64,7 +64,7 @@ PostingEditView = Backbone.View.extend({
     characterCount: function(){
         _.defer(function(){
             this.$("#characterCount").text(this.$("textarea[name=summary]").val().length);
-            this.$("#characterCountFr").text(this.$("textarea[name=summaryFr]").val().length);
+            //this.$("#characterCountFr").text(this.$("textarea[name=summaryFr]").val().length);
         }.bind(this));
     },
     

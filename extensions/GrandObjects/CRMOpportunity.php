@@ -73,7 +73,7 @@ class CRMOpportunity extends BackboneModel {
 	}
 	
 	function isAllowedToEdit(){
-        return $this->getContact()->isAllowedToEdit();
+        return ($this->getContact()->isAllowedToEdit() || $this->getPerson()->isMe());
     }
     
     function isAllowedToView(){
@@ -94,7 +94,8 @@ class CRMOpportunity extends BackboneModel {
 	                      'contact' => $this->getContact()->getId(),
 	                      'owner' => $owner,
 	                      'description' => $this->getDescription(),
-	                      'category' => $this->getCategory());
+	                      'category' => $this->getCategory(),
+	                      'isAllowedToEdit' => $this->isAllowedToEdit());
 	        return $json;
 	    }
 	    return array();

@@ -15,6 +15,9 @@ class IndexTable {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
+        if($config->getValue('guestLockdown') && !$me->isLoggedIn()){
+            return true;
+        }
         $aliases = $config->getValue('roleAliases');
         
         $themesColl = new Collection(Theme::getAllThemes());
@@ -78,8 +81,8 @@ class IndexTable {
             $selected = ((($project != null && $project->getType() != "Administrative" && $project->getType() != "Innovation Hub") || $wgTitle->getText() == "Projects" || $wgTitle->getText() == "CompletedProjects" || $wgTitle->getText() == "ProposedProjects") && 
                          !($me->isMemberOf($project) || $me->isThemeLeaderOf($project) || $me->isThemeCoordinatorOf($project) || ($project != null && $me->isMemberOf($project->getParent())))) ? "selected" : "";
             $projectTab = TabUtils::createSubTab("Projects", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", "$selected");
+            $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
             if(Project::areThereDeletedProjects()){
-                $projectTab['dropdown'][] = TabUtils::createSubTab("Current", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects", $selected);
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Completed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:CompletedProjects", $selected);
             }
             if(Project::areThereProposedProjects() && $me->isRoleAtLeast(STAFF)){

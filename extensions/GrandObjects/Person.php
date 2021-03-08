@@ -1169,6 +1169,10 @@ class Person extends BackboneModel {
      * @return Person Whether or not this Person is allowed to edit the specified Person
      */
     function isAllowedToEdit($person){
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            return false;
+        }
         if($person->isMe()){
             // User is themselves
             return true;

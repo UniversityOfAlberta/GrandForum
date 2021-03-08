@@ -210,6 +210,9 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("ATOP Report", "{$url}HQPApplications/ATOPReport", $selected);
             }
             
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/BioTalent")) ? "selected" : false;
+            $tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("Technical Skills Fundamentals", "{$url}HQPApplications/BioTalent", $selected);
+            
             //$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplications/CSPC")) ? "selected" : false;
             //$tabs["Awards"]['subtabs'][] = TabUtils::createSubTab("CSPC", "{$url}HQPApplications/CSPC", $selected);
 

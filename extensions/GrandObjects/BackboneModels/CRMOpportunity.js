@@ -31,7 +31,8 @@ CRMOpportunity = Backbone.Model.extend({
                     name: "",
                     url: ""},
             description: "",
-            category: ""
+            category: "",
+            isAllowedToEdit: true
         };
     }
 

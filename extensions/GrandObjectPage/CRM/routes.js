@@ -31,15 +31,17 @@ var pageRouter = new PageRouter;
 
 allPeople = new People();
 allPeople.simple = true;
-allPeople.fetch();
+allPeople.roles = [STAFF,MANAGER,ADMIN];
+allPeopleXHR = allPeople.fetch();
 
 pageRouter.on('route:showCRMContactsTable', function(){
-    // Get All CRMContacts
-    var contacts = new CRMContacts();
-    
     main.set('title', "Contacts");
-    this.closeCurrentView();
-    this.currentView = new CRMContactsTableView({el: $("#currentView"), model: contacts});
+    $.when(allPeopleXHR).done(function(){
+        // Get All CRMContacts
+        var contacts = new CRMContacts();
+        this.closeCurrentView();
+        this.currentView = new CRMContactsTableView({el: $("#currentView"), model: contacts});
+    }.bind(this));
 });
 
 pageRouter.on('route:newCRMContact', function(){
@@ -49,19 +51,22 @@ pageRouter.on('route:newCRMContact', function(){
         addError("You do not have permissions to view this page");
     }
     else{
-        var contact = new CRMContact();
-        this.closeCurrentView();
-        this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
-        _.defer(this.currentView.render);
+        $.when(allPeopleXHR).done(function(){
+            var contact = new CRMContact();
+            this.closeCurrentView();
+            this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+            _.defer(this.currentView.render);
+        }.bind(this));
     }
 });
 
 pageRouter.on('route:showCRMContact', function(id){
-    // Show a single CRMContact
-    var contact = new CRMContact({id: id});
-
-    this.closeCurrentView();
-    this.currentView = new CRMContactView({el: $("#currentView"), model: contact});
+    $.when(allPeopleXHR).done(function(){
+        // Show a single CRMContact
+        var contact = new CRMContact({id: id});
+        this.closeCurrentView();
+        this.currentView = new CRMContactView({el: $("#currentView"), model: contact});
+    }.bind(this));
 });
 
 pageRouter.on('route:editCRMContact', function (id) {
@@ -71,9 +76,11 @@ pageRouter.on('route:editCRMContact', function (id) {
         addError("You do not have permissions to view this page");
     }
     else{
-        var contact = new CRMContact({id: id});
-        this.closeCurrentView();
-        this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+        $.when(allPeopleXHR).done(function(){
+            var contact = new CRMContact({id: id});
+            this.closeCurrentView();
+            this.currentView = new CRMContactEditView({el: $("#currentView"), model: contact});
+        }.bind(this));
     }
 });
 
