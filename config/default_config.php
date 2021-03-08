@@ -125,6 +125,10 @@
     
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
+    // Whether to prevent access to certain pages when a guess
+    // This is mostly a facade since it doesn't actually prevent access from the data, it just hides the links to the pages.
+    $config->setValue("guestLockdown", false);
+    
     // Whether or not to show outputs unrelated to projects or not.
     $config->setValue("showNonNetwork", true);
     

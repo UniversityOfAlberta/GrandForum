@@ -15,6 +15,9 @@ class IndexTable {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $config, $wgTitle, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
+        if($config->getValue('guestLockdown') && !$me->isLoggedIn()){
+            return true;
+        }
         $aliases = $config->getValue('roleAliases');
         
         $themesColl = new Collection(Theme::getAllThemes());

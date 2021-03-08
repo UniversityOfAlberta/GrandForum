@@ -22,8 +22,16 @@ function runPublicVisualizations($par) {
 class PublicVisualizations extends SpecialPage{
 
 	function PublicVisualizations() {
-		SpecialPage::__construct("PublicVisualizations", '', true, 'runPublicVisualizations');
+		SpecialPage::__construct("PublicVisualizations", '', false, 'runPublicVisualizations');
 	}
+	
+	function userCanExecute($user){
+	    global $config;
+	    if($config->getValue('guestLockdown')){
+	        return $user->isLoggedIn();
+	    }
+        return true;
+    }
 
     function execute(){
         global $wgOut, $config;
@@ -48,8 +56,10 @@ class PublicVisualizations extends SpecialPage{
     
     static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        $selected = @($wgTitle->getText() == "PublicVisualizations") ? "selected" : false;
-        $tabs["Main"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:PublicVisualizations", $selected);
+	    if(self::userCanExecute($wgUser)){
+	        $selected = @($wgTitle->getText() == "PublicVisualizations") ? "selected" : false;
+            $tabs["Main"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:PublicVisualizations", $selected);
+	    }
 	    return true;
     }
 }
