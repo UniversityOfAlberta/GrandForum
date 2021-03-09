@@ -24,10 +24,21 @@ class CRMContact extends BackboneModel {
 	    return self::$cache[$id];
 	}
 	
-	static function getAllContacts(){
-	    $data = DBFunctions::select(array('grand_crm_contact'),
-	                                array('id'),
-	                                array());
+	static function getAllContacts($project=null){
+	    if($project == null){
+	        // Get All
+	        $data = DBFunctions::select(array('grand_crm_contact'),
+	                                    array('id'),
+	                                    array());
+	    }
+	    else{
+	        // Get only the contacts which belong to $project
+	        $data = DBFunctions::select(array('grand_crm_contact' => 'c', 
+	                                          'grand_crm_projects' => 'p'),
+	                                    array('c.id'),
+	                                    array('c.id' => EQ(COL('p.contact_id')),
+	                                          'p.project_id' => $project->getId()));
+	    }
 	    $contacts = array();
 	    foreach($data as $row){
 	        $contact = CRMContact::newFromId($row['id']);

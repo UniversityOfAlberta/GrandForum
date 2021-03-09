@@ -416,6 +416,15 @@ class ProjectMainTab extends AbstractEditableTab {
             if(isset($_GET['generatePDF'])){
                 $this->html .= "</div>";
             }
+            $contacts = $this->project->getContacts();
+            if(count($contacts) > 0){
+                $this->html .= "<h2>Contacts</h2>";
+                $this->html .= "<ul>";
+                foreach($contacts as $contact){
+                    $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
+                }
+                $this->html .= "</ul>";
+            }
         }
     }
     

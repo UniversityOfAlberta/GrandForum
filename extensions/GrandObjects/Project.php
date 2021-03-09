@@ -1075,6 +1075,14 @@ EOF;
         }
         return $multimedia;
     }
+    
+    /**
+     * Returns an array of CRMContacts that belong to this Project
+     * @return array The array of CRMContacts that belong to theis Project
+     */
+    function getContacts(){
+        return CRMContact::getAllContacts($this);
+    }
 
     /// Returns an array with the leaders of the project.  By default, the
     /// resulting array contains instances of Person.  If #onlyid is set to
