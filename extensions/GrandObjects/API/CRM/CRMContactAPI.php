@@ -24,6 +24,7 @@ class CRMContactAPI extends RESTAPI {
             foreach($contact->details as $key => $value){
                 $contact->details->{$key} = trim($value);
             }
+            $contact->projects = $this->POST('projects');
             // Validate first
             $validation = $contact->validate();
             if($validation !== true){
@@ -47,6 +48,7 @@ class CRMContactAPI extends RESTAPI {
             foreach($contact->details as $key => $value){
                 $contact->details->{$key} = trim($value);
             }
+            $contact->projects = $this->POST('projects');
             // Validate first
             $validation = $contact->validate();
             if($validation !== true){

@@ -12,6 +12,7 @@ class CRMContact extends BackboneModel {
     var $title;
     var $owner;
     var $details = array();
+    var $projects = null;
 	
 	static function newFromId($id){
 	    if(!isset(self::$cache[$id])){
@@ -70,14 +71,16 @@ class CRMContact extends BackboneModel {
 	}
 	
 	function getProjects(){
-	    $projects = array();
-	    $data = DBFunctions::select(array('grand_crm_projects'),
-	                                array('project_id'),
-	                                array('contact_id' => $this->getId()));
-	    foreach($data as $row){
-	        $projects[] = Project::newFromId($row['project_id']);
+	    if($this->projects === null){
+	        $this->projects = array();
+	        $data = DBFunctions::select(array('grand_crm_projects'),
+	                                    array('project_id'),
+	                                    array('contact_id' => $this->getId()));
+	        foreach($data as $row){
+	            $this->projects[] = Project::newFromId($row['project_id']);
+	        }
 	    }
-	    return $projects;
+	    return $this->projects;
 	}
 	
 	function getUrl(){
@@ -130,6 +133,18 @@ class CRMContact extends BackboneModel {
 	                       'name' => $person->getNameForForms(),
 	                       'url' => $person->getUrl());
 	        $opportunities = array();
+	        $projects = array();
+	        if(is_array($this->getProjects())){
+                foreach($this->getProjects() as $project){
+                    $url = "";
+                    if($project->getId() != -1){
+                        $url = $project->getUrl();
+                    }
+                    $projects[] = array('id' => $project->getId(),
+                                        'name' => $project->getName(),
+                                        'url' => $url);
+                }
+            }
 	        foreach($this->getOpportunities() as $opportunity){
 	            $opp = $opportunity->toArray();
 	            $tasks = array();
@@ -145,6 +160,7 @@ class CRMContact extends BackboneModel {
 	                      'owner' => $owner,
 	                      'details' => $this->getDetails(),
 	                      'url' => $this->getUrl(),
+	                      'projects' => $projects,
 	                      'isAllowedToEdit' => $this->isAllowedToEdit(),
 	                      'opportunities' => $opportunities);
 	        return $json;
@@ -161,6 +177,15 @@ class CRMContact extends BackboneModel {
 	                                  'owner' => $this->owner,
 	                                  'details' => json_encode($this->details)));
 	        $this->id = DBFunctions::insertId();
+	        // Now add projects
+	        foreach($this->projects as $project){
+                DBFunctions::insert("grand_crm_projects", 
+                                    array('contact_id' => $this->id,
+                                          'project_id' => $project->id),
+                                    true);
+            }
+            $this->projects = null;
+            $this->getProjects();
 	    }
 	}
 	
@@ -168,13 +193,30 @@ class CRMContact extends BackboneModel {
 	    if($this->isAllowedToEdit()){
 	        $me = Person::newFromWgUser();
 	        $this->owner = $me->getId();
-	        DBFunctions::delete('grand_crm_projects',
-	                            array('contact_id' => $this->id));
 	        DBFunctions::update('grand_crm_contact',
 	                            array('title' => $this->title,
 	                                  'owner' => $this->owner,
 	                                  'details' => json_encode($this->details)),
 	                            array('id' => $this->id));
+	        // Now add projects
+	        $this->getProjects(); // Just incase projects not provided
+	        foreach($this->projects as $project){
+                if(!isset($project->id) || $project->id == 0){
+                    $p = Project::newFromName($project->name);
+                    $project->id = $p->getId();
+                }
+            }
+            
+	        DBFunctions::delete('grand_crm_projects',
+	                            array('contact_id' => $this->id));
+	        foreach($this->projects as $project){
+                DBFunctions::insert("grand_crm_projects", 
+                                    array('contact_id' => $this->id,
+                                          'project_id' => $project->id),
+                                    true);
+            }
+            $this->projects = null;
+            $this->getProjects();
 	    }
 	}
 	

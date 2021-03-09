@@ -40,6 +40,7 @@ CRMContact = Backbone.Model.extend({
                       lastName: "",
                       email: "",
                       institution: ""},
+            projects: new Array(),
             url: "",
             isAllowedToEdit: true
         };
