@@ -6,9 +6,8 @@
     function reportIssue($wgOut, $skin){
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
-        
-        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.css' />");
-        $wgOut->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.js'></script>");
+        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.css?".filemtime(dirname(__FILE__)."/reportIssue.css")."' />");
+        $wgOut->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/ReportIssue/reportIssue.js?".filemtime(dirname(__FILE__)."/reportIssue.js")."' ></script>");
         
         $loggedIn = "";
         if(!$me->isLoggedIn()){
