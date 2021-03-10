@@ -99,7 +99,7 @@ class PersonApplicantDataTab extends AbstractEditableTab {
                 $this->html .= "<b>Areas of Study:</b><br/>";
                 $this->html .= "{$gsms['additional']['areas_of_study']}<br/>";
                 $this->html .= "<b>Supervisors:</b><br/>";
-                $supers = implode(", ", array_map(function($sup){ return $sup['last']; }, $gsms['additional']['supervisors']));
+                $supers = @implode(", ", array_map(function($sup){ return $sup['last']; }, $gsms['additional']['supervisors']));
                 $this->html .= "{$supers}<br/><br/>";
                 $this->html .= "<b>Courses:</b><br/>";
                 if ($gsms['additional']['courses'] == "") {
