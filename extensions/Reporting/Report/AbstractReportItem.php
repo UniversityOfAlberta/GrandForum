@@ -266,7 +266,7 @@ abstract class AbstractReportItem {
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
         if(isset($_POST[$this->getPostId()])){
-            /*if(strtolower($this->getAttr('default', '')) == ''){
+            if(strtolower($this->getAttr('default', '')) == ''){
                 if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
                    $_POST[$this->getPostId().'_ignoreConflict'] != "true"){
                     if(isset($_POST['oldData'][$this->getPostId()]) && is_array($_POST['oldData'][$this->getPostId()])){
@@ -279,6 +279,7 @@ abstract class AbstractReportItem {
                        // Don't save, but also don't display an error
                        return array();
                     }
+                    /*
                     else if(isset($_POST['oldData'][$this->getPostId()]) && 
                        $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
                        $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
@@ -293,8 +294,9 @@ abstract class AbstractReportItem {
                                                'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                         }
                     }
+                    */
                 }
-            }*/
+            }
             $this->setBlobValue($_POST[$this->getPostId()]);
         }
         return array();

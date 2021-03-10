@@ -1,6 +1,6 @@
 var autosaveDiv = null;
 var sTimeout = null;
-var sInterval = 120*1000;
+var sInterval = 60*1000;
 var autosaveEnabled = true;
 var nextSave = sInterval/1000;
 
