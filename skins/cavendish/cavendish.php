@@ -558,7 +558,7 @@ class CavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
-		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
 		    <script type="text/javascript">
                 var logoutFn = function(redirect){
                     $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
