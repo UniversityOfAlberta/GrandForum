@@ -7,10 +7,6 @@ $wgSpecialPageGroups['Register'] = 'network-tools';
 
 $wgHooks['OutputPageParserOutput'][] = 'Register::onOutputPageParserOutput';
 
-function runRegister($par) {
-    Register::execute($par);
-}
-
 class Register extends SpecialPage{
 
     static function onOutputPageParserOutput(&$out, $parseroutput){
@@ -53,7 +49,7 @@ class Register extends SpecialPage{
     }
 
     function Register() {
-        SpecialPage::__construct("Register", null, false, 'runRegister');
+        SpecialPage::__construct("Register", null, false);
     }
     
     function userCanExecute($user){
@@ -202,7 +198,22 @@ class Register extends SpecialPage{
         }
         Register::generateFormHTML($wgOut);
     }
+}
 
+$wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
+class HQPRegister extends SpecialPage{
+    function HQPRegister() {
+        SpecialPage::__construct("HQPRegister", null, false);
+    }
+    
+    function userCanExecute($user){
+        return true;
+    }
+
+    function execute($par){
+        global $wgServer, $wgScriptPath;
+        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Register");
+    }
 }
 
 ?>
