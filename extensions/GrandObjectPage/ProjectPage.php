@@ -15,10 +15,8 @@ class ProjectPage {
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
-        
         $me = Person::newFromId($wgUser->getId());
         if(!$wgOut->isDisabled()){
-
             $name = ($article != null) ? str_replace("_Talk", "", $article->getTitle()->getNsText()) : "";
             $name = str_replace("_", " ", $name);
             $title = ($article != null) ? $article->getTitle()->getText() : "";
@@ -56,23 +54,26 @@ class ProjectPage {
                 }
                 return true;
             }
-            $isLead = false;
-            if($project != null){
-                $isLead = $project->userCanEdit();
-            }
-            
-            $isMember = ($project != null && ($me->isMemberOf($project) || $project->getType() == 'Administrative'));
-            
-            //Adding support for GET['edit']
-            if(isset($_GET['edit'])){
-                $_POST['edit'] = true;
-                $_POST['submit'] = "Edit Main";
-            }
 
-            $edit = (isset($_POST['edit']) && $isLead);
-            
             // Project Exists and it is the right Namespace
             if($project != null && $project->getName() != null){
+                if($config->getValue('guestLockdown') && !$wgUser->isLoggedIn()){
+                    permissionError();
+                }
+                $isLead = false;
+                if($project != null){
+                    $isLead = $project->userCanEdit();
+                }
+                
+                $isMember = ($project != null && ($me->isMemberOf($project) || $project->getType() == 'Administrative'));
+                
+                //Adding support for GET['edit']
+                if(isset($_GET['edit'])){
+                    $_POST['edit'] = true;
+                    $_POST['submit'] = "Edit Main";
+                }
+
+                $edit = (isset($_POST['edit']) && $isLead);
                 TabUtils::clearActions();
                 $wgOut->clearHTML();
                 $wgOut->setPageTitle("{$project->getFullName()} ({$project->getName()})");
@@ -161,8 +162,8 @@ class ProjectPage {
             }
             //$projects = array_merge($projects, $me->getThemeProjects());
             if(!$wgUser->isLoggedIn() || count($myProjects) == 0 || $me->isRoleAtLeast(MANAGER)){
-		        return true;
-		    }
+                return true;
+            }
 
             foreach($myProjects as $key => $project){
                 if($project->isSubProject() || $project->getStatus() != "Active"){

@@ -558,7 +558,7 @@ class CavendishTemplate extends QuickTemplate {
 		        });
 		    });
 		</script>
-		<?php if(isExtensionEnabled('Shibboleth')){ ?>
+		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
 		    <script type="text/javascript">
                 var logoutFn = function(redirect){
                     $.get(wgServer + wgScriptPath + '/index.php?clearSession', function(){
@@ -1247,8 +1247,14 @@ EOF;
             if(isExtensionEnabled("Shibboleth")){
                 echo "
                 <script type='text/javascript'>
-                    $('.pBodyLogin').detach();
-                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='ssoLogin' class='button' style='width: 70px;' href='{$config->getValue('shibLoginUrl')}'>Login</a></div>\");
+                    $('.pBodyLogin').parent().hide();
+                    $('.pBodyLogin').parent().css('width', '100%');
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='ssoLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$config->getValue('shibLoginUrl')}'>Login w CCID</a></div>\");
+                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='forumLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;'>Login w/out CCID</a></div>\");
+                    $('#forumLogin').click(function(){
+                        $(this).remove();
+                        $('.pBodyLogin').parent().slideDown();
+                    });
                 </script>
                 ";
             }

@@ -16,6 +16,10 @@ class PersonPage {
     function userCanExecute(&$title, &$user, $action, &$result){
         global $config;
         $name = $title->getNSText();
+        if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
+            $result = false;
+            return true;
+        }
         if($name == HQP){
             $result = $user->isLoggedIn() || $config->getValue('hqpIsPublic');
         }
@@ -24,11 +28,7 @@ class PersonPage {
 
     function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
-        $result = true;
-        self::userCanExecute($wgTitle, $wgUser, "read", $result);
-        if(!$result){
-            permissionError();
-        }
+        
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if(!isset($wgRoleValues[$nsText])){
@@ -37,6 +37,11 @@ class PersonPage {
         }
         if($article == null){
             return true;
+        }
+        $result = true;
+        self::userCanExecute($wgTitle, $wgUser, "read", $result);
+        if(!$result){
+            permissionError();
         }
         if(!$wgOut->isDisabled()){
             $role = $nsText;

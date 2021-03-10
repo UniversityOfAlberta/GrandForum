@@ -359,6 +359,7 @@
                 <![CDATA[
                     {set(achievements,)}
                     {set(deliverables,)}
+                    {set(edi,)}
                     {set(lay_summary,)}
                     {set(covid,)}
                     {set(impact,)}
@@ -377,6 +378,12 @@
                         {set(deliverables,{concat({get(deliverables)}, 
                             {concat(<h3>{$user_name}</h3>,
                                 {getText(RP_PROGRESS,ACHIEVEMENTS,DELIVERABLES,{$user_id},0,{$project_id})}
+                            )}
+                        )})}
+                        
+                        {set(edi,{concat({get(edi)}, 
+                            {concat(<h3>{$user_name}</h3>,
+                                {getText(RP_PROGRESS,ACHIEVEMENTS,EDI,{$user_id},0,{$project_id})}
                             )}
                         )})}
                         
@@ -425,6 +432,18 @@
             </ReportItem>
             <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" rich="true" limit="2000" recommended="true">
                 <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="edi_popup" type="PopupReportItem" title="NI Comments" text="{get(edi)}">
+                <![CDATA[
+                    <p><b>Implementation of EDI Activities</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" limit="2000" recommended="true">
+                <![CDATA[
+                    <small><br />Please provide an update on your EDI activities.</small>
                     {$item}
                 ]]>
             </ReportItem>
@@ -488,6 +507,13 @@
             <ReportItem id="deliverables" type="TextareaReportItem" blobItem="DELIVERABLES" blobSubItem="{$my_id}">
                 <![CDATA[
                     <p><b>Research Achievements in the Current Funding Period</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="edi" type="Textarea" blobItem="EDI" blobSubItem="{$my_id}">
+                <![CDATA[
+                    <p><b>Implementation of EDI Activities</b></p>
+                    <small>Please provide an update on your EDI activities.</small>
                     {$item}
                 ]]>
             </ReportItem>
