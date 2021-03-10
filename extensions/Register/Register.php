@@ -1,17 +1,17 @@
 <?php
 
 $dir = dirname(__FILE__) . '/';
-$wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['HQPRegister'] = $dir . 'HQPRegister.i18n.php';
-$wgSpecialPageGroups['HQPRegister'] = 'network-tools';
+$wgSpecialPages['Register'] = 'Register'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['Register'] = $dir . 'Register.i18n.php';
+$wgSpecialPageGroups['Register'] = 'network-tools';
 
-$wgHooks['OutputPageParserOutput'][] = 'HQPRegister::onOutputPageParserOutput';
+$wgHooks['OutputPageParserOutput'][] = 'Register::onOutputPageParserOutput';
 
-function runHQPRegister($par) {
-    HQPRegister::execute($par);
+function runRegister($par) {
+    Register::execute($par);
 }
 
-class HQPRegister extends SpecialPage{
+class Register extends SpecialPage{
 
     static function onOutputPageParserOutput(&$out, $parseroutput){
         global $wgServer, $wgScriptPath, $config, $wgTitle;
@@ -20,29 +20,29 @@ class HQPRegister extends SpecialPage{
         if($wgTitle->getText() == "Main Page" && $wgTitle->getNsText() == ""){ // Only show on Main Page
             if(!$me->isLoggedIn()){
                 if($config->getValue('networkName') == "AGE-WELL"){
-                    $parseroutput->mText .= "<h2>HQP Affiliates Registration</h2><p>If you would like to apply to become an HQP (trainee) in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>
+                    $parseroutput->mText .= "<h2>HQP Affiliates Registration</h2><p>If you would like to apply to become an HQP (trainee) in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 
 <p>If you would like access to the Catalyst or SIP Accelerator applications, please do not use the Affiliates Application instructions. Instead, please email <a href='mailto:info@agewell-nce.ca'>info@agewell-nce.ca</a>.</p>
 
                     <b>AGE-WELL Conference Abstracts</b><p>In order to submit a conference abstract to the AGE-WELL Conference, you must be an AGE-WELL member. Please see list below for potential membership options.</p>
-<p><u>Student/Trainees:</u> If you would like to apply to become an HQP (trainee) in AGE-WELL then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>
+<p><u>Student/Trainees:</u> If you would like to apply to become an HQP (trainee) in AGE-WELL then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 <p><u>Partner Organizations/Start-ups:</u> Please email <a href='mailto:partnerships@agewell-nce.ca'>partnerships@agewell-nce.ca</a> for more information on how to partner with AGE-WELL.</p>
 <p><u>Researchers:</u>  A researcher must be actively engaged in an AGE-WELL project to submit an abstract to the AGE-WELL conference. Please email <a href='mailto:info@agewell-nce.ca'>info@agewell-nce.ca</a> for information on how to apply to become a project researcher.</p>";
                 }
                 else if($config->getValue('networkName') == "ADA"){
-                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "CFN"){
-                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the KT Intent to Apply {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the KT Intent to Apply {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "IntComp"){
-                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the LOI then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                    $parseroutput->mText .= "<h2>Registration</h2><p>If you would like to apply for the LOI then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else if($config->getValue('networkName') == "MtS"){
-                    $parseroutput->mText .= "<h2>New Applicant Registration</h2><p>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                    $parseroutput->mText .= "<h2>New Applicant Registration</h2><p>If you are applying for the first time, please complete the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
                 else{
-                    $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:HQPRegister'>registration form</a>.</p>";
+                    $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
             }
             /*else if($me->isRole(HQP.'-Candidate')){
@@ -52,8 +52,8 @@ class HQPRegister extends SpecialPage{
         return true;
     }
 
-    function HQPRegister() {
-        SpecialPage::__construct("HQPRegister", null, false, 'runHQPRegister');
+    function Register() {
+        SpecialPage::__construct("Register", null, false, 'runRegister');
     }
     
     function userCanExecute($user){
@@ -70,10 +70,10 @@ class HQPRegister extends SpecialPage{
             return;
         }
         if(!isset($_POST['submit'])){
-            HQPRegister::generateFormHTML($wgOut);
+            Register::generateFormHTML($wgOut);
         }
         else{
-            HQPRegister::handleSubmit($wgOut);
+            Register::handleSubmit($wgOut);
             return;
         }
     }
@@ -140,7 +140,7 @@ class HQPRegister extends SpecialPage{
         if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0){
             $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
         }
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:HQPRegister' method='post'>\n");
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
@@ -200,7 +200,7 @@ class HQPRegister extends SpecialPage{
                 }
             }
         }
-        HQPRegister::generateFormHTML($wgOut);
+        Register::generateFormHTML($wgOut);
     }
 
 }

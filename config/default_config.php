@@ -214,7 +214,7 @@
         //'Twitter',
         'MailingList',
         'AddMember',
-        //'HQPRegister',
+        //'Register',
         'Poll',
         'QueryableTable',
         'IndexTables',

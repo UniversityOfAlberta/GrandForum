@@ -225,8 +225,8 @@ abstract class AbstractReport extends SpecialPage {
             if(!$this->checkPermissions()){
                 if(!$me->isLoggedIn()){
                     $register = "";
-                    if(isExtensionEnabled('HQPRegister')){
-                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:HQPRegister'>register</a>";
+                    if(isExtensionEnabled('Register')){
+                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Register'>register</a>";
                     }
                     $wgOut->clearHTML();
                     $wgOut->setPageTitle("Not logged in");
