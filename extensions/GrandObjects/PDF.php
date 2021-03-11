@@ -151,7 +151,7 @@ class PDF extends BackboneModel {
                 }
                 break;
         }
-        return "{$this->year} {$title}";
+        return trim("{$this->year} {$title}");
     }
     
     /**
