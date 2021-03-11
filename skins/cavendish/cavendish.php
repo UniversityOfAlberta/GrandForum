@@ -1257,6 +1257,11 @@ EOF;
                     });
                 </script>
                 ";
+                if(isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])){
+                    echo "<script type='text/javascript'>
+                        $('#forumLogin').click();
+                    </script>";
+                }
             }
         }
 		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
