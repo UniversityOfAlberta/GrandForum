@@ -76,9 +76,12 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
         $this->html .= "</table></div>";
-        $this->html .= "<div style='flex-grow:10;'>";
-        $this->showFiles();
-        $this->html .= "</div></div>";
+        if(!isset($_GET['generatePDF'])){
+            $this->html .= "<div style='flex-grow:10;'>";
+            $this->showFiles();
+            $this->html .= "</div>";
+        }
+        $this->html .= "</div>";
         
         $this->showPeople();
         //$this->showChampions();
