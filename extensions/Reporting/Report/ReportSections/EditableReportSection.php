@@ -69,10 +69,10 @@ class EditableReportSection extends AbstractReportSection {
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){
-                    $('#reportMain textarea').prop('disabled', 'disabled');
-                    $('#reportMain div:not(.dataTables_filter) > input').prop('disabled', 'disabled');
-                    $('#reportMain button').prop('disabled', 'disabled');
-                    $('#reportMain div:not(.dataTables_length) > select').prop('disabled', 'disabled');
+                    $('#reportMain textarea:not(.noDisable)').prop('disabled', 'disabled');
+                    $('#reportMain div:not(.dataTables_filter) > input:not(.noDisable)').prop('disabled', 'disabled');
+                    $('#reportMain button:not(.noDisable)').prop('disabled', 'disabled');
+                    $('#reportMain div:not(.dataTables_length) > select:not(.noDisable)').prop('disabled', 'disabled');
                     $('#reportMain a.custom-combobox-toggle').hide();
                 });
             </script>");
