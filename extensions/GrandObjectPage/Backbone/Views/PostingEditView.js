@@ -74,6 +74,8 @@ PostingEditView = Backbone.View.extend({
             this.$('textarea').tinymce({
                 theme: 'modern',
                 menubar: false,
+                relative_urls : false,
+                convert_urls: false,
                 plugins: 'link image charmap lists table paste',
                 toolbar: [
                     'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'

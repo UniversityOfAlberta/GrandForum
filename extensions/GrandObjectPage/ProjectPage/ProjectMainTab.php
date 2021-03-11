@@ -509,6 +509,8 @@ class ProjectMainTab extends AbstractEditableTab {
             <script type='text/javascript'>
                 $('textarea[name=description]').tinymce({
                     theme: 'modern',
+                    relative_urls : false,
+                    convert_urls: false,
                     menubar: false,
                     plugins: 'link image charmap lists table paste wordcount',
                     toolbar: [

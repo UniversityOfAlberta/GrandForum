@@ -285,6 +285,8 @@ EOF;
             });
             $('textarea.profile').tinymce({
                 theme: 'modern',
+                relative_urls : false,
+                convert_urls: false,
                 menubar: false,
                 plugins: 'link image charmap lists table paste wordcount',
                 toolbar: [

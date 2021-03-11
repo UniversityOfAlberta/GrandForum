@@ -80,6 +80,8 @@ PostView = Backbone.View.extend({
         _.defer(function(){
             this.$('textarea').tinymce({
                 theme: 'modern',
+                relative_urls : false,
+                convert_urls: false,
                 menubar: false,
                 plugins: 'link image charmap lists table paste mention',
                 toolbar: [
