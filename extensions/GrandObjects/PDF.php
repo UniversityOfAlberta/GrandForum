@@ -158,7 +158,7 @@ class PDF extends BackboneModel {
      */
     function getPDF(){
         if($this->userCanRead()){
-            $data = DBFunctions::select(array('mw_pdf_report'),
+            $data = DBFunctions::select(array('grand_pdf_report'),
                                         array('pdf'),
                                         array('report_id' => $this->getReportId()));
             if(count($data) > 0){
