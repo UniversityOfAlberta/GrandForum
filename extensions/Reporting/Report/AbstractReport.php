@@ -1091,8 +1091,10 @@ abstract class AbstractReport extends SpecialPage {
             $zip = new ZipArchive;
             $res = $zip->open($fileName, ZipArchive::CREATE);
             foreach($md5s as $md5){
-                $pdf = PDF::newFromToken($md5);
-                $zip->addFromString(ucwords(unaccentChars($pdf->getTitle())).".pdf", $pdf->getPDF());
+                if($md5 != ""){
+                    $pdf = PDF::newFromToken($md5);
+                    $zip->addFromString(ucwords(unaccentChars($pdf->getTitle())).".pdf", $pdf->getPDF());
+                }
             }
             $zip->close();
             $contents = file_get_contents($fileName);

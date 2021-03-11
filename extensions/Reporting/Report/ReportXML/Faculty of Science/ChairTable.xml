@@ -19,7 +19,7 @@
             <SectionPermission id="deans_advice" permissions="" />
             <SectionPermission id="deans_decision" permissions="" />
             <SectionPermission id="chairs_advice" permissions="r" />
-            <SectionPermission id="atsec" permissions="" />
+            <SectionPermission id="atsec" permissions="r" />
             <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
         <Role role="IAC">
@@ -485,10 +485,25 @@
                         font-size:11px !important;
                     }
                 </style>
-                <div style='float:right; margin-top: -45px;'><button id='generateAll' type='button'>Generate All Evaluations</button></div>
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Evals</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Evals</button></div>
+                </div>
                 <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
                     $('#generateAll').click(function(){
                         $('.generateButton').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".recommendationPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
                     });
                 </script>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
