@@ -340,7 +340,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $statusColspan--;
                 }
                 if($me->isRoleAtLeast(STAFF)){
-                    $statusHeader .= "<th width='1%'>Delete?</td>";
+                    $statusHeader .= "<th width='1%'>Delete?</th>";
                 }
             }
             else{
