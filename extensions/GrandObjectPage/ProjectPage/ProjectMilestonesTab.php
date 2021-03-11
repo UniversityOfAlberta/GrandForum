@@ -290,6 +290,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 width: 100%;
                 height: 24px;
             }
+            
+            .displayNone {
+                display:none;
+            }
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
@@ -332,7 +336,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $statusHeader = "<th>Status</th>";
                 }
                 else{
-                    $statusHeader = "<th style='display:none;'>Status</th>";
+                    $statusHeader = "<th class='displayNone'>Status</th>";
+                    $statusColspan--;
                 }
                 if($me->isRoleAtLeast(STAFF)){
                     $statusHeader .= "<th width='1%'>Delete?</td>";
@@ -398,7 +403,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $activity = "<input type='hidden' name='milestone_activity[$activityId]' value='$activityTitle' /><b>$activity</b>";
             }
             if($this->visibility['edit'] == 1 && $me->isRoleAtLeast(STAFF)){
-                $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' />Delete?</td>";
+                $deleteActivity = "<td align='center' style='white-space: nowrap;'><input type='checkbox' name='milestone_activity_delete[$activityId]' style='vertical-align:middle;' /></td>";
                 $deleteColspan = 1;
             }
             if($this instanceof ProjectFESMilestonesTab){
