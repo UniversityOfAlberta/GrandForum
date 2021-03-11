@@ -111,10 +111,25 @@
                         font-size:11px !important;
                     }
                 </style>
-                <div style='float:right; margin-top: -45px;'><button id='generateAll' type='button'>Generate All Evaluations</button></div>
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Evals</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Evals</button></div>
+                </div>
                 <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
                     $('#generateAll').click(function(){
                         $('.generateButton').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".recommendationPDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
                     });
                 </script>
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
@@ -186,7 +201,7 @@
                 ]]>
             </If>
             <If id="if_not_ca" if="{!contains({$user_sub_roles},Chair's Advice)}">
-                <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                     <![CDATA[
                             <td align='center'>
                             {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />
@@ -543,7 +558,7 @@
                     <td align='center'>Not Locked</td>
                 ]]>
             </If>
-            <ReportItem id="recommendation" type="PDFReportItem" class="downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+            <ReportItem id="recommendation" type="PDFReportItem" class="recommendationPDF downloadButton{$user_id}" reportType="ChairTable" section="Recommendations" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
                         {$item} <a class="viewEvaluation" style="cursor:pointer;" data-href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ChairTable&section=Recommendations&userId={$user_id}'>Recommendation</a><br />

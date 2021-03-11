@@ -159,13 +159,11 @@ class PDF extends BackboneModel {
      * @return string The PDF data, or null if the user is not allowed to read this PDF
      */
     function getPDF(){
-        if($this->userCanRead()){
-            $data = DBFunctions::select(array('mw_pdf_report'),
-                                        array('pdf'),
-                                        array('report_id' => $this->getReportId()));
-            if(count($data) > 0){
-                return $data[0]['pdf'];
-            }
+        $data = DBFunctions::select(array('grand_pdf_report'),
+                                    array('pdf'),
+                                    array('report_id' => $this->getReportId()));
+        if(count($data) > 0){
+            return $data[0]['pdf'];
         }
         return null;
     }

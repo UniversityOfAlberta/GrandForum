@@ -8,6 +8,7 @@
 $wgHooks['CheckImpersonationPermissions'][] = 'AbstractReport::checkImpersonationPermissions';
 $wgHooks['ImpersonationMessage'][] = 'AbstractReport::impersonationMessage';
 $wgHooks['UnknownAction'][] = 'AbstractReport::downloadBlob';
+$wgHooks['UnknownAction'][] = 'AbstractReport::downloadReportZip';
 $wgHooks['UnknownAction'][] = 'AbstractReport::tinyMCEUpload';
 
 require_once("ReportConstants.php");
@@ -1073,6 +1074,35 @@ abstract class AbstractReport extends SpecialPage {
                     exit;
                 }
             }
+            exit;
+        }
+        return true;
+    }
+    
+    static function downloadReportZip($action){
+        $me = Person::newFromWgUser();
+        if($action == "downloadReportZip" && isset($_POST['pdfs'])){
+            if(!$me->isLoggedIn()){
+                permissionError();
+            }
+            ini_set("memory_limit","256M");
+            $fileName = '/tmp/'.md5($me->getId().'_'.rand(0,9999)).'.zip';
+            $md5s = explode(",", $_POST['pdfs']);
+            $zip = new ZipArchive;
+            $res = $zip->open($fileName, ZipArchive::CREATE);
+            foreach($md5s as $md5){
+                $pdf = PDF::newFromToken($md5);
+                $zip->addFromString($pdf->getTitle().".pdf", $pdf->getPDF());
+            }
+            $zip->close();
+            $contents = file_get_contents($fileName);
+            unlink($fileName);
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="Recommendations.zip"');
+            header('Cache-Control: private, max-age=0, must-revalidate');
+            header('Pragma: public');
+            ini_set('zlib.output_compression','0');
+            echo $contents;
             exit;
         }
         return true;
