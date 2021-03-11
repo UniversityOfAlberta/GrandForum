@@ -195,8 +195,11 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function showYearsHeader(){
         $html = "";
+        $startDate = $this->project->getCreated();
+        $startYear = substr($startDate, 0, 4);
         for($y=1; $y <= $this->nYears; $y++){
-            $html .= "<th colspan='4' class='left_border'>Year {$y}</th>";
+            $year = ($startYear+$y)-1;
+            $html .= "<th colspan='4' class='left_border'>{$year}-".substr(($year+1),2,2)."</th>";
         }
         return $html;
     }
@@ -298,6 +301,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         $commentsHeader = "";
         $statusHeader = "";
         $statusColspan = 2;
+        $buttons = "";
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -307,6 +311,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $activityBox->forceKey= true;
             $activityText = $activityBox->render();
             if($this->canEditMilestone(null)){
+                $buttons = "<a class='button' id='addActivity'>Add Activity</a>&nbsp;";
+                if(count($activities) > 0){
+                    $buttons .= "<a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
+                }
                 $this->html .= "<div title='Add Activity' id='addActivityDialog' style='display:none;'>
                                     <table>
                                         <tr>
@@ -327,10 +335,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                                         </tr>
                                     </table>
                                 </div>
-                                <a class='button' id='addActivity'>Add Activity</a>&nbsp;";
-                if(count($activities) > 0){
-                    $this->html .= "<a class='button' id='addMilestone'>Add Milestone</a><br /><br />";
-                }
+                                <p>
+                                    The <b>Activities</b> represent major project deliverables and <b>Milestones</b> are steps taken to achieve these deliverables.<br />
+                                    For example, Data Collection would be considered a major project deliverable that takes several steps - initial interview, second interview, final interview, data analysis, etc.
+                                </p>";
                 
                 if($showStatus){
                     $statusHeader = "<th>Status</th>";
@@ -370,7 +378,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         <th colspan='{$statusColspan}' class='left_border'></th>
                     </tr>
                     <tr>
-                        <th class='milestone_header'>Milestone</th>
+                        <th class='milestone_header'>Activities and Milestones</th>
                         {$this->showQuartersHeader()}
                         <th class='left_border'>Leader</th>
                         <th>Personnel</th>
@@ -379,9 +387,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     </tr>";
         
         $this->html .= "<p>
-                            <span class='milestones_note'><b>Please Note:</b> Year 1, Quarter 1 starts on {$startYear}/{$startMonth}.<br /></span>
-                            <span class='new_milestones_message'>New Milestones have titles in bold.</span>
+                            <span class='milestones_note'><b>Please Note:</b> Fiscal years begin on ".time2date(NCE_START, 'F j')." and end on ".time2date(NCE_END, 'F j')." of the following year.<br /></span>
+                            <!--span class='new_milestones_message'>New Milestones have titles in bold.</span-->
                         </p>
+                        {$buttons}
                         <table id='milestones_table' frame='box' rules='all' cellpadding='2' class='smallest dashboard milestones' style='width:100%; border: 2px solid #555555;'>
                         <thead>{$header}</thead>
                         <tbody>";
@@ -429,18 +438,18 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
-                    if($milestone->isNew()){
-                        $title .= "<b>$milestoneTitle</b>";
-                    }
-                    else{
+                    //if($milestone->isNew()){
+                    //    $title .= "<b>$milestoneTitle</b>";
+                    //}
+                    //else{
                         $title .= $milestoneTitle;
-                    }
+                    //}
                 }
                 else{
                     $title = $milestone->getTitle();
-                    if($milestone->isNew()){
-                        $title = "<b>$title</b>";
-                    }
+                    //if($milestone->isNew()){
+                    //    $title = "<b>$title</b>";
+                    //}
                 }
                 $height = "";
                 if($pdf){
