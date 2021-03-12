@@ -44,8 +44,13 @@ class ProjectMainTab extends AbstractEditableTab {
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
             $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
         }
-        $this->html .= "<div style='display:flex;flex-wrap:wrap;'>
-                            <div style='white-space:nowrap;'>
+        $this->html .= "<div style='display:flex;flex-wrap:wrap;'>";
+        if(!isset($_GET['generatePDF'])){
+            $this->html .= "<div>";
+            $this->showFiles();
+            $this->html .= "</div>";
+        }
+        $this->html .= "    <div style='flex-grow:10;white-space:nowrap;'>
                                 <table>
                             $title";
         if($project->getType() != "Administrative"){
@@ -70,21 +75,36 @@ class ProjectMainTab extends AbstractEditableTab {
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
-            $this->html .= "<tr><td><b>Website:</b></td><td><div style='display:block;max-width:200px;overflow:hidden;text-overflow:ellipsis;'><a href='{$website}' target='_blank'>{$website}</a></div></td></tr>";
+            $this->html .= "<tr><td><b>Website:</b></td><td><div style='display:block;max-width:30em;overflow:hidden;text-overflow:ellipsis;'><a href='{$website}' target='_blank'>{$website}</a></div></td></tr>";
         }
         else if($edit){
             $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
-        $this->html .= "</table></div>";
-        if(!isset($_GET['generatePDF'])){
-            $this->html .= "<div style='flex-grow:10;'>";
-            $this->showFiles();
-            $this->html .= "</div>";
+        if(!$edit){
+            // Project Leader(s)
+            $leaders = $this->showRole(PL, null, false, true);
+            if(count($leaders) > 0){
+                if(count($leaders) == 1){
+                    // There is normally just 1 PL, so only use singlular
+                    $this->html .= "<tr><td colspan='2' style='white-space:nowrap;'><b>".ucwords($config->getValue('roleDefs', PL))."</b></td></tr>";
+                }
+                else{
+                    // Other roles will normally have multiple people, but also pluralize if there is more than one PL
+                    $this->html .= "<tr style='padding-top:1em;'><td colspan='2' style='white-space:nowrap;'><b>".ucwords(Inflect::pluralize($config->getValue('roleDefs', PL)))."</b></td></tr>";
+                }
+                $this->html .= "<tr><td colspan='2'>";
+                $leadersString = array();
+                foreach($leaders as $p){
+                    $leadersString[] = "&nbsp;&nbsp;&nbsp;<a href='{$p->getUrl()}'>{$p->getReversedName()}</a>";
+                }
+                $this->html .= implode("<br />", $leadersString);
+                $this->html .= "</td></tr>";
+            }
         }
+        $this->html .= "</table></div>";
         $this->html .= "</div>";
         
         $this->showPeople();
-        //$this->showChampions();
         $this->showDescription();
         $this->html .= $this->showTable();
         if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
@@ -98,7 +118,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         if($config->getValue('allowPhotoUpload')){
             if($edit){
-                $this->html .= "<table style='margin:0 auto; width:1%;'>
+                $this->html .= "<table style='margin:0 auto; width:1%; padding-right:25px;'>
                                     <tr>
                                         <th colspan='2'></th>
                                         <th>Delete?</th>
@@ -383,7 +403,46 @@ class ProjectMainTab extends AbstractEditableTab {
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
         $project = $this->project;
 
+        $colcss = "flex-grow:3;";
+        if(isset($_GET['generatePDF'])){
+            $colcss = "width:33.333%;display:inline-block;vertical-align:top;";
+        }
+
         if(!$edit){
+            if(isset($_GET['generatePDF'])){ $this->html .= "<div style='font-size: smaller;'>"; }
+            else { $this->html .= "<div style='display:flex;flex-wrap:wrap;width:100%;'>"; }
+            // First Column
+            $this->html .= "<div style='$colcss'><div style='padding-right:1em;'>";
+            $this->showRole(PL);
+            $this->showRole(PA);
+            if($this->project->getType() == "Innovation Hub"){
+                $this->showRole(null, 'Innovation Hub Team');
+            }
+            else{
+                if($this->project->getType() == "Administrative"){ $this->showRole("NMO"); }
+                $this->showRole(CI);
+                $this->showRole(AR);
+                $this->showRole(CHAMP);
+                // Second Column
+                $this->html .= "</div></div><div style='$colcss'><div style='padding-right:1em;'>";
+                if($wgUser->isLoggedIn()){ $this->showRole(HQP); }
+                $this->showRole(PARTNER);
+                // Third Column
+                $this->html .= "</div></div><div style='$colcss'><div>";
+                if($wgUser->isLoggedIn()){ $this->showRole(HQP, "Alumni ".HQP, true); }
+                $this->showRole(EXTERNAL);
+                $contacts = $this->project->getContacts();
+                if(count($contacts) > 0){
+                    $this->html .= "<h2>Contacts</h2>";
+                    $this->html .= "<ul>";
+                    foreach($contacts as $contact){
+                        $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
+                    }
+                    $this->html .= "</ul>";
+                }
+            }
+            $this->html .= "</div></div></div>";
+            /*
             if(isset($_GET['generatePDF'])){
                 $this->html .= "<div class='small'>";
             }
@@ -427,11 +486,11 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
                 }
                 $this->html .= "</ul>";
-            }
+            }*/
         }
     }
     
-    function showRole($role, $text=null, $past=false){
+    function showRole($role, $text=null, $past=false, $returnOnly=false){
         global $config;
         $me = Person::newFromWgUser();
         if(!$past){
@@ -466,6 +525,9 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
             }
             $people = $alumnis;
+        }
+        if($returnOnly){
+            return $people;
         }
         
         if(count($people) > 0){
@@ -557,7 +619,6 @@ class ProjectMainTab extends AbstractEditableTab {
                 </thead>
                 <tbody>";
             foreach($products as $paper){
-
                 $names = array();
                 foreach($paper->getAuthors() as $author){
                     if($author->getId() != 0 && $author->getUrl() != ""){

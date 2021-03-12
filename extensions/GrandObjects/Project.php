@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
  
-define('PROJECT_FILE_COUNT', 3);
+define('PROJECT_FILE_COUNT', 1);
 
 class Project extends BackboneModel {
 
