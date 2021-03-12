@@ -88,7 +88,7 @@ class Inflect
         'person' => 'people',
         'CNI'    => 'CNIs',
         'PNI'    => 'PNIs',
-        'HQP'    => 'HQPs',
+        'HQP'    => 'HQP',
         'Publication and Research Output' => 'Publications and Research Outputs'
     );
 
