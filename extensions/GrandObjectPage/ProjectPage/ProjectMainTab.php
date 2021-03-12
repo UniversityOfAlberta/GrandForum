@@ -500,18 +500,27 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= "<h2><span class='mw-headline'>".ucwords(Inflect::pluralize($config->getValue('roleDefs', $role)))."</span></h2>";
                 }
             }
-            $this->html .= "<ul>";
+            $this->html .= "<table style='width:100%;' cellspacing='0' cellpadding='0'>
+                                <tr><td valign='top' style='width:50%;'>
+                                    <ul style='padding-left:1.5em;margin-left:0;margin-right:0;'>";
+            $i=0;
+            $limit = 5;
             if($role == "CRMContact"){
                 foreach($people as $contact){
                     $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
+                    $i++;
                 }
             }
             else{
                 foreach($people as $p){
+                    if(count($people) >= $limit && $i == ceil(count($people)/2)){
+                        $this->html .= "</ul></td><td valign='top'><ul style='padding-left:1em;margin-left:0;margin-right:0;'>";
+                    }
                     $this->html .= "<li><a href='{$p->getUrl()}'>{$p->getReversedName()}</a></li>\n";
+                    $i++;
                 }
             }
-            $this->html .= "</ul>";
+            $this->html .= "</ul></td></tr></table>";
             $this->html .= "</div>";
             $this->nRolesCells++;
             if(isset($_GET['generatePDF']) && $this->nRolesCells % 3 == 0){
