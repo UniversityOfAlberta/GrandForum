@@ -95,7 +95,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "<tr><td colspan='2'>";
                 $leadersString = array();
                 foreach($leaders as $p){
-                    $leadersString[] = "&nbsp;&nbsp;&nbsp;<a href='{$p->getUrl()}'>{$p->getReversedName()}</a>";
+                    $leadersString[] = "&nbsp;&nbsp;&nbsp;<a href='{$p->getUrl()}'><b>{$p->getReversedName()}</b></a>";
                 }
                 $this->html .= implode("<br />", $leadersString);
                 $this->html .= "</td></tr>";
@@ -424,7 +424,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(AR);
                 $this->showRole(CHAMP);
                 // Second Column
-                $this->html .= "</div></div><div style='$colcss'><div style='padding-right:1em;'>";
+                $this->html .= "</div></div><div style='$colcss'>";
                 if($wgUser->isLoggedIn()){ $this->showRole(HQP); }
                 $this->showRole(PARTNER);
                 // Third Column
@@ -436,7 +436,7 @@ class ProjectMainTab extends AbstractEditableTab {
                     $this->html .= "<h2>Contacts</h2>";
                     $this->html .= "<ul>";
                     foreach($contacts as $contact){
-                        $this->html .= "<li><a href='{$contact->getUrl()}'><b>{$contact->getTitle()}</b></a></li>\n";
+                        $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
                     }
                     $this->html .= "</ul>";
                 }
