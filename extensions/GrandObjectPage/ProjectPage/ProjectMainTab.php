@@ -424,7 +424,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(AR);
                 $this->showRole(CHAMP);
                 // Second Column
-                $this->html .= "</div></div><div style='$colcss'>";
+                $this->html .= "</div></div><div style='$colcss'><div style='padding-right:1em;'>";
                 if($wgUser->isLoggedIn()){ $this->showRole(HQP); }
                 $this->showRole(PARTNER);
                 // Third Column
@@ -442,6 +442,51 @@ class ProjectMainTab extends AbstractEditableTab {
                 }
             }
             $this->html .= "</div></div></div>";
+            /*
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "<div class='small'>";
+            }
+            $this->html .= "<table width='100%'><tr><td valign='top' width='33%'>";
+            $this->showRole(PL);
+            $this->showRole(PA);
+            if($this->project->getType() == "Innovation Hub"){
+                $this->showRole(null, 'Innovation Hub Team');
+            }
+            else{
+                if($this->project->getType() == "Administrative"){
+                    $this->showRole("NMO");
+                }
+                $this->showRole(CI);
+                $this->showRole(AR);
+                $this->html .= "</td><td width='33%' valign='top'>";
+                if($wgUser->isLoggedIn()){
+                    $this->showRole(HQP);
+                }
+                $this->html .= "</td><td width='33%' valign='top'>";
+                if($wgUser->isLoggedIn()){
+                    $this->showRole(HQP, "Alumni ".HQP, true);
+                }
+                $this->html .= "</td></tr>";
+                $this->html .= "<tr><td valign='top' width='33%'>";
+                $this->showRole(CHAMP);
+                $this->html .= "</td><td width='33%' valign='top'>";
+                $this->showRole(PARTNER);
+                $this->html .= "</td><td width='33%' valign='top'>";
+                $this->showRole(EXTERNAL);
+            }
+            $this->html .= "</td></tr></table>";
+            if(isset($_GET['generatePDF'])){
+                $this->html .= "</div>";
+            }
+            $contacts = $this->project->getContacts();
+            if(count($contacts) > 0){
+                $this->html .= "<h2>Contacts</h2>";
+                $this->html .= "<ul>";
+                foreach($contacts as $contact){
+                    $this->html .= "<li><a href='{$contact->getUrl()}'>{$contact->getTitle()}</a></li>\n";
+                }
+                $this->html .= "</ul>";
+            }*/
         }
     }
     
