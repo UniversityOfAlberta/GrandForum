@@ -96,7 +96,8 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "<tr><td colspan='2'>";
                 $leadersString = array();
                 foreach($leaders as $p){
-                    $leadersString[] = "&nbsp;&nbsp;&nbsp;<a href='{$p->getUrl()}'><b>{$p->getReversedName()}</b></a>";
+                    $leadercss = (!isset($_GET['generatePDF'])) ? "font-weight:bold;" : "";
+                    $leadersString[] = "&nbsp;&nbsp;&nbsp;<a href='{$p->getUrl()}' style='$leadercss'>{$p->getReversedName()}</a>";
                 }
                 $this->html .= implode("<br />", $leadersString);
                 $this->html .= "</td></tr>";
