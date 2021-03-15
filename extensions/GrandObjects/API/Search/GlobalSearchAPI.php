@@ -119,7 +119,7 @@ class GlobalSearchAPI extends RESTAPI {
                             // Don't include Admin
                             continue;
                         }
-                        if(!$me->isLoggedIn() && !$p->isRoleAtLeast(NI)){
+                        if(!$me->isLoggedIn() && !$p->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
                             continue;
                         }
 	                    $ids[] = intval($person['user_id']);

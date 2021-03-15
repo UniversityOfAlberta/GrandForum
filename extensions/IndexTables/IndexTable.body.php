@@ -171,6 +171,8 @@ class IndexTable {
             $text = $title->getText();
             switch ($title->getText()) {
                 case 'ALL '.HQP:
+                    $result = ($me->isLoggedIn() || $config->getValue('hqpIsPublic'));
+                    break;
                 case 'Multimedia':
                     $result = $me->isLoggedIn();
                     break;

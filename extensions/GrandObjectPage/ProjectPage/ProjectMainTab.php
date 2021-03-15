@@ -415,9 +415,9 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(CI);
                 $this->showRole(AR);
                 $this->showRole(CHAMP);
-                if($wgUser->isLoggedIn()){ $this->showRole(HQP); }
+                $this->showRole(HQP);
                 $this->showRole(PARTNER);
-                if($wgUser->isLoggedIn()){ $this->showRole(HQP, "Alumni ".HQP, true); }
+                $this->showRole(HQP, "Alumni ".HQP, true);
                 $this->showRole(EXTERNAL);
             }
             $this->showRole("CRMContact", "Contact");

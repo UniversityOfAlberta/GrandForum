@@ -2412,8 +2412,9 @@ class Person extends BackboneModel {
      * @return string The full role information for this Person
      */
     function getRoleString(){
+        global $config;
         $me = Person::newFromWgUser();
-        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI)){
+        if(!$me->isLoggedIn() && !$this->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
             return "";
         }
         $roles = $this->getRoles();
