@@ -23,7 +23,15 @@ class Milestone {
     static $modifications = array("" => "transparent", 
                                   "Revised" => "#0000FF", 
                                   "Postponed" => "#FF0000");
-    
+                                  
+    static $endUsers = array("",
+                             "Researchers",
+                             "Policymakers",
+                             "Government Officials",
+                             "Funders",
+                             "Media",
+                             "General Public",
+                             "Other");
 
     var $id;
     var $activity;
@@ -38,9 +46,8 @@ class Milestone {
     var $title;
     var $status;
     var $modification;
-    var $problem;
     var $description;
-    var $assessment;
+    var $endUser;
     var $parentWaiting;
     var $editedBy;
     var $start_date;
@@ -126,9 +133,8 @@ class Milestone {
             $this->people = array();
             $this->peopleText = $data[0]['people'];
             $this->peopleWaiting = true;
-            $this->problem = $data[0]['problem'];
             $this->description = $data[0]['description'];
-            $this->assessment = $data[0]['assessment'];
+            $this->endUser = $data[0]['end_user'];
             $this->quarters = $data[0]['quarters'];
             $this->start_date = $data[0]['start_date'];
             $this->end_date = $data[0]['end_date'];
@@ -294,18 +300,6 @@ class Milestone {
     function getPeopleText(){
         return $this->peopleText;
     }
-
-    /**
-     * Returns the problem statement of this Milestone
-     * @return string The problem statement of this Milestone
-     */
-    function getProblem(){
-        return str_replace("\\'", "&#39;", 
-               str_replace("\\&quot;", "&quot;", 
-               str_replace("\n\n", "\n", 
-               str_replace("&lt;br /&gt;", "\n", 
-               str_replace("&lt;br/&gt;", "\n", $this->problem)))));
-    }
     
     /**
      * Returns the description of this Milestone
@@ -320,15 +314,11 @@ class Milestone {
     }
     
     /**
-     * Returns the assessement of this Milestone
-     * @return string The assessment of this Milestone
+     * Returns the 'end user' of this Milestone
+     * @return string The 'end user' of this Milestone
      */
-    function getAssessment(){
-        return str_replace("\\'", "&#39;", 
-               str_replace("\\&quot;", "&quot;", 
-               str_replace("\n\n", "\n", 
-               str_replace("&lt;br /&gt;", "\n", 
-               str_replace("&lt;br/&gt;", "\n", $this->assessment)))));
+    function getEndUser(){
+        return $this->endUser;
     }
     
     /**

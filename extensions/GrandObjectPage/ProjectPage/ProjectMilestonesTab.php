@@ -64,9 +64,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
                     $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
                     $_POST['new_title'] = $title;
-                    $_POST['problem'] = "";
                     $_POST['description'] = "";
-                    $_POST['assessment'] = "";
+                    $_POST['end_user'] = @$_POST['milestone_end_user'][$activityId][$milestoneId];
                     $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
                     $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
                     $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
@@ -108,9 +107,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $_POST['milestone'] = "";
             $_POST['title'] = $_POST['new_milestone_title'];
             $_POST['new_title'] = $_POST['new_milestone_title'];
-            $_POST['problem'] = "";
             $_POST['description'] = "";
-            $_POST['assessment'] = "";
+            $_POST['end_user'] = "";
             $_POST['status'] = "New";
             $_POST['people'] = "";
             $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
@@ -224,7 +222,6 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $class = ($q == 1) ? "class='left_border'" : "";
                 $color = @Milestone::$statuses[$quarters[$y][$q]];
 
-                $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
                 $select = "";
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $select = "<select class='milestone' name='milestone_q[$activityId][{$milestone->getMilestoneId()}][$y][$q]'>
@@ -236,7 +233,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     $select .= "</select>";
                 }
                 if(isset($quarters[$y][$q])){
-                    $this->html .= "<td style='background:$color;text-align:center;' title='{$assessment}' $class>$select</td>";
+                    $this->html .= "<td style='background:$color;text-align:center;' $class>$select</td>";
                 }
                 else{
                     $this->html .= "<td style='text-align:center;' $class>$select</td>";
@@ -301,7 +298,15 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         $commentsHeader = "";
         $statusHeader = "";
         $statusColspan = 2;
+        $titleColspan = 1;
         $buttons = "";
+        if(!($this instanceof ProjectFESMilestonesTab)){
+            $titleColspan++;
+            $endUserHeader = "<th>End User</th>";
+        }
+        else{
+            $endUserHeader = "";
+        }
         if($this->visibility['edit'] == 1){
             $activityNames = array();
             foreach($project->getActivities() as $activity){
@@ -373,12 +378,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         }
         $statusColspan++;
         $header = " <tr>
-                        <th colspan='1'></th>
+                        <th colspan='{$titleColspan}'></th>
                         {$this->showYearsHeader()}
                         <th colspan='{$statusColspan}' class='left_border'></th>
                     </tr>
                     <tr>
                         <th class='milestone_header'>Activities and Milestones</th>
+                        {$endUserHeader}
                         {$this->showQuartersHeader()}
                         <th class='left_border'>Leader</th>
                         <th>Personnel</th>
@@ -421,41 +427,41 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             $this->html .= "<tr class='top_border' data-id='$activityId'>
-                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+1-$deleteColspan+($this->nYears*4) + $yearOffset)."'>{$activity}</td>{$deleteActivity}
+                                <td style='background:#555555;color:white;font-weight:bold;' colspan='".($statusColspan+$titleColspan-$deleteColspan+($this->nYears*4) + $yearOffset)."'>{$activity}</td>{$deleteActivity}
                             </tr>";
             
             if(count($milestones) == 0){
-                $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4))."'></td>";
+                $this->html .= "<tr><td colspan='".($statusColspan+$titleColspan+($this->nYears*4))."'></td>";
             }
             foreach($milestones as $key => $milestone){
-                    $this->html .= "<tr>";
+                $this->html .= "<tr>";
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone(null)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='text' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
+                    $endUser = new SelectBox("milestone_end_user[$activityId][{$milestone->getMilestoneId()}]", "endUser", $milestone->getEndUser(), Milestone::$endUsers);
+                    $endUser = $endUser->render();
                 }
                 else if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $milestoneTitle = str_replace("'", "&#39;", $milestone->getTitle());
                     $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                               <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
-                    //if($milestone->isNew()){
-                    //    $title .= "<b>$milestoneTitle</b>";
-                    //}
-                    //else{
-                        $title .= $milestoneTitle;
-                    //}
+                    $title .= $milestoneTitle;
+                    $endUser = new SelectBox("milestone_end_user[$activityId][{$milestone->getMilestoneId()}]", "endUser", $milestone->getEndUser(), Milestone::$endUsers);
+                    $endUser = $endUser->render();
                 }
                 else{
                     $title = $milestone->getTitle();
-                    //if($milestone->isNew()){
-                    //    $title = "<b>$title</b>";
-                    //}
+                    $endUser = $milestone->getEndUser();
                 }
                 $height = "";
                 if($pdf){
                     $height = "height:".(DPI_CONSTANT*10)."px;";
                 }
                 $this->html .= "<td style='$height'>{$title}</td>";
+                if($endUserHeader != ""){
+                    $this->html .= "<td>{$endUser}</td>";
+                }
                 $this->showQuartersCells($milestone, $activityId);
                 
                 $comment = str_replace("'", "&#39;", $milestone->getComment());

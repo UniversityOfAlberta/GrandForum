@@ -53,9 +53,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
                 $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
                 $_POST['new_title'] = $title;
-                $_POST['problem'] = "";
                 $_POST['description'] = @$_POST['milestone_description'][$activityId][$milestoneId];
-                $_POST['assessment'] = "";
+                $_POST['end_user'] = @$_POST['milestone_end_user'][$activityId][$milestoneId];
                 $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
                 $_POST['modification'] = @$_POST['milestone_modification'][$activityId][$milestoneId];
                 $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
@@ -106,9 +105,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $_POST['milestone'] = "";
             $_POST['title'] = $_POST['new_milestone_title'];
             $_POST['new_title'] = $_POST['new_milestone_title'];
-            $_POST['problem'] = "";
             $_POST['description'] = "";
-            $_POST['assessment'] = "";
+            $_POST['end_user'] = "";
             $_POST['status'] = "New";
             $_POST['modification'] = "";
             $_POST['people'] = "";
@@ -196,7 +194,6 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $color = @$colors[$milestone->getStatus()];
                 $color2 = @Milestone::$modifications[$milestone->getModification()];
 
-                $assessment = str_replace("'", "&#39;", $milestone->getAssessment());
                 $checkbox = "";
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $checked = "";
@@ -226,7 +223,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             $color = "#BBBBBB";
                         }
                     }
-                    $this->html .= "<td style='background:$color; $border; text-align:center;' title='{$assessment}' $class>$checkbox</td>";
+                    $this->html .= "<td style='background:$color; $border; text-align:center;' $class>$checkbox</td>";
                 }
                 else{
                     $this->html .= "<td style='text-align:center;' $class>$checkbox</td>";

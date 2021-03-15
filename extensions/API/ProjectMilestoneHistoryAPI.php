@@ -60,7 +60,6 @@ class ProjectMilestoneHistoryAPI extends API{
         
         $lastTitle = "";
         $lastDesc = "";
-        $lastAss = "";
         $lastEnd = "";
         $lastComment = "";
         $lastLabel = "";
@@ -75,7 +74,6 @@ class ProjectMilestoneHistoryAPI extends API{
             $p_title = stripslashes($m_parent->getTitle());
             $p_end_date = $m_parent->getProjectedEndDate();
             $p_description = str_replace("\r", "", str_replace("<br />", "", str_replace("\n", " ", stripslashes($m_parent->getDescription()))));
-            $p_assessment = str_replace("\r", "", str_replace("<br />", "", str_replace("\n", " ", stripslashes($m_parent->getAssessment()))));
             $p_comment = stripslashes(nl2br($m_parent->getComment()));
             if($p_comment){
                 $p_comment = "$p_comment";
@@ -100,7 +98,6 @@ class ProjectMilestoneHistoryAPI extends API{
         
             $diffTitle = @htmldiff($lastTitle, $p_title);
             $diffDesc = @htmldiffNL($lastDesc, $p_description);
-            $diffAss = @htmldiffNL($lastAss, $p_assessment);
             $diffEnd = @htmldiff($lastEnd, $p_end_date);
             $diffComment = @htmldiffNL($lastComment, $p_comment);
             $diffLabel = trim(@htmldiff($lastLabel, $label));
@@ -115,7 +112,6 @@ class ProjectMilestoneHistoryAPI extends API{
                 <tr><td valign='top'><strong>Projected&nbsp;End&nbsp;Date:</strong></td><td>$diffEnd</td></tr>
                 <tr><td valign='top'><strong>Title:</strong></td><td>$diffTitle</td></tr>
                 <tr><td valign='top'><strong>Description:</strong></td><td>$diffDesc</td></tr>
-                <tr><td valign='top'><strong>Assessment:</strong></td><td>$diffAss</td></tr>
                 <tr><td valign='top'><strong>Comment:</strong></td><td>$diffComment</td></tr>
                 <tr><td valign='top'><strong>People&nbsp;Involved:</strong></td><td>$diffPeople</td></tr>
              $lastEdit
@@ -148,7 +144,6 @@ EOF;
             $history_html .= "</script></div>";
             $lastTitle = $p_title;
             $lastDesc = $p_description;
-            $lastAss = $p_assessment;
             $lastEnd = $p_end_date;
             $lastComment = $p_comment;
             $lastLabel = $label;

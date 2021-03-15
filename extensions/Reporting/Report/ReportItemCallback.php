@@ -38,8 +38,6 @@ class ReportItemCallback {
             "project_leader_names" => "getProjectLeaderNames",
             "project_leader_ids" => "getProjectLeaderIds",
             "project_past_leader_names" => "getPastProjectLeaderNames",
-            "project_problem" => "getProjectProblem",
-            "project_solution" => "getProjectSolution",
             "project_nis" => "getProjectNIs",
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
@@ -70,8 +68,6 @@ class ReportItemCallback {
             "milestone_changes" => "getMilestoneChanges",
             "milestone_description" => "getMilestoneDescription",
             "milestone_olddescription" => "getMilestoneOldDescription",
-            "milestone_assessment" => "getMilestoneAssessment",
-            "milestone_oldassessment" => "getMilestoneOldAssessment",
             "milestone_last_edited_by" => "getMilestoneLastEditedBy",
             // Reports
             "timestamp" => "getTimestamp",
@@ -356,24 +352,6 @@ class ReportItemCallback {
             $leads[] = "N/A";
         }
         return implode(", ", $leads);
-    }
-    
-    function getProjectProblem(){
-        $project_prob = "";
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromHistoricId($this->reportItem->projectId);
-            $project_prob = $project->getProblem();
-        }
-        return $project_prob;
-    }
-    
-    function getProjectSolution(){
-        $project_sol = "";
-        if($this->reportItem->projectId != 0 ){
-            $project = Project::newFromHistoricId($this->reportItem->projectId);
-            $project_sol = $project->getSolution();
-        }
-        return $project_sol;
     }
     
     function getProjectNIs(){
@@ -891,26 +869,6 @@ class ReportItemCallback {
             }
         }
         return $nChanges;
-    }
-    
-    function getMilestoneAssessment(){
-        $milestone_assessment = "";
-        if($this->reportItem->milestoneId != 0 ){
-            $milestone = Milestone::newFromId($this->reportItem->milestoneId);
-            $milestone_assessment = $milestone->getAssessment();
-        }
-        return $milestone_assessment;
-    }
-    
-    function getMilestoneOldAssessment(){
-        $milestone_assessment = "";
-        if($this->reportItem->milestoneId != 0 ){
-            $milestone = Milestone::newFromId($this->reportItem->milestoneId)->getRevisionByDate((REPORTING_YEAR-1)."-12-00");
-            if($milestone != null){
-                $milestone_assessment = $milestone->getAssessment();
-            }
-        }
-        return $milestone_assessment;
     }
     
     function getMilestoneLastEditedBy(){

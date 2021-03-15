@@ -11,9 +11,8 @@ class ProjectMilestoneAPI extends API{
         $this->addPOST("activity",true,"The name of the activity", "Analysis");
         $this->addPOST("activity_id",false,"The id of the activity", "2");
         $this->addPOST("milestone",true,"The title of the milestone","MEOW is great");
-        $this->addPOST("problem",true,"The problem of this milestone","Show that MEOW is great");
 	    $this->addPOST("description",true,"The description for this milestone","Show that MEOW is great");
-	    $this->addPOST("assessment",true,"The assessment for this milestone","Use surveys to determine MEOW\'s greatness");
+	    $this->addPOST("end_user",true,"The end_user for this milestone","Researchers");
 	    //$this->addPOST("status",true,"The status of this milestone. Can be one of either ('New','Revised','Continuing','Closed','Abandoned')","New");
 	    $this->addPOST("modification",false,"The modification of this milestone","Revised");
 	    $this->addPOST("people",false,"The people involved with this milestone, people separated by commas.", "First1.Last1, First2.Last2");
@@ -25,14 +24,11 @@ class ProjectMilestoneAPI extends API{
     }
 
     function processParams($params){
-        if(isset($_POST['problem']) && $_POST['problem'] != ""){
-            $_POST['problem'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['problem'])));
-        }
         if(isset($_POST['description']) && $_POST['description'] != ""){
             $_POST['description'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['description'])));
         }
-        if(isset($_POST['assessment']) && $_POST['assessment'] != ""){
-            $_POST['assessment'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['assessment'])));
+        if(isset($_POST['end_user']) && $_POST['end_user'] != ""){
+            $_POST['end_user'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['end_user'])));
         }
         if(isset($_POST['status']) && $_POST['status'] != ""){
             $_POST['status'] = @addslashes(str_replace("<", "&lt;", str_replace(">", "&gt;", $_POST['status'])));
@@ -126,9 +122,6 @@ class ProjectMilestoneAPI extends API{
         else{
             $join = "title = '".DBFunctions::escape($_POST['title'])."'";
         }
-        if(!isset($_POST['problem'])){
-            $_POST['problem'] = '';
-        }
         if($this->update){
             $sql = "UPDATE grand_milestones
                     SET `end_date` = CURRENT_TIMESTAMP
@@ -173,7 +166,8 @@ class ProjectMilestoneAPI extends API{
 		       $milestone->getModification() == @$_POST['modification'] &&
 		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
 		       $milestone->getComment() == $_POST['comment'] &&
-		       $milestone->getDescription() == $_POST['description']){
+		       $milestone->getDescription() == $_POST['description'] &&
+		       $milestone->getEndUser() == @$_POST['end_user']){
 		        return;   
 		   }
 		}
@@ -197,9 +191,8 @@ class ProjectMilestoneAPI extends API{
 		                              'title'               => $_POST['new_title'],
 		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],
-		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
-		                              'assessment'          => $_POST['assessment'],
+		                              'end_user'            => @$_POST['end_user'],
 		                              'comment'             => $_POST['comment'],
 		                              'people'              => $_POST['people'],
 		                              'edited_by'           => $me->getId(),
@@ -229,9 +222,8 @@ class ProjectMilestoneAPI extends API{
 		                              'title'               => $_POST['title'],
 		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],
-		                              'problem'             => $_POST['problem'],
 		                              'description'         => $_POST['description'],
-		                              'assessment'          => $_POST['assessment'],
+		                              'end_user'            => @$_POST['end_user'],
 		                              'comment'             => @$_POST['comment'],
 		                              'people'              => $_POST['people'],
 		                              'edited_by'           => $me->getId(),
