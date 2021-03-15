@@ -70,9 +70,6 @@ class GlobalSearchAPI extends RESTAPI {
                         // Don't include Admin
                         $continue = true; 
                     }
-                    if(!$me->isLoggedIn() && !$person->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
-                        $continue = true;
-                    }
                     if($continue) continue;
                     similar_text(unaccentChars(str_replace(".", " ", $person->getName())), unaccentChars($origSearch), $percent);
                     if(!$person->isActive()){
@@ -117,9 +114,6 @@ class GlobalSearchAPI extends RESTAPI {
 	                    $p = Person::newFromId($person['user_id']);
 	                    if($p->isRoleAtLeast(ADMIN)){
                             // Don't include Admin
-                            continue;
-                        }
-                        if(!$me->isLoggedIn() && !$p->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
                             continue;
                         }
 	                    $ids[] = intval($person['user_id']);
