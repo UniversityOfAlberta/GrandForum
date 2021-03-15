@@ -3,10 +3,11 @@
 class PersonAPI extends RESTAPI {
     
     function doGET(){
+        global $config;
         $me = Person::newFromWgUser();
         if($this->getParam('id') != "" && count(explode(",", $this->getParam('id'))) == 1){
             $person = Person::newFromId($this->getParam('id'));
-            if($person == null || $person->getName() == ""){
+            if($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic'))){
                 $this->throwError("This user does not exist");
             }
             return $person->toJSON();
@@ -15,7 +16,7 @@ class PersonAPI extends RESTAPI {
             $json = array();
             foreach(explode(",", $this->getParam('id')) as $id){
                 $person = Person::newFromId($id);
-                if(!($person == null || $person->getName() == "")){
+                if(!($person == null || $person->getName() == "" || (!$me->isLoggedIn() && !$person->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')))){
                     $json[] = $person->toArray();
                 }
             }
