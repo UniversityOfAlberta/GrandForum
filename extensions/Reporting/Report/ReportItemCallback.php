@@ -34,6 +34,8 @@ class ReportItemCallback {
             "project_description" => "getProjectDescription",
             "project_theme" => "getProjectTheme",
             "project_start" => "getProjectStart",
+            "project_end" => "getProjectEnd",
+            "project_length" => "getProjectLength",
             "project_leaders" => "getProjectLeaders",
             "project_leader_names" => "getProjectLeaderNames",
             "project_leader_ids" => "getProjectLeaderIds",
@@ -292,9 +294,35 @@ class ReportItemCallback {
         $project_start = "";
         if($this->reportItem->projectId != 0){
             $project = Project::newFromHistoricId($this->reportItem->projectId);
-            $project_start = $project->getCreated();
+            $project_start = substr($project->getStartDate(),0,10);
         }
         return $project_start;
+    }
+    
+    function getProjectEnd(){
+        $project_end = "";
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $project_end = substr($project->getEndDate(),0,10);
+        }
+        return $project_end;
+    }
+    
+    function getProjectLength(){
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            $date1 = new DateTime($project->getStartDate());
+            $date2 = new DateTime($project->getEndDate());
+            $interval = $date1->diff($date2);
+            $years = round(max(1, $interval->y+1));
+            if($years == 0 || $years > 1){
+                return "{$years} years";
+            }
+            else{
+                return "{$years} year";
+            }
+        }
+        return "0 years";
     }
     
     function getProjectLeaders(){
