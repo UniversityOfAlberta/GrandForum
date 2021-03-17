@@ -52,7 +52,11 @@ class ApplicationsTable extends SpecialPage{
         $this->clinical2021 = array();
         $this->trans2020 = array();
         $this->trans2021 = array();
+        $this->tsfHQP = array();
         foreach(Person::getAllCandidates() as $person){
+            if($person->isSubRole('TSF HQP')){
+                $this->tsfHQP[] = $person;
+            }
             if($person->isSubRole('Trans2020')){
                 $this->trans2020[] = $person;
             }
@@ -130,6 +134,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=atop'>ATOP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=bio'>BioTalent</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tsf'>TSF Survey</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cspc'>CSPC</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=tech'>Tech</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=regional'>Regional</a>";
@@ -188,6 +193,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "bio" && $me->isRoleAtLeast(SD)){
             $this->generateBioTalent();
+        }
+        else if($program == "tsf" && $me->isRoleAtLeast(SD)){
+            $this->generateTSF();
         }
         else if($program == "cspc" && $me->isRoleAtLeast(SD)){
             $this->generateCSPC();
@@ -404,6 +412,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab(array('RP_BIO_TALENT'), $this->hqps, 2021, "2021", array(), true));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateTSF(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_SKILLS_SURVEY'), $this->tsfHQP, 0, "Survey", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
