@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Technical Skills Fundamentals Training Program Survey" reportType="RP_TECH_SKILLS_SURVEY" pdfType="RP_TECH_SKILLS_SURVEY" pdfFiles="TechSkillsSurveyPDF" ajax="true" disabled="false" year="0">
+    <Permissions>
+        <Role subRole="TSF HQP" />
+    </Permissions>
+    <ReportSection id="survey" tooltip="Survey" name="Survey" title="Technical Skills Fundamentals Training Program Survey" type="EULAReportSection" blobSection="SURVEY">
+        <ReportItem id="status" type="Radio" blobItem="STATUS" options="M.Sc.|PhD|PDF|Research Associate|Technician">
+            <![CDATA[
+                <h3>1. What is your academic status?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hours" type="Text" blobItem="HOURS">
+            <![CDATA[
+                <h3>2. How many hours did you take to complete the courses?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="learn" type="Radio" blobItem="LEARN" options="Yes|No">
+            <![CDATA[
+                <h3>3. Did you learn new concepts and skills?</h3>
+                <div id="learn">
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="learn_yes" type="Textarea" blobItem="LEARN_YES">
+            <![CDATA[
+                <div id="learn_yes" style="display:none;">
+                    <b>If yes, which one?</b>
+                    {$item}
+                </div>
+                <script type="text/javascript">
+                    $("#learn input").change(function(){
+                        if($("#learn input:checked").val() == "Yes"){
+                            $("#learn_yes").show();
+                        }
+                        else{
+                            $("#learn_yes").hide();
+                        }
+                    }).trigger("change");
+                </script>
+            ]]>
+        </ReportItem>
+        <ReportItem id="difficulty" type="Radio" blobItem="DIFFICULTY" options="Introductory|Advanced">
+            <![CDATA[
+                <h3>4. Do you think the courses are introductory or advanced?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="future" type="Radio" blobItem="FUTURE" options="Yes|No">
+            <![CDATA[
+                <h3>5. Do you think the courses will be beneficial for your future career?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="explain" type="Textarea" blobItem="EXPLAIN">
+            <![CDATA[
+                <b>Explain:</b>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By generating a PDF your survey is automatically submitted" />
+    </ReportSection>
+</Report>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Technical Skills Fundamentals Training Program Survey" reportType="RP_TECH_SKILLS_SURVEY" pdfType="RP_TECH_SKILLS_SURVEY" pdfFiles="TechSkillsSurveyPDF" ajax="true" disabled="false" year="0">
+    <ReportSection id="survey" tooltip="Survey" name="Survey" title="Technical Skills Fundamentals Training Program Survey" type="EULAReportSection" blobSection="SURVEY" pagebreak="false">
+        <ReportItem id="status" type="Radio" blobItem="STATUS" options="M.Sc.|PhD|PDF|Research Associate|Technician">
+            <![CDATA[
+                <h3>1. What is your academic status?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hours" type="Text" blobItem="HOURS">
+            <![CDATA[
+                <h3>2. How many hours did you take to complete the courses?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="learn" type="Radio" blobItem="LEARN" options="Yes|No">
+            <![CDATA[
+                <h3>3. Did you learn new concepts and skills?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_TECH_SKILLS_SURVEY,SURVEY,LEARN,0,{$user_id},0)},Yes)}">
+            <ReportItem id="learn_yes" type="Textarea" blobItem="LEARN_YES">
+                <![CDATA[
+                    <br /><p><b>If yes, which one?</b></p>
+                    <p>{$item}</p>
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="difficulty" type="Radio" blobItem="DIFFICULTY" options="Introductory|Advanced">
+            <![CDATA[
+                <h3>4. Do you think the courses are introductory or advanced?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="future" type="Radio" blobItem="FUTURE" options="Yes|No">
+            <![CDATA[
+                <h3>5. Do you think the courses will be beneficial for your future career?</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="explain" type="Textarea" blobItem="EXPLAIN">
+            <![CDATA[
+                <br /><p><b>Explain:</b></p>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
