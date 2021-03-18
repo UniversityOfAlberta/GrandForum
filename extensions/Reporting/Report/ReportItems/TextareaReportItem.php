@@ -20,6 +20,21 @@ class TextareaReportItem extends AbstractReportItem {
         }
         if(strtolower($this->getAttr('rich', 'false')) == 'true'){
             $imgConst = DPI_CONSTANT*72/96;
+            $mentionPlugin = "";
+            $mentionSource = array();
+            $mentions = explode("|", $this->getAttr("mentions", ""));
+            if(count($mentions) > 0){
+                $mentionPlugin = "mention";
+                foreach($mentions as $mention){
+                    $mentionSource[] = array("name" => $mention);
+                }
+            }
+            $toolbar = strtolower($this->getAttr("toolbar", "true"));
+            if($toolbar == "true"){
+                $toolbar = "['undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify']";
+            }
+            $plugins = strtolower($this->getAttr("plugins", "link image charmap lists table paste wordcount"));
+            $statusbar = strtolower($this->getAttr("statusbar", "true"));
             $item .= "<script type='text/javascript'>
                 if($('#tinyMCEUpload').length == 0){
                     $('body').append(\"<iframe id='tinyMCEUpload' name='tinyMCEUpload' style='display:none'></iframe>\" +
@@ -48,10 +63,9 @@ class TextareaReportItem extends AbstractReportItem {
                         convert_urls: false,
                         readonly: readOnly,
                         menubar: false,
-                        plugins: 'link image charmap lists table paste wordcount',
-                        toolbar: [
-                            'undo redo | bold italic underline | link image charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
-                        ],
+                        plugins: '$plugins $mentionPlugin',
+                        toolbar: $toolbar,
+                        statusbar: $statusbar,
                         file_browser_callback: function(field_name, url, type, win) {
                             if(type=='image') $('#tinyMCEUploadForm input').click();
                         },
@@ -84,6 +98,14 @@ class TextareaReportItem extends AbstractReportItem {
                             });
                         },
                         'formats' : {
+                        },
+                        mentions: {
+                            source: ".json_encode($mentionSource).",
+                            insert: function(item) {
+                                return '<b>' + item.name + '</b>';
+                            },
+                            delay: 100,
+                            delimiter: '@'
                         },
                         setup: function(ed){
                             if('$limit' > 0){

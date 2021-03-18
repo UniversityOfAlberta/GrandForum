@@ -44,6 +44,7 @@ class ReportItemCallback {
             "project_evolved_from" => "getProjectEvolvedFrom",
             "project_evolved_into" => "getProjectEvolvedInto",
             "project_n_collaborators" => "getNCollaborators",
+            "getProjectMilestones" => "getProjectMilestones",
             "getNStakeholders" => "getNStakeholders",
             "getNStakeholderProducts" => "getNStakeholderProducts",
             "project_n_partners" => "getNPartners",
@@ -131,6 +132,8 @@ class ReportItemCallback {
             "product_id" => "getProductId",
             "product_title" => "getProductTitle",
             "product_url" => "getProductUrl",
+            "product_authors" => "getProductAuthors",
+            "getProductData" => "getProductData",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -500,6 +503,20 @@ class ReportItemCallback {
             }
         }
         return count($collaborators);
+    }
+    
+    function getProjectMilestones($status="", $endUser="", $delimiter="|"){
+        $milestones = array();
+        if($this->reportItem->projectId != 0){
+            $project = Project::newFromHistoricId($this->reportItem->projectId);
+            foreach($project->getMilestones() as $milestone){
+                if(($status == "" || $status == $milestone->getStatus()) && // TODO: This might need to be changed to account for status change
+                   ($endUser == "" || $endUser == $milestone->getEndUser())){ 
+                    $milestones[] = str_replace($delimiter, "", "{$milestone->getActivity()->getName()} - {$milestone->getTitle()}");
+                }
+            }
+        }
+        return implode($delimiter, $milestones);
     }
     
     function getNStakeholders($startDate = false, $endDate = false, $stakeholderCategory="", $role = null){
@@ -1490,6 +1507,20 @@ class ReportItemCallback {
     function getProductUrl(){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getUrl();
+    }
+    
+    function getProductAuthors(){
+        $product = Paper::newFromId($this->reportItem->productId);
+        $names = array();
+        foreach($product->getAuthors() as $author){
+            $names[] = $author->getNameForProduct();
+        }
+        return implode(", ", $names);
+    }
+    
+    function getProductData($field){
+        $product = Paper::newFromId($this->reportItem->productId);
+        return $product->getData($field);
     }
     
     function getWgUserId(){

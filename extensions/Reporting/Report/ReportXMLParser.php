@@ -694,7 +694,7 @@ class ReportXMLParser {
                 $item->setMilestoneId($value['milestone_id']);
             }
             if(isset($value['product_id'])){
-                $item->seProductId($value['product_id']);
+                $item->setProductId($value['product_id']);
             }
             if(isset($value['person_id'])){
                 $item->setPersonId($value['person_id']);

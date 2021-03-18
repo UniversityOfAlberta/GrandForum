@@ -265,6 +265,7 @@ abstract class AbstractReportItem {
     // By default only calls setBlobValue using the postdata, but can
     // be overridden to do some proccessing before hand, or handle uploads etc.
     function save(){
+        $this->render();
         if(isset($_POST[$this->getPostId()])){
             if(strtolower($this->getAttr('default', '')) == ''){
                 if(!isset($_POST[$this->getPostId().'_ignoreConflict']) ||
@@ -350,7 +351,8 @@ abstract class AbstractReportItem {
                 $parent = $this->getParent();
                 $accessStr = "";
                 if($this->id != ""){
-                    $accessStr = "['{$this->id}']";
+                    $id = $this->varSubstitute($this->id);
+                    $accessStr = "['{$id}']";
                 }
                 while($parent instanceof ReportItemSet){
                     if($parent->blobIndex != ""){
@@ -432,7 +434,8 @@ abstract class AbstractReportItem {
                 $parent = $this->getParent();
                 $accessStr = "";
                 if($this->id != ""){
-                    $accessStr = "['{$this->id}']";
+                    $id = $this->varSubstitute($this->id);
+                    $accessStr = "['{$id}']";
                 }
                 while($parent instanceof ReportItemSet){
                     if($parent->blobIndex != ""){
