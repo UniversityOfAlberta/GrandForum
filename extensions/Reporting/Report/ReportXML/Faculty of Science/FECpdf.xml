@@ -236,6 +236,7 @@
                             <th>Title</th>
                             <th>Type</th>
                             <th>Invited</th>
+                            <th>Event Title</th>
                             <th>Organization</th>
                             <th>Location</th>
                             <th>Date</th>
@@ -250,6 +251,7 @@
                     <tr><td align='center'>{$presentation_title} <sup>{$item}</sup></td>
                         <td align='center'>{$presentation_type}</td>
                         <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
                         <td>{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
@@ -574,6 +576,7 @@
                             <th>Type</th>
                             <th>HQP</th>
                             <th>Invited</th>
+                            <th>Event Title</th>
                             <th>Organization</th>
                             <th>Location</th>
                             <th>Date</th>
@@ -589,6 +592,7 @@
                         <td align='center'>{$presentation_type}</td>
                         <td align='center'>{$product_authors}</td>
                         <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
                         <td>{$presentation_organization}</td>
                         <td align='center'>{$presentation_country}</td>
                         <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
