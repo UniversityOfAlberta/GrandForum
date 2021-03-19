@@ -72,7 +72,7 @@
             ]]>
         </ReportItem>
         
-        <!-- Partners involved (Companies, agencies etc) -->
+        <!-- Partners involved (Academia Sinica, companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" 
                               blobType="BLOB_ARRAY" 
                               blobItem="CAT_DESC_PART" 
@@ -81,7 +81,7 @@
                               sizes="20%|20%|20%|20%|20%"
                               showHeader="false">
             <![CDATA[
-                <p><b><u>Partners involved</u> (Partner Name, Contact Name, Dollars requested, Cash, In-Kind)</b></p>
+                <p><b><u>Partners involved</u> (Academia Sinica, companies, agencies etc)</b></p>
                 <div style='font-size: smaller;'>{$item}</div><br />
             ]]>
         </ReportItem>

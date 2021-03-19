@@ -16,7 +16,7 @@
                 
                 <p>Academia Sinica, Taiwan’s premier research institution, focuses on conducting ground-breaking research that advances the frontiers of knowledge, in glycoscience. Academia Sinica has more than 30 research groups in six institutes carrying out research in glycoscience. Additional information about Academia Sinica can be found at <a href="https://www.sinica.edu.tw/en" target="_blank">www.sinica.edu.tw/en</a>.</p>
                 
-                <p>GlycoNet has formalized a partnership with Academia Sinica to co-fund collaborative research between the two entities that could lead to tangible deliverables by the end of the project. Tangible deliverables can include publications, patent applications, new analytical methods, drug candidates, disease treatment or diagnosis. Accordingly, this Request for Proposals seeks to fund projects that involve at least two groups, one in Canada and one in Taiwan. GlycoNet will fund research conducted in Canada and Academia Sinica in Taiwan.</p>
+                <p>GlycoNet has formalized a partnership with Academia Sinica to co-fund collaborative research between the two entities that could lead to tangible deliverables by the end of the project. Tangible deliverables can include publications, patent applications, new analytical methods, drug candidates, disease treatment or diagnosis. Accordingly, this Request for Proposals seeks to fund projects that involve at least two groups, one in Canada and one in Taiwan. GlycoNet will fund research conducted in Canada, while Academia Sinica will fund research conducted in Taiwan.</p>
                 
                 <h2>Requirements</h2>
                 Project applications must:
@@ -113,10 +113,10 @@
             ]]>
         </ReportItem>
         
-        <!-- Partners involved (Companies, agencies etc) -->
+        <!-- Partners involved (Academia Sinica, companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Partner Name|Contact Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
             <![CDATA[
-                <h2>Partners involved (Companies, agencies etc)</h2>
+                <h2>Partners involved (Academia Sinica, companies, agencies etc)</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -250,9 +250,9 @@
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
         <Static>
             <![CDATA[
-                <p>The front page in the Excel file is the total project budget.  The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. The budget for Academia Sinica should be added in the corresponding Partner section for each NI. The totals will populate automatically on the first page. <b>The project leader is responsible for combining all of the NI budgets into a single Excel file</b>.  The first page also contains the budget for the use of the core services in the project. <b>The project leader should coordinate the core services budget for the project</b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate.</p>
+                <p>The front page in the Excel file is the total project budget.  The other pages (labeled NPI-1, NPI-2 etc; NPI = Network Principal Investigator) are for each involved NI. The budget requested by each NI should be filled in on their respective pages, including the partner contributions that are to be directed to their laboratories. <b>The budget for Academia Sinica should be added in the corresponding Partner section for each NI</b>. The totals will populate automatically on the first page. <b>The project leader is responsible for combining all of the NI budgets into a single Excel file</b>.  The first page also contains the budget for the use of the core services in the project. <b>The project leader should coordinate the core services budget for the project</b>. If you are asked for a password when entering a number, you are attempting to enter a number in a field that will automatically populate.</p>
 
-                Budget Guidelines for Canadians:
+                Budget for GlycoNet Investigators:
                 <ul>
                     <li>Projects can request up to $100,000 from GlycoNet for 12 months.</li>
                     <li>Projects require a 1:1 match from Academia Sinica; at least 50% of the matching funds should be cash. Letter of support must be provided (see section <b>E. Partner Support Letters</b>).</li>
