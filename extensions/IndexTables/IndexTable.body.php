@@ -161,7 +161,7 @@ class IndexTable {
         if($table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>Sub Roles</th>";
         }
-        if($config->getValue('projectsEnabled') && $table != ISAC && $table != IAC && $table != RMC){
+        if($config->getValue('projectsEnabled') && $table != CHAIR && $table != EA && $table != RMC){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
         }
         if(!$config->getValue('singleUniversity')){

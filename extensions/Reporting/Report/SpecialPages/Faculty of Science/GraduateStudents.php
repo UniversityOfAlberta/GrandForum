@@ -10,7 +10,7 @@ $wgHooks['SubLevelTabs'][] = 'GraduateStudents::createSubTabs';
 class GraduateStudents extends SpecialPage {
     
     function GraduateStudents(){
-        parent::__construct("GraduateStudents", ISAC, true);
+        parent::__construct("GraduateStudents", CHAIR, true);
     }
     
     function execute($par){
@@ -95,7 +95,7 @@ class GraduateStudents extends SpecialPage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if($person->isRole(ISAC)){
+        if($person->isRole(CHAIR)){
             $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "grad") ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Graduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=grad", $selected);
             

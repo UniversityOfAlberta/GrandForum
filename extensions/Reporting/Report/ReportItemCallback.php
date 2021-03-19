@@ -116,7 +116,7 @@ class ReportItemCallback {
             "getUserPublicationCount" => "getUserPublicationCount",
             "user_lifetime_pubs_count" => "getUserLifetimePublicationCount",
             "isAllowedToViewRecommendation" => "isAllowedToViewRecommendation",
-            // ISAC
+            // Chair
             "chair_id" => "getChairId",
             // Products
             "product_id" => "getProductId",
@@ -723,7 +723,7 @@ class ReportItemCallback {
 
     function getChairId(){
         $user = Person::newFromId($this->reportItem->personId);
-        $people = Person::getAllPeople(ISAC);
+        $people = Person::getAllPeople(CHAIR);
         foreach($people as $person){
             if($person->getDepartment() == $user->getDepartment()){
                 return $person->getId();

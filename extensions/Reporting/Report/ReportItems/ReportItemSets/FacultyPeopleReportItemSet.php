@@ -45,7 +45,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Don't show DD people unless user is Dean, Vice Dean, HR
                 continue;
             }
-            if(($person->isRoleDuring(ISAC, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(ISAC)) && 
+            if(($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR)) && 
                 !$me->isRole(DEAN) &&
                 !$me->isRole(DEANEA) &&
                 !$me->isRole(VDEAN) && 

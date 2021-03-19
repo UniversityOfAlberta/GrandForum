@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <!--Role role="ISAC">
+        <!--Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
@@ -11,7 +11,7 @@
             <SectionPermission id="atsec" permissions="r" />
             <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
-        <Role role="IAC">
+        <Role role="EA">
             <SectionPermission id="evaluations" permissions="r" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="r" />
@@ -41,7 +41,7 @@
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
         </Role-->
-        <Role role="ISAC">
+        <Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -51,7 +51,7 @@
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="r" />
         </Role>
-        <Role role="IAC">
+        <Role role="EA">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />

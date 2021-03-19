@@ -248,9 +248,9 @@ $wgRoleValues = array(INACTIVE => 0,
                       'TL' => 11,
                       APL => 11,
                       TC => 11,
-                      ISAC => 11,
+                      CHAIR => 11,
                       SRC => 11,
-                      IAC => 11,
+                      EA => 11,
                       HR => 11,
                       ADEAN => 12,
                       VDEAN => 12,
@@ -264,11 +264,11 @@ $wgRoleValues = array(INACTIVE => 0,
 
 $wgRoles = ($config->hasValue('wgRoles')) ? 
     $config->getValue('wgRoles') : 
-    array(HQP, PS, EXTERNAL, ACHAIR, ISAC, SRC, IAC, AR, CI, HR, RMC, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, EXTERNAL, ACHAIR, CHAIR, SRC, EA, AR, CI, HR, RMC, STAFF, MANAGER, ADMIN);
 
 $wgAllRoles = ($config->hasValue('wgAllRoles')) ? 
     $config->getValue('wgAllRoles') :
-    array(HQP, PS, STUDENT, EXTERNAL, ACHAIR, ISAC, SRC, IAC, AR, CI, PL, APL, TL, TC, HR, RMC, EVALUATOR, STAFF, MANAGER, ADMIN);
+    array(HQP, PS, STUDENT, EXTERNAL, ACHAIR, CHAIR, SRC, EA, AR, CI, PL, APL, TL, TC, HR, RMC, EVALUATOR, STAFF, MANAGER, ADMIN);
 
 foreach($config->getValue('roleAliases') as $alias => $role){
     define($alias, $alias);

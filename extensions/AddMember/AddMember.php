@@ -222,18 +222,18 @@ class AddMember extends SpecialPage{
         }
         $roleOptions = array();
         foreach($wgRoles as $role){
-            if($me->isRoleAtLeast($role) && $role != ISAC && 
-                                            $role != IAC && 
+            if($me->isRoleAtLeast($role) && $role != CHAIR && 
+                                            $role != EA && 
                                             $role != RMC){
                 $roleOptions[$config->getValue('roleDefs', $role)] = $role;
             }
         }
         if($me->isRoleAtLeast(STAFF)){
-            if(in_array(ISAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', ISAC)] = ISAC;
+            if(in_array(CHAIR, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', CHAIR)] = CHAIR;
             }
-            if(in_array(IAC, $wgRoles)){
-                $roleOptions[$config->getValue('roleDefs', IAC)] = IAC;
+            if(in_array(EA, $wgRoles)){
+                $roleOptions[$config->getValue('roleDefs', EA)] = EA;
             }
             if(in_array(RMC, $wgRoles)){
                 $roleOptions[$config->getValue('roleDefs', RMC)] = RMC;

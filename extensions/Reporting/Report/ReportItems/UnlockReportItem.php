@@ -7,7 +7,7 @@ class UnlockReportItem extends CheckboxReportItem {
         // Send email before saving
         $person = Person::newFromId($this->personId);
         $me = Person::newFromWgUser();
-        $chairs = Person::getAllPeople(ISAC);
+        $chairs = Person::getAllPeople(CHAIR);
         $deans = Person::getAllPeople(DEAN);
         
         $title = "Annual Report Unlocked";
@@ -15,7 +15,7 @@ class UnlockReportItem extends CheckboxReportItem {
         $headers = "From: {$config->getValue('supportEmail')}" . "\r\n" .
                    "Reply-To: {$config->getValue('supportEmail')}" . "\r\n";
         if(isset($value[0]) && !isset($value[1])){
-            if($me->isRole(IAC)){
+            if($me->isRole(EA)){
                 foreach($chairs as $chair){
                     if(!isset($alreadySent[$chair->getEmail()]) && $chair->getDepartment() == $me->getDepartment() && $me->getId() != $chair->getId() && $wgScriptPath == ""){
                         mail($chair->getEmail(), $title, $message, $headers);

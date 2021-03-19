@@ -27,7 +27,7 @@ class ProductHistory extends BackboneModel {
         if(count($data) > 0){
             $me = Person::newFromWgUser();
             $row = $data[0];
-            if($row['user_id'] == $me->getId() || $me->isRoleAtLeast(ISAC) || $me->isRoleAtLeast(IAC)){
+            if($row['user_id'] == $me->getId() || $me->isRoleAtLeast(CHAIR) || $me->isRoleAtLeast(EA)){
                 $this->id = $row['id'];
                 $this->user_id = $row['user_id'];
                 $this->year = $row['year'];

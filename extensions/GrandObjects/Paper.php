@@ -717,8 +717,8 @@ class Paper extends BackboneModel{
         else if($this->getCreatedBy() == $me->getId() || $this->getAccessId() == $me->getId()){ 
             return true; // Person created the Product
         }
-        else if(($me->isRoleAtLeast(ISAC) || $me->isRoleAtLeast(IAC)) && $this->getAccessId() == 0){
-            return true; // ISAC+ (Chairs) Should have access to everything as long as the Product is not 'Private'
+        else if(($me->isRoleAtLeast(CHAIR) || $me->isRoleAtLeast(EA)) && $this->getAccessId() == 0){
+            return true; // CHAIR+ (Chairs) Should have access to everything as long as the Product is not 'Private'
         }
         else if($me->isAuthorOf($this)){
             return true; // Person is an author of this publication

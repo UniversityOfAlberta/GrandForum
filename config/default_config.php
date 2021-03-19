@@ -242,13 +242,13 @@
     $config->setConst("PS",         "PS");
     $config->setConst("EXTERNAL",   "External");
     $config->setConst("ACHAIR",     "AssocChair");
-    $config->setConst("ISAC",       "ISAC");
+    $config->setConst("CHAIR",      "Chair");
     $config->setConst("ADEAN",      "AssocDean");
     $config->setConst("VDEAN",      "ViceDean");
     $config->setConst("DEAN",       "Dean");
     $config->setConst("DEANEA",     "DeanEA");
     $config->setConst("SRC",        "SRC");
-    $config->setConst("IAC",        "IAC");
+    $config->setConst("EA",         "EA");
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
@@ -269,9 +269,9 @@
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
         $config->getConst('ACHAIR')         => "Associate Chair",
-        $config->getConst('ISAC')           => "International Scientific Advisory Committee",
+        $config->getConst('CHAIR')          => "Chair",
         $config->getConst('SRC')            => "Scientific Research Committee",
-        $config->getConst('IAC')            => "Industry Advisory Committee",
+        $config->getConst('EA')             => "Executive Assistant",
         $config->getConst('NI')             => "Network Investigator",
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
