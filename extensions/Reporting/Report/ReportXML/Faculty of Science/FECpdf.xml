@@ -164,7 +164,7 @@
                 <h2>HQP Supervision</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" footnotes="true" isTopAnchor="true">
+        <ReportItem id="students" type="PersonSupervisesReportItem" blobSection="FEC_STUDENTS" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true" isTopAnchor="true">
             <![CDATA[
                 {$item}
             ]]>

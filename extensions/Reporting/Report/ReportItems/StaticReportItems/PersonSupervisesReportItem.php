@@ -3,6 +3,7 @@
 class PersonSupervisesReportItem extends StaticReportItem {
 
     var $footnotes;
+    var $awards;
 
     function getHTML($pdf=false){
         global $wgServer, $wgScriptPath;
@@ -89,32 +90,55 @@ class PersonSupervisesReportItem extends StaticReportItem {
         }
         
         $this->footnotes = array();
+        $this->awards = array();
         $dom = new SmartDomDocument();
         $dom->loadHTML($item);
         $trs = $dom->getElementsByTagName("tr");
         $hqpIdDone = array();
-        if(strtolower($this->getAttr("footnotes", "false")) == "true"){
-            for($i=0; $i<$trs->length; $i++){
-                $tr = $trs->item($i);
-                $tds = $tr->getElementsByTagName("td");
-                $firstTd = $tds->item(0);
-                $rowspan = 1;
-                if($firstTd != null && $firstTd->getAttribute('rowspan') != "" && $firstTd->getAttribute('rowspan') > 1){
-                    $rowspan = $firstTd->getAttribute('rowspan');
+        for($i=0; $i<$trs->length; $i++){
+            $tr = $trs->item($i);
+            $tds = $tr->getElementsByTagName("td");
+            $firstTd = $tds->item(0);
+            $rowspan = 1;
+            if($firstTd != null && $firstTd->getAttribute('rowspan') != "" && $firstTd->getAttribute('rowspan') > 1){
+                $rowspan = $firstTd->getAttribute('rowspan');
+            }
+            if($tr->getAttribute('hqp-id') != ""){
+                $hqpId = $tr->getAttribute('hqp-id');
+                if(isset($hqpIdDone[$hqpId])){
+                    continue;
                 }
-                if($tr->getAttribute('hqp-id') != ""){
-                    $hqpId = $tr->getAttribute('hqp-id');
-                    if(isset($hqpIdDone[$hqpId])){
-                        continue;
+                $hqpIdDone[$hqpId] = true;
+                $section = $this->getSection();
+                $sec = $this->getAttr('blobSection', $section->sec); //added for FEC report -rd
+                if($sec != '0'){
+                    $section->sec = $sec;
+                }
+                if(strtolower($this->getAttr("awards", "false")) == "true"){
+                    $awards = new TextareaReportItem();
+                    $awards->setId("{$this->id}_{$hqpId}_awards");
+                    $awards->setAttr("blobSection", $sec);
+                    $awards->setAttr("height", "60px");
+                    $awards->setAttr("width", "200px");
+                    $awards->setBlobItem($this->getAttr("blobItem", "HQP_AWARDS"));
+                    $awards->setBlobSubItem($hqpId);
+                    $awards->setParent($this);
+                    $this->awards[] = $awards;
+                    if(!$pdf){
+                        // EDIT
+                        $td = $dom->createDocumentFragment();
+                        $td->appendXML("<td rowspan='$rowspan' align='center'>{$awards->getHTML()}</td>");
+                        $tr->appendChild($td);
                     }
-                    $hqpIdDone[$hqpId] = true;
-                    $section = $this->getSection();
-                    $sec = $this->getAttr('blobSection', $section->sec); //added for FEC report -rd
-                    if($sec != '0'){
-                        $section->sec = $sec;
+                    else {
+                        $td = $dom->createDocumentFragment();
+                        $td->appendXML("<td rowspan='$rowspan'>{$awards->getHTMLForPDF()}</td>");
+                        $tr->appendChild($td);
                     }
+                }
+                if(strtolower($this->getAttr("footnotes", "false")) == "true"){
                     $footnote = new FootnotesReportItem();
-                    $footnote->setId("{$this->id}_{$hqpId}_{$i}");
+                    $footnote->setId("{$this->id}_{$hqpId}_footnotes");
                     $footnote->setAttr("blobSection", $sec);
                     $footnote->setBlobItem($this->getAttr("blobItem", "HQP"));
                     $footnote->setBlobSubItem($hqpId);
@@ -140,7 +164,15 @@ class PersonSupervisesReportItem extends StaticReportItem {
                         }
                     }
                 }
-                else if(!$pdf){
+            }
+            else {
+                if(strtolower($this->getAttr("awards", "false")) == "true"){
+                    // Header & Edit
+                    $th = $dom->createDocumentFragment();
+                    $th->appendXML("<th>Awards</th>");
+                    $tr->appendChild($th);
+                }
+                if(!$pdf && strtolower($this->getAttr("footnotes", "false")) == "true"){
                     // Header & Edit
                     $th = $dom->createDocumentFragment();
                     $th->appendXML("<th>Footnotes</th>");
@@ -156,6 +188,9 @@ class PersonSupervisesReportItem extends StaticReportItem {
         $errors = array();
         foreach($this->footnotes as $footnote){
             $errors = array_merge($errors, $footnote->save());
+        }
+        foreach($this->awards as $award){
+            $errors = array_merge($errors, $award->save());
         }
         return $errors;
     }
