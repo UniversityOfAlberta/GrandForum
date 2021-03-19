@@ -48,6 +48,7 @@ class ApplicationsTable extends SpecialPage{
         $this->strat2020 = array();
         $this->strat2021 = array();
         $this->collab2020 = array();
+        $this->international2021 = array();
         $this->clinical2020 = array();
         $this->clinical2021 = array();
         $this->trans2020 = array();
@@ -77,6 +78,9 @@ class ApplicationsTable extends SpecialPage{
             }
             if($person->isSubRole('Collab2020')){
                 $this->collab2020[] = $person;
+            }
+            if($person->isSubRole('International2021')){
+                $this->international2021[] = $person;
             }
             if($person->isSubRole('Clinical2020')){
                 $this->clinical2020[] = $person;
@@ -124,6 +128,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=trans'>Trans</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=collab'>Collab</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=international'>Int'l Partnerships</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=clinical'>Clinical</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
@@ -163,6 +168,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "collab" && $me->isRoleAtLeast(SD)){
             $this->generateCollab();
+        }
+        else if($program == "international" && $me->isRoleAtLeast(SD)){
+            $this->generateInternational();
         }
         else if($program == "clinical" && $me->isRoleAtLeast(SD)){
             $this->generateClinical();
@@ -296,6 +304,24 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_08_2017', $this->allNis, 2017, "08-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_04_2017', $this->allNis, 2017, "04-2017", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->allNis, 2016, "2016"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateInternational(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_INTERNATIONAL', $this->international2021, 2021, "2021", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
