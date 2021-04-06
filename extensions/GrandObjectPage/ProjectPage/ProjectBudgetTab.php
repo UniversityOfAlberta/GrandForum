@@ -299,7 +299,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 
                 if($edit && $editable){
-                    if(!$config->getValue('networkName') == "AGE-WELL" || $i != 2021){
+                    if($config->getValue('networkName') == "AGE-WELL" && $i == 2021){
+                    
+                    }
+                    else{
                         if($me->isRoleAtLeast(STAFF)){
                             $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
                                             $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
