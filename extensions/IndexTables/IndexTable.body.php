@@ -322,8 +322,15 @@ class IndexTable {
                     <td align='left'><a href='{$proj->getUrl()}'>{$proj->getName()}</a> {$subProjects}</td>
                     <td align='left'>{$proj->getFullName()}</td>");
                 $leaders = array();
-                foreach($proj->getLeaders() as $leader){
-                    $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                if(!$proj->isDeleted()){
+                    foreach($proj->getAllPeople(PL) as $leader){
+                        $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                    }
+                }
+                else{
+                    foreach($proj->getAllPeopleOn(PL, $proj->getEffectiveDate()) as $leader){
+                        $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                    }
                 }
                 $wgOut->addHTML("<td>".implode(", ", $leaders)."</td>");
                 if($type != "Administrative"){
