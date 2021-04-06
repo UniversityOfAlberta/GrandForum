@@ -50,8 +50,15 @@ class ProjectTable extends SpecialPage{
         foreach($projects as $project){
             $leaders = array();
             $themes = array();
-            foreach($project->getLeaders() as $leader){
-                $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+            if(!$project->isDeleted()){
+                foreach($project->getAllPeople(PL) as $leader){
+                    $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                }
+            }
+            else{
+                foreach($project->getAllPeopleOn(PL, $project->getEffectiveDate()) as $leader){
+                    $leaders[] = "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>";
+                }
             }
             foreach($project->getChallenges() as $challenge){
                 $themes[] = ($challenge->getAcronym() != "") ? "<a href='{$challenge->getUrl()}'>{$challenge->getName()} ({$challenge->getAcronym()})</a>" : "";
