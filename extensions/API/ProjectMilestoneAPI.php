@@ -7,7 +7,7 @@ class ProjectMilestoneAPI extends API{
     function ProjectMilestoneAPI($update=false){
         $this->update = $update;
         $this->addPOST("project",true,"The name of the project","MEOW");
-        $this->addPOST("leader",false,"The name of the leader for this milestone","First.Last");
+        $this->addPOST("leader",false,"The id of the leader for this milestone","1");
         $this->addPOST("activity",true,"The name of the activity", "Analysis");
         $this->addPOST("activity_id",false,"The id of the activity", "2");
         $this->addPOST("milestone",true,"The title of the milestone","MEOW is great");
@@ -95,7 +95,7 @@ class ProjectMilestoneAPI extends API{
 		
 		$leader = 0;
 		if(isset($_POST['leader'])){
-		    $l = Person::newFromNameLike(trim($_POST['leader']));
+		    $l = Person::newFromId(trim($_POST['leader']));
 		    if($l != null && $l->getName() != ""){
 		        $leader = $l->getId();
 		    }
