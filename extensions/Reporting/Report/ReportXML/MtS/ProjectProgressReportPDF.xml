@@ -512,11 +512,11 @@ research partners|Designing interview and/or survey questions|Collecting primar
                     <tr>
                         <td>{$contribution_title}</td>
                         <td>{$contribution_partners}</td>
-                        <td>{$contribution_start}</td>
-                        <td>{$contribution_end}</td>
-                        <td align='right'>{number_format({$contribution_cash})}</td>
-                        <td align='right'>{number_format({$contribution_inkind})}</td>
-                        <td align='right'>{number_format({$contribution_total})}</td>
+                        <td style='white-space:nowrap;'>{$contribution_start}</td>
+                        <td style='white-space:nowrap;'>{$contribution_end}</td>
+                        <td align='right'>${number_format({$contribution_cash})}</td>
+                        <td align='right'>${number_format({$contribution_inkind})}</td>
+                        <td align='right'>${number_format({$contribution_total})}</td>
                     </tr>
                 ]]>
             </Static>
