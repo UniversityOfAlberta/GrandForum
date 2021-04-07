@@ -157,11 +157,12 @@ class ProjectFESReportTab extends AbstractEditableTab {
     function handleEdit(){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         $missing = false;
+        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
         for($i = 1; $i <= 9; $i++){
             if(isset($_POST["report_q$i"])){
                 foreach($_POST["report_q$i"] as $year => $q){
                     $this->saveBlobData("Q$i", $year, $q);
-                    if($q == ""){
+                    if($q == "" && $year == $today){
                         $missing = true;
                     }
                 }
@@ -169,7 +170,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
         }
         if($missing){
             // Form is incomplete, so an error message, but still keep any changes that were submitted.  Show the form again
-            return "Not all Reporting questions have been answered.  Make sure there are responses for each header, and for every year.";
+            return "Not all Reporting questions have been answered.  Make sure there are responses for each question.";
         }
         else{
             Messages::addSuccess("'Reporting' updated successfully.");
