@@ -95,7 +95,7 @@
         <ReportItem id="priorities" type="TextareaReportItem" blobItem="PRIORITIES">
             <![CDATA[
                 <h3>c) Innovation Hub Objectives and Priorities</h3>
-                <p>Please provide a brief update on overall IH plans for 2020-2021, including objectives and priorities across NCE Program Criteria, as appropriate (headings from Section 2 a) – d)).</p>
+                <p>Please provide a brief update on overall IH plans for 2021-2022, including objectives and priorities across NCE Program Criteria, as appropriate (headings from Section 2 a) – d)).</p>
                 {$item}
             ]]>
         </ReportItem>
