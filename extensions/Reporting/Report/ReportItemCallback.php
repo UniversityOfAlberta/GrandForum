@@ -134,6 +134,16 @@ class ReportItemCallback {
             "product_url" => "getProductUrl",
             "product_authors" => "getProductAuthors",
             "getProductData" => "getProductData",
+            // Contribution
+            "contribution_id" => "getContributionId",
+            "contribution_title" => "getContributionTitle",
+            "contribution_url" => "getContributionUrl",
+            "contribution_partners" => "getContributionPartners",
+            "contribution_start" => "getContributionStart",
+            "contribution_end" => "getContributionEnd",
+            "contribution_cash" => "getContributionCash",
+            "contribution_inkind" => "getContributionInkind",
+            "contribution_total" => "getContributionTotal",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1620,6 +1630,55 @@ class ReportItemCallback {
     function getProductData($field){
         $product = Paper::newFromId($this->reportItem->productId);
         return $product->getData($field);
+    }
+    
+    function getContributionId(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getId();
+    }
+            
+    function getContributionTitle(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getTitle();
+    }
+    
+    function getContributionUrl(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getUrl();
+    }
+    
+    function getContributionPartners(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        $partners = array();
+        foreach($contribution->getPartners() as $partner){
+            $partners[] = $partner->getOrganization();
+        }
+        return implode(", ", $partners);
+    }
+    
+    function getContributionStart(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return substr($contribution->getStartDate(),0,10);
+    }
+    
+    function getContributionEnd(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return substr($contribution->getEndDate(),0,10);
+    }
+    
+    function getContributionCash(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getCash();
+    }
+    
+    function getContributionInkind(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getKind();
+    }
+    
+    function getContributionTotal(){
+        $contribution = Contribution::newFromId($this->reportItem->productId);
+        return $contribution->getTotal();
     }
     
     function getWgUserId(){
