@@ -116,7 +116,7 @@
                     <td><ul>
             ]]>
         </Static>
-        <ReportItemSet type="ProjectPeople" role="CI">
+        <ReportItemSet type="ProjectPeople" role="Co-I">
             <Static>
                 <![CDATA[
                     <li style="margin-top:0;">{$user_reversed_name}</li>
