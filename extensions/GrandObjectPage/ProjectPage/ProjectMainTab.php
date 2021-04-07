@@ -417,6 +417,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->showRole(CHAMP);
                 $this->showRole(HQP);
                 $this->showRole(PARTNER);
+                $this->showRole(AB);
                 $this->showRole(HQP, "Alumni ".HQP, true);
                 $this->showRole(EXTERNAL);
             }

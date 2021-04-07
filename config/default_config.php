@@ -354,6 +354,7 @@
     $config->setConst("PS",         "PS");
     $config->setConst("STUDENT",    "Student");
     $config->setConst("EXTERNAL",   "External");
+    $config->setConst("AB",         "AdvisoryBoard");
     $config->setConst("NI",         "NI");
     $config->setConst("AR",         "AR");
     $config->setConst("CI",         "CI");
@@ -378,6 +379,7 @@
         $config->getConst('HQP')            => "Highly Qualified Person",
         $config->getConst('PS')             => "Project Support",
         $config->getConst('EXTERNAL')       => "External",
+        $config->getConst('AB')             => "Advisory Board",
         $config->getConst('NI')             => "Network Investigator",
         $config->getConst('AR')             => "Affiliated Researcher",
         $config->getConst('CI')             => "Co-Investigator",
