@@ -562,18 +562,10 @@ research partners|Designing interview and/or survey questions|Collecting primar
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="7 - Form 300" title="SECTION 7: FORM 300">
-        <ReportItem id="form300" type="Upload" blobItem="FORM300" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
-            <![CDATA[
-                <a href="{$wgServer}{$wgScriptPath}/data/F300_2020-21_[PIsFirstName-LastName].pdf"><b>Form 300 Template</b></a>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="8 - Contributions" title="SECTION 8: Contributions">
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions">
         <Static>
             <![CDATA[
-                <h3>8.1 List all cash and inkind contributions from the previous year:</h3>
+                <h3>7.1 List all cash and inkind contributions from the previous year:</h3>
                 <a href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageContributions" class="button" target="_blank">Manage Contributions</a>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
@@ -607,6 +599,14 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 </table>
             ]]>
         </Static>
+    </ReportSection>
+    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="8 - Form 300" title="SECTION 8: FORM 300">
+        <ReportItem id="form300" type="Upload" blobItem="FORM300" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <a href="{$wgServer}{$wgScriptPath}/data/F300_2020-21_[PIsFirstName-LastName].pdf"><b>Form 300 Template</b></a>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
