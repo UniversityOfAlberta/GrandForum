@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC Conference" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="true" year="2020">
+<Report name="The EPIC Conference (2021)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="instructions" permissions="rw" />
@@ -8,29 +8,34 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="instructions" tooltip="Instructions" name="Instructions" type="ReportSection">
+    <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="The EPIC Conference (2021)" type="ReportSection">
         <Static>
             <![CDATA[
+                <h3>#AWepic2021</h3>
                 <p>AGE-WELL, Canada’s AgeTech network, is dedicated to the creation of technologies and services that benefit older adults and caregivers. Our aim is to help older Canadians maintain their independence, health and quality of life through technologies and services that increase their safety and security, support their independent living, and enhance their social participation.</p>
 
                 <p>Through extensive public consultation, AGE-WELL has identified 8 Challenge Areas – difficult and complex problem areas – that demand innovation and deployment of real-world solutions.</p>
 
-                <p>The EPIC Conference (2020) is an opportunity for AGE-WELL HQP to share their research, highlight their potential impact, and connect with colleagues.</p>
+                <p>The EPIC Conference (2021) is an opportunity for AGE-WELL students, postdoctoral fellows, research staff and ECRs to share their research, highlight their potential impact, and connect with colleagues.</p>
                 
-                <p>It will comprise of 8 virtual sessions, each dedicated to one of the identified challenge areas. Each session will involve 2 streams of presentations – a traditional oral presentation and a Twitter conference presentation. Additional sessions will include interactive design workshops, a roundtable on pivoting your research during COVID, and a hybrid career presentation and workshop.</p>
+                <p>The month-long virtual conference will comprise of 8 virtual sessions, each dedicated to one of the identified challenge areas. Each session will involve 2 streams of presentations – a traditional oral presentation and a Twitter conference presentation. Additional planned sessions  include Workshop Wednesdays, where we will host professional development workshops and panels, and a number of trainee-hosted social events.</p>
+                
+                <p>AGE-WELL is pleased to announce that as part of #AWepic2021 we will co-host a French-language research day, highlighting a breadth of AgeTech expertise.</p>
 
-                <p><i>Oral Presentation Stream</i></p>
+                <p><b>Oral Presentation Stream</b></p>
                 <p>These sessions will be hosted on Crowdcast and comprise of an introduction to the challenge area presented by the session chair, 3 oral presentations, and a follow up comment by a stakeholder that places these presentations into the larger discourse and addresses potential research impact.</p>
                 
                 <p>Please note that presenters are required to accompany their 10 minute talks with a PowerPoint presentation of no more than 10 slides (inclusive of title slide and bibliography). Each presenter will be allocated an additional 5 minutes for Q&A after their presentation.</p>
                 
-                <p><i>Twitter Presentation Stream</i></p>
-                <p>In this conference stream, HQP will be challenged to encapsulate their presentations into 5 pre-scheduled tweets using their personal Twitter accounts. Presenters will be given a timeslot in which to release their tweets and be expected to be present for an interactive Q&A Twitter session and at least 1 other session scheduled in their stream.</p>
+                <p>Attendees may view the Crowdcast “how to” page <a href="https://docs.crowdcast.io/en/articles/651701-attendee-quick-reference-guide" target="_blank">here</a>.</p>
+                
+                <p><b>Twitter Presentation Stream</b></p>
+                <p>In this conference stream, presenters will be challenged to encapsulate their presentations into 5 pre-scheduled tweets using their personal Twitter accounts. Presenters will be given a timeslot in which to release their tweets and be expected to be present for an interactive Q&A Twitter session and at least 1 other presentation scheduled in their session.</p>
                 
                 <p><b>Call for Abstracts</b></p>
-                <p>Presentation proposals for both streams are invited from <b>all AGE-WELL HQP including alumni</b>. Applicants are encouraged to review the full challenge area booklet here and ensure they are available for their sessions on the dates below.</p>
+                <p>Presentation proposals for both streams are invited from AGE-WELL students, postdoctoral fellows, research staff and ECRs. Applicants are encouraged to review the full challenge area booklet <a href="https://agewell-nce.ca/wp-content/uploads/2018/05/Booklet_8_Challenges_English_2019oct2_digital.pdf" target="_blank">here</a> and ensure they are available for their sessions on the dates below.</p>
 
-                <p>Applications will be open in Forum from May 1 – May 18, 2020.</p>
+                <p>Applications will be open in Forum until May 7, 2021 at 11:59pm EDT.</p>
                 <table class='wikitable'>
                     <tr>
                         <th>Oral Presentation Sessions</th>
@@ -39,43 +44,48 @@
                     </tr>
                     <tr>
                         <td>Supportive Homes & Communities</td>
-                        <td>June 2, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 1, 2021</td>
+                        <td style="white-space:nowrap;">Oral Presentations: 1:00-2:30 pm ET<br />Twitter (#AWepic2021): 2:30-3:30 pm ET </td>
                     </tr>
                     <tr>
                         <td>Health Care & Health Service Delivery</td>
-                        <td>June 4, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 3, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Autonomy & Independence</td>
-                        <td>June 9, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 8, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Cognitive Health & Dementia</td>
-                        <td>June 11, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 10, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Mobility & Transportation</td>
-                        <td>June 16, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 15, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Healthy Lifestyles & Wellness</td>
-                        <td>June 18, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 17, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Staying Connected</td>
-                        <td>June 23, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 22, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
                     </tr>
                     <tr>
                         <td>Financial Wellness & Employment</td>
-                        <td>June 25, 2020</td>
-                        <td>1:00-2:30 pm ET</td>
+                        <td>June 24, 2021</td>
+                        <td style="white-space:nowrap;">Twitter (#AWepic2021): 12:00-1:00 pm ET<br />Oral Presentations: 1:00-2:30 pm ET</td>
+                    </tr>
+                    <tr>
+                        <td>French-language Research Sessions</td>
+                        <td>June 29, 30, 2021</td>
+                        <td style="white-space:nowrap;">Time TBC</td>
                     </tr>
                 </table>
             ]]>
@@ -104,16 +114,16 @@
                 <small>If any of the above are missing or incorrect, they can be updated on your <a href='{$user_url}' target='_blank'>profile</a>.</small>
             ]]>
         </Static>
-        <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment">
+        <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (Max 2):</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" options="Oral Presentation|Twitter Presentation">
+        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" options="Oral Presentation|Twitter Presentation|French-language Research Sessions">
             <![CDATA[
                 <h3>Abstract:</h3>
-                Please select conference presentation stream (you may select both streams):
+                Please select conference presentation stream (you may select all streams):
                 {$item}
             ]]>
         </ReportItem>
