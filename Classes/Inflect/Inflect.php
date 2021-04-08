@@ -119,7 +119,7 @@ class Inflect
         'staff',
         'cycle i',
         'cycle ii',
-        'advisory board',
+        'advisory group',
         'project staff'
     );
 
