@@ -204,9 +204,8 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2021, "2021 (May)");
-        $tab = new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2018, "2020");
-        $tabbedPage->addTab($tab);
+        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2021, "May 2021"));
+        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2018, "2020"));
         
         $wgOut->addHTML($tabbedPage->showPage());
     }
