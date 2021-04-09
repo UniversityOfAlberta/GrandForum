@@ -17,16 +17,17 @@
             <![CDATA[
                 <h1>SECTION 1: INTRO & CONSENT</h1>
                 <p>Network Members are required to submit an end-of-year progress report by April 30, each year. This report is designed to capture emerging research findings, knowledge mobilization activities, new partnerships, successes, and opportunities for future improvement.</p>
-                <p>In addition to this progress report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift.  Form 300 can be downloaded and attached under section 7.</p>
+                <p>In addition to this progress report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift.  Form 300 can be downloaded and attached under section 8.</p>
                 <p>This report and corresponding documents are <b>due no later than April 30, 2021, 4 p.m. EST</b>.</p> 
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
             <![CDATA[
                 <h3>Informed consent and the use of images for evaluation</h3>
-                <p>Dear Network Member, the information we ask you to submit in this report is used to fulfill our reporting requirements to the funder, determine the continuation of project funding and to contribute to MtS’s impact evaluation. Information related to your project will be shared with the funder as a report that summarises the main findings related to project progress, including achieving project objectives, knowledge mobilization and highly qualified personnel development targets. The questions of the reporting template are structured to encourage project team’s reflection on the research project implementation, collective work, engagement of partners and network building. The response to this template will inform MtS’s knowledge mobilization and training strategy for advancing network and partnership building, and the research impact.</p>
                 
-                <p>All reported information will be held in strict confidence and will be accessible to the research team. All digital data will be encrypted and kept on a secure server under a password accessible only to the research team members. Please, note that if you share any images of your research project as part of this reporting, these images may be used for the purpose of MtS impact evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. If the images you share include your research project participants, it is your responsibility to inform the research participants that their images may be used in the context of this evaluation. Please ensure project participants sign the <a href="https://forum.makingtheshiftinc.ca/data/Photo%20Release%20Project%20Participants.docx" target="_blank">Photo Release Form</a>, attach the signed form(s) in the space provided below, and check Research Participants Photo Release Form check box.</p>
+                <p>Please, note that if you share any images of your research project as part of this reporting, these images may be used for the purpose of MtS impact evaluation, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. If the images you share include your research project participants, it is your responsibility to inform the research participants that their images may be used in the context of this evaluation. Please ensure project participants sign the <a href="https://forum.makingtheshiftinc.ca/data/Photo%20Release%20Project%20Participants.docx" target="_blank">Photo Release Form</a>, attach the signed form(s) in the space provided below, and check Research Participants Photo Release Form check box.</p>
+                
+                <p>If you have any questions about this release form, please contact <a href="mailto:mtsfunding@yorku.ca">mtsfunding@yorku.ca</a>.</p>
 
                 {$item}
                 
@@ -565,7 +566,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions">
         <Static>
             <![CDATA[
-                <h3>7.1 List all cash and inkind contributions from the previous year:</h3>
+                <h3>7.1 List all cash and in-kind contributions from the previous year:</h3>
                 <a href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageContributions" class="button" target="_blank">Manage Contributions</a>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
@@ -574,7 +575,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Cash</th>
-                        <th>Inkind</th>
+                        <th>In-kind</th>
                         <th>Total</th>
                     </tr>
             ]]>

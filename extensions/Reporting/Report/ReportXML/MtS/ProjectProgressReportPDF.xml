@@ -493,7 +493,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
     <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions" pagebreak="false">
         <Static>
             <![CDATA[
-                <h3>7.1 List all cash and inkind contributions from the previous year:</h3>
+                <h3>7.1 List all cash and in-kind contributions from the previous year:</h3>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
                         <th>Title</th>
@@ -501,7 +501,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Cash</th>
-                        <th>Inkind</th>
+                        <th>In-kind</th>
                         <th>Total</th>
                     </tr>
             ]]>
