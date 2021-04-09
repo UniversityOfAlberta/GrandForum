@@ -547,7 +547,7 @@ class ProjectMainTab extends AbstractEditableTab {
         $description = $project->getDescription();
         
         if($edit || !$edit && $description != ""){
-            $this->html .= "<h2><span class='mw-headline'>Project Overview (live on website)</span></h2>";
+            $this->html .= "<h2><span class='mw-headline'>Project Overview</span></h2>";
         }
         if(!$edit){
             $this->html .= $description."<br />";
