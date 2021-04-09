@@ -824,7 +824,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function getSectionPermissions($section){
-        global $wgUser;
+        global $wgUser, $wgAllRoles;
         $me = Person::newFromId($wgUser->getId());
         /*if($me->isRoleAtLeast(MANAGER)){
             return array('r' => true, 'w' => true);
@@ -832,7 +832,12 @@ abstract class AbstractReport extends SpecialPage {
         $found = false;
         $roles = $me->getRights();
         if($this->project != null && $this->project->getId() != 0 && $this->project instanceof Project){
-            $roles = array($me->getRoleOn($this->project, null, true));
+            $roles = array();
+            foreach($wgAllRoles as $role){
+                if($me->isRole($role, $this->project)){
+                    $roles[] = $role;
+                }
+            }
         }
         else{
             $roleObjs = $me->getRolesDuring($this->year-1, $this->year);
