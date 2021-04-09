@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" disabled="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" year="2021" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="details" permissions="rw" />
@@ -21,7 +21,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" width="70px">
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" default="{$project_end}" width="70px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}
             ]]>
@@ -32,13 +32,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" width="70px">
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" default="{$last_year}-09-01" width="70px">
             <![CDATA[
                 <h3>Reporting Period:</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" width="70px">
+        <ReportItem id="reportEnd" type="Calendar" blobItem="REPORT_END" blobType="BLOB_TEXT" default="{$this_year}-04-30" width="70px">
             <![CDATA[
                 &nbsp;-&nbsp;{$item}
             ]]>
