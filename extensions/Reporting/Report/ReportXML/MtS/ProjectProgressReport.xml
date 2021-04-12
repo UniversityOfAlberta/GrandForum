@@ -570,7 +570,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
         <Static>
             <![CDATA[
                 <h3>7.1 List all cash and in-kind contributions from the previous year:</h3>
-                <a href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageContributions" class="button" target="_blank">Manage Contributions</a>
+                <a href="{$wgServer}{$wgScriptPath}/index.php/Special:Contributions" class="button" target="_blank">Manage Contributions</a>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
                         <th>Title</th>
