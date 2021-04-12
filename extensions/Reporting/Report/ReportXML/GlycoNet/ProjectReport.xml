@@ -441,7 +441,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" limit="2000" recommended="true">
+            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" recommended="true">
                 <![CDATA[
                     <small><br />Please provide an update on your EDI activities.</small>
                     {$item}
