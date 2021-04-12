@@ -138,6 +138,9 @@ class PeopleTableTab extends AbstractTab {
                                     {$uniHeader}
                                     <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
+                                    <th style='display:none;'>First University</th>
+                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    <th style='display:none;'>First Title / Rank</th>
                                     {$hqpHeader}
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
                                     {$statusHeader}
@@ -211,6 +214,7 @@ class PeopleTableTab extends AbstractTab {
                 }
                 $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
+            // Current University
             $university = $person->getUniversity();
             if($uniHeader != ''){
                 $this->html .= "<td align='left'>{$university['university']}</td>";
@@ -222,6 +226,11 @@ class PeopleTableTab extends AbstractTab {
                 $this->html .= "<td align='left'>{$person->getDepartment()}</td>";
             }
             $this->html .= "<td align='left'>{$university['position']}</td>";
+            // First University
+            $firstuniversity = $person->getFirstUniversity();
+            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
+            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
+            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
             if($hqpHeader != ''){
                 $supervisors = array();
                 foreach($person->getSupervisorsDuring($start, $end) as $supervisor){

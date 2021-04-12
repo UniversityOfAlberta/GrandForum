@@ -2262,13 +2262,31 @@ class Person extends BackboneModel {
                     if($row['university_name'] != "Unknown"){
                         $universities[] = array("university" => $row['university_name'],
                                                 "department" => $row['department'],
-                                                "position"   => $row['position']);
+                                                "position"   => $row['position'],
+                                                "start" => $row['start_date'],
+                                                "end" => $row['end_date']);
                     }
                 }
             }
             $this->universityDuring[$startRange.$endRange] = $universities;
         }
         return $this->universityDuring[$startRange.$endRange];
+    }
+    
+    function getFirstUniversity(){
+        $universities = $this->getUniversitiesDuring("0000-00-00", "2100-01-01");
+        if(count($universities) > 0){
+            usort($universities, function($a, $b){
+                return ($a['start'] > $b['start']);
+            });
+            return $universities[0];
+        }
+        // None found, use the 'default' values
+        return array("university" => $this->getUni(),
+                     "department" => $this->getDepartment(),
+                     "position"   => $this->getPosition(),
+                     "start" => "",
+                     "end" => "");
     }
     
     /**
