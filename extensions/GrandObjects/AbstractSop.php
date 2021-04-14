@@ -518,6 +518,9 @@ abstract class AbstractSop extends BackboneModel{
            strstr($dec, "Incoming") !== false){
             $dec = "Admit";   
         }
+        if(strstr($dec, "Rejected Apps")){
+            $dec = "Reject";
+        }
         //if(strstr($dec, "Ready for Decision") !== false){ // Need to handle some extra folders from FGSR (gross!)
         //    $dec = "Reject";   
         //}
