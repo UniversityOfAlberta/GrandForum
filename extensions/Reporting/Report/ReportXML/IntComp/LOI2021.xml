@@ -58,7 +58,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="General Information about the project" name="Description" title="UofA-Huawei JIC LOI (Fall 2019)" blobSection="PROP_DESC" type="EditableReportSection">
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" title="UofA-Huawei JIC LOI (Spring 2021)" blobSection="PROP_DESC" type="EditableReportSection">
         <!--ReportItemSet type="DateReportItemSet" id="dateIf" start="2019-07-08 23:00:00" end="9999-99-99">
             <Static>
                 <![CDATA[
@@ -88,7 +88,7 @@
         </ReportItem>
         <ReportItem id="contact" type="MultiText" blobItem="CONTACT" blobType="BLOB_ARRAY" labels="Name|E-mail" optional="true">
             <![CDATA[
-                <h3>Huawei Contact:</h3>
+                <h3>Huawei Contact (if applicable):</h3>
                 {$item}
             ]]>
         </ReportItem>

@@ -28,7 +28,7 @@
         </ReportItem>
         <ReportItem id="contact" type="MultiText" blobItem="CONTACT" class="wikitable" blobType="BLOB_ARRAY" labels="Name|E-mail" sizes="50%|50%" optional="true">
             <![CDATA[
-                <h3>Huawei Contact</h3>
+                <h3>Huawei Contact (if applicable)</h3>
                 {$item}
             ]]>
         </ReportItem>
