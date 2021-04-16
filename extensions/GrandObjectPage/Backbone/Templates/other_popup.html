@@ -8,7 +8,7 @@
                     <input data-project="<%= p.id %>"
                            type="checkbox" 
                            name="otherproject"
-                           <%= this.projectChecked(p.id) %> />&nbsp;<a href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
+                           <%= this.projectChecked(p.id) %> />&nbsp;<a title="<%= p.get('fullname') %>" href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
                     <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
                         <% _.each(p.get('subprojects'), function(sub) { %>
                             <div class="subproject">
@@ -31,7 +31,7 @@
                     <input data-project="<%= p.id %>"
                            type="checkbox" 
                            name="otherproject" 
-                           <%= this.projectChecked(p.id) %> />&nbsp;<a href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
+                           <%= this.projectChecked(p.id) %> />&nbsp;<a title="<%= p.get('fullname') %>" href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
                     <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
                         <% _.each(p.get('subprojects'), function(sub) { %>
                             <div class="subproject">
