@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Award 2020" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2020">
+<Report name="Award 2021" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" pdfFiles="HQPApplicationPDF" ajax="true" disabled="false" year="2021">
     <Permissions>
         <Role role="HQP-Candidate">
             <SectionPermission id="background" permissions="rw" />
@@ -37,7 +37,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
+    <ReportSection id="background" tooltip="Background Information" name="Information" title="AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging (2021)" type="ReportSection">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -59,7 +59,7 @@
 <h3>The Awards</h3>
 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees must demonstrate that they receive funding from a source other than AGE-WELL.</p>
 
-<p>We expect to offer the following awards in this 2020 call:</p>
+<p>We expect to offer the following awards in this 2021 call:</p>
 <ul>
     <li>Master’s level awards at $10,000</li>
     <li>PhD level awards at $15,000</li>
@@ -71,7 +71,7 @@
 <h3>Program Requirements</h3>
 
 <i>Training</i>
-<p>Funded trainees will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship) to earn the Innovators of Tomorrow certificate.</p>
+<p>Funded trainees will be automatically enrolled in our EPIC training program (Early Professionals, Inspired Careers) and are expected to participate actively in AGE-WELL seminar series and professional development activities (e.g. workshops in commercialization or entrepreneurship). Trainees will be required to earn the Innovators of Tomorrow certificate by completing 4 online courses (estimated 25-30 hours total) within 1 year of receiving AGE-WELL funds.</p>
 
 <i>Reporting</i>
 <p>As per NCE rules, funds must flow from AGE-WELL to the trainee’s primary supervisor at their institution.  Academic institutions receiving AGE-WELL funds in trust are expected to:</p>
@@ -97,16 +97,16 @@
     <li>Online Application Form;</li>
     <li>Two Confidential Letters of Support (one must be from your proposed supervisor)</li>
     <li>Formal evidence of enrolment in a Master’s or Doctoral program or Post‐Doctoral position;</li>
-    <li>Formal evidence of awarded funding for 2020-2021;</li>
+    <li>Formal evidence of awarded funding for 2021-2022;</li>
     <li>Curriculum Vitae.</li>
 </ol>
 
 <h3>Important Dates</h3>
-Applications Open: 1 May, 2020<br />
-Completed Applications Due: 31 May, 2020<br />
-Results Available: July 31, 2020<br />
-Funding Commences: September 2020<br />
-Award term: 1 September 2020 - 31 August 2021<br />
+Applications Open: 30 April, 2021<br />
+Completed Applications Due: 31 May, 2021<br />
+Results Available: 2 August, 2021<br />
+Funding Commences: September 2021<br />
+Award term: 1 September 2021 - 31 August 2022<br />
 
 
 <h3>1. Michael F. Harcourt Policy Fellowship</h3>
@@ -114,9 +114,9 @@ Award term: 1 September 2020 - 31 August 2021<br />
 
 <p>AGE-WELL NCE is dedicated to the creation of technologies, services, policies, and practices that benefit older adults and caregivers. We are committed to engaging and nurturing outstanding emerging scientific, industry and community leaders from across disciplines. We aim to provide a unique training environment based on scientific excellence and real-world applicability that exposes trainees to multidisciplinary research environments within a truly collaborative setting in the field of technology and aging.</p>
 
-<p>The successful recipient of the <b>Michael F. Harcourt Policy Fellowship</b> will be supported and mentored by AGE-WELL’s knowledge mobilization, policy and governmental relations team; at least four meetings over the course of the award term are expected. The successful recipient will complete the APPTA Policy Education Program and will be asked to write, at minimum, 3 short articles (750 words) for publication on the APPTA website.</p>
+<p>The successful recipient of the <b>Michael F. Harcourt Policy Fellowship</b> will be supported and mentored by AGE-WELL’s knowledge mobilization, policy and governmental relations team; at least four meetings over the course of the award term are expected.</p>
 
-<p>The recipient may be profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. The $20,000 fellowship will be awarded to one <b>doctoral student or postdoctoral fellow</b>.  Award term: 1 September 2020-31 August 2021.</p>
+<p>The recipient may be profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. The $20,000 fellowship will be awarded to one <b>doctoral student (any year) or postdoctoral fellow</b>.  This award is subject to the training and reporting requirements of the AGE-WELL Awards. Award term: 1 September 2021-31 August 2022.</p>
 
 <p><i>Note that applicants to the Michael F Harcourt Policy Fellowship do not need to have completed a policy-focused degree program or be employed in a policy-focused role. The fellowship is meant to encourage trainees from any discipline and training program to explore the policy dimensions of their work in the field of technology and aging.</i></p>
 
@@ -126,7 +126,7 @@ Award term: 1 September 2020 - 31 August 2021<br />
 
 <h3>2. AGE-WELL Indigenous Graduate Student and Postdoctoral Awards</h3>
 
-<p>AGE-WELL is pleased to launch the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified Indigenous trainees researching in AgeTech-related fields. Recipients will be matched with network mentors during their award term.</p>
+<p>AGE-WELL is pleased to once again offer the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified Indigenous trainees researching in AgeTech-related fields.</p>
 
 <p>We expect to offer the following awards in this 2020 call:</p>
 <ul>
@@ -135,9 +135,9 @@ Award term: 1 September 2020 - 31 August 2021<br />
     <li>Postdoctoral level awards at $30,000</li>
 </ul>
 
-<p>If successful, trainee funding will be held and disbursed by the trainee’s supervisor in a new account that must be established at the supervisor’s home institution. Awards are not renewable.</p>
+<p>If successful, trainee funding will be held and disbursed by the trainee’s supervisor in a new account that must be established at the supervisor’s home institution. Awards are not renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
-<p>The recipient may be profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. Award term: 1 September 2020-31 August 2021.</p>
+<p>The recipient may be profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. Award term: 1 September 2021-31 August 2022.</p>
 
 <p><b>APPLICATION AND SUBMISSION INFORMATION</b></p>
 
@@ -158,12 +158,12 @@ Applicants are asked to review eligibility and program information for each of t
     <li>Postdoctoral award at $50,000</li>
 </ul>
 
-<p>Funding for this award runs from September 1, 2020 – August 31, 2021 and is non-renewable. AGE-WELL and MIRA will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding for this award runs from September 1, 2021 – August 31, 2022 and is non-renewable. AGE-WELL and MIRA will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
 <p><b>AGE-WELL-NBHRF Awards</b></p>
-<p>AGE-WELL NCE and the <a href='https://www.nbhrf.com/' target='_blank'>New Brunswick Health Research Foundation</a> (NBHRF) are pleased to open the call for the 2020 AGE-WELL-NBHRF Funding Program.  Applicants must be based at a New Brunswick institution.</p>
+<p>AGE-WELL NCE and the <a href='https://www.nbhrf.com/' target='_blank'>New Brunswick Health Research Foundation</a> (NBHRF) are pleased to open the call for the 2021 AGE-WELL-NBHRF Funding Program.  Applicants must be based at a New Brunswick institution.</p>
 
-<p>We expect to offer the following awards in this 2020 call:</p>
+<p>We expect to offer the following awards in this 2021 call:</p>
 <ul>
     <li>Master’s level award at $17,500</li>
     <li>PhD level award at $25,000</li>
@@ -171,38 +171,39 @@ Applicants are asked to review eligibility and program information for each of t
     <li>Postdoctoral level award (MD or Pharm. D) at $56,500</li>
 </ul>
 
-<p>Funding will commence on 1 September 2020 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding will commence on 1 September 2021 and is non-renewable. AGE-WELL and NBHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
 <p><b>AGE-WELL-SHRF Awards</b></p>
-<p>AGE-WELL and the <a href='https://www.shrf.ca/' target='_blank'>Saskatchewan Health Research Foundation</a> are pleased to open the call for the 2020 AGE-WELL-SHRF Postdoctoral Fellowship. The successful recipient must be based at a Saskatchewan institution.</p>
+<p>AGE-WELL and the <a href='https://www.shrf.ca/' target='_blank'>Saskatchewan Health Research Foundation</a> are pleased to open the call for the 2021 AGE-WELL-SHRF Postdoctoral Fellowship. The successful recipient must be based at a Saskatchewan institution.</p>
 
 <p>We expect to offer the following awards in this 2020 call:</p>
 <ul>
     <li>Postdoctoral award at $45,000</li>
 </ul>
-<p>Funding for this award runs from September 1, 2020 – August 31, 2021 and is non-renewable. AGE-WELL and SHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding for this award runs from September 1, 2021 – August 31, 2022 and is non-renewable. AGE-WELL and SHRF will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
-<p><b>AGE-WELL-SFU BPK Awards</b></p>
-<p>AGE-WELL and the <a href='https://www.sfu.ca/bpk.html' target='_blank'>Department of Biomedical Physiology and Kinesiology</a>, Simon Fraser University aim to support a greater number of salary awards to outstanding graduate students enrolled in their department who wish to commence, pursue or sustain their research training in technology and aging.</p>
+<p><b>AGE-WELL-UBC Awards</b></p>
+<p>AGE-WELL and the Institute for Healthy Living and Chronic Disease Prevention, University of British Columbia-Okanagan aim to support a greater number of salary awards to outstanding graduate students enrolled at UBC-O who wish to commence, pursue or sustain their research training in technology and aging.</p>
  
-<p>We expect to offer the following awards in this 2020 call:</p>
+<p>We expect to offer the following awards in this 2021 call:</p>
 <ul>
     <li>Master’s level award at $10,000</li>
-    <li>PhD level award at $15,000 (eligible applicants will be entering years 1-3)</li>
+    <li>PhD level award at $20,000 (eligible applicants will be entering years 1-3)</li>
+    <li>Postdoctoral award at $25,000</li>
 </ul>
-
-<p>Funding for this award runs from September 1, 2020 – August 31, 2021 and is non-renewable. AGE-WELL and SFU BPK will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+ 
+<p>Funding for this award runs from September 1, 2021 – August 31, 2022 and is non-renewable. AGE-WELL and UBC will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
 
 <p><b>AGE-WELL-UofT FASE Awards</b></p>
 <p>AGE-WELL and the <a href='https://www.engineering.utoronto.ca/' target='_blank'>Faculty of Applied Science and Engineering</a>, University of Toronto aim to support a greater number of salary awards to outstanding graduate students enrolled in FASE who wish to commence, pursue or sustain their research training in technology and aging.</p>
  
-<p>We expect to offer the following awards in this 2020 call:</p>
+<p>We expect to offer the following awards in this 2021 call:</p>
 <ul>
     <li>Master’s level award at $10,000</li>
     <li>PhD level award at $15,000 (eligible applicants will be entering years 1-3)</li>
     <li>Postdoctoral award at $20,000</li>
 </ul>
-<p>Funding for this award runs from September 1, 2020 – August 31, 2021 and is non-renewable. AGE-WELL and UofT FASE will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+<p>Funding for this award runs from September 1, 2021 – August 31, 2022 and is non-renewable. AGE-WELL and UofT FASE will individually administer their portion of the award funds. This award is subject to the training and reporting requirements of the AGE-WELL Awards. </p>
         ]]>
         </Static>
     </ReportSection>
@@ -306,9 +307,9 @@ Applicants are asked to review eligibility and program information for each of t
             ]]>
         </ReportItem>
         
-        <ReportItem id="SFU" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SFU" orientation="vertical" options="Master's ($10,000)|PhD ($15,000)" optional="true">
+        <ReportItem id="UBC" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UBC" orientation="vertical" options="Master's ($10,000)|PhD ($20,000)|Postdoctoral ($25,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-SFU BPK Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-UBC Award</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
@@ -361,7 +362,7 @@ Applicants are asked to review eligibility and program information for each of t
             <![CDATA[
                 <b>Statement of research focus (1/2 page)</b>
                     <div style="font-size:smaller;">
-                        <p>AGE-WELL is inviting proposals in the broad area of technology and aging. The research project may be linked to one of AGE-WELL’s eight <a href='http://agewell-nce.ca/research/research-themes-and-projects' target='_blank'>Research Workpackages</a> (WP) 2015-2020 OR one of AGE-WELL's eight <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>Challenge Areas</a>, but does not need to limited to these. Research should address at least one of our key research questions:</p>
+                        <p>AGE-WELL is inviting proposals in the broad area of technology and aging. The research project may be linked to one of AGE-WELL's eight <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>Challenge Areas</a>, but does not need to limited to these. Research should address at least one of our key research questions:</p>
                         <ol>
                             <li>What are the needs of older adults and caregivers?</li>
                             <li>What technology-based systems and services should be used to meet those needs?</li>
@@ -552,7 +553,7 @@ Applicants are asked to review eligibility and program information for each of t
         </ReportItem>
         <ReportItem id="evidence" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
             <![CDATA[
-                <h2>Formal evidence of application or awarded funding for 2019-2020</h2>
+                <h2>Formal evidence of application or awarded funding for 2021-2022</h2>
                 <p>AGE-WELL Awards are intended to enhance existing funding support to promising new scholars. Applicants must receive financial support from additional sources; AGE-WELL project funds are an ineligible source of matching funds for this competition.</p>
                 <ul>
                     <li>Award Offer Letter</li>
