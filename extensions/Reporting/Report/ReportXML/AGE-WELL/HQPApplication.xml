@@ -264,7 +264,7 @@ Applicants are asked to review eligibility and program information for each of t
         
         <ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master’s ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
             <![CDATA[
-                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Please indicate your eligibility and desire to be considered for these awards and confirm that you self-identify as an Indigenous trainee.</i></td><td id='indigenous' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;'><b>Indigenous Graduate Student and Postdoctoral Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards and confirm that you self-identify as an Indigenous trainee.</i></td><td id='indigenous' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
         </ReportItem>
         
