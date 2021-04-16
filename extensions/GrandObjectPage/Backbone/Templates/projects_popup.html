@@ -7,7 +7,7 @@
                    data-parent="<%= id %>" 
                    type="checkbox" 
                    name="subproject" 
-                   <%= this.projectChecked(sub.id) %> />&nbsp;<%= sub.name %>
+                   <%= this.projectChecked(sub.id) %> />&nbsp;<a href="<%= sub.url %>" target="_blank"><%= sub.name %></a>
         </div>
     <% }) %>
 </div>

@@ -1,48 +1,49 @@
 <% if(this.otherProjects.length > 0) { %>
-    <div class="popupHeader">Current Projects</div>
-    <div class="popupBlock">
-        <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-        <% this.otherProjects.each(function(p){ %>
-            <div class="popupMainProject">
-                <input data-project="<%= p.id %>"
-                       type="checkbox" 
-                       name="otherproject"
-                       <%= this.projectChecked(p.id) %> />&nbsp;<%= p.get('name') %>
-                <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
-                    <% _.each(p.get('subprojects'), function(sub) { %>
-                        <div class="subproject">
-                            <input data-project="<%= sub.id %>"
-                                   type="checkbox" 
-                                   name="othersubproject" 
-                                   <%= this.projectChecked(sub.id) %> />&nbsp;<%= sub.name %>
-                        </div>
-                    <% }, this) %>
+    <div style="<% if(this.inlineOther){ %>display:inline-block;vertical-align:top;<% } %>">
+        <div class="popupHeader">Current Projects</div>
+        <div class="popupBlock" style="<% if(this.inlineOther){ %>border-bottom:none;<% } %>">
+            <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
+            <% this.otherProjects.each(function(p){ %>
+                <div class="popupMainProject">
+                    <input data-project="<%= p.id %>"
+                           type="checkbox" 
+                           name="otherproject"
+                           <%= this.projectChecked(p.id) %> />&nbsp;<a href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
+                    <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
+                        <% _.each(p.get('subprojects'), function(sub) { %>
+                            <div class="subproject">
+                                <input data-project="<%= sub.id %>"
+                                       type="checkbox" 
+                                       name="othersubproject" 
+                                       <%= this.projectChecked(sub.id) %> />&nbsp;<a href="<%= sub.url %>" target="_blank"><%= sub.name %></a>
+                            </div>
+                        <% }, this) %>
+                    </div>
                 </div>
-            </div>
-        <% }, this) %>
-    </div>
-<% } %>
-<% if(this.oldProjects.length > 0) { %>
-    <div class="popupHeader">Ended Projects</div>
-    <div class="popupBlock">
-        <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
-        <% this.oldProjects.each(function(p){ %>
-            <div class="popupMainProject">
-                <input data-project="<%= p.id %>"
-                       type="checkbox" 
-                       name="otherproject" 
-                       <%= this.projectChecked(p.id) %> />&nbsp;<%= p.get('name') %>
-                <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
-                    <% _.each(p.get('subprojects'), function(sub) { %>
-                        <div class="subproject">
-                            <input data-project="<%= sub.id %>"
-                                   type="checkbox" 
-                                   name="othersubproject" 
-                                   <%= this.projectChecked(sub.id) %> />&nbsp;<%= sub.name %>
-                        </div>
-                    <% }, this) %>
+            <% }, this) %>
+        </div>
+    </div><% } if(this.oldProjects.length > 0) { %><div style="<% if(this.inlineOther){ %>display:inline-block;vertical-align:top;border-left:1px solid #CCC;<% } %>">
+        <div class="popupHeader">Ended Projects</div>
+        <div class="popupBlock" style="<% if(this.inlineOther){ %>border-bottom:none;<% } %>">
+            <input type="text" class="popupBlockSearch" placeholder="Search..." autocomplete="off" />
+            <% this.oldProjects.each(function(p){ %>
+                <div class="popupMainProject">
+                    <input data-project="<%= p.id %>"
+                           type="checkbox" 
+                           name="otherproject" 
+                           <%= this.projectChecked(p.id) %> />&nbsp;<a href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>
+                    <div class="otherSubProjects" <% if(this.projectChecked(p.id) == ""){ %>style="display:none;" <% } %>>
+                        <% _.each(p.get('subprojects'), function(sub) { %>
+                            <div class="subproject">
+                                <input data-project="<%= sub.id %>"
+                                       type="checkbox" 
+                                       name="othersubproject" 
+                                       <%= this.projectChecked(sub.id) %> />&nbsp;<a href="<%= sub.url %>" target="_blank"><%= sub.name %></a>
+                            </div>
+                        <% }, this) %>
+                    </div>
                 </div>
-            </div>
-        <% }, this) %>
+            <% }, this) %>
+        </div>
     </div>
 <% } %>
