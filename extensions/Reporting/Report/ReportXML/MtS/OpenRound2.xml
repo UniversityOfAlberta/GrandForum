@@ -25,7 +25,7 @@
                     <li>Propose a clear, realistic project budget, including a detailed accounting of cash and in-kind support.</li>
                 </ul>
                 <br />
-                <p>This invitation does not guarantee funding. Research Management Committee will review all applications and recommend proposals that the Board of Directors fund. Please review <a href="{$wgServer}{$wgScriptPath}/data/MtS_Second_Round_Applicant_Guide.pdf" target="_blank">application guide</a> for submission instructions, and access the budget template <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx">here</a>.</p>
+                <p>This invitation does not guarantee funding. Research Management Committee will review all applications and recommend proposals that the Board of Directors fund. Please review <a href="{$wgServer}{$wgScriptPath}/data/MtS_Second_Round_Applicant_Guide2021.pdf" target="_blank">application guide</a> for submission instructions, and access the budget template <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx" target="_blank">here</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -250,7 +250,7 @@
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
             <![CDATA[
                 <h3>V. Budget</h3>
-                <p>Please download the <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx">Budget Template</a> and upload using the following file naming [PILastName_First5WordsOfTitle]_Budget_MtSDataCall_[YYYYMMDD]</p> 
+                <p>Please download the <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx" target="_blank">Budget Template</a> and upload using the following file naming [PILastName_First5WordsOfTitle]_Budget_MtSDataCall_[YYYYMMDD]</p> 
                 
                 {$item}
             ]]>
