@@ -329,7 +329,7 @@
     </ReportSection>
 
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qEducation1" idLabel="Degrees" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
+        <ReportItem id="qEducation1" idLabel="Degrees" type="MultiTextReportItem" types="Text|Text|Text|Date" labels="Degree|University|Country|Date (Awarded/Expected)" sizes="300|200|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
             <![CDATA[
                 
                 <h3>Degrees</h3>
