@@ -36,6 +36,7 @@
             <![CDATA[
                 <h3>Applicant ID</h3>
                 <p>Please enter your 8-digit Admissions Number (beginning with '16' or '17') from your FGSR application. After you have submitted an <a href='https://www.ualberta.ca/graduate-studies/prospective-students/apply-for-admission' target='_blank'>FGSR application</a>, you can login to your <a href='https://graduate-studies-apply.ualberta.ca/urd/sits.urd/run/siw_lgn' target='_blank'>Applicant portal</a>, and you will see your application.  When you click on 'Show Details' it will display your 8-digit Admissions Number (GSMS ID).</p>
+                <p><b>Note:</b> You need to submit your GSMS/FGSR application in order to receive your ID.  You will be able to continue uploading documents to GSMS/FGSR after submitting.</p>
                 
                 {$item}
                 <div id='gsmsIdError1' class='error' style='display:none;'>An ID must be provided</div>
