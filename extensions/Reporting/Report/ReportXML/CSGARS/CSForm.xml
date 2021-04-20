@@ -452,8 +452,7 @@
 
     <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItemSet type="If" if="{and({==({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)},
-                                              {!=({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)},)})}">
+            <ReportItemSet type="If" if="{==({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)}">
                 <ReportItemSet id="if_gpa" type="If" if="{!=({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
                     <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" />
                 </ReportItemSet>
@@ -463,8 +462,7 @@
                     ]]>
                 </ReportItem>
             </ReportItemSet>
-            <ReportItem type="If" if="{or({!=({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)},
-                                          {==({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)},)})}">
+            <ReportItem type="If" if="{!=({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)}">
                 <![CDATA[
                     <p>You must provide an 8-digit Admissions Number.</p>
                 ]]>

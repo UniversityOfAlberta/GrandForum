@@ -23,7 +23,7 @@
     </ReportSection>
 
     <ReportSection id="gsms_ids" tooltip="Applicant ID" name="Applicant ID" title="Applicant ID" blobSection="CS_Questions_tab0" type="EditableReportSection" pagebreak="false" >
-        <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100" >
+        <ReportItem id="gsmsID_OT" type="Text" blobType="BLOB_TEXT" blobItem="gsmsID_OT" limit="100">
             <![CDATA[
                 <h3>Applicant ID</h3>
                 <p>Please enter your 8-digit Admissions Number (beginning with '16' or '17') from your FGSR application. After you have submitted an <a href='https://www.ualberta.ca/graduate-studies/prospective-students/apply-for-admission' target='_blank'>FGSR application</a>, you can login to your <a href='https://graduate-studies-apply.ualberta.ca/urd/sits.urd/run/siw_lgn' target='_blank'>Applicant portal</a>, and you will see your application.  When you click on 'Show Details' it will display your 8-digit Admissions Number (GSMS ID).</p>
@@ -211,7 +211,14 @@
     </ReportSection>
     <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your OT GARS data will be generated. At this point, you will no longer be able to edit your OT GARS data. Please review the correctness of the information you have provided through the Review step. To complete the Letter of Intent all applicants must upload a copy of their PDF in to the Department Check section of the online application. Applications missing the PDF letter of intent will be considered incomplete and not reviewed. As with all supporting documents the Letter of Intent PDF must be uploaded by the application deadline of January 31st, 11:59 p.m. (MST)" />
+            <ReportItemSet type="If" if="{==({strlen({getText(RP_OT,CS_Questions_tab0,gsmsID_OT,0,{$user_id},0)})},8)}">
+                <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your OT GARS data will be generated. At this point, you will no longer be able to edit your OT GARS data. Please review the correctness of the information you have provided through the Review step. To complete the Letter of Intent all applicants must upload a copy of their PDF in to the Department Check section of the online application. Applications missing the PDF letter of intent will be considered incomplete and not reviewed. As with all supporting documents the Letter of Intent PDF must be uploaded by the application deadline of January 31st, 11:59 p.m. (MST)" />
+            </ReportItemSet>
+            <ReportItem type="If" if="{!=({strlen({getText(RP_OT,CS_Questions_tab0,gsmsID_OT,0,{$user_id},0)})},8)}">
+                <![CDATA[
+                    <p>You must provide an 8-digit Admissions Number.</p>
+                ]]>
+            </ReportItem>
         </ReportItemSet>
         <ReportItem id="if_not_eula" type="If" if="{!=({getText(RP_OT,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
             <![CDATA[
