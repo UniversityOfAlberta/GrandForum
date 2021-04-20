@@ -105,14 +105,14 @@
                     margin-top: 8px;
                     margin-right: 8px;" >
                     <h1>Research Interests</h1>
-                    <h3>*Area of Study</h3>
+                    <h3>*Area of Study<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
     
         <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
@@ -307,7 +307,7 @@
     <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" idLabel="Research Experience" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
-                <h3>Describe any prior research experience relevant to your intended area of research at the University of Alberta.   This information will help us identify your potential supervisors.</h3>
+                <h3>Describe any prior research experience relevant to your intended area of research at the University of Alberta.  This information will help us identify your potential supervisors.<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
