@@ -5,12 +5,14 @@ ProjectSelectorView = Backbone.View.extend({
     otherProjects: null,
     oldProjects: null,
     otherOnly: false,
+    inlineOther: false,
     template: _.template($('#project_selector_template').html()),
     otherPopupTemplate: _.template($('#other_popup_template').html()),
     projectsPopupTemplate: _.template($('#projects_popup_template').html()),
 
     initialize: function(options){
         this.otherOnly = (options.otherOnly != undefined) ? options.otherOnly : false;
+        this.inlineOther = (options.inlineOther != undefined) ? options.inlineOther : false;
         
         this.listenTo(Backbone, 'document-click-event', function(e){
             // Clicking somewhere else in the document, close popup
@@ -217,6 +219,9 @@ ProjectSelectorView = Backbone.View.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
+        if(this.inlineOther){
+            this.showOther();
+        }
         return this.$el;
     }
 

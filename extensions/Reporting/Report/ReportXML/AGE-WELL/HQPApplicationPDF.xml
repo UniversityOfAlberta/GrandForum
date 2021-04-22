@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Award 2020" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" ajax="true" disabled="false" year="2020">
+<Report name="Award 2021" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_HQP_APPLICATION" pdfType="RPTP_HQP_APPLICATION" ajax="true" disabled="false" year="2021">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging</h4></div>
+                <div style="margin-top:20px;"><h4 style='font-size:1.5em;'>AGE-WELL Graduate Student and Postdoctoral Awards in Technology and Aging (2021)</h4></div>
                 <div class='logo_div' style="height:20px;margin-top:30px;">
                     <img class='logo' style="position:static; float:right;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 </div>
@@ -102,9 +102,9 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="SFU" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_SFU" orientation="vertical" options="Master's ($10,000)|PhD ($15,000)" optional="true">
+        <ReportItem id="UBC" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_UBC" orientation="vertical" options="Master's ($10,000)|PhD ($20,000)|Postdoctoral ($25,000)" optional="true">
             <![CDATA[
-                <h4>AGE-WELL-SFU BPK Award</h4>
+                <h4>AGE-WELL-UBC Award</h4>
                 <p>{$item}</p><br />
             ]]>
         </ReportItem>

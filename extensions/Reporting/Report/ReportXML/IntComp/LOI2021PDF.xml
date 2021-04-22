@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="UofA-Huawei JIC LOI" reportType="RP_LOI_2021" pdfType="RPTP_LOI_2021"  pdfFiles="LOI2021PDF" year="2021" allowIdProjects="true" ajax="true" disabled="false">
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="PROP_DESC" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <!--img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' /-->
+                <h4 style='font-size:1.20em;'>UofA-Huawei JIC LOI (2021)</h4>
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE" blobType="BLOB_TEXT" width="400px">
+            <![CDATA[
+                <h3>Title of Project</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobItem="PI" class="wikitable" blobType="BLOB_ARRAY" labels="Name|E-mail" sizes="50%|50%">
+            <![CDATA[
+                <h3>UofA Principal Investigator</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="copi" type="MultiText" blobItem="COPI" class="wikitable" blobType="BLOB_ARRAY" labels="Name|E-mail" sizes="50%|50%" multiple="true">
+            <![CDATA[
+                <h3>UofA Co-Principal Investigators (if applicable)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="MultiText" blobItem="CONTACT" class="wikitable" blobType="BLOB_ARRAY" labels="Name|E-mail" sizes="50%|50%" optional="true">
+            <![CDATA[
+                <h3>Huawei Contact (if applicable)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="duration" type="Select" blobItem="DURATION" blobType="BLOB_TEXT" options="1|2|3">
+            <![CDATA[
+                <h3>Proposed Duration</h3>
+                <div>{$item} years</div>
+            ]]>
+        </ReportItem>        
+        <ReportItem id="primary" type="Select" blobItem="PRIMARY" blobType="BLOB_TEXT" options="CSI: Programming languages/intermediate representation and compilers |CSI: Programming models, languages and compilers for productivity/performance on heterogeneous architectures|CSI: Code generation &amp; compiler optimization for performance, energy, portability|CSI: Static, dynamic, and hybrid analysis for performance, energy, memory locality|CSI: AI assisted compiler optimization, auto-tuning and scheduling|CSI: Software-defined architecture, software tooling for reconfigurable architecture|CSI: Data management and storage during entire AI application development cycle|CSI: Training data analysis for DL|CSI: Data visualization during AI application development cycle|CSI: System for RL|CSI: Serverless computing|CSI: Computer Vision and Graphics|CSI: light-weight Web|HiSilicon: AI/ML/RL|HiSilicon: Devices (RF/Optical/Sensors, etc.)|HiSilicon: Semiconductors (process/IO design/logic design, etc.)">
+            <![CDATA[
+                <h3>Topic Alignment (primary)</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <If id="if_primary_other" if="{==({getText(RP_LOI_2021,PROP_DESC,PRIMARY,0,{$user_id},0)},Other)}">
+            <ReportItem id="primary_other" type="Text" blobItem="PRIMARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
+                <![CDATA[
+                    <p><i>&nbsp;-&nbsp;{$item}</i></p>
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="secondary" type="Select" blobItem="SECONDARY" blobType="BLOB_TEXT" options="N/A|CSI: Programming languages/intermediate representation and compilers |CSI: Programming models, languages and compilers for productivity/performance on heterogeneous architectures|CSI: Code generation &amp; compiler optimization for performance, energy, portability|CSI: Static, dynamic, and hybrid analysis for performance, energy, memory locality|CSI: AI assisted compiler optimization, auto-tuning and scheduling|CSI: Software-defined architecture, software tooling for reconfigurable architecture|CSI: Data management and storage during entire AI application development cycle|CSI: Training data analysis for DL|CSI: Data visualization during AI application development cycle|CSI: System for RL|CSI: Serverless computing|CSI: Computer Vision and Graphics|CSI: light-weight Web|HiSilicon: AI/ML/RL|HiSilicon: Devices (RF/Optical/Sensors, etc.)|HiSilicon: Semiconductors (process/IO design/logic design, etc.)" optional="true">
+            <![CDATA[
+                <h3>Topic Alignment (secondary)</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <If id="if_secondary_other" if="{==({getText(RP_LOI_2021,PROP_DESC,SECONDARY,0,{$user_id},0)},Other)}">
+            <ReportItem id="secondary_other" type="Text" blobItem="SECONDARY_OTHER" blobType="BLOB_TEXT" width="300px" optional="true">
+                <![CDATA[
+                    <p><i>&nbsp;-&nbsp;{$item}</i></p>
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="keywords" type="MultiText" blobItem="KEYWORDS" blobType="BLOB_ARRAY" labels="Keyword" showHeader="false" orientation="list" optional="true" multiple="true">
+            <![CDATA[
+                <h3>Keywords</h3>
+                <p>{$item}</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" blobType="BLOB_TEXT" rich="true">
+            <![CDATA[
+                <h3>Proposal Summary</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="attachment" type="UploadPDF" blobType="BLOB_RAW" blobItem="ATTACHMENT" fileSize="10" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

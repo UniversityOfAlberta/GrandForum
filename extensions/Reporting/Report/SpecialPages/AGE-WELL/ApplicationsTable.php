@@ -288,6 +288,7 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2021', $this->fullHQPs, 2021, "2021-07"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2021', $this->fullHQPs, 2021, "2021-04"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2021', $this->fullHQPs, 2021, "2021-01"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2020', $this->fullHQPs, 2020, "2020-07"));
@@ -403,11 +404,31 @@ class ApplicationsTable extends SpecialPage{
         $sfu->setBlobSection(HQP_APPLICATION_FORM);
         $sfu->setId("SFU");
         
+        $ubc = new CheckboxReportItem();
+        $ubc->setBlobType(BLOB_ARRAY);
+        $ubc->setBlobItem("HQP_APPLICATION_UBC");
+        $ubc->setBlobSection(HQP_APPLICATION_FORM);
+        $ubc->setId("UBC");
+        
         $shrf = new CheckboxReportItem();
         $shrf->setBlobType(BLOB_ARRAY);
         $shrf->setBlobItem("HQP_APPLICATION_SHRF");
         $shrf->setBlobSection(HQP_APPLICATION_FORM);
         $shrf->setId("SHRF");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2021, "2021", array("Level" => $level,
+                                                                                                                                   "Michael F. Harcourt" => $michael,
+                                                                                                                                   "Indigenous" => $ind,
+                                                                                                                                   "MIRA" => $mira,
+                                                                                                                                   "UofT" => $uoft,
+                                                                                                                                   "UBC" => $ubc,
+                                                                                                                                   "NBHRF" => $nbhrf,
+                                                                                                                                   "SHRF" => $shrf,
+                                                                                                                                   "Supervisor" => $sup,
+                                                                                                                                   "Institution" => $uni,
+                                                                                                                                   "Status/Department" => $dept,
+                                                                                                                                   "Project Title" => $title,
+                                                                                                                                   "Keywords" => $keywords,)));
         
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array_merge($this->hqps, $this->externals), 2020, "2020", array("Level" => $level,
                                                                                                                                    "Michael F. Harcourt" => $michael,

@@ -21,7 +21,7 @@
         <Role role="FAKENI">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="summary" permissions="" />
             <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
@@ -33,12 +33,12 @@
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="-" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
         <Role role="CI">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="summary" permissions="" />
             <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
@@ -50,12 +50,12 @@
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="-" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
         <Role role="AR">
             <SectionPermission id="instructions" permissions="rw" />
             <SectionPermission id="information" permissions="rw" />
-            <SectionPermission id="summary" permissions="-" />
+            <SectionPermission id="summary" permissions="" />
             <SectionPermission id="figures" permissions="rw" />
             <SectionPermission id="milestones" permissions="rw" />
             <SectionPermission id="achievements" permissions="rw" />
@@ -67,7 +67,7 @@
             <SectionPermission id="ccv" permissions="rw" />
             <SectionPermission id="extension" permissions="rw" />
             <SectionPermission id="review" permissions="r" />
-            <SectionPermission id="submit" permissions="-" />
+            <SectionPermission id="submit" permissions="" />
         </Role>
         <Role role="PL">
             <SectionPermission id="instructions" permissions="rw" />
@@ -441,7 +441,7 @@
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" limit="2000" recommended="true">
+            <ReportItem id="edi" type="TextareaReportItem" blobItem="EDI" rich="true" recommended="true">
                 <![CDATA[
                     <small><br />Please provide an update on your EDI activities.</small>
                     {$item}

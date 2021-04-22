@@ -174,6 +174,15 @@ class ApplicationsTable extends SpecialPage{
                                                                                                   'Secondary' => $secondary));
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         
+        $tab3 = new ApplicationTab('RP_LOI_2021', $this->allPeople, 2021, "Spring 2021", array('Title' => $title, 
+                                                                                               'Duration' => $duration,
+                                                                                               'PI' => $pi,
+                                                                                               'Contact' => $contact,
+                                                                                               'Primary' => $primary,
+                                                                                               'Secondary' => $secondary));
+        $tab3->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
+        
+        $tabbedPage->addTab($tab3);
         $tabbedPage->addTab($tab2);
         $tabbedPage->addTab($tab1);
         

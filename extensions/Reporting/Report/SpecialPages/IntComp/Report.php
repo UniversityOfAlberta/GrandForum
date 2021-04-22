@@ -38,10 +38,24 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         
         if($person->isLoggedIn()){
+            $projectId = 0;
+            do{
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI2021") && ($_GET['project'] == $projectId || (!isset($_GET['project']) && $projectId == 0))) ? "selected" : false;
+                $tabName = ($projectId > 0) ? "[".($projectId+1)."]" : "JIC LOI (Spring 2021)&nbsp;&nbsp;&nbsp;[".($projectId+1)."]";
+                $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab($tabName, "{$url}LOI2021&project=$projectId", $selected);
+                
+                $report = new DummyReport("LOI2021", $person, ++$projectId, YEAR, true);
+            } while($report->hasStarted());
+
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOI2021") && ($_GET['project'] == $projectId)) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}LOI2021&project=$projectId", $selected);
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HuaweiFall2019")) ? "selected" : false;
             $leadership = $person->leadership();
             
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Fall 2019)", "{$url}HuaweiFall2019", $selected);
+            if($person->getId() == 62){
+                $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("JIC (Spring 2019)", "{$url}HuaweiFall2019", $selected);
+            }
 
             if($person->isRole("UAHJIC")){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HuaweiReview")) ? "selected" : false;
@@ -75,19 +89,6 @@ class Report extends AbstractReport{
                     $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProgressReport&project={$project->getName()}", $selected);
                 }
             }
-            
-            /*
-            $projectId = 0;
-            do{
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOIFall2019") && ($_GET['project'] == $projectId || (!isset($_GET['project']) && $projectId == 0))) ? "selected" : false;
-                $tabName = ($projectId > 0) ? "[".($projectId+1)."]" : "JIC LOI (Fall 2019)&nbsp;&nbsp;&nbsp;[".($projectId+1)."]";
-                $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab($tabName, "{$url}LOIFall2019&project=$projectId", $selected);
-                
-                $report = new DummyReport("LOIFall2019", $person, ++$projectId, YEAR, true);
-            } while($report->hasStarted());
-
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LOIFall2019") && ($_GET['project'] == $projectId)) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("[+]", "{$url}LOIFall2019&project=$projectId", $selected);*/
         }
         
         return true;
