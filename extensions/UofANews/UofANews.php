@@ -1,6 +1,7 @@
 <?php
 
 require_once("SpecialUofANews.php");
+require_once("SpecialUofANewsTable.php");
 
 class UofANews {
 
