@@ -24,7 +24,7 @@
                     <% } else { %>
                         <a href="<%= grant.get('url') %>">(Missing Title)</a>
                     <% } %>
-                    <br /><%= grant.get('description') %>
+                    <div style="width:100%;max-height:100px;overflow-y:auto;"><%= grant.get('description') %></div>
                 </td>
                 <td align="center">
                     <% if(grant.get('exclude')){ %>Yes<% } %>
