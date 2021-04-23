@@ -1560,13 +1560,16 @@ class Paper extends BackboneModel{
         }
         
         if(in_array($this->getType(), array('Book', 'Collections Paper', 'Proceedings Paper', 'Journal Paper'))){
-            $pg = $this->getData('pages');
-            if (!(strlen($pg) > 0)){
+            $pg = (isset($this->data['pages'])) ? "{$this->data['pages']}" : null;
+            if ($pg == ''){
                 $completeness['pages'] = false;
             }
-            $pb = $this->getData('publisher');
+            $pb = (isset($this->data['publisher'])) ? "{$this->data['publisher']}" : null;
             if($pb == ''){
                 $completeness['publisher'] = false;
+            }
+            if($vn == ''){
+                $completness['venue'] = false;
             }
         }
 
