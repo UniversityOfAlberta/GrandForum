@@ -37,8 +37,8 @@
                         <%= grant.get('external_pi') %>
                     <% } %>
                 </td>
-                <td><%= grant.get('copi_string') %></td>
-                <td><%= grant.get('sponsor') %></td>
+                <td><div style="width:100%;max-height:110px;overflow-y:auto;"><%= grant.get('copi_string') %></div></td>
+                <td><div style="width:100%;max-height:110px;overflow-y:auto;"><%= grant.get('sponsor') %></div></td>
                 <td><%= grant.get('start_date') %></td>
                 <td><%= grant.get('end_date') %></td>
                 <td align="right"><%= number_format(grant.get('total')) %></td>
