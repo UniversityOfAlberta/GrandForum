@@ -59,15 +59,15 @@ class PersonDataQualityTab extends AbstractTab {
 
             $this->html .= "
             <div id='dataQualityAccordion'>
-                <h3><a href='#'>Profile Errors (".count($errors['profile_errors']).")</a></h3>
+                <h3><a href='#'>Profile Errors (".@count($errors['profile_errors']).")</a></h3>
                 <div>
                 {$profile_checks}
                 </div>
-                <h3><a href='#'>HQP Errors (".count($errors['student_errors']).")</a></h3>
+                <h3><a href='#'>HQP Errors (".@count($errors['student_errors']).")</a></h3>
                 <div>
                 {$hqp_checks}
                 </div>
-                <h3><a href='#'>{$productTerm} Errors (".count($errors['paper_errors']).")</a></h3>
+                <h3><a href='#'>{$productTerm} Errors (".@count($errors['paper_errors']).")</a></h3>
                 <div>
                 {$product_checks}
                 </div>
