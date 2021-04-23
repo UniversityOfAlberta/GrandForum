@@ -12,15 +12,15 @@ EditGrantView = Backbone.View.extend({
                 }.bind(this)
             });
         }
-        this.listenTo(this.model, "change:title", function(){
-            if(this.model.get('title') != ''){
-                main.set('title', this.model.get('title'));
+        this.listenTo(this.model, "change:scientific_title", function(){
+            if(this.model.get('scientific_title') != ''){
+                main.set('title', "<a href='#'>Revenue Accounts</a> > " + this.model.get('scientific_title'));
             }
             else if(this.model.isNew()){
-                main.set('title', 'New Revenue Account');
+                main.set('title', "<a href='#'>Revenue Accounts</a> > " + 'New Revenue Account');
             }
             else if(!this.model.isNew()){
-                main.set('title', 'Editing Revenue Account');
+                main.set('title', "<a href='#'>Revenue Accounts</a> > " + 'Editing Revenue Account');
             }
         });
         this.allPeople = new People();

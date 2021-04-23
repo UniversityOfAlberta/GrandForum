@@ -48,6 +48,7 @@ class ReportItemCallback {
             // Grants
             "grant_id" => "getGrantId",
             "grant_title" => "getGrantTitle",
+            "grant_scientific_title" => "getGrantScientificTitle",
             "grant_description" => "getGrantDescription",
             "grant_sponsor" => "getGrantSponsor",
             "grant_project_id" => "getGrantProjectId",
@@ -354,6 +355,11 @@ class ReportItemCallback {
     function getGrantTitle(){
         $grant = Grant::newFromId($this->reportItem->productId);
         return $grant->getTitle();
+    }
+    
+    function getGrantScientificTitle(){
+        $grant = Grant::newFromId($this->reportItem->productId);
+        return $grant->getScientificTitle();
     }
     
     function getGrantDescription(){

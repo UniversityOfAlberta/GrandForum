@@ -19,8 +19,8 @@
         <% this.model.each(function(grant){ %>
             <tr>
                 <td>
-                    <% if(grant.get('title').trim() != ''){ %>
-                        <a href="<%= grant.get('url') %>"><%= grant.get('title') %></a>
+                    <% if(grant.get('scientific_title').trim() != ''){ %>
+                        <a href="<%= grant.get('url') %>"><%= grant.get('scientific_title') %></a>
                     <% } else { %>
                         <a href="<%= grant.get('url') %>">(Missing Title)</a>
                     <% } %>

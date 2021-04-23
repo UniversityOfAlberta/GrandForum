@@ -49,6 +49,12 @@
             <td><%= end_date.substring(0, 10) %></td>
         </tr>
     <% } %>
+    <% if(title != ""){ %>
+        <tr>
+            <td class="label">Project Title:</td>
+            <td><%= title %></td>
+        </tr>
+    <% } %>
     <% if(project_id != ""){ %>
         <tr>
             <td class="label">Project ID:</td>

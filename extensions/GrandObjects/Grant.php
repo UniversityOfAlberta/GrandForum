@@ -14,6 +14,7 @@ class Grant extends BackboneModel {
     var $funds_before;
     var $funds_after;
     var $title;
+    var $scientific_title;
     var $description;
     var $role;
     var $seq_no;
@@ -81,6 +82,7 @@ class Grant extends BackboneModel {
                 $this->funds_before = $row['funds_before'];
                 $this->funds_after = $row['funds_after'];
                 $this->title = $row['title'];
+                $this->scientific_title = $row['scientific_title'];
                 $this->description = $row['description'];
                 $this->role = $row['role'];
                 $this->seq_no = $row['seq_no'];
@@ -161,6 +163,10 @@ class Grant extends BackboneModel {
   
     function getTitle(){
         return $this->title;
+    }
+    
+    function getScientificTitle(){
+        return $this->scientific_title;
     }
     
     function getDescription(){
@@ -248,6 +254,7 @@ class Grant extends BackboneModel {
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
+                                  'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
                                   'role' => $this->role,
                                   'seq_no' => $this->seq_no,
@@ -296,6 +303,7 @@ class Grant extends BackboneModel {
                                   'funds_before' => str_replace(",", "", $this->funds_before),
                                   'funds_after' => str_replace(",", "", $this->funds_after),
                                   'title' => $this->title,
+                                  'scientific_title' => $this->scientific_title,
                                   'description' => $this->description,
                                   'role' => $this->role,
                                   'seq_no' => $this->seq_no,
@@ -377,6 +385,7 @@ class Grant extends BackboneModel {
             'funds_before' => $this->funds_before,
             'funds_after' => $this->funds_after,
             'title' => $this->title,
+            'scientific_title' => $this->scientific_title,
             'description' => $this->description,
             'role' => $this->role,
             'seq_no' => $this->seq_no,

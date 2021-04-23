@@ -7,7 +7,7 @@ MainView = Backbone.View.extend({
     
     changeTitle: function(){
         $('#pageTitle').html(this.model.get('title'));
-        document.title = this.model.get('title');
+        document.title = $("<div>" + this.model.get('title') + "</div>").text();
         this.$('#pageTitle .tooltip').qtip({
             position: {
                 adjust: {

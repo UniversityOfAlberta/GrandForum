@@ -29,6 +29,7 @@ Grant = Backbone.Model.extend({
             funds_before: 0,
             funds_after: 0,
             title: '',
+            scientific_title: '',
             description: '',
             role: '',
             seq_no: '',

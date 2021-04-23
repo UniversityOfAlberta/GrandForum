@@ -113,7 +113,7 @@ GrantView = Backbone.View.extend({
 
     render: function(){
         main.set('title', this.model.get('title'));
-        $("#pageTitle").html("<a href='#'>Revenue Accounts</a> > " + this.model.get('title'));
+        $("#pageTitle").html("<a href='#'>Revenue Accounts</a> > " + this.model.get('scientific_title'));
         this.$el.html(this.template(this.model.toJSON()));
         this.renderContributions();
         this.renderCoPI();

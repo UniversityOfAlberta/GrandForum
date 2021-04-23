@@ -626,7 +626,7 @@
                     <![CDATA[
                         <tr>
                             <td align='left'>{$grant_project_id}<br />
-                                <p>{$grant_description}</p>
+                                <p>{$grant_scientific_title}</p>
                             </td>
                             <td align='left'>{$grant_sponsor}</td>
                             <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>

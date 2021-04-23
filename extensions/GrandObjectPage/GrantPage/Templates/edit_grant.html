@@ -1,8 +1,7 @@
 <p>
     <h3>Title</h3>
-    <%= HTML.TextBox(this, 'title', {size: '60'}) %>
+    <%= HTML.TextBox(this, 'scientific_title', {size: '60'}) %>
     <h3>Description:</h3>
-    <small>The description is what will show in the Annual Report.  If the description is empty, it will use the title instead.</small><br />
     <%= HTML.TextArea(this, 'description', {style: 'height:150px;width:650px;'}) %>
 </p>
 <div id="preview" style="display:none;"></div>
@@ -35,6 +34,10 @@
     <tr>
         <td class="label">End Date:</td>
         <td colspan="3"><%= HTML.DatePicker(this, 'end_date', {format: 'yy-mm-dd', id: 'end_date'}) %></td>
+    </tr>
+    <tr>
+        <td class="label">Project Title:</td>
+        <td colspan="3"><%= HTML.TextBox(this, 'title', {size: '40'}) %></td>
     </tr>
     <tr>
         <td class="label">Project ID:</td>

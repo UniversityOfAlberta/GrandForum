@@ -550,7 +550,7 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <![CDATA[
                     <tr>
                         <td align='left'>{$grant_project_id}<br />
-                            {$grant_description}
+                            {$grant_scientific_title}
                         </td>
                         <td align='left'>{$grant_sponsor}</td>
                         <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
