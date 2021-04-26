@@ -51,8 +51,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->showFiles();
             $this->html .= "</div>";
         }
-        $this->html .= "    <div style='flex-grow:10;white-space:nowrap;'>
-                                <table>
+        $this->html .= "    <div style='flex-grow:10;white-space:nowrap;display:flex;'>
+                                <div><table>
                             $title";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
@@ -103,7 +103,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "</td></tr>";
             }
         }
-        $this->html .= "</table></div>";
+        $this->html .= "</table></div><div style='width:100%;'>{$this->showCloud()}</div></div>";
         $this->html .= "</div>";
         
         $this->showPeople();
@@ -396,6 +396,17 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= implode(", ", $text);
         }
         $this->html .= "</td></tr>";
+    }
+    
+    function showCloud(){
+        global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
+        $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$this->project->getId()}&limit=50";
+        $wordle = new Wordle($dataUrl, true);
+        $wordle->width = "100%";
+        $wordle->height = 232;
+        return $wordle->show()."<script type='text/javascript'>
+                                    onLoad{$wordle->index}();
+                                </script>";
     }
 
     function showPeople(){

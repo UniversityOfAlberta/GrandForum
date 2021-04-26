@@ -309,12 +309,9 @@ EOF;
         $wordle = new Wordle($dataUrl, true, '$("#personProducts_wrapper input").val(text); $("#personProducts_wrapper input").trigger("keyup")');
         $wordle->width = "100%";
         $wordle->height = 232;
-        $wgOut->addScript("<script type='text/javascript'>
-                                $(document).ready(function(){
+        return $wordle->show()."<script type='text/javascript'>
                                     onLoad{$wordle->index}();
-                                });
-                          </script>");
-        return $wordle->show();
+                                </script>";
     }
     
     static function getPersonCloudData($action, $article){
@@ -377,39 +374,36 @@ EOF;
         $chord->fn = '$("#personProducts_wrapper input").val(data.labels[d.index]); $("#personProducts_wrapper input").trigger("keyup")';
         $html .= $chord->show();
         $html .= "</div>";
-        $wgOut->addScript("<script type='text/javascript'>
-                                $(document).ready(function(){
-                                    $('#vis{$chord->index}').hide();
-                                    var maxWidth = {$chord->width};
-                                    var width = -1;
-                                    var height = {$chord->height};
-                                    var lastWidth = -1;
-                                    setInterval(function(){
-                                        var leftWidth = $('#firstLeft').width();
-                                        var cardWidth = $('#firstLeft div#card').width();
-                                        var widthDiff = leftWidth - cardWidth;
-                                        newWidth = Math.min(maxWidth, widthDiff);
-                                        if($('#vis{$chord->index}').is(':visible') && (width != newWidth || $('#vis{$chord->index} svg').width() != width)){
-                                            width = newWidth;
-                                            height = width;
-                                            if(width < 100){
-                                                // Too small, just don't show it anymore
-                                                $('#vis{$chord->index}').empty();
-                                            }
-                                            else{
-                                                $('#vis{$chord->index}').empty();
-                                                $('#vis{$chord->index}').show();
-                                                render{$chord->index}(width, height);
-                                            }
-                                            $('#vis{$chord->index}').height(Math.max(1,height));
-                                            $('#vis{$chord->index}').width(Math.max(1,width));
-                                            lastWidth = $('#firstLeft').width();
-                                            $('#contact').height(Math.max(172, Math.max(height, $('#contact > #card').height())));
+        return $html."<script type='text/javascript'>
+                                $('#vis{$chord->index}').hide();
+                                var maxWidth = {$chord->width};
+                                var width = -1;
+                                var height = {$chord->height};
+                                var lastWidth = -1;
+                                setInterval(function(){
+                                    var leftWidth = $('#firstLeft').width();
+                                    var cardWidth = $('#firstLeft div#card').width();
+                                    var widthDiff = leftWidth - cardWidth;
+                                    newWidth = Math.min(maxWidth, widthDiff);
+                                    if($('#vis{$chord->index}').is(':visible') && (width != newWidth || $('#vis{$chord->index} svg').width() != width)){
+                                        width = newWidth;
+                                        height = width;
+                                        if(width < 100){
+                                            // Too small, just don't show it anymore
+                                            $('#vis{$chord->index}').empty();
                                         }
-                                    }, 100);
-                                });
-                          </script>");
-        return $html;
+                                        else{
+                                            $('#vis{$chord->index}').empty();
+                                            $('#vis{$chord->index}').show();
+                                            render{$chord->index}(width, height);
+                                        }
+                                        $('#vis{$chord->index}').height(Math.max(1,height));
+                                        $('#vis{$chord->index}').width(Math.max(1,width));
+                                        lastWidth = $('#firstLeft').width();
+                                        $('#contact').height(Math.max(172, Math.max(height, $('#contact > #card').height())));
+                                    }
+                                }, 100);
+                          </script>";
     }
     
     function showFundedProjects($person, $visibility){
