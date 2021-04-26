@@ -139,7 +139,7 @@ class ProjectVisualizationsTab extends AbstractTab {
     function showWordle($project, $visibility){
         global $wgServer, $wgScriptPath, $wgTitle, $wgOut, $wgUser;
         if($wgUser->isLoggedIn()){
-            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}";
+            $dataUrl = "$wgServer$wgScriptPath/index.php/{$wgTitle->getNSText()}:{$wgTitle->getText()}?action=getProjectWordleData&project={$project->getId()}&limit=250";
             $wordle = new Wordle($dataUrl);
             $wordle->width = "100%";
             $wordle->height = 480;
@@ -476,12 +476,19 @@ class ProjectVisualizationsTab extends AbstractTab {
 	static function getProjectWordleData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getProjectWordleData"){
-	        
 	        $project = Project::newFromId($_GET['project']);
-	        $description = strip_tags($project->getDescription());
-	        
+	        $description = strip_tags($project->getDescription())."\n";
+	        foreach($project->getAllPeople() as $person){
+	            $description .= strip_tags($person->getProfile())."\n";
+	        }
+	        foreach($project->getPapers('all', "0000-00-00", "2100-01-01") as $product){
+	            $description .= strip_tags($product->getTitle())."\n";
+	            $description .= strip_tags($product->getDescription())."\n";
+	        }
 	        $data = Wordle::createDataFromText($description);
-
+            if(isset($_GET['limit']) && is_numeric($_GET['limit'])){
+                $data = array_splice($data, 0, $_GET['limit']);
+            }
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;

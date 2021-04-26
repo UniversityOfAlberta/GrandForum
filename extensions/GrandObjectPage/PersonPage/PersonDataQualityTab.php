@@ -57,17 +57,17 @@ class PersonDataQualityTab extends AbstractTab {
 
             $productTerm = $config->getValue('productsTerm');
 
-            $this->html .=<<<EOF
+            $this->html .= "
             <div id='dataQualityAccordion'>
-                <h3><a href='#'>Profile Errors</a></h3>
+                <h3><a href='#'>Profile Errors (".@count($errors['profile_errors']).")</a></h3>
                 <div>
                 {$profile_checks}
                 </div>
-                <h3><a href='#'>HQP Errors</a></h3>
+                <h3><a href='#'>HQP Errors (".@count($errors['student_errors']).")</a></h3>
                 <div>
                 {$hqp_checks}
                 </div>
-                <h3><a href='#'>{$productTerm} Errors</a></h3>
+                <h3><a href='#'>{$productTerm} Errors (".@count($errors['paper_errors']).")</a></h3>
                 <div>
                 {$product_checks}
                 </div>
@@ -75,8 +75,7 @@ class PersonDataQualityTab extends AbstractTab {
                 <div>
                 {$duplicates}
                 </div>
-            </div>
-EOF;
+            </div>";
         }
         
 
@@ -238,7 +237,7 @@ EOF;
             if(empty($ni_position)){ $ni_errors['profile_pri'][] = "Missing private profile"; }
 
             //Product completeness
-            $papers = $person->getPapersAuthored("all", "2012-01-01 00:00:00", "2013-05-01 00:00:00", false);
+            $papers = $person->getPapersAuthored("all", "1900-01-01 00:00:00", "2100-01-01 00:00:00", false);
             $person_paper_errors = array();
 
             foreach($papers as $paper){
@@ -248,7 +247,7 @@ EOF;
                 $errors = array();
                 $completeness = $paper->getCompleteness();
                 if(!$completeness['venue']){
-                    $errors[] = "Does not have a venue.";
+                    $errors[] = "Does not have a venue/journal.";
                 }
 
                 if(!$completeness['pages']){
