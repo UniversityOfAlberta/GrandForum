@@ -3714,17 +3714,21 @@ class Person extends BackboneModel {
         $papers = Product::getByIds($papers);
         $structure = Product::structure();
         foreach($papers as $paper){
-            $acceptanceDate = $paper->getAcceptanceDate();
-            $date = ($onlyUseStartDate) ? $acceptanceDate : $paper->getDate();
-            if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
-                $acceptanceDate = $date;
-            }
             $type = explode(":", $paper->getType());
             $dateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["date_label"];
             $acceptanceDateLabel = @$structure['categories'][$paper->getCategory()]['types'][$type[0]]["acceptance_date_label"];
             $reportedYear = $paper->getReportedForPerson($this->getId());
+            $acceptanceDate = $paper->getAcceptanceDate();
+            $date = ($onlyUseStartDate) ? $acceptanceDate : $paper->getDate();
+            if(($acceptanceDateLabel == "Acceptance Date" && $acceptanceDate == "0000-00-00" && $date >= "2020-07-01")){
+                // Don't allow papers without acceptance dates (starting 2020-07-01)
+                continue;
+            }
+            if($acceptanceDate == "0000-00-00" || $acceptanceDate == ""){
+                $acceptanceDate = $date;
+            }
             if(!$paper->deleted && ($category == 'all' || $paper->getCategory() == $category) &&
-               $paper->getId() != 0 && 
+               $paper->getId() != 0 &&
                (// Handle Products Normally
                 ($date >= $startRange && $date <= $endRange ||
                 ($acceptanceDate >= $startRange && $acceptanceDate <= $endRange && $acceptanceDateLabel != "")) ||
