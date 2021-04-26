@@ -62,7 +62,7 @@
     }
     
     $allNews = UofANews::getAllNews();
-    $searchEngines = (file_exists("searchEngines.json")) ? json_decode(file_get_contents("searchEngines.json"), true) : array();
+    $searchEngines = (file_exists(__DIR__."/searchEngines.json")) ? json_decode(file_get_contents(__DIR__."/searchEngines.json"), true) : array();
     foreach($allNews as $news){
         if(strstr($news->getUrl(), "folio") !== false){
             echo $news->getUrl()."\n";
@@ -92,7 +92,7 @@
             echo ($searchEngines[$news->getUrl()]['yahoo']) ? "Found\n" : (($searchEngines[$news->getUrl()]['yahoo'] === false) ? "Not Found\n" : "Error\n");
             
             // Save json
-            file_put_contents("searchEngines.json", json_encode($searchEngines));
+            file_put_contents(__DIR__."/searchEngines.json", json_encode($searchEngines));
             if($changed){
                 sleep(rand(45, 60)); // Random sleep time to help prevent being blocked
             }
