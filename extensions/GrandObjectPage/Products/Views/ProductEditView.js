@@ -225,6 +225,8 @@ ProductEditView = Backbone.View.extend({
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
         }
         this.$("#productAuthors").append("<p><i>Right-Click " + this.model.getAuthorsLabel().toLowerCase() + " to toggle between non-UofA and UofA member (if they are known)</i></p>");
+        this.$("#productAuthors").append("<p><i>Green Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>known</b> to the UofA.<br />" + 
+                                         "   <i>White Background: " + this.model.getAuthorsLabel().toLowerCase() + " is <b>not</b> known to the UofA.</i></p>");
         this.$("#productAuthors .tagit").sortable({
             stop: function(event,ui) {
                 $('input[name=authors_fullname]').val(
