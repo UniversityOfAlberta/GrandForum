@@ -51,8 +51,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->showFiles();
             $this->html .= "</div>";
         }
-        $this->html .= "    <div style='flex-grow:10;white-space:nowrap;display:flex;'>
-                                <div><table>
+        $this->html .= "    <div style='flex-grow:10;white-space:nowrap;display:flex;flex-wrap:wrap;'>
+                                <div style='flex: 0 1 30%;'><table>
                             $title";
         if($project->getType() != "Administrative"){
             $this->showChallenge();
@@ -103,7 +103,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 $this->html .= "</td></tr>";
             }
         }
-        $this->html .= "</table></div><div style='width:100%;'>{$this->showCloud()}</div></div>";
+        $this->html .= "</table></div><div style='flex: 0 1 70%;'>{$this->showCloud()}</div></div>";
         $this->html .= "</div>";
         
         $this->showPeople();
