@@ -75,7 +75,7 @@ class Posting extends BackboneModel {
     static function getDeletedPostings(){
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
-                                    array('delete' => 1));
+                                    array('deleted' => 1));
         $postings = array();
         foreach($data as $row){
             $posting = new static(array($row));
