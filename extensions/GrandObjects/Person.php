@@ -218,7 +218,7 @@ class Person extends BackboneModel {
                 $alias);
         $alias = trim($alias);
         
-        if (array_key_exists($alias, self::$cache)) {
+        if(isset(self::$cache[$alias])){
             return self::$cache[$alias];
         }
         else {
@@ -232,15 +232,14 @@ class Person extends BackboneModel {
             }
         }
 
-        switch (count($data)) {
-        case 0:
+        if(count($data) == 0){
             self::$cache[$alias] = false;
             return false;
-        case 1:
-            // Check again the cache, in case the alias is an alternate
-            // for an already-instantiated user.
+        }
+        else {
+            // This could have multiple results if there is a duplicate alias
             $id = $data[0]['user_id'];
-            if (array_key_exists($id, self::$cache)) {
+            if(isset(self::$cache[$id])){
                 // Mark this alias too.
                 self::$cache[$alias] = self::$cache[$id];
                 return self::$cache[$id];
@@ -251,8 +250,6 @@ class Person extends BackboneModel {
             self::$cache[$person->getId()] = &$person;
             self::$cache[$person->getName()] = &$person;
             return $person;
-        default:
-            throw new DomainException("Alias is not unique.");
         }
     }
     
@@ -1951,7 +1948,39 @@ class Person extends BackboneModel {
         return $format;
     }
 
-
+    /**
+     * Returns an array of aliases for this Person
+     * @return array This Person's aliases
+     */
+    function getAliases(){
+        $data = DBFunctions::select(array('mw_user_aliases'),
+                                    array('*'),
+                                    array('user_id' => $this->id));
+        $aliases = array();
+        foreach($data as $row){
+            $aliases[] = $row['alias'];
+        }
+        return $aliases;
+    }
+    
+    /**
+     * Updates the Person's aliases
+     * @param array $aliases The array of aliases
+     * @return array This Person's aliases
+     */
+    function setAliases($aliases){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEdit($this)){
+            DBFunctions::delete('mw_user_aliases',
+                                array('user_id' => $this->id));
+            foreach($aliases as $alias){
+                DBFunctions::insert('mw_user_aliases',
+                                    array('user_id' => $this->id,
+                                          'alias' => $alias));
+            }
+        }
+        return $aliases;
+    }
     
     // Returns the user's profile.
     // If $private is true, then it grabs the private version, otherwise it gets the public

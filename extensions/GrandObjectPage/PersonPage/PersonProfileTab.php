@@ -98,6 +98,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->person->privateProfile = @$_POST['private_profile'];
         $this->person->update();
         $this->person->setKeywords(explode(",", $_POST['keywords']));
+        $this->person->setAliases(explode(";", $_POST['aliases']));
         
         // Update Role Titles
         if(isset($_POST['role_title'])){
@@ -639,7 +640,7 @@ EOF;
             if(count($stakeholderCategories) > 0){
                 $blankSelected = (!$person->isStakeholder()) ? "selected='selected'" : "";
                 $stakeholder = "<tr>
-                    <td align='right'><b>Stakeholder<br />Category:</b></td>
+                    <td align='right'><b>Stakeholder Category:</b></td>
                     <td>
                         <select name='stakeholder'>
                             <option value='' $blankSelected>---</option>";
@@ -762,6 +763,10 @@ EOF;
                                 <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
+                                <td align='right'><b>Aliases:</b><br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
+                                <td style='max-width: 0;' valign='top'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
+                            </tr>
+                            <tr>
                                 <td align='right'><b>Email:</b></td>";
         if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
             $this->html .= "<td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
@@ -807,6 +812,13 @@ EOF;
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
         $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input type='button' id='addUniversity' value='Add Institution' />
         <script type='text/javascript'>
+            $('input[name=aliases]').tagit({
+                allowSpaces: true,
+                removeConfirmation: false,
+                singleField: true,
+                singleFieldDelimiter: ';',
+            });
+            
             var model = new Person({id: {$this->person->getId()}});
             var view = new ManagePeopleEditUniversitiesView({model: model.universities, person: model, el: $('#editUniversities')});
             $('#addUniversity').click(function(){
