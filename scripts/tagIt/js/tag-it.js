@@ -160,12 +160,12 @@
 
             // Bind autocomplete.source callback functions to this context.
             if ($.isFunction(this.options.autocomplete.source)) {
-                this.options.autocomplete.source = $.proxy(this.options.autocomplete.source, this);
+                this.options.autocomplete.source = this.options.autocomplete.source.bind(this);
             }
 
             // DEPRECATED.
             if ($.isFunction(this.options.tagSource)) {
-                this.options.tagSource = $.proxy(this.options.tagSource, this);
+                this.options.tagSource = this.options.tagSource.bind(this);
             }
 
             this.tagList
@@ -238,7 +238,7 @@
                     // Tab will also create a tag, unless the tag input is empty, 
                     // in which case it isn't caught.
                     if (
-                        event.which === $.ui.keyCode.COMMA ||
+                        event.which === this.options.singleFieldDelimiter.charCodeAt(0) ||
                         event.which === $.ui.keyCode.ENTER ||
                         (
                             event.which == $.ui.keyCode.TAB &&
@@ -268,7 +268,7 @@
                         // So let's ensure that it closes.
                         that.tagInput.autocomplete('close');
                     }
-                }).blur(function(e){
+                }.bind(this)).blur(function(e){
                     // Create a tag when the element loses focus.
                     // If autocomplete is enabled and suggestion was clicked, don't add it.
                     if (!that.tagInput.data('autocomplete-open')) {
