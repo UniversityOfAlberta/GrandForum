@@ -493,6 +493,7 @@ class IndexTable {
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
         $visibility = true;
+        header("HTTP/1.0: 200");
         $tabbedPage->addTab(new PeopleTableTab($table, $visibility, false));
         if($table != "Candidate"){
             $tabbedPage->addTab(new PeopleTableTab($table, $visibility, true));
@@ -507,7 +508,17 @@ class IndexTable {
             }
         }
         $tabbedPage->showPage();
-        $wgOut->addHTML("<script type='text/javascript'>$('.custom-title').hide();</script>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.custom-title').hide();
+        </script>");
+        foreach($tabbedPage->tabs as $key => $tab){
+            if(@$_GET['tab'] == $tab->id || (@$_GET['tab'] == "" && $key == 0)){
+                $wgOut->addHTML("<script type='text/javascript'>
+                    {$tab->tabSelect()}
+                </script>");
+                break;
+            }
+        }
         return true;
     }
     

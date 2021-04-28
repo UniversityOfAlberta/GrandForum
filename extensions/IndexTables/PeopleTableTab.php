@@ -28,10 +28,30 @@ class PeopleTableTab extends AbstractTab {
         $this->table = $table;
         $this->visibility = $visibility;
         $this->past = $past;
+        if(isset($_GET['getHTML']) && @$_GET['tab'] == $this->id){
+            echo $this->getHTML();
+            exit;
+        }
+    }
+    
+    function tabSelect(){
+        global $wgServer, $wgScriptPath, $config;
+        return "_.defer(function(){
+            if($('.indexTable.{$this->id}').length == 0){
+                $.get('{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?getHTML&tab={$this->id}', function(response){
+                    $('#{$this->id}').html(response);
+                });
+            }
+        });";
     }
 
     function generateBody(){
+        $this->html = "<span class='throbber'></span>";
+    }
+    
+    function getHTML(){
         global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config, $wgRoleValues;
+        $html = "";
         $me = Person::newFromId($wgUser->getId());
         $start = "";
         $end = "";
@@ -127,7 +147,7 @@ class PeopleTableTab extends AbstractTab {
             $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
         }
         $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
-        $this->html .= "<table class='indexTable {$this->id}' style='display:none;' frame='box' rules='all'>
+        $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
                                     <th style='white-space: nowrap; width:20%;'>Name</th>
@@ -173,7 +193,7 @@ class PeopleTableTab extends AbstractTab {
                 }
             }
             $count++;
-            $this->html .= "
+            $html .= "
                 <tr>
                     <td align='center' style='white-space: nowrap;'>
                         <a href='{$person->getUrl()}'><img src='{$person->getPhoto(true)}' style='max-width:100px;max-height:132px; border-radius: 5px;' /></a><br />
@@ -190,7 +210,7 @@ class PeopleTableTab extends AbstractTab {
                 foreach(@$person->getSubRoles() as $sub){
                     $subRoles[] = $config->getValue('subRoles', $sub);
                 }
-                $this->html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
+                $html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
             }
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
                 $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
@@ -212,31 +232,31 @@ class PeopleTableTab extends AbstractTab {
                         $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                     }
                 }
-                $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
+                $html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             // Current University
             $university = $person->getUniversity();
             if($uniHeader != ''){
-                $this->html .= "<td align='left'>{$university['university']}</td>";
+                $html .= "<td align='left'>{$university['university']}</td>";
             }
             if($person->getFaculty() != ""){
-                $this->html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
+                $html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
             }
             else{
-                $this->html .= "<td align='left'>{$person->getDepartment()}</td>";
+                $html .= "<td align='left'>{$person->getDepartment()}</td>";
             }
-            $this->html .= "<td align='left'>{$university['position']}</td>";
+            $html .= "<td align='left'>{$university['position']}</td>";
             // First University
             $firstuniversity = $person->getFirstUniversity();
-            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
-            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
-            $this->html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
+            $html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
             if($hqpHeader != ''){
                 $supervisors = array();
                 foreach($person->getSupervisorsDuring($start, $end) as $supervisor){
                     $supervisors[$supervisor->id] = "<a href='{$supervisor->getUrl()}'>{$supervisor->getNameForForms()}</a>";
                 }
-                $this->html .= "<td>".implode("; ", $supervisors)."</td>";
+                $html .= "<td>".implode("; ", $supervisors)."</td>";
             }
             $keywords = $person->getKeywords(', ');
             $bio = strip_tags(trim($person->getProfile()));
@@ -246,7 +266,7 @@ class PeopleTableTab extends AbstractTab {
             if($keywords != "" && $bio != ""){
                 $keywords .= "<br /><br />";
             }
-            $this->html .= "<td align='left'>{$keywords}{$bio}</td>";
+            $html .= "<td align='left'>{$keywords}{$bio}</td>";
             if($statusHeader != ''){
                 if($person->isRole($this->table)){
                     $status = "Active";
@@ -256,81 +276,82 @@ class PeopleTableTab extends AbstractTab {
                     $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
                 if($config->getValue("genderEnabled")){
-                    $this->html .= "<td align='left'>{$person->getGender()}</td>";
+                    $html .= "<td align='left'>{$person->getGender()}</td>";
                 }
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
-                    $this->html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
+                    $html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
                 }
                 if($config->getValue('ecrEnabled')){
-                    $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
+                    $html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
                 }
                 if($config->getValue('agenciesEnabled')){
-                    $this->html .= "<td align='left'>{$person->getAgencies(', ')}</td>";
+                    $html .= "<td align='left'>{$person->getAgencies(', ')}</td>";
                 }
                 if($config->getValue('mitacsEnabled')){
-                    $this->html .= "<td align='left'>{$person->getMitacs()}</td>";
+                    $html .= "<td align='left'>{$person->getMitacs()}</td>";
                 }
                 if($me->isRoleAtLeast(MANAGER)){
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
-                    $this->html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
+                    $html .= "<td align='left' style='display:none;'>{$person->getIndigenousStatus()}</td>";
+                    $html .= "<td align='left' style='display:none;'>{$person->getDisabilityStatus()}</td>";
+                    $html .= "<td align='left' style='display:none;'>{$person->getMinorityStatus()}</td>";
                 }
                 if($config->getValue("nationalityEnabled")){
-                    $this->html .= "<td align='left'>{$person->getNationality()}</td>";
+                    $html .= "<td align='left'>{$person->getNationality()}</td>";
                 }
-                $this->html .= "<td align='left'>{$status}</td>";
+                $html .= "<td align='left'>{$status}</td>";
             }
             if($epicHeader != ''){
                 $hqpTab = new HQPEpicTab($person, array());
                 $date = $hqpTab->getBlobValue('HQP_EPIC_REP_DATE');
-                $this->html .= "<td align='left'>{$date}</td>";
+                $html .= "<td align='left'>{$date}</td>";
                 $doc1 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_A');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
+                $html .= "<td align='center'><span style='font-size:2em;'>{$doc1}</span></td>";
                 $doc2 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_COI');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
+                $html .= "<td align='center'><span style='font-size:2em;'>{$doc2}</span></td>";
                 $doc3 = $hqpTab->getBlobValue('HQP_EPIC_DOCS_NDA');
-                $this->html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
+                $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
                 if($person->getEmail() == ""){
-                    $this->html .= "<td></td>";
+                    $html .= "<td></td>";
                 }
                 else {
-                    $this->html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                    $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 }
-                $this->html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
+                $html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
                 if($person->getEmail() == ""){
-                    $this->html .= "<td></td>";
+                    $html .= "<td></td>";
                 }
                 else {
-                    $this->html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
+                    $html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
                 }
             }
             if($idHeader != ''){
-                $this->html .= "<td>{$person->getId()}</td>";
+                $html .= "<td>{$person->getId()}</td>";
             }
-            $this->html .= "</tr>";
+            $html .= "</tr>";
         }
-        $this->html .= "</tbody></table><script type='text/javascript'>
-        $('.indexTable.{$this->id}').dataTable({
-            'aLengthMenu': [[100,-1], [100,'All']], 
-            'iDisplayLength': 100, 
-            'autoWidth':false,
-            'columnDefs': [
-                ($('.indexTable.{$this->id} th').index($('#epicHeader')) != -1) ? {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))} : {}
-            ],
-            'dom': 'Blfrtip',
-            'buttons': [
-                'excel', 'pdf'
-            ]
-        });</script>";
+        $html .= "</tbody></table><script type='text/javascript'>
+            $('.indexTable.{$this->id}').dataTable({
+                'aLengthMenu': [[100,-1], [100,'All']], 
+                'iDisplayLength': 100, 
+                'autoWidth':false,
+                'columnDefs': [
+                    ($('.indexTable.{$this->id} th').index($('#epicHeader')) != -1) ? {'type': 'date', 'targets': $('.indexTable.{$this->id} th').index($('#epicHeader'))} : {}
+                ],
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel', 'pdf'
+                ]
+            });
+        </script>";
         if($count == 0){
-            $this->html = "";
+            $html = "No people found for this time period";
         }
-        return $this->html;
+        return $html;
     }
     
 }
