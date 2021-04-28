@@ -667,10 +667,10 @@ abstract class QueryableTable {
                             $class .= " explicitSpan";
                         }
                         if($Cell->wrap){
-                            $ret[] = "<td style='width:3em;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                            $ret[] = "<td style='width:3em;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                         }
                         else{
-                            $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class' colspan='$span' class='smaller'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
+                            $ret[] = "<td nowrap='nowrap' style='width:3em;white-space:nowrap;$style' class='$class smaller' colspan='$span'>{$errorMsg}{$cell}{$errorMsgEnd}</td>\n";
                         }
                         
                         ++$i;

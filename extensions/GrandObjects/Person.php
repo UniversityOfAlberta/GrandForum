@@ -2994,7 +2994,8 @@ class Person extends BackboneModel {
      */
     function getProjects($history=false, $allowProposed=false){
         $projects = array();
-        if(($this->projects === null || $history) && $this->id != null){
+        if((($this->projects === null && $history === false) || 
+            (!isset($this->projectCache["{$history}"]) && $history !== false)) && $this->id != null){
             $sql = "SELECT p.name
                     FROM grand_project_members u, grand_project p
                     WHERE user_id = '{$this->id}'
@@ -3023,12 +3024,18 @@ class Person extends BackboneModel {
                     }
                 }
             }
+            if($history === false){
+                $this->projects = $projects;
+            }
+            else{
+                $this->projectCache["{$history}"] = $projects;
+            }
         }
-        if($history === false && $this->projects === null){
-            $this->projects = $projects;
-        }
-        if($history === false && $this->projects !== null){
+        if($history === false){
             return $this->projects;
+        }
+        else {
+            return $this->projectCache["{$history}"];
         }
         return $projects;
     }
