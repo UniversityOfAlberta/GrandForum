@@ -36,9 +36,10 @@ class PeopleTableTab extends AbstractTab {
     
     function tabSelect(){
         global $wgServer, $wgScriptPath, $config;
+        $tabTitle = ($this->table == "Candidate") ? "Candidates" : $this->table;
         return "_.defer(function(){
             if($('.indexTable.{$this->id}').length == 0){
-                $.get('{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$this->table}?getHTML&tab={$this->id}', function(response){
+                $.get('{$wgServer}{$wgScriptPath}/index.php/{$config->getValue('networkName')}:ALL_{$tabTitle}?getHTML&tab={$this->id}', function(response){
                     $('#{$this->id}').html(response);
                 });
             }

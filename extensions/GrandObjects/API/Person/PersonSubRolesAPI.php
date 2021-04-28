@@ -47,6 +47,7 @@ class PersonSubRolesAPI extends RESTAPI {
                 }
             }
             DBFunctions::commit();
+            Person::$subRolesCache = array();
             MailingList::subscribeAll($person);
             return $this->doGET();
         }
