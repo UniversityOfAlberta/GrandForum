@@ -155,6 +155,7 @@ class ReportItemCallback {
             "getArray" => "getArray",
             "getExtra" => "getExtra",
             "concat" =>"concat",
+            "strlen" => "strlen",
             "add" => "add",
             "subtract" => "subtract",
             "multiply" => "multiply",
@@ -1732,6 +1733,10 @@ class ReportItemCallback {
             $concat .= $arg;
         }
         return $concat;
+    }
+    
+    function strlen($str){
+        return strlen($str);
     }
     
     function add(){

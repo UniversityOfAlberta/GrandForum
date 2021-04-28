@@ -36,6 +36,7 @@
             <![CDATA[
                 <h3>Applicant ID</h3>
                 <p>Please enter your 8-digit Admissions Number (beginning with '16' or '17') from your FGSR application. After you have submitted an <a href='https://www.ualberta.ca/graduate-studies/prospective-students/apply-for-admission' target='_blank'>FGSR application</a>, you can login to your <a href='https://graduate-studies-apply.ualberta.ca/urd/sits.urd/run/siw_lgn' target='_blank'>Applicant portal</a>, and you will see your application.  When you click on 'Show Details' it will display your 8-digit Admissions Number (GSMS ID).</p>
+                <p><b>Note:</b> You need to submit your GSMS/FGSR application in order to receive your ID.  You will be able to continue uploading documents to GSMS/FGSR after submitting.</p>
                 
                 {$item}
                 <div id='gsmsIdError1' class='error' style='display:none;'>An ID must be provided</div>
@@ -104,14 +105,14 @@
                     margin-top: 8px;
                     margin-right: 8px;" >
                     <h1>Research Interests</h1>
-                    <h3>*Area of Study</h3>
+                    <h3>*Area of Study<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
     
         <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
@@ -306,7 +307,7 @@
     <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" idLabel="Research Experience" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
             <![CDATA[
-                <h3>Describe any prior research experience relevant to your intended area of research at the University of Alberta.   This information will help us identify your potential supervisors.</h3>
+                <h3>Describe any prior research experience relevant to your intended area of research at the University of Alberta.  This information will help us identify your potential supervisors.<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -329,7 +330,7 @@
     </ReportSection>
 
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qEducation1" idLabel="Degrees" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)" sizes="300|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
+        <ReportItem id="qEducation1" idLabel="Degrees" type="MultiTextReportItem" types="Text|Text|Text|Date" labels="Degree|University|Country|Date (Awarded/Expected)" sizes="300|200|200|100" start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" limit="150" width="98%">
             <![CDATA[
                 
                 <h3>Degrees</h3>
@@ -452,12 +453,19 @@
 
     <ReportSection id="submit" tooltip="Submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItemSet id="if_eula" type="If" if="{==({getText(RP_CS,OT_EULA,EULA,0,{$user_id},0)},Yes)}">
-            <ReportItemSet id="if_gpa" type="If" if="{!=({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
-                <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" />
+            <ReportItemSet type="If" if="{==({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)}">
+                <ReportItemSet id="if_gpa" type="If" if="{!=({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
+                    <ReportItem id="review" type="SimpleReviewSubmitReportItem" text="By clicking the SUBMIT button above, a PDF document with your CS GARS data will be generated and submitted to the CS department. &lt;br />&lt;b style='color:red;'>At this point, you will no longer be able to edit your CS GARS data. Please review the correctness of the information you have provided through the Review step.&lt;/b>" />
+                </ReportItemSet>
+                <ReportItem id="if_not_gpa" type="If" if="{==({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
+                    <![CDATA[
+                        <p>You must provide a GPA.</p>
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
-            <ReportItem id="if_not_gpa" type="If" if="{==({getText(RP_CS,CS_QUESTIONS_tab1,Q21,0,{$user_id},0)},)}">
+            <ReportItem type="If" if="{!=({strlen({getText(RP_CS,CS_Questions_tab0,gsmsIDCS,0,{$user_id},0)})},8)}">
                 <![CDATA[
-                    <p>You must provide a GPA.</p>
+                    <p>You must provide an 8-digit Admissions Number.</p>
                 ]]>
             </ReportItem>
         </ReportItemSet>

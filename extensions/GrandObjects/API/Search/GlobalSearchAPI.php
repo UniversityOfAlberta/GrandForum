@@ -15,10 +15,12 @@ class GlobalSearchAPI extends RESTAPI {
         $searchNames = array_filter(explode("*", str_replace(".", "*", unaccentChars($search))));
         switch($group){
             case 'people':
-                $person = Person::newFromGSMSId($origSearch);
-                if (($person != null) && ($person->getId() != 0)) {
-                    $array['results'][] = $person->getId();
-                    return json_encode($array);
+                if(is_numeric($origSearch)){
+                    $person = Person::newFromGSMSId($origSearch);
+                    if (($person != null) && ($person->getId() != 0)) {
+                        $array['results'][] = $person->getId();
+                        return json_encode($array);
+                    }
                 }
 
                 $data = array();
@@ -26,10 +28,6 @@ class GlobalSearchAPI extends RESTAPI {
                                               array('user_name', 'user_real_name', 'user_id', 'user_email'),
                                               array('deleted' => '0'));
                 foreach($people as $pRow){
-                    $check = Person::newFromName($pRow['user_name']);
-                    if($check->getId() == 0){
-                        continue;
-                    }
                     $person = new Person(array());
                     $person->name = $pRow['user_name'];
                     $person->realname = $pRow['user_real_name'];
@@ -37,9 +35,9 @@ class GlobalSearchAPI extends RESTAPI {
                         // Only search by email if the person is logged in
                         $person->email = $pRow['user_email'];
                     }
-                    $realName = $person->getNameForForms();
-                    $names = array_merge(explode(".", str_replace(" ", "", unaccentChars($realName))), 
-                                         explode(" ", str_replace(".", "", unaccentChars($realName))));
+                    $realName = unaccentChars($person->getNameForForms());
+                    $names = array_merge(explode(".", str_replace(" ", "", $realName)), 
+                                         explode(" ", str_replace(".", "", $realName)));
                     $names[] = unaccentChars($person->getEmail());
                     $found = true;
                     foreach($searchNames as $name){
@@ -56,8 +54,6 @@ class GlobalSearchAPI extends RESTAPI {
                     }
                 }
                 $results = array();
-                $myRelations = $me->getRelations();
-                $sups = $me->getSupervisors();
                 $dataCollection = new Collection($data);
                 $people = Person::getByIds($dataCollection->pluck('user_id'));
                 foreach($people as $person){

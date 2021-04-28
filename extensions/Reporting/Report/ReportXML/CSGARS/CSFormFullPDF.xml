@@ -208,7 +208,7 @@
 
     <!-- Page3: Education History, Courses, MSc Thesis (if there) -->
     <ReportSection id="education" tooltip="Education History" name="Education History" blobSection="CS_QUESTIONS_tab6" type="EditableReportSection" pagebreak="true">
-        <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Date" labels="Degree|University|Date (Awarded/Expected)"  start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" class="wikitable">
+        <ReportItem id="qEducation1" type="MultiTextReportItem" types="Text|Text|Text|Date" labels="Degree|University|Country|Date (Awarded/Expected)"  start="1" multiple="true" blobType="BLOB_ARRAY" blobItem="qDegrees" class="wikitable">
             <![CDATA[
                 <h3>Degrees</h3>
                 {$item}
@@ -275,10 +275,5 @@
         </ReportItem>
     </ReportSection>
     <!-- End page3 -->
-
-
-
-
-    
 
 </Report>
