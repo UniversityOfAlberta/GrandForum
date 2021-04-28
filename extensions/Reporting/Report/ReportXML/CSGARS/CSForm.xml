@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="CS Form" reportType="RP_CS" pdfType="RPTP_CS" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
     <Permissions>
-        <Role role="Applicant">
+        <!--Role role="Applicant">
             <SectionPermission id="personal" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        </Role>
+        </Role-->
     </Permissions>
 
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >

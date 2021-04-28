@@ -2,11 +2,11 @@
 
 require_once('commandLine.inc');
 
-$sops = DBFunctions::select(array('grand_sop_2018'),
+$sops = DBFunctions::select(array('grand_sop'),
                             array('id'));
 
 foreach($sops as $sop){
-    $data = DBFunctions::select(array('grand_sop_2018'),
+    $data = DBFunctions::select(array('grand_sop'),
                                 array('*'),
                                 array('id' => $sop['id']));
     $data = $data[0];
@@ -23,7 +23,7 @@ foreach($sops as $sop){
                 $size2 = strlen($contents);
                 if($size1 > $size2){
                     // Only update if the file is actually smaller
-                    DBFunctions::update('grand_sop_2018',
+                    DBFunctions::update('grand_sop',
                                         array('pdf_contents' => $contents),
                                         array('id' => $sop['id']));
                     echo "Update {$sop['id']}: {$size1} -> {$size2}\n";

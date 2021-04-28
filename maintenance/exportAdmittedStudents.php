@@ -28,7 +28,7 @@ $filenames = [];
 @mkdir($outdir);
 $peopleSoFar = 0;
 $nPeople = count($people);
-for($y=2017;$y<=YEAR;$y++){
+for($y=YEAR;$y<=YEAR;$y++){
     @mkdir("{$outdir}/{$y}");
     foreach($people as $person){
 	    $gsms = $person->getGSMS($y);
