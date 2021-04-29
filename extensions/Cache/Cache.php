@@ -10,6 +10,8 @@ $wgObjectCaches['apc_shared'] = array(
 
 abstract class Cache {
 
+    static $hitCount = 0;
+
 	var $fileName;
 	var $compress;
 	
@@ -26,9 +28,22 @@ abstract class Cache {
 	}
 	
 	static function fetch($key){
-	    global $wgSitename;
+	    global $wgSitename, $wgOut;
 	    if(function_exists('apc_fetch')){
-            return apc_fetch($wgSitename.$key);
+	        if(DBFunctions::$queryDebug){
+                $start = microtime(true);
+                $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
+            }
+            $data = apc_fetch($wgSitename.$key);
+            if(DBFunctions::$queryDebug){
+                self::$hitCount++;
+                $end = microtime(true);
+                $peakMemAfter = memory_get_peak_usage(true)/1024/1024;
+                $diff = number_format(($end - $start)*1000, 5);
+                $debugLine = "<!-- Cache ".self::$hitCount.": ($diff ms / ".count($data)." / Before:{$peakMemBefore}MiB / After:{$peakMemAfter}MiB) $key -->\n";
+		        $wgOut->addHTML($debugLine);
+		    }
+            return $data;
         }
         return "";
 	}

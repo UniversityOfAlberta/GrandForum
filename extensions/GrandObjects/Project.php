@@ -473,7 +473,6 @@ class Project extends BackboneModel {
                 $this->effectiveDate = "0000-00-00 00:00:00";
             }
             $this->fullName = false;
-            $this->getTechnology();
         }
     }
     

@@ -168,6 +168,7 @@ class DBFunctions {
                 while(strstr($printedSql, "  ") !== false){
                     $printedSql = str_replace("  ", " ", $printedSql);
                 }
+                $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
             }
 		    if($update != false){
 		        if(!DBFunctions::DBWritable()){
@@ -179,7 +180,7 @@ class DBFunctions {
 			    }
 			    return $status;
 		    }
-		    $peakMemBefore = memory_get_peak_usage(true)/1024/1024;
+		    
 		    $result = DBFunctions::$dbr->query($sql);
 		    
 	        $rows = array();
@@ -193,9 +194,9 @@ class DBFunctions {
 	                }
 	            }
 	        }
-	        $peakMemAfter = memory_get_peak_usage(true)/1024/1024;
 	        self::$lastResult = count($rows);
 	        if(self::$queryDebug){
+	            $peakMemAfter = memory_get_peak_usage(true)/1024/1024;
 		        $end = microtime(true);
 		        $diff = number_format(($end - $start)*1000, 5);
 		        self::$queryLength += $diff;
