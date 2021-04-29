@@ -1423,8 +1423,8 @@ EOF;
         $list_pub = '';
         $a1_details = "";
         foreach($pub_count['a1'] as $pub){
-            $issub = $pub->getData('submitted');
-            if ($issub !== false){
+            $status = $pub->getStatus();
+            if ($status !== "Published"){
                 $ptr = &$list_sub;
             }
             else{
@@ -1461,8 +1461,8 @@ EOF;
         $list_pub = '';
         $a2_details = "";
         foreach($pub_count['a2'] as $pub){
-            $issub = $pub->getData('submitted');
-            if ($issub !== false){
+            $status = $pub->getStatus();
+            if ($status !== "Published"){
                 $ptr = &$list_sub;
             }
             else{
@@ -1527,8 +1527,8 @@ EOF;
         $list_pub = '';
         $b_details = "";
         foreach($pub_count['b'] as $pub){
-            $issub = $pub->getData('submitted');
-            if ($issub !== false){
+            $status = $pub->getStatus();
+            if ($status !== "Published"){
                 $ptr = &$list_sub;
             }
             else{
@@ -1565,8 +1565,8 @@ EOF;
         $list_pub = '';
         $c_details = "";
         foreach($pub_count['c'] as $pub){
-            $issub = $pub->getData('submitted');
-            if ($issub !== false){
+            $status = $pub->getStatus();
+            if ($status !== "Published"){
                 $ptr = &$list_sub;
             }
             else{
