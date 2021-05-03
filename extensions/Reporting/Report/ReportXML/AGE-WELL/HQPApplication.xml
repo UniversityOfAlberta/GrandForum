@@ -295,7 +295,7 @@ Applicants are asked to review eligibility and program information for each of t
             ]]>
         </ReportItem>
         
-        <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($18,000)|Postdoctoral ($50,000)" optional="true">
+        <ReportItem id="MIRA" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_MIRA" orientation="vertical" options="Master's ($15,000)|PhD ($20,000)|Postdoctoral ($50,000)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;'><b>AGE-WELL-MIRA Awards</b></td><td style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
