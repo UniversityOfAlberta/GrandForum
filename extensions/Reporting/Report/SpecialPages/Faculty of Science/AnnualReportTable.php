@@ -19,7 +19,7 @@ class AnnualReportTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR) || $person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA));
     }
 
     function execute($par){
@@ -49,6 +49,22 @@ class AnnualReportTable extends SpecialPage{
                     <tbody>");
             $ar = new DummyReport("FEC", $me, null, $y);
             $rec = new DummyReport("ChairTable", $me, null, $y);
+            if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+                $report = new DummyReport("", $me, null, $y);
+                $section = new EditableReportSection();
+                $set = new DepartmentPeopleReportItemSet();
+                $section->setParent($report);
+                $set->setParent($section);
+                $set->setAttr('start', ($y-1)."-07-01");
+                $set->setAttr('end', ($y)."-07-01");
+                $set->setAttr('excludeMe', 'true');
+                $set->setAttr('department', $me->getDepartment());
+                $data = $set->getData();
+                $people = array();
+                foreach($data as $row){
+                    $people[] = Person::newFromId($row['person_id']);
+                }
+            }
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
                 if($case != ""){
