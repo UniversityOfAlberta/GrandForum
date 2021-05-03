@@ -106,7 +106,7 @@ class AnnualReportTable extends SpecialPage{
         $person = Person::newFromWgUser();
         if(self::userCanExecute($wgUser)){
             $tab = "Manager";
-            if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+            if($person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA)){
                 $tab = "Chair";
             }
             $selected = @($wgTitle->getText() == "AnnualReportTable") ? "selected" : false;
