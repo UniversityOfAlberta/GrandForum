@@ -220,7 +220,7 @@ class Report extends AbstractReport {
                 }
             }
         }*/
-        if(count($person->getEvaluates("EEA-2021", 2019)) > 0){
+        if(count($person->getEvaluates("EEA-2021", 2021)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA Review", "{$url}EEAReview", $selected);
         }
