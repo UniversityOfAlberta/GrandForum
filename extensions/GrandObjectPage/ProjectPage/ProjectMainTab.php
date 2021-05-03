@@ -182,6 +182,7 @@ class ProjectMainTab extends AbstractEditableTab {
                 return $error;
             }
             Project::$cache = array();
+            Project::$projectDataCache = array();
             $this->project = Project::newFromId($this->project->getId());
             $wgOut->setPageTitle($this->project->getFullName());
         }
@@ -206,6 +207,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                           'project_id' => EQ($this->project->getId())));
             }
             Project::$cache = array();
+            Project::$projectDataCache = array();
             // Update Dates
             $this->project = Project::newFromId($this->project->getId());
             $startDate = @DBFunctions::escape($_POST['start_date']);
@@ -226,6 +228,7 @@ class ProjectMainTab extends AbstractEditableTab {
                                   ORDER BY `date` ASC
                                   LIMIT 1", true);
             Project::$cache = array();
+            Project::$projectDataCache = array();
             $this->project = Project::newFromId($this->project->getId());
         }
         

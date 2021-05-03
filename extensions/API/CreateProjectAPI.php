@@ -113,6 +113,7 @@ class CreateProjectAPI extends API{
 	    }
 	    if($stat){
 	        Project::$cache = array();
+	        Project::$projectDataCache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $_POST['acronym'];
 	        APIRequest::doAction('ProjectDescription', true);

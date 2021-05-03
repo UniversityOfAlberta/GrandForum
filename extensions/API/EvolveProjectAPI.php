@@ -81,6 +81,7 @@ class EvolveProjectAPI extends API{
 	    }
 	    if($stat){
 	        Project::$cache = array();
+	        Project::$projectDataCache = array();
 	        $project = Project::newFromId($nsId);
 	        //MailingList::createMailingList($project);
 	    }

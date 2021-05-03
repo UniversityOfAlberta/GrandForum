@@ -48,6 +48,7 @@ class DeleteProjectAPI extends API{
 	    }
 	    if($stat){
 	        Project::$cache = array();
+	        Project::$projectDataCache = array();
 	        $project = Project::newFromId($nsId);
 	        $_POST['project'] = $project->getName();
 	        $_POST['description'] = $project->getDescription();

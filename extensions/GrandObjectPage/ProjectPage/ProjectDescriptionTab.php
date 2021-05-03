@@ -32,6 +32,7 @@ class ProjectDescriptionTab extends AbstractEditableTab {
                 return $error;
             }
             Project::$cache = array();
+            Project::$projectDataCache = array();
             $this->project = Project::newFromId($this->project->getId());
             $wgOut->setPageTitle($this->project->getFullName());
         }
