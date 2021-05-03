@@ -104,10 +104,13 @@ class AnnualReportTable extends SpecialPage{
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
-        
         if(self::userCanExecute($wgUser)){
+            $tab = "Manager";
+            if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+                $tab = "Chair";
+            }
             $selected = @($wgTitle->getText() == "AnnualReportTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "$wgServer$wgScriptPath/index.php/Special:AnnualReportTable", $selected);
+            $tabs[$tab]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "$wgServer$wgScriptPath/index.php/Special:AnnualReportTable", $selected);
         }
         return true;
     }
