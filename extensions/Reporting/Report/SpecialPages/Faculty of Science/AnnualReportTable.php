@@ -110,7 +110,7 @@ class AnnualReportTable extends SpecialPage{
                 $tab = "Chair";
             }
             $selected = @($wgTitle->getText() == "AnnualReportTable") ? "selected" : false;
-            $tabs[$tab]['subtabs'][] = TabUtils::createSubTab("Annual Reports", "$wgServer$wgScriptPath/index.php/Special:AnnualReportTable", $selected);
+            $tabs[$tab]['subtabs'][] = TabUtils::createSubTab("Report Archives", "$wgServer$wgScriptPath/index.php/Special:AnnualReportTable", $selected);
         }
         return true;
     }
