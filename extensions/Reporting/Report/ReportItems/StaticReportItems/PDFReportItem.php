@@ -31,9 +31,9 @@ class PDFReportItem extends StaticReportItem {
             }
         }
         else{
-            $project = new Project(array());
-            $project->id = 0;
-            $projects[] = $project;
+            //$project = new Project(array());
+            //$project->id = 0;
+            $projects[] = null;
         }
         $found = false;
         foreach($projects as $project){
