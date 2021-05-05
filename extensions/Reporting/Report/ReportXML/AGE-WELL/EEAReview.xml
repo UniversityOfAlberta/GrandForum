@@ -78,7 +78,7 @@ Major: weakness that severely limits the quality of the proposal or potential of
             ]]>
         </Static>
         <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EEA-2021">
-            <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EEA" width="100%" project="true">
+            <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EEA" width="100%">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
