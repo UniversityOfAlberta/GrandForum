@@ -53,6 +53,7 @@ class Messages {
         else{
             $this->warnings[$this->warningIndex++] = $message;
         }
+        @setcookie('warnings', serialize($this->warnings), time()+3600);
     }
     
     // Adds a (green) success message

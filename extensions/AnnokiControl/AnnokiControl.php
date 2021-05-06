@@ -135,6 +135,9 @@ $egAnnokiExtensions['UofANews'] = array('name' => 'UofANews',
                                          
 $egAnnokiExtensions['Freeze'] = array('name' => 'Freeze',
                                       'path' => "$IP/extensions/Freeze/Freeze.php");
+                                      
+$egAnnokiExtensions['RSSAlerts'] = array('name' => 'RSSAlerts',
+                                         'path' => "$IP/extensions/RSSAlerts/RSSAlerts.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

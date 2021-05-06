@@ -236,7 +236,8 @@
         'MyThreads',
         'Freeze',
         //'Postings',
-        //'CRM'
+        //'CRM',
+        //'RSSAlerts'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
