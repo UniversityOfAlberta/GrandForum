@@ -43,6 +43,9 @@
     // Scopus Api Id
     $config->setValue("scopusApi", "");
     
+    // Url for gscholar-rss
+    $config->setValue("gscholar-rss", "");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     

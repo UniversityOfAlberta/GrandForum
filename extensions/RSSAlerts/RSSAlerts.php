@@ -124,14 +124,15 @@ class RSSAlerts extends SpecialPage{
         return $articles;
     }
     
-    function handleImport(){
-        global $wgMessage, $wgServer, $wgScriptPath;
+    function handleImport($importGS=false){
+        global $wgMessage, $wgServer, $wgScriptPath, $config;
         $articles = array();
         $feeds = RSSFeed::getAllFeeds();
         $errors = array();
         foreach($feeds as $feed){
             $contents = file_get_contents($feed->url);
             $parsed = $this->parseRSS($contents, $feed);
+            if(php_sapi_name() == "cli"){ echo $feed->url."\n"; }
             if($parsed === false){
                 $errors[] = $feed;
             }
@@ -139,28 +140,31 @@ class RSSAlerts extends SpecialPage{
                 $articles = array_merge($articles, $parsed);
             }
         }
-        $nis = Person::getAllPeople(NI);
-        foreach($nis as $ni){
-            $contents = "";
-            $result = 0;
-            //$contents = file_get_contents("extensions/RSSAlerts/stroulia.rss");
-            $gsUrl = "https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=%22{$ni->getFirstName()}+{$ni->getLastName()}%22&scisbd=1";
-            exec("./extensions/RSSAlerts/gscholar-rss \"{$gsUrl}\"", $contents, $result);
-            if($result == 0){
-                $parsed = $this->parseRSS($contents, null, $ni);
-                if($parsed === false){
-                    $errors[] = $ni;
+        if($importGS){
+            $nis = Person::getAllPeople(NI);
+            foreach($nis as $ni){
+                $contents = "";
+                $result = 0;
+                $gsUrl = urlencode("https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=\"{$ni->getFirstName()}+{$ni->getLastName()}\"&scisbd=1");
+                $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
+                if(php_sapi_name() == "cli"){ echo $gsUrl."\n"; }
+                if($contents != ""){
+                    $parsed = $this->parseRSS($contents, null, $ni);
+                    if($parsed === false){
+                        $errors[] = $ni;
+                    }
+                    else{
+                        $articles = array_merge($articles, $parsed);
+                    }
                 }
                 else{
-                    $articles = array_merge($articles, $parsed);
+                    $errors[] = $ni;
                 }
+                sleep(rand(45, 60)); // Random sleep time to help prevent being blocked
             }
-            else{
-                $errors[] = $ni;
+            if(count($errors) > 0){
+                $wgMessage->addError("<b>".count($errors)."</b> RSS feeds could not be read");
             }
-        }
-        if(count($errors) > 0){
-            $wgMessage->addError("<b>".count($errors)."</b> RSS feeds could not be read");
         }
         
         $success = array();
@@ -183,7 +187,6 @@ class RSSAlerts extends SpecialPage{
         if(count($errors) > 0){
             $wgMessage->addError("<b>".count($errors)."</b> articles failed to imported");
         }
-        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts");
     }
 
     function execute($par){
@@ -193,6 +196,7 @@ class RSSAlerts extends SpecialPage{
         }
         if(isset($_POST['import'])){
             $this->handleImport();
+            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts");
         }
         $feeds = RSSFeed::getAllFeeds();
         $articles = RSSArticle::getAllArticles();
@@ -223,7 +227,7 @@ class RSSAlerts extends SpecialPage{
         
         // Articles
         $wgOut->addHTML("<h3>Articles</h3>
-                         Articles are imported from the RSS Feeds, as well as from Google Scholar.  Importing can take a while.<br />
+                         Articles are imported from the RSS Feeds.  Articles from Google Scholar are also imported, but are done automatically on a daily basis.<br />
                          <p><input type='submit' name='import' value='Import Articles' /></p>
                          <table id='articles' class='wikitable' width='100%'>
                             <thead>
