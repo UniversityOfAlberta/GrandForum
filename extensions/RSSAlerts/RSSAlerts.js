@@ -8,5 +8,6 @@ $("#feeds").DataTable({
 });
 
 $("#articles").DataTable({
-    'aLengthMenu': [[-1], ['All']]
+    'aLengthMenu': [[-1], ['All']],
+    'aaSorting': [[2,'desc']],
 });
