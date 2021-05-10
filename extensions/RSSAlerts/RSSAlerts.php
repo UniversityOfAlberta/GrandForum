@@ -200,7 +200,7 @@ class RSSAlerts extends SpecialPage{
             </tr>");
         }
         $wgOut->addHTML("</tbody></table><br />
-            <input type='submit' name='save' value='Save' />");
+            <span><input type='submit' name='save' value='Save' /></span>");
         
         // Articles
         $wgOut->addHTML("<h3>Articles</h3>
@@ -239,7 +239,7 @@ class RSSAlerts extends SpecialPage{
             </tr>");
         }
         $wgOut->addHTML("</tbody></table><br />
-            <input type='submit' name='save' value='Save' />
+            <span><input type='submit' name='save' value='Save' /></span>
         </form>
         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/RSSAlerts/RSSAlerts.js' />");
     }

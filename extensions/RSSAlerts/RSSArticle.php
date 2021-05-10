@@ -15,7 +15,8 @@ class RSSArticle extends BackboneModel {
 
     static function getAllArticles(){
         $data = DBFunctions::select(array('grand_rss_articles'),
-                                    array('*'));
+                                    array('*'),
+                                    array('deleted' => NEQ(1)));
         $feeds = array();
         foreach($data as $row){
             $feeds[] = new RSSArticle(array($row));
@@ -128,7 +129,8 @@ class RSSArticle extends BackboneModel {
     }
     
     function delete(){
-        $status = DBFunctions::delete('grand_rss_articles',
+        $status = DBFunctions::update('grand_rss_articles',
+                                      array('deleted' => 1),
                                       array('id' => EQ($this->id)));
         return $status;
     }
