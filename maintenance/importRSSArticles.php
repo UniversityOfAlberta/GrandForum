@@ -7,7 +7,6 @@
     $rssAlerts = new RSSAlerts();
     $rssAlerts->handleImport();
 
-    $articles = array();
     $nis = Person::getAllPeople(NI);
     foreach($nis as $ni){
         $contents = "";
@@ -16,24 +15,21 @@
         $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
         echo $gsUrl." ... ";
         if($contents != ""){
-            $parsed = $rssAlerts->parseRSS($contents, null, $ni);
-            if($parsed === false){
-                $errors[] = $ni;
+            $articles = $rssAlerts->parseRSS($contents, null, $ni);
+            if($articles === false){
                 echo "FAILED\n";
             }
             else{
-                $articles = array_merge($articles, $parsed);
+                foreach($articles as $article){
+                    $article->create();
+                }
                 echo "DONE\n";
             }
         }
         else{
-            $errors[] = $ni;
             echo "FAILED\n";
         }
         sleep(rand(45, 60)); // Random sleep time to help prevent being blocked
-    }
-    if(count($errors) > 0){
-        $wgMessage->addError("<b>".count($errors)."</b> RSS feeds could not be read");
     }
     
 ?>
