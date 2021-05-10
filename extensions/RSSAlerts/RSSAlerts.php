@@ -124,7 +124,7 @@ class RSSAlerts extends SpecialPage{
         return $articles;
     }
     
-    function handleImport($importGS=false){
+    function handleImport(){
         global $wgMessage, $wgServer, $wgScriptPath, $config;
         $articles = array();
         $feeds = RSSFeed::getAllFeeds();
@@ -132,7 +132,6 @@ class RSSAlerts extends SpecialPage{
         foreach($feeds as $feed){
             $contents = file_get_contents($feed->url);
             $parsed = $this->parseRSS($contents, $feed);
-            if(php_sapi_name() == "cli"){ echo $feed->url."\n"; }
             if($parsed === false){
                 $errors[] = $feed;
             }
@@ -140,31 +139,9 @@ class RSSAlerts extends SpecialPage{
                 $articles = array_merge($articles, $parsed);
             }
         }
-        if($importGS){
-            $nis = Person::getAllPeople(NI);
-            foreach($nis as $ni){
-                $contents = "";
-                $result = 0;
-                $gsUrl = urlencode("https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=\"{$ni->getFirstName()}+{$ni->getLastName()}\"&scisbd=1");
-                $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
-                if(php_sapi_name() == "cli"){ echo $gsUrl."\n"; }
-                if($contents != ""){
-                    $parsed = $this->parseRSS($contents, null, $ni);
-                    if($parsed === false){
-                        $errors[] = $ni;
-                    }
-                    else{
-                        $articles = array_merge($articles, $parsed);
-                    }
-                }
-                else{
-                    $errors[] = $ni;
-                }
-                sleep(rand(45, 60)); // Random sleep time to help prevent being blocked
-            }
-            if(count($errors) > 0){
-                $wgMessage->addError("<b>".count($errors)."</b> RSS feeds could not be read");
-            }
+        
+        if(count($errors) > 0){
+            $wgMessage->addError("<b>".count($errors)."</b> RSS feeds could not be read");
         }
         
         $success = array();
