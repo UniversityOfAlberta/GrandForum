@@ -33,6 +33,14 @@ class PeopleAPI extends RESTAPI {
                     // Get All people (including candidates)
                     $people = array_merge(Person::getAllPeople(), Person::getAllCandidates('all'));
                 }
+                else if($role == 'allexceptstaff'){
+                    $people = array();
+                    foreach(array_merge(Person::getAllPeople(), Person::getAllCandidates('all')) as $person){
+                        if(!$person->isRoleAtLeast(STAFF)){
+                            $people[] = $person;
+                        }
+                    }
+                }
                 else{
                     // Get the specific role
                     if(strstr($role, "Former-") !== false){

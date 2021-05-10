@@ -8,7 +8,12 @@ ManagePeopleView = Backbone.View.extend({
 
     initialize: function(){
         this.allPeople = new People();
-        this.allPeople.roles = ['all'];
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+            this.allPeople.roles = ['all'];
+        }
+        else{
+            this.allPeople.roles = ['allexceptstaff'];
+        }
         this.allPeople.simple = true;
         this.allPeople.comparator = 'fullName';
         this.allPeople.fetch();
