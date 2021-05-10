@@ -172,7 +172,7 @@
                 </table>
             ]]> 
         </ReportItem>
-        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Actual Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees,Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
+        <ReportItem id="budget" type="MultiText" blobItem="BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Actual Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees,Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Textarea" optional="true" multiple="true">
             <![CDATA[
                 <b>Expenditures for the reporting period:</b>
                 {$item}
