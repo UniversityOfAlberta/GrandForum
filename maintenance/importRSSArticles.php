@@ -5,8 +5,9 @@
     $wgUser = User::newFromId(1);
     
     $rssAlerts = new RSSAlerts();
-    $rssAlerts->handleImport(true);
+    $rssAlerts->handleImport();
 
+    $articles = array();
     $nis = Person::getAllPeople(NI);
     foreach($nis as $ni){
         $contents = "";
