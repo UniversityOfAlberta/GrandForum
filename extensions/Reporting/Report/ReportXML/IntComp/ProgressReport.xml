@@ -196,7 +196,7 @@
             ]]>
         </ReportItem>
         <ReportItem id="future_budget" type="MultiText" blobItem="FUTURE_BUDGET" blobType="BLOB_ARRAY" labels="Category|Category (if other)|Proposed Expenditures ($)|Comments (if applicable)" types="Select(Salaries and benefits - Students,Salaries and benefits - Postdoctoral fellows,Salaries and benefits - Technical/professional assistants,Equipment or facility - Purchase and rentals,Equipment or facility - Operation and maintenance costs,Equipment or facility - User fees
-Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Integer|Text" optional="true" multiple="true">
+Materials and supplies,Travel - Conferences,Travel - Field Work,Travel - Project-related travel,Dissemination - Publication costs,Technology transfer activities,Other (specify))|Text|Integer|Text" optional="true" multiple="true">
             <![CDATA[
                 <br />
                 <b>Budget plan for the next six months:</b>
