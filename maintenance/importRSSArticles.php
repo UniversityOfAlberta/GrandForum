@@ -29,7 +29,7 @@
         else{
             echo "FAILED\n";
         }
-        sleep(rand(60, 75)); // Random sleep time to help prevent being blocked
+        sleep(rand(55, 65)); // Random sleep time to help prevent being blocked
     }
     
 ?>

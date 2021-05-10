@@ -38,6 +38,30 @@ class RSSAlerts extends SpecialPage{
             }
             $wgMessage->addSuccess("Articles Deleted");
         }
+        if(isset($_POST['keywords']) || isset($_POST['people']) || isset($_POST['projects'])){
+            if(isset($_POST['people'])){
+                foreach($_POST['people'] as $id => $people){
+                    $article = RSSArticle::newFromId($id);
+                    $article->people = $people;
+                    $article->update();
+                }
+            }
+            if(isset($_POST['projects'])){
+                foreach($_POST['projects'] as $id => $projects){
+                    $article = RSSArticle::newFromId($id);
+                    $article->projects = $projects;
+                    $article->update();
+                }
+            }
+            if(isset($_POST['keywords'])){
+                foreach($_POST['keywords'] as $id => $keywords){
+                    $article = RSSArticle::newFromId($id);
+                    $article->keywords = explode(",", $keywords);
+                    $article->update();
+                }
+            }
+            $wgMessage->addSuccess("Articles Saved");
+        }
         redirect("{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts");
     }
     
@@ -205,12 +229,13 @@ class RSSAlerts extends SpecialPage{
         // Articles
         $wgOut->addHTML("<h3>Articles</h3>
                          Articles are imported from the RSS Feeds.  Articles from Google Scholar are also imported, but are done automatically on a daily basis.<br />
+                         <i>To edit a cell, double click it (this can only be done on some cells)</i>
                          <p><input type='submit' name='import' value='Import Articles' /></p>
                          <table id='articles' class='wikitable' width='100%'>
                             <thead>
                                 <tr>
-                                    <th>Article</th>
-                                    <th>Description</th>
+                                    <th width='25%'>Article</th>
+                                    <th width='25%'>Description</th>
                                     <th>Date</th>
                                     <th>People</th>
                                     <th>Projects</th>
@@ -226,15 +251,15 @@ class RSSAlerts extends SpecialPage{
                 $people[] = "<a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>";
             }
             foreach($article->getProjects() as $project){
-                $projects[] = "<a href='{$project->getUrl()}'>{$project->getNameForForms()}</a>";
+                $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
-            $wgOut->addHTML("<tr>
+            $wgOut->addHTML("<tr data-id='{$article->id}'>
                 <td><a href='{$article->url}' target='_blank'>{$article->title}</a></td>
                 <td>{$article->description}</td>
                 <td>{$article->getDate()}</td>
-                <td>".implode(", ", $people)."</td>
-                <td>".implode(", ", $projects)."</td>
-                <td>".implode(", ", $article->keywords)."</td>
+                <td class='people'>".implode(", ", $people)."</td>
+                <td class='projects'>".implode(", ", $projects)."</td>
+                <td class='keywords'>".implode(", ", $article->keywords)."</td>
                 <td align='center'><input type='checkbox' name='delete_article[{$article->id}]' /></td>
             </tr>");
         }

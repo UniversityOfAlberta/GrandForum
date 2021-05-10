@@ -237,7 +237,7 @@
                     // except when there is an open quote or if setting allowSpaces = true.
                     // Tab will also create a tag, unless the tag input is empty, 
                     // in which case it isn't caught.
-                    if (
+                    if (event.originalEvent.key === this.options.singleFieldDelimiter ||
                         event.which === this.options.singleFieldDelimiter.charCodeAt(0) ||
                         event.which === $.ui.keyCode.ENTER ||
                         (
