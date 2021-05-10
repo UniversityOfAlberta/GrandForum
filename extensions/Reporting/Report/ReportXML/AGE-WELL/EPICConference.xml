@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2021)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2021">
+<Report name="The EPIC Conference (2021)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="true" year="2021">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="instructions" permissions="rw" />
