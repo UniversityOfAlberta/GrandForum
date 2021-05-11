@@ -77,6 +77,10 @@ class RSSAlerts extends SpecialPage{
         if(isset($array['entry'])){
             // Atom Format
             $entries = $array['entry'];
+            if(isset($entries['title'])){
+                // Only a single entry
+                $entries = array($entries);
+            }
             foreach($entries as $entry){
                 $article = RSSArticle::newFromRSSId($entry['id']);
                 if(!$article->exists()){
@@ -103,6 +107,10 @@ class RSSAlerts extends SpecialPage{
         else if(isset($array['channel']['item'])){
             // Old RSS Format
             $entries = $array['channel']['item'];
+            if(isset($entries['title'])){
+                // Only a single entry
+                $entries = array($entries);
+            }
             foreach($entries as $entry){
                 $id = md5($entry['title']);
                 if($person != null){

@@ -11,9 +11,10 @@
     foreach($nis as $ni){
         $contents = "";
         $result = 0;
-        $gsUrl = urlencode("https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=\"{$ni->getFirstName()}+{$ni->getLastName()}\"&scisbd=1");
-        $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
+        $gsUrl = "https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=\"{$ni->getFirstName()}+{$ni->getLastName()}\"&scisbd=1";
         echo $gsUrl." ... ";
+        $gsUrl = urlencode($gsUrl);
+        $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
         if($contents != ""){
             $articles = $rssAlerts->parseRSS($contents, null, $ni);
             if($articles === false){
@@ -29,7 +30,7 @@
         else{
             echo "FAILED\n";
         }
-        sleep(rand(55, 65)); // Random sleep time to help prevent being blocked
+        sleep(rand(75, 90)); // Random sleep time to help prevent being blocked
     }
     
 ?>
