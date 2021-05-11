@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td class="label"># of University<br />positions</td>
-            <td><%= positions %><br /><%= positionsText %></td>
+            <td><%= positions %><br /><%= nl2br(positionsText) %></td>
         </tr>
         <tr>
             <td class="label">Discipline</td>
@@ -51,15 +51,15 @@
         </tr>
         <tr>
             <td class="label">About the<br />company</td>
-            <td><%= nl2br(about) %></td>
+            <td><%= about %></td>
         </tr>
         <tr>
             <td class="label">Describe the<br />project</td>
-            <td><%= nl2br(summary) %></td>
+            <td><%= summary %></td>
         </tr>
         <tr>
             <td class="label">Required<br />expertise/skills</td>
-            <td><%= nl2br(skills) %></td>
+            <td><%= skills %></td>
         </tr>
     </table>
 </div>
