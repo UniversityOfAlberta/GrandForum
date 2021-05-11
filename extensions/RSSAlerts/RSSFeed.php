@@ -51,6 +51,8 @@ class RSSFeed extends BackboneModel {
     function delete(){
         DBFunctions::delete('grand_rss_feeds',
                             array('id' => EQ($this->id)));
+        DBFunctions::delete('grand_rss_articles',
+                            array('feed' => EQ($this->id)));
         DBFunctions::commit();
     }
     
