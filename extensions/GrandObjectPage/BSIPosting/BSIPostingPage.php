@@ -43,7 +43,7 @@ class BSIPostingPage extends BackbonePage {
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Internships", "$wgServer$wgScriptPath/index.php/Special:BSIPostingPage");
+            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Jobs/Internships", "$wgServer$wgScriptPath/index.php/Special:BSIPostingPage");
         }
         return true;
     }
