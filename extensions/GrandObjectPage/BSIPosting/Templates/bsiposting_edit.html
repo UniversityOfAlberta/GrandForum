@@ -45,6 +45,15 @@
             <td class="label">Discipline</td>
             <td><div id="discipline"></div></td>
         </tr>
+        <tr>
+            <td class="label">Attachment:</td>
+            <td valign="top">
+                <%= HTML.File(this, 'image', {}) %>
+                <% if(image != ""){ %>
+                    <%= HTML.CheckBox(this, 'image_delete', {}) %> Delete?
+                <% } %>
+            </td>
+        </tr>
     </table>
     
     <h3>Project</h3>

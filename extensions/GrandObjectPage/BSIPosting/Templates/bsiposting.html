@@ -41,6 +41,12 @@
             <td class="label">Discipline</td>
             <td><%= discipline %></td>
         </tr>
+        <% if(image != ""){ %>
+            <tr>
+                <td class="label">Attachment</td>
+                <td><a href="<%= image %>" target="_blank">Download</a></td>
+            </tr>
+        <% } %>
     </table>
     
     <h3>Project</h3>
