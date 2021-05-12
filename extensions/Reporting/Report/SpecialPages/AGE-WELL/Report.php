@@ -147,6 +147,7 @@ class Report extends AbstractReport {
                        preg_match("/.*-SIP A[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CIP[0-9]+.*/", $project->getName()) != 0 ||
                        preg_match("/.*-CAT.*/", $project->getName()) != 0 ||
+                       preg_match("/AWSIP-.*/", $project->getName()) != 0 ||
                        $project->getName() == "DATcares"){
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPProjectEvaluation" && @$_GET['project'] == $project->getName())) ? "selected" : false;
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}SIPProjectEvaluation&project={$project->getName()}", $selected);
