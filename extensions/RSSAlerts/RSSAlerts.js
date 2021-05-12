@@ -14,12 +14,20 @@ $('#new_feed').click(function(){
 
 // Tables
 $("#feeds").DataTable({
-    'aLengthMenu': [[-1], ['All']]
+    'aLengthMenu': [[-1], ['All']],
+    'dom': 'Blfrtip',
+    'buttons': [
+        'excel', 'pdf'
+    ],
 });
 
 $("#articles").DataTable({
     'aLengthMenu': [[-1], ['All']],
     'aaSorting': [[2,'desc']],
+    'dom': 'Blfrtip',
+    'buttons': [
+        'excel', 'pdf'
+    ],
 });
 
 // Editing
