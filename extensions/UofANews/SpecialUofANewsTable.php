@@ -30,6 +30,7 @@ class SpecialUofANewsTable extends SpecialPage{
             <thead>
                 <tr>
                     <th>Article</th>
+                    <th>Date</th>
                     <th>Google</th>
                     <th>Bing</th>
                     <th>Yahoo!</th>
@@ -43,6 +44,7 @@ class SpecialUofANewsTable extends SpecialPage{
                 $yahoo  = ($searchEngines[$news->getUrl()]['yahoo'])  ? "Found\n" : (($searchEngines[$news->getUrl()]['yahoo'] === false)  ? "Not Found\n" : "Error\n");
                 $wgOut->addHTML("<tr>
                     <td><a href='{$news->getUrl()}' target='_blank'>{$news->getTitle()}</a></td>
+                    <td><span style='display:none;'>{$news->date} </span>{$news->getDate()}</td>
                     <td align='center'><a href='https://www.google.com/search?q=site:{$news->getUrl()}' target='_blank'>{$google}</a></td>
                     <td align='center'><a href='https://www.bing.com/search?q=url:{$news->getUrl()}' target='_blank'>{$bing}</a></td>
                     <td align='center'><a href='https://search.yahoo.com/search?p=url:{$news->getUrl()}' target='_blank'>{$yahoo}</a></td>
@@ -54,6 +56,7 @@ class SpecialUofANewsTable extends SpecialPage{
                             $('#table').dataTable({
                                 'aLengthMenu': [[-1], ['All']],
                                 'iDisplayLength': -1,
+                                'aaSorting': [[1,'desc']],
                                 'dom': 'Blfrtip',
                                 'buttons': [
                                     'excel', 'pdf'
