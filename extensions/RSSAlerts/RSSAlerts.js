@@ -26,7 +26,11 @@ $("#articles").DataTable({
     'aaSorting': [[2,'desc']],
     'dom': 'Blfrtip',
     'buttons': [
-        'excel', 'pdf'
+        'excel', 
+        {
+            extend: 'pdfHtml5',
+            orientation: 'landscape'
+        }
     ],
 });
 
