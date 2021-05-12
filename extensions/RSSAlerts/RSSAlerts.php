@@ -245,9 +245,9 @@ class RSSAlerts extends SpecialPage{
                                     <th width='25%'>Article</th>
                                     <th width='25%'>Description</th>
                                     <th>Date</th>
-                                    <th>People</th>
-                                    <th>Projects</th>
-                                    <th>Keywords</th>
+                                    <th style='min-width:100px;'>People</th>
+                                    <th style='min-width:100px;'>Projects</th>
+                                    <th style='min-width:100px;'>Keywords</th>
                                     <th>Delete?</th>
                                 </tr>
                             </thead>
