@@ -281,7 +281,7 @@ class RSSAlerts extends SpecialPage{
         global $wgTitle, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(STAFF)){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FEC")) ? "selected" : false;
+            $selected = @($wgTitle->getText() == "RSSAlerts") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("RSS Alerts", "$wgServer$wgScriptPath/index.php/Special:RSSAlerts", $selected);
         }
         return true;
