@@ -106,11 +106,14 @@ Feature: Manage People
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage People"
         And I fill in "Search:" with "HQP User1"
-        And I click by css "#editProjects"
-        And I select "Phase2Project2" from "name"
+        And I click by css "#editRoles"
+        And I select "Phase2Project2" from "selectedProject"
+        And I click by css "#addProject"
         And I press "Save"
         And I wait "1000"
-        Then I should see "Projects saved"
+        Then I should see "Roles saved"
+        When I go to "index.php/Phase2Project2:Main"
+        Then I should see "User1, HQP"
         
     Scenario: NI Inactivating HQP
         Given I am logged in as "NI.User1" using password "NI.Pass1"

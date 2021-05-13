@@ -70,13 +70,6 @@ function addUserUniversity($name, $uni, $dept, $pos){
     $api->doPOST();
 }
 
-function addProjectLeader($name, $project, $coLead='False', $manager='False'){
-    $x = new stdClass();
-    $x->name = $project;
-    $_POST['projects'] = array($x);
-    addUserRole($name, PL);
-}
-
 function addThemeLeader($name, $theme, $coLead='False', $coord='False'){
     $_POST['name'] = $name;
     $_POST['theme'] = Theme::newFromName($theme)->getId();
@@ -284,16 +277,15 @@ addUserRole("HQP.User4", HQP, array("Phase1Project1"));
 addUserRole("HQP-Candidate.User1", HQP, array());
 addUserRole("HQP.ToBeInactivated", HQP, array());
 addUserRole("External.User1", EXTERNAL, array());
+addUserRole("PL.User1", PL, array("Phase2Project1"));
+addUserRole("PL.User2", PL, array("Phase2Project3"));
+addUserRole("PL.User4", PL, array("Phase1Project1"));
 
 addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");
 addUserUniversity("NI.User2", "University of Calgary", "Computing Science", "Professor");
 addUserUniversity("NI.User3", "University of Saskatchewan", "Computing Science", "Associate Professor");
 addUserUniversity("HQP.User1", "University of Alberta", "Computing Science", "Graduate Student");
 addUserUniversity("HQP.User2", "University of Calgary", "Computing Science", "PhD Student");
-
-addProjectLeader("PL.User4", "Phase1Project1");
-addProjectLeader("PL.User1", "Phase2Project1");
-addProjectLeader("PL.User2", "Phase2Project3");
 
 addThemeLeader("TL.User1", "Theme1", 'False', 'False');
 addThemeLeader("TC.User1", "Theme1", 'False', 'True');
