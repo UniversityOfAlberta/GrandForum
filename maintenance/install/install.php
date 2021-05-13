@@ -299,7 +299,6 @@ if(file_exists("projects.csv")){
         DBFunctions::execSQL("TRUNCATE TABLE `grand_project_leaders`", true);
         DBFunctions::execSQL("TRUNCATE TABLE `grand_project_status`", true);
         DBFunctions::execSQL("TRUNCATE TABLE `grand_project_challenges`", true);
-        DBFunctions::execSQL("TRUNCATE TABLE `grand_project_members`", true);
         $lines = explode("\n", file_get_contents("projects.csv"));
         foreach($lines as $line){
             $cells = str_getcsv($line);
@@ -340,7 +339,6 @@ else{
 
 if(file_exists("project_members.csv")){
     if(question("Import Project Memberships from project_members.csv (y/n)") == 'y'){
-        DBFunctions::execSQL("TRUNCATE TABLE `grand_project_members`", true);
         $lines = explode("\n", file_get_contents("project_members.csv"));
         foreach($lines as $line){
             $cells = str_getcsv($line);

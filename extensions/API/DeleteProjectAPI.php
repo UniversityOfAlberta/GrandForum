@@ -41,10 +41,6 @@ class DeleteProjectAPI extends API{
 	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`start_date`,`end_date`,`type`)
 	                VALUES ('{$evoId}','{$nsId}','Ended','{$startDate}','{$endDate}','{$type}')";
 	        $stat = DBFunctions::execSQL($sql, true, true);
-	        DBFunctions::update('grand_project_members',
-	                            array('end_date' => $effective_date),
-	                            array('project_id' => EQ($nsId),
-	                                  'end_date' => EQ('0000-00-00 00:00:00')));
 	    }
 	    if($stat){
 	        Project::$cache = array();

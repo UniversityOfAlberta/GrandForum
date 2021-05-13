@@ -495,37 +495,6 @@ class Project extends BackboneModel {
     
     }
     
-    static function getHQPDistributionDuring($startRange, $endRange){
-        $sql = <<<EOF
-        SELECT s.num_projects, COUNT(s.user_id) as user_count
-        FROM 
-        (SELECT p.user_id, COUNT(DISTINCT p.project_id) as num_projects
-        FROM grand_project_members p
-        INNER JOIN mw_user u ON (p.user_id=u.user_id) 
-        INNER JOIN grand_roles r ON (p.user_id=r.user_id)
-        INNER JOIN grand_project pp ON (p.project_id=pp.id)
-        WHERE r.role = 'HQP'
-        AND ( 
-                ( (r.end_date != '0000-00-00 00:00:00') AND
-                (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
-                OR
-                ( (r.end_date = '0000-00-00 00:00:00') AND
-                ((r.start_date <= '$endRange')))
-                )              
-        AND u.deleted != '1'
-        AND pp.parent_id = 0
-        GROUP BY p.user_id) AS s
-        GROUP BY s.num_projects
-EOF;
-        $data = DBFunctions::execSQL($sql);
-        $distribution = array();
-        foreach($data as $row){
-            $distribution[$row['num_projects']] = $row['user_count'];
-        }
-        
-        return $distribution;
-    }
-    
     // Returns the id of this Project
     function getId(){
         return $this->id;
@@ -754,13 +723,14 @@ EOF;
             }
         }
         if(!Cache::exists("project{$this->id}_people")){
-            $sql = "SELECT m.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
-                    FROM grand_project_members m, mw_user u
-                    WHERE (m.end_date > CURRENT_TIMESTAMP OR m.end_date = '0000-00-00 00:00:00')
-                    AND m.user_id = u.user_id
-                    AND m.project_id = '{$this->id}'
+            $sql = "SELECT r.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                    FROM grand_roles r, grand_role_projects rp, mw_user u
+                    WHERE (r.end_date > CURRENT_TIMESTAMP OR r.end_date = '0000-00-00 00:00:00')
+                    AND r.user_id = u.user_id
+                    AND r.id = rp.role_id
+                    AND rp.project_id = '{$this->id}'
                     AND u.`deleted` != '1'
-                    ORDER BY last_name ASC";
+                    ORDER BY u.last_name ASC";
             $data = DBFunctions::execSQL($sql);
             Cache::store("project{$this->id}_people", $data);
         }
@@ -805,19 +775,20 @@ EOF;
             }
         }
         if(!Cache::exists("project{$this->id}_peopleDuring$startRange.$endRange")){
-            $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
-                    FROM grand_project_members p, mw_user u
-                    WHERE p.user_id = u.user_id
-                    AND p.project_id = '{$this->id}'
-                    AND ( 
-                    ( (p.end_date != '0000-00-00 00:00:00') AND
-                    (( p.start_date BETWEEN '$startRange' AND '$endRange' ) || ( p.end_date BETWEEN '$startRange' AND '$endRange' ) || (p.start_date <= '$startRange' AND p.end_date >= '$endRange') ))
+            $sql = "SELECT r.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                    FROM grand_roles r, grand_role_projects rp, mw_user u
+                    WHERE ( 
+                    ( (r.end_date != '0000-00-00 00:00:00') AND
+                    (( r.start_date BETWEEN '$startRange' AND '$endRange' ) || ( r.end_date BETWEEN '$startRange' AND '$endRange' ) || (r.start_date <= '$startRange' AND r.end_date >= '$endRange') ))
                     OR
-                    ( (p.end_date = '0000-00-00 00:00:00') AND
-                    ((p.start_date <= '$endRange')))
+                    ( (r.end_date = '0000-00-00 00:00:00') AND
+                    ((r.start_date <= '$endRange')))
                     )
+                    AND r.user_id = u.user_id
+                    AND r.id = rp.role_id
+                    AND rp.project_id = '{$this->id}'
                     AND u.`deleted` != '1'
-                    ORDER BY last_name ASC";
+                    ORDER BY u.last_name ASC";
             $data = DBFunctions::execSQL($sql);
             Cache::store("project{$this->id}_peopleDuring$startRange.$endRange", $data);
         }
@@ -857,13 +828,14 @@ EOF;
                 }
             }
         }
-        $sql = "SELECT p.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
-                FROM grand_project_members p, mw_user u
-                WHERE p.user_id = u.user_id
-                AND p.project_id = '{$this->id}'
-                AND (('$date' BETWEEN p.start_date AND p.end_date ) OR (p.start_date <= '$date' AND p.end_date = '0000-00-00 00:00:00'))
+        $sql = "SELECT r.user_id, u.user_name, SUBSTR(u.user_name, LOCATE('.', u.user_name) + 1) as last_name
+                FROM grand_roles r, grand_role_projects rp, mw_user u
+                WHERE (('$date' BETWEEN r.start_date AND r.end_date ) OR (r.start_date <= '$date' AND r.end_date = '0000-00-00 00:00:00'))
+                AND r.user_id = u.user_id
+                AND r.id = rp.role_id
+                AND rp.project_id = '{$this->id}'
                 AND u.`deleted` != '1'
-                ORDER BY last_name ASC";
+                ORDER BY u.last_name ASC";
         $data = DBFunctions::execSQL($sql);
         foreach($data as $row){
             $id = $row['user_id'];
@@ -1353,29 +1325,6 @@ EOF;
         return $subs;
     }
     
-    // Returns the comments for the Project when a user moved from this Project
-    function getComments(){
-        if($this->comments == null){
-            $this->comments = array();
-            if(!$this->clear){
-                $preds = $this->getPreds();
-                foreach($preds as $pred){
-                    foreach($pred->getComments() as $uId => $comment){
-                        $this->comments[$uId] = $comment;
-                    }
-                }
-            }
-            $sql = "SELECT user_id, comment 
-                    FROM grand_project_members
-                    WHERE project_id = '{$this->id}'";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->comments[$row['user_id']] = $row['comment'];
-            }
-        }
-        return $this->comments;
-    }
-    
     // Returns the startDates for the Project
     function getStartDates(){
         if($this->startDates == null){
@@ -1388,12 +1337,13 @@ EOF;
                     }
                 }
             }
-            $sql = "SELECT user_id, start_date 
-                    FROM grand_project_members
-                    WHERE project_id = '{$this->id}'";
+            $sql = "SELECT r.user_id, r.start_date 
+                    FROM grand_roles r, grand_roles_projects rp
+                    WHERE rp.project_id = '{$this->id}'
+                    AND r.id = rp.role_id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->startDates[$row['user_id']] = $row['start_date'];
+                $this->startDates[$row['user_id']] = (isset($this->startDates[$row['user_id']])) ? min($this->startDates[$row['user_id']], $row['start_date']) : $row['start_date'];
             }
         }
         return $this->startDates;
@@ -1427,12 +1377,13 @@ EOF;
                     }
                 }
             }
-            $sql = "SELECT user_id, end_date 
-                    FROM grand_project_members 
-                    WHERE project_id = '{$this->id}'";
+            $sql = "SELECT r.user_id, r.end_date 
+                    FROM grand_roles r, grand_roles_projects rp
+                    WHERE rp.project_id = '{$this->id}'
+                    AND r.id = rp.role_id";
             $data = DBFunctions::execSQL($sql);
             foreach($data as $row){
-                $this->endDates[$row['user_id']] = $row['end_date'];
+                $this->endDates[$row['user_id']] = (isset($this->endDates[$row['user_id']])) ? max($this->endDates[$row['user_id']], $row['end_date']) : $row['end_date'];
             }
         }
         return $this->endDates;

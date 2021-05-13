@@ -104,12 +104,6 @@ class Role extends BackboneModel {
                     DBFunctions::insert('grand_role_projects',
                                         array('role_id' => $this->getId(),
                                               'project_id' => $p->getId()));
-                    if(!$this->getPerson()->isMemberOf($p)){
-                        DBFunctions::insert('grand_project_members',
-                                            array('user_id' => $this->getPerson()->getId(),
-                                                  'project_id' => $p->getId(),
-                                                  'start_date' => $this->getStartDate()));
-                    }
                     Cache::delete("project{$p->getId()}_people*", true);
                 }
             }
@@ -149,12 +143,6 @@ class Role extends BackboneModel {
 	        DBFunctions::insert('grand_role_projects',
 	                            array('role_id' => $this->getId(),
 	                                  'project_id' => $p->getId()));
-	        if(!$this->getPerson()->isMemberOf($p)){
-                DBFunctions::insert('grand_project_members',
-                                    array('user_id' => $this->getPerson()->getId(),
-                                          'project_id' => $p->getId(),
-                                          'start_date' => $this->getStartDate()));
-            }
             Cache::delete("project{$p->getId()}_people*", true);
 	    }
 	    Role::$cache = array();

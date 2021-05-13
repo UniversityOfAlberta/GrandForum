@@ -2876,47 +2876,6 @@ class Person extends BackboneModel {
                                           'changed' => GT($date)));
         return (count($data) > 0);
     }
-    
-    /**
-     * Returns all of the Projects that this Person has been a member of
-     * @param boolean $groupBySubs Whether or not to group by sub-projects
-     * @return array The Projects that this Person has been a member of
-     */
-    function getProjectHistory($groupBySubs=false){
-        $projects = array();
-        $tmpProjects = array();
-        $data = DBFunctions::select(array('grand_project_members'),
-                                    array('*'),
-                                    array('user_id' => EQ($this->getId())));
-        foreach($data as $row){
-            $start = $row['start_date'];
-            $end = $row['end_date'];
-            if($end == "0000-00-00 00:00:00"){
-                $end = "9999";
-            }
-            $tmpProjects[$end.$start.$row['id']] = $row;
-        }
-        ksort($tmpProjects);
-        $projects = array_reverse($tmpProjects);
-        if($groupBySubs){
-            $tmpProjects = array();
-            foreach($projects as $proj){
-                $project = Project::newFromId($proj['project_id']);
-                if($project != null && !$project->isSubProject()){
-                    $tmpProjects[] = $proj;
-                    foreach($projects as $id => $proj2){
-                        $sub = Project::newFromId($proj2['project_id']);
-                        if($sub != null && $sub->isSubProject() && $sub->getParent()->getId() == $project->getId()){
-                            $tmpProjects[] = $proj2;
-                            unset($projects[$id]);
-                        }  
-                    }
-                }
-            }
-            $projects = $tmpProjects;
-        }
-        return $projects;
-    }
 
     /*
      * Returns an array of 'PersonProjects' (used for Backbone API)
@@ -2924,15 +2883,16 @@ class Person extends BackboneModel {
      */
     function getPersonProjects(){
         $projects = array();
-        $data = DBFunctions::select(array('grand_project_members'),
-                                    array('id', 'project_id', 'start_date', 'end_date', 'comment'),
-                                    array('user_id' => EQ($this->id)),
+        $data = DBFunctions::select(array('grand_roles' => 'r', 'grand_role_projects' => 'rp'),
+                                    array('rp.role_id', 'rp.project_id', 'r.start_date', 'r.end_date', 'r.comment'),
+                                    array('r.user_id' => EQ($this->id),
+                                          'r.id' => EQ(COL('rp.role_id'))),
                                     array('end_date' => 'DESC'));
         foreach($data as $row){
             $project = Project::newFromId($row['project_id']);
             if($project != null && !$project->isSubProject() && !$project->isDeleted()){
                 $projects[] = array(
-                    'id' => $row['id'],
+                    'id' => "{$row['role_id']}-{$row['project_id']}",
                     'projectId' => $project->getId(),
                     'personId' => $this->getId(),
                     'startDate' => $row['start_date'],
@@ -3011,9 +2971,10 @@ class Person extends BackboneModel {
         if((($this->projects === null && $history === false) || 
             (!isset($this->projectCache["{$history}"]) && $history !== false)) && $this->id != null){
             $sql = "SELECT p.name
-                    FROM grand_project_members u, grand_project p
-                    WHERE user_id = '{$this->id}'
-                    AND p.id = u.project_id \n";
+                    FROM grand_roles r, grand_role_projects rp, grand_project p
+                    WHERE r.user_id = '{$this->id}'
+                    AND r.id = rp.role_id
+                    AND rp.project_id = p.id \n";
             if($history === false){
                 $sql .= "AND (end_date = '0000-00-00 00:00:00'
                          OR end_date > CURRENT_TIMESTAMP)\n";

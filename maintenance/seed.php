@@ -38,24 +38,24 @@ function createProduct($title, $tags) {
     $api->doPOST();
 }
 
-function addUserRole($name, $role){
+function addUserRole($name, $role, $projectNames){
     Person::$cache = array();
     Person::$namesCache = array();
+    $projects = array();
+    foreach($projectNames as $projectName){
+        $x = new stdClass();
+        $x->name = $projectName;
+        $projects[] = $x;
+    }
     $person = Person::newFromName($name);
     $_POST['userId'] = $person->getId();
     $_POST['name'] = $role;
+    $_POST['projects'] = $projects;
     $_POST['startDate'] = '2010-01-01 00:00:00';
     $_POST['endDate'] = '0000-00-00 00:00:00';
     $_POST['comment'] = '';
-    
     $api = new RoleAPI();
     $api->doPOST();
-}
-
-function addUserProject($name, $project){
-    $_POST['user'] = $name;
-    $_POST['role'] = $project;
-    APIRequest::doAction('AddProjectMember', true);
 }
 
 function addUserUniversity($name, $uni, $dept, $pos){
@@ -263,40 +263,27 @@ createProject("Phase2Project4", "Phase 2 Project 4", "Active", "Research", "No",
 createProject("Phase2Project5", "Phase 2 Project 5", "Active", "Research", "No", 2, "2014-04-01", "", "", "", "Theme4", 0);
 createProject("Phase2BigBetProject1", "Phase 2 Big Bet Project 1", "Active", "Research", "Yes", 2, "2014-04-01", "", "", "", "Theme5", 0);
 
-addUserRole("Manager.User1", MANAGER);
-addUserRole("Staff.User1", STAFF);
-addUserRole("PL.User1", CI);
-addUserRole("TL.User1", CI);
-addUserRole("RMC.User1", RMC);
-addUserRole("RMC.User1", CI);
-addUserRole("RMC.User2", RMC);
-addUserRole("CHAMP.User1", CHAMP);
-addUserRole("CHAMP.User2", CHAMP);
-addUserRole("NI.User1", CI);
-addUserRole("NI.User2", CI);
-addUserRole("NI.User3", CI);
-addUserRole("NI.User4", CI);
-addUserRole("NI.User5", CI);
-addUserRole("HQP.User1", HQP);
-addUserRole("HQP.User2", HQP);
-addUserRole("HQP.User3", HQP);
-addUserRole("HQP.User4", HQP);
-addUserRole("HQP-Candidate.User1", HQP);
-addUserRole("HQP.ToBeInactivated", HQP);
-addUserRole("External.User1", EXTERNAL);
-
-addUserProject("NI.User1", "Phase1Project1");
-addUserProject("NI.User1", "Phase1Project5");
-addUserProject("NI.User1", "Phase2Project1");
-addUserProject("NI.User1", "Phase2Project2");
-addUserProject("NI.User1", "Phase2BigBetProject1");
-addUserProject("NI.User2", "Phase2Project1");
-addUserProject("NI.User3", "Phase2Project2");
-addUserProject("NI.User4", "Phase2Project3");
-addUserProject("HQP.User1", "Phase1Project1");
-addUserProject("HQP.User2", "Phase2Project3");
-addUserProject("HQP.User3", "Phase2Project1");
-addUserProject("HQP.User4", "Phase1Project1");
+addUserRole("Manager.User1", MANAGER, array());
+addUserRole("Staff.User1", STAFF, array());
+addUserRole("PL.User1", CI, array());
+addUserRole("TL.User1", CI, array());
+addUserRole("RMC.User1", RMC, array());
+addUserRole("RMC.User1", CI, array());
+addUserRole("RMC.User2", RMC, array());
+addUserRole("CHAMP.User1", CHAMP, array());
+addUserRole("CHAMP.User2", CHAMP, array());
+addUserRole("NI.User1", CI, array("Phase1Project1", "Phase1Project5", "Phase2Project1", "Phase2Project2", "Phase2BigBetProject1"));
+addUserRole("NI.User2", CI, array("Phase2Project1"));
+addUserRole("NI.User3", CI, array("Phase2Project2"));
+addUserRole("NI.User4", CI, array("Phase2Project3"));
+addUserRole("NI.User5", CI, array());
+addUserRole("HQP.User1", HQP, array("Phase1Project1"));
+addUserRole("HQP.User2", HQP, array("Phase2Project3"));
+addUserRole("HQP.User3", HQP, array("Phase2Project1"));
+addUserRole("HQP.User4", HQP, array("Phase1Project1"));
+addUserRole("HQP-Candidate.User1", HQP, array());
+addUserRole("HQP.ToBeInactivated", HQP, array());
+addUserRole("External.User1", EXTERNAL, array());
 
 addUserUniversity("NI.User1", "University of Alberta", "Computing Science", "Professor");
 addUserUniversity("NI.User2", "University of Calgary", "Computing Science", "Professor");

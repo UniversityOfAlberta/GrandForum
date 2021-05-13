@@ -5,7 +5,6 @@ ManagePeopleRowView = Backbone.View.extend({
     row: null,
     // Views
     editRoles: null,
-    editProjects: null,
     editRelations: null,
     editUniversities: null,
     editAlumni: null,
@@ -14,7 +13,6 @@ ManagePeopleRowView = Backbone.View.extend({
     editThemeLeaders: null,
     // Dialogs
     rolesDialog: null,
-    projectsDialog: null,
     relationsDialog: null,
     universitiesDialog: null,
     editAlumni: null,
@@ -76,55 +74,6 @@ ManagePeopleRowView = Backbone.View.extend({
         this.editRoles = new ManagePeopleEditRolesView({model: this.model.roles, 
                                                         person:this.model, 
                                                         el: this.rolesDialog});
-    },
-    
-    openProjectsDialog: function(){
-        if(this.projectsDialog == null){
-            this.projectsDialog = this.$("#projectsDialog").dialog({
-	            autoOpen: false,
-	            modal: true,
-	            show: 'fade',
-	            resizable: false,
-	            draggable: false,
-	            width: 800,
-	            position: {
-                    my: "center bottom",
-                    at: "center center"
-                },
-	            open: function(){
-	                $("html").css("overflow", "hidden");
-	            },
-	            beforeClose: function(){
-	                $("html").css("overflow", "auto");
-	                this.editProjects.stopListening();
-	                this.editProjects.undelegateEvents();
-	                clearInterval(this.editProjects.interval);
-	                this.editProjects.interval = null;
-	            }.bind(this),
-	            buttons: {
-	                "+": { 
-	                    text: "Add Project", 
-	                    click: function(e){
-	                        this.editProjects.addProject();
-	                    }.bind(this),
-	                    disabled: (allowedProjects.length == 0),
-	                    style: "float: left;"
-	                },
-	                "Save": function(e){
-	                    this.editProjects.saveAll();
-                        this.projectsDialog.dialog('close');
-	                }.bind(this),
-	                "Cancel": function(){
-	                    this.projectsDialog.dialog('close');
-	                }.bind(this)
-	            }
-	        });
-        }
-        this.projectsDialog.empty();
-        this.projectsDialog.dialog('open');
-        this.editProjects = new ManagePeopleEditProjectsView({model: this.model.projects, 
-                                                              person:this.model, 
-                                                              el: this.projectsDialog});
     },
     
     openRelationsDialog: function(){
@@ -388,7 +337,6 @@ ManagePeopleRowView = Backbone.View.extend({
     
     events: {
         "click #editRoles": "openRolesDialog",
-        "click #editProjects": "openProjectsDialog",
         "click #editRelations": "openRelationsDialog",
         "click #editUniversities": "openUniversitiesDialog",
         "click #editAlumni": "openAlumniDialog",

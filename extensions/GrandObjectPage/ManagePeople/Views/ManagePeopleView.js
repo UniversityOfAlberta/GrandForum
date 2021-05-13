@@ -28,7 +28,7 @@ ManagePeopleView = Backbone.View.extend({
     
     addRows: function(){
         var searchStr = "";
-        var orderCol = 4;
+        var orderCol = 3;
         if(alumniEnabled){
             orderCol += 1;
         }

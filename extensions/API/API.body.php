@@ -130,7 +130,6 @@ class APIRequest{
 		
 		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
-		$this->addAction('Projects', 'addProjectMember', 'AddProjectMemberAPI');
 		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');
 		$this->addAction('Projects', 'updateProjectDescription', 'ProjectDescriptionAPI');
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
