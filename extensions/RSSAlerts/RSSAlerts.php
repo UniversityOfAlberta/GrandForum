@@ -68,7 +68,7 @@ class RSSAlerts extends SpecialPage{
     // Returns RSSArticles
     function parseRSS($contents, $feed=null, $person=null){
         $articles = array();
-        $xml = @simplexml_load_string($contents);
+        $xml = @simplexml_load_string($contents, null, LIBXML_NOCDATA);
         if($xml === false){
             return false;
         }
@@ -91,7 +91,7 @@ class RSSAlerts extends SpecialPage{
                     $article->rssId = $entry['id'];
                     $article->title = $entry['title'];
                     $article->url = $entry['link']['@attributes']['href'];
-                    $article->description = $entry['content'];
+                    $article->description = strip_tags($entry['content']);
 
                     foreach(Wordle::createDataFromText(strip_tags($article->title." ".$article->description)) as $keyword){
                         if($keyword['freq'] > 1){
@@ -125,7 +125,7 @@ class RSSAlerts extends SpecialPage{
                     $article->rssId = $id;
                     $article->title = $entry['title'];
                     $article->url = $entry['link'];
-                    $article->description = $entry['description'];
+                    $article->description = strip_tags($entry['description']);
                     
                     foreach(Wordle::createDataFromText(strip_tags($article->title." ".$article->description)) as $keyword){
                         if($keyword['freq'] > 1){
