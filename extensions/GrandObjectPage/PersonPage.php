@@ -69,6 +69,7 @@ class PersonPage {
                 $isMe = ($person->isMe() ||
                         $me->isRoleAtLeast(STAFF));
                 $isSupervisor = false;
+                $isLeader = false;
                 foreach($supervisors as $supervisor){
                     if($supervisor->getName() == $me->getName()){
                         $isSupervisor = true;
@@ -94,7 +95,10 @@ class PersonPage {
                     if($me->isRole(PA, $project) ||
                        $me->isRole(PS, $project)){
                         $isSupervisor = true;
-                        break;
+                    }
+                    if($person->isRole(HQP, $project) && $me->isRole(PL, $project)){
+                        // Person is an HQP and $me is the leader of their project
+                        $isLeader = true;
                     }
                 }
                 foreach($me->getThemeProjects() as $project){
@@ -120,6 +124,7 @@ class PersonPage {
                 $visibility['edit'] = $edit;
                 $visibility['isMe'] = $isMe;
                 $visibility['isSupervisor'] = $isSupervisor;
+                $visibility['isLeader'] = $isLeader;
                 $visibility['isChampion'] = $isChampion;
                 
                 self::showTitle($person, $visibility);
