@@ -86,7 +86,8 @@ class PersonProfileTab extends AbstractEditableTab {
     function canEdit(){
         $me = Person::newFromWgUser();
         return (($this->visibility['isMe'] || 
-                 $this->visibility['isSupervisor']) &&
+                 $this->visibility['isSupervisor'] ||
+                 $this->visibility['isLeader']) &&
                 $me->isAllowedToEdit($this->person));
     }
     
