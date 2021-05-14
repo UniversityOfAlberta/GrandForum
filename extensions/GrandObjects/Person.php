@@ -3531,25 +3531,8 @@ class Person extends BackboneModel {
             foreach($role_objs as $r){
                 $skip = $defaultSkip;
                 if($project != null && count($r->getProjects()) > 0){
-                    // Projects are explicitely specified
                     $skip = true;
                     foreach($r->getProjects() as $p){
-                        if($p->getId() == $project->getId()){
-                            $skip = false;
-                            break;
-                        }
-                        foreach($p->getAllPreds() as $pred){
-                            if($pred->getId() == $project->getId()){
-                                $skip = false;
-                                break 2;
-                            }
-                        }
-                    }
-                }
-                else if($project != null && count($r->getProjects()) == 0){
-                    // Projects are not explicitely specified
-                    $skip = true;
-                    foreach($this->getProjectsDuring($startRange, $endRange) as $p){
                         if($p->getId() == $project->getId()){
                             $skip = false;
                             break;
