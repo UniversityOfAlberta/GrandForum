@@ -138,6 +138,9 @@ $egAnnokiExtensions['Freeze'] = array('name' => 'Freeze',
                                       
 $egAnnokiExtensions['RSSAlerts'] = array('name' => 'RSSAlerts',
                                          'path' => "$IP/extensions/RSSAlerts/RSSAlerts.php");
+                                         
+$egAnnokiExtensions['EventRegistration'] = array('name' => 'EventRegistration',
+                                         'path' => "$IP/extensions/EventRegistration/SpecialEventRegistration.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
