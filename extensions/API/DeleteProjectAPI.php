@@ -41,6 +41,20 @@ class DeleteProjectAPI extends API{
 	        $sql = "INSERT INTO `grand_project_status` (`evolution_id`,`project_id`,`status`,`start_date`,`end_date`,`type`)
 	                VALUES ('{$evoId}','{$nsId}','Ended','{$startDate}','{$endDate}','{$type}')";
 	        $stat = DBFunctions::execSQL($sql, true, true);
+	        
+	        // Change end date of roles which only belong to this project
+            $roles = DBFunctions::execSQL("SELECT r.id, COUNT(*)
+                                           FROM grand_roles r, grand_role_projects rp, grand_role_projects rp1 
+                                           WHERE r.id = rp.role_id AND r.id = rp1.role_id 
+                                           AND rp.project_id = '{$nsId}'
+                                           AND r.end_date = '0000-00-00 00:00:00' 
+                                           GROUP by r.id 
+                                           HAVING COUNT(*) = 1");
+            foreach($roles as $role){
+                DBFunctions::update('grand_roles',
+                                   array('end_date' => $effective_date),
+                                   array('id' => $role['id']));
+            }
 	    }
 	    if($stat){
 	        Project::$cache = array();
