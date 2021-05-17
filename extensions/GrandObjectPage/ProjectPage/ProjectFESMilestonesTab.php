@@ -36,41 +36,43 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     // This person can't edit this milestone, try next one
                     continue;
                 }
-                $quarters = array();
-                if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
-                    foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
-                        foreach($qs as $qId => $q){
-                            $quarters[] = ($year).":$qId";
-                        }
-                    }
-                }
-                
-                if(isset($_POST['milestone_leader'])){
-                    $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
-                }
-                $_POST['activity'] = $activity;
-                $_POST['activity_id'] = $activityId;
-                $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
-                $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
-                $_POST['new_title'] = $title;
-                $_POST['description'] = @$_POST['milestone_description'][$activityId][$milestoneId];
-                $_POST['end_user'] = @$_POST['milestone_end_user'][$activityId][$milestoneId];
-                $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
-                $_POST['modification'] = @$_POST['milestone_modification'][$activityId][$milestoneId];
-                $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
-                $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
-                $_POST['quarters'] = implode(",", $quarters);
-                $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
-                $_POST['id'] = $milestoneId;
-                
-                $milestoneApi = new ProjectMilestoneAPI(true);
-                $milestoneApi->doAction(true);
                 
                 if(isset($_POST['milestone_delete'][$activityId][$milestoneId]) &&
                    $_POST['milestone_delete'][$activityId][$milestoneId] == 'delete'){
                     DBFunctions::update('grand_milestones',
                                         array('status' => 'Deleted'),
                                         array('id' => $milestone->getId()));
+                }
+                else{
+                    $quarters = array();
+                    if(isset($_POST['milestone_q'][$activityId][$milestoneId])){
+                        foreach($_POST['milestone_q'][$activityId][$milestoneId] as $year => $qs){
+                            foreach($qs as $qId => $q){
+                                $quarters[] = ($year).":$qId";
+                            }
+                        }
+                    }
+                    
+                    if(isset($_POST['milestone_leader'])){
+                        $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                    }
+                    $_POST['activity'] = $activity;
+                    $_POST['activity_id'] = $activityId;
+                    $_POST['milestone'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                    $_POST['title'] = $_POST['milestone_old'][$activityId][$milestoneId];
+                    $_POST['new_title'] = $title;
+                    $_POST['description'] = @$_POST['milestone_description'][$activityId][$milestoneId];
+                    $_POST['end_user'] = @$_POST['milestone_end_user'][$activityId][$milestoneId];
+                    $_POST['status'] = $_POST['milestone_status'][$activityId][$milestoneId];
+                    $_POST['modification'] = @$_POST['milestone_modification'][$activityId][$milestoneId];
+                    $_POST['people'] = $_POST['milestone_people'][$activityId][$milestoneId];
+                    $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
+                    $_POST['quarters'] = implode(",", $quarters);
+                    $_POST['comment'] = str_replace(">", "&gt;", str_replace("<", "&lt;", $_POST['milestone_comment'][$activityId][$milestoneId]));
+                    $_POST['id'] = $milestoneId;
+                    
+                    $milestoneApi = new ProjectMilestoneAPI(true);
+                    $milestoneApi->doAction(true);
                 }
             }
         }
