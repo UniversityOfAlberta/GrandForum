@@ -240,7 +240,8 @@
         'Freeze',
         //'Postings',
         //'CRM',
-        //'RSSAlerts'
+        //'RSSAlerts',
+        //'EventRegistration'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,
