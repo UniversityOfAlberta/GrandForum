@@ -67,7 +67,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
         $person = Person::newFromWgUser($wgUser);
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "SpecialEventRegistrationTable") ? "selected" : false;
-            $tabs["Manager"]['subtabs'] = TabUtils::createSubTab("Event Registraton Table", "$wgServer$wgScriptPath/index.php/Special:SpecialEventRegistrationTable", $selected);
+            $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Event Registraton Table", "$wgServer$wgScriptPath/index.php/Special:SpecialEventRegistrationTable", $selected);
         }
         return true;
     }
