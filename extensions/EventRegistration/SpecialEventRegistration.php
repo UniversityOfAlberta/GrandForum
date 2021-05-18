@@ -89,8 +89,8 @@ class SpecialEventRegistration extends SpecialPage{
                 <tr>
                     <td class='label' style='vertical-align: middle;'>Participant Role</td>
                     <td><select name='role' required='required'>
-                        <option>Host</option>
                         <option>Presenter</option>
+                        <option>Host</option>
                         <option>Audience</option>
                     </select></td>
                 </tr>
