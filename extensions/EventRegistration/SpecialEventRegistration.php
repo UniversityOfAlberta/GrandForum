@@ -71,7 +71,13 @@ class SpecialEventRegistration extends SpecialPage{
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
         
+        $preamble = "";
+        if($config->getValue('networkName')){
+            $preamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
+        }
+        
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration' method='post'>
+            {$preamble}
             <h3>Participant information</h3>
             <table class='wikitable' frame='box' rules='all'>
                 <tr>
@@ -103,11 +109,11 @@ class SpecialEventRegistration extends SpecialPage{
                 </tr>
                 <tr>
                     <td><input type='checkbox' name='join_newsletter' value='1' /></td>
-                    <td>Join AI4Society Newsletter</td>
+                    <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
                 </tr>
                 <tr>
                     <td><input type='checkbox' name='create_profile' value='1' /></td>
-                    <td>Become an {$config->getValue('networkName')} Member</td>
+                    <td>Become an AI4Society Member</td>
                 </tr>
                 <tr>
                     <td><input type='checkbox' name='similar_events' value='1' /></td>
