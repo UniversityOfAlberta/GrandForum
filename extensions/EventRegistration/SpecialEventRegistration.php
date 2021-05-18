@@ -71,8 +71,6 @@ class SpecialEventRegistration extends SpecialPage{
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
         
-        $preamble = "";
-        
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration' method='post'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
             <h3>Participant information</h3>
