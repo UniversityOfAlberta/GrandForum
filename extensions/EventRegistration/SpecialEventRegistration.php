@@ -41,8 +41,13 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->similarEvents = isset($_POST['similar_events']);
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
+            $event = EventPosting::newFromId($_POST['event']);
+            if($event != null && $event->title != ""){
+                redirect($event->getUrl());
+            }
         }
-        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration");
+        $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
+        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}");
     }
 
     function execute($par){
@@ -51,14 +56,20 @@ class SpecialEventRegistration extends SpecialPage{
         if(isset($_POST['submit'])){
             $this->handleEdit();
         }
+        $defaultEvent = "";
         $eventOptions = array();
+        $event = EventPosting::newFromId(@$_GET['event']);
+        if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
+            $eventOptions[$event->id] = $event->title;
+            $defaultEvent = $event->id;
+        }
         $events = EventPosting::getAllPostings();
         foreach($events as $event){
-            if($event->startDate >= date('Y-m-d')){
+            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish"){
                 $eventOptions[$event->id] = $event->title;
             }
         }
-        $eventField = new SelectBox("event", "event", "", $eventOptions);
+        $eventField = new SelectBox("event", "event", $defaultEvent, $eventOptions);
         $eventField->attr('required', 'required');
         $eventField->forceKey = true;
         
@@ -71,8 +82,8 @@ class SpecialEventRegistration extends SpecialPage{
                 ((isset($_SERVER['givenName']) && isset($_SERVER['sn'])) ? ucfirst($_SERVER['givenName'])." ".ucfirst($_SERVER['sn']) : "");
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
-        
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration' method='post'>
+        $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
+        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
             <h3>Participant information</h3>
             <table class='wikitable' frame='box' rules='all'>
@@ -91,9 +102,9 @@ class SpecialEventRegistration extends SpecialPage{
                 <tr>
                     <td class='label' style='vertical-align: middle;'>Participant Role</td>
                     <td><select name='role' required='required'>
+                        <option selected>Audience</option>
                         <option>Presenter</option>
                         <option>Host</option>
-                        <option>Audience</option>
                     </select></td>
                 </tr>
             </table>
