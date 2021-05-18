@@ -25,7 +25,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
             this.projectMembers.add(members);
         }.bind(this));
         
-        $.when(xhr).then(function(){
+        $.when(xhr).always(function(){
             this.model.ready().then(function(){
                 this.relations = this.model;
                 this.listenTo(this.relations, "add", this.addRows);
