@@ -11,6 +11,7 @@ class EventRegistration extends BackboneModel {
     var $joinNewsletter;
     var $createProfile;
     var $similarEvents;
+    var $created;
 
     static function getAllEventRegistrations(){
         $data = DBFunctions::select(array('grand_event_registration'),
@@ -40,7 +41,12 @@ class EventRegistration extends BackboneModel {
             $this->joinNewsletter = $data[0]['join_newsletter'];
             $this->createProfile = $data[0]['create_profile'];
             $this->similarEvents = $data[0]['similar_events'];
+            $this->created = $data[0]['created'];
         }
+    }
+    
+    function getEvent(){
+        return EventPosting::newFromId($this->eventId);
     }
     
     function toArray(){
@@ -52,7 +58,8 @@ class EventRegistration extends BackboneModel {
                      'receive_information' => $this->receiveInformation,
                      'join_newsletter' => $this->joinNewsletter,
                      'create_profile' => $this->createProfile,
-                     'similar_events' => $this->similarEvents);
+                     'similar_events' => $this->similarEvents,
+                     'created' => $this->created);
     }
     
     function create(){
