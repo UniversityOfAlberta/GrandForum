@@ -3154,7 +3154,7 @@ class Person extends BackboneModel {
     function getRelations($type='all', $history=false, $inverse=false){
         $me = Person::newFromWgUser();
         $relations = array();
-        if($inverse && $me->isRoleAtLeast(STAFF)){
+        if($inverse && ($me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA))){
             $where = "WHERE user2 = '{$this->id}'";
         }
         else{

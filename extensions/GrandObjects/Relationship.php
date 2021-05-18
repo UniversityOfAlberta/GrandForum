@@ -105,7 +105,7 @@ class Relationship extends BackboneModel {
     
     function create(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF)){
+        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA)){
             $projects = array();
             if(is_array($this->projects)){
                 foreach($this->projects as $project){
@@ -134,7 +134,7 @@ class Relationship extends BackboneModel {
     
     function update(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF)){
+        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA)){
             $projects = array();
             foreach($this->projects as $project){
                 $proj = Project::newFromName($project->name);
@@ -159,7 +159,7 @@ class Relationship extends BackboneModel {
     
     function delete(){
         $me = Person::newFromWgUser();
-        if($me->getId() == $this->user1 || $me->isRole(ADMIN)){
+        if($me->getId() == $this->user1 || $me->isRoleAtLeast(STAFF) || $me->isRole(PL) || $me->isRole(PA)){
             $status = DBFunctions::delete('grand_relations',
                                           array('id' => EQ($this->id)));
             if($status){
