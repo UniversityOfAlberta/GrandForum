@@ -52,6 +52,9 @@ class PublicVisualizations extends SpecialPage{
             $tabbedPage->addTab(new PublicWordleTab());
         }
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.custom-title').hide();
+        </script>");
     }
     
     static function createSubTabs(&$tabs){

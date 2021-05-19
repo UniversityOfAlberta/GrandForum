@@ -97,8 +97,9 @@ class PublicChordTab extends AbstractTab {
             foreach($sortedProjects as $key => $sort){
                 foreach($sort as $project){
                     $key = explode("-", $key);
+                    $id = $key[0];
                     $key = $key[count($key)-1];
-                    $theme = $project->getChallenge();
+                    $theme = Theme::newFromId($id);
                     $color = $theme->getColor();
                     $projects[] = $project;
                     $colorHashs[] = $key;
