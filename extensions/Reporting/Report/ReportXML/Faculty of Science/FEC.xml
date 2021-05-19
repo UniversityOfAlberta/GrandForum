@@ -12,8 +12,8 @@
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
         </Role>
         <Role role="ATS">
             <SectionPermission id="information" permissions="rw" />
@@ -26,8 +26,8 @@
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="review" permissions="-" />
+            <SectionPermission id="submit" permissions="-" />
         </Role>
         <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
             <SectionPermission id="information" permissions="rw" />
