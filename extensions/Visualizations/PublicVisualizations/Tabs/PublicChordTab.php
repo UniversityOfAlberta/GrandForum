@@ -59,9 +59,27 @@ class PublicChordTab extends AbstractTab {
                 }
             }
             
+            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'activity')){
+                foreach($projects as $project){
+                    foreach($project->getChallenges() as $theme){
+                        if(strstr($theme->getName(), "Activity - ") !== false){
+                            $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
+                            break;
+                        }
+                    }
+                }
+            }
             if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
                 foreach($projects as $project){
-                    $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
+                    if($config->getValue('networkName') == "AI4Society"){
+                        if(strstr($theme->getName(), "Theme - ") !== false){
+                            $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
+                            break;
+                        }
+                    }
+                    else{
+                        $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
+                    }
                 }
             }
             else if(isset($_GET['sortBy']) && $_GET['sortBy'] == 'name'){
@@ -153,8 +171,14 @@ class PublicChordTab extends AbstractTab {
             $array['filterOptions'] = array();
 
             $array['dateOptions'] = $dates;
-                                      
-            $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+            
+            if($config->getValue('networkName') == "AI4Society"){
+                $array['sortOptions'] = array(array('name' => "Activity", 'value' => 'activity', 'checked' => 'checked'),
+                                              array('name' => "Theme", 'value' => 'theme', 'checked' => ''));
+            }
+            else{
+                $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+            }
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
