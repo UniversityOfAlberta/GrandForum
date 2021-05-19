@@ -72,9 +72,11 @@ class PublicChordTab extends AbstractTab {
             if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
                 foreach($projects as $project){
                     if($config->getValue('networkName') == "AI4Society"){
-                        if(strstr($theme->getName(), "Theme - ") !== false){
-                            $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
-                            break;
+                        foreach($project->getChallenges() as $theme){
+                            if(strstr($theme->getName(), "Theme - ") !== false){
+                                $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
+                                break;
+                            }
                         }
                     }
                     else{
