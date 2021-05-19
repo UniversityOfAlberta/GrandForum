@@ -11,7 +11,7 @@ class PublicWordleTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
 	    $wordle = new Wordle("{$wgServer}{$wgScriptPath}/index.php?action=getPublicWordleData");
-	    $wordle->width = 640;
+	    $wordle->width = "100%";
         $wordle->height = 480;
         $this->html = "<div><a class='button' onClick='$(\"#help{$wordle->index}\").show();$(this).hide();'>Show Help</a>
 	        <div id='help{$wordle->index}' style='display:none;'>
