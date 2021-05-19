@@ -59,7 +59,7 @@ class PublicChordTab extends AbstractTab {
                 }
             }
             
-            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'activity')){
+            if(($config->getValue('networkName') == "AI4Society") && (!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'activity'))){
                 foreach($projects as $project){
                     foreach($project->getChallenges() as $theme){
                         if(strstr($theme->getName(), "Activity - ") !== false){
@@ -69,7 +69,7 @@ class PublicChordTab extends AbstractTab {
                     }
                 }
             }
-            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
+            else if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
                 foreach($projects as $project){
                     if($config->getValue('networkName') == "AI4Society"){
                         foreach($project->getChallenges() as $theme){
