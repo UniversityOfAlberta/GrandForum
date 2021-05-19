@@ -23,6 +23,8 @@ class SpecialEventRegistrationTable extends SpecialPage{
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Webpage</th>
+                    <th>Twitter</th>
                     <th style='width:1%;'>Receive Information</th>
                     <th style='width:1%;'>Join Newsletter</th>
                     <th style='width:1%;'>Create Profile</th>
@@ -41,6 +43,8 @@ class SpecialEventRegistrationTable extends SpecialPage{
                 <td>{$registration->name}</td>
                 <td>{$registration->email}</td>
                 <td>{$registration->role}</td>
+                <td>{$registration->webpage}</td>
+                <td>{$registration->twitter}</td>
                 <td align='center' style='font-size:2em;'>{$receiveInformation}</td>
                 <td align='center' style='font-size:2em;'>{$joinNewsletter}</td>
                 <td align='center' style='font-size:2em;'>{$createProfile}</td>

@@ -35,6 +35,8 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->email = $_POST['email'];
             $eventRegistration->name = $_POST['name'];
             $eventRegistration->role = $_POST['role'];
+            $eventRegistration->webpage = @$_POST['webpage'];
+            $eventRegistration->twitter = @$_POST['twitter'];
             $eventRegistration->receiveInformation = isset($_POST['receive_information']);
             $eventRegistration->joinNewsletter = isset($_POST['join_newsletter']);
             $eventRegistration->createProfile = isset($_POST['create_profile']);
@@ -82,6 +84,13 @@ class SpecialEventRegistration extends SpecialPage{
                 ((isset($_SERVER['givenName']) && isset($_SERVER['sn'])) ? ucfirst($_SERVER['givenName'])." ".ucfirst($_SERVER['sn']) : "");
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
+        
+        $twitter = ($me->isLoggedIn()) ? $me->getTwitter() : "";
+        $twitterField = new TextField("twitter", "twitter", $twitter);
+        
+        $webpage = ($me->isLoggedIn()) ? $me->getWebsite() : "";
+        $webpageField = new TextField("webpage", "webpage", $webpage);
+        
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
@@ -106,6 +115,14 @@ class SpecialEventRegistration extends SpecialPage{
                         <option>Presenter</option>
                         <option>Host</option>
                     </select></td>
+                </tr>
+                <tr>
+                    <td class='label' style='vertical-align: middle;'>Webpage</td>
+                    <td>{$webpageField->render()}</td>
+                </tr>
+                <tr>
+                    <td class='label' style='vertical-align: middle;'>Twitter</td>
+                    <td>{$twitterField->render()}</td>
                 </tr>
             </table>
             <h3>Other information</h3>

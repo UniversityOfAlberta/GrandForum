@@ -7,6 +7,8 @@ class EventRegistration extends BackboneModel {
     var $email;
     var $name;
     var $role;
+    var $webpage;
+    var $twitter;
     var $receiveInformation;
     var $joinNewsletter;
     var $createProfile;
@@ -37,6 +39,8 @@ class EventRegistration extends BackboneModel {
             $this->email = $data[0]['email'];
             $this->name = $data[0]['name'];
             $this->role = $data[0]['role'];
+            $this->webpage = $data[0]['webpage'];
+            $this->twitter = $data[0]['twitter'];
             $this->receiveInformation = $data[0]['receive_information'];
             $this->joinNewsletter = $data[0]['join_newsletter'];
             $this->createProfile = $data[0]['create_profile'];
@@ -55,6 +59,8 @@ class EventRegistration extends BackboneModel {
                      'email' => $this->email,
                      'name' => $this->name,
                      'role' => $this->role,
+                     'webpage' => $this->webpage,
+                     'twitter' => $this->twitter,
                      'receive_information' => $this->receiveInformation,
                      'join_newsletter' => $this->joinNewsletter,
                      'create_profile' => $this->createProfile,
@@ -68,6 +74,8 @@ class EventRegistration extends BackboneModel {
                                   'email' => $this->email,
                                   'name' => $this->name,
                                   'role' => $this->role,
+                                  'webpage' => $this->webpage,
+                                  'twitter' => $this->twitter,
                                   'receive_information' => $this->receiveInformation,
                                   'join_newsletter' => $this->joinNewsletter,
                                   'create_profile' => $this->createProfile,
@@ -82,6 +90,8 @@ class EventRegistration extends BackboneModel {
                                   'email' => $this->email,
                                   'name' => $this->name,
                                   'role' => $this->role,
+                                  'webpage' => $this->webpage,
+                                  'twitter' => $this->twitter,
                                   'receive_information' => $this->receiveInformation,
                                   'join_newsletter' => $this->joinNewsletter,
                                   'create_profile' => $this->createProfile,
