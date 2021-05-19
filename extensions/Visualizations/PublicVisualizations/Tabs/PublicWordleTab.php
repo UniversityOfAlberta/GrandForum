@@ -49,6 +49,7 @@ class PublicWordleTab extends AbstractTab {
                 $description[] = strip_tags($theme->getDescription());
             }
             $data = Wordle::createDataFromText(implode(" ", $description));
+            $data = array_splice($data, 0, 600);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
