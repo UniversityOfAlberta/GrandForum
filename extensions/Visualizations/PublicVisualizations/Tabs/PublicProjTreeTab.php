@@ -25,8 +25,7 @@ class PublicProjTreeTab extends AbstractTab {
             setInterval(function(){
                 var newWidth = $('#projects').width();
                 var newHeight = $('#projects').height();
-                if(lastWidth{$tree->index} != newWidth ||
-                   lastHeight{$tree->index} != newHeight){
+                if(lastWidth{$tree->index} != newWidth){
                     onLoad{$tree->index}();
                 }
                 lastWidth{$tree->index} = newWidth;

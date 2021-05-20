@@ -25,8 +25,7 @@ class PublicUniTreeTab extends AbstractTab {
             setInterval(function(){
                 var newWidth = $('#universities').width();
                 var newHeight = $('#universities').height();
-                if(lastWidth{$tree->index} != newWidth ||
-                   lastHeight{$tree->index} != newHeight){
+                if(lastWidth{$tree->index} != newWidth){
                     onLoad{$tree->index}();
                 }
                 lastWidth{$tree->index} = newWidth;
