@@ -161,7 +161,7 @@ class Theme {
      * @return string This Theme's color
      */
     function getColor(){
-        return $this->color;
+        return ($this->color != "") ? $this->color : "#888888";
     }
     
     function getCreated(){

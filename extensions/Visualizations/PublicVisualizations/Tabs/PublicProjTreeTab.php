@@ -37,36 +37,69 @@ class PublicProjTreeTab extends AbstractTab {
                 }
                 $people = $project->getAllPeople();
                 $challenges = $project->getChallenges();
-                foreach($challenges as $challenge){
-                    $theme = ($challenge != null) ? $challenge->getAcronym() : "Unknown";
-                    foreach($people as $person){
-                        if($person->isRole(NI)){
-                            @$projs[$theme][$project->getName()][$person->getReversedName()] = 1;
+                $activities = array("N/A");
+                $themes = $challenges;
+                if($config->getValue('networkName') == "AI4Society"){
+                    // Handle Activity - Theme structure
+                    $themes = array();
+                    foreach($challenges as $challenge){
+                        if(strstr($challenge->getName(), "Activity - ") !== false){
+                            $activities[] = $challenge;
+                        }
+                        else{
+                            $themes[] = $challenge;
+                        }
+                    }
+                }
+                foreach($activities as $activity){
+                    foreach($themes as $theme){
+                        $theme = ($theme != null) ? $theme->getAcronym() : "Unknown";
+                        foreach($people as $person){
+                            if($person->isRole(NI)){
+                                @$projs[$activity][$theme][$project->getName()][$person->getReversedName()] = 1;
+                            }
                         }
                     }
                 }
             }
-            foreach($projs as $theme => $projs2){
-                $challenge = Theme::newFromName($theme);
-                $color = $challenge->getColor();
-                $themeData = array("name" => $theme,
-                                   "color" => $color,
-                                   "children" => array());
-                foreach($projs2 as $proj => $person){
-                    $project = Project::newFromName($proj);
-                    
-                    $projData = array("name" => $proj,
-                                      "color" => $color,
-                                      "children" => array());
-                    $personData = array();
-                    foreach($person as $name => $total){
-                        $personData[] = array("name" => $name,
-                                              "size" => $total);
-                    }
-                    $projData['children'] = $personData;
-                    $themeData['children'][] = $projData;
+            
+            foreach($projs as $activity => $projs2){
+                if($config->getValue('networkName') == "AI4Society"){
+                    $challenge = Theme::newFromName($activity);
+                    $color = $challenge->getColor();
+                    $activityData = array("name" => $theme,
+                                          "color" => $color,
+                                          "children" => array());
                 }
-                $data['children'][] = $themeData;
+                foreach($projs2 as $theme => $projs3){
+                    $challenge = Theme::newFromName($theme);
+                    $color = $challenge->getColor();
+                    $themeData = array("name" => $theme,
+                                       "color" => $color,
+                                       "children" => array());
+                    foreach($projs3 as $proj => $person){
+                        $project = Project::newFromName($proj);
+                        $projData = array("name" => $proj,
+                                          "color" => $color,
+                                          "children" => array());
+                        $personData = array();
+                        foreach($person as $name => $total){
+                            $personData[] = array("name" => $name,
+                                                  "size" => $total);
+                        }
+                        $projData['children'] = $personData;
+                        $themeData['children'][] = $projData;
+                    }
+                    if($config->getValue('networkName') == "AI4Society"){
+                        $activityData['children'][] = $themeData;
+                    }
+                    else{
+                        $data['children'][] = $themeData;
+                    }
+                }
+                if($config->getValue('networkName') == "AI4Society"){
+                    $data['children'][] = $activityData;
+                }
             }
             header("Content-Type: application/json");
             echo json_encode($data);
