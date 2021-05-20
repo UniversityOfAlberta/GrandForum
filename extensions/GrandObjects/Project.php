@@ -17,6 +17,7 @@ class Project extends BackboneModel {
     var $fullName;
     var $name;
     var $status;
+    var $creationDate;
     var $startDate;
     var $endDate;
     var $type;
@@ -692,22 +693,32 @@ EOF;
     
     // Returns when this project was initially created
     function getCreated(){
-        $created = null;
+        if($this->creationDate != null){
+            return $this->creationDate;
+        }
         if(!$this->clear){
             $preds = $this->getPreds();
             if(count($preds) == 0){
-                return $this->getEffectiveDate();
+                $data = DBFunctions::select(array('grand_project_evolution'),
+                                            array('effective_date'),
+                                            array('new_id' => $this->getId(),
+                                                  'action' => 'CREATE'));
+                $this->creationDate = @$data[0]['effective_date'];
             }
             else{
                 foreach($preds as $pred){
-                    $created = $pred->getCreated();
+                    $this->creationDate = $pred->getCreated();
                 }
             }
         }
         else{
-            $created = $this->getEffectiveDate();
+            $data = DBFunctions::select(array('grand_project_evolution'),
+                                        array('effective_date'),
+                                        array('new_id' => $this->getId(),
+                                              'action' => 'CREATE'));
+            $this->creationDate = @$data[0]['effective_date'];
         }
-        return $created;
+        return $this->creationDate;
     }
     
     function getDeleted(){
