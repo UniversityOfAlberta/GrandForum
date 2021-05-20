@@ -67,7 +67,7 @@ class PublicProjTreeTab extends AbstractTab {
                 if($config->getValue('networkName') == "AI4Society"){
                     $challenge = Theme::newFromName($activity);
                     $color = $challenge->getColor();
-                    $activityData = array("name" => $theme,
+                    $activityData = array("name" => $activity,
                                           "color" => $color,
                                           "children" => array());
                 }
