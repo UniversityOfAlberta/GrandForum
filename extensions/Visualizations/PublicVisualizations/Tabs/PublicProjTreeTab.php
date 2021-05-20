@@ -11,8 +11,8 @@ class PublicProjTreeTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
         $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getPublicProjTreeData", "Count", "", "", "");
-        $tree->height = 500;
-        $tree->width = 1000;
+        $tree->height = 600;
+        $tree->width = "100%";
         $this->html .= $tree->show();
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -20,6 +20,18 @@ class PublicProjTreeTab extends AbstractTab {
                     onLoad{$tree->index}();
                 }
             });
+            var lastWidth{$tree->index} = 0;
+            var lastHeight{$tree->index} = 0;
+            setInterval(function(){
+                var newWidth = $('#projects').width();
+                var newHeight = $('#projects').height();
+                if(lastWidth{$tree->index} != newWidth ||
+                   lastHeight{$tree->index} != newHeight){
+                    onLoad{$tree->index}();
+                }
+                lastWidth{$tree->index} = newWidth;
+                lastHeight{$tree->index} = newHeight;
+            }, 100);
             </script>";
 	}
 	
@@ -42,6 +54,7 @@ class PublicProjTreeTab extends AbstractTab {
                 if($config->getValue('networkName') == "AI4Society"){
                     // Handle Activity - Theme structure
                     $themes = array();
+                    $activities = array();
                     foreach($challenges as $challenge){
                         if(strstr($challenge->getName(), "Activity - ") !== false){
                             $activities[] = $challenge;
@@ -69,7 +82,7 @@ class PublicProjTreeTab extends AbstractTab {
                     $challenge = Theme::newFromName($activity);
                     $color = $challenge->getColor();
                     $activity = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
-                    $activityData = array("name" => $activity,
+                    $activityData = array("name" => str_replace("Activity - ", "", $activity),
                                           "color" => $color,
                                           "children" => array());
                 }
@@ -77,7 +90,7 @@ class PublicProjTreeTab extends AbstractTab {
                     $challenge = Theme::newFromName($theme);
                     $color = $challenge->getColor();
                     $theme = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
-                    $themeData = array("name" => $theme,
+                    $themeData = array("name" => str_replace("Theme - ", "", $theme),
                                        "color" => $color,
                                        "children" => array());
                     foreach($projs3 as $proj => $person){

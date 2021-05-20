@@ -39,6 +39,8 @@ class TreeMap extends Visualization {
 <script type='text/javascript'>
     
     function onLoad{$this->index}(){
+        $('#vis{$this->index}').width('{$this->width}');
+        $('#vis{$this->index}').height('{$this->height}');
         $('#vis{$this->index}').empty();
         $('#vis{$this->index}').treemap({url: '{$this->url}',
                                          sizeLabel: '{$this->sizeLabel}',

@@ -11,8 +11,8 @@ class PublicUniTreeTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
         $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getPublicUniTreeData", "Count", "", "", "");
-        $tree->height = 500;
-        $tree->width = 1000;
+        $tree->height = 600;
+        $tree->width = "100%";
         $this->html .= $tree->show();
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -20,6 +20,18 @@ class PublicUniTreeTab extends AbstractTab {
                     onLoad{$tree->index}();
                 }
             });
+            var lastWidth{$tree->index} = 0;
+            var lastHeight{$tree->index} = 0;
+            setInterval(function(){
+                var newWidth = $('#universities').width();
+                var newHeight = $('#universities').height();
+                if(lastWidth{$tree->index} != newWidth ||
+                   lastHeight{$tree->index} != newHeight){
+                    onLoad{$tree->index}();
+                }
+                lastWidth{$tree->index} = newWidth;
+                lastHeight{$tree->index} = newHeight;
+            }, 100);
             </script><br />";
 	}
 	
