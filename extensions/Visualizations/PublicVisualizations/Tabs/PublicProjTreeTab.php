@@ -42,7 +42,6 @@ class PublicProjTreeTab extends AbstractTab {
                 if($config->getValue('networkName') == "AI4Society"){
                     // Handle Activity - Theme structure
                     $themes = array();
-                    $activities = array();
                     foreach($challenges as $challenge){
                         if(strstr($challenge->getName(), "Activity - ") !== false){
                             $activities[] = $challenge;
@@ -69,6 +68,7 @@ class PublicProjTreeTab extends AbstractTab {
                 if($config->getValue('networkName') == "AI4Society"){
                     $challenge = Theme::newFromName($activity);
                     $color = $challenge->getColor();
+                    $activity = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
                     $activityData = array("name" => $activity,
                                           "color" => $color,
                                           "children" => array());
@@ -76,6 +76,7 @@ class PublicProjTreeTab extends AbstractTab {
                 foreach($projs2 as $theme => $projs3){
                     $challenge = Theme::newFromName($theme);
                     $color = $challenge->getColor();
+                    $theme = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
                     $themeData = array("name" => $theme,
                                        "color" => $color,
                                        "children" => array());
