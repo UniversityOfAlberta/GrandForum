@@ -38,7 +38,8 @@ $("#articles").DataTable({
 $("td.people").dblclick(function(){
     var id = $(this).closest("tr").attr("data-id");
     var text = $(this).text();
-    $(this).html("<select style='min-width:120px;' data-placeholder='People...' name='people[" + id + "][]' multiple ></select>");
+    $(this).html("<input type='hidden' name='people[" + id + "][]' />" + 
+                 "<select style='min-width:120px;' data-placeholder='People...' name='people[" + id + "][]' multiple ></select>");
     _.each(allPeople.toJSON(), function(person){
         if(person.fullName == ""){ return; }
         var selected = (text.indexOf(person.fullName) != -1) ? "selected" : "";
@@ -52,7 +53,8 @@ $("td.people").dblclick(function(){
 $("td.projects").dblclick(function(){
     var id = $(this).closest("tr").attr("data-id");
     var text = $(this).text();
-    $(this).html("<select style='min-width:120px;' data-placeholder='Projects...' name='projects[" + id + "][]' multiple ></select>");
+    $(this).html("<input type='hidden' name='projects[" + id + "][]' />" + 
+                 "<select style='min-width:120px;' data-placeholder='Projects...' name='projects[" + id + "][]' multiple ></select>");
     _.each(allProjects.toJSON(), function(project){
         if(project.name == ""){ return; }
         var selected = (text.indexOf(project.name) != -1) ? "selected" : "";
