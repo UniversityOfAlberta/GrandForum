@@ -37,11 +37,12 @@ class PublicProjTreeTab extends AbstractTab {
                 }
                 $people = $project->getAllPeople();
                 $challenges = $project->getChallenges();
-                $activities = array("N/A");
+                $activities = array(null);
                 $themes = $challenges;
                 if($config->getValue('networkName') == "AI4Society"){
                     // Handle Activity - Theme structure
                     $themes = array();
+                    $activities = array();
                     foreach($challenges as $challenge){
                         if(strstr($challenge->getName(), "Activity - ") !== false){
                             $activities[] = $challenge;
@@ -52,6 +53,7 @@ class PublicProjTreeTab extends AbstractTab {
                     }
                 }
                 foreach($activities as $activity){
+                    $activity = ($activity != null) ? $activity->getAcronym() : "Unknown";
                     foreach($themes as $theme){
                         $theme = ($theme != null) ? $theme->getAcronym() : "Unknown";
                         foreach($people as $person){
