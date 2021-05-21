@@ -13,16 +13,6 @@ class PublicChordTab extends AbstractTab {
 	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
 	    $chord->height = 600;
 	    $chord->width = 600;
-	    $this->html = "<div><a class='button' onClick='$(\"#help{$chord->index}\").show();$(this).hide();'>Show Help</a>
-	        <div id='help{$chord->index}' style='display:none;'>
-	            <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
-	            <ul>
-	                <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>
-	                <li>To change how the projects are sorted/coloured, select one of the options in the 'Sorting Options'.</li>
-	            </ul>
-	            <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the sorting category in the legend.</p>
-	        </div>
-	    </div>";
 	    $this->html .= $chord->show();
 	    $this->html .= "<script type='text/javascript'>
         $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -30,7 +20,14 @@ class PublicChordTab extends AbstractTab {
                 onLoad{$chord->index}();
             }
         });
-        </script><br />";
+        </script>
+        <h3>Help</h3>
+        <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
+        <ul>
+            <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>
+            <li>To change how the projects are sorted/coloured, select one of the options in the 'Sorting Options'.</li>
+        </ul>
+        <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the sorting category in the legend.</p>";
 	}
 	
 	static function getPublicChordData($action, $article){

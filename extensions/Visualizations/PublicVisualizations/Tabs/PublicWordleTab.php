@@ -13,11 +13,6 @@ class PublicWordleTab extends AbstractTab {
 	    $wordle = new Wordle("{$wgServer}{$wgScriptPath}/index.php?action=getPublicWordleData");
 	    $wordle->width = "100%";
         $wordle->height = 480;
-        $this->html = "<div><a class='button' onClick='$(\"#help{$wordle->index}\").show();$(this).hide();'>Show Help</a>
-	        <div id='help{$wordle->index}' style='display:none;'>
-	            <p>This visualization shows the most used keywords in the project and theme descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>
-	        </div>
-	    </div>";
 	    $this->html .= $wordle->show();
 	    $this->html .= "<script type='text/javascript'>
 	        var nTimesLoadedProjectWordle = 0;
@@ -31,7 +26,9 @@ class PublicWordleTab extends AbstractTab {
 	                });
 	            }
 	        });
-	    </script>";
+	    </script>
+	    <h3>Help</h3>
+	    <p>This visualization shows the most used keywords in the project and theme descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>";
 	}
 	
 	static function getPublicWordleData($action, $article){
