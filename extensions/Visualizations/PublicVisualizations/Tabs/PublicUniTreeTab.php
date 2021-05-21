@@ -31,7 +31,21 @@ class PublicUniTreeTab extends AbstractTab {
                 lastWidth{$tree->index} = newWidth;
                 lastHeight{$tree->index} = newHeight;
             }, 100);
-            </script><br />";
+            </script>";
+        $this->html .= "<h3>Help</h3>
+            <p>This tree map shows the distribution of people in universities.  Each level represents a different entity:</p>
+            <ul type='disc'>
+                <li>Province
+                    <ul type='disc'>
+                        <li>Universities
+                            <ul type='disc'>
+                                <li>People</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Click to go down a level.  Once at the lowest level, click again to return to the top level.</p>";
 	}
 	
 	static function getPublicUniTreeData($action, $article){
