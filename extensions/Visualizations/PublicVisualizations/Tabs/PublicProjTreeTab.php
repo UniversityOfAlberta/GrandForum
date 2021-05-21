@@ -9,7 +9,7 @@ class PublicProjTreeTab extends AbstractTab {
     }
 
     function generateBody(){
-	    global $wgServer, $wgScriptPath;
+	    global $wgServer, $wgScriptPath, $config;
         $tree = new TreeMap("{$wgServer}{$wgScriptPath}/index.php?action=getPublicProjTreeData", "Count", "", "", "");
         $tree->height = 600;
         $tree->width = "100%";
@@ -32,6 +32,29 @@ class PublicProjTreeTab extends AbstractTab {
                 lastHeight{$tree->index} = newHeight;
             }, 100);
             </script>";
+        $this->html .= "<h3>Help</h3>
+                        <p>This tree map shows the distribution of people and projects within themes.  Each level represents a different entity:</p>";
+        if($config->getValue('networkName') == "AI4Society"){
+            $this->html .= "<ul type='disc'>
+                <li>Activities";
+        }
+        $this->html .= "<ul type='disc'>
+                            <li>".Inflect::pluralize($config->getValue('projectThemes'))."
+                                <ul type='disc'>
+                                    <li>Projects
+                                        <ul type='disc'>
+                                            <li>People</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>";
+        if($config->getValue('networkName') == "AI4Society"){
+            $this->html .= "
+                </li>
+            </ul>";
+        }
+        $this->html .= "<p>Click to go down a level.  Once at the lowest level, click again to return to the top level.</p>";
 	}
 	
 	static function getPublicProjTreeData($action, $article){
