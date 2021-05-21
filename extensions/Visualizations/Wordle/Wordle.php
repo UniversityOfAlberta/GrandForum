@@ -184,6 +184,12 @@ class Wordle extends Visualization {
               }
       });
   }
+  
+  $(document).ready(function(){
+        if($('#vis{$this->index}:visible').length > 0){
+            onLoad{$this->index}();
+        }
+    });
 </script>
 EOF;
         return $string;

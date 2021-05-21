@@ -14,6 +14,15 @@ class PublicWordleTab extends AbstractTab {
 	    $wordle->width = "100%";
         $wordle->height = 480;
 	    $this->html .= $wordle->show();
+	    $projects = Project::getAllProjects();
+	    $this->html .= "<style>
+	        #vis{$wordle->index} text:hover {
+	            cursor: pointer;
+	            stroke: black;
+	            stroke-width: 0.5px;
+	            fill-opacity: 0.5;
+	        }
+	    </style>";
 	    $this->html .= "<script type='text/javascript'>
 	        var nTimesLoadedProjectWordle = 0;
             $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -26,27 +35,46 @@ class PublicWordleTab extends AbstractTab {
 	                });
 	            }
 	        });
+	        
+	        $(document).on('click', '#vis{$wordle->index} text', function(){
+	            var word = $(this).text().toLowerCase();
+	            $('#resultsContainer{$wordle->index}').show();
+	            $('#resultsContainer{$wordle->index} #results li').each(function(){
+	                var text = $(this).text().toLowerCase();
+	                if(text.indexOf(word) != -1){
+	                    $(this).slideDown();
+	                }
+	                else{
+	                    $(this).slideUp();
+	                }
+	            });
+	            document.location = '#resultsContainer{$wordle->index}';
+	        });
 	    </script>
+	    <div id='resultsContainer{$wordle->index}' name='resultsContainer{$wordle->index}' style='display:none;'>
+	        <h3>Projects</h3>
+	        <div id='results'>
+	            <ul>";
+	    foreach($projects as $project){
+	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a><span style='display:none;'>{$project->getDescription()}</span></li>\n";
+	    }
+	    $this->html .= "</ul>
+	        </div>
+	    </div>
 	    <h3>Help</h3>
-	    <p>This visualization shows the most used keywords in the project and theme descriptions.  The more times the word is used, the larger it appears in the tag cloud.</p>";
+	    <p>This visualization shows the most used keywords in the project descriptions.  The more times the word is used, the larger it appears in the tag cloud.  Click a word to show the projects that contain that word in its title or description.</p>";
 	}
 	
 	static function getPublicWordleData($action, $article){
 	    global $wgServer, $wgScriptPath;
 	    if($action == "getPublicWordleData"){
 	        $projects = Project::getAllProjects();
-	        $themes = Theme::getAllThemes();
 	        $description = array();
 	        foreach($projects as $project){
 	            $description[] = strip_tags($project->getDescription());
 	            $description[] = strip_tags($project->getFullName());
             }
-            foreach($themes as $theme){
-                $description[] = strip_tags($theme->getName());
-                $description[] = strip_tags($theme->getDescription());
-            }
             $data = Wordle::createDataFromText(implode(" ", $description));
-            $data = array_splice($data, 0, 600);
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;
