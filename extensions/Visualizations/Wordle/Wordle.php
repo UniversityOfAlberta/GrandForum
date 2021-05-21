@@ -41,6 +41,7 @@ class Wordle extends Visualization {
                 $word = str_replace("nbsp", " ", $word);
                 $word = str_replace("lsquo", " ", $word);
                 $word = str_replace("rsquo", " ", $word);
+                $word = str_replace("ndash", " ", $word);
                 $word = trim($word);
                 $word = strtolower($word);
                 $skip = false;

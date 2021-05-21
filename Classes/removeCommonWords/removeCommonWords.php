@@ -69,7 +69,7 @@ class CommonWords {
 	                     'undergraduate','masters','phd','group','research','role','fellow','fellowship','postdoctoral',
 	                     'postdoc','subsequently','alberta','department','tenure','including','associate','received','position',
 	                     'calgary','ottawa','simon','fraser','british','columbia','saskatchewan','manitoba','toronto','ontario',
-	                     'regina','victoria','vancouver','waterloo','nbsp', 'rsquo', 'lsquo');
+	                     'regina','victoria','vancouver','waterloo','nbsp', 'rsquo', 'lsquo', 'ndash');
 
     static function removeCommonWords($input){
 		$input = preg_replace('/\b('.implode('|',self::$commonWords).')\b/','',$input);
