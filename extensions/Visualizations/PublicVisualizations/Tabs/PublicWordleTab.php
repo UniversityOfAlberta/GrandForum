@@ -56,7 +56,7 @@ class PublicWordleTab extends AbstractTab {
 	        <div id='results'>
 	            <ul>";
 	    foreach($projects as $project){
-	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a><span style='display:none;'>{$project->getDescription()}</span></li>\n";
+	        $this->html .= "<li style='display:none;'><a href='{$project->getUrl()}'>{$project->getName()} - {$project->getFullName()}</a> <span style='display:none;'>{$project->getDescription()}</span></li>\n";
 	    }
 	    $this->html .= "</ul>
 	        </div>
@@ -74,7 +74,12 @@ class PublicWordleTab extends AbstractTab {
 	            $description[] = strip_tags($project->getDescription());
 	            $description[] = strip_tags($project->getFullName());
             }
-            $data = Wordle::createDataFromText(implode(" ", $description));
+            $data = array();
+            foreach(Wordle::createDataFromText(implode(" ", $description)) as $word){
+                if($word['freq'] > 1){
+                    $data[] = $word;
+                }
+            }
             header("Content-Type: application/json");
             echo json_encode($data);
             exit;

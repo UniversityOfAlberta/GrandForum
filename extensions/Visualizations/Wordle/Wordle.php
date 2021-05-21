@@ -37,8 +37,10 @@ class Wordle extends Visualization {
             $words = explode(" ", $line);
             foreach($words as $word){
                 $word = preg_replace("/\&lt;.*\&gt;/", '', $word); // Strip out html-like stuff
-                $word = preg_replace("/[^A-Za-z0-9 ]/", ' ', $word);
+                $word = preg_replace("/[^A-Za-z0-9\- ]/", ' ', $word);
                 $word = str_replace("nbsp", " ", $word);
+                $word = str_replace("lsquo", " ", $word);
+                $word = str_replace("rsquo", " ", $word);
                 $word = trim($word);
                 $word = strtolower($word);
                 $skip = false;
