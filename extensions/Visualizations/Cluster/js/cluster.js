@@ -16,7 +16,7 @@
         rotate = 0;
 
     var cluster = d3.layout.cluster()
-        .size([360, ry - 120])
+        .size([360, ry - 80])
         .sort(null);
 
     var diagonal = d3.svg.diagonal.radial()
@@ -45,7 +45,6 @@
       });
       links.push({"source": rootChildren[0], "target": lastChild});
 
-      
       var link = vis.selectAll("path.link")
           .data(links)
         .enter().append("svg:path")
@@ -79,6 +78,8 @@
       var normalNodes = vis.selectAll("g.normal");
 
       normalNodes.append("svg:circle")
+          .attr("title", function(d){ return d.fullname; })
+          .attr("class", "cluster-tooltip")
           .style("display", function(d) { return d == root ? "none" : "block"})
           .attr("r", function(d) { if(d.children == undefined){ return 8*scalingFactor; } else { return 13*scalingFactor; }})
           .style("stroke-width", 5*scalingFactor)
@@ -114,50 +115,52 @@
         
         function createText(stroke){
             var text = node.append("svg:text");
-            text.attr("dx", function(d) {
-                if(d.children == undefined){
-                    return d.x < 180 ? 16*scalingFactor : -16*scalingFactor; 
-                } else {
-                    return 0;
-                }
-              })
-              .attr("dy", function(d) {
-                if(d.text != undefined && d.text == "below"){
-                    return 35*scalingFactor + 25*scalingFactor;
-                }
-                else if(d == root){
-                    return "0.25em";
-                } else if(d.children == undefined){
-                    return ".31em";
-                } else {
-                    return d.x < 180 ? "1.69em" : "-1em";
-                }
-              })
-              .attr("text-anchor", function(d) { 
-                if(d.children == undefined){
-                    return d.x < 180 ? "start" : "end";
-                } else{
-                    return "middle";
-                } 
-              })
-              .attr("transform", function(d) {
-                if(d.text != undefined && d.text == "below"){
-                    return "rotate(" + -(d.x - 90) + ")";
-                }
-                return d.x < 180 ? null : "rotate(180)"; 
-              })
-              .style("fill",  function(d){ return d.color; })
-              .style("font-size", function(d) {
-                if(d.text != undefined && d.text == "below"){
-                    return 30*scalingFactor + "px";
-                }
-                return d == root ? 40*scalingFactor + "px" : 20*scalingFactor + "px"
-               })
-              .text(function(d) { return d.name; });
-              if(stroke){
-                  text.style("stroke", "#FFF")
+            text.attr("title", function(d){ return d.fullname; })
+                .attr("class", "cluster-tooltip")
+                .attr("dx", function(d) {
+                    if(d.children == undefined){
+                        return d.x < 180 ? 16*scalingFactor : -16*scalingFactor; 
+                    } else {
+                        return 0;
+                    }
+                })
+                .attr("dy", function(d) {
+                    if(d.text != undefined && d.text == "below"){
+                        return 35*scalingFactor + 25*scalingFactor;
+                    }
+                    else if(d == root){
+                        return "0.25em";
+                    } else if(d.children == undefined){
+                       return ".31em";
+                    } else {
+                        return d.x < 180 ? "1.69em" : "-1em";
+                    }
+                })
+                .attr("text-anchor", function(d) { 
+                    if(d.children == undefined){
+                        return d.x < 180 ? "start" : "end";
+                    } else{
+                       return "middle";
+                    } 
+                })
+                .attr("transform", function(d) {
+                    if(d.text != undefined && d.text == "below"){
+                       return "rotate(" + -(d.x - 90) + ")";
+                    }
+                    return d.x < 180 ? null : "rotate(180)"; 
+                })
+                .style("fill",  function(d){ return d.color; })
+                .style("font-size", function(d) {
+                    if(d.text != undefined && d.text == "below"){
+                        return 30*scalingFactor + "px";
+                    }
+                    return d == root ? 40*scalingFactor + "px" : 20*scalingFactor + "px"
+                })
+                .text(function(d) { return d.name; });
+                if(stroke){
+                     text.style("stroke", "#FFF")
                       .style("stroke-width", 5*scalingFactor);
-             }
+                }
         }
         
         node.on("mouseover", function(d){
@@ -192,7 +195,17 @@
 
         createText(true);
         createText(false);
-      
+        
+        $(".cluster-tooltip").qtip({
+            style: {
+                classes: 'qtip-dark qtip-shadow'
+            },
+            position: {
+                my: 'bottom left',
+		        target: 'mouse'
+	        }
+        });
+        
     });
 
         function changePage(d){
