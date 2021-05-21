@@ -51,7 +51,7 @@
           .attr("class", "link")
           .style("fill", "none")
           .style("stroke", "#000")
-          .style("stroke-width", 5*scalingFactor)
+          .style("stroke-width", 4*scalingFactor)
           .attr("d", diagonal);
 
       var node = vis.selectAll("g.node")
@@ -82,9 +82,9 @@
           .attr("class", "cluster-tooltip")
           .style("display", function(d) { return d == root ? "none" : "block"})
           .attr("r", function(d) { if(d.children == undefined){ return 8*scalingFactor; } else { return 13*scalingFactor; }})
-          .style("stroke-width", 5*scalingFactor)
-          .style("fill", "#fff")
-          .style("stroke", function(d) { return d.color; });
+          .style("stroke-width", 3*scalingFactor)
+          .style("fill", function(d){ return d.color; })
+          .style("stroke", "#000000");
           
       imageNodes.append("svg:image")
         .attr("transform", function(d) { 
@@ -149,13 +149,14 @@
                     }
                     return d.x < 180 ? null : "rotate(180)"; 
                 })
-                .style("fill",  function(d){ return d.color; })
+                .style("fill",  function(d){ return d3.rgb(d.color); })
                 .style("font-size", function(d) {
                     if(d.text != undefined && d.text == "below"){
                         return 30*scalingFactor + "px";
                     }
                     return d == root ? 40*scalingFactor + "px" : 20*scalingFactor + "px"
                 })
+                .style("font-weight", "bold")
                 .text(function(d) { return d.name; });
                 if(stroke){
                      text.style("stroke", "#FFF")
@@ -174,8 +175,7 @@
               
             d3.select(this)
               .selectAll("circle:not(.overlay)")
-              .style("stroke", d3.rgb(d.color).darker(1))
-              .style("fill", "#CCC");
+              .style("fill", d3.rgb(d.color).darker(1));
         });
         
         node.on("mouseout", function(d){
@@ -189,8 +189,7 @@
               
             d3.select(this)
               .selectAll("circle:not(.overlay)")
-              .style("stroke", d.color)
-              .style("fill", "#FFF");
+              .style("fill", d.color);
         });
 
         createText(true);
