@@ -1078,6 +1078,30 @@ EOF;
         return array_values($this->themes);
     } 
     
+    /**
+     * For AI4Society: Returns this Project's theme
+     */
+    function getTheme(){
+        foreach($this->getChallenges() as $challenge){
+            if(strstr($challenge->getAcronym(), "Theme - ") !== false){
+                return $challenge;
+            }
+        }
+        return Theme::newFromName("Not Specified");
+    }
+    
+    /**
+     * For AI4Society: Returns this Project's activity
+     */
+    function getActivity(){
+        foreach($this->getChallenges() as $challenge){
+            if(strstr($challenge->getAcronym(), "Activity - ") !== false){
+                return $challenge;
+            }
+        }
+        return Theme::newFromName("Not Specified");
+    }
+    
     // Returns the description of the Project
     function getDescription($history=false){
         $sql = "(SELECT description 
