@@ -61,7 +61,6 @@ class PublicWordleTab extends AbstractTab {
 	    $this->html .= "</ul>
 	        </div>
 	    </div>
-	    <h3>Help</h3>
 	    <p>This visualization shows the most used keywords in the project descriptions.  The more times the word is used, the larger it appears in the tag cloud.  Click a word to show the projects that contain that word in its title or description.</p>";
 	}
 	

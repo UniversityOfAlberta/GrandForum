@@ -13,16 +13,15 @@ class PublicProjectClusterTab extends AbstractTab {
         $cluster = new Cluster("{$wgServer}{$wgScriptPath}/index.php?action=getProjectClusterData");
         $cluster->height = 750;
         $cluster->width = 750;
-        $this->html .= "<div style='display:inline-block;'>{$cluster->show()}</div>";
+        $this->html .= "{$cluster->show()}";
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'project-cluster'){
                     onLoad{$cluster->index}();
                 }
             });
-            </script>";
-        $this->html .= "<div style='display:inline-block;'><h3>Help</h3>
-            <p>This visualization shows which projects are in each ".strtolower($config->getValue('projectThemes')).".  Click on a ".strtolower($config->getValue('projectThemes'))." or project to take you to its page.</p></div>";
+            </script>
+            <p>This visualization shows which projects are in each ".strtolower($config->getValue('projectThemes')).".  Click on a ".strtolower($config->getValue('projectThemes'))." or project to take you to its page.</p>";
 	}
 	
 	static function getProjectClusterData($action, $article){

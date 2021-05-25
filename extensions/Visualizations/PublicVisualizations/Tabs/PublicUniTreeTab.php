@@ -31,8 +31,7 @@ class PublicUniTreeTab extends AbstractTab {
                 lastWidth{$tree->index} = newWidth;
                 lastHeight{$tree->index} = newHeight;
             }, 100);
-            </script>";
-        $this->html .= "<h3>Help</h3>
+            </script>
             <p>This tree map shows the distribution of people in universities.  Each level represents a different entity:</p>
             <ul type='disc'>
                 <li>Province

@@ -21,7 +21,6 @@ class PublicChordTab extends AbstractTab {
             }
         });
         </script>
-        <h3>Help</h3>
         <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
         <ul>
             <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>

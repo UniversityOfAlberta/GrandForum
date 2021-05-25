@@ -31,9 +31,8 @@ class PublicProjTreeTab extends AbstractTab {
                 lastWidth{$tree->index} = newWidth;
                 lastHeight{$tree->index} = newHeight;
             }, 100);
-            </script>";
-        $this->html .= "<h3>Help</h3>
-                        <p>This tree map shows the distribution of people and projects within themes.  Each level represents a different entity:</p>";
+            </script>
+            <p>This tree map shows the distribution of people and projects within themes.  Each level represents a different entity:</p>";
         if($config->getValue('networkName') == "AI4Society"){
             $this->html .= "<ul type='disc'>
                 <li>Activities";
