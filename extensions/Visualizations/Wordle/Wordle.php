@@ -47,6 +47,7 @@ class Wordle extends Visualization {
                 $word = str_replace("ndash", " ", $word);
                 $word = trim($word);
                 $word = strtolower($word);
+                $origWord = $word;
                 $word = $stemmer->stem($word);
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
@@ -55,16 +56,27 @@ class Wordle extends Visualization {
                         break;
                     }
                 }
-                if(!$skip && strlen($word) > 3 && 
-                   !is_numeric($word) &&
-                   array_search($word, CommonWords::$commonWords) === false){
-                    @$data[$word]++;
+                if(!$skip && strlen($origWord) > 3 && 
+                   !is_numeric($origWord) &&
+                   array_search($origWord, CommonWords::$commonWords) === false){
+                    if(!isset($data[$word])){
+                        $data[$word] = array('word' => $origWord,
+                                             'freq' => 1);
+                    }
+                    else{
+                        $data[$word]['freq']++;
+                    }
                 }
             }
         }
+        $newData = array();
+        foreach($data as $word){
+            $newData[$word['word']] = $word['freq'];
+        }
+        
         $retData = array();
-        asort($data);
-        $data = array_reverse($data);
+        asort($newData);
+        $data = array_reverse($newData);
         foreach($data as $word => $freq){
             $retData[] = array('word' => ucfirst($word),
                                'freq' => $freq);
