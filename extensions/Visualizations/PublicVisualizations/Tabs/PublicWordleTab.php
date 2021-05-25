@@ -75,7 +75,7 @@ class PublicWordleTab extends AbstractTab {
             }
             $data = array();
             foreach(Wordle::createDataFromText(implode(" ", $description)) as $word){
-                if($word['freq'] > 1){
+                if($word['freq'] >= 3){
                     $data[] = $word;
                 }
             }

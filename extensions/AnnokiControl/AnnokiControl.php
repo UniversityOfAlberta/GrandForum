@@ -17,6 +17,8 @@ $egAnnokiExtensions['MyAnnokiExtension'] = array( 'name' => 'My Annoki Extension
 **/
 function autoload_register($directory){
     spl_autoload_register(function ($class) use ($directory) {
+        $exploded = explode("\\", $class);
+        $class = $exploded[count($exploded)-1]; 
         if(file_exists(dirname(__FILE__) . "/../$directory/" . $class . '.php')){
             require_once(dirname(__FILE__) . "/../$directory/" . $class . '.php');
         }

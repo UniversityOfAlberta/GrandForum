@@ -1,5 +1,7 @@
 <?php
 
+autoload_register('../Classes/Stemmer');
+use Wamania\Snowball\English;
 require_once("Classes/removeCommonWords/removeCommonWords.php");
 
 class Wordle extends Visualization {
@@ -31,6 +33,7 @@ class Wordle extends Visualization {
     }
     
     static function createDataFromText($text){
+        $stemmer = new English();
         $data = array();
         $lines = explode("\n", $text);
         foreach($lines as $line){
@@ -44,6 +47,7 @@ class Wordle extends Visualization {
                 $word = str_replace("ndash", " ", $word);
                 $word = trim($word);
                 $word = strtolower($word);
+                $word = $stemmer->stem($word);
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
                     if(strstr($word, $stub) !== false){
