@@ -16,7 +16,7 @@
         rotate = 0;
 
     var cluster = d3.layout.cluster()
-        .size([360, ry - 80])
+        .size([360, ry - 100])
         .sort(null);
 
     var diagonal = d3.svg.diagonal.radial()
@@ -81,7 +81,7 @@
           .attr("title", function(d){ return d.fullname; })
           .attr("class", "cluster-tooltip")
           .style("display", function(d) { return d == root ? "none" : "block"})
-          .attr("r", function(d) { if(d.children == undefined){ return 8*scalingFactor; } else { return 13*scalingFactor; }})
+          .attr("r", function(d) { if(d.children == undefined){ return 15*scalingFactor; } else { return 15*scalingFactor; }})
           .style("stroke-width", 3*scalingFactor)
           .style("fill", function(d){ return d.color; })
           .style("stroke", "#000000");
@@ -119,7 +119,7 @@
                 .attr("class", "cluster-tooltip")
                 .attr("dx", function(d) {
                     if(d.children == undefined){
-                        return d.x < 180 ? 16*scalingFactor : -16*scalingFactor; 
+                        return d.x < 180 ? 20*scalingFactor : -20*scalingFactor; 
                     } else {
                         return 0;
                     }
@@ -152,9 +152,9 @@
                 .style("fill",  function(d){ return d3.rgb(d.color); })
                 .style("font-size", function(d) {
                     if(d.text != undefined && d.text == "below"){
-                        return 30*scalingFactor + "px";
+                        return 50*scalingFactor + "px";
                     }
-                    return d == root ? 40*scalingFactor + "px" : 20*scalingFactor + "px"
+                    return d == root ? 50*scalingFactor + "px" : 25*scalingFactor + "px"
                 })
                 .style("font-weight", "bold")
                 .text(function(d) { return d.name; });
