@@ -117,6 +117,7 @@ class PublicProjTreeTab extends AbstractTab {
                     foreach($projs3 as $proj => $person){
                         $project = Project::newFromName($proj);
                         $projData = array("name" => $proj,
+                                          "tooltip" => $project->getFullName(),
                                           "color" => $color,
                                           "children" => array());
                         $personData = array();
