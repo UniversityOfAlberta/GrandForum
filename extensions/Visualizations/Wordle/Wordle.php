@@ -64,6 +64,10 @@ class Wordle extends Visualization {
                                              'freq' => 1);
                     }
                     else{
+                        if(strlen($origWord) < strlen($data[$word]['word'])){
+                            // This word is shorter, use it instead
+                            $data[$word]['word'] = $origWord;
+                        }
                         $data[$word]['freq']++;
                     }
                 }
