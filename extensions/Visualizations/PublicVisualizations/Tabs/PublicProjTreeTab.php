@@ -104,6 +104,8 @@ class PublicProjTreeTab extends AbstractTab {
                     $color = $challenge->getColor();
                     $acronym = ($challenge->getId() != 0) ? $challenge->getAcronym() : $activity;
                     $longname = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
+                    $longname = str_replace("Collaboratory", "Collaboratories", $longname);
+                    $longname = str_replace("Project", "Projects", $longname);
                     $activityData = array("name" => str_replace("Activity - ", "", $acronym),
                                           "longname" => str_replace("Activity - ", "", $longname),
                                           "color" => $color,
