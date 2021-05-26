@@ -132,7 +132,7 @@
                 .style("font-weight", "bold")
                 .text(function(d) { if(d.children == undefined) { return d.name; } return ""; });
                 if(stroke){
-                     text.style("stroke", "#FFF")
+                     text.style("stroke", function(d){ if(d3.lab(d.color).l > 75) { return "#000"; } return "#FFF"; })
                       .style("stroke-width", 5*scalingFactor);
                 }
             text.selectAll("text")
