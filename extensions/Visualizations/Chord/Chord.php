@@ -155,10 +155,10 @@ class Chord extends Visualization {
                 .attr("height", height)
               .append("g")
                 .attr("transform", "translate(" + ((width / 2)) + "," + ((height / 2)) + ")");
-            
+
             svg.append("g").selectAll("path")
                 .data(chord.groups)
-              .enter().append("path")
+                .enter().append("path")
                 .style("fill", function(d) { return fill(d.index); })
                 .style("stroke", function(d) { return fill(d.index); })
                 .style("cursor", "pointer")
@@ -168,16 +168,6 @@ class Chord extends Visualization {
                 .on("click", function(d){ {$this->fn} })
                 .on("mouseover", fade(.3))
                 .on("mouseout", fade(1));
-                
-            $("#vis{$this->index} path.outer").qtip({
-                position: {
-                    target: 'mouse', // Track the mouse as the positioning target
-                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
-                },
-                style: {
-                    classes: 'qtip-tipsy'
-                }
-            });
             
             svg.append("g")
                 .attr("class", "chord")
@@ -191,8 +181,19 @@ class Chord extends Visualization {
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) { return fill(d.target.index); })
                 .style("opacity", 1)
+                .attr("title", function(d){ return data.chordLabels[d.source.index][d.target.index]; })
                 .on("mouseover", fade2(.3))
                 .on("mouseout", fade2(1));
+                
+            $("#vis{$this->index} path.outer, #vis{$this->index} .chord path").qtip({
+                position: {
+                    target: 'mouse', // Track the mouse as the positioning target
+                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
+                },
+                style: {
+                    classes: 'qtip-tipsy'
+                }
+            });
 
             // Returns an array of tick angles and labels, given a group.
             function groupTicks(d) {

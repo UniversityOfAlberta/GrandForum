@@ -106,6 +106,7 @@ class PublicChordTab extends AbstractTab {
             
             $labels = array();
             $matrix = array();
+            $chordLabels = array();
             
             // Initialize
             foreach($projects as $k1 => $project){
@@ -120,6 +121,7 @@ class PublicChordTab extends AbstractTab {
                         foreach($projects as $p){
                             if($person->isMemberOfDuring($p, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && isset($matrix[$p->getId()]) && $project->getId() != $p->getId()){
                                 $matrix[$project->getId()][$p->getId()] += 1;
+                                $chordLabels[$project->getId()][$p->getId()][$person->getId()] = $person->getNameForForms();
                             }
                         }
                     }
@@ -140,14 +142,19 @@ class PublicChordTab extends AbstractTab {
             }
             
             $newMatrix = array();
-            foreach($matrix as $row){
+            $newChordLabels = array();
+            foreach($matrix as $i => $row){
                 $newRow = array();
-                foreach($row as $col){
+                $newChordRow = array();
+                foreach($row as $j => $col){
                     $newRow[] = $col;
+                    $newChordRow[] = @implode("<br />", $chordLabels[$i][$j]);
                 }
                 $newMatrix[] = $newRow;
+                $newChordLabels[] = $newChordRow;
             }
             $matrix = $newMatrix;
+            $chordLabels = $newChordLabels;
             
             $startYear = date('Y');
             foreach($projects as $project){
@@ -183,6 +190,7 @@ class PublicChordTab extends AbstractTab {
             $array['labels'] = $labels;
             $array['colorHashs'] = $colorHashs;
             $array['colors'] = $colors;
+            $array['chordLabels'] = $chordLabels;
 
             header("Content-Type: application/json");
             echo json_encode($array);
