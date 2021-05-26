@@ -10,7 +10,8 @@ class PublicChordTab extends AbstractTab {
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
-	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
+	    $sortBy = (isset($_GET['sortBy'])) ? "&sortBy={$_GET['sortBy']}" : "";
+	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData{$sortBy}");
 	    $chord->height = 600;
 	    $chord->width = 600;
 	    $this->html .= $chord->show();
@@ -154,7 +155,7 @@ class PublicChordTab extends AbstractTab {
                 if($created < $startYear){
                     $startYear = intval($created);
                 }
-                $labels[] = $project->getName();
+                $labels[] = "{$project->getName()} - {$project->getFullName()}";
             }
             
             $dates = array();
@@ -172,8 +173,8 @@ class PublicChordTab extends AbstractTab {
             $array['dateOptions'] = $dates;
             
             if($config->getValue('networkName') == "AI4Society"){
-                $array['sortOptions'] = array(array('name' => "Activity", 'value' => 'activity', 'checked' => 'checked'),
-                                              array('name' => "Theme", 'value' => 'theme', 'checked' => ''));
+                $array['sortOptions'] = array(array('name' => "Activity", 'value' => 'activity', 'checked' => (!isset($_GET['sortBy']) || $_GET['sortBy'] == 'activity') ? 'checked' : ""),
+                                              array('name' => "Theme", 'value' => 'theme', 'checked' => (@$_GET['sortBy'] == 'theme') ? 'checked' : ""));
             }
             else{
                 $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));

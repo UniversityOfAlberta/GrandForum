@@ -190,7 +190,9 @@ class Chord extends Visualization {
                 .style("stroke-opacity", 0.2)
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) { return fill(d.target.index); })
-                .style("opacity", 1);
+                .style("opacity", 1)
+                .on("mouseover", fade2(.3))
+                .on("mouseout", fade2(1));
 
             // Returns an array of tick angles and labels, given a group.
             function groupTicks(d) {
@@ -288,15 +290,25 @@ class Chord extends Visualization {
                 if(i instanceof Array){
                     svg.selectAll(".chord path")
                         .filter(function(d) { return i.indexOf(d.source.index) == -1 && i.indexOf(d.target.index) == -1; })
-                      .transition()
+                        .transition()
                         .style("opacity", opacity);
                 }
                 else{
                     svg.selectAll(".chord path")
                         .filter(function(d) { return d.source.index != i && d.target.index != i; })
-                      .transition()
+                        .transition()
                         .style("opacity", opacity);
                 }
+              };
+            }
+            
+            function fade2(opacity) {
+              return function(g, i) {
+                var path = this;
+                svg.selectAll(".chord path")
+                    .filter(function(d) { return (path != this); })
+                    .transition()
+                    .style("opacity", opacity);
               };
             }
         }
