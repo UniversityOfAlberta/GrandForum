@@ -35,6 +35,9 @@ class PublicProjectClusterTab extends AbstractTab {
 	        $themes = array();
 	        $projects = Project::getAllProjects();
 	        foreach($projects as $project){
+	            if($project->getType() == "Administrative"){
+                    continue;
+                }
                 $challenges = $project->getChallenges();
                 foreach($challenges as $theme){
                     @$themes[$theme->getAcronym()][$project->getId()] = $project;
