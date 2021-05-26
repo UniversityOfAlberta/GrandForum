@@ -570,7 +570,7 @@ EOF;
      * Returns a shortened version of the full name (first 3 words, or text before a colon)
      */
     function getShortFullName(){
-        $pName = $proj->getFullName();
+        $pName = $this->getFullName();
         $pName = explode(":", $pName);
         $pName = $pName[0];
         $pName = explode(" ", $pName);
