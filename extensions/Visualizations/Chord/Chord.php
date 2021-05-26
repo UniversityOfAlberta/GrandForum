@@ -181,7 +181,7 @@ class Chord extends Visualization {
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) { return fill(d.target.index); })
                 .style("opacity", 1)
-                .attr("title", function(d){ return data.chordLabels[d.source.index][d.target.index]; })
+                .attr("title", function(d){ if(data.chordLabels == undefined) {return ""; } return data.chordLabels[d.source.index][d.target.index]; })
                 .on("mouseover", fade2(.3))
                 .on("mouseout", fade2(1));
                 
