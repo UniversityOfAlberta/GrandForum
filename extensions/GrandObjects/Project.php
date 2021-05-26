@@ -566,6 +566,18 @@ EOF;
         return $this->fullName;
     }
     
+    /**
+     * Returns a shortened version of the full name (first 3 words, or text before a colon)
+     */
+    function getShortFullName(){
+        $pName = $proj->getFullName();
+        $pName = explode(":", $pName);
+        $pName = $pName[0];
+        $pName = explode(" ", $pName);
+        $pName = @"{$pName[0]} {$pName[1]} {$pName[2]}";
+        return trim($pName);
+    }
+    
     // Returns the status of this Project
     function getStatus(){
         return $this->status;

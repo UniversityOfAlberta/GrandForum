@@ -57,12 +57,7 @@
       var node = vis.selectAll("g.node")
           .data(nodes)
         .enter().append("svg:g")
-          .attr("class", function(d){
-            if(d.image != undefined){
-                return "node image";
-            }
-            return "node normal";
-          })
+          .attr("class", "node normal")
           .attr("transform", function(d) { 
                 if(d == root){
                     return "rotate(" + (180) + ")"; 
@@ -74,7 +69,6 @@
           .style("cursor", "pointer")
           .on("click", changePage);
 
-      var imageNodes = vis.selectAll("g.image");
       var normalNodes = vis.selectAll("g.normal");
 
       normalNodes.append("svg:circle")
@@ -85,33 +79,6 @@
           .style("stroke-width", 3*scalingFactor)
           .style("fill", function(d){ return d.color; })
           .style("stroke", "#000000");
-          
-      imageNodes.append("svg:image")
-        .attr("transform", function(d) { 
-            return "rotate(" + -(d.x - 90) + ")"; 
-        })
-        .attr("x", -35*scalingFactor)
-        .attr("y", -35*scalingFactor)
-        .attr("width", 70*scalingFactor)
-        .attr("height", 70*scalingFactor)
-        .attr("xlink:href", function(d){
-            if(d.image != undefined){
-                return d.image;
-            }
-        })
-        .style("fill", "#fff");
-        
-      imageNodes.append("svg:circle")
-        .attr("class", "overlay")
-        .attr("transform", function(d) { 
-            return "rotate(" + -(d.x - 90) + ")"; 
-        })
-        .attr("x", -30*scalingFactor)
-        .attr("y", -30*scalingFactor)
-        .attr("r", 30*scalingFactor)
-        .style("stroke-width", 0)
-        .style("opacity", 0)
-        .style("fill:", "#000");
         
         function createText(stroke){
             var text = node.append("svg:text");
@@ -123,6 +90,12 @@
                     } else {
                         return 0;
                     }
+                })
+                .attr("y", function(d){
+                    if(d.children == undefined){
+                        return 0;
+                    }
+                    return "-" + (1 + d.name.split(" ").length) + "em";
                 })
                 .attr("dy", function(d) {
                     if(d.text != undefined && d.text == "below"){
@@ -157,11 +130,19 @@
                     return d == root ? 50*scalingFactor + "px" : 25*scalingFactor + "px"
                 })
                 .style("font-weight", "bold")
-                .text(function(d) { return d.name; });
+                .text(function(d) { if(d.children == undefined) { return d.name; } return ""; });
                 if(stroke){
                      text.style("stroke", "#FFF")
                       .style("stroke-width", 5*scalingFactor);
                 }
+            text.selectAll("text")
+                .data(function(d) { if(d.children == undefined) { return []; } return d.name.split(" "); })
+                .enter()
+                .append("tspan")
+                .attr("class", "text")
+                .text(d => d)
+                .attr("x", 0)
+                .attr("dy", '1em');
         }
         
         node.on("mouseover", function(d){

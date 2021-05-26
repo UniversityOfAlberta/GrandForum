@@ -11,8 +11,8 @@ class PublicProjectClusterTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath, $config;
         $cluster = new Cluster("{$wgServer}{$wgScriptPath}/index.php?action=getProjectClusterData");
-        $cluster->height = 750;
-        $cluster->width = 750;
+        $cluster->height = 900;
+        $cluster->width = 900;
         $this->html .= "{$cluster->show()}";
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -44,100 +44,41 @@ class PublicProjectClusterTab extends AbstractTab {
 	        foreach($themes as $name => $projs){
 	            if($config->getValue('networkName') == "AI4Society" && strstr($name, "Activity - ") !== false){ continue; }
 	            $theme = Theme::newFromName($name);
-	            $tFullName = $theme->getName();
-	            $tDesc = $theme->getDescription();
-	            $tleaders = $theme->getLeaders();
 	            $color = $theme->getColor();
-	            $turl = $theme->getUrl();
-	            $image = "";
-	            switch($name){
-	                case "(Big) Data":
-	                    $image = "data.png";
-	                    break;
-	                case "Citizenship":
-	                    $image = "citizenship.png";
-	                    break;
-	                case "Entertainment":
-	                    $image = "entertainment.png";
-	                    break;
-	                case "Health":
-	                    $image = "health.png";
-	                    break;
-	                case "Learning":
-	                    $image = "learning.png";
-	                    break;
-	                case "Sustainability":
-	                    $image = "sustainability.png";
-	                    break;
-	                case "Work":
-	                    $image = "work.png";
-	                    break;
-	            }
-	            
 	            $themeChildren = array();
 	            foreach($projs as $proj){
-	                $subs = $proj->getSubProjects();
-	                $projChildren = array();
-	                $pleaders = $proj->getLeaders();
-	                foreach($subs as $sub){
-	                    $sleaders = $sub->getLeaders();
-	                    $slead = array("name" => "",
-	                                   "uni" => "");
-	                    if(count($sleaders) > 0){
-	                        $sleaders = array_values($sleaders);
-	                        $slead['name'] = $sleaders[0]->getNameForForms();
-	                        $slead['uni'] = $sleaders[0]->getUni();
+	                $activity = $proj->getActivity();
+	                $pName = $proj->getName();
+	                if($config->getValue('networkName') == "AI4Society"){
+	                    $pname = $proj->getShortFullName();
+	                }
+	                $project = array("name" => $pName,
+                                     "fullname" => $proj->getFullName(),
+                                     "color" => $color,
+                                     "url" => $proj->getUrl(),
+                                     "children" => array());
+	                if($activity->getAcronym() != "Not Specified"){
+	                    if(!isset($themeChildren[$activity->getId()])){
+	                        $tname = ($config->getValue('networkName') == "AI4Society") ? str_replace("Activity - ", "", $activity->getName()) : $activity->getAcronym();
+	                        $themeChildren[$activity->getId()] = array("name" => $tname,
+                                                                       "fullname" => $activity->getName(),
+                                                                       "color" => $activity->getColor(),
+                                                                       "url" => $activity->getUrl(),
+                                                                       "children" => array());
 	                    }
-	                    $projChildren[] = array("name" => $sub->getName(),
-	                                            "fullname" => $sub->getFullName(),
-	                                            "description" => $sub->getDescription(),
-	                                            "color" => $color,
-	                                            "url" => $sub->getUrl(),
-	                                            "leader" => $slead);
+	                    $project['color'] = $activity->getColor();
+	                    $themeChildren[$activity->getId()]['children'][] = $project;
 	                }
-	                $plead = array("name" => "",
-	                               "uni" => "");
-	                if(count($pleaders) > 0){
-	                    $pleaders = array_values($pleaders);
-	                    $plead['name'] = $pleaders[0]->getNameForForms();
-	                    $plead['uni'] = $pleaders[0]->getUni();
+	                else{
+	                    $themeChildren[] = $project;
 	                }
-	                $themeChildren[] = array("name" => $proj->getName(),
-	                                         "fullname" => $proj->getFullName(),
-	                                         "description" => $proj->getDescription(),
-	                                         "color" => $color,
-	                                         "url" => $proj->getUrl(),
-	                                         "leader" => $plead,
-	                                         "children" => $projChildren);
 	            }
-	            
-	            $tlead = array("name" => "",
-	                           "uni" => "");
-	            if(count($tleaders) > 0){
-	                $tleaders = array_values($tleaders);
-	                $tlead['name'] = $tleaders[0]->getNameForForms();
-	                $tlead['uni'] = $tleaders[0]->getUni();
-	            }
-	            if($image != ""){
-	                $image = "{$wgServer}{$wgScriptPath}/extensions/Visualizations/Cluster/images/{$image}";
-	                $data['children'][] = array("name" => $name,
-	                                            "fullname" => $tFullName,
-	                                            "description" => $tDesc,
-	                                            "color" => $color,
-	                                            "image" => $image,
-	                                            "url" => $turl,
-	                                            "text" => "below",
-	                                            "leader" => $tlead,
-	                                            "children" => $themeChildren);
-	            }
-	            else{
-	                $data['children'][] = array("name" => $name,
-	                                            "fullname" => $tFullName,
-	                                            "color" => $color,
-	                                            "url" => $turl,
-	                                            "leader" => $tlead,
-	                                            "children" => $themeChildren);
-	            }
+	            $tname = ($config->getValue('networkName') == "AI4Society") ? str_replace("Theme - ", "", $theme->getName()) : $theme->getAcronym();
+                $data['children'][] = array("name" => $tname,
+                                            "fullname" => $theme->getName(),
+                                            "color" => $theme->getColor(),
+                                            "url" => $theme->getUrl(),
+                                            "children" => array_values($themeChildren));
 	        }
 	        
 	        header("Content-Type: application/json");
