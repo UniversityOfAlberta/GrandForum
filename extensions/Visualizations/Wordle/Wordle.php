@@ -36,6 +36,7 @@ class Wordle extends Visualization {
         $stemmer = new English();
         $data = array();
         $lines = explode("\n", $text);
+        $stems = array();
         foreach($lines as $line){
             $words = explode(" ", $line);
             foreach($words as $word){
@@ -48,7 +49,10 @@ class Wordle extends Visualization {
                 $word = trim($word);
                 $word = strtolower($word);
                 $origWord = $word;
-                $word = $stemmer->stem($word);
+                if(!isset($stems[$word])){
+                    $stems[$word] = $stemmer->stem($word);
+                }
+                $word = $stems[$word];
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
                     if(strstr($word, $stub) !== false){
