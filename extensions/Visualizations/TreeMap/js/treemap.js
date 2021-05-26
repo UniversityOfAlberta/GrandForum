@@ -103,10 +103,11 @@
           .attr("class", "longname")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
-          .attr("dy", "1.35em")
+          .attr("dy", "1.4em")
           .attr("text-anchor", "middle")
           .text(function(d) { return (d.name != d.longname) ? d.longname : ""; })
           .style("cursor", "default")
+          .style("font-size", "0.90em")
           .style("opacity", function(d) { d.w2 = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w2 ? 0.85 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
