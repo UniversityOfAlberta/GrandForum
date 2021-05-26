@@ -102,21 +102,26 @@ class PublicProjTreeTab extends AbstractTab {
                 if($config->getValue('networkName') == "AI4Society"){
                     $challenge = Theme::newFromName($activity);
                     $color = $challenge->getColor();
-                    $activity = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
-                    $activityData = array("name" => str_replace("Activity - ", "", $activity),
+                    $acronym = ($challenge->getId() != 0) ? $challenge->getAcronym() : $activity;
+                    $longname = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
+                    $activityData = array("name" => str_replace("Activity - ", "", $acronym),
+                                          "longname" => str_replace("Activity - ", "", $longname),
                                           "color" => $color,
                                           "children" => array());
                 }
                 foreach($projs2 as $theme => $projs3){
                     $challenge = Theme::newFromName($theme);
                     $color = $challenge->getColor();
-                    $theme = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
-                    $themeData = array("name" => str_replace("Theme - ", "", $theme),
+                    $acronym = ($challenge->getId() != 0) ? $challenge->getAcronym() : $theme;
+                    $longname = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
+                    $themeData = array("name" => str_replace("Theme - ", "", $acronym),
+                                       "longname" => str_replace("Theme - ", "", $longname),
                                        "color" => $color,
                                        "children" => array());
                     foreach($projs3 as $proj => $person){
                         $project = Project::newFromName($proj);
                         $projData = array("name" => $proj,
+                                          "longname" => $project->getFullName(),
                                           "tooltip" => $project->getFullName(),
                                           "color" => $color,
                                           "children" => array());

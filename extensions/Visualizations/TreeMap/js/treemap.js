@@ -96,6 +96,16 @@
           .style("cursor", "default")
           .style("font-weight", "bold")
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
+          
+      catCell.append("svg:text")
+          .attr("x", function(d) { return d.dx / 2; })
+          .attr("y", function(d) { return d.dy / 2; })
+          .attr("dy", "1.35em")
+          .attr("text-anchor", "middle")
+          .text(function(d) { return (d.name != d.longname) ? d.longname : ""; })
+          .style("cursor", "default")
+          .style("fill", "#111")
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
         type = this.value;
@@ -173,7 +183,7 @@
           .attr("width", function(d) { return kx * d.dx - 1; })
           .attr("height", function(d) { return ky * d.dy - 1; })
 
-      t.select("text")
+      t.selectAll("text")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return ky * d.dy / 2; })
           .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
