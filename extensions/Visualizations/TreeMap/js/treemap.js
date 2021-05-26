@@ -63,7 +63,7 @@
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; })
           .style("cursor", "default")
-          .style("fill", function(d){ if(d3.lab(d.color).l < 25) { return "#FFF"; } return "#000"; })
+          .style("fill", function(d){ if(d3.lab(d.parent.color).l < 25) { return "#FFF"; } return "#000"; })
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
           
       var catCell = svg.selectAll("g.catCell")
