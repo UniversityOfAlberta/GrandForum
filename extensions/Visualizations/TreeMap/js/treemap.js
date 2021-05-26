@@ -56,6 +56,7 @@
           .style("fill", function(d) { return (!d.color) ? d.parent.color : d.color; });
 
       cell.append("svg:text")
+          .attr("class", "name")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", ".35em")
@@ -88,6 +89,7 @@
           .style("stroke-width", "2px");
 
       catCell.append("svg:text")
+          .attr("class", "name")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", ".35em")
@@ -98,14 +100,14 @@
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
           
       catCell.append("svg:text")
+          .attr("class", "longname")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", "1.35em")
           .attr("text-anchor", "middle")
           .text(function(d) { return (d.name != d.longname) ? d.longname : ""; })
           .style("cursor", "default")
-          .style("fill", "#111")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
+          .style("opacity", function(d) { d.w2 = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w2 ? 0.85 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
         type = this.value;
@@ -183,10 +185,15 @@
           .attr("width", function(d) { return kx * d.dx - 1; })
           .attr("height", function(d) { return ky * d.dy - 1; })
 
-      t.selectAll("text")
+      t.selectAll("text.name")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return ky * d.dy / 2; })
           .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
+          
+      t.selectAll("text.longname")
+          .attr("x", function(d) { return kx * d.dx / 2; })
+          .attr("y", function(d) { return ky * d.dy / 2; })
+          .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w2 ? 0.85 : 0; });
 
       node = d;
       d3.event.stopPropagation();
