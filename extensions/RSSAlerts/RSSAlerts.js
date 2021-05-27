@@ -23,6 +23,7 @@ $("#feeds").DataTable({
 
 $("#articles").DataTable({
     'aLengthMenu': [[-1], ['All']],
+    'autoWidth': false,
     'aaSorting': [[2,'desc']],
     'dom': 'Blfrtip',
     'buttons': [
@@ -53,7 +54,8 @@ $("td.people").dblclick(function(){
         var selected = (text.indexOf(person.fullName) != -1) ? "selected" : "";
         $("select", $(this)).append("<option value='" + person.id + "' " + selected + " >" + person.fullName + "</option>");
     }.bind(this));
-    $("select", $(this)).chosen();
+    $("select", $(this)).chosen({width: "100%"});
+    $("div.chosen-container", this).css("margin", 0);
     $(this).off("dblclick");
     $(this).css('white-space', 'nowrap');
 });
@@ -68,7 +70,8 @@ $("td.projects").dblclick(function(){
         var selected = (text.indexOf(project.name) != -1) ? "selected" : "";
         $("select", $(this)).append("<option value='" + project.id + "' " + selected + " >" + project.name + "</option>");
     }.bind(this));
-    $("select", $(this)).chosen();
+    $("select", $(this)).chosen({width: "100%"});
+    $("div.chosen-container", this).css("margin", 0);
     $(this).off("dblclick");
     $(this).css('white-space', 'nowrap');
 });

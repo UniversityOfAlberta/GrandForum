@@ -164,7 +164,7 @@ class RSSAlerts extends SpecialPage{
         $filteredArticles = array();
         foreach($articles as $article){
             $found = true;
-            if($feed->filter != ""){
+            if($feed != null && $feed->filter != ""){
                 $found = false;
                 $ors = explode(" OR ", $feed->filter);
                 foreach($ors as $or){
@@ -273,12 +273,12 @@ class RSSAlerts extends SpecialPage{
                          <table id='articles' class='wikitable' width='100%'>
                             <thead>
                                 <tr>
-                                    <th width='25%'>Article</th>
-                                    <th width='25%'>Description</th>
-                                    <th>Date</th>
-                                    <th style='min-width:100px;'>People</th>
-                                    <th style='min-width:100px;'>Projects</th>
-                                    <th style='min-width:100px;'>Keywords</th>
+                                    <th width='35%'>Article</th>
+                                    <th>Feed</th>
+                                    <th width='1px'>Date</th>
+                                    <th style='min-width:100px;width:20%;'>People</th>
+                                    <th style='min-width:100px;width:20%;'>Projects</th>
+                                    <th style='min-width:100px;width:20%;'>Keywords</th>
                                     <th width='1px'>Delete?</th>
                                 </tr>
                             </thead>
@@ -293,8 +293,8 @@ class RSSAlerts extends SpecialPage{
                 $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
             $wgOut->addHTML("<tr data-id='{$article->id}'>
-                <td><a href='{$article->url}' target='_blank'>{$article->title}</a></td>
-                <td>{$article->description}</td>
+                <td><a href='{$article->url}' target='_blank'>{$article->title}</a><br />{$article->description}</td>
+                <td>{$article->getFeed()}</td>
                 <td>{$article->getDate()}</td>
                 <td class='people'>".implode(", ", $people)."</td>
                 <td class='projects'>".implode(", ", $projects)."</td>
