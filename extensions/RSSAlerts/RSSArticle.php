@@ -70,6 +70,10 @@ class RSSArticle extends BackboneModel {
         return substr($this->date, 0, 10);
     }
     
+    function getWeek(){
+        return time2date($this->date, "W");
+    }
+    
     function getPeople(){
         $people = array();
         foreach($this->people as $id){

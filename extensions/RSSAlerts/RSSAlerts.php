@@ -295,7 +295,7 @@ class RSSAlerts extends SpecialPage{
             $wgOut->addHTML("<tr data-id='{$article->id}'>
                 <td><a href='{$article->url}' target='_blank'>{$article->title}</a><br />{$article->description}</td>
                 <td>{$article->getFeed()}</td>
-                <td>{$article->getDate()}</td>
+                <td>{$article->getDate()}<br />Week {$article->getWeek()}</td>
                 <td class='people'>".implode(", ", $people)."</td>
                 <td class='projects'>".implode(", ", $projects)."</td>
                 <td class='keywords'>".implode(", ", $article->keywords)."</td>
