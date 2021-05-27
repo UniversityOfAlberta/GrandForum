@@ -35,6 +35,14 @@ $("#articles").DataTable({
 });
 
 // Editing
+$("td.filter").dblclick(function(){
+    var id = $(this).closest("tr").attr("data-id");
+    var text = $(this).text();
+    $(this).html("<input type='text' name='filter[" + id + "]' style='width:100%;box-sizing:border-box;margin:0;' />");
+    $("input", $(this)).val(text);
+    $(this).off("dblclick");
+});
+
 $("td.people").dblclick(function(){
     var id = $(this).closest("tr").attr("data-id");
     var text = $(this).text();

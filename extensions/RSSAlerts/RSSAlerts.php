@@ -38,6 +38,13 @@ class RSSAlerts extends SpecialPage{
             }
             $wgMessage->addSuccess("Articles Deleted");
         }
+        if(isset($_POST['filter'])){
+            foreach($_POST['filter'] as $id => $filter){
+                $feed = RSSFeed::newFromId($id);
+                $feed->filter = trim($filter);
+                $feed->update();
+            }
+        }
         if(isset($_POST['keywords']) || isset($_POST['people']) || isset($_POST['projects'])){
             if(isset($_POST['people'])){
                 foreach($_POST['people'] as $id => $people){
@@ -153,7 +160,27 @@ class RSSAlerts extends SpecialPage{
             // Unknown Format
             return false;
         }
-        return $articles;
+        // Run Filter
+        $filteredArticles = array();
+        foreach($articles as $article){
+            $found = true;
+            if($feed->filter != ""){
+                $found = false;
+                $ors = explode(" OR ", $feed->filter);
+                foreach($ors as $or){
+                    $ands = explode(" AND ", $or);
+                    $foundAnd = true;
+                    foreach($ands as $and){
+                        $foundAnd = ($foundAnd && strstr(strtolower(strip_tags($article->title." ".$article->description)), strtolower(trim($and))) !== false);
+                    }
+                    $found = ($found || $foundAnd);
+                }
+            }
+            if($found){
+                $filteredArticles[] = $article;
+            }
+        }
+        return $filteredArticles;
     }
     
     function handleImport(){
@@ -212,7 +239,9 @@ class RSSAlerts extends SpecialPage{
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts' method='post'>");
         
         // RSS Feeds
-        $wgOut->addHTML("<h3>RSS/Atom Feeds</h3>");
+        $wgOut->addHTML("<h3>RSS/Atom Feeds</h3>
+                        Urls to RSS Feeds can be added here.  The 'filter' can be used to only import articles which contain the words.  Basic boolean expressions can be used like AND/OR, all other characters will be treated literally.<br />
+                        <i>To edit a cell, double click it (this can only be done on some cells)</i>");
         $wgOut->addHTML("<p><button id='new_feed' type='button'>Add RSS Feed</button></p>
                          <div id='new_feed_div' style='display:none;'>
                             <p><input type='text' size='80' name='new_feed' /> <input type='submit' name='save' value='Save' /></p>
@@ -220,14 +249,16 @@ class RSSAlerts extends SpecialPage{
         $wgOut->addHTML("<table id='feeds' class='wikitable' width='100%'>
                             <thead>
                                 <tr>
-                                    <th>Url</th>
-                                    <th>Delete?</th>
+                                    <th width='50%'>Url</th>
+                                    <th width='50%'>Filter</th>
+                                    <th width='1px'>Delete?</th>
                                 </tr>
                             </thead>
                             <tbody>");
         foreach($feeds as $feed){
-            $wgOut->addHTML("<tr>
+            $wgOut->addHTML("<tr data-id='{$feed->id}'>
                 <td><a href='{$feed->url}'>{$feed->url}</a></td>
+                <td class='filter'>{$feed->filter}</td>
                 <td align='center'><input type='checkbox' name='delete_feed[{$feed->id}]' /></td>
             </tr>");
         }
@@ -248,7 +279,7 @@ class RSSAlerts extends SpecialPage{
                                     <th style='min-width:100px;'>People</th>
                                     <th style='min-width:100px;'>Projects</th>
                                     <th style='min-width:100px;'>Keywords</th>
-                                    <th>Delete?</th>
+                                    <th width='1px'>Delete?</th>
                                 </tr>
                             </thead>
                             <tbody>");
