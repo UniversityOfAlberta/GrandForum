@@ -189,7 +189,9 @@ class RSSAlerts extends SpecialPage{
         $feeds = RSSFeed::getAllFeeds();
         $errors = array();
         foreach($feeds as $feed){
-            $contents = file_get_contents($feed->url);
+            $opts = array('http'=>array('header' => "User-Agent:MyAgent/1.0\r\n"));
+            $context = stream_context_create($opts);
+            $contents = @file_get_contents($feed->url, false, $context);
             $parsed = $this->parseRSS($contents, $feed);
             if($parsed === false){
                 $errors[] = $feed;
