@@ -53,7 +53,7 @@ class PublicProjectClusterTab extends AbstractTab {
 	                $activity = $proj->getActivity();
 	                $pName = $proj->getName();
 	                if($config->getValue('networkName') == "AI4Society"){
-	                    $pname = $proj->getShortFullName();
+	                    $pName = $proj->getShortFullName();
 	                }
 	                $project = array("name" => $pName,
                                      "fullname" => $proj->getFullName(),
