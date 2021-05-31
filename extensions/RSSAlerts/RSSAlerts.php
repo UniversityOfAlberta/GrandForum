@@ -129,19 +129,22 @@ class RSSAlerts extends SpecialPage{
                     if($feed != null){
                         $article->feed = $feed->id;
                     }
+                    $link = (is_string($entry['link'])) ? $entry['link'] : "";
+                    $description = (is_string($entry['description'])) ? $entry['description'] : "";
+                    
                     $article->rssId = $id;
                     $article->title = $entry['title'];
-                    $article->url = $entry['link'];
-                    $article->description = strip_tags($entry['description']);
+                    $article->url = $link;
+                    $article->description = strip_tags($description);
                     
-                    foreach(Wordle::createDataFromText(strip_tags($article->title." ".$article->description)) as $keyword){
+                    foreach(Wordle::createDataFromText(strip_tags($article->title." ".$description)) as $keyword){
                         if($keyword['freq'] > 1){
                             $article->keywords[] = $keyword['word'];
                         }
                     }
                     
                     $matches = array();
-                    preg_match("/(([0-9]+) days ago)/", $entry['description'], $matches);
+                    preg_match("/(([0-9]+) days ago)/", $description, $matches);
                     if(isset($matches[2])){
                         // Google Scholar
                         $article->date = date('Y-m-d', time() - $matches[2]*60*60*24);
