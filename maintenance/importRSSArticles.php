@@ -1,6 +1,8 @@
 <?php
 
     require_once('commandLine.inc');
+    
+    ini_set('default_socket_timeout', 900);
 
     $wgUser = User::newFromId(1);
     
@@ -11,10 +13,22 @@
     foreach($nis as $ni){
         $contents = "";
         $result = 0;
-        $gsUrl = "https://scholar.google.com/scholar?hl=en&as_sdt=2007&q=\"{$ni->getFirstName()}+{$ni->getLastName()}\"&scisbd=1";
-        echo $gsUrl." ... ";
+        $gsUrl = "\"{$ni->getFirstName()} {$ni->getLastName()}\"";
+        echo "{$gsUrl}";
+        $parts = parse_url($ni->getGoogleScholar());
+        $single = false;
+        if($parts !== false){
+            parse_str($parts['query'], $query);
+            if(isset($query['user'])){
+                $single = true;
+                $gsUrl = $query['user'];
+                echo " ({$gsUrl})";
+            }
+        }
+        echo ": ... ";
         $gsUrl = urlencode($gsUrl);
-        $contents = file_get_contents("{$config->getValue("gscholar-rss")}{$gsUrl}");
+        $contents = ($single) ? file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}") 
+                              : file_get_contents("{$config->getValue("gscholar-rss")}search/{$gsUrl}");
         if($contents != ""){
             $articles = $rssAlerts->parseRSS($contents, null, $ni);
             if($articles === false){
@@ -30,7 +44,7 @@
         else{
             echo "FAILED\n";
         }
-        sleep(rand(120, 150)); // Random sleep time to help prevent being blocked
+        //sleep(rand(120, 150)); // Random sleep time to help prevent being blocked
     }
     
 ?>
