@@ -152,7 +152,20 @@ class RSSAlerts extends SpecialPage{
                     else{
                         $article->date = date('Y-m-d');
                     }
-                    if($person != null){
+
+                    if(isset($entry['creator'])){
+                        foreach(explode(" and ", $entry['creator']) as $a){
+                            $author = Person::newFromNameLike($a);
+                            if($author == null || $author->getName() == null || $author->getName() == ""){
+                                // The name might not match exactly what is in the db, try aliases
+                                $author = Person::newFromAlias($a);
+                            }
+                            if($author != null && $author->getId() != 0){
+                                $article->people[] = $author->getId();
+                            }
+                        }
+                    }
+                    else if($person != null){
                         $article->people[] = $person->getId();
                     }
                     $articles[] = $article;

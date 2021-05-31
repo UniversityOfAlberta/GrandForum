@@ -31,7 +31,7 @@
             $contents = file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}");
         }
         else{
-            echo "FAILED\n";
+            echo "Google Scholar Profile missing...\n";
             continue;
         }
         /*$contents = ($single) ? file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}") 
@@ -51,7 +51,6 @@
         else{
             echo "FAILED\n";
         }
-        //sleep(rand(120, 150)); // Random sleep time to help prevent being blocked
     }
     
 ?>

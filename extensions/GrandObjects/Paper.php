@@ -895,12 +895,7 @@ class Paper extends BackboneModel{
                     $person = Person::newFromNameLike($author);
                     if($person == null || $person->getName() == null || $person->getName() == ""){
                         // The name might not match exactly what is in the db, try aliases
-                        try{
-                            $person = Person::newFromAlias($author);
-                        }
-                        catch(DomainException $e){
-                            $person = null;
-                        }
+                        $person = Person::newFromAlias($author);
                     }
                 }
                 self::generateIllegalAuthorsCache();
