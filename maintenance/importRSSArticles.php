@@ -27,8 +27,15 @@
         }
         echo ": ... ";
         $gsUrl = urlencode($gsUrl);
-        $contents = ($single) ? file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}") 
-                              : file_get_contents("{$config->getValue("gscholar-rss")}search/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}");
+        if($single){
+            $contents = file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}");
+        }
+        else{
+            echo "FAILED\n";
+            continue;
+        }
+        /*$contents = ($single) ? file_get_contents("{$config->getValue("gscholar-rss")}author/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}") 
+                              : file_get_contents("{$config->getValue("gscholar-rss")}search/{$gsUrl}?apiKey={$config->getValue("gscholar-api")}");*/
         if($contents != ""){
             $articles = $rssAlerts->parseRSS($contents, null, $ni);
             if($articles === false){
