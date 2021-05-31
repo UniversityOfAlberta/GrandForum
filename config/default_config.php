@@ -46,6 +46,9 @@
     // Url for gscholar-rss
     $config->setValue("gscholar-rss", "");
     
+    // API Key for gscholar-rss
+    $config->setValue("gscholar-api", "");
+    
     // Localization Cache Directory
     $config->setValue("localizationCache", "");
     
