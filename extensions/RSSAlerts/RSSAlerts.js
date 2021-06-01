@@ -34,6 +34,7 @@ $("#feeds").DataTable({
         });
     }
 });
+$("#feeds").show();
 
 $("#articles").DataTable({
     'aLengthMenu': [[50, 100, -1], [50, 100, 'All']],
@@ -67,6 +68,8 @@ $("#articles").DataTable({
         });
     },
 });
+$("#articles").show();
+
 
 // Editing
 $("td.filter").dblclick(function(){

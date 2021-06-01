@@ -268,7 +268,7 @@ class RSSAlerts extends SpecialPage{
                          <div id='new_feed_div' style='display:none;'>
                             <p><input type='text' size='80' name='new_feed' /> <input type='submit' name='save' value='Save' /></p>
                          </div>");
-        $wgOut->addHTML("<table id='feeds' class='wikitable' width='100%'>
+        $wgOut->addHTML("<table id='feeds' class='wikitable' width='100%' style='display:none;'>
                             <thead>
                                 <tr>
                                     <th width='50%'>Url</th>
@@ -292,7 +292,7 @@ class RSSAlerts extends SpecialPage{
                          Articles are imported from the RSS Feeds.  Articles from Google Scholar are also imported, but are done automatically on a daily basis.<br />
                          <i>To edit a cell, double click it (this can only be done on some cells)</i>
                          <p><input type='submit' name='import' value='Import Articles' /></p>
-                         <table id='articles' class='wikitable' width='100%'>
+                         <table id='articles' class='wikitable' width='100%' style='display:none;'>
                             <thead>
                                 <tr>
                                     <th width='35%'>Article</th>
