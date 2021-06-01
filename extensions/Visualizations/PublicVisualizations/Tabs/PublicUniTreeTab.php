@@ -58,7 +58,7 @@ class PublicUniTreeTab extends AbstractTab {
             foreach($people as $person){
                 if($person->isRole(NI)){
                     $uni = $person->getUni();
-                    @$unis[$uni][$person->getReversedName()] = 1;
+                    @$unis[$uni][$person->getId()] = 1;
                 }
             }
             $provinces = array();
@@ -79,9 +79,11 @@ class PublicUniTreeTab extends AbstractTab {
                                      "color" => $university->getColor(),
                                      "children" => array());
                     $personData = array();
-                    foreach($people as $name => $total){
-                        $personData[] = array("name" => $name,
-                                              "size" => $total);
+                    foreach($people as $id => $total){
+                        $person = Person::newFromId($id);
+                        $personData[] = array("name" => $person->getReversedName(),
+                                              "size" => $total,
+                                              "url" => $person->getUrl());
                     }
                     $uniData['children'] = $personData;
                     $provData['children'][] = $uniData;

@@ -91,7 +91,7 @@ class PublicProjTreeTab extends AbstractTab {
                         $theme = ($theme != null) ? $theme->getAcronym() : "Unknown";
                         foreach($people as $person){
                             if($person->isRole(NI)){
-                                @$projs[$activity][$theme][$project->getName()][$person->getReversedName()] = 1;
+                                @$projs[$activity][$theme][$project->getName()][$person->getId()] = 1;
                             }
                         }
                     }
@@ -108,6 +108,7 @@ class PublicProjTreeTab extends AbstractTab {
                     $longname = str_replace("Project", "Projects", $longname);
                     $activityData = array("name" => str_replace("Activity - ", "", $acronym),
                                           "longname" => str_replace("Activity - ", "", $longname),
+                                          "url" => $challenge->getUrl(),
                                           "color" => $color,
                                           "children" => array());
                 }
@@ -118,6 +119,7 @@ class PublicProjTreeTab extends AbstractTab {
                     $longname = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
                     $themeData = array("name" => str_replace("Theme - ", "", $acronym),
                                        "longname" => str_replace("Theme - ", "", $longname),
+                                       "url" => $challenge->getUrl(),
                                        "color" => $color,
                                        "children" => array());
                     foreach($projs3 as $proj => $person){
@@ -125,12 +127,15 @@ class PublicProjTreeTab extends AbstractTab {
                         $projData = array("name" => $proj,
                                           "longname" => $project->getFullName(),
                                           "tooltip" => $project->getFullName(),
+                                          "url" => $project->getUrl(),
                                           "color" => $color,
                                           "children" => array());
                         $personData = array();
-                        foreach($person as $name => $total){
-                            $personData[] = array("name" => $name,
-                                                  "size" => $total);
+                        foreach($person as $id => $total){
+                            $person = Person::newFromId($id);
+                            $personData[] = array("name" => $person->getReversedName(),
+                                                  "size" => $total,
+                                                  "url" => $person->getUrl());
                         }
                         $projData['children'] = $personData;
                         $themeData['children'][] = $projData;
