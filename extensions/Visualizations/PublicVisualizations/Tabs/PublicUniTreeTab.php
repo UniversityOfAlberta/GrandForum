@@ -5,7 +5,7 @@ $wgHooks['UnknownAction'][] = 'PublicUniTreeTab::getPublicUniTreeData';
 class PublicUniTreeTab extends AbstractTab {
 	
 	function PublicUniTreeTab(){
-        parent::AbstractTab("Universities");
+        parent::AbstractTab("Institutions");
     }
 
     function generateBody(){
@@ -16,15 +16,15 @@ class PublicUniTreeTab extends AbstractTab {
         $this->html .= $tree->show();
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
-                if(ui.panel.id == 'universities'){
+                if(ui.panel.id == 'institutions'){
                     onLoad{$tree->index}();
                 }
             });
             var lastWidth{$tree->index} = 0;
             var lastHeight{$tree->index} = 0;
             setInterval(function(){
-                var newWidth = $('#universities').width();
-                var newHeight = $('#universities').height();
+                var newWidth = $('#institutions').width();
+                var newHeight = $('#institutions').height();
                 if(lastWidth{$tree->index} != newWidth){
                     onLoad{$tree->index}();
                 }
@@ -32,11 +32,11 @@ class PublicUniTreeTab extends AbstractTab {
                 lastHeight{$tree->index} = newHeight;
             }, 100);
             </script>
-            <p>This tree map shows the distribution of people in universities.  Each level represents a different entity:</p>
+            <p>This tree map shows the distribution of people in institutions.  Each level represents a different entity:</p>
             <ul type='disc'>
-                <li>Province
+                <li>Provinces
                     <ul type='disc'>
-                        <li>Universities
+                        <li>Institutions
                             <ul type='disc'>
                                 <li>People</li>
                             </ul>
