@@ -14,6 +14,7 @@ class PublicChordTab extends AbstractTab {
 	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData{$sortBy}");
 	    $chord->height = 600;
 	    $chord->width = 600;
+	    $chord->fn = "document.location = data.urls[d.index];";
 	    $this->html .= $chord->show();
 	    $this->html .= "<script type='text/javascript'>
         $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -105,6 +106,7 @@ class PublicChordTab extends AbstractTab {
             }
             
             $labels = array();
+            $urls = array();
             $matrix = array();
             $chordLabels = array();
             
@@ -163,6 +165,7 @@ class PublicChordTab extends AbstractTab {
                     $startYear = intval($created);
                 }
                 $labels[] = "{$project->getName()} - {$project->getFullName()}";
+                $urls[] = $project->getUrl();
             }
             
             $dates = array();
@@ -188,6 +191,7 @@ class PublicChordTab extends AbstractTab {
             }
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
+            $array['urls'] = $urls;
             $array['colorHashs'] = $colorHashs;
             $array['colors'] = $colors;
             $array['chordLabels'] = $chordLabels;
