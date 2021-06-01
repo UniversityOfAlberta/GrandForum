@@ -164,6 +164,9 @@ class RSSAlerts extends SpecialPage{
                                 $article->people[] = $author->getId();
                             }
                         }
+                        if(count($article->people) == 0){
+                            $article->people[] = $person->getId();
+                        }
                     }
                     else if($person != null){
                         $article->people[] = $person->getId();
