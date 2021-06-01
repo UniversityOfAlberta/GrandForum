@@ -19,10 +19,24 @@ $("#feeds").DataTable({
     'buttons': [
         'excel', 'pdf'
     ],
+    "preDrawCallback": function() {
+        $("#feeds input, #feeds select").each(function(i, el){
+            $("#hiddenForm [name='" + $(el).attr('name') + "']").remove();
+        });
+        $("#feeds input, #feeds select").each(function(i, el){
+            if($(el).attr("name") != "" && $(el).attr("name") != undefined){
+                var clone = $(el).clone();
+                $("option", el).each(function(j, op){
+                    $(clone).find("option[value=" + $(op).val() + "]").attr("selected", $(op).prop('selected'));
+                });
+                $("#hiddenForm").append(clone);
+            }
+        });
+    }
 });
 
 $("#articles").DataTable({
-    'aLengthMenu': [[-1], ['All']],
+    'aLengthMenu': [[50, 100, -1], [50, 100, 'All']],
     'autoWidth': false,
     'aaSorting': [[2,'desc']],
     'dom': 'Blfrtip',
@@ -33,6 +47,25 @@ $("#articles").DataTable({
             orientation: 'landscape'
         }
     ],
+    "preDrawCallback": function() {
+        $("#articles input, #articles select").each(function(i, el){
+            $("#hiddenForm [name='" + $(el).attr('name') + "']").remove();
+        });
+        $("#articles input, #articles select").each(function(i, el){
+            if($(el).attr("name") != "" && $(el).attr("name") != undefined){
+                var clone = $(el).clone();
+                $("option", el).each(function(j, op){
+                    $(clone).find("option[value=" + $(op).val() + "]").attr("selected", $(op).prop('selected'));
+                });
+                $("#hiddenForm").append(clone);
+            }
+        });
+    },
+    "drawCallback": function(){
+        $("#articles input, #articles select").each(function(i, el){
+            $("#hiddenForm [name='" + $(el).attr('name') + "']").remove();
+        });
+    },
 });
 
 // Editing

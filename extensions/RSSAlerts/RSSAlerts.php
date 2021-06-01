@@ -257,7 +257,8 @@ class RSSAlerts extends SpecialPage{
         }
         $feeds = RSSFeed::getAllFeeds();
         $articles = RSSArticle::getAllArticles();
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts' method='post'>");
+        $wgOut->addHTML("<form id='rssAlerts' action='{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts' method='post'>
+                         <div id='hiddenForm' style='display:none;'></div>");
         
         // RSS Feeds
         $wgOut->addHTML("<h3>RSS/Atom Feeds</h3>
