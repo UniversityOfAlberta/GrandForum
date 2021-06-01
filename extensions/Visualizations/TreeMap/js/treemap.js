@@ -114,13 +114,14 @@
           .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; })
           .on("click", function(d){ if(d.url != undefined && d.url != ""){ d3.event.stopPropagation(); window.location = d.url; } })
           .on("mouseover", function(d){
-              d3.select(this)
-                .selectAll("text.name")
-                .style("fill", d.color);
-                  
-              d3.select(this)
-                .selectAll("text.name")
-                .style("stroke",function(d){ if(d3.lab(d.color).l < 25) { return "#FFF"; } return "#000"; });
+              if(d.url != undefined && d.url != ""){
+                  d3.select(this)
+                    .style("text-decoration", "underline");
+              }
+          })
+          .on("mouseout", function(d){
+                d3.select(this)
+                  .style("text-decoration", "none");
           });
           
       catCell.append("svg:text")
