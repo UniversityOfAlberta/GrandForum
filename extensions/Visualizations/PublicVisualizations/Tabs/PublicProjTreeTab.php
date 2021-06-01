@@ -106,9 +106,10 @@ class PublicProjTreeTab extends AbstractTab {
                     $longname = ($challenge->getId() != 0) ? $challenge->getName() : $activity;
                     $longname = str_replace("Collaboratory", "Collaboratories", $longname);
                     $longname = str_replace("Project", "Projects", $longname);
+                    $url = ($challenge->getName() != "Not Specified") ? $challenge->getUrl() : "";
                     $activityData = array("name" => str_replace("Activity - ", "", $acronym),
                                           "longname" => str_replace("Activity - ", "", $longname),
-                                          "url" => $challenge->getUrl(),
+                                          "url" => $url,
                                           "color" => $color,
                                           "children" => array());
                 }
@@ -117,9 +118,10 @@ class PublicProjTreeTab extends AbstractTab {
                     $color = $challenge->getColor();
                     $acronym = ($challenge->getId() != 0) ? $challenge->getAcronym() : $theme;
                     $longname = ($challenge->getId() != 0) ? $challenge->getName() : $theme;
+                    $url = ($challenge->getName() != "Not Specified") ? $challenge->getUrl() : "";
                     $themeData = array("name" => str_replace("Theme - ", "", $acronym),
                                        "longname" => str_replace("Theme - ", "", $longname),
-                                       "url" => $challenge->getUrl(),
+                                       "url" => $url,
                                        "color" => $color,
                                        "children" => array());
                     foreach($projs3 as $proj => $person){
