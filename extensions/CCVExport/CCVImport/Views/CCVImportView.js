@@ -42,6 +42,9 @@ CCVImportView = Backbone.View.extend({
                 if(response.employment != undefined){
                     success.push("Employment Information was updated");
                 }
+                if(response.keywords != undefined){
+                    success.push("Research Specialization Keywords were updated");
+                }
                 
                 if(success.length > 0){
                     addSuccess(success.join("<br />"));
