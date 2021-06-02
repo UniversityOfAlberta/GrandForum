@@ -76,3 +76,7 @@
     <br />
     <button id='editPosting'>Edit Event Posting</button>&nbsp;<button id='deletePosting'>Delete Event Posting</button>
 <% } %>
+<% if(isExtensionEnabled('EventRegistration') && visibility == "Publish"){ %>
+    <br />
+    <a class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:SpecialEventRegistration?event=' + id %>">Register for this Event</a>
+<% } %>

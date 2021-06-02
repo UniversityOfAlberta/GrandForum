@@ -38,7 +38,7 @@
       var cell = svg.selectAll("g.cell")
           .data(nodes)
         .enter().append("svg:g")
-          .attr("title", function(d){ var ret = d.name + "<table>" + 
+          .attr("title", function(d){ var ret = (d.tooltip || d.name) + "<table>" + 
                                                       "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(Math.round(d.value)) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>"; 
                                       if(options.countLabel  != ""){
                                          ret += "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>";
@@ -56,18 +56,32 @@
           .style("fill", function(d) { return (!d.color) ? d.parent.color : d.color; });
 
       cell.append("svg:text")
+          .attr("class", "name")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", ".35em")
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; })
-          .style("cursor", "default")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
+          .style("cursor", function(d){ return (d.url != undefined && d.url != "") ? "pointer" : "default"; })
+          .style("font-weight", "bold")
+          .style("fill", function(d){ if(d3.lab(d.parent.color).l < 25) { return "#FFF"; } return "#000"; })
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; })
+          .on("click", function(d){ if(d.url != undefined && d.url != ""){ d3.event.stopPropagation(); window.location = d.url; } })
+          .on("mouseover", function(d){
+              if(d.url != undefined && d.url != ""){
+                  d3.select(this)
+                    .style("text-decoration", "underline");
+              }
+          })
+          .on("mouseout", function(d){
+                d3.select(this)
+                  .style("text-decoration", "none");
+          });
           
       var catCell = svg.selectAll("g.catCell")
           .data(categories)
         .enter().append("svg:g")
-          .attr("title", function(d){ var ret = d.name + "<table>" + 
+          .attr("title", function(d){ var ret = (d.tooltip || d.name) + "<table>" + 
                                                       "<tr><td>" + options.sizeLabel + ":</td><td align=right>" + options.sizeUnit + addCommas(Math.round(d.value)) + "</td><td>(" + Math.round(d.value*100*10/d.parent.value)/10 + "%)</td></tr>"; 
                                       if(options.countLabel  != ""){
                                          ret += "<tr><td>" + options.countLabel + ":</td><td align=right>" + options.countUnit + addCommas(recursiveCount(d)) + "</td><td>(" + Math.round(recursiveCount(d)*100*10/recursiveCount(d.parent))/10 + "%)</td></tr>";
@@ -88,14 +102,39 @@
           .style("stroke-width", "2px");
 
       catCell.append("svg:text")
+          .attr("class", "name")
           .attr("x", function(d) { return d.dx / 2; })
           .attr("y", function(d) { return d.dy / 2; })
           .attr("dy", ".35em")
           .attr("text-anchor", "middle")
           .text(function(d) { return d.name; })
-          .style("cursor", "default")
+          .style("cursor", function(d){ return (d.url != undefined && d.url != "") ? "pointer" : "default"; })
           .style("font-weight", "bold")
-          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; });
+          .style("fill", function(d){ if(d3.lab(d.color).l < 25) { return "#FFF"; } return "#000"; })
+          .style("opacity", function(d) { d.w = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w ? 1 : 0; })
+          .on("click", function(d){ if(d.url != undefined && d.url != ""){ d3.event.stopPropagation(); window.location = d.url; } })
+          .on("mouseover", function(d){
+              if(d.url != undefined && d.url != ""){
+                  d3.select(this)
+                    .style("text-decoration", "underline");
+              }
+          })
+          .on("mouseout", function(d){
+                d3.select(this)
+                  .style("text-decoration", "none");
+          });
+          
+      catCell.append("svg:text")
+          .attr("class", "longname")
+          .attr("x", function(d) { return d.dx / 2; })
+          .attr("y", function(d) { return d.dy / 2; })
+          .attr("dy", "1.4em")
+          .attr("text-anchor", "middle")
+          .text(function(d) { return (d.name != d.longname) ? d.longname : ""; })
+          .style("cursor", "default")
+          .style("font-size", "0.90em")
+          .style("fill", function(d){ if(d3.lab(d.color).l < 25) { return "#FFF"; } return "#000"; })
+          .style("opacity", function(d) { d.w2 = this.getComputedTextLength(); if(type == "size" && d.size == 0){ return 0; } return d.dx > d.w2 ? 0.85 : 0; });
 
       d3.selectAll("#" + id + "options input").on("change", function() {
         type = this.value;
@@ -173,10 +212,15 @@
           .attr("width", function(d) { return kx * d.dx - 1; })
           .attr("height", function(d) { return ky * d.dy - 1; })
 
-      t.select("text")
+      t.selectAll("text.name")
           .attr("x", function(d) { return kx * d.dx / 2; })
           .attr("y", function(d) { return ky * d.dy / 2; })
           .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w ? 1 : 0; });
+          
+      t.selectAll("text.longname")
+          .attr("x", function(d) { return kx * d.dx / 2; })
+          .attr("y", function(d) { return ky * d.dy / 2; })
+          .style("opacity", function(d) { if(type == "size" && d.size == 0){ return 0; } return kx * d.dx > d.w2 ? 0.85 : 0; });
 
       node = d;
       d3.event.stopPropagation();

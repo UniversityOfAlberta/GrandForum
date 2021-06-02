@@ -115,6 +115,7 @@
                               'CD-73'
                               'CD-76'
                               'CD-77'
+                              'CD-82'
                               'DO-2'
                               'DO-6'
                               'DO-16'
@@ -279,6 +280,7 @@
                               'CR-03'
                               'CR-06'
                               'CR-07'
+                              'ND-12'
                               'TP-18','{$project_name}')}">
                 <Static>
                     <![CDATA[
@@ -387,7 +389,8 @@
                               'Project 2'
                               'CD-46'
                               'CD-81'
-                              'TP-1','{$project_name}')}">
+                              'TP-1'
+                              'CR-14','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>

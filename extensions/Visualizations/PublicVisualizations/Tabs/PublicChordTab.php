@@ -10,19 +10,11 @@ class PublicChordTab extends AbstractTab {
 
     function generateBody(){
 	    global $wgServer, $wgScriptPath;
-	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData");
+	    $sortBy = (isset($_GET['sortBy'])) ? "&sortBy={$_GET['sortBy']}" : "";
+	    $chord = new Chord("{$wgServer}{$wgScriptPath}/index.php?action=getPublicChordData{$sortBy}");
 	    $chord->height = 600;
 	    $chord->width = 600;
-	    $this->html = "<div><a class='button' onClick='$(\"#help{$chord->index}\").show();$(this).hide();'>Show Help</a>
-	        <div id='help{$chord->index}' style='display:none;'>
-	            <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
-	            <ul>
-	                <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>
-	                <li>To change how the projects are sorted/coloured, select one of the options in the 'Sorting Options'.</li>
-	            </ul>
-	            <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the sorting category in the legend.</p>
-	        </div>
-	    </div>";
+	    $chord->fn = "document.location = data.urls[d.index];";
 	    $this->html .= $chord->show();
 	    $this->html .= "<script type='text/javascript'>
         $('#publicVis').bind('tabsselect', function(event, ui) {
@@ -30,7 +22,13 @@ class PublicChordTab extends AbstractTab {
                 onLoad{$chord->index}();
             }
         });
-        </script><br />";
+        </script>
+        <p>This visualization shows the relations between projects.  Each chord represents a person who is in both projects.</p>
+        <ul>
+            <li>Using the date slider allows the chart to only show projects from the specified year.  This is useful to see the evolution of the network.</li>
+            <li>To change how the projects are sorted/coloured, select one of the options in the 'Sorting Options'.</li>
+        </ul>
+        <p>You can also highlight an individual project or theme either by hovering over the outer wedge in the chart, or by hovering over the sorting category in the legend.</p>";
 	}
 	
 	static function getPublicChordData($action, $article){
@@ -41,7 +39,7 @@ class PublicChordTab extends AbstractTab {
 	        session_write_close();
 	        $array = array();
             $people = Person::getAllPeopleDuring(null, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL);
-            $projects = Project::getAllProjectsEver();
+            $projects = Project::getAllProjectsDuring($year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL);
             foreach($projects as $key => $project){
                 if($project->getChallenge()->getName() == "Not Specified" || 
                    $project->getChallenge()->getName() == "" ||
@@ -59,9 +57,29 @@ class PublicChordTab extends AbstractTab {
                 }
             }
             
-            if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
+            if(($config->getValue('networkName') == "AI4Society") && (!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'activity'))){
                 foreach($projects as $project){
-                    $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
+                    foreach($project->getChallenges() as $theme){
+                        if(strstr($theme->getName(), "Activity - ") !== false){
+                            $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if(!isset($_GET['sortBy']) || (isset($_GET['sortBy']) && $_GET['sortBy'] == 'theme')){
+                foreach($projects as $project){
+                    if($config->getValue('networkName') == "AI4Society"){
+                        foreach($project->getChallenges() as $theme){
+                            if(strstr($theme->getName(), "Theme - ") !== false){
+                                $sortedProjects[$theme->getId()."-".$theme->getName()][] = $project;
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        $sortedProjects[$project->getChallenge()->getId()."-".$project->getChallenge()->getName()][] = $project;
+                    }
                 }
             }
             else if(isset($_GET['sortBy']) && $_GET['sortBy'] == 'name'){
@@ -75,10 +93,11 @@ class PublicChordTab extends AbstractTab {
             $projects = array();
             ksort($sortedProjects);
             foreach($sortedProjects as $key => $sort){
+                $key = explode("-", $key);
+                $id = $key[0];
+                $key = $key[count($key)-1];
                 foreach($sort as $project){
-                    $key = explode("-", $key);
-                    $key = $key[count($key)-1];
-                    $theme = $project->getChallenge();
+                    $theme = Theme::newFromId($id);
                     $color = $theme->getColor();
                     $projects[] = $project;
                     $colorHashs[] = $key;
@@ -87,7 +106,9 @@ class PublicChordTab extends AbstractTab {
             }
             
             $labels = array();
+            $urls = array();
             $matrix = array();
+            $chordLabels = array();
             
             // Initialize
             foreach($projects as $k1 => $project){
@@ -102,6 +123,7 @@ class PublicChordTab extends AbstractTab {
                         foreach($projects as $p){
                             if($person->isMemberOfDuring($p, $year.CYCLE_START_MONTH, $year.CYCLE_END_MONTH_ACTUAL) && isset($matrix[$p->getId()]) && $project->getId() != $p->getId()){
                                 $matrix[$project->getId()][$p->getId()] += 1;
+                                $chordLabels[$project->getId()][$p->getId()][$person->getId()] = $person->getNameForForms();
                             }
                         }
                     }
@@ -122,14 +144,19 @@ class PublicChordTab extends AbstractTab {
             }
             
             $newMatrix = array();
-            foreach($matrix as $row){
+            $newChordLabels = array();
+            foreach($matrix as $i => $row){
                 $newRow = array();
-                foreach($row as $col){
+                $newChordRow = array();
+                foreach($row as $j => $col){
                     $newRow[] = $col;
+                    $newChordRow[] = @implode("<br />", $chordLabels[$i][$j]);
                 }
                 $newMatrix[] = $newRow;
+                $newChordLabels[] = $newChordRow;
             }
             $matrix = $newMatrix;
+            $chordLabels = $newChordLabels;
             
             $startYear = date('Y');
             foreach($projects as $project){
@@ -137,7 +164,8 @@ class PublicChordTab extends AbstractTab {
                 if($created < $startYear){
                     $startYear = intval($created);
                 }
-                $labels[] = $project->getName();
+                $labels[] = "{$project->getName()} - {$project->getFullName()}";
+                $urls[] = $project->getUrl();
             }
             
             $dates = array();
@@ -153,12 +181,20 @@ class PublicChordTab extends AbstractTab {
             $array['filterOptions'] = array();
 
             $array['dateOptions'] = $dates;
-                                      
-            $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+            
+            if($config->getValue('networkName') == "AI4Society"){
+                $array['sortOptions'] = array(array('name' => "Activity", 'value' => 'activity', 'checked' => (!isset($_GET['sortBy']) || $_GET['sortBy'] == 'activity') ? 'checked' : ""),
+                                              array('name' => "Theme", 'value' => 'theme', 'checked' => (@$_GET['sortBy'] == 'theme') ? 'checked' : ""));
+            }
+            else{
+                $array['sortOptions'] = array(array('name' => $config->getValue('projectThemes'), 'value' => 'theme', 'checked' => 'checked'));
+            }
             $array['matrix'] = $matrix;
             $array['labels'] = $labels;
+            $array['urls'] = $urls;
             $array['colorHashs'] = $colorHashs;
             $array['colors'] = $colors;
+            $array['chordLabels'] = $chordLabels;
 
             header("Content-Type: application/json");
             echo json_encode($array);

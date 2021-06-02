@@ -320,7 +320,7 @@ class Collaboration extends BackboneModel{
         
         $hqps = $me->getHQP(true);
         foreach($hqps as $hqp){
-            if($this->isAllowedToEdit($hqp)){
+            if($this->isAllowedToEdit($hqp) && $hqp->isRoleAtMost(HQP)){
                 return true;
             }
         }

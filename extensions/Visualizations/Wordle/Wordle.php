@@ -1,5 +1,7 @@
 <?php
 
+autoload_register('../Classes/Stemmer');
+use Wamania\Snowball\English;
 require_once("Classes/removeCommonWords/removeCommonWords.php");
 
 class Wordle extends Visualization {
@@ -31,15 +33,26 @@ class Wordle extends Visualization {
     }
     
     static function createDataFromText($text){
+        $stemmer = new English();
         $data = array();
         $lines = explode("\n", $text);
+        $stems = array();
         foreach($lines as $line){
             $words = explode(" ", $line);
             foreach($words as $word){
                 $word = preg_replace("/\&lt;.*\&gt;/", '', $word); // Strip out html-like stuff
-                $word = preg_replace("/[^A-Za-z0-9 ]/", ' ', $word);
+                $word = preg_replace("/[^A-Za-z0-9\- ]/", ' ', $word);
+                $word = str_replace("nbsp", " ", $word);
+                $word = str_replace("lsquo", " ", $word);
+                $word = str_replace("rsquo", " ", $word);
+                $word = str_replace("ndash", " ", $word);
                 $word = trim($word);
                 $word = strtolower($word);
+                $origWord = $word;
+                if(!isset($stems[$word])){
+                    $stems[$word] = $stemmer->stem($word);
+                }
+                $word = $stems[$word];
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
                     if(strstr($word, $stub) !== false){
@@ -47,16 +60,31 @@ class Wordle extends Visualization {
                         break;
                     }
                 }
-                if(!$skip && strlen($word) > 3 && 
-                   !is_numeric($word) &&
-                   array_search($word, CommonWords::$commonWords) === false){
-                    @$data[$word]++;
+                if(!$skip && strlen($origWord) > 3 && 
+                   !is_numeric($origWord) &&
+                   array_search($origWord, CommonWords::$commonWords) === false){
+                    if(!isset($data[$word])){
+                        $data[$word] = array('word' => $origWord,
+                                             'freq' => 1);
+                    }
+                    else{
+                        if(strlen($origWord) < strlen($data[$word]['word'])){
+                            // This word is shorter, use it instead
+                            $data[$word]['word'] = $origWord;
+                        }
+                        $data[$word]['freq']++;
+                    }
                 }
             }
         }
+        $newData = array();
+        foreach($data as $word){
+            $newData[$word['word']] = $word['freq'];
+        }
+        
         $retData = array();
-        asort($data);
-        $data = array_reverse($data);
+        asort($newData);
+        $data = array_reverse($newData);
         foreach($data as $word => $freq){
             $retData[] = array('word' => ucfirst($word),
                                'freq' => $freq);
@@ -183,6 +211,12 @@ class Wordle extends Visualization {
               }
       });
   }
+  
+  $(document).ready(function(){
+        if($('#vis{$this->index}:visible').length > 0){
+            onLoad{$this->index}();
+        }
+    });
 </script>
 EOF;
         return $string;

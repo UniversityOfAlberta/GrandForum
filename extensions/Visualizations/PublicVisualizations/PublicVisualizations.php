@@ -47,11 +47,14 @@ class PublicVisualizations extends SpecialPage{
             $tabbedPage->addTab(new PublicProjTreeTab());
         }
         $tabbedPage->addTab(new PublicUniTreeTab());
-        $tabbedPage->addTab(new PublicUniversityMapTab());
+        //$tabbedPage->addTab(new PublicUniversityMapTab());
         if($config->getValue('projectsEnabled')){
             $tabbedPage->addTab(new PublicWordleTab());
         }
         $tabbedPage->showPage();
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('.custom-title').hide();
+        </script>");
     }
     
     static function createSubTabs(&$tabs){

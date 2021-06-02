@@ -4,6 +4,7 @@ class RSSFeed extends BackboneModel {
 
     var $id;
     var $url;
+    var $filter;
 
     static function getAllFeeds(){
         $data = DBFunctions::select(array('grand_rss_feeds'),
@@ -26,24 +27,28 @@ class RSSFeed extends BackboneModel {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->url = $data[0]['url'];
+            $this->filter = $data[0]['filter'];
         }
     }
     
     function toArray(){
         return array('id' => $this->id,
-                     'url' => $this->url);
+                     'url' => $this->url,
+                     'filter' => $this->filter);
     }
     
     function create(){
         DBFunctions::insert('grand_rss_feeds',
-                            array('url' => $this->url));
+                            array('url' => $this->url,
+                                  'filter' => $this->filter));
         $this->id = DBFunctions::insertId();
         DBFunctions::commit();
     }
     
     function update(){
         DBFunctions::update('grand_rss_feeds',
-                            array('url' => $this->url),
+                            array('url' => $this->url,
+                                  'filter' => $this->filter),
                             array('id' => EQ($this->id)));
         DBFunctions::commit();
     }

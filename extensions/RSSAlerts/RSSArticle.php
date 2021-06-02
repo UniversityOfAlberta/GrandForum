@@ -53,8 +53,25 @@ class RSSArticle extends BackboneModel {
         }
     }
     
+    function getRSSFeed(){
+        return RSSFeed::newFromId($this->feed);
+    }
+    
+    function getFeed(){
+        if($this->feed == 0){
+            return "GScholar";
+        }
+        $feed = $this->getRSSFeed();
+        $url = parse_url($feed->url);
+        return str_replace("www.", "", $url['host']);
+    }
+    
     function getDate(){
         return substr($this->date, 0, 10);
+    }
+    
+    function getWeek(){
+        return time2date($this->date, "W");
     }
     
     function getPeople(){

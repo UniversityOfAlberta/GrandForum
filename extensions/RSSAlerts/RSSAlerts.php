@@ -38,6 +38,13 @@ class RSSAlerts extends SpecialPage{
             }
             $wgMessage->addSuccess("Articles Deleted");
         }
+        if(isset($_POST['filter'])){
+            foreach($_POST['filter'] as $id => $filter){
+                $feed = RSSFeed::newFromId($id);
+                $feed->filter = trim($filter);
+                $feed->update();
+            }
+        }
         if(isset($_POST['keywords']) || isset($_POST['people']) || isset($_POST['projects'])){
             if(isset($_POST['people'])){
                 foreach($_POST['people'] as $id => $people){
@@ -122,19 +129,22 @@ class RSSAlerts extends SpecialPage{
                     if($feed != null){
                         $article->feed = $feed->id;
                     }
+                    $link = (is_string($entry['link'])) ? $entry['link'] : "";
+                    $description = (is_string($entry['description'])) ? $entry['description'] : "";
+                    
                     $article->rssId = $id;
                     $article->title = $entry['title'];
-                    $article->url = $entry['link'];
-                    $article->description = strip_tags($entry['description']);
+                    $article->url = $link;
+                    $article->description = strip_tags($description);
                     
-                    foreach(Wordle::createDataFromText(strip_tags($article->title." ".$article->description)) as $keyword){
+                    foreach(Wordle::createDataFromText(strip_tags($article->title." ".$description)) as $keyword){
                         if($keyword['freq'] > 1){
                             $article->keywords[] = $keyword['word'];
                         }
                     }
                     
                     $matches = array();
-                    preg_match("/(([0-9]+) days ago)/", $entry['description'], $matches);
+                    preg_match("/(([0-9]+) days ago)/", $description, $matches);
                     if(isset($matches[2])){
                         // Google Scholar
                         $article->date = date('Y-m-d', time() - $matches[2]*60*60*24);
@@ -142,7 +152,23 @@ class RSSAlerts extends SpecialPage{
                     else{
                         $article->date = date('Y-m-d');
                     }
-                    if($person != null){
+
+                    if(isset($entry['creator'])){
+                        foreach(explode(" and ", $entry['creator']) as $a){
+                            $author = Person::newFromNameLike($a);
+                            if($author == null || $author->getName() == null || $author->getName() == ""){
+                                // The name might not match exactly what is in the db, try aliases
+                                $author = Person::newFromAlias($a);
+                            }
+                            if($author != null && $author->getId() != 0){
+                                $article->people[] = $author->getId();
+                            }
+                        }
+                        if(count($article->people) == 0){
+                            $article->people[] = $person->getId();
+                        }
+                    }
+                    else if($person != null){
                         $article->people[] = $person->getId();
                     }
                     $articles[] = $article;
@@ -153,7 +179,27 @@ class RSSAlerts extends SpecialPage{
             // Unknown Format
             return false;
         }
-        return $articles;
+        // Run Filter
+        $filteredArticles = array();
+        foreach($articles as $article){
+            $found = true;
+            if($feed != null && $feed->filter != ""){
+                $found = false;
+                $ors = explode(" OR ", $feed->filter);
+                foreach($ors as $or){
+                    $ands = explode(" AND ", $or);
+                    $foundAnd = true;
+                    foreach($ands as $and){
+                        $foundAnd = ($foundAnd && strstr(strtolower(strip_tags($article->title." ".$article->description)), strtolower(trim($and))) !== false);
+                    }
+                    $found = ($found || $foundAnd);
+                }
+            }
+            if($found){
+                $filteredArticles[] = $article;
+            }
+        }
+        return $filteredArticles;
     }
     
     function handleImport(){
@@ -162,7 +208,9 @@ class RSSAlerts extends SpecialPage{
         $feeds = RSSFeed::getAllFeeds();
         $errors = array();
         foreach($feeds as $feed){
-            $contents = file_get_contents($feed->url);
+            $opts = array('http'=>array('header' => "User-Agent:MyAgent/1.0\r\n"));
+            $context = stream_context_create($opts);
+            $contents = @file_get_contents($feed->url, false, $context);
             $parsed = $this->parseRSS($contents, $feed);
             if($parsed === false){
                 $errors[] = $feed;
@@ -209,25 +257,30 @@ class RSSAlerts extends SpecialPage{
         }
         $feeds = RSSFeed::getAllFeeds();
         $articles = RSSArticle::getAllArticles();
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts' method='post'>");
+        $wgOut->addHTML("<form id='rssAlerts' action='{$wgServer}{$wgScriptPath}/index.php/Special:RSSAlerts' method='post'>
+                         <div id='hiddenForm' style='display:none;'></div>");
         
         // RSS Feeds
-        $wgOut->addHTML("<h3>RSS/Atom Feeds</h3>");
+        $wgOut->addHTML("<h3>RSS/Atom Feeds</h3>
+                        Urls to RSS Feeds can be added here.  The 'filter' can be used to only import articles which contain the words.  Basic boolean expressions can be used like AND/OR, all other characters will be treated literally.<br />
+                        <i>To edit a cell, double click it (this can only be done on some cells)</i>");
         $wgOut->addHTML("<p><button id='new_feed' type='button'>Add RSS Feed</button></p>
                          <div id='new_feed_div' style='display:none;'>
                             <p><input type='text' size='80' name='new_feed' /> <input type='submit' name='save' value='Save' /></p>
                          </div>");
-        $wgOut->addHTML("<table id='feeds' class='wikitable' width='100%'>
+        $wgOut->addHTML("<table id='feeds' class='wikitable' width='100%' style='display:none;'>
                             <thead>
                                 <tr>
-                                    <th>Url</th>
-                                    <th>Delete?</th>
+                                    <th width='50%'>Url</th>
+                                    <th width='50%'>Filter</th>
+                                    <th width='1px'>Delete?</th>
                                 </tr>
                             </thead>
                             <tbody>");
         foreach($feeds as $feed){
-            $wgOut->addHTML("<tr>
+            $wgOut->addHTML("<tr data-id='{$feed->id}'>
                 <td><a href='{$feed->url}'>{$feed->url}</a></td>
+                <td class='filter'>{$feed->filter}</td>
                 <td align='center'><input type='checkbox' name='delete_feed[{$feed->id}]' /></td>
             </tr>");
         }
@@ -239,16 +292,16 @@ class RSSAlerts extends SpecialPage{
                          Articles are imported from the RSS Feeds.  Articles from Google Scholar are also imported, but are done automatically on a daily basis.<br />
                          <i>To edit a cell, double click it (this can only be done on some cells)</i>
                          <p><input type='submit' name='import' value='Import Articles' /></p>
-                         <table id='articles' class='wikitable' width='100%'>
+                         <table id='articles' class='wikitable' width='100%' style='display:none;'>
                             <thead>
                                 <tr>
-                                    <th width='25%'>Article</th>
-                                    <th width='25%'>Description</th>
-                                    <th>Date</th>
-                                    <th style='min-width:100px;'>People</th>
-                                    <th style='min-width:100px;'>Projects</th>
-                                    <th style='min-width:100px;'>Keywords</th>
-                                    <th>Delete?</th>
+                                    <th width='35%'>Article</th>
+                                    <th>Feed</th>
+                                    <th width='1px'>Date</th>
+                                    <th style='min-width:100px;width:20%;'>People</th>
+                                    <th style='min-width:100px;width:20%;'>Projects</th>
+                                    <th style='min-width:100px;width:20%;'>Keywords</th>
+                                    <th width='1px'>Delete?</th>
                                 </tr>
                             </thead>
                             <tbody>");
@@ -262,9 +315,9 @@ class RSSAlerts extends SpecialPage{
                 $projects[] = "<a href='{$project->getUrl()}'>{$project->getName()}</a>";
             }
             $wgOut->addHTML("<tr data-id='{$article->id}'>
-                <td><a href='{$article->url}' target='_blank'>{$article->title}</a></td>
-                <td>{$article->description}</td>
-                <td>{$article->getDate()}</td>
+                <td><a href='{$article->url}' target='_blank'>{$article->title}</a><br /><div style='max-height:100px;overflow-y:auto;'>{$article->description}</div></td>
+                <td>{$article->getFeed()}</td>
+                <td>{$article->getDate()}<br />Week {$article->getWeek()}</td>
                 <td class='people'>".implode(", ", $people)."</td>
                 <td class='projects'>".implode(", ", $projects)."</td>
                 <td class='keywords'>".implode(", ", $article->keywords)."</td>

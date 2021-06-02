@@ -17,6 +17,8 @@ $egAnnokiExtensions['MyAnnokiExtension'] = array( 'name' => 'My Annoki Extension
 **/
 function autoload_register($directory){
     spl_autoload_register(function ($class) use ($directory) {
+        $exploded = explode("\\", $class);
+        $class = $exploded[count($exploded)-1]; 
         if(file_exists(dirname(__FILE__) . "/../$directory/" . $class . '.php')){
             require_once(dirname(__FILE__) . "/../$directory/" . $class . '.php');
         }
@@ -138,6 +140,9 @@ $egAnnokiExtensions['Freeze'] = array('name' => 'Freeze',
                                       
 $egAnnokiExtensions['RSSAlerts'] = array('name' => 'RSSAlerts',
                                          'path' => "$IP/extensions/RSSAlerts/RSSAlerts.php");
+                                         
+$egAnnokiExtensions['EventRegistration'] = array('name' => 'EventRegistration',
+                                         'path' => "$IP/extensions/EventRegistration/SpecialEventRegistration.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

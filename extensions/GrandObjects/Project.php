@@ -17,6 +17,7 @@ class Project extends BackboneModel {
     var $fullName;
     var $name;
     var $status;
+    var $creationDate;
     var $startDate;
     var $endDate;
     var $type;
@@ -534,6 +535,18 @@ class Project extends BackboneModel {
         return $this->fullName;
     }
     
+    /**
+     * Returns a shortened version of the full name (first 3 words, or text before a colon)
+     */
+    function getShortFullName(){
+        $pName = $this->getFullName();
+        $pName = explode(":", $pName);
+        $pName = $pName[0];
+        $pName = explode(" ", $pName);
+        $pName = @"{$pName[0]} {$pName[1]} {$pName[2]}";
+        return trim($pName);
+    }
+    
     // Returns the status of this Project
     function getStatus(){
         return $this->status;
@@ -661,22 +674,32 @@ class Project extends BackboneModel {
     
     // Returns when this project was initially created
     function getCreated(){
-        $created = null;
+        if($this->creationDate != null){
+            return $this->creationDate;
+        }
         if(!$this->clear){
             $preds = $this->getPreds();
             if(count($preds) == 0){
-                return $this->getEffectiveDate();
+                $data = DBFunctions::select(array('grand_project_evolution'),
+                                            array('effective_date'),
+                                            array('new_id' => $this->getId(),
+                                                  'action' => 'CREATE'));
+                $this->creationDate = @$data[0]['effective_date'];
             }
             else{
                 foreach($preds as $pred){
-                    $created = $pred->getCreated();
+                    $this->creationDate = $pred->getCreated();
                 }
             }
         }
         else{
-            $created = $this->getEffectiveDate();
+            $data = DBFunctions::select(array('grand_project_evolution'),
+                                        array('effective_date'),
+                                        array('new_id' => $this->getId(),
+                                              'action' => 'CREATE'));
+            $this->creationDate = @$data[0]['effective_date'];
         }
-        return $created;
+        return $this->creationDate;
     }
     
     function getDeleted(){
@@ -1038,6 +1061,30 @@ class Project extends BackboneModel {
         }
         return array_values($this->themes);
     } 
+    
+    /**
+     * For AI4Society: Returns this Project's theme
+     */
+    function getTheme(){
+        foreach($this->getChallenges() as $challenge){
+            if(strstr($challenge->getAcronym(), "Theme - ") !== false){
+                return $challenge;
+            }
+        }
+        return Theme::newFromName("Not Specified");
+    }
+    
+    /**
+     * For AI4Society: Returns this Project's activity
+     */
+    function getActivity(){
+        foreach($this->getChallenges() as $challenge){
+            if(strstr($challenge->getAcronym(), "Activity - ") !== false){
+                return $challenge;
+            }
+        }
+        return Theme::newFromName("Not Specified");
+    }
     
     // Returns the description of the Project
     function getDescription($history=false){

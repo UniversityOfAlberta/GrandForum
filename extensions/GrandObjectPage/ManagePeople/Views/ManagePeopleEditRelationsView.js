@@ -5,6 +5,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     relationViews: null,
     interval: null,
     allPeople: new Array(),
+    projectMembers: new Array(),
 
     initialize: function(options){
         this.person = options.person;
@@ -12,26 +13,34 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         this.relationViews = new Array();
         var extraRelationships = this.relations = new PersonRelations();
         this.template = _.template($('#edit_relations_template').html());
-        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN,PL,PA]).length > 0){
             // Person is Staff, so show all relations, not just mine
             extraRelationships.url = this.person.urlRoot + '/' + this.person.get('id') + '/relations/inverse';
             extraRelationships.fetch();
         }
-        this.model.ready().then(function(){
-            this.relations = this.model;
-            this.listenTo(this.relations, "add", this.addRows);
-            this.relations.each(function(r){
-                r.startTracking();
-            });
-            this.render();
-            extraRelationships.ready().then(function(){
-                this.relations.add(extraRelationships.models);
+        // Used for Project Leaders
+        this.projectMembers = new People();
+        this.projectMembers.add(me);
+        var xhr = $.get(wgServer + wgScriptPath + '/index.php?action=api.project/' + allowedProjects.join(',') + '/members', function(members){
+            this.projectMembers.add(members);
+        }.bind(this));
+        
+        $.when(xhr).always(function(){
+            this.model.ready().then(function(){
+                this.relations = this.model;
+                this.listenTo(this.relations, "add", this.addRows);
                 this.relations.each(function(r){
                     r.startTracking();
                 });
                 this.render();
+                extraRelationships.ready().then(function(){
+                    this.relations.add(extraRelationships.models);
+                    this.relations.each(function(r){
+                        r.startTracking();
+                    });
+                    this.render();
+                }.bind(this));
             }.bind(this));
-            
         }.bind(this));
         
         var dims = {w:0, h:0};
@@ -96,10 +105,16 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     
     addRows: function(){
         var relations = new Backbone.Collection(this.relations.where({'user2': this.person.get('id')}));
+        if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length == 0 &&
+           _.intersection(_.pluck(me.get('roles'), 'role'), [PL,PA]).length > 0){
+            // If PL, only show relations belonging to the project
+            relations = new Backbone.Collection(relations.filter(function(rel){ return this.projectMembers.where({'id': rel.get('user1')}).length > 0; }.bind(this)));
+        }
         relations.each(function(relation, i){
             if(this.relationViews[i] == null){
                 var view = new ManagePeopleEditRelationsRowView({model: relation});
                 view.allPeople = this.allPeople;
+                view.projectMembers = this.projectMembers;
                 this.$("#relation_rows").append(view.render());
                 if(i % 2 == 0){
                     view.$el.addClass('even');
@@ -128,6 +143,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     owner: null,
     target: null,
     allPeople: new Array(),
+    projectMembers: new Array(),
     
     initialize: function(){
         this.model.set('deleted', false);

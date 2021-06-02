@@ -155,10 +155,10 @@ class Chord extends Visualization {
                 .attr("height", height)
               .append("g")
                 .attr("transform", "translate(" + ((width / 2)) + "," + ((height / 2)) + ")");
-            
+
             svg.append("g").selectAll("path")
                 .data(chord.groups)
-              .enter().append("path")
+                .enter().append("path")
                 .style("fill", function(d) { return fill(d.index); })
                 .style("stroke", function(d) { return fill(d.index); })
                 .style("cursor", "pointer")
@@ -168,16 +168,6 @@ class Chord extends Visualization {
                 .on("click", function(d){ {$this->fn} })
                 .on("mouseover", fade(.3))
                 .on("mouseout", fade(1));
-                
-            $("#vis{$this->index} path.outer").qtip({
-                position: {
-                    target: 'mouse', // Track the mouse as the positioning target
-                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
-                },
-                style: {
-                    classes: 'qtip-tipsy'
-                }
-            });
             
             svg.append("g")
                 .attr("class", "chord")
@@ -190,7 +180,20 @@ class Chord extends Visualization {
                 .style("stroke-opacity", 0.2)
                 .attr("d", d3.svg.chord().radius(innerRadius))
                 .style("fill", function(d) { return fill(d.target.index); })
-                .style("opacity", 1);
+                .style("opacity", 1)
+                .attr("title", function(d){ if(data.chordLabels == undefined) {return ""; } return data.chordLabels[d.source.index][d.target.index]; })
+                .on("mouseover", fade2(.3))
+                .on("mouseout", fade2(1));
+                
+            $("#vis{$this->index} path.outer, #vis{$this->index} .chord path").qtip({
+                position: {
+                    target: 'mouse', // Track the mouse as the positioning target
+                    adjust: { x: 15, y: 10 } // Offset it slightly from under the mouse
+                },
+                style: {
+                    classes: 'qtip-tipsy'
+                }
+            });
 
             // Returns an array of tick angles and labels, given a group.
             function groupTicks(d) {
@@ -288,15 +291,25 @@ class Chord extends Visualization {
                 if(i instanceof Array){
                     svg.selectAll(".chord path")
                         .filter(function(d) { return i.indexOf(d.source.index) == -1 && i.indexOf(d.target.index) == -1; })
-                      .transition()
+                        .transition()
                         .style("opacity", opacity);
                 }
                 else{
                     svg.selectAll(".chord path")
                         .filter(function(d) { return d.source.index != i && d.target.index != i; })
-                      .transition()
+                        .transition()
                         .style("opacity", opacity);
                 }
+              };
+            }
+            
+            function fade2(opacity) {
+              return function(g, i) {
+                var path = this;
+                svg.selectAll(".chord path")
+                    .filter(function(d) { return (path != this); })
+                    .transition()
+                    .style("opacity", opacity);
               };
             }
         }

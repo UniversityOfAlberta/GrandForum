@@ -1,5 +1,7 @@
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){ %>
-    <td width="1%"><%= HTML.Select(this, 'user1', {style: 'width: 100px;', options: this.allPeople.map(function(person){ return {option: person.get('fullName'), value: person.get('id')}; })}) %></td>
+    <td width="1%"><%= HTML.Select(this, 'user1', {style: 'width: 100px;', options: this.allPeople.filter(function(person){ return (person.get('id') != user2); }).map(function(person){ return {option: person.get('fullName'), value: person.get('id')}; })}) %></td>
+<% } else if(_.intersection(_.pluck(me.get('roles'), 'role'), [PL,PA]).length > 0){ %>
+    <td width="1%"><%= HTML.Select(this, 'user1', {style: 'width: 100px;', options: this.projectMembers.filter(function(person){ return (person.get('id') != user2); }).map(function(person){ return {option: person.get('fullName'), value: person.get('id')}; })}) %></td>
 <% } %>
 <td align="center"><%= this.owner.get('fullName') %><%= HTML.Select(this, 'type', {options: relationTypes}) %><%= this.target.get('fullName') %></td>
 <td style="white-space:nowrap;">
