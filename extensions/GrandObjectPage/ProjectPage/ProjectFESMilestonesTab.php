@@ -341,7 +341,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         $uofaMilestones = array();
         $otherMilestones = array();
         foreach($milestones as $milestone){
-            $leader = $milestone->getLeader();
+            $leaders = $milestone->getLeaders();
+            $leader = @$leaders[0];
             $uni = "";
             if($leader != null && $leader->getId() != 0){
                 $uni = $leader->getUni();
@@ -478,7 +479,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
-            $leader = $milestone->getLeader();
+            $leaders = $milestone->getLeaders();
+            $leader = @$leaders[0];
             $peopleText = $milestone->getPeopleText();
             $uniText = "";
             if($leader->getName() != "" && $leader->getUniversity() != null){
@@ -508,12 +510,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     $peopleNames[$person->getId()] = $person->getNameForForms();
                 }
                 if($this->canEditMilestone(null)){
-                    $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getId(), $peopleNames);
+                    $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}][]", "leader", $leader->getId(), $peopleNames);
                     $selectBox->forceKey = true;
                     $leaderText = $selectBox->render();
                 }
                 else{
-                    $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
+                    $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}][]' value='{$leader->getId()}' />$leaderText";
                 }
                 $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                 $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());

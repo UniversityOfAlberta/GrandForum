@@ -93,11 +93,13 @@ class ProjectMilestoneAPI extends API{
             $people = $_POST['people'];
         }
 		
-		$leader = 0;
+		$leaders = array();
 		if(isset($_POST['leader'])){
-		    $l = Person::newFromId(trim($_POST['leader']));
-		    if($l != null && $l->getName() != ""){
-		        $leader = $l->getId();
+		    foreach($_POST['leader'] as $leader){
+		        $l = Person::newFromId(trim($leader));
+		        if($l != null && $l->getName() != ""){
+		            $leaders[] = $l->getId();
+		        }
 		    }
 		}
 		
@@ -164,7 +166,7 @@ class ProjectMilestoneAPI extends API{
 		       $milestone->getPeopleText() == $_POST['people'] &&
 		       $milestone->quarters == $_POST['quarters'] &&
 		       $milestone->getModification() == @$_POST['modification'] &&
-		       $milestone->getLeader()->getNameForForms() == $_POST['leader'] &&
+		       $milestone->leader == $_POST['leader'] &&
 		       $milestone->getComment() == $_POST['comment'] &&
 		       $milestone->getDescription() == $_POST['description'] &&
 		       $milestone->getEndUser() == @$_POST['end_user']){
@@ -187,7 +189,7 @@ class ProjectMilestoneAPI extends API{
 		                              'milestone_id'        => $milestoneId,
 		                              '`order`'             => $m->getOrder(),
 		                              'project_id'          => $project->getId(),
-		                              'leader'              => $leader,
+		                              'leader'              => json_encode($leaders),
 		                              'title'               => $_POST['new_title'],
 		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],
@@ -218,7 +220,7 @@ class ProjectMilestoneAPI extends API{
 		                        array('activity_id'         => $activityId,
 		                              'milestone_id'        => $milestoneId,
 		                              'project_id'          => $project->getId(),
-		                              'leader'              => $leader,
+		                              'leader'              => json_encode($leaders),
 		                              'title'               => $_POST['title'],
 		                              'status'              => @$_POST['status'],
 		                              'modification'        => @$_POST['modification'],

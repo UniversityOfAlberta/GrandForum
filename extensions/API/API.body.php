@@ -136,10 +136,6 @@ class APIRequest{
 		$this->addAction('Projects', 'updateProjectMilestone', new ProjectMilestoneAPI(true));
 		$this->addAction('Projects', 'evolveProject', 'EvolveProjectAPI');
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
-		
-		// HIDDENS
-		$this->addAction('Hidden', 'addRecordStory', 'RecordStoryAPI');
-		$this->addAction('Hidden', 'getProjectMilestoneHistory', 'ProjectMilestoneHistoryAPI');
 	}
 }
 
