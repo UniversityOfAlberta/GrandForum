@@ -47,7 +47,7 @@ class PublicNetworkTab extends AbstractTab {
 	        $people = Person::getAllPeople();
 	        $projects = Project::getAllProjects();
 	        $themes = Theme::getAllThemes();
-	        $products = Product::getAllPapers();
+	        //$products = Product::getAllPapers();
 	        
 	        $nodes = array();
 	        $edges = array();
@@ -102,6 +102,7 @@ class PublicNetworkTab extends AbstractTab {
 	        }
 	        */
 	        
+	        /*
 	        foreach($products as $product){
 	            foreach($product->getAuthors() as $person1){
 	                if($person1->getId() != 0){
@@ -112,7 +113,7 @@ class PublicNetworkTab extends AbstractTab {
 	                    }
 	                }
 	            }
-	        }
+	        }*/
 	        
 	        
 	        $data = array('nodes' => array_values($nodes),
