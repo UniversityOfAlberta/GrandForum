@@ -51,7 +51,7 @@ class PublicNetworkTab extends AbstractTab {
 	        
 	        $nodes = array();
 	        $edges = array();
-	        /*
+	        
 	        foreach($themes as $theme){
 	            $nodes[] = array("id"    => "theme{$theme->getId()}",
 	                             "label" => "{$theme->getAcronym()}",
@@ -60,7 +60,7 @@ class PublicNetworkTab extends AbstractTab {
 	                             "group" => 1,
 	                             "color" => $theme->getColor());
 	        }
-	        */
+	        
 	        foreach($people as $person){
 	            $nodes[] = array("id"    => "person{$person->getId()}",
 	                             "label" => "{$person->getNameForForms()}",
@@ -75,32 +75,18 @@ class PublicNetworkTab extends AbstractTab {
 	        }
 	        
 	        foreach($projects as $project){
-	            foreach($project->getAllPeople() as $person1){
-	                foreach($project->getAllPeople() as $person2){
-	                    if($person1 != $person2){
-	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
-	                    }
-	                }
-	            }
-	        }
-	        
-	        /*
-	        foreach($projects as $project){
 	            $nodes[] = array("id"    => "project{$project->getId()}",
 	                             "label" => "{$project->getName()}",
 	                             "title" => "{$project->getFullName()}",
 	                             "value" => 20,
 	                             "group" => 2);
 	            foreach($project->getChallenges() as $challenge){
-	                $edges[] = array("from" => "project{$project->getId()}",
-	                                 "to"   => "theme{$challenge->getId()}");
+	                self::addEdge($edges, "project{$project->getId()}", "theme{$challenge->getId()}");
 	            }
 	            foreach($project->getAllPeople() as $person){
-                    $edges[] = array("from" => "person{$person->getId()}",
-                                     "to"   => "project{$project->getId()}");
+	                self::addEdge($edges, "person{$person->getId()}", "project{$project->getId()}");
 	            }
 	        }
-	        */
 	        
 	        /*
 	        foreach($products as $product){
