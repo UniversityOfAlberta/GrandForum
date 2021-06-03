@@ -44,14 +44,13 @@ class PublicNetworkTab extends AbstractTab {
 	    if($action == "getPublicNetworkData"){
 	        session_write_close();
 	        
-	        $people = Person::getAllPeople();
+	        $people = Person::getAllPeople(NI);
 	        $projects = Project::getAllProjects();
 	        $themes = Theme::getAllThemes();
-	        //$products = Product::getAllPapers();
 	        
 	        $nodes = array();
 	        $edges = array();
-	        
+	        /*
 	        foreach($themes as $theme){
 	            $nodes[] = array("id"    => "theme{$theme->getId()}",
 	                             "label" => "{$theme->getAcronym()}",
@@ -60,7 +59,7 @@ class PublicNetworkTab extends AbstractTab {
 	                             "group" => 1,
 	                             "color" => $theme->getColor());
 	        }
-	        
+	        */
 	        foreach($people as $person){
 	            $nodes[] = array("id"    => "person{$person->getId()}",
 	                             "label" => "{$person->getNameForForms()}",
@@ -69,11 +68,24 @@ class PublicNetworkTab extends AbstractTab {
 	                             "group" => 3);
 	            foreach($person->getRelations() as $relationType){
 	                foreach($relationType as $relation){
-	                    self::addEdge($edges, "person{$relation->getUser1()->getId()}", "person{$relation->getUser2()->getId()}");
+	                    if(isset($people[$relation->getUser1()->getName()]) && isset($people[$relation->getUser2()->getName()])){
+	                        self::addEdge($edges, "person{$relation->getUser1()->getId()}", "person{$relation->getUser2()->getId()}");
+	                    }
 	                }
 	            }
 	        }
 	        
+	        foreach($projects as $project){
+	            foreach($project->getAllPeople() as $person1){
+	                foreach($project->getAllPeople() as $person2){
+	                    if($person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
+	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
+	                    }
+	                }
+	            }
+	        }
+	        
+	        /*
 	        foreach($projects as $project){
 	            $nodes[] = array("id"    => "project{$project->getId()}",
 	                             "label" => "{$project->getName()}",
@@ -81,26 +93,28 @@ class PublicNetworkTab extends AbstractTab {
 	                             "value" => 20,
 	                             "group" => 2);
 	            foreach($project->getChallenges() as $challenge){
-	                self::addEdge($edges, "project{$project->getId()}", "theme{$challenge->getId()}");
+	                $edges[] = array("from" => "project{$project->getId()}",
+	                                 "to"   => "theme{$challenge->getId()}");
 	            }
 	            foreach($project->getAllPeople() as $person){
-	                self::addEdge($edges, "person{$person->getId()}", "project{$project->getId()}");
+                    $edges[] = array("from" => "person{$person->getId()}",
+                                     "to"   => "project{$project->getId()}");
 	            }
 	        }
+	        */
 	        
-	        /*
+	        $products = Product::getAllPapers();
 	        foreach($products as $product){
 	            foreach($product->getAuthors() as $person1){
 	                if($person1->getId() != 0){
 	                    foreach($product->getAuthors() as $person2){
-	                        if($person2->getId() != 0 && $person1 != $person2){
+	                        if($person2->getId() != 0 && $person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
 	                            self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
 	                        }
 	                    }
 	                }
 	            }
-	        }*/
-	        
+	        }
 	        
 	        $data = array('nodes' => array_values($nodes),
 	                      'edges' => array_values($edges));
