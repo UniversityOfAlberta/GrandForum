@@ -33,14 +33,20 @@ class PublicNetworkTab extends AbstractTab {
             $color = array("opacity" => 1);
         }
 	    if(isset($edges[$from.$to])){
-	        $edges[$from.$to]['width'] += 1;
-	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 5);
-	        $edges[$from.$to]['color'] = $color;
+	        $edge = $edges[$from.$to];
+	        $edge['width'] += 1;
+	        $edge['width'] = min($edge, 5);
+	        $edge['color'] = $color;
+	        unset($edges[$from.$to]);   // Replace old one
+	        $edges[$from.$to] = $edge;
 	    }
 	    else if(isset($edges[$to.$from])){
-	        $edges[$to.$from]['width'] += 1;
-	        $edges[$to.$from]['width'] = min($edges[$to.$from]['width'], 5);
-	        $edges[$to.$from]['color'] = $color;
+	        $edge = $edges[$to.$from];
+	        $edge['width'] += 1;
+	        $edge['width'] = min($edge, 5);
+	        $edge['color'] = $color;
+	        unset($edges[$to.$from]);   // Replace old one
+	        $edges[$to.$from] = $edge;
 	    }
 	    else{
 	        $edges[$from.$to] = array("from" => $from,
