@@ -24,7 +24,7 @@ class PublicNetworkTab extends AbstractTab {
             <p></p>";
 	}
 	
-	static function addEdge(&$edges, $from, $to, $color="", $length=null, $hidden=false){
+	static function addEdge(&$edges, $from, $to, $color="", $hidden=false){
 	    if(isset($edges[$from.$to])){
 	        $edges[$from.$to]['width'] += 1;
 	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 5);
@@ -45,7 +45,6 @@ class PublicNetworkTab extends AbstractTab {
 	                                  "to" => $to,
 	                                  "width" => 1,
 	                                  "color" => $color,
-	                                  "length" => $length,
 	                                  "hidden" => $hidden);
 	    }
 	}
@@ -114,7 +113,7 @@ class PublicNetworkTab extends AbstractTab {
 	                             "mass" => 0,
 	                             "color" => $challenge->getColor());
 	            foreach($project->getAllPeople() as $person){
-	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", $challenge->getColor(), "0");
+	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", $challenge->getColor());
 	            }
 	        }
 	        
