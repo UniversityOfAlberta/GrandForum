@@ -11,7 +11,7 @@ class PublicNetworkTab extends AbstractTab {
     function generateBody(){
 	    global $wgServer, $wgScriptPath, $config;
         $graph = new ForceDirectedGraph("{$wgServer}{$wgScriptPath}/index.php?action=getPublicNetworkData");
-        $graph->height = 600;
+        $graph->height = 700;
         $graph->width = "100%";
         $this->html .= "{$graph->show()}";
         $this->html .= "<script type='text/javascript'>
@@ -24,17 +24,23 @@ class PublicNetworkTab extends AbstractTab {
             <p></p>";
 	}
 	
-	static function addEdge(&$edges, $from, $to){
+	static function addEdge(&$edges, $from, $to, $weight=1, $color=""){
 	    if(isset($edges[$from.$to])){
-	        $edges[$from.$to]['width'] += 1;
+	        $edges[$from.$to]['width'] += $weight;
+	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 10);
 	    }
 	    else if(isset($edges[$to.$from])){
-	        $edges[$to.$from]['width'] += 1;
+	        $edges[$to.$from]['width'] += $weight;
+	        $edges[$to.$from]['width'] = min($edges[$to.$from]['width'], 10);
 	    }
 	    else{
+	        if($color != ""){
+	            $color = array("color" => $color);
+	        }
 	        $edges[$from.$to] = array("from" => $from,
 	                                  "to" => $to,
-	                                  "width" => 1);
+	                                  "width" => $weight,
+	                                  "color" => $color);
 	    }
 	}
 	
@@ -65,7 +71,7 @@ class PublicNetworkTab extends AbstractTab {
 	                             "label" => "{$person->getNameForForms()}",
 	                             "title" => "{$person->getNameForForms()} ({$person->getRoleString()})",
 	                             "value" => 10,
-	                             "group" => 3);
+	                             "group" => 0);
 	            foreach($person->getRelations() as $relationType){
 	                foreach($relationType as $relation){
 	                    if(isset($people[$relation->getUser1()->getName()]) && isset($people[$relation->getUser2()->getName()])){
@@ -75,11 +81,14 @@ class PublicNetworkTab extends AbstractTab {
 	            }
 	        }
 	        
+	        
 	        foreach($projects as $project){
+	            $challenges = $project->getChallenges();
+	            $challenge = @$challenges[0];
 	            foreach($project->getAllPeople() as $person1){
 	                foreach($project->getAllPeople() as $person2){
 	                    if($person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
-	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
+	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", 1, $challenge->getColor());
 	                    }
 	                }
 	            }
@@ -87,21 +96,23 @@ class PublicNetworkTab extends AbstractTab {
 	        
 	        /*
 	        foreach($projects as $project){
+	            $challenges = $project->getChallenges();
+	            $challenge = @$challenges[0];
 	            $nodes[] = array("id"    => "project{$project->getId()}",
 	                             "label" => "{$project->getName()}",
 	                             "title" => "{$project->getFullName()}",
 	                             "value" => 20,
-	                             "group" => 2);
+	                             "color" => $challenge->getColor(),
+	                             "group" => $challenge->getId());
 	            foreach($project->getChallenges() as $challenge){
 	                $edges[] = array("from" => "project{$project->getId()}",
 	                                 "to"   => "theme{$challenge->getId()}");
 	            }
 	            foreach($project->getAllPeople() as $person){
-                    $edges[] = array("from" => "person{$person->getId()}",
-                                     "to"   => "project{$project->getId()}");
+	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", 10);
 	            }
-	        }
-	        */
+	        }*/
+	        
 	        
 	        $products = Product::getAllPapers();
 	        foreach($products as $product){
