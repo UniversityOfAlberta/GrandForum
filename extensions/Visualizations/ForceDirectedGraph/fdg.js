@@ -12,7 +12,8 @@ function createFDG(id, url){
               max: 30,
             },
             font: {
-              size: 12,
+              size: 30,
+              strokeWidth: 2,
               face: "Tahoma",
             },
           },
@@ -23,8 +24,12 @@ function createFDG(id, url){
               type: "continuous",
             },
           },
+          autoResize: true,
           physics: {
-            stabilization: false,
+            stabilization: {
+              enabled: true,
+              iterations: 250
+            },
             barnesHut: {
               gravitationalConstant: -80000,
               springConstant: 0.001,
@@ -36,7 +41,6 @@ function createFDG(id, url){
           },
         };
 
-        // Note: data is coming from ./datasources/WorldCup2014.js
         network = new vis.Network(container, data, options);
     });
 }

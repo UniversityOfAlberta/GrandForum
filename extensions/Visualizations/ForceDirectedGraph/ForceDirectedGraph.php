@@ -14,9 +14,8 @@ class ForceDirectedGraph extends Visualization {
     
     static function init(){
         global $wgOut, $wgServer, $wgScriptPath;
-        if(strstr($wgOut->getScript(), 'vis.min.js') === false){
-            $wgOut->addScript("<script src='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.js' type='text/javascript'></script>");
-            $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/Visualizations/Vis/js/vis.min.css' rel='stylesheet' type='text/css' />");
+        if(strstr($wgOut->getScript(), 'vis-network.min.js') === false){
+            $wgOut->addScript("<script src='https://unpkg.com/vis-network@9.0.4/standalone/umd/vis-network.min.js' type='text/javascript'></script>");
         }
         $wgOut->addScript('<script src="'.$wgServer.$wgScriptPath.'/extensions/Visualizations/ForceDirectedGraph/fdg.js" type="text/javascript" charset="utf-8"></script>');
     }

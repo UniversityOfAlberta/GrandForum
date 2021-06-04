@@ -24,23 +24,29 @@ class PublicNetworkTab extends AbstractTab {
             <p></p>";
 	}
 	
-	static function addEdge(&$edges, $from, $to, $weight=1, $color=""){
+	static function addEdge(&$edges, $from, $to, $color="", $length=null, $hidden=false){
 	    if(isset($edges[$from.$to])){
-	        $edges[$from.$to]['width'] += $weight;
-	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 10);
+	        $edges[$from.$to]['width'] += 1;
+	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 5);
 	    }
 	    else if(isset($edges[$to.$from])){
-	        $edges[$to.$from]['width'] += $weight;
-	        $edges[$to.$from]['width'] = min($edges[$to.$from]['width'], 10);
+	        $edges[$to.$from]['width'] += 1;
+	        $edges[$to.$from]['width'] = min($edges[$to.$from]['width'], 5);
 	    }
 	    else{
 	        if($color != ""){
-	            $color = array("color" => $color);
+	            $color = array("color" => $color,
+	                           "opacity" => 1);
+	        }
+	        else{
+	            $color = array("opacity" => 1);
 	        }
 	        $edges[$from.$to] = array("from" => $from,
 	                                  "to" => $to,
-	                                  "width" => $weight,
-	                                  "color" => $color);
+	                                  "width" => 1,
+	                                  "color" => $color,
+	                                  "length" => $length,
+	                                  "hidden" => $hidden);
 	    }
 	}
 	
@@ -52,26 +58,29 @@ class PublicNetworkTab extends AbstractTab {
 	        
 	        $people = Person::getAllPeople(NI);
 	        $projects = Project::getAllProjects();
-	        $themes = Theme::getAllThemes();
 	        
 	        $nodes = array();
 	        $edges = array();
-	        /*
-	        foreach($themes as $theme){
-	            $nodes[] = array("id"    => "theme{$theme->getId()}",
-	                             "label" => "{$theme->getAcronym()}",
-	                             "title" => "{$theme->getName()}",
-	                             "value" => 30,
-	                             "group" => 1,
-	                             "color" => $theme->getColor());
+
+	        $products = Product::getAllPapers();
+	        foreach($products as $product){
+	            foreach($product->getAuthors() as $person1){
+	                if($person1->getId() != 0){
+	                    foreach($product->getAuthors() as $person2){
+	                        if($person2->getId() != 0 && $person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
+	                            self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
+	                        }
+	                    }
+	                }
+	            }
 	        }
-	        */
+	        
 	        foreach($people as $person){
 	            $nodes[] = array("id"    => "person{$person->getId()}",
 	                             "label" => "{$person->getNameForForms()}",
 	                             "title" => "{$person->getNameForForms()} ({$person->getRoleString()})",
 	                             "value" => 10,
-	                             "group" => 0);
+	                             "group" => "people");
 	            foreach($person->getRelations() as $relationType){
 	                foreach($relationType as $relation){
 	                    if(isset($people[$relation->getUser1()->getName()]) && isset($people[$relation->getUser2()->getName()])){
@@ -88,13 +97,12 @@ class PublicNetworkTab extends AbstractTab {
 	            foreach($project->getAllPeople() as $person1){
 	                foreach($project->getAllPeople() as $person2){
 	                    if($person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
-	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", 1, $challenge->getColor());
+	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", $challenge->getColor());
 	                    }
 	                }
 	            }
 	        }
 	        
-	        /*
 	        foreach($projects as $project){
 	            $challenges = $project->getChallenges();
 	            $challenge = @$challenges[0];
@@ -102,28 +110,11 @@ class PublicNetworkTab extends AbstractTab {
 	                             "label" => "{$project->getName()}",
 	                             "title" => "{$project->getFullName()}",
 	                             "value" => 20,
-	                             "color" => $challenge->getColor(),
-	                             "group" => $challenge->getId());
-	            foreach($project->getChallenges() as $challenge){
-	                $edges[] = array("from" => "project{$project->getId()}",
-	                                 "to"   => "theme{$challenge->getId()}");
-	            }
+	                             "group" => "projects",
+	                             "mass" => 0,
+	                             "color" => $challenge->getColor());
 	            foreach($project->getAllPeople() as $person){
-	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", 10);
-	            }
-	        }*/
-	        
-	        
-	        $products = Product::getAllPapers();
-	        foreach($products as $product){
-	            foreach($product->getAuthors() as $person1){
-	                if($person1->getId() != 0){
-	                    foreach($product->getAuthors() as $person2){
-	                        if($person2->getId() != 0 && $person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
-	                            self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}");
-	                        }
-	                    }
-	                }
+	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", $challenge->getColor(), "0");
 	            }
 	        }
 	        
