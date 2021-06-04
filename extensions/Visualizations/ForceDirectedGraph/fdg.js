@@ -1,7 +1,13 @@
 function createFDG(id, url){
 
     var network;
-    $.get(url, function(data){
+    $.get(url, function(response){
+        nodesd = new vis.DataSet(response.nodes);
+        edgesd = new vis.DataSet(response.edges);
+        data = {
+            nodes: nodesd,
+            edges: edgesd
+        };
         // create a network
         var container = document.getElementById(id);
         var options = {
@@ -42,5 +48,17 @@ function createFDG(id, url){
         };
 
         network = new vis.Network(container, data, options);
+        globalNetwork = network;
+        
+        updateNetworkEdges = function(groups){
+            _.each(response.edges, function(edge){
+                data.edges.remove([edge.id]);
+            });
+            _.each(response.edges, function(edge){
+                if(groups.indexOf(edge.group) != -1){
+                    data.edges.add(edge);
+                }
+            });
+        }
     });
 }

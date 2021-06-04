@@ -22,7 +22,7 @@ class ForceDirectedGraph extends Visualization {
 
     function show(){
         global $wgOut, $wgServer, $wgScriptPath;
-        $string = "<div id='vis{$this->index}' style='width:{$this->width}px; height:{$this->height}px;'></div>
+        $string = "<div id='vis{$this->index}' style='width:{$this->width}; height:{$this->height};'></div>
         <script type='text/javascript'>
             function onLoad{$this->index}(){
                 createFDG('vis{$this->index}', '{$this->url}');
