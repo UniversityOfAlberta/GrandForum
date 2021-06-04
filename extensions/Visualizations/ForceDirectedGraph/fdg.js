@@ -32,12 +32,12 @@ function createFDG(id, url){
             },
             barnesHut: {
               gravitationalConstant: -80000,
-              springConstant: 0.001,
+              springConstant: 0.01,
               springLength: 200,
             },
           },
           interaction: {
-            tooltipDelay: 200
+            tooltipDelay: 100
           },
         };
 

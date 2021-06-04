@@ -101,7 +101,7 @@ class PublicNetworkTab extends AbstractTab {
 	                }
 	            }
 	        }
-	        
+	        /*
 	        foreach($projects as $project){
 	            $challenges = $project->getChallenges();
 	            $challenge = @$challenges[0];
@@ -115,7 +115,7 @@ class PublicNetworkTab extends AbstractTab {
 	            foreach($project->getAllPeople() as $person){
 	                self::addEdge($edges, "project{$project->getId()}", "person{$person->getId()}", $challenge->getColor());
 	            }
-	        }
+	        }*/
 	        
 	        $data = array('nodes' => array_values($nodes),
 	                      'edges' => array_values($edges));
