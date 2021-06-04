@@ -25,22 +25,24 @@ class PublicNetworkTab extends AbstractTab {
 	}
 	
 	static function addEdge(&$edges, $from, $to, $color="", $hidden=false){
+	    if($color != ""){
+            $color = array("color" => $color,
+                           "opacity" => 1);
+        }
+        else{
+            $color = array("opacity" => 1);
+        }
 	    if(isset($edges[$from.$to])){
 	        $edges[$from.$to]['width'] += 1;
 	        $edges[$from.$to]['width'] = min($edges[$from.$to]['width'], 5);
+	        $edges[$from.$to]['color'] = $color;
 	    }
 	    else if(isset($edges[$to.$from])){
 	        $edges[$to.$from]['width'] += 1;
 	        $edges[$to.$from]['width'] = min($edges[$to.$from]['width'], 5);
+	        $edges[$to.$from]['color'] = $color;
 	    }
 	    else{
-	        if($color != ""){
-	            $color = array("color" => $color,
-	                           "opacity" => 1);
-	        }
-	        else{
-	            $color = array("opacity" => 1);
-	        }
 	        $edges[$from.$to] = array("from" => $from,
 	                                  "to" => $to,
 	                                  "width" => 1,
