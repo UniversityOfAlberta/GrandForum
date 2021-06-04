@@ -31,8 +31,8 @@ function createFDG(id, url){
               iterations: 250
             },
             barnesHut: {
-              gravitationalConstant: -80000,
-              springConstant: 0.01,
+              gravitationalConstant: -50000,
+              springConstant: 0.001,
               springLength: 200,
             },
           },
