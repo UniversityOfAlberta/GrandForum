@@ -14,8 +14,10 @@ class PublicNetworkTab extends AbstractTab {
         $graph->height = "100%";
         $graph->width = "100%";
         $graph->fn = "function(){
-                        $('.network_options').prop('disabled', false);
-                    }";
+                          $('.network_options').prop('disabled', false);
+                      }";
+                      
+        $facultyCheckbox = ($config->getValue('networkName') == "AI4Society") ? "<input type='checkbox' class='network_options' value='faculty' checked /> Faculty<br />" : "";
         $this->html .= "<div style='display:flex;height:700px;'>
                             <div style='width:80%;height:100%;'>{$graph->show()}</div>
                             <div style='width:20%;min-width:200px;margin-left:15px;'>
@@ -23,6 +25,7 @@ class PublicNetworkTab extends AbstractTab {
                                 <input type='checkbox' class='network_options' value='projects' checked /> Projects<br />
                                 <input type='checkbox' class='network_options' value='coauthors' checked /> Co-Authors<br />
                                 <input type='checkbox' class='network_options' value='relations' checked /> Relations<br />
+                                {$facultyCheckbox}
                             </div>
                         </div>";
         $this->html .= "<script type='text/javascript'>
@@ -123,6 +126,19 @@ class PublicNetworkTab extends AbstractTab {
 	                foreach($relationType as $relation){
 	                    if(isset($people[$relation->getUser1()->getName()]) && isset($people[$relation->getUser2()->getName()])){
 	                        self::addEdge($edges, "person{$relation->getUser1()->getId()}", "person{$relation->getUser2()->getId()}", "#888888", "relations");
+	                    }
+	                }
+	            }
+	        }
+	        
+	        if($config->getValue('networkName') == "AI4Society"){
+	            foreach($people as $person1){
+	                $faculty1 = $person1->getFaculty();
+	                foreach($people as $person2){
+	                    $faculty2 = $person2->getFaculty();
+	                    if($person1 != $person2 && !isset($edges["person{$person1->getId()}person{$person2->getId()}"]['groups']['faculty']) &&
+	                                               !isset($edges["person{$person2->getId()}person{$person1->getId()}"]['groups']['faculty'])){
+	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", "#888888", "faculty", $faculty1);
 	                    }
 	                }
 	            }
