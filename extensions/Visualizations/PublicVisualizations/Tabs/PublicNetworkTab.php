@@ -17,7 +17,7 @@ class PublicNetworkTab extends AbstractTab {
                           $('.network_options').prop('disabled', false);
                       }";
                       
-        $facultyCheckbox = ($config->getValue('networkName') == "AI4Society" || $config->getValue('networkName') == "FES") ? "<input type='checkbox' class='network_options' value='faculty' checked /> Faculty<br />" : "";
+        $facultyCheckbox = ($config->getValue('networkName') == "AI4Society") ? "<input type='checkbox' class='network_options' value='faculty' checked /> Faculty<br />" : "";
         $this->html .= "<div style='display:flex;height:700px;'>
                             <div style='width:80%;height:100%;'>{$graph->show()}</div>
                             <div style='width:20%;min-width:200px;margin-left:15px;'>
@@ -136,19 +136,6 @@ class PublicNetworkTab extends AbstractTab {
 	                $faculty1 = $person1->getFaculty();
 	                foreach($people as $person2){
 	                    $faculty2 = $person2->getFaculty();
-	                    if($faculty1 != "" && $faculty2 != "" && $person1 != $person2 && $faculty1 == $faculty2 && 
-	                       !isset($edges["person{$person1->getId()}person{$person2->getId()}"]['groups']['faculty']) &&
-	                       !isset($edges["person{$person2->getId()}person{$person1->getId()}"]['groups']['faculty'])){
-	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", "#888888", "faculty", $faculty1);
-	                    }
-	                }
-	            }
-	        }
-	        else if($config->getValue('networkName') == "FES"){
-	            foreach($people as $person1){
-	                $faculty1 = $person1->getDepartment();
-	                foreach($people as $person2){
-	                    $faculty2 = $person2->getDepartment();
 	                    if($faculty1 != "" && $faculty2 != "" && $person1 != $person2 && $faculty1 == $faculty2 && 
 	                       !isset($edges["person{$person1->getId()}person{$person2->getId()}"]['groups']['faculty']) &&
 	                       !isset($edges["person{$person2->getId()}person{$person1->getId()}"]['groups']['faculty'])){
