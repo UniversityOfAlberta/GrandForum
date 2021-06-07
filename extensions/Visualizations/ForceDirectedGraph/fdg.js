@@ -63,6 +63,7 @@ function createFDG(id, url){
                 _.each(edge.groups, function(width, group){
                     if(groups.indexOf(group) != -1){
                         newEdge.width += width;
+                        newEdge.width = Math.min(10, width);
                     }
                 });
                 if(newEdge.width > 0){
