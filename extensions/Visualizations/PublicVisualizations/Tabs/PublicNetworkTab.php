@@ -63,7 +63,6 @@ class PublicNetworkTab extends AbstractTab {
 	    if(isset($edges[$from.$to])){
 	        $edge = $edges[$from.$to];
 	        $edge['width'] += 1;
-	        $edge['width'] = min($edge['width'], 5);
 	        $edge['color'] = $color;
 	        @$edge['groups'][$group] += 1;
 	        @$edge['title'][$group][] = $label;
@@ -73,7 +72,6 @@ class PublicNetworkTab extends AbstractTab {
 	    else if(isset($edges[$to.$from])){
 	        $edge = $edges[$to.$from];
 	        $edge['width'] += 1;
-	        $edge['width'] = min($edge['width'], 5);
 	        $edge['color'] = $color;
 	        @$edge['groups'][$group] += 1;
 	        @$edge['title'][$group][] = $label;
@@ -162,6 +160,7 @@ class PublicNetworkTab extends AbstractTab {
 	        
 	        foreach($edges as $key => $edge){
 	            $titles = $edge['title'];
+	            $edges[$key]['width'] = log($edge['width'], 2) + 1;
 	            foreach($titles as $title => $labels){
 	                switch($title){
 	                    default:
