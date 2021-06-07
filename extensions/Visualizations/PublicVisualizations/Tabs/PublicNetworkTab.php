@@ -136,8 +136,9 @@ class PublicNetworkTab extends AbstractTab {
 	                $faculty1 = $person1->getFaculty();
 	                foreach($people as $person2){
 	                    $faculty2 = $person2->getFaculty();
-	                    if($person1 != $person2 && !isset($edges["person{$person1->getId()}person{$person2->getId()}"]['groups']['faculty']) &&
-	                                               !isset($edges["person{$person2->getId()}person{$person1->getId()}"]['groups']['faculty'])){
+	                    if($faculty1 != "" && $faculty2 != "" && $person1 != $person2 && $faculty1 == $faculty2 && 
+	                       !isset($edges["person{$person1->getId()}person{$person2->getId()}"]['groups']['faculty']) &&
+	                       !isset($edges["person{$person2->getId()}person{$person1->getId()}"]['groups']['faculty'])){
 	                        self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", "#888888", "faculty", $faculty1);
 	                    }
 	                }
@@ -166,6 +167,9 @@ class PublicNetworkTab extends AbstractTab {
 	                        break;
 	                    case "relations":
 	                        $titles[$title] = "Relations: ".count($labels)."";
+	                        break;
+	                    case "faculty":
+	                        $titles[$title] = "Faculty: ".implode(", ", $labels)."";
 	                        break;
 	                    case "projects":
 	                        $labels = array_unique($labels);
