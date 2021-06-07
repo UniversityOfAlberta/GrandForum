@@ -51,14 +51,19 @@ function createFDG(id, url){
         globalNetwork = network;
         
         updateNetworkEdges = function(groups){
+            var toRemove = [];
+            var toAdd = [];
             _.each(response.edges, function(edge){
-                data.edges.remove([edge.id]);
+                toRemove.push(edge.id);
+                
             });
+            data.edges.remove(toRemove);
             _.each(response.edges, function(edge){
                 if(groups.indexOf(edge.group) != -1){
-                    data.edges.add(edge);
+                    toAdd.push(edge);
                 }
             });
+            data.edges.add(toAdd);
         }
     });
 }
