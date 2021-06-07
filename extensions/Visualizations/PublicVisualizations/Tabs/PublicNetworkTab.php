@@ -107,8 +107,11 @@ class PublicNetworkTab extends AbstractTab {
 	        foreach($products as $product){
 	            foreach($product->getAuthors() as $person1){
 	                if($person1->getId() != 0){
-	                    foreach($product->getAuthors() as $person2){
-	                        if($person2->getId() != 0 && $person1 != $person2 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
+	                    foreach(array_reverse($product->getAuthors()) as $person2){
+	                        if($person1 == $person2){
+	                            break;
+	                        }
+	                        if($person2->getId() != 0 && isset($people[$person1->getName()]) && isset($people[$person2->getName()])){
 	                            self::addEdge($edges, "person{$person1->getId()}", "person{$person2->getId()}", "#888888", "coauthors");
 	                        }
 	                    }
