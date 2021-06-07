@@ -48,7 +48,7 @@ class PublicNetworkTab extends AbstractTab {
                 updateNetworkEdges(groups);
             });
             </script>
-            <p>This visualization shows how the network is connected.  The nodes are ".Inflect::pluralize($config->getValue('roleDefs', NI))." in the network, and the edges are the different types of relations (ie. Projects, Co-Authors, Relationships).  The edges can be filtered using the checkboxes on the right.  Hover over the edges or nodes to see more information about them.</p>";
+            <p>This visualization shows how the network is connected.  The nodes are NI in the network, and the edges are the different types of relations (ie. Projects, Co-Authors, Relationships).  The edges can be filtered using the checkboxes on the right.  Hover over the edges or nodes to see more information about them.</p>";
 	}
 	
 	static function addEdge(&$edges, $from, $to, $color="", $group="", $label=""){
