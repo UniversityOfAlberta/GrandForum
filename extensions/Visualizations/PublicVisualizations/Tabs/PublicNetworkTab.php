@@ -13,6 +13,9 @@ class PublicNetworkTab extends AbstractTab {
         $graph = new ForceDirectedGraph("{$wgServer}{$wgScriptPath}/index.php?action=getPublicNetworkData");
         $graph->height = "100%";
         $graph->width = "100%";
+        $graph->fn = "function(){
+                        $('.network_options').prop('disabled', false);
+                    }";
         $this->html .= "<div style='display:flex;height:700px;'>
                             <div style='width:80%;height:100%;'>{$graph->show()}</div>
                             <div style='width:20%;min-width:200px;margin-left:15px;'>
@@ -25,9 +28,12 @@ class PublicNetworkTab extends AbstractTab {
         $this->html .= "<script type='text/javascript'>
             $('#publicVis').bind('tabsselect', function(event, ui) {
                 if(ui.panel.id == 'network'){
+                    $('.network_options').prop('disabled', true);
+                    $('.network_options').prop('checked', true);
                     onLoad{$graph->index}();
                 }
             });
+            $('.network_options').prop('disabled', true);
             $('.network_options').prop('checked', true);
             $('.network_options').change(function(){
                 var groups = [];

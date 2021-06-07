@@ -1,4 +1,4 @@
-function createFDG(id, url){
+function createFDG(id, url, callback){
 
     var network;
     $.get(url, function(response){
@@ -72,6 +72,10 @@ function createFDG(id, url){
             });
             data.edges.remove(toRemove);
             data.edges.add(toAdd);
+        }
+        
+        if(callback != undefined){
+            callback();
         }
     });
 }

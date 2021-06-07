@@ -6,6 +6,7 @@ class ForceDirectedGraph extends Visualization {
     var $url = "";
     var $height = "800px";
     var $width = "1000px";
+    var $fn = "undefined";
     
     function ForceDirectedGraph($url){
         $this->url = $url;
@@ -25,7 +26,7 @@ class ForceDirectedGraph extends Visualization {
         $string = "<div id='vis{$this->index}' style='width:{$this->width}; height:{$this->height};'><span class='throbber'></span></div>
         <script type='text/javascript'>
             function onLoad{$this->index}(){
-                createFDG('vis{$this->index}', '{$this->url}');
+                createFDG('vis{$this->index}', '{$this->url}', {$this->fn});
             }
             $(document).ready(function(){
                 if($('#vis{$this->index}:visible').length > 0){
