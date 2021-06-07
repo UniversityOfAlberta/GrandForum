@@ -28,6 +28,7 @@ class PublicNetworkTab extends AbstractTab {
                     onLoad{$graph->index}();
                 }
             });
+            $('.network_options').prop('checked', true);
             $('.network_options').change(function(){
                 var groups = [];
                 $('.network_options').each(function(i, el){
@@ -55,6 +56,7 @@ class PublicNetworkTab extends AbstractTab {
 	        $edge['width'] += 1;
 	        $edge['width'] = min($edge, 5);
 	        $edge['color'] = $color;
+	        @$edge['groups'][$group] += 1;
 	        @$edge['title'][$group][] = $label;
 	        unset($edges[$from.$to]);   // Replace old one
 	        $edges[$from.$to] = $edge;
@@ -64,6 +66,7 @@ class PublicNetworkTab extends AbstractTab {
 	        $edge['width'] += 1;
 	        $edge['width'] = min($edge, 5);
 	        $edge['color'] = $color;
+	        @$edge['groups'][$group] += 1;
 	        @$edge['title'][$group][] = $label;
 	        unset($edges[$to.$from]);   // Replace old one
 	        $edges[$to.$from] = $edge;
@@ -74,7 +77,7 @@ class PublicNetworkTab extends AbstractTab {
 	                                  "to" => $to,
 	                                  "width" => 1,
 	                                  "color" => $color,
-	                                  "group" => $group,
+	                                  "groups" => array($group => 1),
 	                                  "title" => array($group => array($label)));
 	    }
 	}

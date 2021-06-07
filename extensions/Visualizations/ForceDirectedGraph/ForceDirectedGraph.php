@@ -28,7 +28,9 @@ class ForceDirectedGraph extends Visualization {
                 createFDG('vis{$this->index}', '{$this->url}');
             }
             $(document).ready(function(){
-                onLoad{$this->index}();
+                if($('#vis{$this->index}:visible').length > 0){
+                    onLoad{$this->index}();
+                }
             });
         </script>";
         return $string;

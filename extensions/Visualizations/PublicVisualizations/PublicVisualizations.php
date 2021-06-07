@@ -44,9 +44,7 @@ class PublicVisualizations extends SpecialPage{
                 $tabbedPage->addTab(new PublicPersonChordTab());
             }
             $tabbedPage->addTab(new PublicProjectClusterTab());
-            if($me->isRole(ADMIN)){
-                $tabbedPage->addTab(new PublicNetworkTab());
-            }
+            $tabbedPage->addTab(new PublicNetworkTab());
             $tabbedPage->addTab(new PublicProjTreeTab());
         }
         $tabbedPage->addTab(new PublicUniTreeTab());

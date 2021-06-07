@@ -55,14 +55,21 @@ function createFDG(id, url){
             var toAdd = [];
             _.each(response.edges, function(edge){
                 toRemove.push(edge.id);
-                
             });
-            data.edges.remove(toRemove);
             _.each(response.edges, function(edge){
-                if(groups.indexOf(edge.group) != -1){
-                    toAdd.push(edge);
+                var width = 0;
+                var newEdge = Object.assign({}, edge);
+                newEdge.width = 0
+                _.each(edge.groups, function(width, group){
+                    if(groups.indexOf(group) != -1){
+                        newEdge.width += width;
+                    }
+                });
+                if(newEdge.width > 0){
+                    toAdd.push(newEdge);
                 }
             });
+            data.edges.remove(toRemove);
             data.edges.add(toAdd);
         }
     });
