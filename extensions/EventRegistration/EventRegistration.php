@@ -13,6 +13,7 @@ class EventRegistration extends BackboneModel {
     var $joinNewsletter;
     var $createProfile;
     var $similarEvents;
+    var $misc;
     var $created;
 
     static function getAllEventRegistrations(){
@@ -45,6 +46,10 @@ class EventRegistration extends BackboneModel {
             $this->joinNewsletter = $data[0]['join_newsletter'];
             $this->createProfile = $data[0]['create_profile'];
             $this->similarEvents = $data[0]['similar_events'];
+            $this->misc = json_decode($data[0]['misc']);
+            if(!is_array($this->misc) && !is_object($this->misc)){
+                $this->misc = array();
+            }
             $this->created = $data[0]['created'];
         }
     }
@@ -65,6 +70,7 @@ class EventRegistration extends BackboneModel {
                      'join_newsletter' => $this->joinNewsletter,
                      'create_profile' => $this->createProfile,
                      'similar_events' => $this->similarEvents,
+                     'misc' => $this->misc,
                      'created' => $this->created);
     }
     
@@ -79,7 +85,8 @@ class EventRegistration extends BackboneModel {
                                   'receive_information' => $this->receiveInformation,
                                   'join_newsletter' => $this->joinNewsletter,
                                   'create_profile' => $this->createProfile,
-                                  'similar_events' => $this->similarEvents));
+                                  'similar_events' => $this->similarEvents,
+                                  'misc' => json_encode($this->misc)));
         $this->id = DBFunctions::insertId();
         DBFunctions::commit();
     }
@@ -95,7 +102,8 @@ class EventRegistration extends BackboneModel {
                                   'receive_information' => $this->receiveInformation,
                                   'join_newsletter' => $this->joinNewsletter,
                                   'create_profile' => $this->createProfile,
-                                  'similar_events' => $this->similarEvents),
+                                  'similar_events' => $this->similarEvents,
+                                  'misc' => json_encode($this->misc)),
                             array('id' => EQ($this->id)));
         DBFunctions::commit();
     }

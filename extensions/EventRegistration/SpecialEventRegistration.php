@@ -41,6 +41,7 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->joinNewsletter = isset($_POST['join_newsletter']);
             $eventRegistration->createProfile = isset($_POST['create_profile']);
             $eventRegistration->similarEvents = isset($_POST['similar_events']);
+            $eventRegistration->misc = @$_POST['misc'];
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
             $event = EventPosting::newFromId($_POST['event']);
@@ -61,6 +62,7 @@ class SpecialEventRegistration extends SpecialPage{
         $defaultEvent = "";
         $eventOptions = array();
         $event = EventPosting::newFromId(@$_GET['event']);
+        $default = $event;
         if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
             $eventOptions[$event->id] = $event->title;
             $defaultEvent = $event->id;
@@ -90,6 +92,13 @@ class SpecialEventRegistration extends SpecialPage{
         
         $webpage = ($me->isLoggedIn()) ? $me->getWebsite() : "";
         $webpageField = new TextField("webpage", "webpage", $webpage);
+        
+        $misc = "";
+        if($default->title == "Energy Hackathon 2021 - APIC"){
+            $miscField = new TextareaField("misc['Programming']", "misc", "");
+            $misc = "<h3>Which programming technologies or tools are you familiar with or would like to learn?</h3>
+                     {$miscField->render()}";
+        }
         
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
@@ -125,6 +134,7 @@ class SpecialEventRegistration extends SpecialPage{
                     <td>{$twitterField->render()}</td>
                 </tr>
             </table>
+            {$misc}
             <h3>Other information</h3>
             <table class='wikitable' frame='box' rules='all'>
                 <tr>

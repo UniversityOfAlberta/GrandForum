@@ -29,6 +29,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
                     <th style='width:1%;'>Join Newsletter</th>
                     <th style='width:1%;'>Create Profile</th>
                     <th style='width:1%;'>Similar Events</th>
+                    <th>Misc</th>
                     <th>Created</th>
                 </tr>
             </thead>
@@ -38,6 +39,10 @@ class SpecialEventRegistrationTable extends SpecialPage{
             $joinNewsletter = ($registration->joinNewsletter) ? "&#10003;" : "";
             $createProfile = ($registration->createProfile) ? "&#10003;" : "";
             $similarEvents = ($registration->similarEvents) ? "&#10003;" : "";
+            $misc = array();
+            foreach($registration->misc as $field => $contents){
+                $misc[] = nl2br("<b>{$field}</b>: {$contents}");
+            }
             $wgOut->addHTML("<tr>
                 <td>{$registration->getEvent()->title}</td>
                 <td>{$registration->name}</td>
@@ -49,6 +54,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
                 <td align='center' style='font-size:2em;'>{$joinNewsletter}</td>
                 <td align='center' style='font-size:2em;'>{$createProfile}</td>
                 <td align='center' style='font-size:2em;'>{$similarEvents}</td>
+                <td>".implode("<br />", $misc)."</td>
                 <td align='center'>{$registration->created}</td>
             </tr>");
         }
