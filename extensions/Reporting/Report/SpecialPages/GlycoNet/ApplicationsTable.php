@@ -43,6 +43,7 @@ class ApplicationsTable extends SpecialPage{
         $this->startUpLegal2020Applicants = array();
         $this->startUpDev2018Applicants = array();
         $this->cycleIILOIApplicants = array();
+        $this->legacyLOIApplicants = array();
         $this->strat2017 = array();
         $this->strat2019 = array();
         $this->strat2020 = array();
@@ -103,6 +104,9 @@ class ApplicationsTable extends SpecialPage{
             if($person->isSubRole('CycleIILOI')){
                 $this->cycleIILOIApplicants[] = $person;
             }
+            if($person->isSubRole('LegacyLOI')){
+                $this->legacyLOIApplicants[] = $person;
+            }
         }
     }
     
@@ -131,6 +135,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=international'>Int'l Partnerships</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=clinical'>Clinical</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=legacyloi'>LegacyLOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=startup'>StartUp</a>";
@@ -177,6 +182,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "cycleiiloi" && $me->isRoleAtLeast(SD)){
             $this->generateCycleIILOI();
+        }
+        else if($program == "legacyloi" && $me->isRoleAtLeast(SD)){
+            $this->generateLegacyLOI();
         }
         else if($program == "alberta" && $me->isRoleAtLeast(SD)){
             $this->generateAlberta();
@@ -359,6 +367,24 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
         $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020", array($reviewers)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateLegacyLOI(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_LEGACY', $this->legacyLOIApplicants, 2021, "2021", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
