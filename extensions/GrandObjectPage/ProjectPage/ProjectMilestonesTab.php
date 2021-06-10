@@ -101,7 +101,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
            $_POST['new_milestone_activity'] != "" && $_POST['new_milestone_title'] != "" && 
            $this->canEditMilestone(null)){
             $activity = Activity::newFromId($_POST['new_milestone_activity']);
-            $_POST['leader'] = "";
+            $_POST['leader'] = array();
             $_POST['activity'] = $activity->getName();
             $_POST['activity_id'] = $_POST['new_milestone_activity'];
             $_POST['milestone'] = "";
@@ -136,8 +136,10 @@ class ProjectMilestonesTab extends AbstractEditableTab {
         if($me->isLoggedIn()){
             $milestones = $this->project->getMilestones(true);
             foreach($milestones as $milestone){
-                if($milestone->getLeader()->getId() == $me->getId()){
-                    return true;
+                foreach($milestone->getLeaders() as $leader){
+                    if($leader->getId() == $me->getId()){
+                        return true;
+                    }
                 }
             }
             return $this->project->userCanEdit();
@@ -147,8 +149,12 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     
     function canEditMilestone($milestone=null){
         $me = Person::newFromWgUser();
-        if($milestone != null && $milestone->getLeader()->getId() == $me->getId()){
-            return true;
+        if($milestone != null){
+            foreach($milestone->getLeaders() as $leader){
+                if($leader->getId() == $me->getId()){
+                    return true;
+                }
+            }
         }
         return $this->project->userCanEdit();
     }
@@ -467,9 +473,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $comment = str_replace("'", "&#39;", $milestone->getComment());
                 $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
                 $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
-                $leader = $milestone->getLeader();
+                $leaders = $milestone->getLeaders();
                 $peopleText = $milestone->getPeopleText();
-                $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+                $leadersText = array();
+                foreach($leaders as $leader){
+                    $leadersText[] = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
+                }
+                $leadersText = implode(", ", $leadersText);
                 
                 if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                     $members = $project->getAllPeople();
@@ -478,19 +488,24 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         $peopleNames[$person->getId()] = $person->getNameForForms();
                     }
                     if($this->canEditMilestone(null)){
-                        $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}]", "leader", $leader->getId(), $peopleNames);
+                        $selectBox = new SelectBox("milestone_leader[$activityId][{$milestone->getMilestoneId()}][]", "leader", $milestone->leader, $peopleNames);
+                        $selectBox->attr('multiple', 'multiple');
+                        $selectBox->attr('class', 'leaders');
+                        $selectBox->attr('style', 'display:none;');
                         $selectBox->forceKey = true;
-                        $leaderText = $selectBox->render();
+                        $leadersText = $selectBox->render();
                     }
                     else{
-                        $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}]' value='{$leader->getNameForForms()}' />$leaderText";
+                        foreach(array_reverse($leaders) as $leader){
+                            $leadersText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}][]' value='{$leader->getId()}' />$leadersText";
+                        }
                     }
                     $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                     $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                     $peopleText = "<input type='text' class='milestone_people' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
                 }
-                $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
-                $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
+                $this->html .= "<td class='left_border'>{$leadersText}</td>";
+                $this->html .= "<td class='left_comment'>{$peopleText}</td>";
                 if(!$pdf){
                     $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
                 }
@@ -673,6 +688,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                             showChoices(this._subtractArray(choices, this.assignedTags()));
                         }
                     });
+                    $('select.leaders').chosen({width:'99%'});
+                    $('#milestones_table .chosen-container').css('font-size', 'small');
                 });
                 
             </script>";

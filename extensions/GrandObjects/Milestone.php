@@ -129,7 +129,10 @@ class Milestone {
             $this->status = $data[0]['status'];
             $this->modification = $data[0]['modification'];
             $this->project = Project::newFromId($data[0]['project_id']);
-            $this->leader = $data[0]['leader'];
+            $this->leader = json_decode($data[0]['leader']);
+            if(!is_array($this->leader)){
+                $this->leader = array($this->leader);
+            }
             $this->people = array();
             $this->peopleText = $data[0]['people'];
             $this->peopleWaiting = true;
@@ -266,11 +269,18 @@ class Milestone {
     }
     
     /**
-     * Returns the Person who leads this Milestone
-     * @return Person The Person who leads this Milestone
+     * Returns the People who leads this Milestone
+     * @return array The People who leads this Milestone
      */
-    function getLeader(){
-        return Person::newFromId($this->leader);
+    function getLeaders(){
+        $leaders = array();
+        foreach($this->leader as $leader){
+            $leaders[] = Person::newFromId($leader);
+        }
+        if(count($leaders) == 0){
+            $leaders[] = new Person(array());
+        }
+        return $leaders;
     }
 
     /**

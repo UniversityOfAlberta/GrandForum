@@ -13,127 +13,133 @@
     <ReportSection id="feedback" tooltip="Feedback" name="Feedback" title="Feedback" blobSection="FEEDBACK" type="EditableReportSection">
         <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PROGRESS_REPORT">
             <If if="{!=({$user_id},{$my_id})}">
-                <Static>
-                    <![CDATA[
-                        {set(future,)}
-                    ]]>
-                </Static>
-                <If if="{or({==({$project_name}, IC LAB-05)},
-                            {==({$project_name}, Ad-hoc-03)},
-                            {==({$project_name}, IC LAB-10)},
-                            {==({$project_name}, Ad-hoc-05)}
+                <If if="{and({!=({$project_name}, CSI-03)},
+                             {!=({$project_name}, Ad-hoc-03)},
+                             {!=({$project_name}, Ad-hoc-05)}
                         )}">
-                    <![CDATA[
-                        {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
-                    ]]>
+                    <Static>
+                        <![CDATA[
+                            {set(future,)}
+                        ]]>
+                    </Static>
+                    <If if="{or({==({$project_name}, PROJECT_NAME)},
+                                {==({$project_name}, PROJECT_NAME)}
+                            )}">
+                        <![CDATA[
+                            {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
+                        ]]>
+                    </If>
+                    <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
+                        <ReportItem id="pdf" type="PDFReportItem" reportType="ProgressReport" project="true" buttonName="Report">
+                            <![CDATA[
+                                <table width='100%'>
+                                <tr>
+                                    <td class='label' width='1%'>Download:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="date" type="Calendar" blobItem="DATE" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Date:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                            ]]>
+                        </ReportItem>
+                        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Comments:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                                </table>
+                            ]]>
+                        </ReportItem>
+                    </ReportItemSet>
                 </If>
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
-                    <ReportItem id="pdf" type="PDFReportItem" reportType="ProgressReport" project="true" buttonName="Report">
-                        <![CDATA[
-                            <table width='100%'>
-                            <tr>
-                                <td class='label' width='1%'>Download:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="date" type="Calendar" blobItem="DATE" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Date:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Comments:</td>
-                                <td>{$item}</td>
-                            </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                </ReportItemSet>
             </If>
         </ReportItemSet>
     </ReportSection>
     <ReportSection id="discussion" tooltip="Discussion" name="Discussion" title="Discussion" blobSection="DISCUSION" type="EditableReportSection">
         <ReportItemSet id="reports" type="PDFReportItemSet" pdf="RPTP_PROGRESS_REPORT">
             <If if="{!=({$user_id},{$my_id})}">
-                <Static>
-                    <![CDATA[
-                        {set(future,)}
-                    ]]>
-                </Static>
-                <If if="{or({==({$project_name}, IC LAB-05)},
-                            {==({$project_name}, Ad-hoc-03)},
-                            {==({$project_name}, IC LAB-10)},
-                            {==({$project_name}, Ad-hoc-05)}
+                <If if="{and({!=({$project_name}, CSI-03)},
+                             {!=({$project_name}, Ad-hoc-03)},
+                             {!=({$project_name}, Ad-hoc-05)}
                         )}">
-                    <![CDATA[
-                        {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
-                    ]]>
-                </If>
-                <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
                     <Static>
                         <![CDATA[
-                            <div style="display: flex;">
-                                <div style="width:50%;padding-right:5px;">
+                            {set(future,)}
                         ]]>
                     </Static>
-                    <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
-                        <If if="{!contains({$user_roles}, Manager)}">
+                    <If if="{or({==({$project_name}, PROJECT_NAME)},
+                                {==({$project_name}, PROJECT_NAME)}
+                            )}">
+                        <![CDATA[
+                            {set(future, <span style='color:red;'>future project plan &#40;project has not started&#41;</span> -&nbsp;)}
+                        ]]>
+                    </If>
+                    <ReportItemSet id="toggle" type="ToggleHeader" title="{get(future)}{$project_leader_names} - {$project_name} - {$project_full_name}">
+                        <Static>
+                            <![CDATA[
+                                <div style="display: flex;">
+                                    <div style="width:50%;padding-right:5px;">
+                            ]]>
+                        </Static>
+                        <ReportItemSet id="committee" type="AllPeople" roles="UAHJIC" start="{timestamp(Y-m-d)}" end="{timestamp(Y-m-d)}">
+                            <If if="{!contains({$user_roles}, Manager)}">
+                                <![CDATA[
+                                    <table width='100%'>
+                                        <tr>
+                                            <td class='label' width='1%'>Reviewer:</td>
+                                            <td>{$user_name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class='label'>Date:</td>
+                                            <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class='label'>Comments:</td>
+                                            <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
+                                        </tr>
+                                    </table>
+                                    <hr />
+                                ]]>
+                            </If>
+                        </ReportItemSet>
+                        <Static>
+                            <![CDATA[
+                                    </div>
+                                    <div style="width:50%; padding-left:5px;">
+                            ]]>
+                        </Static>
+                        <ReportItem id="pdf" type="PDFReportItem" reportType="ProgressReport" project="true" buttonName="Report">
                             <![CDATA[
                                 <table width='100%'>
-                                    <tr>
-                                        <td class='label' width='1%'>Reviewer:</td>
-                                        <td>{$user_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class='label'>Date:</td>
-                                        <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, DATE, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class='label'>Comments:</td>
-                                        <td>{getText(RP_PROGRESS_REVIEW, FEEDBACK, COMMENTS, {$parent_id}, {$user_id}, {$project_id})}</td>
-                                    </tr>
-                                </table>
-                                <hr />
+                                <tr>
+                                    <td class='label' width='1%'>Download:</td>
+                                    <td>{$item}</td>
+                                </tr>
                             ]]>
-                        </If>
+                        </ReportItem>
+                        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
+                            <![CDATA[
+                                <tr>
+                                    <td class='label'>Comments:</td>
+                                    <td>{$item}</td>
+                                </tr>
+                                </table>
+                            ]]>
+                        </ReportItem>
+                        <Static>
+                            <![CDATA[     
+                                    </div>
+                                </div>
+                            ]]>
+                        </Static>
                     </ReportItemSet>
-                    <Static>
-                        <![CDATA[
-                                </div>
-                                <div style="width:50%; padding-left:5px;">
-                        ]]>
-                    </Static>
-                    <ReportItem id="pdf" type="PDFReportItem" reportType="ProgressReport" project="true" buttonName="Report">
-                        <![CDATA[
-                            <table width='100%'>
-                            <tr>
-                                <td class='label' width='1%'>Download:</td>
-                                <td>{$item}</td>
-                            </tr>
-                        ]]>
-                    </ReportItem>
-                    <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobSubItem="{$user_id}">
-                        <![CDATA[
-                            <tr>
-                                <td class='label'>Comments:</td>
-                                <td>{$item}</td>
-                            </tr>
-                            </table>
-                        ]]>
-                    </ReportItem>
-                    <Static>
-                        <![CDATA[     
-                                </div>
-                            </div>
-                        ]]>
-                    </Static>
-                </ReportItemSet>
+                </If>
             </If>
         </ReportItemSet>
     </ReportSection>

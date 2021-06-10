@@ -517,6 +517,17 @@ class UploadCCVAPI extends API{
         }
         return $status;
     }
+    
+    function updateKeywords($person, $keywords){
+        $currentKeywords = $person->getKeywords();
+        foreach($keywords as $keyword){
+            if(!in_array($keyword['keyword'], $currentKeywords)){
+                $currentKeywords[] = $keyword['keyword'];
+            }
+        }
+        $person->setKeywords($currentKeywords);
+        return true;
+    }
 
     function doAction($noEcho=false){
         global $wgMessage;
@@ -598,6 +609,13 @@ class UploadCCVAPI extends API{
                     $status = $this->updateEmployment($person, $employment);
                     if($status){
                         $json['employment'] = $employment;
+                    }
+                }
+                if(isset($_POST['keywords'])){
+                    $keywords = $cv->getResearchSpecializationKeywords();
+                    $status = $this->updateKeywords($person, $keywords);
+                    if($status){
+                        $json['keywords'] = $keywords;
                     }
                 }
             }

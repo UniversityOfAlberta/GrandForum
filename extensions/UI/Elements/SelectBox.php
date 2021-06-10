@@ -15,7 +15,8 @@ class SelectBox extends UIElement {
         $selectedFound = false;
         foreach($this->options as $key => $option){
             $selected = "";
-            if($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option)){
+            if((!is_array($this->value) && ($this->value == str_replace("'", "&#39;", $key) || $this->value == str_replace("'", "&#39;", $option))) ||
+               (is_array($this->value) && (in_array(str_replace("'", "&#39;", $key), $this->value) || in_array(str_replace("'", "&#39;", $option), $this->value)))){
                 $selected = " selected";
                 $selectedFound = true;
             }
@@ -26,9 +27,19 @@ class SelectBox extends UIElement {
             $value = sanitizeInput($value);
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
-        if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
-            $value = sanitizeInput($this->value);
-            $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
+        if(!is_array($this->value)){
+            if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
+                $value = sanitizeInput($this->value);
+                $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
+            }
+        }
+        else{
+            foreach($this->value as $value){
+                if(!$selectedFound && $value != "" && !in_array($value, $this->options)){
+                    $value = sanitizeInput($value);
+                    $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
+                }
+            }
         }
         $html .= "</select>";
         return $html;

@@ -439,6 +439,25 @@ class CommonCV // {{{
     }
     return $records;
    } // }}}
+   
+   /**
+   * Parses the list of Research Specialization Keywords and returns (some of its) data
+   * as an associative array for convenience
+   */
+  public function getResearchSpecializationKeywords() // {{{
+   {
+    global $CCV_CONST;
+    $records = array();
+    $elements = $this->m_xpath->query("//section[@id='53099556bdac4ac8813be6fd62a356b1']");
+    for ($i = 0; !is_null($elements) && $i < $elements->length; $i++)
+    {
+      $record = array();
+      $id = $this->get_xpath("@recordId", $elements->item($i));
+      $record["keyword"] = $this->get_xpath("field[@id='6351fbc0f45f4266b29f292fd521c67a']/value", $elements->item($i));
+      $records[$id] = $record;
+    }
+    return $records;
+   } // }}}
 
   /**
    * Parses the list of reviewed journal papers and returns (some of its)

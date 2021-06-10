@@ -109,9 +109,9 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "StartUpDevelopment")) ? "selected" : false;
             $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Start Up (Dev)", "{$url}StartUpDevelopment", $selected);
         }
-        if($person->isSubRole('CycleIILOI')){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CycleIILOI")) ? "selected" : false;
-            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Cycle II LOI", "{$url}CycleIILOI", $selected);
+        if($person->isSubRole('LegacyLOI')){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyLOI")) ? "selected" : false;
+            $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Legacy LOI", "{$url}LegacyLOI", $selected);
         }
         /*if(count($person->getEvaluates("SAB")) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABReview")) ? "selected" : false;
