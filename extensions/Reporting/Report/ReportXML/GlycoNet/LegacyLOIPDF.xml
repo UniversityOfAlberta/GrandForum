@@ -71,7 +71,7 @@
         </ReportItem>
         
         <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="250">
             <![CDATA[
                 <p><b><u>Equity, Diversity and Inclusion</u></b></p>
                 {$item}<br />
@@ -121,7 +121,7 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="750">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="1500">
             <![CDATA[
                 <h2>Project Description</h2>
                 {$item}

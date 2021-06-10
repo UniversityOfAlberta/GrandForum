@@ -116,7 +116,7 @@
         </ReportItem>
         
         <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="250">
             <![CDATA[
                 <h2>Equity, Diversity and Inclusion</h2>
                 <p>Demonstrate how equity, diversity and inclusion (EDI) has been incorporated into the project (see application instructions for more details).</p>
@@ -136,7 +136,7 @@
         <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
             <![CDATA[
                 <h2>Suggested Reviewers</h2>
-                At least seven suggested reviewers for the application.  At least five of the seven suggested reviewers must be working at locations outside of Canada.  Suggested reviewers should not be members of the GlycoNet Scientific Advisory Board, Research Management Committee or Board of Directors.  GlycoNet follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>.  Please consult the policy before suggesting reviewers.
+                At least three suggested reviewers for the application. At least two of the three suggested reviewers must be working at locations outside of Canada. Suggested reviewers should not be members of the GlycoNet Scientific Advisory Board, Research Management Committee or Board of Directors.  GlycoNet follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>. Please consult the policy before suggesting reviewers.
                 {$item}
             ]]>
         </ReportItem>
@@ -175,10 +175,10 @@
             ]]>
         </ReportItem>
 
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="750">
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="1500">
             <![CDATA[
                 <h2>Project Description</h2>
-                <p>A research proposal (750 words maximum, not including figure/scheme legends and references)</p>
+                <p>A two-page research proposal (1500 words maximum, not including figure/scheme legends and references)<p>
                 {$item}
             ]]>
         </ReportItem>
