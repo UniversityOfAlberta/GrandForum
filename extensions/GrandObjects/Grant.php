@@ -5,6 +5,7 @@ class Grant extends BackboneModel {
     static $exclusionCache = null;
 
     var $id;
+    var $owner_id;
     var $user_id;
     var $project_id;
     var $sponsor;
@@ -70,9 +71,10 @@ class Grant extends BackboneModel {
         if(count($data) > 0){
             $row = $data[0];
             $copi = unserialize($row['copi']);
-            if($me->getId() == $row['user_id'] || $me->isRoleAtLeast(STAFF) ||
+            if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isRoleAtLeast(STAFF) ||
                array_search($me->getId(), $copi) !== false){
                 $this->id = $row['id'];
+                $this->owner_id = $row['owner_id'];
                 $this->user_id = $row['user_id'];
                 $this->project_id = $row['project_id'];
                 $this->sponsor = $row['sponsor'];
@@ -245,7 +247,8 @@ class Grant extends BackboneModel {
             }
         }
         DBFunctions::insert('grand_grants',
-                            array('user_id' => $this->user_id,
+                            array('owner_id' => $this->owner_id,
+                                  'user_id' => $this->user_id,
                                   'project_id' => $this->project_id,
                                   'sponsor' => $this->sponsor,
                                   'external_pi' => $this->external_pi,

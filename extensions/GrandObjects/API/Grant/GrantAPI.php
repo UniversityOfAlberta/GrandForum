@@ -18,7 +18,9 @@ class GrantAPI extends RESTAPI {
     }
     
     function doPOST(){
+        $me = Person::newFromWgUser();
         $grant = new Grant(array());
+        $grant->owner_id = $me->getId();
         $grant->user_id = $this->POST('user_id');
         $grant->copi = $this->POST('copi');
         $grant->project_id = $this->POST('project_id');
