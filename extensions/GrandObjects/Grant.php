@@ -68,7 +68,7 @@ class Grant extends BackboneModel {
     
     function Grant($data){
         $me = Person::newFromWgUser();
-        if(count($data) > 0){
+        if(count($data) > 0 && $me->isLoggedIn()){
             $row = $data[0];
             $copi = unserialize($row['copi']);
             if($me->getId() == $row['user_id'] || $me->getId() == $row['owner_id'] || $me->isRoleAtLeast(STAFF) ||
