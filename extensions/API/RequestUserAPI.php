@@ -16,6 +16,9 @@ class RequestUserAPI extends API{
         $this->addPOST("university",false, "", "");
         $this->addPOST("department",false, "", "");
         $this->addPOST("position",false, "", "");
+        $this->addPOST("nationality",false, "", "");
+        $this->addPOST("start_date",false, "", "");
+        $this->addPOST("end_date",false, "", "");
     }
 
     function processParams($params){
@@ -109,6 +112,9 @@ class RequestUserAPI extends API{
 		$university = isset($_POST['university']) ? $_POST['university'] : "";
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
+		$nationality = isset($_POST['nationality']) ? $_POST['nationality'] : "";
+		$startDate = isset($_POST['start_date']) ? $_POST['start_date'] : "";
+		$endDate = isset($_POST['end_date']) ? $_POST['end_date'] : "";
 		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
 		if($candidate == "Yes" || $candidate == "1"){
 		    $candidate = 1;
@@ -130,6 +136,9 @@ class RequestUserAPI extends API{
 		                          'university' => $university,
 		                          'department' => $department,
 		                          'position' => $position,
+		                          'nationality' => $nationality,
+		                          'start_date' => $startDate,
+		                          'end_date' => $endDate,
 		                          'candidate' => $candidate,
 		                          'created' => 0));
 		

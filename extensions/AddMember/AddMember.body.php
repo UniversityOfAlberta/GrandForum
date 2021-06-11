@@ -47,7 +47,8 @@ class UserCreate {
                     DBFunctions::insert('grand_roles',
                                         array('user_id' => $id,
                                               'role' => $role,
-                                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                                              'start_date' => @$_POST['start_date'],
+                                              'end_date' => @$_POST['end_date']));
                     $roleId = DBFunctions::insertId();
                     // Add Projects
                     if(isset($_POST['wpNS'])){
