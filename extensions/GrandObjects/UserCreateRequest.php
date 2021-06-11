@@ -21,6 +21,9 @@ class UserCreateRequest {
     var $university;
     var $department;
     var $position;
+    var $nationality;
+    var $startDate;
+    var $endDate;
     var $candidate;
     var $created;
     var $ignored;
@@ -73,6 +76,9 @@ class UserCreateRequest {
             $this->university = $data[0]['university'];
             $this->department = $data[0]['department'];
             $this->position = $data[0]['position'];
+            $this->nationality = $data[0]['nationality'];
+            $this->startDate = $data[0]['start_date'];
+            $this->endDate = $data[0]['end_date'];
             $this->candidate = $data[0]['candidate'];
             $this->created = $data[0]['created'];
             $this->ignored = $data[0]['ignore'];
@@ -138,6 +144,21 @@ class UserCreateRequest {
     
     function getPosition(){
         return $this->position;
+    }
+    
+    function getNationality(){
+        return $this->nationality;
+    }
+    
+    function getStartDate(){
+        if($this->startDate == "0000-00-00 00:00:00"){
+            return date('Y-m-d');
+        }
+        return $this->startDate;
+    }
+    
+    function getEndDate(){
+        return $this->endDate;
     }
     
     function getCandidate($transformed=false){

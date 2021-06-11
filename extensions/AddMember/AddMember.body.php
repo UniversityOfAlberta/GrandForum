@@ -46,7 +46,8 @@ class UserCreate {
                     DBFunctions::insert('grand_roles',
                                         array('user_id' => $id,
                                               'role' => $role,
-                                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                                              'start_date' => @$_POST['start_date'],
+                                              'end_date' => @$_POST['end_date']));
                     $roleId = DBFunctions::insertId();
                 }
             }
@@ -64,7 +65,8 @@ class UserCreate {
                     DBFunctions::insert('grand_project_members',
                                         array('user_id' => $id,
                                               'project_id' => $project->getId(),
-                                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
+                                              'start_date' => @$_POST['start_date'],
+                                              'end_date' => @$_POST['end_date']));
                     if(is_array($_POST['wpUserType']) && count($_POST['wpUserType']) == 1 && $roleId != null){
                         // Only associate the role with the project if there is only one role
                         DBFunctions::insert('grand_role_projects',

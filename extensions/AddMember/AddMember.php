@@ -55,6 +55,9 @@ class AddMember extends SpecialPage{
                 $form->getElementById('university_field')->setPOST('university');
                 $form->getElementById('dept_field')->setPOST('department');
                 $form->getElementById('position_field')->setPOST('position');
+                $form->getElementById('nationality_field')->setPOST('nationality');
+                $form->getElementById('end_field')->setPOST('end_date');
+                $form->getElementById('start_field')->setPOST('start_date');
                 $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
@@ -198,6 +201,9 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
+                            <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
+                            <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />
+                            <input type='hidden' name='end_date' value='".str_replace("'", "&#39;", $request->getEndDate())."' />
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
             if($history){
                 if($request->isCreated()){
@@ -313,6 +319,23 @@ class AddMember extends SpecialPage{
         $positionRow->append($positionLabel)->append($positionField);
         $positionRow->attr('id', 'position_row');
         
+        $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOTHING);
+        $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", "Canadian", "American", "Landed Immigrant", "Visa Holder", "International"), VALIDATE_NOTHING);
+        $nationalityField->attr("style", "width: 260px;");
+        $nationalityRow = new FormTableRow("nationality_row");
+        $nationalityRow->append($nationalityLabel)->append($nationalityField);
+        $nationalityRow->attr('id', 'nationality_row');
+        
+        $startLabel = new Label("start_label", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOTHING);
+        $startField = new CalendarField("start_field", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
+        $startRow = new FormTableRow("start_row");
+        $startRow->append($startLabel)->append($startField);
+        
+        $endLabel = new Label("end_label", "End Date", "When the member's role, project, institution should end (if currently active, just leave blank.)", VALIDATE_NOTHING);
+        $endField = new CalendarField("end_field", "End Date", "", VALIDATE_NOTHING);
+        $endRow = new FormTableRow("end_row");
+        $endRow->append($endLabel)->append($endField);
+        
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
         $submitRow = new FormTableRow("submit_row");
@@ -328,6 +351,9 @@ class AddMember extends SpecialPage{
                   ->append($universityRow)
                   ->append($deptRow)
                   ->append($positionRow)
+                  ->append($nationalityRow)
+                  ->append($startRow)
+                  ->append($endRow)
                   ->append($candRow)
                   ->append($submitRow);
                   
@@ -360,9 +386,11 @@ class AddMember extends SpecialPage{
                 });
                 if(found){
                     $('#position_row').show();
+                    $('#nationality_row').show();
                 }
                 else{
                     $('#position_row').hide();
+                    $('#nationality_row').hide();
                 }
                 $('#roleWarning').remove();
                 if(found && otherFound){

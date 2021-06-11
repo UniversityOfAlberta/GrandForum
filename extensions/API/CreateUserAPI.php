@@ -118,6 +118,8 @@ class CreateUserAPI extends API{
                 if($person != null && $person->getName() != null){
                     $_POST['user_name'] = $person->getName();
                     $_POST['email'] = $_POST['wpEmail'];
+                    $_POST['startDate'] = $_POST['start_date'];
+                    $_POST['endDate'] = $_POST['end_date'];
                     
                     $api = new UserEmailAPI();
                     $api->doAction(true);
@@ -141,7 +143,9 @@ class CreateUserAPI extends API{
                         DBFunctions::insert('grand_user_university',
                                             array('user_id' => $person->getId(),
                                                   'university_id' => $unis[$defaultUni],
-                                                  'position_id' => $poss[$defaultPos]));
+                                                  'position_id' => $poss[$defaultPos],
+                                                  'start_date' => $_POST['start_date'],
+                                                  'end_date' => $_POST['end_date']));
                     }
                     if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
                         // Adds the role subtype if it is set
