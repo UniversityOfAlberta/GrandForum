@@ -68,30 +68,13 @@ function addUserProject($name, $project, $role){
     $_POST['role'] = $project;
     $person = Person::newFromName($name);
     $proj = Project::newFromName($project);
-    DBFunctions::delete('mw_user_groups',
-                        array('ug_user' => $person->getId(),
-                              'ug_group' => $project));
-    APIRequest::doAction('AddProjectMember', true);
     if($role != ""){
-        $data = DBFunctions::select(array('grand_roles'),
-                                    array('id'),
-                                    array('user_id' => $person->getId(),
-                                          'role' => $role));
-        if(count($data) > 0){
-            $id = $data[0]['id'];
-            $r = Role::newFromId($id);
-            $r->getProjects();
-            $r->projects[] = $proj;
-            $r->update();
-        }
-        else{
-            $r = new Role(array());
-            $r->user = $person->getId();
-            $r->role = $role;
-            $r->projects = array($proj);
-            $r->startDate = date('Y-m-d 00:00:00');
-            $r->create();
-        }
+        $r = new Role(array());
+        $r->user = $person->getId();
+        $r->role = $role;
+        $r->projects = array($proj);
+        $r->startDate = date('Y-m-d 00:00:00');
+        $r->create();
         Role::$projectCache = null;
     }
 }
