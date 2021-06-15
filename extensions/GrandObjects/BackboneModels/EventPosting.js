@@ -27,8 +27,8 @@ EventPosting = Posting.extend({
         image1: "", // For Uploads
         image2: "", // For Uploads
         image3: "", // For Uploads
-        banner4: "", // For Uploads
-        banner5: "", // For Uploads
+        banner1: "", // For Uploads
+        banner2: "", // For Uploads
         image_url1: "", // For Uploads
         image_url2: "", // For Uploads
         image_url3: "", // For Uploads
