@@ -92,13 +92,17 @@ class SpecialEventRegistration extends SpecialPage{
         
         $webpage = ($me->isLoggedIn()) ? $me->getWebsite() : "";
         $webpageField = new TextField("webpage", "webpage", $webpage);
-        
+
+        $roles = array("Audience", "Presenter", "Host");
         $misc = "";
         if($default->title == "Energy Hackathon 2021 - APIC"){
             $miscField = new TextareaField("misc['Programming']", "misc", "");
             $misc = "<h3>Which programming technologies or tools are you familiar with or would like to learn?</h3>
                      {$miscField->render()}";
+            $roles = array("Audience", "Host");
         }
+        
+        $roleField = new SelectBox("role", "role", "Audience", $roles);
         
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
@@ -119,11 +123,7 @@ class SpecialEventRegistration extends SpecialPage{
                 </tr>
                 <tr>
                     <td class='label' style='vertical-align: middle;'>Participant Role</td>
-                    <td><select name='role' required='required'>
-                        <option selected>Audience</option>
-                        <option>Presenter</option>
-                        <option>Host</option>
-                    </select></td>
+                    <td>{$roleField->render()}</td>
                 </tr>
                 <tr>
                     <td class='label' style='vertical-align: middle;'>Webpage</td>
