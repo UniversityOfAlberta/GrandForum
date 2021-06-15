@@ -105,56 +105,66 @@ class SpecialEventRegistration extends SpecialPage{
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
+        $banner1 = ($event->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}' />" : "";
+        $banner2 = ($event->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$event->getImageUrl(5)}' />" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
-            <h3>Participant information</h3>
-            <table class='wikitable' frame='box' rules='all'>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Event</td>
-                    <td>{$eventField->render()}</td>
-                </tr>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Your Email</td>
-                    <td>{$emailField->render()}</td>
-                </tr>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Your Name</td>
-                    <td>{$nameField->render()}</td>
-                </tr>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Participant Role</td>
-                    <td>{$roleField->render()}</td>
-                </tr>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Webpage</td>
-                    <td>{$webpageField->render()}</td>
-                </tr>
-                <tr>
-                    <td class='label' style='vertical-align: middle;'>Twitter</td>
-                    <td>{$twitterField->render()}</td>
-                </tr>
-            </table>
-            {$misc}
-            <h3>Other information</h3>
-            <table class='wikitable' frame='box' rules='all'>
-                <tr>
-                    <td><input type='checkbox' name='receive_information' value='1' checked /></td>
-                    <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
-                </tr>
-                <tr>
-                    <td><input type='checkbox' name='join_newsletter' value='1' /></td>
-                    <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
-                </tr>
-                <tr>
-                    <td><input type='checkbox' name='create_profile' value='1' /></td>
-                    <td>Become an AI4Society Member</td>
-                </tr>
-                <tr>
-                    <td><input type='checkbox' name='similar_events' value='1' /></td>
-                    <td>Inform me about similar events</td>
-                </tr>
-            </table>
-            <input type='submit' name='submit' value='Submit' />
+            <div style='display:flex;'>
+                <div style='width:800px;margin-right:15px;'>
+                    <div style='text-align:center;width:100%;'>{$banner1}</div>
+                    <h3>Participant information</h3>
+                    <table class='wikitable' frame='box' rules='all'>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Event</td>
+                            <td>{$eventField->render()}</td>
+                        </tr>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Your Email</td>
+                            <td>{$emailField->render()}</td>
+                        </tr>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Your Name</td>
+                            <td>{$nameField->render()}</td>
+                        </tr>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Participant Role</td>
+                            <td>{$roleField->render()}</td>
+                        </tr>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Webpage</td>
+                            <td>{$webpageField->render()}</td>
+                        </tr>
+                        <tr>
+                            <td class='label' style='vertical-align: middle;'>Twitter</td>
+                            <td>{$twitterField->render()}</td>
+                        </tr>
+                    </table>
+                    {$misc}
+                    <h3>Other information</h3>
+                    <table class='wikitable' frame='box' rules='all'>
+                        <tr>
+                            <td><input type='checkbox' name='receive_information' value='1' checked /></td>
+                            <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
+                        </tr>
+                        <tr>
+                            <td><input type='checkbox' name='join_newsletter' value='1' /></td>
+                            <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
+                        </tr>
+                        <tr>
+                            <td><input type='checkbox' name='create_profile' value='1' /></td>
+                            <td>Become an AI4Society Member</td>
+                        </tr>
+                        <tr>
+                            <td><input type='checkbox' name='similar_events' value='1' /></td>
+                            <td>Inform me about similar events</td>
+                        </tr>
+                    </table>
+                    <input type='submit' name='submit' value='Submit' />
+                </div>
+                <div>
+                    {$banner2}
+                </div>
+            </div>
         </form>");
     }
 

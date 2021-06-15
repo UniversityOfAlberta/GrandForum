@@ -72,6 +72,8 @@ class EventPostingAPI extends PostingAPI {
         $posting->image1 = $this->uploadFile(1, $posting);
         $posting->image2 = $this->uploadFile(2, $posting);
         $posting->image3 = $this->uploadFile(3, $posting);
+        $posting->banner1 = $this->uploadFile(4, $posting);
+        $posting->banner2 = $this->uploadFile(5, $posting);
     }
     
     function uploadFile($n, $posting){

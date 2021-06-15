@@ -16,6 +16,8 @@ class EventPosting extends Posting {
     var $image1;
     var $image2;
     var $image3;
+    var $banner1;
+    var $banner2;
     
     function EventPosting($data){
         if(count($data) > 0){
@@ -59,6 +61,8 @@ class EventPosting extends Posting {
         $json['image1'] = $this->getImageUrl(1);
         $json['image2'] = $this->getImageUrl(2);
         $json['image3'] = $this->getImageUrl(3);
+        $json['banner1'] = $this->getImageUrl(4);
+        $json['banner2'] = $this->getImageUrl(5);
         return $json;
     }
     
@@ -75,6 +79,8 @@ class EventPosting extends Posting {
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);
             $this->saveImage(3, $this->image3);
+            $this->saveImage(4, $this->banner1);
+            $this->saveImage(5, $this->banner2);
         }
         return $status;
     }
@@ -92,6 +98,8 @@ class EventPosting extends Posting {
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);
             $this->saveImage(3, $this->image3);
+            $this->saveImage(4, $this->banner1);
+            $this->saveImage(5, $this->banner2);
         }
         return $status;
     }
