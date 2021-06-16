@@ -96,7 +96,7 @@ class SpecialEventRegistration extends SpecialPage{
         $roles = array("Audience", "Presenter", "Host");
         $misc = "";
         if($default->title == "Energy Hackathon 2021 - APIC"){
-            $miscField = new TextareaField("misc['Programming']", "misc", "");
+            $miscField = new TextareaField("misc[Programming]", "misc", "");
             $misc = "<h3>Which programming technologies or tools are you familiar with or would like to learn?</h3>
                      {$miscField->render()}";
             $roles = array("Audience", "Host");
