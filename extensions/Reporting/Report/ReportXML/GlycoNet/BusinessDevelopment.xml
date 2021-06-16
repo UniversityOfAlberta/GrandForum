@@ -488,7 +488,7 @@
                     <tbody>
             ]]>
         </Static>
-        <For from="1" to="4">
+        <For from="1" to="5">
             <Static>
                 <![CDATA[
                     {set(company,}
@@ -517,6 +517,12 @@
                 <![CDATA[
                     {set(company, Carbaform Bioscience}
                     {set(leaders, Robert Britton and David Vocadlo)}
+                ]]>
+            </If>
+            <If if="{==({$index},5)}">
+                <![CDATA[
+                    {set(company, ABOzymes Biomedical}
+                    {set(leaders, Stephen Withers)}
                 ]]>
             </If>
             <Static>
