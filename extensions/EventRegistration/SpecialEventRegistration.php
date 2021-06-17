@@ -99,7 +99,7 @@ class SpecialEventRegistration extends SpecialPage{
             $miscField = new TextareaField("misc[Programming]", "misc", "");
             $misc = "<h3>Which programming technologies or tools are you familiar with or would like to learn?</h3>
                      {$miscField->render()}";
-            $roles = array("Audience", "Host");
+            $roles = array("Audience", "Host/Judge");
         }
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
