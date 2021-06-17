@@ -54,8 +54,8 @@ class MultiTextReportItem extends AbstractReportItem {
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
-        $indices = explode("|", $this->getAttr('indices', ''));
-        $indices = (count($indices) == 0) ? $this->getIndices($labels) : $indices;
+        $indices = $this->getAttr('indices', '');
+        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
@@ -457,8 +457,8 @@ EOF;
             $rules = "all";
             $frame = "box";
         }
-        $indices = explode("|", $this->getAttr('indices', ''));
-        $indices = (count($indices) == 0) ? $this->getIndices($labels) : $indices;
+        $indices = $this->getAttr('indices', '');
+        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
