@@ -1538,7 +1538,6 @@ EOF;
             return $this->milestones;
         }
         $milestones = array();
-        $milestonesIds = array();
         if(!$this->clear){
             $preds = $this->getPreds();
             foreach($preds as $pred){
@@ -1555,8 +1554,7 @@ EOF;
                 FROM grand_milestones
                 WHERE project_id = '{$this->id}'";
         if(!$history){
-            $sql .= "\nAND start_date > end_date
-                     AND status != 'Abandoned' AND status != 'Closed'";
+            $sql .= "\nAND status != 'Abandoned' AND status != 'Closed'";
         }
         if(!$fesMilestones){
             $sql .= "\nAND activity_id != '0'";
@@ -1568,15 +1566,11 @@ EOF;
         $data = DBFunctions::execSQL($sql);
         
         foreach($data as $row){
-            if(isset($milestoneIds[$row['milestone_id']])){
-                continue;
-            }
             $milestone = Milestone::newFromId($row['milestone_id']);
             $activity = $milestone->getActivity();
             if($milestone->getStatus() == 'Deleted' || ($activity != null && $milestone->getActivity()->isDeleted())){
                 continue;
             }
-            $milestoneIds[$milestone->getMilestoneId()] = true;
             $milestones[] = $milestone;
         }
         

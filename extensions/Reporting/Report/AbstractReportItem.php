@@ -446,7 +446,7 @@ abstract class AbstractReportItem {
                 $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
                 if(is_array($value)){
                     foreach($value as $k => $v){
-                        if((is_array($v) && implode("", $v) == "") || $v == ""){
+                        if((is_array($v) && recursive_implode("", $v) == "") || $v == ""){
                             unset($value[$k]);
                         }
                     }

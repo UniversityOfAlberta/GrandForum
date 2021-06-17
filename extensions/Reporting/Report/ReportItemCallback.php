@@ -177,6 +177,7 @@ class ReportItemCallback {
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
+            "comma" => "comma",
             "set" => "set",
             "get" => "get",
             "and" => "andCond",
@@ -1901,6 +1902,10 @@ class ReportItemCallback {
     
     function strtoupper($str){
         return strtoupper($str);
+    }
+    
+    function comma(){
+        return ",";
     }
     
     function set($key, $val){
