@@ -54,7 +54,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     }
                     
                     if(isset($_POST['milestone_leader'])){
-                        $_POST['leader'] = $_POST['milestone_leader'][$activityId][$milestoneId];
+                        $_POST['leader'] = @$_POST['milestone_leader'][$activityId][$milestoneId];
                     }
                     $_POST['activity'] = $activity;
                     $_POST['activity_id'] = $activityId;
