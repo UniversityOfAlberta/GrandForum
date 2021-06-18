@@ -593,20 +593,14 @@ EOF;
             $nationality = "";
             if($config->getValue("nationalityEnabled")){
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-                $interSelected = ($person->getNationality() == "International") ? "selected='selected'" : "";
+                $foreignSelected = ($person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $nationality = "<tr>
                     <td align='right'><b>Nationality:</b></td>
                     <td>
                         <select name='nationality'>
                             <option value=''>---</option>
                             <option value='Canadian' $canSelected>Canadian</option>
-                            <option value='American' $amerSelected>American</option>
-                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                            <option value='International' $interSelected>International</option>
+                            <option value='American' $foreignSelected>Foreign</option>
                         </select>
                     </td>
                 </tr>";

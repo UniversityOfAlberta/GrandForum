@@ -1545,7 +1545,15 @@ class Person extends BackboneModel {
         }
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            return $this->nationality;
+            if($this->nationality != ""){
+                if($this->nationality == "Canadian" || 
+                   $this->nationality == "Landed Immigrant"){
+                    return "Canadian";
+                }
+                else{
+                    return "Foreign";
+                }
+            }
         }
         return "";
     }

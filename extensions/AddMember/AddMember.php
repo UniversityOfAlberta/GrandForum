@@ -320,7 +320,7 @@ class AddMember extends SpecialPage{
         $positionRow->attr('id', 'position_row');
         
         $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOTHING);
-        $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", "Canadian", "American", "Landed Immigrant", "Visa Holder", "International"), VALIDATE_NOTHING);
+        $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", "Canadian", "Foreign"), VALIDATE_NOTHING);
         $nationalityField->attr("style", "width: 260px;");
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
