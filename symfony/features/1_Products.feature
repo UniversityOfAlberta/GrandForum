@@ -13,7 +13,7 @@ Feature: Products
         And I select "Proceedings Paper" from "type"
         And I click by css "#projects_Phase2Project1"
         And I press "Save Product"
-        And I wait "100"
+        And I wait until I see "The Product has been saved sucessfully" up to "1000"
         Then I should see "The Product has been saved sucessfully"
         
     Scenario: Viewing list of Publications
@@ -35,7 +35,7 @@ Feature: Products
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
-        And I wait "500"
+        And I wait until I see "Visibility" up to "1000"
         And I select "Public" from "access"
         And I press "Save Publication"
         Then I should see "New Publication"
@@ -54,12 +54,12 @@ Feature: Products
         When I go to "index.php/Special:Products#/Publication"
         And I follow "New Publication"
         And I press "Edit Publication"
-        And I wait "500"
+        And I wait until I see "Authors" up to "1000"
         And I select "NI User2" from "rightauthors"
         And I press "<<"
         And fill in "description" with "This is an edited description"
         And I press "Save Publication"
-        Then I wait "1000"
+        And I wait until I see "Edit Publication" up to "1000"
         Then I should see "This is an edited description"
         Then I should see "NI User2"
         
@@ -71,7 +71,7 @@ Feature: Products
         And I press "Delete Publication"
         Then I should see "The Publication New Publication was deleted sucessfully"
         And I reload the page
-        And I wait "100"
+        And I wait until I see "This publication has been deleted, and will not show up anywhere else on the forum" up to "1000"
         Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
         When I go to "index.php/Special:Products#/Publication"
         Then I should not see "New Publication"
@@ -79,7 +79,7 @@ Feature: Products
     Scenario: Adding a new Publication with Tags
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Add Product" up to "1000"
         And I press "Add Product"
         And I fill in "title" with "Publication with Tags"
         And I select "NI User2" from "rightauthors"
@@ -88,13 +88,13 @@ Feature: Products
         And I select "Publication" from "category"
         And I select "Proceedings Paper" from "type"
         And I press "Save Product"
-        And I wait "100"
+        And I wait until I see "The Product has been saved sucessfully" up to "1000"
         Then I should see "The Product has been saved sucessfully"
         
     Scenario: Uploading a valid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -117,13 +117,13 @@ Feature: Products
         }
         """
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "1 products were created/update" up to "1000"
         Then I should see "1 products were created/updated"
         
     Scenario: Uploading a duplicate BibTeX (with overwrite not checked)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -147,13 +147,13 @@ Feature: Products
         }
         """
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "1 products were ignored" up to "1000"
         Then I should see "1 products were ignored (probably duplicates)"
         
     Scenario: Uploading a duplicate BibTeX (with overwrite checked)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -178,17 +178,17 @@ Feature: Products
         """
         And I check "bibtex_overwrite"
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "1 products were created/updated" up to "1000"
         Then I should see "1 products were created/updated"
         When I fill in "Search:" with "UMLDiff"
         When I click by css ".edit-icon"
-        And I wait "1000"
+        And I wait until I see "Hello World" up to "1000"
         Then I should see "Hello World"
         
     Scenario: Uploading an invalid BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -209,13 +209,13 @@ Feature: Products
         }
         """
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "A publication was missing a title" up to "1000"
         Then I should see "A publication was missing a title"
         
     Scenario: Uploading a BibTeX with capital letters 
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with:
         """
@@ -238,23 +238,23 @@ Feature: Products
         }
         """
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "1 products were created/updated" up to "1000"
         Then I should see "1 products were created/updated"
         
     Scenario: Uploading an empty BibTeX
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Import BibTeX" up to "1000"
         And I press "Import BibTeX"
         And I fill in "bibtex" with ""
         And I click "Import"
-        And I wait "500"
+        And I wait until I see "No BibTeX references were found" up to "1000"
         Then I should see "No BibTeX references were found"
         
     Scenario: Adding a new Publication (testing events leak bug)
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I follow "Manage Products"
-        And I wait "100"
+        And I wait until I see "Add Product" up to "1000"
         And I press "Add Product"
         And I fill in "title" with "Test1"
         And I select "NI User1" from "rightauthors"
@@ -262,7 +262,7 @@ Feature: Products
         And I select "Publication" from "category"
         And I select "Proceedings Paper" from "type"
         And I press "Save Product"
-        And I wait "100"
+        And I wait until I see "The Product has been saved sucessfully" up to "1000"
         Then I should see "Test1"
         And I press "Add Product"
         And I fill in "title" with "Test2"
@@ -271,6 +271,6 @@ Feature: Products
         And I select "Publication" from "category"
         And I select "Proceedings Paper" from "type"
         And I press "Save Product"
-        And I wait "100"
+        And I wait until I see "The Product has been saved sucessfully" up to "1000"
         Then I should see "Test1"
         And I should see "Test2"
