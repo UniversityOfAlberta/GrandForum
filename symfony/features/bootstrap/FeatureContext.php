@@ -395,7 +395,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function selectFromChosenWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('select[name=$id]').val('$text').trigger('chosen:updated').change()");
+        $this->getSession()->evaluateScript("
+            var text = '$text';
+            $('select[name=$id] option').each(function(i, el){
+                if($(el).val() == text ||
+                   $(el).text() == text){
+                    text = $(el).val();
+                }
+            });
+            $('select[name=$id]').val(text).trigger('chosen:updated').change()");
     }
     
     /**
