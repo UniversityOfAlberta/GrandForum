@@ -105,8 +105,8 @@ class SpecialEventRegistration extends SpecialPage{
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
-        $banner1 = ($event->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}' />" : "";
-        $banner2 = ($event->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$event->getImageUrl(5)}' />" : "";
+        $banner1 = ($event->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$$default->getImageUrl(4)}' />" : "";
+        $banner2 = ($event->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$$default->getImageUrl(5)}' />" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
             <div style='display:flex;'>
