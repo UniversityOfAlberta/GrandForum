@@ -333,10 +333,16 @@ class AddMember extends SpecialPage{
                   ->append($projectsRow)
                   ->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
-            $programLabel = new Label("program_label{$i}", "Program ".($i+1)." (can leave blank if N/A)", "", VALIDATE_NOTHING);
+            $extraText = "";
+            if($i == 0 && $config->getValue("networkName") == "MtS"){
+                $year = date('Y', time() - 3*30);
+                $nextYear = $year+1;
+                $extraText = "If applicable, please list the start and expected end-date of educational or fellowship programs personnel is (1) currently pursuing, and/or (2) will begin within this fiscal year, and/or (3) will end this fiscal year (March {$year}-{$nextYear}):<br />";
+            }
+            $programLabel = new Label("program_label{$i}", "{$extraText}Program ".($i+1)." (can leave blank if N/A)", "", VALIDATE_NOTHING);
             $programLabel->colon = "";
             $programLabel->colspan = 2;
-            $programLabel->attr('style', 'text-align:left;');
+            $programLabel->attr('style', 'text-align:left;max-width:400px;');
             $programRow = new FormTableRow("program_row{$i}");
             $programRow->append($programLabel);
             $programRow->attr('id', "program_row$i");
