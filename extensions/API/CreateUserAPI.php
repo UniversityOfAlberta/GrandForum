@@ -127,20 +127,20 @@ class CreateUserAPI extends API{
                                               'last_name' => @$_POST['wpLastName']),
                                         array('user_id' => $person->getId()));
                     
-                    $universities = explode("\n", $_POST['university']);
-                    $departments = explode("\n", $_POST['department']);
-                    $positions = explode("\n", $_POST['position']);
-                    $startDates = explode("\n", $_POST['start_date']);
-                    $endDates = explode("\n", $_POST['end_date']);
+                    $universities = explode("\n", str_replace("\r", "", $_POST['university']));
+                    $departments = explode("\n", str_replace("\r", "", $_POST['department']));
+                    $positions = explode("\n", str_replace("\r", "", $_POST['position']));
+                    $startDates = explode("\n", str_replace("\r", "", $_POST['start_date']));
+                    $endDates = explode("\n", str_replace("\r", "", $_POST['end_date']));
                     $earliestStartDate = "";
                     $latestEndDate = "";
                     foreach($universities as $i => $university){
                         if(trim($universities[$i]) != "" || trim($departments[$i]) != "" || trim($positions[$i]) != ""){
-                            $_POST['university'] = $universities[$i];
-                            $_POST['department'] = $departments[$i];
-                            $_POST['position'] = $positions[$i];
-                            $_POST['startDate'] = $startDates[$i];
-                            $_POST['endDate'] = $endDates[$i];
+                            $_POST['university'] = trim($universities[$i]);
+                            $_POST['department'] = trim($departments[$i]);
+                            $_POST['position'] = trim($positions[$i]);
+                            $_POST['startDate'] = trim($startDates[$i]);
+                            $_POST['endDate'] = trim($endDates[$i]);
                             
                             $api = new PersonUniversitiesAPI();
                             $api->params['id'] = $person->getId();
@@ -163,6 +163,18 @@ class CreateUserAPI extends API{
                                         array('start_date' => $earliestStartDate,
                                               'end_date' => $latestEndDate),
                                         array('user_id' => $person->getId()));
+                                        
+                    if($_POST['employment'] != ""){
+                        $_POST['id'] = "";
+                        $_POST['user'] = $person->getName();
+                        $_POST['studies'] = "";
+                        $_POST['employer'] = "";
+                        $_POST['city'] = "";
+                        $_POST['country'] = "";
+                        $_POST['employment_type'] = @str_replace("'", "&#39;", $_POST['employment']);
+                        $_POST['effective_date'] = ($latestEndDate == "" || $latestEndDate == "0000-00-00") ? date('Y-m-d') : str_replace("'", "&#39;", $latestEndDate);
+                        APIRequest::doAction('AddHQPMovedOn', true);
+                    }
                     
                     if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
                         // Adds the role subtype if it is set

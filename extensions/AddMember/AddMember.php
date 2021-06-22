@@ -53,6 +53,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('nationality_field')->setPOST('nationality');
+                $form->getElementById('employment_field')->setPOST('employment');
                 for($i = 0; $i < 3; $i++){
                     $form->getElementById("university_field{$i}")->setPOST("university{$i}");
                     $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
@@ -208,6 +209,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
+                            <input type='hidden' name='employment' value='".str_replace("'", "&#39;", $request->getEmployment())."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
@@ -318,6 +320,19 @@ class AddMember extends SpecialPage{
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
         $nationalityRow->attr('id', 'nationality_row');
+        
+        $employmentLabel1 = new Label("employment_label1", "Please select institution type of employment (if applicable)", "", VALIDATE_NOTHING);
+        $employmentLabel1->colspan = 2;
+        $employmentLabel1->attr('style', 'text-align:left;max-width:400px;');
+        $employmentField = new SelectBox("employment_field", "Please select institution type of employment (if applicable)", "", array("", "University", "Industry", "Government", "Hospital", "Other"), VALIDATE_NOTHING);
+        $employmentLabel2 = new Label("employment_label2", "Employment", "Please select institution type of employment (if applicable)", VALIDATE_NOTHING);
+        $employmentField->attr("style", "width: 260px;");
+        $employmentRow1 = new FormTableRow("employment_row1");
+        $employmentRow1->append($employmentLabel1);
+        $employmentRow1->attr('id', 'employment_row1');
+        $employmentRow2 = new FormTableRow("employment_row2");
+        $employmentRow2->append($employmentLabel2)->append($employmentField);
+        $employmentRow2->attr('id', 'employment_row2');
 
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -389,7 +404,9 @@ class AddMember extends SpecialPage{
                       ->append($startRow)
                       ->append($endRow);
         }
-        $formTable->append($candRow)
+        $formTable->append($employmentRow1)
+                  ->append($employmentRow2)
+                  ->append($candRow)
                   ->append($submitRow);
                   
         if(!$me->isRoleAtLeast(STAFF)){
@@ -442,6 +459,9 @@ class AddMember extends SpecialPage{
                     $('#end_row2').show();
                     
                     $('#nationality_row').show();
+                    
+                    $('#employment_row1').show();
+                    $('#employment_row2').show();
                 }
                 else{
                     // Not HQP
@@ -466,6 +486,9 @@ class AddMember extends SpecialPage{
                     $('#end_row2').hide();
                     
                     $('#nationality_row').hide();
+                    
+                    $('#employment_row1').hide();
+                    $('#employment_row2').hide();
                 }
                 $('#roleWarning').remove();
                 if(found && otherFound){

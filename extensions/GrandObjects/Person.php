@@ -540,7 +540,7 @@ class Person extends BackboneModel {
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_positions'),
                                     array('*'),
-                                    array('position' => NEQ('')),
+                                    array(),
                                     array('`order`' => 'ASC',
                                           'position' => 'ASC'));
         $positions = array();
