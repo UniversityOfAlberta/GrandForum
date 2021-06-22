@@ -118,9 +118,6 @@ class CreateUserAPI extends API{
                 if($person != null && $person->getName() != null){
                     $_POST['user_name'] = $person->getName();
                     $_POST['email'] = $_POST['wpEmail'];
-                    $_POST['startDate'] = $_POST['start_date'];
-                    $_POST['endDate'] = $_POST['end_date'];
-                    
                     $api = new UserEmailAPI();
                     $api->doAction(true);
                     
@@ -129,24 +126,44 @@ class CreateUserAPI extends API{
                                               'middle_name' => @$_POST['wpMiddleName'],
                                               'last_name' => @$_POST['wpLastName']),
                                         array('user_id' => $person->getId()));
-                
-                    if(isset($_POST['university']) && isset($_POST['department']) && isset($_POST['position'])){
-                        $api = new PersonUniversitiesAPI();
-                        $api->params['id'] = $person->getId();
-                        $api->doPOST();
+                    
+                    $universities = explode("\n", $_POST['university']);
+                    $departments = explode("\n", $_POST['department']);
+                    $positions = explode("\n", $_POST['position']);
+                    $startDates = explode("\n", $_POST['start_date']);
+                    $endDates = explode("\n", $_POST['end_date']);
+                    $earliestStartDate = "";
+                    $latestEndDate = "";
+                    foreach($universities as $i => $university){
+                        if(trim($universities[$i]) != "" || trim($departments[$i]) != "" || trim($positions[$i]) != ""){
+                            $_POST['university'] = $universities[$i];
+                            $_POST['department'] = $departments[$i];
+                            $_POST['position'] = $positions[$i];
+                            $_POST['startDate'] = $startDates[$i];
+                            $_POST['endDate'] = $endDates[$i];
+                            
+                            $api = new PersonUniversitiesAPI();
+                            $api->params['id'] = $person->getId();
+                            $api->doPOST();
+                            
+                            if($_POST['startDate'] != "" && $_POST['startDate'] != "0000-00-00"){
+                                $earliestStartDate = ($earliestStartDate == "") ? $_POST['startDate'] : min($earliestStartDate, $_POST['startDate']);
+                            }
+                            $latestEndDate = ($_POST['endDate'] == "" || $_POST['endDate'] == "0000-00-00") ? "0000-00-00" : max($latestEndDate, $_POST['endDate']);
+                        }
                     }
-                    else{
-                        $defaultUni = Person::getDefaultUniversity();
-                        $unis = array_flip(Person::getAllUniversities());
-                        $defaultPos = Person::getDefaultPosition();
-                        $poss = array_flip(Person::getAllPositions());
-                        DBFunctions::insert('grand_user_university',
-                                            array('user_id' => $person->getId(),
-                                                  'university_id' => $unis[$defaultUni],
-                                                  'position_id' => $poss[$defaultPos],
-                                                  'start_date' => $_POST['start_date'],
-                                                  'end_date' => $_POST['end_date']));
-                    }
+                    
+                    // Correct role dates
+                    DBFunctions::update('grand_roles',
+                                        array('start_date' => $earliestStartDate,
+                                              'end_date' => $latestEndDate),
+                                        array('user_id' => $person->getId()));
+                    // Correct project dates
+                    DBFunctions::update('grand_project_members',
+                                        array('start_date' => $earliestStartDate,
+                                              'end_date' => $latestEndDate),
+                                        array('user_id' => $person->getId()));
+                    
                     if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
                         // Adds the role subtype if it is set
                         foreach($_POST['subtype'] as $subtype){

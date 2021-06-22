@@ -52,12 +52,21 @@ class AddMember extends SpecialPage{
                 $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 $form->getElementById('project_field')->setPOST('wpNS');
-                $form->getElementById('university_field')->setPOST('university');
-                $form->getElementById('dept_field')->setPOST('department');
-                $form->getElementById('position_field')->setPOST('position');
                 $form->getElementById('nationality_field')->setPOST('nationality');
-                $form->getElementById('end_field')->setPOST('end_date');
-                $form->getElementById('start_field')->setPOST('start_date');
+                for($i = 0; $i < 3; $i++){
+                    $form->getElementById("university_field{$i}")->setPOST("university{$i}");
+                    $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
+                    $form->getElementById("position_field{$i}")->setPOST("position{$i}");
+                    $form->getElementById("end_field{$i}")->setPOST("end_date{$i}");
+                    $form->getElementById("start_field{$i}")->setPOST("start_date{$i}");
+                }
+                
+                $_POST['university'] = "{$_POST["university0"]}\n{$_POST["university1"]}\n{$_POST["university2"]}";
+                $_POST['department'] = "{$_POST["department0"]}\n{$_POST["department1"]}\n{$_POST["department2"]}";
+                $_POST['position'] = "{$_POST["position0"]}\n{$_POST["position1"]}\n{$_POST["position2"]}";
+                $_POST['end_date'] = "{$_POST["end_date0"]}\n{$_POST["end_date1"]}\n{$_POST["end_date2"]}";
+                $_POST['start_date'] = "{$_POST["start_date0"]}\n{$_POST["start_date1"]}\n{$_POST["start_date2"]}";
+                
                 $form->getElementById('cand_field')->setPOST('candidate');
                 
                 if(isset($_POST['wpNS'])){
@@ -175,9 +184,9 @@ class AddMember extends SpecialPage{
             }
             $wgOut->addHTML("<td>{$request->getRoles()}</td>
                              <td align='left'>{$request->getProjects()}</td>
-                             <td>{$request->getUniversity()}<br />
-                                 {$request->getDepartment()}<br />
-                                 {$request->getPosition()}</td> ");
+                             <td>".str_replace("\n", ", ", trim($request->getUniversity()))."<br />
+                                 ".str_replace("\n", ", ", trim($request->getDepartment()))."<br />
+                                 ".str_replace("\n", ", ", trim($request->getPosition()))."</td> ");
             if(count($config->getValue('subRoles')) > 0 && !$history){
                 $wgOut->addHTML("<td align='left' style='white-space:nowrap;'>");
                 foreach($config->getValue('subRoles') as $subRole => $fullSubRole){
@@ -198,10 +207,10 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
+                            <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
-                            <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
                             <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />
                             <input type='hidden' name='end_date' value='".str_replace("'", "&#39;", $request->getEndDate())."' />
                             <input type='hidden' name='wpSendMail' value='$wpSendMail' />");
@@ -283,9 +292,10 @@ class AddMember extends SpecialPage{
                 unset($projects[$key]);
             }
         }
-        $universities = Person::getAllUniversities();
-        $positions = array("Other", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
-        $departments = Person::getAllDepartments();
+
+        $universities = array_merge(array(""), Person::getAllUniversities());
+        $departments = array_merge(array(""), Person::getAllDepartments());
+        $positions = array("", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
@@ -300,25 +310,6 @@ class AddMember extends SpecialPage{
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
-        $universityLabel = new Label("university_label", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
-        $universityField = new ComboBox("university_field", "Instutution", $me->getUni(), $universities, VALIDATE_NOTHING);
-        $universityField->attr("style", "width: 250px;");
-        $universityRow = new FormTableRow("university_row");
-        $universityRow->append($universityLabel)->append($universityField);
-        
-        $deptLabel = new Label("dept_label", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", VALIDATE_NOTHING);
-        $deptField = new ComboBox("dept_field", $config->getValue('deptsTerm'), $me->getDepartment(), $departments, VALIDATE_NOTHING);
-        $deptField->attr("style", "width: 250px;");
-        $deptRow = new FormTableRow("dept_row");
-        $deptRow->append($deptLabel)->append($deptField);
-        
-        $positionLabel = new Label("position_label", "HQP Academic Status", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
-        $positionField = new SelectBox("position_field", "HQP Academic Status", "", $positions, VALIDATE_NOTHING);
-        $positionField->attr("style", "width: 260px;");
-        $positionRow = new FormTableRow("position_row");
-        $positionRow->append($positionLabel)->append($positionField);
-        $positionRow->attr('id', 'position_row');
-        
         $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOTHING);
         $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", 
                                                                                         "Canadian" => "Canadian/Landed Immigrant", 
@@ -327,17 +318,7 @@ class AddMember extends SpecialPage{
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
         $nationalityRow->attr('id', 'nationality_row');
-        
-        $startLabel = new Label("start_label", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOTHING);
-        $startField = new CalendarField("start_field", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
-        $startRow = new FormTableRow("start_row");
-        $startRow->append($startLabel)->append($startField);
-        
-        $endLabel = new Label("end_label", "End Date", "When the member's role, project, institution should end (if currently active, just leave blank.)", VALIDATE_NOTHING);
-        $endField = new CalendarField("end_field", "End Date", "", VALIDATE_NOTHING);
-        $endRow = new FormTableRow("end_row");
-        $endRow->append($endLabel)->append($endField);
-        
+
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
         $submitRow = new FormTableRow("submit_row");
@@ -350,13 +331,55 @@ class AddMember extends SpecialPage{
                   ->append($sendEmailRow)
                   ->append($rolesRow)
                   ->append($projectsRow)
-                  ->append($universityRow)
-                  ->append($deptRow)
-                  ->append($positionRow)
-                  ->append($nationalityRow)
-                  ->append($startRow)
-                  ->append($endRow)
-                  ->append($candRow)
+                  ->append($nationalityRow);
+        for($i = 0; $i < 3; $i++){
+            $programLabel = new Label("program_label{$i}", "Program ".($i+1)." (can leave blank if N/A)", "", VALIDATE_NOTHING);
+            $programLabel->colon = "";
+            $programLabel->colspan = 2;
+            $programLabel->attr('style', 'text-align:left;');
+            $programRow = new FormTableRow("program_row{$i}");
+            $programRow->append($programLabel);
+            $row = new FormTableRow("program_row{$i}");
+            
+            $defaultUniversity = ($i == 0) ? $me->getUni() : "";
+            $universityLabel = new Label("university_label$i", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
+            $universityField = new ComboBox("university_field$i", "Instutution", $defaultUniversity, $universities, VALIDATE_NOTHING);
+            $universityField->attr("style", "width: 250px;");
+            $universityRow = new FormTableRow("university_row$i");
+            $universityRow->append($universityLabel)->append($universityField);
+            
+            $defaultDepartment = ($i == 0) ? $me->getDepartment() : "";
+            $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", VALIDATE_NOTHING);
+            $deptField = new ComboBox("dept_field$i", $config->getValue('deptsTerm'), $defaultDepartment, $departments, VALIDATE_NOTHING);
+            $deptField->attr("style", "width: 250px;");
+            $deptRow = new FormTableRow("dept_row$i");
+            $deptRow->append($deptLabel)->append($deptField);
+            
+            $positionLabel = new Label("position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
+            $positionField = new SelectBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
+            $positionField->attr("style", "width: 260px;");
+            $positionRow = new FormTableRow("position_row$i");
+            $positionRow->append($positionLabel)->append($positionField);
+            $positionRow->attr('id', "position_row$i");
+            
+            $startLabel = new Label("start_label$i", "Start Date", "When the member's role, project, institution should take effect", VALIDATE_NOTHING);
+            $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
+            $startRow = new FormTableRow("start_row$i");
+            $startRow->append($startLabel)->append($startField);
+            
+            $endLabel = new Label("end_label$i", "End Date", "When the member's role, project, institution should end (if currently active, just leave blank.)", VALIDATE_NOTHING);
+            $endField = new CalendarField("end_field$i", "End Date", "", VALIDATE_NOTHING);
+            $endRow = new FormTableRow("end_row$i");
+            $endRow->append($endLabel)->append($endField);
+
+            $formTable->append($programRow)
+                      ->append($universityRow)
+                      ->append($deptRow)
+                      ->append($positionRow)
+                      ->append($startRow)
+                      ->append($endRow);
+        }
+        $formTable->append($candRow)
                   ->append($submitRow);
                   
         if(!$me->isRoleAtLeast(STAFF)){
@@ -387,11 +410,15 @@ class AddMember extends SpecialPage{
                     otherFound = (otherFound || $(el).val() != '".HQP."');
                 });
                 if(found){
-                    $('#position_row').show();
+                    $('#position_row0').show();
+                    $('#position_row1').show();
+                    $('#position_row2').show();
                     $('#nationality_row').show();
                 }
                 else{
-                    $('#position_row').hide();
+                    $('#position_row0').hide();
+                    $('#position_row1').hide();
+                    $('#position_row2').hide();
                     $('#nationality_row').hide();
                 }
                 $('#roleWarning').remove();
