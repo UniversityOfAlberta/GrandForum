@@ -339,7 +339,7 @@ class AddMember extends SpecialPage{
             $programLabel->attr('style', 'text-align:left;');
             $programRow = new FormTableRow("program_row{$i}");
             $programRow->append($programLabel);
-            $row = new FormTableRow("program_row{$i}");
+            $programRow->attr('id', "program_row$i");
             
             $defaultUniversity = ($i == 0) ? $me->getUni() : "";
             $universityLabel = new Label("university_label$i", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
@@ -347,6 +347,7 @@ class AddMember extends SpecialPage{
             $universityField->attr("style", "width: 250px;");
             $universityRow = new FormTableRow("university_row$i");
             $universityRow->append($universityLabel)->append($universityField);
+            $universityRow->attr('id', "university_row$i");
             
             $defaultDepartment = ($i == 0) ? $me->getDepartment() : "";
             $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", VALIDATE_NOTHING);
@@ -354,6 +355,7 @@ class AddMember extends SpecialPage{
             $deptField->attr("style", "width: 250px;");
             $deptRow = new FormTableRow("dept_row$i");
             $deptRow->append($deptLabel)->append($deptField);
+            $deptRow->attr('id', "dept_row$i");
             
             $positionLabel = new Label("position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
             $positionField = new SelectBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
@@ -366,11 +368,13 @@ class AddMember extends SpecialPage{
             $startField = new CalendarField("start_field$i", "Start Date", date('Y-m-d'), VALIDATE_NOTHING);
             $startRow = new FormTableRow("start_row$i");
             $startRow->append($startLabel)->append($startField);
+            $startRow->attr('id', "start_row$i");
             
             $endLabel = new Label("end_label$i", "End Date", "When the member's role, project, institution should end (if currently active, just leave blank.)", VALIDATE_NOTHING);
             $endField = new CalendarField("end_field$i", "End Date", "", VALIDATE_NOTHING);
             $endRow = new FormTableRow("end_row$i");
             $endRow->append($endLabel)->append($endField);
+            $endRow->attr('id', "end_row$i");
 
             $formTable->append($programRow)
                       ->append($universityRow)
@@ -410,15 +414,51 @@ class AddMember extends SpecialPage{
                     otherFound = (otherFound || $(el).val() != '".HQP."');
                 });
                 if(found){
+                    // HQP
+                    $('#program_row0').show();
+                    $('#program_row1').show();
+                    $('#program_row2').show();
+                    
                     $('#position_row0').show();
                     $('#position_row1').show();
                     $('#position_row2').show();
+                    
+                    $('#university_row1').show();
+                    $('#university_row2').show();
+                    
+                    $('#dept_row1').show();
+                    $('#dept_row2').show();
+                    
+                    $('#start_row1').show();
+                    $('#start_row2').show();
+                    
+                    $('#end_row1').show();
+                    $('#end_row2').show();
+                    
                     $('#nationality_row').show();
                 }
                 else{
+                    // Not HQP
+                    $('#program_row0').hide();
+                    $('#program_row1').hide();
+                    $('#program_row2').hide();
+                    
                     $('#position_row0').hide();
                     $('#position_row1').hide();
                     $('#position_row2').hide();
+                    
+                    $('#university_row1').hide();
+                    $('#university_row2').hide();
+                    
+                    $('#dept_row1').hide();
+                    $('#dept_row2').hide();
+                    
+                    $('#start_row1').hide();
+                    $('#start_row2').hide();
+                    
+                    $('#end_row1').hide();
+                    $('#end_row2').hide();
+                    
                     $('#nationality_row').hide();
                 }
                 $('#roleWarning').remove();
