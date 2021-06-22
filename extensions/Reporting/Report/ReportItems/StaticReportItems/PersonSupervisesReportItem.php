@@ -127,12 +127,12 @@ class PersonSupervisesReportItem extends StaticReportItem {
                     if(!$pdf){
                         // EDIT
                         $td = $dom->createDocumentFragment();
-                        $td->appendXML("<td rowspan='$rowspan' align='center'>{$awards->getHTML()}</td>");
+                        $td->appendXML("<td rowspan='$rowspan' align='center'>".str_replace("&", "&amp;", $awards->getHTML())."</td>");
                         $tr->appendChild($td);
                     }
                     else {
                         $td = $dom->createDocumentFragment();
-                        $td->appendXML("<td rowspan='$rowspan'>{$awards->getHTMLForPDF()}</td>");
+                        $td->appendXML("<td rowspan='$rowspan'>".str_replace("&", "&amp;", $awards->getHTMLForPDF())."</td>");
                         $tr->appendChild($td);
                     }
                 }
