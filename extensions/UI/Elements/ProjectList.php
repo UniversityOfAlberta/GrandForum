@@ -26,6 +26,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                 }
             }
         }
+        ksort($themes);
         if(count($otherThemes) > 0){
             if(count($themes) == 0){
                 $themes[""] = $otherThemes;
