@@ -21,6 +21,7 @@ Feature: Contributions
         And I fill in "partners_0_amounts_1a" with "1000"
         And I click by css "body"
         And I press "Create Contribution"
+        And I wait until I no longer see "Create Contribution" up to "1000"
         Then I should see "New Contribution 1"
         And I should see "Edit Contribution"
         And I should see "Salaries: Bachelors - Canadian and Permanent Residents"
@@ -44,6 +45,7 @@ Feature: Contributions
         And I press "<<"
         And I click by css "body"
         And I press "Create Contribution"
+        And I wait until I no longer see "Create Contribution" up to "1000"
         Then I should see "New Contribution 2"
         And I should see "Edit Contribution"
         
@@ -81,6 +83,7 @@ Feature: Contributions
         And I fill in "partners_0_amounts_1b" with "1000"
         And I click by css "body"
         And I press "Create Contribution"
+        And I wait until I no longer see "Create Contribution" up to "1000"
         Then I should see "New Contribution 2"
         And I should see "Edit Contribution"
         And I should see "Salaries: Bachelors - Foreign"
