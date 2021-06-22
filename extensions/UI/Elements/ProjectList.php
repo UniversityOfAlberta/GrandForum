@@ -68,7 +68,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
                                 <fieldset><legend>Reasoning</legend>
                                     <p>Date Effective:<input type='text' class='datepicker' id='{$this->id}_datepicker{$proj->getName()}' name='{$partialId}_datepicker[{$proj->getName()}]' /></p>
                                     Additional Comments:<br />
-                                    <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;' ></textarea>
+                                    <textarea name='{$partialId}_comment[{$proj->getName()}]' cols='15' rows='4' style='height:auto;'></textarea>
                                 </fieldset>
                              </div>";
                 }
