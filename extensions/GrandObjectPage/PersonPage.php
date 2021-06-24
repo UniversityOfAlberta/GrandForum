@@ -17,8 +17,8 @@ class PersonPage {
         global $config;
         $name = $title->getNSText();
         $referrer = @$_SERVER['HTTP_REFERER'];
-        $cameFromWebsite = (strstr(@$_SERVER['HTTP_REFERER'], "{$config->getValue('networkSite')}") !== false ||
-                            strstr(@$_SERVER['HTTP_REFERER'], "{$config->getValue('domain')}") !== false);
+        $cameFromWebsite = (@strstr($_SERVER['HTTP_REFERER'], "{$config->getValue('networkSite')}") !== false ||
+                            @strstr($_SERVER['HTTP_REFERER'], "{$config->getValue('domain')}") !== false);
         if($config->getValue('guestLockdown') && !$cameFromWebsite && !$user->isLoggedIn()){
             $result = false;
             return true;
