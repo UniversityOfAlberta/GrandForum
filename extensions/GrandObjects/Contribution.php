@@ -952,8 +952,18 @@ class Contribution extends BackboneModel {
 
 global $config;
 if($config->getValue('networkName') == "MtS"){
-    unset(Contribution::$cashMap["3"]);
-    unset(Contribution::$cashMap["8"]);
+    //unset(Contribution::$cashMap["3"]);
+    //unset(Contribution::$cashMap["8"]);
+    Contribution::$cashMap = array("c_equi" => "Equipment, Software",
+                                   "c_mate" => "Materials",
+                                   "c_logi" => "Logistical Support of Field Work",
+                                   "c_srvc" => "Provision of Services",
+                                   "c_faci" => "Use of Company Facilites",
+                                   "c_sifi" => "Salaries of Scientific Staff",
+                                   "c_mngr" => "Salaries of Managerial and Administrative Staff",
+                                   "c_trvl" => "Project-related Travel",
+                                   "c_othe" => "Other");
+    
 }
 
 Contribution::$subTypeMap = array("none" => "None") + 
