@@ -119,6 +119,7 @@ $apiRequest->addAction('Hidden','contribution/:id/:rev_id', 'ContributionAPI');
 
 // University
 $apiRequest->addAction('Hidden','university', 'UniversityAPI');
+$apiRequest->addAction('Hidden','university/current', 'UniversityAPI');
 $apiRequest->addAction('Hidden','university/:id', 'UniversityAPI');
 $apiRequest->addAction('Hidden','departments', 'DepartmentAPI');
 
