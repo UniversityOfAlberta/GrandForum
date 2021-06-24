@@ -52,6 +52,7 @@ abstract class UIElement {
     var $validations;
     var $extraValidations;
     var $attr;
+    var $colspan = 1;
     
     function UIElement($id, $name, $value, $validations){
         $this->parent = null;

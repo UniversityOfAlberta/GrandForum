@@ -27,6 +27,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
 
     static $scenarioId = 0;
     static $stepId;
+    static $skipScreenshot = false;
+    static $screenshotTaken = false;
     
     /**
      * Initializes context.
@@ -42,7 +44,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     }
     
     public function spin($lambda, $wait = 5000, $args=array()){
-        $interval = 500*1000;
+        $interval = 50*1000;
         $timeElapsed = 0;
         $start = microtime(true);
         $time = microtime(true);
@@ -114,12 +116,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
         catch(Exception $e){
             
         }*/
+        if((strstr(strtolower($event->getStep()->getText()), "i should see") !== false ||
+            strstr(strtolower($event->getStep()->getText()), "i should not see") !== false)){
+            self::$skipScreenshot = true;
+        }
+        self::$screenshotTaken = false;
         try{
-            $currentSession->iTakeAScreenshot();
+            if(!self::$skipScreenshot){
+                $currentSession->iTakeAScreenshot();
+                self::$screenshotTaken = true;
+            }
         }
         catch(Exception $e){
             
         }
+        self::$skipScreenshot = false;
         self::$stepId++;
     }
 
@@ -234,6 +245,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @Then /^"([^"]*)" should be subscribed to "([^"]*)"$/
      */
     public function shouldBeSubscribedTo($email, $list){
+        self::$skipScreenshot = true;
         $command = "/usr/lib/mailman/bin/list_members $list";
         exec($command, $output);
         $found = false;
@@ -249,6 +261,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @Then /^"([^"]*)" should not be subscribed to "([^"]*)"$/
      */
     public function shouldNotBeSubscribedTo($email, $list){
+        self::$skipScreenshot = true;
         $command = "/usr/lib/mailman/bin/list_members $list";
         exec($command, $output);
         $found = false;
@@ -264,6 +277,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      * @Then /^unsubscribe "([^"]*)" from "([^"]*)"$/
      */
     public function unsubscribeFrom($email, $list){
+        self::$skipScreenshot = true;
         $command =  "/usr/lib/mailman/bin/remove_members -n -N $list $email";
 		exec($command, $output);
 		assertTrue(count($output) == 0 || (count($output) > 0 && $output[0] == ""));
@@ -283,6 +297,32 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function iWait($ms){
         $this->getSession()->wait($ms);
+    }
+    
+
+    
+    /**
+     * @Given /^I wait until I see "([^"]*)" in "([^"]*)" up to "([^"]*)"$/
+     */
+    public function iWaitOrUntilISeeIn($text, $sel, $ms){
+        $this->spin(function($context, $args){
+            if(strstr($context->getSession()->getPage()->find('css', $args['sel'])->getText(), $args['text']) !== false){;
+                return true;
+            }
+            return false;
+        }, $ms, array('sel' => $sel, 'text' => $text));
+    }
+    
+    /**
+     * @Given /^I wait until I no longer see "([^"]*)" in "([^"]*)" up to "([^"]*)"$/
+     */
+    public function iWaitOrUntilINoLongerSeeIn($text, $sel, $ms){
+        $this->spin(function($context, $args){
+            if(strstr($context->getSession()->getPage()->find('css', $args['sel'])->getText(), $args['text']) === false){;
+                return true;
+            }
+            return false;
+        }, $ms, array('sel' => $sel, 'text' => $text));
     }
     
     /**
@@ -355,21 +395,22 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
      */
     public function selectFromChosenWith($id, $text){
         $text = addslashes($text);
-        $this->getSession()->evaluateScript("$('select[name=$id]').val('$text').trigger('chosen:updated').change()");
-    }
-    
-     /**
-     * @Given /^I index expert search$/
-     */
-    public function indexExpertSearch(){
-        $output = array();
-        exec("php ../maintenance/expert.php &> /dev/null", $output);
+        $this->getSession()->evaluateScript("
+            var text = '$text';
+            $('select[name=$id] option').each(function(i, el){
+                if($(el).val() == text ||
+                   $(el).text() == text){
+                    text = $(el).val();
+                }
+            });
+            $('select[name=$id]').val(text).trigger('chosen:updated').change()");
     }
     
     /**
      * @Given /^I validate report xml$/
      */
     public function validateReportXML(){
+        self::$skipScreenshot = true;
         $files = self::listFiles("../extensions/Reporting/Report/ReportXML");
         foreach($files as $file){
             $content = file_get_contents($file);
@@ -436,6 +477,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function iLogIShouldSee($js, $text)
     {
+        self::$skipScreenshot = true;
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
         assertTrue((strpos($json, $text) !== false));
@@ -446,6 +488,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     */
     public function iLogIShouldNotSee($js, $text)
     {
+        self::$skipScreenshot = true;
         $value = $this->getSession()->evaluateScript('return '.$js);
         $json = json_encode($value);
         assertTrue((strpos($json, $text) === false));
@@ -453,6 +496,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext {
     
     static function listFiles($dir){
         global $config;
+        self::$skipScreenshot = true;
         $return = array();
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach($files as $file){

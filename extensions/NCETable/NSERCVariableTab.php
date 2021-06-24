@@ -572,12 +572,6 @@ EOF;
             $gender = (empty($gender))? "Unknown" : $gender;
             $nation = $hqp->getNationality();
             $nation = (empty($nation))? "Unknown" : $nation;
-            if($nation == "Landed Immigrant"){
-                $nation = "Canadian";
-            }
-            else if($nation == "Visa Holder"){
-                $nation = "Foreign";
-            }
 
             $hqp_table[$positions[$pos]][$gender][$nation][0][] = $hqp;
             $movedOns = $hqp->getAllMovedOn();
@@ -1016,15 +1010,8 @@ EOF;
         foreach ($movedons as $m){
             $movedon_data = $m->getMovedOn();
             $nationality = $m->getNationality();
-            if($nationality == "Canadian" || $nationality == "Landed Immigrant"){
-                $nationality = "Canadian";
-            }
-            else if($nationality == ""){
-                $nationality = "Unknown";
-            }
-            else{
-                $nationality = "Foreign";
-            }
+            $nationality = (empty($nationality))? "Unknown" : $nationality;
+            
             //Theses data
             if(isset($movedon_data['works']) && $movedon_data['works']==""){
                 $thesis = $m->getThesis();

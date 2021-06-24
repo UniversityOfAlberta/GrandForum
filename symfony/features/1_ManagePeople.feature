@@ -61,13 +61,13 @@ Feature: Manage People
         And I press "Edit Existing Member"
         And I select "NI User5" from "select"
         And I click "Add"
-        And I wait "1000"
+        And I wait until I see "NI User5" up to "1000"
         And I fill in "Search:" with "NI User5"
         And I click by css "#editRoles"
         And I select "Phase2Project1" from "selectedProject"
         And I click by css "#addProject"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         When I go to "index.php/Phase2Project1:Main"
         Then I should see "User5, NI"
 
@@ -109,7 +109,7 @@ Feature: Manage People
         And I click by css "#editProjects"
         And I select "Phase2Project2" from "name"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Projects saved" up to "1000"
         Then I should see "Projects saved"
         
     Scenario: NI Inactivating HQP
@@ -118,11 +118,11 @@ Feature: Manage People
         When I follow "Manage People"
         And I fill in "Search:" with "HQP ToBeInactivated"
         And I click by css "#editRoles"
-        And I wait "500"
+        And I wait until I see "Highly Qualified Person" up to "1000"
         And I fill in "endDate" with ""
         And I click by css ".ui-state-active"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         Then I should see "Roles saved"
         And "hqp.tobeinactivated@behat-test.com" should not be subscribed to "test-hqps"
     
@@ -132,10 +132,10 @@ Feature: Manage People
         When I follow "Manage People"
         And I fill in "Search:" with "HQP ToBeInactivated"
         And I click by css "#editRoles"
-        And I wait "500"
+        And I wait until I see "Highly Qualified Person" up to "1000"
         And I click by css "#infinity"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         Then I should see "Roles saved"
         And "hqp.tobeinactivated@behat-test.com" should be subscribed to "test-hqps"
     
@@ -145,12 +145,12 @@ Feature: Manage People
         When I follow "Manage People"
         And I fill in "Search:" with "HQP ToBeInactivated"
         And I click by css "#editRoles"
-        And I wait "500"
+        And I wait until I see "Highly Qualified Person" up to "1000"
         And I click by css "input[name=endDate]"
         And I click by css ".ui-datepicker-next"
         And I click by css ".ui-datepicker-calendar .ui-state-default"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         Then I should see "Roles saved"
         And "hqp.tobeinactivated@behat-test.com" should not be subscribed to "test-hqps"
         
@@ -184,7 +184,7 @@ Feature: Manage People
         And I click by css "#addProject"
         Then I should not see "There should be a project associated with this role"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         When I go to "index.php/Phase2Project5:Main"
         Then I should see "User3, PL"
         When I go to "index.php/PL:PL.User3?tab=projects"
@@ -198,7 +198,7 @@ Feature: Manage People
         And I click by css "#editRoles"
         And I click by css "input[name=deleted]"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Roles saved" up to "1000"
         And "ni.user3@behat-test.com" should not be subscribed to "test-leaders"
         
     Scenario: Admin Adding TL
@@ -209,7 +209,7 @@ Feature: Manage People
         And I press "Add Theme"
         And I select "Theme1" from "name"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Themes saved" up to "1000"
         And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User3"
         
@@ -222,7 +222,7 @@ Feature: Manage People
         And I select "Theme1" from "name"
         And I click by css "input[name=coordinator]"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Themes saved" up to "1000"
         And I go to "index.php/NETWORK:Themes_II"
         Then I should see "NI User4"
         
@@ -232,13 +232,13 @@ Feature: Manage People
         And I press "Edit Existing Member"
         And I select "HQP User4" from "select"
         And I click "Add"
-        And I wait "1000"
+        And I wait until I see "HQP User4" up to "1000"
         And I fill in "Search:" with "HQP User4"
         And I click by css "#editRelations"
         And I press "Add Relationship"
         And I select "Supervises" from "type"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Relations saved" up to "1000"
         Then I should see "Relations saved"
         
     Scenario: Removing Supervises relations
@@ -246,11 +246,11 @@ Feature: Manage People
         When I follow "Manage People"
         And I fill in "Search:" with "HQP User4"
         And I click by css "#editRelations"
-        And I wait "500"
+        And I wait until I see "Edit Relations" up to "1000"
         And I fill in "endDate" with ""
         And I click by css ".ui-state-active"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Relations saved" up to "1000"
         Then I should see "Relations saved"
         
     Scenario: Adding Works With relations
@@ -261,7 +261,7 @@ Feature: Manage People
         And I press "Add Relationship"
         And I select "Works With" from "type"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Relations saved" up to "1000"
         Then I should see "Relations saved"
         
     Scenario: Adding University information
@@ -274,7 +274,7 @@ Feature: Manage People
         And I fill in "combo_department" with "Test Department"
         And I select "Graduate Student - Master's" from "position"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Institutions saved" up to "1000"
         Then I should see "Institutions saved"
         
     Scenario: Updating University information
@@ -284,5 +284,5 @@ Feature: Manage People
         And I click by css "#editUniversities"
         And I fill in "combo_department" with "Test Department Updated"
         And I press "Save"
-        And I wait "1000"
+        And I wait until I see "Institutions saved" up to "1000"
         Then I should see "Institutions saved"

@@ -39,7 +39,12 @@ class MyHtmlFormatter extends HtmlFormatter {
 
     protected function printStep($step, $result, $definition = null, $snippet = null, $exception = null){
         $this->writeln('<li class="' . $this->getResultColorCode($result) . '">');
-        $this->writeln("<a title='".str_replace("'", "&#39;", $step->getText())."' rel='scenario".FeatureContext::$scenarioId."' class='colorbox ".$this->getResultColorCode($result)."' href='../screenshots/".FeatureContext::$scenarioId."_".(FeatureContext::$stepId-1).".png'>");
+        if(FeatureContext::$screenshotTaken){
+            $this->writeln("<a title='".str_replace("'", "&#39;", $step->getText())."' rel='scenario".FeatureContext::$scenarioId."' class='colorbox {$this->getResultColorCode($result)}' href='../screenshots/".FeatureContext::$scenarioId."_".(FeatureContext::$stepId-1).".png'>");
+        }
+        else{
+            $this->writeln("<a title='".str_replace("'", "&#39;", $step->getText())."' class='{$this->getResultColorCode($result)}'>");
+        }
         PrettyFormatter::printStep($step, $result, $definition, $snippet, $exception);
         $this->writeln("</a></li>");
     }

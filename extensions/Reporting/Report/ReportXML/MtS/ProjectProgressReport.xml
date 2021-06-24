@@ -412,7 +412,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
     </ReportSection>
     <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
         <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true"
-                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General public,Other)|Textarea|Textarea|Textarea|Date" 
+                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Other)|Textarea|Textarea|Textarea|Date" 
                     indices="activity|endgroup|activities|impact|reach|date" 
                     labels="Knowledge Mobilization Activity|End Group(s)&lt;br />&lt;small style='font-weight:normal;'>(Select the End Group(s) the Knowledge Mobilization Activity engaged)&lt;/small>|Knowledge Mobilization Activities&lt;br />&lt;small style='font-weight:normal;'>(include links to related materials)&lt;/small>|Impact&lt;br />&lt;small style='font-weight:normal;'>(i.e., what happened once the end user group engaged with your KMb materials?)&lt;/small>|Actual Reach/Projected reach per selected End Group&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Date(s) of Activity/ Projected Date of Activity" 
                     sizes="200|200|200|200|200|75">
