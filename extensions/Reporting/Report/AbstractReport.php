@@ -56,6 +56,7 @@ abstract class AbstractReport extends SpecialPage {
     var $pdfAllProjects;
     var $showInstructions = true;
     var $allowIdProjects = false;
+    var $encrypt = false;
     var $variables = array();
     
     /**
@@ -544,6 +545,10 @@ abstract class AbstractReport extends SpecialPage {
         $this->header = $header;
     }
     
+    function setEncrypt($encrypt){
+        $this->encrypt = $encrypt;
+    }
+    
     // Adds a new section to this Report
     function addSection($section, $position=null){
         $section->setParent($this);
@@ -942,7 +947,7 @@ abstract class AbstractReport extends SpecialPage {
                         $data = "";
                         $pdf = PDFGenerator::generate("{$report->person->getNameForForms()}_{$report->name}", $wgOut->getHTML(), "", $me, null, false, $report, false, $report->orientation);
                         $sto = new ReportStorage($this->person, $project);
-                        $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year);
+                        $sto->store_report($data, $pdf['html'], $pdf['pdf'], 0, 0, $report->pdfType, $this->year, $this->encrypt);
                         if($submit){
                             $report->submitReport($person);
                         }
@@ -961,7 +966,7 @@ abstract class AbstractReport extends SpecialPage {
                 exit;
             }
             $sto = new ReportStorage($this->person, $this->project);
-            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year);
+            $sto->store_report($data, $pdf['html'],$pdf['pdf'], 0, 0, $report->pdfType, $this->year, $this->encrypt);
             $tok = $sto->metadata('token');
             $tst = $sto->metadata('timestamp');
             $len = $sto->metadata('pdf_len');

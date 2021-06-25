@@ -23,6 +23,7 @@ abstract class AbstractReportItem {
     var $extra;
     var $extraIndex;
     var $private;
+    var $encrypt;
     var $deleted;
     var $blobSection;
     var $blobItem;
@@ -47,6 +48,7 @@ abstract class AbstractReportItem {
         $this->productId = 0;
         $this->extra = array();
         $this->private = false;
+        $this->encrypt = false;
         $this->deleted = false;
     }
     
@@ -143,6 +145,11 @@ abstract class AbstractReportItem {
     // Sets whether or not this item should be treated as private or not
     function setPrivate($private){
         $this->private = $private;
+    }
+    
+    // Whether to encrypt or not
+    function setEncrypt($encrypt){
+        $this->encrypt = $encrypt;
     }
     
     /**
@@ -427,7 +434,7 @@ abstract class AbstractReportItem {
             case BLOB_HTML:
                 $value = str_replace("\00", "", $value); // Fixes problem with the xml backup putting in random null escape sequences
                 if(is_string($value)){
-                    $blob->store(trim($value), $blob_address);
+                    $blob->store(trim($value), $blob_address, $this->encrypt);
                 }
                 break;
             case BLOB_ARRAY:
@@ -452,17 +459,17 @@ abstract class AbstractReportItem {
                     }
                 }
                 eval("\$blob_data$accessStr = \$value;");
-                $blob->store($blob_data, $blob_address);
+                $blob->store($blob_data, $blob_address, $this->encrypt);
                 break;
             case BLOB_EXCEL:
                 if(mb_check_encoding($value, 'UTF-8')){
                     $value = utf8_decode($value);
                 }
-                $blob->store($value, $blob_address);
+                $blob->store($value, $blob_address, $this->encrypt);
 	            $blob->load($blob_address);
 	            break;
 	        case BLOB_RAW:
-	            $blob->store(utf8_decode($value), $blob_address);
+	            $blob->store(utf8_decode($value), $blob_address, $this->encrypt);
 	            $blob->load($blob_address);
 	            break;
         }   

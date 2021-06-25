@@ -123,6 +123,39 @@ A special type of ReportItem & ReportItemSet are conditionals.  If, ElseIf, Else
     
 If, ElseIf and Else can be either a ReportItem or a ReportItemSet.  For is only a ReportItemSet.
 
+Encryption
+----------
+
+ReportItems aswell as entire Reports can be encrypted by adding the encrypt="true" to the element.  If this is done to a PDF XML, it will encrypt the pdf aswell.
+
+Some setup needs to be done though.  You will need to run the keygen.php script from maintenance and save to a file:
+
+.. code-block:: sh
+
+    php keygen.php > encrypt.key
+    
+Then you should move it to a more secure location, like /etc/pki/tls/private/ and also make sure the file permissions are set to be root only
+
+.. code-block:: sh
+
+    sudo mv encrypt.key /etc/pki/tls/private/encrypt.key
+    sudo chown root:root /etc/pki/tls/private/encrypt.key
+    sudo chmod 600 /etc/pki/tls/private/encrypt.key
+
+Then make sure Apache reads this into an envionment variable at startup.  This could be at a couple different locations, like /etc/apache2/envvars or /etc/sysconfig/httpd.  Once you found the file add this to the file:
+
+.. code-block:: sh
+
+    export ENC_KEY=$(cat /etc/pki/tls/private/encrypt.key)
+    
+And finally add the following to the Apache config
+
+.. code-block:: sh
+
+    PassEnv ENC_KEY
+    
+Now restart Apache and encryption should work.
+
 PDF Generation
 --------------
 

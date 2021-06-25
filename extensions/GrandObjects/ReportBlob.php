@@ -52,6 +52,8 @@ class ReportBlob {
 	
 	// The hash for this blob (based on time of creation, user, project etc.)
 	private $_md5;
+	
+	private $_encrypted;
 
 	function __construct($type = BLOB_NULL, $year = 0, $owner = 0, $proj = 0) {
 		$this->_type = $type;
@@ -78,6 +80,7 @@ class ReportBlob {
 		$this->_blob_id = null;
 		$this->_changed = null;
 		$this->_md5 = null;
+		$this->_encrypted = 0;
 	}
 
 
@@ -128,7 +131,7 @@ class ReportBlob {
 	///	  components have a blank key and/or associated value).
 	///	- DomainException (blob type is null).
 	///	- UnexpectedValueException (unknown blob type).
-	public function store(&$data, $address = null) {
+	public function store(&$data, $address=null, $encrypt=false) {
 		// Some checks before trying to actually store data.
 		global $wgImpersonating, $wgRealUser;
 		Cache::delete($this->getCacheId($address));
@@ -177,9 +180,16 @@ class ReportBlob {
 			// Unexpected type -- complain about it.
 			throw new UnexpectedValueException('Attempted to store a blob of an unknown type (new type registered?).');
 		}
+		
+		$this->_data_transformed = $this->_data;
 
+        // Encrypt
+        if($encrypt){
+            $this->_data_transformed = encrypt($this->_data_transformed);
+            $this->_encrypted = 1;
+        }
 		// Prepare data for writing into the database.
-		$this->_data_transformed = DBFunctions::escape($this->_data);
+		$this->_data_transformed = DBFunctions::escape($this->_data_transformed);
 
 		// Prepare the address for an SQL statement.
 		$where_list = array();
@@ -203,10 +213,12 @@ class ReportBlob {
 			// Update query.
 			$this->_blob_id = $res[0]['blob_id'];
 			
-			$status = DBFunctions::execSQL("UPDATE grand_report_blobs SET data = '{$this->_data_transformed}', " .
-				"blob_type = {$this->_type} ," .
-				"edited_by = {$impersonateId} " .
-				"WHERE blob_id = {$this->_blob_id}", true);
+			$status = DBFunctions::execSQL("UPDATE grand_report_blobs 
+			    SET data = '{$this->_data_transformed}', 
+				    blob_type = {$this->_type} ,
+				    edited_by = {$impersonateId} ,
+				    encrypted = {$this->_encrypted}
+			    WHERE blob_id = {$this->_blob_id}", true);
 	        if($wgImpersonating){
 	            $oldData = DBFunctions::escape($res[0]['data']);
 	            $impersonateId = $wgRealUser->getId();
@@ -222,9 +234,9 @@ class ReportBlob {
 			$insert_keys = implode(',', array_keys($address));
 			$insert_data = "'".implode("','", array_values($address))."'";
 			DBFunctions::execSQL("INSERT INTO grand_report_blobs " .
-				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5) " .
+				"(edited_by, year, user_id, proj_id, {$insert_keys}, changed, blob_type, data, md5, encrypted) " .
 				"VALUES ({$impersonateId}, {$this->_year}, {$this->_owner_id}, {$this->_proj_id}, " .
-				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}');", true);
+				"{$insert_data}, CURRENT_TIMESTAMP, {$this->_type}, '{$this->_data_transformed}', '{$md5}', {$this->_encrypted});", true);
 			if($wgImpersonating){
 			    $res = DBFunctions::execSQL("SELECT blob_id FROM grand_report_blobs WHERE " .
 			                                "user_id = {$this->_owner_id} AND " .
@@ -264,6 +276,9 @@ class ReportBlob {
 		$this->_changed = $dbdata['changed'];
 		$this->_type = $dbdata['blob_type'];
 		$this->_md5 = $dbdata['md5'];
+		$this->_encrypted = $dbdata['encrypted'];
+		
+		$this->_data = ($this->_encrypted) ? decrypt($dbdata['data']) : $dbdata['data'];
 
 		// Undo data transformations, if necessary.
 		switch ($this->_type) {
@@ -278,16 +293,14 @@ class ReportBlob {
 		case BLOB_CURRENTMILESTONE:
 		case BLOB_CONTRIBUTION:
 			// Unserialize.
-			$this->_data = unserialize($dbdata['data']);
+			$this->_data = unserialize($this->_data);
 			if ($this->_data === false)
 				throw new RuntimeException("Unserialization of blob #{$this->_blob_id} failed.");
 			break;
-
 		default:
 			// Assume any other method does not need transforming.
-			$this->_data = $dbdata['data'];
+            break;
 		}
-
 		return true;
 	}
 
@@ -360,8 +373,9 @@ class ReportBlob {
 			$ret = $this->populate($res[0]);
             break;
 		}
-		if($this->_type != BLOB_RAW && $this->_owner_id !== "%"){
+		if($this->_type != BLOB_RAW && $this->_owner_id !== "%" && !$this->_encrypted){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
+		    // Also don't cache if it is encrypted
 		    Cache::store($cacheId, $this->_data);
 		}
 		return $ret;

@@ -573,3 +573,32 @@ function recursive_implode($glue, $array, $include_keys = false, $trim_all = tru
 
 	return (string) $glued_string;
 }
+
+function encrypt($plaintext){
+    if(!isset($_SERVER['ENC_KEY'])){
+        throw new Exception('ENC_KEY not defined');
+    }
+    $key = $_SERVER['ENC_KEY'];
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext_raw = openssl_encrypt($plaintext, $cipher, $key, 0, $iv);
+    $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+    $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+    return $ciphertext;
+}
+
+function decrypt($ciphertext){
+    if(!isset($_SERVER['ENC_KEY'])){
+        throw new Exception('ENC_KEY not defined');
+    }
+    $key = $_SERVER['ENC_KEY'];
+    $c = base64_decode($ciphertext);
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = substr($c, 0, $ivlen);
+    $hmac = substr($c, $ivlen, $sha2len=32);
+    $ciphertext_raw = substr($c, $ivlen+$sha2len);
+    $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, 0, $iv);
+    return $original_plaintext;
+}
+
+?>
