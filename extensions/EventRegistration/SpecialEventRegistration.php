@@ -62,6 +62,10 @@ class SpecialEventRegistration extends SpecialPage{
         $defaultEvent = "";
         $eventOptions = array();
         $event = EventPosting::newFromId(@$_GET['event']);
+        if(date('Y-m-d') >= $event->getStartDate()){
+            $wgOut->addHTML("This event has already past");
+            return;
+        }
         $default = $event;
         if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
             $eventOptions[$event->id] = $event->title;
