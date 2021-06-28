@@ -217,7 +217,7 @@ class ReportBlob {
 			    SET data = '{$this->_data_transformed}', 
 				    blob_type = {$this->_type} ,
 				    edited_by = {$impersonateId} ,
-				    encrypted = {$this->_encrypted}
+				    encrypted = '{$encrypt}'
 			    WHERE blob_id = {$this->_blob_id}", true);
 	        if($wgImpersonating){
 	            $oldData = DBFunctions::escape($res[0]['data']);
