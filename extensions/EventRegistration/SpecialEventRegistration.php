@@ -62,7 +62,7 @@ class SpecialEventRegistration extends SpecialPage{
         $defaultEvent = "";
         $eventOptions = array();
         $event = EventPosting::newFromId(@$_GET['event']);
-        if(date('Y-m-d') >= $event->getStartDate()){
+        if($event->getId() != 0 && date('Y-m-d') >= $event->getStartDate()){
             $wgOut->addHTML("This event has already past");
             return;
         }
@@ -73,7 +73,7 @@ class SpecialEventRegistration extends SpecialPage{
         }
         $events = EventPosting::getAllPostings();
         foreach($events as $event){
-            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish"){
+            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish" && $event->isRegistrationEnabled()){
                 $eventOptions[$event->id] = $event->title;
             }
         }
