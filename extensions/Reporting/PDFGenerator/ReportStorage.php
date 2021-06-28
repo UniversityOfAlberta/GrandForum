@@ -70,7 +70,7 @@ class ReportStorage {
                 VALUES ({$this->_uid}, {$this->_pid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
             DBFunctions::escape($sdata) . "', '" .
             DBFunctions::escape(utf8_decode($html)) . "', '" .
-            DBFunctions::escape($pdf) . "', $encrypt)";
+            DBFunctions::escape($pdf) . "', '$encrypt')";
 
         DBFunctions::execSQL($sql, true);
         DBFunctions::commit();
