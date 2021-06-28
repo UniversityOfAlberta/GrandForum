@@ -578,6 +578,7 @@ function encrypt($plaintext){
     if(!isset($_SERVER['ENC_KEY'])){
         throw new Exception('ENC_KEY not defined');
     }
+    $plaintext = str_pad($plaintext, 50, "\0", STR_PAD_LEFT); // Pad so that the response can't be inferred from the length of the encrypted string
     $key = $_SERVER['ENC_KEY'];
     $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
     $iv = openssl_random_pseudo_bytes($ivlen);
@@ -598,6 +599,7 @@ function decrypt($ciphertext){
     $hmac = substr($c, $ivlen, $sha2len=32);
     $ciphertext_raw = substr($c, $ivlen+$sha2len);
     $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, 0, $iv);
+    $original_plaintext = ltrim($original_plaintext, "\0");
     return $original_plaintext;
 }
 

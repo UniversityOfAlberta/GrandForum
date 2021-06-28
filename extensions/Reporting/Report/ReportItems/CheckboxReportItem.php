@@ -5,19 +5,20 @@ class CheckboxReportItem extends AbstractReportItem {
 	function render(){
 		global $wgOut;
         $options = $this->parseOptions();
+        $labels = $this->parseLabels();
         $value = $this->getBlobValue();
         $limit = $this->getAttr('limit', 0);
         if(is_array($value)){
             $value = array_filter($value);
         }
         $items = array();
-		foreach($options as $option){
+		foreach($options as $key => $option){
 		    $checked = "";
 		    if(is_array($value) && array_search($option, $value) !== false){
 		        $checked = "checked='checked'";
 		    }
 		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		    $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;' type='checkbox' name='{$this->getPostId()}[]' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$labels[$key]}</div></div>";
 		}
 
         $output = "";
@@ -52,6 +53,11 @@ class CheckboxReportItem extends AbstractReportItem {
 	function parseOptions(){
 	    $options = @explode("|", $this->attributes['options']);
 	    return $options;
+	}
+	
+	function parseLabels(){
+	    $labels = @explode("|", $this->getAttr('labels', $this->getAttr('options')));
+	    return $labels;
 	}
 	
 	function renderForPDF(){
