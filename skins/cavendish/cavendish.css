@@ -454,7 +454,6 @@ input[type=radio][disabled]:hover {
 
 .custom-combobox-input {
     background: #FFFFFF !important;
-    font-weight: bold;
     -moz-border-radius-topright: 0;
 	-webkit-border-top-right-radius: 0;
 	border-top-right-radius: 0;
@@ -511,9 +510,9 @@ select {
 	display:inline-block;
 	padding:3px 3px;
 	margin: 2px;
-	font-weight: bold;
 	outline: none;
 	font-family: "Roboto", Verdana, Arial, sans-serif;
+	font-size: 14px;
 }
 
 option {
@@ -626,7 +625,7 @@ textarea {
 	display:inline-block;
 	padding:6px 6px !important;
 	font-family: "Roboto", Verdana, Arial, sans-serif;
-	font-size: 1em;
+	font-size: 14px;
 	margin:2px;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
