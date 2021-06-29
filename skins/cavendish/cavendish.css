@@ -463,7 +463,7 @@ input[type=radio][disabled]:hover {
 	border-bottom-right-radius: 0;
 	border: 1px solid #CCC !important;
 	margin-right: 0 !important;
-	max-height: 15px !important;
+	height: 17px !important;
 	min-width: 100px;
 }
 
@@ -488,7 +488,7 @@ input[type=radio][disabled]:hover {
     padding-left: 10px !important;
     padding-right: 10px !important;
     
-    line-height: 15px !important;
+    line-height: 17px !important;
     vertical-align: top;
 }
 
@@ -626,7 +626,7 @@ textarea {
 	display:inline-block;
 	padding:6px 6px !important;
 	font-family: "Roboto", Verdana, Arial, sans-serif;
-	font-size: 10pt;
+	font-size: 1em;
 	margin:2px;
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
