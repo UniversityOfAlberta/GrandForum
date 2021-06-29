@@ -314,6 +314,10 @@ class ReportBlob {
 	    $cacheId = $this->getCacheId($address);
 	    if(Cache::exists($cacheId) && !$skipCache && $this->_owner_id !== "%" && strstr($this->_owner_id, "|") === false){
 	        $this->_data = Cache::fetch($cacheId);
+	        if(is_array($this->_data) && isset($this->_data['encrypted'])){
+	            $this->_encrypted = 1;
+	            $this->_data = unserialize(decrypt($this->_data['encrypted']));
+	        }
 	        return true;
 	    }
 		// Some checks before going to the database.
@@ -373,10 +377,15 @@ class ReportBlob {
 			$ret = $this->populate($res[0]);
             break;
 		}
-		if($this->_type != BLOB_RAW && $this->_owner_id !== "%" && !$this->_encrypted){
+		if($this->_type != BLOB_RAW && $this->_owner_id !== "%"){
 		    // Cache the data as long as it isn't a raw type since they can be quite large
 		    // Also don't cache if it is encrypted
-		    Cache::store($cacheId, $this->_data);
+		    if($this->_encrypted){
+		        Cache::store($cacheId, array('encrypted' => encrypt(serialize($this->_data))));
+		    }
+		    else{
+		        Cache::store($cacheId, $this->_data);
+		    }
 		}
 		return $ret;
 	}
