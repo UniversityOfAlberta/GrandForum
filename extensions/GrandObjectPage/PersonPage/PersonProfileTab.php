@@ -516,50 +516,52 @@ EOF;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>";
         if($config->getValue('allowPhotoUpload') || $me->isRoleAtLeast(STAFF)){
             $this->html .= "<tr>
-                                <td align='right'><b>Upload new Photo:</b></td>
-                                <td><input type='file' name='photo' /></td>
-                            </tr>
-                            <tr>
-                                <td></td><td><small><li>For best results, the image should be 300x396</li>
-                                                    <li>Max file size is 5MB</li>
-                                                    <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
+                                <td class='label'>Upload new Photo:</td>
+                                <td class='value'><input type='file' name='photo' />
+                                                  <small>
+                                                    <ul>
+                                                        <li>For best results, the image should be 300x396</li>
+                                                        <li>Max file size is 5MB</li>
+                                                        <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li>
+                                                    </ul>
+                                                    </small></td>
                             </tr>";
         }
         $this->html .= "    <tr>
-                                <td align='right'><b>Website Url:</b></td>
-                                <td><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
+                                <td class='label'>Website Url:</td>
+                                <td class='value'><input type='text' size='30' name='website' value='".str_replace("'", "&#39;", $person->getWebsite())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Google Scholar URL:</b></td>
-                                <td><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
+                                <td class='label'>Google Scholar URL:</td>
+                                <td class='value'><input type='text' size='30' name='googleScholarUrl' placeholder='https://scholar.google.ca/citations?user=XXXXXXXXX' value='".str_replace("'", "&#39;", $person->getGoogleScholar())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Sciverse Id:</b></td>
-                                <td><input type='text' size='30' name='scopus' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getScopus())."' /></td>
+                                <td class='label'>Sciverse Id:</td>
+                                <td class='value'><input type='text' size='30' name='scopus' placeholder='0000000000' value='".str_replace("'", "&#39;", $person->getScopus())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>ORCID:</b></td>
-                                <td><input type='text' size='30' name='orcid' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcid())."' /></td>
+                                <td class='label'>ORCID:</td>
+                                <td class='value'><input type='text' size='30' name='orcid' placeholder='0000-0000-0000-0000' value='".str_replace("'", "&#39;", $person->getOrcid())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>ResearcherID:</b></td>
-                                <td><input type='text' size='30' name='researcherId' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getResearcherId())."' /></td>
+                                <td class='label'>ResearcherID:</td>
+                                <td class='value'><input type='text' size='30' name='researcherId' placeholder='H-0000-0000' value='".str_replace("'", "&#39;", $person->getResearcherId())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>LinkedIn Url:</b></td>
-                                <td><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
+                                <td class='label'>LinkedIn Url:</td>
+                                <td class='value'><input type='text' size='30' name='linkedin' value='".str_replace("'", "&#39;", $person->getLinkedIn())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Twitter Account:</b></td>
-                                <td><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
+                                <td class='label'>Twitter Account:</td>
+                                <td class='value'><input type='text' name='twitter' value='".str_replace("'", "&#39;", $person->getTwitter())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Office Address:</b></td>
-                                <td><input type='text' size='30' name='office' value='".str_replace("'", "&#39;", $person->getOffice())."' /></td>
+                                <td class='label'>Office Address:</td>
+                                <td class='value'><input type='text' size='30' name='office' value='".str_replace("'", "&#39;", $person->getOffice())."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Phone Number:</b></td>
-                                <td><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
+                                <td class='label'>Phone Number:</td>
+                                <td class='value'><input type='text' name='phone' value='".str_replace("'", "&#39;", $person->getPhoneNumber())."' /></td>
                             </tr>
                         </table></td>";
     }
@@ -595,8 +597,8 @@ EOF;
                 $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
                 $foreignSelected = ($person->getNationality() == "Foreign") ? "selected='selected'" : "";
                 $nationality = "<tr>
-                    <td align='right'><b>Nationality:</b></td>
-                    <td>
+                    <td class='label'>Nationality:</td>
+                    <td class='value'>
                         <select name='nationality'>
                             <option value=''>---</option>
                             <option value='Canadian' $canSelected>Canadian</option>
@@ -615,8 +617,8 @@ EOF;
                 $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
                 $declinedSelected = ($person->getGender() == "Not disclosed") ? "selected='selected'" : "";
                 $gender = "<tr>
-                    <td align='right'><b>Gender:</b></td>
-                    <td>
+                    <td class='label'>Gender:</td>
+                    <td class='value'>
                         <select name='gender'>
                             <option value='' $blankSelected>---</option>
                             <option value='Male' $maleSelected>Male</option>
@@ -635,7 +637,7 @@ EOF;
             if(count($stakeholderCategories) > 0){
                 $blankSelected = (!$person->isStakeholder()) ? "selected='selected'" : "";
                 $stakeholder = "<tr>
-                    <td align='right'><b>Stakeholder Category:</b></td>
+                    <td class='label'>Stakeholder Category:</td>
                     <td>
                         <select name='stakeholder'>
                             <option value='' $blankSelected>---</option>";
@@ -746,28 +748,28 @@ EOF;
         
         $this->html .= "<table>
                             <tr>
-                                <td align='right'><b>First Name:</b></td>
-                                <td><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
+                                <td class='label'>First Name:</td>
+                                <td class='value'><input type='text' name='first_name' value='".str_replace("'", "&#39;", $person->getFirstName())."'></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Middle Name:</b></td>
-                                <td><input type='text' name='middle_name' value='".str_replace("'", "&#39;", $person->getMiddleName())."'></td>
+                                <td class='label'>Middle Name:</td>
+                                <td class='value'><input type='text' name='middle_name' value='".str_replace("'", "&#39;", $person->getMiddleName())."'></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Last Name:</b></td>
-                                <td><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
+                                <td class='label'>Last Name:</td>
+                                <td class='value'><input type='text' name='last_name' value='".str_replace("'", "&#39;", $person->getLastName())."'></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Aliases:</b><br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
-                                <td style='max-width: 0;' valign='top'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
+                                <td class='label'>Aliases:<br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
+                                <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
                             </tr>
                             <tr>
-                                <td align='right'><b>Email:</b></td>";
+                                <td class='label'>Email:</td>";
         if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
-            $this->html .= "<td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
+            $this->html .= "<td class='value'><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
         }
         else{
-            $this->html .= "<td>{$person->getEmail()}</td>";
+            $this->html .= "<td class='value'>{$person->getEmail()}</td>";
         }
         $this->html .= "</tr>
                             {$nationality}
@@ -779,7 +781,6 @@ EOF;
                             {$mitacs}";
         
         $roles = $person->getRoles();
-
         if($me->isRoleAtLeast(STAFF)){
             $this->html .= "<tr>
                                 <td><b>Role Titles:</b></td>
@@ -789,8 +790,8 @@ EOF;
                 if($role->getId() > 0){
                     $roleTitleCombo = new ComboBox("role_title[{$role->getId()}]", "Title", $role->getTitle(), $titles);
                     $this->html .= "<tr>
-                                        <td align='right'><b>{$role->getRole()}:</b></td>
-                                        <td>{$roleTitleCombo->render()}</td>
+                                        <td class='label'>{$role->getRole()}:</td>
+                                        <td class='value'>{$roleTitleCombo->render()}</td>
                                     </tr>";
                 }
             }

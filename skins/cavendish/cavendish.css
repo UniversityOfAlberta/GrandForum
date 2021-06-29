@@ -1149,8 +1149,20 @@ del {
     font-size: 1.0em;
     font-weight: bold;
     vertical-align: top;
-    line-height: 25px;
     white-space:nowrap;
+}
+
+.value {
+    text-align: left;
+    vertical-align: top;
+}
+
+.label::first-line {
+    line-height: 29px;
+}
+
+.value::first-line {
+    line-height: 29px;
 }
 
 .left-align {
