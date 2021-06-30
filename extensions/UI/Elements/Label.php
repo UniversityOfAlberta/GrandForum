@@ -11,9 +11,9 @@ class Label extends UIElement {
     function render(){
         $redStar = "";
         if($this->isValidationSet(VALIDATE_NOT_NULL)){
-            $redStar = "<span style='color:red;'>*</span>";
+            $this->attr('class', $this->attr('class') . ' required');
         }
-        return "<div id='{$this->id}' {$this->renderAttr()} title='{$this->value}'>{$this->name}{$this->colon}<sup>{$redStar}</sup></div>";
+        return "<div id='{$this->id}' {$this->renderAttr()} title='{$this->value}'>{$this->name}{$this->colon}</div>";
     }
 }
 

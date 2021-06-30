@@ -13,7 +13,7 @@ class FormTableRow extends UIElementArray {
                 $html .= "<td style='vertical-align:top;' colspan='{$element->colspan}'>".$element->render()."</td>";
             }
             else{
-                $html .= "<td>".$element->render()."</td>";
+                $html .= "<td class='value'>".$element->render()."</td>";
             }
         }
         return $html."</tr>";

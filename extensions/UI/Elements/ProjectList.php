@@ -39,7 +39,7 @@ class ProjectList extends MultiColumnVerticalCheckBox {
         foreach($themes as $theme => $projs){
             $count = ceil(count($projs)/3);
             $i = 0;
-            $html .= "<div><div style='height:25px;line-height:25px;'><b>{$theme}</b></div>";
+            $html .= "<div><div style='height:29px;line-height:29px;'><b>{$theme}</b></div>";
             foreach($projs as $key => $proj){
                 if($i == 0){
                     $html .= "<div style='display:inline-block;margin-right:75px;vertical-align:top;'>";
