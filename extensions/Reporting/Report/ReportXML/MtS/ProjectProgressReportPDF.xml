@@ -369,50 +369,17 @@ research partners|Designing interview and/or survey questions|Collecting primar
         </Static>
     </ReportSection>
     <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
-        <Static>
+        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true" class="wikitable smaller"
+                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Other)|Textarea|Textarea|Textarea|Date" 
+                    indices="activity|endgroup|activities|impact|reach|date" 
+                    labels="Knowledge Mobilization Activity|End Group(s)|Knowledge Mobilization Activities|Impact|Actual Reach/Projected reach per selected End Group|Date(s) of Activity/ Projected Date of Activity"
+                    sizes="auto|auto|auto|auto|auto|1%">
             <![CDATA[
                 <h2>Knowledge Mobilization Activities and Impact</h2>
                 <h3>5.1 Describe the knowledge mobilization activities you completed in the previous year for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
-                <table width="100%" class="wikitable" frame="box" rules="all">
-                    <tr>
-                        <th>End Group</th>
-                        <th>Knowledge Mobilization Activities (include links to related materials)</th>
-                        <th>Impact (i.e., what happened once the end user group engaged with your KMb materials?)</th>
-                    </tr>
+                {$item}
             ]]>
-        </Static>
-        <For array="Researchers|Policymakers|Government Officials|Funders|Media|General public|Other"> 
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{getExtra()}</td>
-                ]]>
-            </Static>
-            <ReportItem id="activities_{$extraIndex}" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="KMB" rich="true" toolbar="true" statusbar="false" plugins="link lists paste" mentions="{getProjectMilestones(,{getExtra()})}">
-                <![CDATA[
-                    <td>
-                        {$item}
-                    </td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="impact_{$extraIndex}" type="TextareaReportItem" blobType="BLOB_ARRAY" blobItem="KMB" rich="true" toolbar="true" statusbar="false" plugins="link lists paste" mentions="{getProjectMilestones(,{getExtra()})}">
-                <![CDATA[
-                    <td>
-                        {$item}
-                    </td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                    </tr>
-                ]]>
-            </Static>
-        </For>
-        <Static>
-            <![CDATA[
-                </table><br />
-            ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="200">
             <![CDATA[
                 <h3>5.2 What are some of the knowledge mobilization successes the project has achieved in the previous year?</h3>

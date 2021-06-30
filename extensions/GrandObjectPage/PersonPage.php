@@ -16,7 +16,10 @@ class PersonPage {
     function userCanExecute(&$title, &$user, $action, &$result){
         global $config;
         $name = $title->getNSText();
-        if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
+        $referrer = @$_SERVER['HTTP_REFERER'];
+        $cameFromWebsite = (@strstr(referrer, $config->getValue('networkSite')) !== false ||
+                            @strstr(referrer, $config->getValue('domain')) !== false);
+        if($config->getValue('guestLockdown') && !$cameFromWebsite && !$user->isLoggedIn()){
             $result = false;
             return true;
         }

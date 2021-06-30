@@ -37,7 +37,7 @@ class ReportStorage {
     }
 
     /// Store a new report.
-    function store_report(&$data, &$html, &$pdf, $special = 0, $auto = 0, $type = 0, $year = REPORTING_YEAR) {
+    function store_report(&$data, &$html, &$pdf, $special = 0, $auto = 0, $type = 0, $year = REPORTING_YEAR, $encrypt = false) {
         global $wgImpersonating, $wgRealUser, $wgUser;
         $impersonateId = $this->_uid;
         if($wgImpersonating){
@@ -48,22 +48,29 @@ class ReportStorage {
         }
         
         $uname = $this->_person->getName();
+        
+        $len = strlen($pdf);
+        $sdata = serialize($data);
+        
+        if($encrypt){
+            $html = encrypt($html);
+            $sdata = encrypt($sdata);
+            $pdf = encrypt($pdf);
+        }
 
         $tst = time();
-        $sdata = serialize($data);
         $hdata = sha1($sdata);
         $hpdf = sha1($pdf);
-        $len = strlen($pdf);
 
         // The token is the MD5 digest of the user ID, user name, timestamp,
         // the hash of the data and the hash of PDF file.
         $tok = md5($this->_uid . $uname . $tst . $hdata . $hpdf);
 
-        $sql = "INSERT INTO grand_pdf_report (user_id, proj_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf) 
+        $sql = "INSERT INTO grand_pdf_report (user_id, proj_id, generation_user_id, year, type, special, auto, token, timestamp, len_pdf, hash_data, hash_pdf, data, html, pdf, encrypted) 
                 VALUES ({$this->_uid}, {$this->_pid}, {$impersonateId}, {$year}, '{$type}', {$special}, {$auto}, '{$tok}', FROM_UNIXTIME({$tst}), '{$len}', '{$hdata}', '{$hpdf}', '" .
             DBFunctions::escape($sdata) . "', '" .
             DBFunctions::escape(utf8_decode($html)) . "', '" .
-            DBFunctions::escape($pdf) . "')";
+            DBFunctions::escape($pdf) . "', '$encrypt')";
 
         DBFunctions::execSQL($sql, true);
         DBFunctions::commit();
@@ -74,13 +81,8 @@ class ReportStorage {
     /// Retrieves a specific report (PDF) for the user.  The PDF returned
     /// (if any) is a string.
     function fetch_pdf($tok, $strict = true) {
-        if ($this->_cache !== null && isset($this->_cache['pdf']) &&
-                isset($this->_cache['token']) && $this->_cache['token'] === $tok) {
-            return $this->_cache['pdf'];
-        }
-
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
-        $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year 
+        $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, encrypted, generation_user_id, submission_user_id, year 
                 FROM grand_pdf_report 
                 WHERE {$ext} token = '{$tok}' 
                 ORDER BY timestamp DESC LIMIT 1";
@@ -101,8 +103,9 @@ class ReportStorage {
         $this->_cache['len_pdf'] = $res[0]['len_pdf'];
         $this->_cache['generation_user_id'] = $res[0]['generation_user_id'];
         $this->_cache['submission_user_id'] = $res[0]['submission_user_id'];
-        
-        return $res[0]['pdf'];
+        $this->_cache['encrypted'] = $res[0]['encrypted'];
+
+        return ($this->_cache['encrypted']) ? decrypt($res[0]['pdf']) : $res[0]['pdf'];
     }
     
     function mark_submitted($tok) {

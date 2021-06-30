@@ -134,6 +134,9 @@
                         <td>
                             <% _.each(cashMap, function(subType, subId){ %>
                                 <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px', class: 'amount'}) %>&nbsp;<%= subType %>
+                                <% if(subId == "c_othe"){ %>
+                                    <%= HTML.TextBox(this, 'partners.' + i + '.amounts.cash_other', {style: 'width: 250px', placeholder: 'Description'}) %>
+                                <% } %>
                                 <br />
                             <% }.bind(this)); %>
                         </td>

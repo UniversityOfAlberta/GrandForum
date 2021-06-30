@@ -316,6 +316,8 @@ class CavendishTemplate extends QuickTemplate {
 		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
+		    
+		    var today = new Date().toLocaleDateString('en-CA');
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);

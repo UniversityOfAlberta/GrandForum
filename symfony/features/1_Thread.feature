@@ -16,7 +16,7 @@ Feature: Threads
         And I select "Admin" from "roles"
         And I fill in TinyMCE "message" with "This is the description."
         And I press "Save Thread"
-        And I wait "100"
+        And I wait until I see "Thread has been successfully saved" up to "1000"
         Then I should see "Thread has been successfully saved"
 
     Scenario: Viewing list of Threads as Admin
@@ -45,7 +45,7 @@ Feature: Threads
         And I select "CI" from "roles"
         And I fill in TinyMCE "message" with "This is the description."
         And I press "Save Thread"
-        And I wait "100"
+        And I wait until I see "Thread has been successfully saved" up to "1000"
         Then I should see "Thread has been successfully saved"
 
     Scenario: Viewing list of Threads as NI
@@ -59,11 +59,11 @@ Feature: Threads
         When I go to "index.php/Special:MyThreads"
         And I follow "General"
         And I follow "New NI Thread By Admin.User1"
-        And I wait "100"
+        And I wait until I see "Reply to Thread" up to "1000"
         Then I should see "This is the description."
         And I fill in TinyMCE "message" with "Hello World"
         And I press "Add Reply"
-        And I wait "100"
+        And I wait until I see "From: NI User1" up to "1000"
         Then I should see "Hello World"
         
     Scenario: Editing a post as NI
@@ -71,10 +71,10 @@ Feature: Threads
         When I go to "index.php/Special:MyThreads"
         And I follow "General"
         And I follow "New NI Thread By Admin.User1"
-        And I wait "500"
+        And I wait until I see "Reply to Thread" up to "1000"
         And I click by css ".edit-icon"
         And I fill in TinyMCE "message" with "Edited Message"
         And I press "Save"
-        And I wait "100"
+        And I wait until I no longer see "Save" up to "1000"
         Then I should see "Edited Message"
         

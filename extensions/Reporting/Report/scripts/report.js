@@ -266,7 +266,9 @@ $(document).ready(function(){
     });
     
     $('#reportMain').on('change', 'input, select, textarea, button', function() {
-        saveAll();
+        saveAll(function(){
+            updateProgress();
+        });
     });
     
     $('.hiddenFile').change(function(evt){

@@ -20,6 +20,10 @@
                 <td class="label">Visibility:</td>
                 <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
             </tr>
+            <tr>
+                <td class="label">Enable Registration:</td>
+                <td valign="top"><%= HTML.Radio(this, 'enableRegistration', {options: [{option: 'No', value: 0}, {option: 'Yes', value: 1}]}) %></td>
+            </tr>
             <!--tr>
                 <td class="label">Language:</td>
                 <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
@@ -89,10 +93,14 @@
                 <th colspan='2'></th>
                 <th>Delete?</th>
             </tr>
-            <% var images = [image1,image2,image3];
-                for(i = 1; i <= 3; i++){ %>
+            <% var images = [image1,image2,image3,banner1,banner2];
+                for(i = 1; i <= 5; i++){ %>
                 <tr>
-                    <td align="right" style="white-space: nowrap; width: 1%;"><b>Image <%= i %>:</b></td>
+                    <% if(i <= 3){ %>
+                        <td align="right" style="white-space: nowrap; width: 1%;"><b>Image <%= i %>:</b></td>
+                    <% } else { %>
+                        <td align="right" style="white-space: nowrap; width: 1%;"><b>Banner <%= i - 3 %>:</b></td>
+                    <% } %>
                     <td><%= HTML.File(this, 'image' + i, {accept:'image/*',style:'width:300px;'}) %></td>
                     <td rowspan="2" style="white-space:nowrap;">
                     <% if(images[i-1] != ""){ %>

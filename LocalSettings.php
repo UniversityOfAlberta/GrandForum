@@ -553,3 +553,54 @@ function sanitizeInput($str){
 }
 
 function knatsort(&$arr){return uksort($arr,function($a, $b){return strnatcmp($a,$b);});}
+
+// https://gist.github.com/MarxBro/f08a8768f06f57cff4e627cb4a9a4630
+function recursive_implode($glue, $array, $include_keys = false, $trim_all = true){
+	$glued_string = '';
+
+	// Recursively iterates array and adds key/value to glued string
+	array_walk_recursive($array, function($value, $key) use ($glue, $include_keys, &$glued_string)
+	{
+		$include_keys and $glued_string .= $key.$glue;
+		$glued_string .= $value.$glue;
+	});
+
+	// Removes last $glue from string
+	strlen($glue) > 0 and $glued_string = substr($glued_string, 0, -strlen($glue));
+
+	// Trim ALL whitespace
+	$trim_all and $glued_string = preg_replace("/(\s)/ixsm", '', $glued_string);
+
+	return (string) $glued_string;
+}
+
+function encrypt($plaintext){
+    if(!isset($_SERVER['ENC_KEY'])){
+        throw new Exception('ENC_KEY not defined');
+    }
+    $plaintext = str_pad($plaintext, 50, "\0", STR_PAD_LEFT); // Pad so that the response can't be inferred from the length of the encrypted string
+    $key = $_SERVER['ENC_KEY'];
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = openssl_random_pseudo_bytes($ivlen);
+    $ciphertext_raw = openssl_encrypt($plaintext, $cipher, $key, 0, $iv);
+    $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+    $ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+    return $ciphertext;
+}
+
+function decrypt($ciphertext){
+    if(!isset($_SERVER['ENC_KEY'])){
+        throw new Exception('ENC_KEY not defined');
+    }
+    $key = $_SERVER['ENC_KEY'];
+    $c = base64_decode($ciphertext);
+    $ivlen = openssl_cipher_iv_length($cipher="AES-128-CBC");
+    $iv = substr($c, 0, $ivlen);
+    $hmac = substr($c, $ivlen, $sha2len=32);
+    $ciphertext_raw = substr($c, $ivlen+$sha2len);
+    $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, 0, $iv);
+    $original_plaintext = ltrim($original_plaintext, "\0");
+    return $original_plaintext;
+}
+
+?>

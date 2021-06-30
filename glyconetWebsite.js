@@ -78,9 +78,15 @@ function initSideBar(){
         jQuery(".outer_tab").hide();
         jQuery("#" + id).show();
         jQuery("#" + id + "_tab").show();
+        jQuery(".back_button").hide();
+        jQuery("iframe", section).each(function(i, el){
+            this.contentWindow.location.replace('about:blank');
+        });
+        jQuery("iframe", section).hide();
+        jQuery("img.throbber", section).hide();
     });
                                    
-    jQuery.get("https://forum.glyconet.ca/index.php?action=api.university", function(response){
+    jQuery.get("https://forum.glyconet.ca/index.php?action=api.university/current", function(response){
         jQuery(".right-sidebar-wrapper").append("<div id='unis' class='custom-sidebar gdl-divider widget_nav_menu'>");
         jQuery("#unis").append("<h3 class='custom-sidebar-title sidebar-title-color gdl-title'>Participating Institutions</h3>");
         jQuery("#unis").append("<div class='menu-members-container'>");
@@ -125,9 +131,9 @@ function initSideBar(){
         jQuery("iframe", section).hide();
         jQuery("img.throbber", section).hide();
         
-        leftPart.animate({'width': "810px"}, function(){
+        //leftPart.animate({'width': "810px"}, function(){
             rightPart.show();
-        });
+        //});
     });
 }
 
@@ -213,18 +219,18 @@ function initTab(role, selector, tabSelector, fields, cols){
                 jQuery(selector + "_tab > h1").fadeOut();
                 
                 rightPart.hide();
-                leftPart.animate({width: section.width() + "px"});
+                //leftPart.animate({width: section.width() + "px"});
             }
             else{
                 jQuery(selector + "_tab").hide();
                 jQuery(selector + "_tab > h1").hide();
                 
                 rightPart.hide();
-                leftPart.animate({width: section.width() + "px"}, 0);
+                //leftPart.animate({width: section.width() + "px"}, 0);
             }
-            jQuery(".gdl-page-item").width("100%");
-            jQuery(".gdl-page-item > div").width("100%");
-            jQuery(".gdl-page-content iframe").each(function(i, el){
+            jQuery("iframe").closest(".elementor-column").show();
+            //jQuery(".gdl-page-item > div").width("100%");
+            jQuery("iframe").each(function(i, el){
                 this.contentWindow.location.replace('about:blank');
             });
             jQuery("img.throbber").show();
@@ -253,7 +259,7 @@ initTab("SAB", "#sab", "tab-5", ['position','university'], 4);
 initTab("RMC", "#rmc", "tab-6", ['position','university'], 4);
 initTab("NI,NFI", "#network-investigators", "tab-1", ['university'], 4);
 initTab("Collaborator", "#collaborators", "tab-2", ['university'], 4);
-initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 3);
+initTab("SD,Staff,Manager", "#administrative-centre", "tab-3", ['position','university', 'phone', 'email'], 4);
 initTab("GTA", "#gta", "tab-7", ['position','university'], 4);
 initTab("CC", "#cc", "tab-8", ['position','university'], 4);
 initTab("EXEC", "#exec", "tab-9", ['position','university'], 4);

@@ -51,6 +51,11 @@ class TextareaReportItem extends AbstractReportItem {
                     });
                 }
                 $(document).ready(function(){
+                    var saveMCE = function(){
+                        saveAll(function(){
+                            updateProgress();
+                        });
+                    }
                     //$('<div class=\"small\"><b>Note:</b> Inserted images should be at least 150dpi otherwise they will either appear as small or will be distorted if their size is enlarged.</div>').insertBefore('textarea[name={$this->getPostId()}]');
                     var readOnly = false;
                     if($('textarea[name={$this->getPostId()}]').attr('disabled') == 'disabled'){
@@ -131,12 +136,12 @@ class TextareaReportItem extends AbstractReportItem {
                                 ed.on('keyup', updateCount);
                                 ed.on('change', function(e){
                                     updateCount(e);
-                                    saveAll();
+                                    saveMCE();
                                 });
                                 ed.on('init', updateCount);
                                 ed.on('paste', updateCount);
-                                ed.on('undo', saveAll);
-                                ed.on('redo', saveAll);
+                                ed.on('undo', saveMCE);
+                                ed.on('redo', saveMCE);
                             }
                             else{
                                 var updateCount = function(e){
@@ -147,12 +152,12 @@ class TextareaReportItem extends AbstractReportItem {
                                 ed.on('keyup', updateCount);
                                 ed.on('change', function(e){
                                     updateCount(e);
-                                    saveAll();
+                                    saveMCE();
                                 });
                                 ed.on('init', updateCount);
                                 ed.on('paste', updateCount);
-                                ed.on('undo', saveAll);
-                                ed.on('redo', saveAll);
+                                ed.on('undo', saveMCE);
+                                ed.on('redo', saveMCE);
                             }
                         }
                     });

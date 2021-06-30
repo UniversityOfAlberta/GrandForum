@@ -73,8 +73,10 @@ class EditableReportSection extends AbstractReportSection {
             $number = implode(', ', $numbers).'. ';
         }
         
+        $showProgress = (strtolower($this->getAttr('showProgress', 'false')) == 'true') ? "<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'>Section Progress ({$this->getPercentComplete()}%)</span></span>" : "";
+        
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                            <div id='reportHeader'>{$number}{$this->title}<span id='reportProgress'><span style='width:{$this->getPercentComplete()}%;background-color: {$config->getValue('highlightColor')};' id='reportProgressBar'></span><span id='reportProgressLabel'>Section Progress ({$this->getPercentComplete()}%)</span></span></div>
+                             <div id='reportHeader'>{$number}{$this->title}{$showProgress}</div>
                              <hr />
                              <div id='reportBody'>");
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){

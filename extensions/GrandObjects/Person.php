@@ -540,7 +540,7 @@ class Person extends BackboneModel {
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_positions'),
                                     array('*'),
-                                    array('position' => NEQ('')),
+                                    array(),
                                     array('`order`' => 'ASC',
                                           'position' => 'ASC'));
         $positions = array();
@@ -1545,7 +1545,15 @@ class Person extends BackboneModel {
         }
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            return $this->nationality;
+            if($this->nationality != ""){
+                if($this->nationality == "Canadian" || 
+                   $this->nationality == "Landed Immigrant"){
+                    return "Canadian";
+                }
+                else{
+                    return "Foreign";
+                }
+            }
         }
         return "";
     }

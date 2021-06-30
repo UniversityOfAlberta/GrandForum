@@ -54,7 +54,8 @@ class MultiTextReportItem extends AbstractReportItem {
         $maxEntries = $this->getAttr('max', 100);
         $labels = explode("|", $this->getAttr('labels', ''));
         $types = explode("|", $this->getAttr('types', ''));
-        $indices = $this->getIndices($labels);
+        $indices = $this->getAttr('indices', '');
+        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
         $sizes = explode("|", $this->getAttr('sizes', ''));
         $class = $this->getAttr('class', 'wikitable');
         $orientation = $this->getAttr('orientation', 'horizontal');
@@ -86,7 +87,19 @@ EOF;
                             $item .= @"\"<tr id='obj\" + i + \"'><td align='right' width='{$widths[1]}'><b>{$labels[$j]}:</b></td>\" + \n";
                             $align = "left";
                         }
-                        if(@$types[$j] == "NI"){
+                        if(@$types[$j] == "Milestones"){
+                            $project = Project::newFromHistoricId($this->projectId);
+                            $milestones = array("");
+                            $people = Person::getAllPeople(NI);
+                            foreach($project->getMilestones() as $milestone){
+                                $names[] = $milestone->title;
+                            }
+                            $combobox = new SelectBox("{$this->getPostId()}[\" + i + \"][$index]", "Milestone", '', $names);
+                            $combobox->attr('class', 'raw');
+                            $combobox->attr('style', "width:{$sizes[$j]}px;");
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><span>".$combobox->renderSelect()."</span></td>\" + \n";
+                        }
+                        else if(@$types[$j] == "NI"){
                             $names = array("");
                             $people = Person::getAllPeople(NI);
                             foreach($people as $person){
@@ -123,14 +136,26 @@ EOF;
                             $item .= "</td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                                strstr(strtolower(@$types[$j]), "combobox") !== false){
+                                strstr(strtolower(@$types[$j]), "combobox") !== false ||
+                                strstr(strtolower(@$types[$j]), "chosen") !== false){
                             if(!$isVertical){
                                 $align = "center";
                             }
-                            $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                            $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]'>";
+                            $cls = "";
+                            $multi = "";
+                            $mIndex = "";
+                            if(strstr(strtolower(@$types[$j]), "select") !== false){
+                                $cls = "raw";
+                            }
+                            else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
+                                $cls = "chosen";
+                                $multi = "multiple";
+                                $align = "left";
+                                $mIndex = "[]";
+                            }
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]{$mIndex}' $multi>";
                             $matches = array();
-                            preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                            preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
                             $matches[2] = str_replace('\,', '\comma', $matches[2]);
                             $matches = @explode(",", $matches[2]);
                             if(array_search(@str_replace(',', '\comma', $value[$index]), $matches) === false && @$value[$index] != ""){
@@ -170,7 +195,11 @@ EOF;
                     }
                     $item .= <<<EOF
                     );
-                $("#table_{$this->getPostId()} tr#obj" + i + " select:not(.raw)").combobox();
+                $("#table_{$this->getPostId()} tr#obj" + i + " select:not(.raw):not(.chosen)").combobox();
+                $("#table_{$this->getPostId()} tr#obj" + i + " select.chosen").chosen({width: "100%"});
+                $("#table_{$this->getPostId()} tr#obj" + i + " div.chosen-container").css({"box-sizing": "border-box",
+                                                                                           "margin": 0,
+                                                                                           "padding": 3});
                 max{$this->getPostId()}++;
                 updateTable{$this->getPostId()}();
             }
@@ -209,7 +238,11 @@ EOF;
                 });
             }
             $(document).ready(function(){
-                $("#table_{$this->getPostId()} select:not(.raw)").combobox();
+                $("#table_{$this->getPostId()} select:not(.raw):not(.chosen)").combobox();
+                $("#table_{$this->getPostId()} select.chosen").chosen({width: "100%"});
+                $("#table_{$this->getPostId()} div.chosen-container").css({"box-sizing": "border-box",
+                                                                           "margin": 0,
+                                                                           "padding": 3});
             });
         </script>
         <input type='hidden' name='{$this->getPostId()}[-1]' value='' />
@@ -247,7 +280,19 @@ EOF;
                         $item .= @"<tr id='obj$i' class='$i'><td width='{$widths[1]}' align='right'><b>{$labels[$j]}:</b></td>";
                         $align = "left";
                     }
-                    if(@$types[$j] == "NI"){
+                    if(@$types[$j] == "Milestones"){
+                            $project = Project::newFromHistoricId($this->projectId);
+                            $milestones = array("");
+                            $people = Person::getAllPeople(NI);
+                            foreach($project->getMilestones() as $milestone){
+                                $names[] = $milestone->title;
+                            }
+                            $combobox = new SelectBox("{$this->getPostId()}[$i][$index]", "Milestone", $value[$index], $names);
+                            $combobox->attr('class', 'raw');
+                            $combobox->attr('style', "width:{$sizes[$j]}px;");
+                            $item .= "<td align='$align'>".$combobox->render()."</td>";
+                        }
+                    else if(@$types[$j] == "NI"){
                         $names = array("");
                         $people = Person::getAllPeople(NI);
                         foreach($people as $person){
@@ -290,22 +335,37 @@ EOF;
                         $item .= "</td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "select") !== false || 
-                            strstr(strtolower(@$types[$j]), "combobox") !== false){
+                            strstr(strtolower(@$types[$j]), "combobox") !== false ||
+                            strstr(strtolower(@$types[$j]), "chosen") !== false){
                         if(!$isVertical){
                             $align = "center";
                         }
-                        $cls = (strstr(strtolower(@$types[$j]), "select") !== false) ? "raw" : "";
-                        $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px' class='{$cls}' name='{$this->getPostId()}[$i][$index]'>";
+                        $cls = "";
+                        $multi = "";
+                        $mIndex = "";
+                        if(strstr(strtolower(@$types[$j]), "select") !== false){
+                            $cls = "raw";
+                        }
+                        else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
+                            $cls = "chosen";
+                            $multi = "multiple";
+                            $align = "left";
+                            $mIndex = "[]";
+                        }
+                        $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[$i][$index]{$mIndex}' {$multi}>";
                         $matches = array();
-                        preg_match("/^(Select|ComboBox)\((.*)\)$/i", $types[$j], $matches);
+                        preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
                         $matches[2] = str_replace('\,', '\comma', $matches[2]);
                         $matches = @explode(",", $matches[2]);
-                        if(array_search(@str_replace(',', '\comma', $value[$index]), $matches) === false && @$value[$index] != ""){
-                            $item .= @"<option selected>{$value[$index]}</option>";
+                        $vals = @(is_array($value[$index])) ? @$value[$index] : @array($value[$index]);
+                        foreach($vals as $val){
+                            if(array_search(@str_replace(',', '\comma', $val), $matches) === false && @$val != ""){
+                                $item .= @"<option selected>{$val}</option>";
+                            }
                         }
                         foreach($matches as $match){
                             $match = trim(str_replace('\comma', ',', $match));
-                            if($match == @$value[$index]){
+                            if(array_search($match, $vals) !== false){
                                 $item .= "<option selected>{$match}</option>";
                             }
                             else{
@@ -397,7 +457,8 @@ EOF;
             $rules = "all";
             $frame = "box";
         }
-        $indices = $this->getIndices($labels);
+        $indices = $this->getAttr('indices', '');
+        $indices = ($indices == "") ? $this->getIndices($labels) : explode("|", $indices);
         $values = $this->getBlobValue();
         if($values == null){
             $values = array();
@@ -474,6 +535,9 @@ EOF;
                            strstr(strtolower(@$types[$j]), "combobox") !== false || 
                            strstr(strtolower(@$types[$j]), "radio") !== false){
                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                        }
+                        else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
+                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(", ", $value[$index])."</td>";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";

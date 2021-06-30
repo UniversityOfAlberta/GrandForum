@@ -35,11 +35,11 @@ Feature: Search
     Scenario: Guest searches for HQP
         Given I am on "index.php"
         When I fill in "globalSearchInput" with "HQP"
-        Then I wait "5000"
+        And I wait until I no longer see "People" in "#globalSearch" up to "5000"
         Then I should not see "HQP User1"
         
     Scenario: Guest searches for Innactive User
         Given I am on "index.php"
         When I fill in "globalSearchInput" with "Innactive"
-        Then I wait "5000"
+        And I wait until I no longer see "People" in "#globalSearch" up to "5000"
         Then I should not see "HQP ToBeInactivated"

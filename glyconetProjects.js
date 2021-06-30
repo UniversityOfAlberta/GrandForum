@@ -13,7 +13,7 @@ if(project != ""){
     $("#project-page").show();
     $("#project-list").hide();
     $.get('https://forum.glyconet.ca/index.php?action=api.project/' + project, function(response){
-        $("#project-image").html("<img style='width:100%;border-radius:10px;' src='http://canadianglycomics.ca/wp-content/uploads/" + response.themeName.replace(/ /g, '-') + ".jpg' />");
+        //$("#project-image").html("<img style='width:100%;border-radius:10px;' src='http://canadianglycomics.ca/wp-content/uploads/" + response.themeName.replace(/ /g, '-') + ".jpg' />");
         $("#project-title").html(response.fullname);
         $(".gdl-page-title").html("<a style='color: #0e4c61;' href='http://canadianglycomics.ca/projects/'>Projects</a> » " + response.name);
         var leaders = new Array();
@@ -57,7 +57,9 @@ else{
     $.get('https://forum.glyconet.ca/index.php?action=api.project', function(response){
         var themes = {}
         $.each(response, function(i, project){
-            if(project.status != "Active" || project.name == "SD-1"){
+            if(project.status != "Active" || project.name == "SD-1" || 
+                                             project.name == "CD-78" || 
+                                             project.name == "CD-44"){
                 return;
             }
             switch(project.name){
@@ -136,6 +138,7 @@ else{
             themes[project.themeName].push(project);
         });
         $.each(themes, function(theme, projects){
+            if(theme == "Not Specified"){ return; }
             $("#project-list").append("<h4>" + theme + "</h4>");
             $.each(projects, function(i, project){
                 var leaders = new Array();
