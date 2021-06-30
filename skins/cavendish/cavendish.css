@@ -1165,6 +1165,21 @@ del {
     line-height: 29px;
 }
 
+.label:after {
+    content:" ";
+    width: 4px;
+    margin-left: 3px;
+    display: inline-block;
+}
+
+.required:after {
+    content:" *";
+    width: 4px;
+    margin-left: 3px;
+    color: red;
+    display: inline-block;
+}
+
 .left-align {
     text-align: left !important;
 }

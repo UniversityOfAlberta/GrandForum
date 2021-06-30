@@ -185,6 +185,7 @@ class UploadReportItem extends AbstractReportItem {
                     $('#delete').click(function(){
                         if(confirm('Are you sure you want to delete this upload?')){
                             $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}', function(){
+                                parent.updateProgress();
                                 window.location = window.location;
                             });
                         };
@@ -224,6 +225,9 @@ class UploadReportItem extends AbstractReportItem {
                     unset($data);
                     $this->setBlobValue($json);
                     echo "<div class='success'>The file was uploaded successfully.</div>";
+                    echo "<script type='text/javascript'>
+                        parent.updateProgress();
+                    </script>";
                     unset($_POST['upload']);
                     $this->fileUploadForm();
                     exit;
@@ -253,14 +257,6 @@ class UploadReportItem extends AbstractReportItem {
             $this->fileUploadForm();
         }
         return array();
-    }
-    
-    function getNFields(){
-        return 0;
-    }
-    
-    function getNComplete(){
-        return 0;
     }
 }
 
