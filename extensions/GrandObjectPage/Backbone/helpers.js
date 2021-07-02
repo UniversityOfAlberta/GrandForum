@@ -297,10 +297,10 @@ HTML.Radio = function(view, attr, options){
             checked = "checked='checked'";
         }
         if(typeof opt == 'object'){
-            $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt.value + "'" + checked + " /><span style='vertical-align:middle;'>" + opt.option + "</span></div>");
+            $(el).append("<input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt.value + "'" + checked + " /><span style='vertical-align:middle;'>" + opt.option + "</span><br />");
         }
         else{
-            $(el).append("<div><input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span></div>");
+            $(el).append("<input type='radio' style='vertical-align:middle;' name='" + HTML.Name(attr) + "' value='" + opt + "'" + checked + " /><span style='vertical-align:middle;'>" + opt + "</span><br />");
         }
     });
     view.events['change input[name=' + HTML.Name(attr) + '][type=radio]'] = function(e){

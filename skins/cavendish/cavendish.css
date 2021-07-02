@@ -597,6 +597,11 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
 	white-space:nowrap;
 }
 
+input[type=file], input[type=file]:focus {
+    border: none !important;
+    padding: 0;
+}
+
 input[type=button]:active, input[type=submit]:active, button:active, a.button:active {
     position: relative;
     top: 1px;

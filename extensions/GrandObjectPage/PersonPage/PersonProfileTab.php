@@ -269,15 +269,15 @@ EOF;
         if($config->getValue("publicProfileOnly")){
             $this->html .= "
                 <h3>Profile:</h3>
-                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea>";
+                <textarea class='profile' style='width:auto; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea>";
         }
         else{
             $this->html .= "
                 <h3>Live on Website:</h3>
-                <textarea class='profile' style='width:100%; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br />
+                <textarea class='profile' style='width:auto; height:200px;' name='public_profile'>{$person->getProfile(false)}</textarea><br />
 
                 <h3>Live on Forum:</h3>
-                <textarea class='profile' style='width:100%; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
+                <textarea class='profile' style='width:auto; height:200px;' name='private_profile'>{$person->getProfile(true)}</textarea>
              ";
          }
          $this->html .= "<script type='text/javascript'>
@@ -594,59 +594,37 @@ EOF;
         if($visibility['isMe'] || $visibility['isSupervisor']){
             $nationality = "";
             if($config->getValue("nationalityEnabled")){
-                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-                $foreignSelected = ($person->getNationality() == "Foreign") ? "selected='selected'" : "";
+                $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array("" => "---", 
+                                                                                                                 "Canadian" => "Canadian/Landed Immigrant", 
+                                                                                                                 "Foreign"));
                 $nationality = "<tr>
                     <td class='label'>Nationality:</td>
-                    <td class='value'>
-                        <select name='nationality'>
-                            <option value=''>---</option>
-                            <option value='Canadian' $canSelected>Canadian</option>
-                            <option value='American' $foreignSelected>Foreign</option>
-                        </select>
-                    </td>
+                    <td class='value'>{$nationalityField->render()}</td>
                 </tr>";
             }
             $gender = "";
             if($config->getValue("genderEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){
-                $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
-                $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
-                $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
-                $genderFluidSelected = ($person->getGender() == "Gender-fluid") ? "selected='selected'" : "";
-                $nonBinarySelected = ($person->getGender() == "Non-binary") ? "selected='selected'" : "";
-                $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
-                $declinedSelected = ($person->getGender() == "Not disclosed") ? "selected='selected'" : "";
+                $genderField = new SelectBox("gender", "Gender", $person->getGender(), array("" => "---", 
+                                                                                             "Male", 
+                                                                                             "Female",
+                                                                                             "Gender-fluid",
+                                                                                             "Non-binary",
+                                                                                             "Two-spirit",
+                                                                                             "Not disclosed"));
                 $gender = "<tr>
                     <td class='label'>Gender:</td>
-                    <td class='value'>
-                        <select name='gender'>
-                            <option value='' $blankSelected>---</option>
-                            <option value='Male' $maleSelected>Male</option>
-                            <option value='Female' $femaleSelected>Female</option>
-                            <option value='Gender-fluid' $genderFluidSelected>Gender-fluid</option>
-                            <option value='Non-binary' $nonBinarySelected>Non-binary</option>
-                            <option value='Two-spirit' $twoSpiritSelected>Two-spirit</option>
-                            <option value='Not disclosed' $declinedSelected>I prefer not to answer</option>
-                        </select>
-                    </td>
+                    <td class='value'>{$genderField->render()}</td>
                 </tr>";
             }
             
             $stakeholderCategories = $config->getValue('stakeholderCategories');
             $stakeholder = "";
             if(count($stakeholderCategories) > 0){
-                $blankSelected = (!$person->isStakeholder()) ? "selected='selected'" : "";
+                $stakeholderCategories = array_merge(array("" => "---"), $stakeholderCategories);
+                $stakeholderField = new SelectBox("stakeholder", "Stakeholder", $person->getStakeholder(), $stakeholderCategories);
                 $stakeholder = "<tr>
                     <td class='label'>Stakeholder Category:</td>
-                    <td>
-                        <select name='stakeholder'>
-                            <option value='' $blankSelected>---</option>";
-                foreach($stakeholderCategories as $category){
-                    $selected = ($person->getStakeholder() == $category) ? "selected='selected'" : "";
-                    $stakeholder .= "<option value='$category' $selected>$category</option>";
-                }
-                $stakeholder .= "</select>
-                    </td>
+                    <td class='value'>{$stakeholderField->render()}</td>
                 </tr>";
             }
             
@@ -654,23 +632,18 @@ EOF;
             $crc = "";
             if($config->getValue('crcEnabled')){
                 $crcObj = $person->getCanadaResearchChair();
-                $crcOptions = array("No", 
+                $crcOptions = array("" => "---",
+                                    "No", 
                                     "Yes, I am a Tier 1 Canada Research Chair (CRC) or equivalent", 
                                     "Yes, I am a Tier 2 Canada Research Chair (CRC) or equivalent",
                                     "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent",
                                     "Yes, I am a Canada 150 Research Chair (C150) or equivalent");
-                $blankSelected = ($crcObj['title'] == "") ? "selected='selected'" : "";
+                $crcField = new SelectBox("crc_rank", "CRC Rank", @$crcObj['rank'], $crcOptions);
                 $crc = "<tr>
                             <td colspan='2'>
                                 <fieldset>
                                     <legend>Are you currently a CRC, CERC, C150 (or equivalent)?</legend>
-                                    <select name='crc_rank'>
-                                        <option value='' $blankSelected>---</option>";
-                                        foreach($crcOptions as $option){
-                                            $selected = @($crcObj['rank'] == $option) ? "selected='selected'" : "";
-                                            $crc .= "<option value='$option' $selected>$option</option>";
-                                        }
-                $crc .= "           </select>
+                                    {$crcField->render()}
                                     <div id='crc_title' style='display:none;'>
                                         <br />
                                         <b>Title of your Chair position</b><br />
@@ -708,12 +681,12 @@ EOF;
             
             $ecr = "";
             if($config->getValue('ecrEnabled')){
-                $checked = ($person->getEarlyCareerResearcher() == "Yes") ? "checked" : "";
+                $ecrField = new SingleCheckBox("earlyCareerResearcher", "ECR", $person->getEarlyCareerResearcher(), array("Yes"));
                 $ecr = "<tr>
                             <td colspan='2'>
                                 <fieldset>
                                     <legend>Was your first appointment as a professor within 5 years of the beginning of your FES research?</legend>
-                                    <input type='checkbox' name='earlyCareerResearcher' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
+                                    {$ecrField->render()}
                                     <small>CFREF defines an Early Career Researcher as a researcher who has five or less experience since their first research appointment, minus eligible leaves</small>
                                 </fieldset>
                             </td>
@@ -722,7 +695,6 @@ EOF;
             $agencies = "";
             if($config->getValue('agenciesEnabled')){
                 $checkbox = new VerticalCheckBox("agencies", "agencies", $person->getAgencies(), array("CFI","CIHR","NSERC","SSHRC"));
-                $checked = ($person->getAgencies() == "Yes") ? "checked" : "";
                 $agencies = "<tr>
                             <td colspan='2'>
                                 <fieldset>
@@ -734,12 +706,12 @@ EOF;
             }
             $mitacs = "";
             if($config->getValue('mitacsEnabled')){
-                $checked = ($person->getMitacs() == "Yes") ? "checked" : "";
+                $mitacsField = new SingleCheckBox("mitacs", "MITACS", $person->getMitacs(), array("Yes"));
                 $mitacs = "<tr>
                             <td colspan='2'>
                                 <fieldset>
                                     <legend>Are you interested in being contacted with MITACS and other research opportunities?</legend>
-                                    <input type='checkbox' name='mitacs' style='vertical-align:bottom;' value='Yes' {$checked} /> - Yes<br />
+                                    {$mitacsField->render()}
                                 </fieldset>
                             </td>
                         </tr>";
