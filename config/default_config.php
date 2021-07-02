@@ -234,7 +234,6 @@
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'TravelForm',
         'CCVExport',
         //'CrossForumExport',
         'ReportIssue',

@@ -4,59 +4,59 @@
         <table>
             <tr>
                 <td class="label">English:</td>
-                <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
             </tr>
             <tr>
                 <td class="label">French:</td>
-                <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
             </tr>
         </table-->
         <table>
             <tr>
                 <td class="label">Title:</td>
-                <td><%= HTML.TextBox(this, 'title', {size: '50', style:'margin-bottom:7px;'}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'title', {size: '50', style:'margin-bottom:7px;'}) %></td>
             </tr>
             <tr>
                 <td class="label">Visibility:</td>
-                <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
+                <td class="value"><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
             </tr>
             <tr>
                 <td class="label">Enable Registration:</td>
-                <td valign="top"><%= HTML.Radio(this, 'enableRegistration', {options: [{option: 'No', value: 0}, {option: 'Yes', value: 1}]}) %></td>
+                <td class="value"><%= HTML.Radio(this, 'enableRegistration', {options: [{option: 'No', value: 0}, {option: 'Yes', value: 1}]}) %></td>
             </tr>
             <!--tr>
                 <td class="label">Language:</td>
-                <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
+                <td class="value"><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
                                                                  {value: 'fr', option: 'Français'},
                                                                  {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
             </tr-->
             <tr>
                 <td class="label">Online Event Address:</td>
-                <td valign="top"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'articleLink', {}) %></td>
             </tr>
             <tr>
                 <td class="label">Video URL:</td>
-                <td valign="top"><%= HTML.TextBox(this, 'website', {}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'website', {}) %></td>
             </tr>
             <tr>
                 <td class="label">Start Date:</td>
-                <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+                <td class="value"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
             </tr>
             <tr>
                 <td class="label">End Date:</td>
-                <td valign="top"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+                <td class="value"><%= HTML.DatePicker(this, 'endDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
             </tr>
             <tr>
                 <td class="label">Address:</td>
-                <td valign="top"><%= HTML.TextBox(this, 'address', {}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'address', {}) %></td>
             </tr>
             <tr>
                 <td class="label">City:</td>
-                <td valign="top"><%= HTML.TextBox(this, 'city', {}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'city', {}) %></td>
             </tr>
             <tr>
                 <td class="label">Province:</td>
-                <td valign="top"><%= HTML.Select(this, 'province', {options: ['',
+                <td class="value"><%= HTML.Select(this, 'province', {options: ['',
                                                                               'Alberta',
                                                                               'British Columbia',
                                                                               'Manitoba',
@@ -74,11 +74,11 @@
             </tr>
             <tr>
                 <td class="label">Country:</td>
-                <td valign="top"><%= HTML.TextBox(this, 'country', {}) %></td>
+                <td class="value"><%= HTML.TextBox(this, 'country', {}) %></td>
             </tr>
             <tr>
                 <td class="label">Attachment:</td>
-                <td valign="top">
+                <td class="value">
                     <%= HTML.File(this, 'image', {}) %>
                     <% if(image != ""){ %>
                         <%= HTML.CheckBox(this, 'image_delete', {}) %> Delete?

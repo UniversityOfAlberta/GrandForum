@@ -3,7 +3,7 @@
         <table>
             <% _.each(this.projects.models, function(p){ %>
                 <tr>
-                    <td class="label"><a title="<%= p.get('fullname') %>" href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>:</td>
+                    <td align="right" style="font-weight: bold;"><a title="<%= p.get('fullname') %>" href="<%= p.get('url') %>" target="_blank"><%= p.get('name') %></a>:</td>
                     <td class="checkboxCell" style="width:40px;text-align:left;">
                         <div class="checkboxOuter" data-project="<%= p.get('id') %>">
                             <input id="projects_<%= p.get('name') %>" data-project="<%= p.get('id') %>" type="checkbox" name="project" <%= this.projectChecked(p.get('id')) %> /><% if(this.projectChecked(p.get('id')) != "" && p.get('subprojects').length > 0){ %><div data-project="<%= p.get('id') %>" class="showSubprojects">&#9660;</div><% } %>
@@ -18,7 +18,7 @@
             <% }, this) %>
             <% if(!this.inlineOther){ %>
                 <tr>
-                    <td class="label">Other:</td>
+                    <td align="right" style="font-weight: bold;">Other:</td>
                     <td class="checkboxCell" align="center" style="width:40px;">
                         <div class="checkboxOuter">
                             <input class="other" name="other"  type="checkbox" <%= this.otherChecked() %> disabled /><div class="showOther">&#9660;</div>

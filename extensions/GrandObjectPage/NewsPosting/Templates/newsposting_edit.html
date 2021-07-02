@@ -4,39 +4,39 @@
     <!--table>
         <tr>
             <td class="label">English:</td>
-            <td><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
+            <td class="value"><%= HTML.TextBox(this, 'title', {size: '50'}) %></td>
         </tr>
         <tr>
             <td class="label">French:</td>
-            <td><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
+            <td class="value"><%= HTML.TextBox(this, 'titleFr', {size: '50'}) %></td>
         </tr>
     </table-->
     <table>
         <tr>
             <td class="label">Visibility:</td>
-            <td><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
+            <td class="value"><%= HTML.Radio(this, 'visibility', {options: [{option: 'Draft (private)', value: 'Draft'}, {option: 'Published (public)', value: 'Publish'}]}) %></td>
         </tr>
         <!--tr>
             <td class="label">Language:</td>
-            <td><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
+            <td class="value"><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},
                                                              {value: 'fr', option: 'Français'},
                                                              {value: 'bi', option: 'Bilingual/Bilingue'}]}) %></td>
         </tr-->
         <tr>
             <td class="label">Posted Date:</td>
-            <td valign="top"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
+            <td class="value"><%= HTML.DatePicker(this, 'startDate', {format: 'yy-mm-dd', style: 'width:80px'}) %></td>
         </tr>
         <tr>
             <td class="label">External URL Name:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'sourceName', {}) %></td>
+            <td class="value"><%= HTML.TextBox(this, 'sourceName', {}) %></td>
         </tr>
         <tr>
             <td class="label">External URL:</td>
-            <td valign="top"><%= HTML.TextBox(this, 'sourceLink', {}) %></td>
+            <td class="value"><%= HTML.TextBox(this, 'sourceLink', {}) %></td>
         </tr>
         <tr>
             <td class="label">Image:</td>
-            <td valign="top">
+            <td class="value">
                 <%= HTML.File(this, 'image', {}) %>
                 <% if(image != ""){ %>
                     <%= HTML.CheckBox(this, 'image_delete', {}) %> Delete?

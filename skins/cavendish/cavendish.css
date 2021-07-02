@@ -597,6 +597,11 @@ input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:ho
 	white-space:nowrap;
 }
 
+input[type=file], input[type=file]:focus {
+    border: none !important;
+    padding: 0;
+}
+
 input[type=button]:active, input[type=submit]:active, button:active, a.button:active {
     position: relative;
     top: 1px;
@@ -1150,6 +1155,8 @@ del {
     font-weight: bold;
     vertical-align: top;
     white-space:nowrap;
+    position: relative;
+    padding-right: 7px;
 }
 
 .value {
@@ -1157,19 +1164,25 @@ del {
     vertical-align: top;
 }
 
+.value:before {
+    content: " ";
+    line-height: 25px;
+    vertical-align: bottom;
+}
+
 .label::first-line {
     line-height: 29px;
 }
 
-.value::first-line {
-    line-height: 29px;
+.label:after {
+    content:"";
+    margin-left: 3px;
+    position: absolute;
+    top: 0;
 }
 
-.label:after {
-    content:" ";
-    width: 4px;
-    margin-left: 3px;
-    display: inline-block;
+.required {
+    position: relative;
 }
 
 .required:after {
@@ -1178,6 +1191,8 @@ del {
     margin-left: 3px;
     color: red;
     display: inline-block;
+    position: absolute;
+    top: 0;
 }
 
 .left-align {

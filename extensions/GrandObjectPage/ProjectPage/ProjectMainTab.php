@@ -40,10 +40,10 @@ class ProjectMainTab extends AbstractEditableTab {
         if($edit){
             if($project->isSubProject()){
                 $acronymField = new TextField("acronym", "New Acronym", $this->project->getName());
-                $title .= "<tr><td><b>New Acronym:</b></td><td>{$acronymField->render()}</td></tr>";
+                $title .= "<tr><td class='label'>New Acronym:</td><td class='value'>{$acronymField->render()}</td></tr>";
             }
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
-            $title .= "<tr><td><b>New Title:</b></td><td>{$fullNameField->render()}</td></tr>";
+            $title .= "<tr><td class='label'>New Title:</td><td class='value'>{$fullNameField->render()}</td></tr>";
         }
         $this->html .= "<div style='display:flex;flex-wrap:wrap;'>";
         if(!isset($_GET['generatePDF'])){
@@ -58,7 +58,8 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->showChallenge();
         }
         if($config->getValue("projectTypes")){
-            $this->html .= "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
+            $this->html .= ($edit) ? "<tr><td class='label'>Type:</td><td class='value'>{$this->project->getType()}</td></tr>"
+                                   : "<tr><td><b>Type:</b></td><td>{$this->project->getType()}</td></tr>";
         }
         if($config->getValue("projectStatus")){
             if(!$edit || !$me->isRoleAtLeast(STAFF)){
@@ -70,16 +71,16 @@ class ProjectMainTab extends AbstractEditableTab {
                 $statusField = new SelectBox("status", "Status", $this->project->getStatus(), array("Proposed", "Deferred", "Active", "Ended"));
                 $startField = new CalendarField("start_date", "Start Date", substr($this->project->getStartDate(), 0, 10));
                 $endField = new CalendarField("effective_date", "End Date", substr($this->project->getEndDate(), 0, 10));
-                $this->html .= "<tr><td><b>Status:</b></td><td>{$statusField->render()}</td></tr>";
-                $this->html .= "<tr><td><b>Start Date:</b></td><td>{$startField->render()}</td></tr>";
-                $this->html .= "<tr><td><b>End Date:</b></td><td>{$endField->render()}</td></tr>";
+                $this->html .= "<tr><td class='label'>Status:</td><td class='value'>{$statusField->render()}</td></tr>";
+                $this->html .= "<tr><td class='label'>Start Date:</td><td class='value'>{$startField->render()}</td></tr>";
+                $this->html .= "<tr><td class='label'>End Date:</td><td class='value'>{$endField->render()}</td></tr>";
             }
         }
         if(!$edit && $website != "" && $website != "http://" && $website != "https://"){
             $this->html .= "<tr><td><b>Website:</b></td><td><div style='display:block;max-width:30em;overflow:hidden;text-overflow:ellipsis;'><a href='{$website}' target='_blank'>{$website}</a></div></td></tr>";
         }
         else if($edit){
-            $this->html .= "<tr><td><b>Website:</b></td><td><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
+            $this->html .= "<tr><td class='label'>Website:</td><td class='value'><input type='text' name='website' value='{$website}' size='40' /></td></tr>";
         }
         if(!$edit){
             // Project Leader(s)
@@ -133,8 +134,8 @@ class ProjectMainTab extends AbstractEditableTab {
                         $delete = "<input style='position:absolute;' type='checkbox' name='file_delete{$n}' value='1' />";
                     }
                     $this->html .= "<tr>
-                                        <td align='right' style='white-space: nowrap; width: 1%;'><b>Image {$n}:</b></td>
-                                        <td><input type='file' style='width:300px;' accept='image/*' name='file{$n}' /></td>
+                                        <td class='label'><b>Image {$n}:</b></td>
+                                        <td class='value'><input type='file' style='width:300px;' accept='image/*' name='file{$n}' /></td>
                                         <td rowspan='2' style='white-space:nowrap;'>{$delete}{$image}</td>
                                     </tr>
                                     <tr>
@@ -377,7 +378,8 @@ class ProjectMainTab extends AbstractEditableTab {
     function showChallenge(){
         global $wgServer, $wgScriptPath, $config;
         $edit = (isset($_POST['edit']) && $this->canEdit() && !isset($this->visibility['overrideEdit']));
-        $this->html .= "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
+        $this->html .= ($edit) ? "<tr><td class='label'>{$config->getValue("projectThemes")}:</td><td class='value'>"
+                               : "<tr><td><b>{$config->getValue("projectThemes")}:</b></td><td>";
         $challenges = $this->project->getChallenges();
         
         if($edit){
@@ -567,7 +569,7 @@ class ProjectMainTab extends AbstractEditableTab {
             $this->html .= $description."<br />";
         }
         else{
-            $this->html .= "<textarea name='description' style='height:500px;'>{$description}</textarea>
+            $this->html .= "<textarea name='description' style='height:500px;width:auto;'>{$description}</textarea>
             <script type='text/javascript'>
                 $('textarea[name=description]').tinymce({
                     theme: 'modern',
