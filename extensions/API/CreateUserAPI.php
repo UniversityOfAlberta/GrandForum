@@ -158,11 +158,6 @@ class CreateUserAPI extends API{
                                         array('start_date' => $earliestStartDate,
                                               'end_date' => $latestEndDate),
                                         array('user_id' => $person->getId()));
-                    // Correct project dates
-                    DBFunctions::update('grand_project_members',
-                                        array('start_date' => $earliestStartDate,
-                                              'end_date' => $latestEndDate),
-                                        array('user_id' => $person->getId()));
                                         
                     if($_POST['employment'] != ""){
                         $_POST['id'] = "";
