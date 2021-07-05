@@ -10,6 +10,7 @@ $roles = DBFunctions::execSQL("SELECT *
                                WHERE r.id NOT IN (SELECT role_id FROM grand_role_projects)
                                AND r.user_id = u.user_id
                                AND u.deleted = 0");
+                               
 $inserts = array();
 $deletes = array();
 foreach($roles as $role){
@@ -67,5 +68,65 @@ foreach($inserts as $insert){
                         array('role_id' => $id,
                               'project_id' => $insert['project']));
 }
+
+$inserts = array();
+$deletes = array();
+
+// Now do Orphaned Projects
+$orphanedProjects = DBFunctions::execSQL("SELECT *
+                                          FROM `grand_project_members` pm
+                                          WHERE (pm.project_id, pm.user_id) NOT IN (SELECT rp.project_id, r.user_id FROM grand_role_projects rp, grand_roles r WHERE rp.role_id = r.id)");
+                                          
+foreach($orphanedProjects as $row){
+    $person = Person::newFromId($row['user_id']);
+    $project = Project::newFromId($row['project_id']);
+
+    if($project != null){
+        $roles = DBFunctions::execSQL("SELECT *
+                                       FROM `grand_roles` r
+                                       WHERE r.user_id = '{$row['user_id']}'");
+        $lowest = 100;
+        $lowestRole = null;
+        foreach($roles as $role){
+            if($role['role'] == ADMIN ||
+               $role['role'] == MANAGER ||
+               $role['role'] == STAFF ||
+               isset($committees[$role['role']]) ||
+               isset($roleAliases[$role['role']])){
+                continue;
+            }
+            $roleValue = $wgRoleValues[$role['role']];
+            if($roleValue < $lowest){
+                $lowest = $roleValue;
+                $lowestRole = $role;
+            }
+        }
+        if($lowestRole != null){
+            $start = $row['start_date'];
+            $end = $row['end_date'];
+            $inserts[] = array('user_id' => $row['user_id'],
+                               'role' => $lowestRole['role'],
+                               'start_date' => $start,
+                               'end_date' => $end,
+                               'project' => $project->getId(),
+                               'comment' => $row['comment']);
+            echo "{$person->getName()}: {$lowestRole['role']}\t-> {$project->getName()} ({$start}, {$end})\n";
+        }
+    }
+}
+
+foreach($inserts as $insert){
+    DBFunctions::insert('grand_roles',
+                        array('user_id' => $insert['user_id'],
+                              'role' => $insert['role'],
+                              'start_date' => $insert['start_date'],
+                              'end_date' => $insert['end_date'],
+                              'comment' => $insert['comment']));
+    $id = DBFunctions::insertId();
+    DBFunctions::insert('grand_role_projects',
+                        array('role_id' => $id,
+                              'project_id' => $insert['project']));
+}
+                                          
 
 ?>
