@@ -2,6 +2,8 @@
 
 require_once('commandLine.inc');
 
+$wgUser = User::newFromId(1);
+
 $committees = $config->getValue('committees');
 $roleAliases = $config->getValue('roleAliases');
 
