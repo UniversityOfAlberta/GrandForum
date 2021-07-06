@@ -40,7 +40,7 @@ class Impersonate extends SpecialPage {
 	    
 	    $wgOut->addHTML("<span id='pageDescription'>Impersonating allows you to temporarily view the {$config->getValue('siteName')} as another user.<br />Select a user from the list below, and then click the 'Impersonate' button to begin a session.</span><table>
 	                        <tr><td>
-	                            <select id='names' data-placeholder='Choose a Person...' name='name' size='10' style='width:100%'>");
+	                            <select id='names' data-placeholder='Choose a Person...' name='name' size='10' style='width:100%;display:none;'>");
 	    foreach($allPeople as $person){
 	        $wgOut->addHTML("<option value=\"{$person->getName()}\">".str_replace(".", " ", $person->getNameForForms())."</option>\n");
 	    }
@@ -49,6 +49,7 @@ class Impersonate extends SpecialPage {
 	            <tr><td>
 	        <input type='button' id='button' name='next' value='Impersonate' disabled='disabled' /></td></tr></table>
 	    <script type='text/javascript'>
+	        $('#names').show();
 	        $('#names').chosen({max_shown_results: 100});
 	        $(document).ready(function(){
 	            $('#names').change(function(){
