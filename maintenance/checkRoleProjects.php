@@ -93,8 +93,6 @@ foreach($orphanedProjects as $row){
         $lowestRole = null;
         foreach($roles as $role){
             if($role['role'] == ADMIN ||
-               $role['role'] == MANAGER ||
-               $role['role'] == STAFF ||
                isset($committees[$role['role']]) ||
                isset($roleAliases[$role['role']])){
                 continue;
