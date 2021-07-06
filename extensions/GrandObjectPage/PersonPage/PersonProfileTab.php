@@ -24,7 +24,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
             $this->showProfile($this->person, $this->visibility);
         }
-        $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
         if($this->visibility['isMe']){
             if($this->person->isRole(NI) || 
@@ -346,31 +345,6 @@ EOF;
                                 });
                           </script>");
         return $html;
-    }
-    
-    /**
-     * Shows a table of this Person's products, and is filterable by the
-     * visualizations which appear above it.
-     */
-    function showTable($person, $visibility){
-        global $config;
-        $me = Person::newFromWgUser();
-        $visibilityCopy = $visibility;
-        $visibilityCopy['isMe'] = false;
-        $tab = new PersonDashboardTab($person, $visibilityCopy);
-        //$tab->showTopProducts($person, $visibilityCopy, 5);
-        $string = $tab->html;
-        return $string;
-    }
-
-    function showEditTable($person, $visibility){
-        $me = Person::newFromWgUser();
-        $visibilityCopy = $visibility;
-        $visibilityCopy['isMe'] = false;
-        $tab = new PersonDashboardTab($person, $visibilityCopy);
-        //$tab->showEditTopProducts($person, $visibilityCopy, 5);
-        $string = $tab->html;
-        return $string;
     }
  
     /**

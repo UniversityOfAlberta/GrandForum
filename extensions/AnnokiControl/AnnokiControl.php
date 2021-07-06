@@ -84,17 +84,11 @@ $egAnnokiExtensions['AddHqp'] = array('name' => 'AddHqp',
 $egAnnokiExtensions['EditMember'] = array('name' => 'EditMember',
                                           'path' => "$IP/extensions/EditMember/EditMember.php");
 
-$egAnnokiExtensions['QueryableTable'] = array('name' => 'Queryable Table',
-                                              'path' => "$IP/extensions/QueryableTable/QueryableTable.php");
-
 $egAnnokiExtensions['GradDB'] = array('name' => 'GradDB',
                                       'path' => "$IP/extensions/GradDB/GradDB.php");
 
 $egAnnokiExtensions['Reporting'] = array('name' => 'Reporting',
                                          'path' => "$IP/extensions/Reporting/Reporting.php");
-
-$egAnnokiExtensions['EmptyEmailList'] = array('name' => 'Empty Email List',
-                                              'path' => "$IP/extensions/EmptyEmailList/EmptyEmailList.php");
 
 $egAnnokiExtensions['GlobalSearch'] = array('name' => 'Global Search',
                                             'path' => "$IP/extensions/GlobalSearch/GlobalSearch.php");

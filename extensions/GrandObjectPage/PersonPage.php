@@ -143,9 +143,6 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                if($config->getValue('projectsEnabled')){
-                    $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                }
                 if(isExtensionEnabled('Acknowledgements')){
                     $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
                 }
