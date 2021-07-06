@@ -73,9 +73,11 @@ $inserts = array();
 $deletes = array();
 
 // Now do Orphaned Projects
-$orphanedProjects = DBFunctions::execSQL("SELECT *
-                                          FROM `grand_project_members` pm
-                                          WHERE (pm.project_id, pm.user_id) NOT IN (SELECT rp.project_id, r.user_id FROM grand_role_projects rp, grand_roles r WHERE rp.role_id = r.id)");
+$orphanedProjects = DBFunctions::execSQL("SELECT pm.*, u.user_name, p.name
+                                          FROM `grand_project_members` pm, mw_user u, grand_project p
+                                          WHERE (pm.project_id, pm.user_id) NOT IN (SELECT rp.project_id, r.user_id FROM grand_role_projects rp, grand_roles r WHERE rp.role_id = r.id)
+                                          AND pm.user_id = u.user_id
+                                          AND p.id = pm.project_id");
                                           
 foreach($orphanedProjects as $row){
     $person = Person::newFromId($row['user_id']);
