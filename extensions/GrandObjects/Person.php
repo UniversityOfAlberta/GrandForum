@@ -1133,10 +1133,10 @@ class Person extends BackboneModel {
      * @param boolean $idOnly Whether or not to only include the id, rather than instantiating a Person object (may result in slightly different results!)
      * @return array The array of People of the type $filter
      */
-    static function getAllPeople($filter=null, $idOnly=false){
+    static function getAllPeople($filter=null, $idOnly=false, $shortCircuit=false){
         if($filter == NI){
-            $ars = self::getAllPeople(AR);
-            $cis = self::getAllPeople(CI);
+            $ars = self::getAllPeople(AR, $idOnly, $shortCircuit);
+            $cis = self::getAllPeople(CI, $idOnly, $shortCircuit);
             return array_merge($ars, $cis);
         }
         $me = Person::newFromWgUser();
@@ -1144,6 +1144,9 @@ class Person extends BackboneModel {
         self::generateRolesCache();
         $people = array();
         foreach(self::$allPeopleCache as $row){
+            if($shortCircuit && !empty($people)){
+                break;
+            }
             if($filter == INACTIVE && !isset(self::$rolesCache[$row])){
                 $person = Person::newFromId($row);
                 if($idOnly){
@@ -3210,22 +3213,6 @@ class Person extends BackboneModel {
             }
         }
         return $creators;
-    }
-    
-    /**
-     * Returns the People that this Person has requested to be created
-     * @return array The People that this Person has requested to be created
-     */
-    function getRequestedMembers(){
-        $data = DBFunctions::select(array('grand_user_request'),
-                                    array('DISTINCT wpName'),
-                                    array('requesting_user' => $this->id,
-                                          'created' => EQ(1)));
-        $members = array();
-        foreach($data as $row){
-            $members[] = Person::newFromName($row['wpName']);
-        }
-        return $members;
     }
 
     /**
