@@ -49,7 +49,7 @@ class Impersonate extends SpecialPage {
 	            <tr><td>
 	        <input type='button' id='button' name='next' value='Impersonate' disabled='disabled' /></td></tr></table>
 	    <script type='text/javascript'>
-	        $('#names').chosen();
+	        $('#names').chosen({max_shown_results: 100});
 	        $(document).ready(function(){
 	            $('#names').change(function(){
 	                var page = $('#names').val();
