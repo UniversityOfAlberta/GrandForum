@@ -98,7 +98,7 @@ foreach($orphanedProjects as $row){
                 continue;
             }
             $roleValue = $wgRoleValues[$role['role']];
-            if($roleValue < $lowest){
+            if($roleValue <= $lowest){
                 $lowest = $roleValue;
                 $lowestRole = $role;
             }
@@ -110,7 +110,7 @@ foreach($orphanedProjects as $row){
                                'role' => $lowestRole['role'],
                                'start_date' => $start,
                                'end_date' => $end,
-                               'project' => $project->getId(),
+                               'project' => $row['project_id'],
                                'comment' => $row['comment']);
             echo "{$person->getName()}: {$lowestRole['role']}\t-> {$project->getName()} ({$start}, {$end})\n";
         }
