@@ -1001,26 +1001,6 @@ EOF;
         return $newProducts;
     }
     
-    /**
-     * Returns an array of Evaluators who are evaluating this Project
-     * @param string $year The evaluation year
-     * @type string $type The type of evaluation
-     * @return array The array of Evaluators who are evaluating this Project during $year
-     */
-    function getEvaluators($year, $type='Project'){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE sub_id = '{$this->id}'
-                AND type = '{$type}'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            $subs[] = Person::newFromId($row['user_id']);
-        }
-        return $subs;
-    }
-    
     // Returns the comments for the Project when a user moved from this Project
     function getComments(){
         if($this->comments == null){

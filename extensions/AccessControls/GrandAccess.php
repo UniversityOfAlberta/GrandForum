@@ -19,10 +19,6 @@ class GrandAccess {
 	    if($me->isRoleAtLeast(MANAGER)){
 	        $aRights[$i++] = RMC;
 	    }
-	    /*if($me->isEvaluator()){
-	        $aRights[$i++] = "Evaluator";
-	        $aRights[$i++] = "Evaluator+";
-	    }*/
 	    if($me->isRole(NI)){
 	        $aRights[$i++] = "Researcher";
 	        $aRights[$i++] = "Researcher+";
@@ -33,9 +29,6 @@ class GrandAccess {
 	        if($me->isRoleAtLeast($role)){
 	            $aRights[$i++] = $role.'+';
 	            $aRights[$i++] = $role.'During+';
-	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Evaluator+', $aRights) === false){
-	                $aRights[$i++] = 'Evaluator+';
-	            }
 	            if(($role == STAFF || $role == MANAGER || $role == ADMIN) && array_search('Researcher+', $aRights) === false){
 	                $aRights[$i++] = 'Researcher+';
 	            }

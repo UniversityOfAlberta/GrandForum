@@ -93,11 +93,9 @@ class Person extends BackboneModel {
     var $middleName;
     var $university;
     var $universityDuring;
-    var $groups;
     var $roles;
     var $rolesDuring;
     var $candidate;
-    var $isEvaluator = array();
     var $relations = array();
     var $hqps;
     var $historyHqps;
@@ -105,7 +103,6 @@ class Person extends BackboneModel {
     var $aliases = false;
     var $roleHistory;
     var $hqpCache = array();
-    var $evaluateCache = array();
     var $splitName = array();
     
     var $dateOfPhd;
@@ -2337,28 +2334,6 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns an array of groups that this Person is in
-     * @return array The groups that this Person is in
-     */
-    function getGroups(){
-        if($this->groups == null){
-            $uTable = getTableName("user");
-            $ugTable = getTableName("user_groups");
-            $this->groups = array();
-            $sql = "SELECT DISTINCT ug.ug_group
-                    FROM $uTable u, $ugTable ug
-                    WHERE u.user_id = ug.ug_user
-                    AND u.user_name = '{$this->name}'
-                    ORDER BY ug.ug_group";
-            $data = DBFunctions::execSQL($sql);
-            foreach($data as $row){
-                $this->groups[] = $row['ug_group'];
-            }
-        }
-        return $this->groups;
-    }
-    
-    /**
      * Returns an array of rights that this Person has
      * @return array The rights that this Person has
      */
@@ -3030,9 +3005,6 @@ class Person extends BackboneModel {
             return ($this->isRole(AR, $project) || 
                     $this->isRole(CI, $project));
         }
-        if($role == EVALUATOR){
-            return $this->isEvaluator();
-        }
         $roles = array();
         $role_objs = $this->getRoles();
         if(count($role_objs) > 0){
@@ -3070,9 +3042,6 @@ class Person extends BackboneModel {
                 $roles[] = $r->getRole();
             }
         }
-        if($role == EVALUATOR && $this->isEvaluator()){
-            $roles[] = EVALUATOR;
-        }
         if(empty($roles)){
             return false;
         }
@@ -3106,9 +3075,6 @@ class Person extends BackboneModel {
             foreach($role_objs as $r){
                 $roles[] = $r->getRole();
             }
-        }
-        if($role == EVALUATOR && $this->isEvaluator()){
-            $roles[] = EVALUATOR;
         }
         if(empty($roles)){
             return false;
@@ -3870,132 +3836,6 @@ class Person extends BackboneModel {
             return $data[0]['ccv'];
         }
         return "";
-    }
-    
-    /**
-     * Returns whether or not this Person is an evaluator on the given Year
-     * @param string $year The year this Person was an evaluator
-     * @return boolean Whether or not this Person is an evaluator
-     */
-    function isEvaluator($year = YEAR){
-        if(!isset($this->isEvaluator[$year])){
-            $sql = "SELECT *
-                    FROM grand_eval
-                    WHERE user_id = '{$this->id}'
-                    AND year = '{$year}'";
-            $data = DBFunctions::execSQL($sql);
-            if(count($data) > 0){
-                $this->isEvaluator[$year] = true;
-            }
-            else {
-                $this->isEvaluator[$year] = false;
-            }
-        }
-        return $this->isEvaluator[$year];
-    }
-    
-    /**
-     * Returns the list of evaluation assignments for this Person
-     * @param string $year The year for the assignments
-     * @return array The evaluation assignments for this Person
-     */
-    function getEvaluateSubs($year = YEAR){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE user_id = '{$this->id}'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            if($row['type'] == "Project" || $row['type'] == "SAB"){
-                $subs[] = Project::newFromId($row['sub_id']);
-            }
-            else if($row['type'] == "Researcher" || $row['type'] == "NI"){
-                $subs[] = Person::newFromId($row['sub_id']);
-            }
-        }
-        $this->evaluateCache[$year] = $subs;
-        return $subs;
-    }
-    
-    /**
-     * Returns all of the evaluation assignments
-     * @param string $type The type of assignment
-     * @param string $year The year for the assignments
-     * @return array The evaluation assignments
-     */
-    static function getAllEvaluates($type, $year = YEAR, $class = "Person"){
-        $type = DBFunctions::escape($type);
-        
-        $sql = "SELECT DISTINCT sub_id 
-                FROM grand_eval
-                WHERE type = '$type'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            if($type != "Project" && 
-               $type != "SAB" && $class != "Project"){
-                $subs[] = Person::newFromId($row['sub_id']);
-            }
-            else{
-                $subs[] = Project::newFromId($row['sub_id']);
-            }
-        }
-        return $subs;
-    }
-
-    /**
-     * Returns all of the evaluation assignments for this Person
-     * @param string $type The type of assignment
-     * @param string $year The year for the assignments
-     * @param string $class The class of the evaluatee
-     * @return array The evaluation assignments for this Person
-     */
-    function getEvaluates($type, $year = YEAR, $class = "Person"){
-        $type = DBFunctions::escape($type);
-        
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE user_id = '{$this->id}'
-                AND type = '$type'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-
-        foreach($data as $row){
-            if($row['type'] == "Project" || $row['type'] == "SAB" || $class == "Project"){
-                $project = Project::newFromId($row['sub_id']);
-                $subs[$project->getName()] = $project;
-            }
-            else{
-                $person = Person::newFromId($row['sub_id']);
-                $subs[$person->getReversedName()] = $person;
-            }
-        }
-        ksort($subs);
-        $subs = array_values($subs);
-        return $subs;
-    }
-
-    /**
-     * Returns a list of the evaluators who are evaluating this Person
-     * @param string $year The year of the evaluation
-     * @param string $type The type of evaluation
-     * @return array The list of People who are evaluating this Person
-     */
-    function getEvaluators($year = YEAR, $type='Researcher'){
-        $sql = "SELECT *
-                FROM grand_eval
-                WHERE sub_id = '{$this->id}'
-                AND type = '{$type}'
-                AND year = '{$year}'";
-        $data = DBFunctions::execSQL($sql);
-        $subs = array();
-        foreach($data as $row){
-            $subs[] = Person::newFromId($row['user_id']);
-        }
-        return $subs;
     }
     
     /**

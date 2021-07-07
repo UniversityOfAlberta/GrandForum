@@ -86,11 +86,7 @@ ManageProductsViewRow = Backbone.View.extend({
         });
         var isMine = {isMine: false};
         if(_.contains(_.pluck(this.model.get('authors'), 'id'), me.get('id')) ||
-           _.contains(_.pluck(this.model.get('authors'), 'name'), me.get('name')) ||
-           _.contains(_.pluck(this.model.get('authors'), 'fullname'), me.get('fullName')) ||
-           _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0 ||
-           _.intersection(_.pluck(this.model.get('authors'), 'name'), studentNames).length > 0 ||
-           _.intersection(_.pluck(this.model.get('authors'), 'fullname'), studentFullNames).length > 0){
+           _.intersection(_.pluck(this.model.get('authors'), 'id'), students).length > 0){
             isMine.isMine = true;
         }
         
