@@ -13,7 +13,6 @@ class Person extends BackboneModel {
     static $aliasCache = array();
     static $authorshipCache = array();
     static $employeeIdCache = array();
-    static $allocationsCache = array();
     static $disciplineMap = array();
     static $allPeopleCache = array();
     static $subRoleCache = array();

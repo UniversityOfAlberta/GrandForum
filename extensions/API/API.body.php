@@ -113,7 +113,6 @@ class APIRequest{
     function createActions(){
         //POST
         $this->addAction('Products', 'uploadCCV', 'UploadCCVAPI');
-        $this->addAction('Products', 'uploadCSV', 'UploadCSVAPI');
         $this->addAction('Products', 'importBibTeX', 'ImportBibTeXAPI');
         $this->addAction('Products', 'importDOI', 'ImportDOIAPI');
         $this->addAction('Products', 'importORCID', 'ImportORCIDAPI');

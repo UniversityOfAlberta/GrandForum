@@ -188,9 +188,6 @@ class HQPExitTab extends AbstractEditableTab {
                     return false;
                 });
                 
-                $('#employer', container).autocomplete({
-                    source: partners
-                });
                 $('#country', container).autocomplete({
                     source: countries
                 });
@@ -230,16 +227,11 @@ EOF;
                     }
                     $wgOut->addScript("theses[{$thesis->getId()}] = '".str_replace("'", "&#39;", $title)."';\n");
                 }
-                $partners = array();
-                foreach(Partner::getAllPartners() as $partner){
-                    $partners[] = $partner->getOrganization();
-                }
                 $universities = array();
                 foreach(Person::getAllUniversities() as $uni){
                     $universities[] = $uni;
                 }
                 $wgOut->addScript("
-                    var partners = [\"".implode("\",\n\"", $partners)."\"];
                     var universities = [\"".implode("\",\n\"", $universities)."\"];
                     
                     function showNewMovedOn(){

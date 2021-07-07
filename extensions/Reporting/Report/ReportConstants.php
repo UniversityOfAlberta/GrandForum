@@ -1,13 +1,7 @@
 <?php
 
 define("REPORTING_YEAR_REAL", YEAR); // Hard-coded year for the reporting period
-if(isset($_GET['reportingYear']) && 
-   ((preg_match("/.*Special:Report.*/", $_SERVER["REQUEST_URI"]) !== false && isset($_GET['ticket']) && isset($_GET['report'])))){
-    define("REPORTING_YEAR", str_replace("'", "", $_GET['reportingYear']));
-}
-else{
-    define("REPORTING_YEAR", REPORTING_YEAR_REAL);
-}
+define("REPORTING_YEAR", REPORTING_YEAR_REAL);
 
 define("REPORTING_CYCLE_START_MONTH", CYCLE_START_MONTH);
 define("REPORTING_NCE_START_MONTH", NCE_START_MONTH);

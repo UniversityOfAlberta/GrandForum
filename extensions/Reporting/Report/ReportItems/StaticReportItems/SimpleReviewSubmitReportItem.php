@@ -11,11 +11,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if($this->getReport()->project != null){
 		    $projectGet = "&project={$this->getReport()->project->getName()}";
 		}
-		
-		$year = "";
-        if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
-            $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
-        }
+
         $onlyGenerate = (strtolower($this->getAttr("onlyGenerate", "false")) == "true");
         $specialDownload = $this->getAttr("specialDownload", "");
         $section = $this->getAttr("section", "");
@@ -41,7 +37,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_throbber{$this->getPostId()}').css('display', 'inline-block');
 		                saveAll(function(){
 		                    $.ajax({
-		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}{$section}{$userId}{$startYearGet}{$yearGet}&generatePDF', 
+		                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$section}{$userId}{$startYearGet}{$yearGet}&generatePDF', 
 		                            success : function(data){
 		                                            //var data = jQuery.parseJSON(response);
 		                                            for(index in data){

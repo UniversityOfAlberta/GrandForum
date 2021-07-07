@@ -192,7 +192,7 @@ class QACVDepartmentTab extends AbstractTab {
 	        exit;
 	    }
         
-        $url = "$wgServer$wgScriptPath/index.php/Special:QACVGenerator?showTab={$this->id}&report=QACV&person=' + id + '&generatePDF=true&reportingYear={$year}&ticket=0";
+        $url = "$wgServer$wgScriptPath/index.php/Special:QACVGenerator?showTab={$this->id}&report=QACV&person=' + id + '&generatePDF=true";
         
         $html = $this->showScript($names, array_keys($people), $url);
         $html .= "<iframe name='downloadIframe{$this->id}' id='downloadIframe{$this->id}' style='display:none;'></iframe>";

@@ -9,7 +9,6 @@ $messages['en'] = array(
 			   'specialpages-group-network-tools' => "{$config->getValue('networkName')} Tools",
 			   'specialpages-group-other-tools' => 'Other Tools',
 			   'specialpages-group-reporting-tools' => 'Researcher Reporting',
-			   'specialpages-group-report-reviewing' => 'Report Reviewing',
-			   'specialpages-group-sociql-tools' => 'SociQL',
+			   'specialpages-group-report-reviewing' => 'Report Reviewing'
 			   );
 ?>

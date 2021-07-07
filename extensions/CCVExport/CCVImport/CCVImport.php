@@ -17,7 +17,6 @@ class CCVImport extends BackbonePage {
         return array(
 		     "Backbone/*",
 		     "ccv_import",
-		     "csv_import",
 		     "eval_import",
 		     "grad_import",
 		     "grant_import",
@@ -30,7 +29,6 @@ class CCVImport extends BackbonePage {
         return array("
 		     Backbone/*",
 		     "CCVImportView",
-		     "CSVImportView",
 		     "EvalImportView",
 		     "GradImportView",
 		     "GrantImportView",

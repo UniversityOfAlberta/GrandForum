@@ -814,31 +814,6 @@ class Paper extends BackboneModel{
         return $authors;
     }
 
-    /** Returns an integer of the citation count of this Paper
-     * @param string $type Name of website that the citation count is from
-    */
-    function getCitationCount($type){
-      $paperId = $this->id;
-      $data = DBFunctions::select(array('grand_product_citations'),
-                                  array('citation_count'),
-                                  array('type'=>$type,
-                                        'product_id'=>$paperId));
-      if(empty($data)){
-          return 0;
-      } 
-      return $data[0]['citation_count'];
-    }
-
-    /** Returns an integer of the total citation count of this Paper
-     * @Return integer The total citation count.
-    */
-    function getTotalCitationCount(){
-        $sciverseCount = $this->getCitationCount("Sciverse Scopus");
-        $scholarCount = $this->getCitationCount("Google Scholar");
-        $total = $sciverseCount + $scholarCount;
-        return $total; 
-    }
-
     /**
      * Returns an array of authors who wrote this Paper
      * @param boolean $evaluate Whether or not to ignore the cache

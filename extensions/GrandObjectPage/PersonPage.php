@@ -123,7 +123,6 @@ class PersonPage {
                 }
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonGrantsTab($person, $visibility, $startRange, $endRange));
-                    //$tabbedPage->addTab(new PersonContributionsTab($person, $visibility));
                 }
                 if($wgUser->isLoggedIn() && ($person->isRole(NI) || $person->isRole("ATS")) && $visibility['isMe']){
                     $tabbedPage->addTab(new PersonCoursesTab($person,$visibility, $startRange, $endRange));
@@ -143,9 +142,6 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                if(isExtensionEnabled('Acknowledgements')){
-                    $tabbedPage->addTab(new PersonAcknowledgementTab($person, $visibility));
-                }
                 if($me->isRoleAtLeast(STAFF)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
