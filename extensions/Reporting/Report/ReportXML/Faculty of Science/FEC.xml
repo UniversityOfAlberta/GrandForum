@@ -229,6 +229,7 @@
         <ReportItem id="ugrad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="1,2,3,4" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 <h3>Undergraduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <p><small><b>Note:</b> Courses have not yet been imported.</small></p>
                 {$item}
                 <script type='text/javascript'>
                     var mentions = new Array();
@@ -238,6 +239,7 @@
         <ReportItem id="grad_courses" type="PersonCoursesReportItem" showPercentages="true" levels="5,6,7,8" start="CYCLE_START" end="CYCLE_END">
             <![CDATA[
                 <h3>Graduate <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.  Teaching percentages in square brackets.'>&#9432;</span></h3>
+                <p><small><b>Note:</b> Courses have not yet been imported.</small></p>
                 {$item}
             ]]>
         </ReportItem>
