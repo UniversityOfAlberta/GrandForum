@@ -33,6 +33,8 @@ class DropTables extends AbstractMigration
         $this->dropTable('grand_contributions_partners');
         $this->dropTable('grand_contributions_projects');
         $this->dropTable('grand_ethics');
+        $this->dropTable('grand_eval');
+        $this->dropTable('grand_eval_conflicts');
         $this->dropTable('grand_feature_votes');
         $this->dropTable('grand_hqp_months');
         $this->dropTable('grand_list_request');
