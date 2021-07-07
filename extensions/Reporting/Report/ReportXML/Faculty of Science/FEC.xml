@@ -923,7 +923,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
