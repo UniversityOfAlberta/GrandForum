@@ -54,6 +54,7 @@ class DropTables extends AbstractMigration
         $this->dropTable('grand_researcher_cv');
         $this->dropTable('grand_review_results');
         $this->dropTable('grand_travel_forms');
+        $this->dropTable('grand_top_products');
         $this->dropTable('wikidev_messages');
         $this->dropTable('wikidev_projects');
         $this->dropTable('wikidev_projects_rules');

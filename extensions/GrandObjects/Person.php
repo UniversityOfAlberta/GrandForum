@@ -1106,22 +1106,6 @@ class Person extends BackboneModel {
         }
         return $people;
     }
-    
-    /**
-     * Returns all the People who currently have at least the Staff role
-     * @return array The People who currently have at least the Staff fole
-     */
-    static function getAllStaff(){
-        self::generateAllPeopleCache();
-        $people = array();
-        foreach(self::$allPeopleCache as $row){
-            $person = Person::newFromId($row);
-            if($person->isRoleAtLeast(STAFF)){
-                $people[] = $person;
-            }
-        }
-        return $people;
-    }
 
     /**
      * Returns an array of People of the type $filter
@@ -1867,22 +1851,6 @@ class Person extends BackboneModel {
             $addresses[$address->getId()] = $address;
         }
         return $addresses;
-    }
-    
-    /**
-     * Returns an array of Telephone objects that this Person has
-     * @return array The Telephone objects that this Person has
-     */
-    function getTelephones(){
-        $data = DBFunctions::select(array('grand_user_telephone'),
-                                    array('id'),
-                                    array('user_id' => EQ($this->getId())));
-        $telephones = array();
-        foreach($data as $row){
-            $phone = Telephone::newFromId($row['id']);
-            $telephones[$phone->getId()] = $phone;
-        }
-        return $telephones;
     }
     
     /**
@@ -3718,54 +3686,6 @@ class Person extends BackboneModel {
             }
         }
         return $papersArray;
-    }
-    
-    /**
-     * Returns when this Person's top products were last updated
-     * @return string When this Person's to products were last updated
-     */
-    function getTopProductsLastUpdated(){
-        $data = DBFunctions::select(array('grand_top_products'),
-                                    array('changed'),
-                                    array('type' => EQ('PERSON'),
-                                          'obj_id' => EQ($this->getId())),
-                                    array('changed' => 'DESC'));
-        if(count($data) > 0){
-            return $data[0]['changed'];
-        }
-    }
-    
-    /**
-     * Returns the list of this Person's top products
-     * @return array This Person's top products
-     */
-    function getTopProducts(){
-        $products = array();
-        $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
-                                    array('type' => EQ('PERSON'),
-                                          'obj_id' => EQ($this->getId())));
-        foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
-            $year = substr($product->getDate(), 0, 4);
-            $authors = $product->getAuthors();
-            $name = "";
-            foreach($authors as $author){
-                $name = $author->getNameForForms();
-                break;
-            }
-            $products["{$year}"][$name][] = $product;
-            ksort($products["{$year}"]);
-        }
-        ksort($products);
-        $products = array_reverse($products);
-        $newProducts = array();
-        foreach($products as $year => $prods){
-            foreach($prods as $prod){
-                $newProducts = array_merge($newProducts, $prod);
-            }
-        }
-        return $newProducts;
     }
     
     /**

@@ -961,46 +961,6 @@ EOF;
         return Paper::getAllPapersDuring($this->name, $category, "grand", $startRange, $endRange);
     }
     
-    function getTopProductsLastUpdated(){
-        $data = DBFunctions::select(array('grand_top_products'),
-                                    array('changed'),
-                                    array('type' => EQ('PROJECT'),
-                                          'obj_id' => EQ($this->getId())),
-                                    array('changed' => 'DESC'));
-        if(count($data) > 0){
-            return $data[0]['changed'];
-        }
-    }
-    
-    function getTopProducts(){
-        $products = array();
-        $data = DBFunctions::select(array('grand_top_products'),
-                                    array('product_id'),
-                                    array('type' => EQ('PROJECT'),
-                                          'obj_id' => EQ($this->getId())));
-        foreach($data as $row){
-            $product = Product::newFromId($row['product_id']);
-            $year = substr($product->getDate(), 0, 4);
-            $authors = $product->getAuthors();
-            $name = "";
-            foreach($authors as $author){
-                $name = $author->getNameForForms();
-                break;
-            }
-            $products["{$year}"][$name][] = $product;
-            ksort($products["{$year}"]);
-        }
-        ksort($products);
-        $products = array_reverse($products);
-        $newProducts = array();
-        foreach($products as $year => $prods){
-            foreach($prods as $prod){
-                $newProducts = array_merge($newProducts, $prod);
-            }
-        }
-        return $newProducts;
-    }
-    
     // Returns the comments for the Project when a user moved from this Project
     function getComments(){
         if($this->comments == null){
