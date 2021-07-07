@@ -821,6 +821,19 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true">
+            <![CDATA[
+                <h2>Pandemic Impact Statement</h2>
+                <p>You can either enter your pandemic impact statement below</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="covid_upload" type="Upload" blobType="BLOB_RAW" blobItem="COVID_UPLOAD" mimeType=".pdf" fileSize="5" optional="true">
+            <![CDATA[
+                <p>or upload a pdf of the statement</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
                 <h2>Sabbatical Report</h2>
@@ -912,7 +925,7 @@ Add a new other teaching entry to create a new paragraph.<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false" disabled="true">
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[
