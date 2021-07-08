@@ -55,7 +55,6 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</td><td style='padding-right:25px;' valign='top'>";
         $this->showEditContact($this->person, $this->visibility);
         $this->html .= "</table>";
-        $this->html .= $this->showEditTable($this->person, $this->visibility);
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
         $this->html .= "<script type='text/javascript'>
