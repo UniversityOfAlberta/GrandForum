@@ -108,6 +108,21 @@ class SpecialEventRegistration extends SpecialPage{
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
+        $preamble = "";
+        if($default->title == "Replaying Japan Conference"){
+            $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
+                           Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
+                        <p>Registration is FREE. Register so we can send you online participation information. You won’t get the links if you don’t register.<br />
+                           参加費は無料です。オンライン参加に必要なリンク情報をお送りするため、登録をお願いいたします。登録されない場合は、リンク情報が送信されません。</p>
+                        <p>To find out more about the conference, including scheduling, go to:<br />
+                           当学会の詳細並びにスケジュール等はこちらをご覧下さい。<br />
+                           <a href='http://replaying.jp' target='_blank'>http://replaying.jp</a></p>
+                        <p>Replaying Japan 2021 is hosted by the University of Alberta<br />
+                           ２０２１年度Replaying Japanはアルバータ大学が主催です。</p>
+                        <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
+                           その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
+        }
+        
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
@@ -116,6 +131,7 @@ class SpecialEventRegistration extends SpecialPage{
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
                     <div style='text-align:center;width:100%;'>{$banner1}</div>
+                    {$preamble}
                     <h3>Participant information</h3>
                     <table class='wikitable' frame='box' rules='all'>
                         <tr>
