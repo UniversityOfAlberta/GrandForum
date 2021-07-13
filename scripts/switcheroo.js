@@ -155,7 +155,7 @@
         $("#" + this.id).html("<input type='hidden' value='' name='" + this.id + "' /><table style='display:none'><tr><td colspan='3' style='display:none;width:100px;'></td></tr><tr><td align=\'center\'><b>Current " + this.name.pluralize() + "</b></td><td></td><td><div style='float:right;'><b id='" + this.id + "helpCell'>?</b></div><b>Search/Add " + this.name.pluralize() + ":</b><br /><input onKeyPress=\'return disableEnterKey(event)\' id=\'search" + this.id.pluralize() + "\' style=\'width:238px;\' type=\'text\' /></td></tr>" +
                 "<tr><td><div id=\'hidden" + this.id.pluralize() + "\' style=\'display:none\'></div>" +
                     "<select id=\'left" + this.id.pluralize() + "\' size=\'10\' style=\'width:250px;\' multiple>" +
-                    "</select><center><input type=\'button\' value=\'&uarr;\' id=\'moveUp" + this.id.pluralize() + "\' />&nbsp;<input type=\'button\' value=\'&darr;\' id=\'moveDown" + this.id.pluralize() + "\' /></center></td>" +
+                    "</select><center style='margin-top:2px;'><input type=\'button\' value=\'&uarr;\' id=\'moveUp" + this.id.pluralize() + "\' />&nbsp;<input type=\'button\' value=\'&darr;\' id=\'moveDown" + this.id.pluralize() + "\' /></center></td>" +
             "<td>" +
                 "<input type=\'button\' value=\'<<\' id=\'moveLeft" + this.id.pluralize() + "\' /><br />" +
                 "<br />" +

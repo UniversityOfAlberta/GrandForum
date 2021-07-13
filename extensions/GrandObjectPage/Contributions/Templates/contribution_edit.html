@@ -20,20 +20,20 @@
 <% } %>
 <table>
     <tr class="tooltip" title="The institution where the contribution was used">
-        <td align="right"><b>PI Institution:</b></td>
-        <td><%= HTML.TextBox(this, 'institution', {size: '40'}) %><br /></td>
+        <td class="label">PI Institution:</td>
+        <td class="value"><%= HTML.TextBox(this, 'institution', {size: '40'}) %><br /></td>
     </tr>
     <tr class="tooltip" title="The province in which that institution is located">
-        <td align="right"><b>Province:</b></td>
-        <td><%= HTML.TextBox(this, 'province', {size: '40'}) %><br /></td>
+        <td class="label">Province:</td>
+        <td class="value"><%= HTML.TextBox(this, 'province', {size: '40'}) %><br /></td>
     </tr>
     <tr>
-        <td align="right"><b>Start Date:</b></td>
-        <td><%= HTML.DatePicker(this, 'start', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
+        <td class="label">Start Date:</td>
+        <td class="value"><%= HTML.DatePicker(this, 'start', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
     </tr>
     <tr>
-        <td align="right"><b>End Date:</b></td>
-        <td><%= HTML.DatePicker(this, 'end', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
+        <td class="label">End Date:</td>
+        <td class="value"><%= HTML.DatePicker(this, 'end', {format: 'yy-mm-dd', style: 'width:100px'}) %></td>
     </tr>
     <tr>
 </table>
@@ -45,8 +45,8 @@
                 <div class="warning" style="display:none;" id="warning<%= i %>"></div>
                 <table id="partner<%= i %>">
                     <tr>
-                        <td align="right"><b>Partner:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50', class: 'partner_name'}) %></td>
+                        <td class="label">Partner:</td>
+                        <td class="value"><%= HTML.TextBox(this, 'partners.' + i + '.name', {size: '50', class: 'partner_name'}) %></td>
                     </tr>
                     <tr style="<% if(networkName == 'MtS'){ %> display:none; <% } %>">
                         <td valign="top" style="padding-top:11px;width:100px;" align="right"><b>Contact:</b><br /><small style="line-height: 1em;">This information is for reporting purposes only. Partners will not be contacted.</small></td>
@@ -80,13 +80,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" style="white-space:nowrap;"><b>Network Signatory:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.signatory', {options: ['','Yes',
+                        <td class="label">Network Signatory:</td>
+                        <td class="value"><%= HTML.Select(this, 'partners.' + i + '.signatory', {options: ['','Yes',
                                                                                                 'No']}) %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>Sector:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','University',
+                        <td class="label">Sector:</td>
+                        <td class="value"><%= HTML.Select(this, 'partners.' + i + '.industry', {options: ['','University',
                                                                                                'Industry',
                                                                                                'Federal Departments and Agencies',
                                                                                                'Provincial Departments and Agencies',
@@ -95,24 +95,24 @@
                                                                                                'Other']}) %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>Country:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.country') %></td>
+                        <td class="label">Country:</td>
+                        <td class="value"><%= HTML.TextBox(this, 'partners.' + i + '.country') %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>Province:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.prov') %></td>
+                        <td class="label">Province:</td>
+                        <td class="value"><%= HTML.TextBox(this, 'partners.' + i + '.prov') %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>City:</b></td>
-                        <td><%= HTML.TextBox(this, 'partners.' + i + '.city') %></td>
+                        <td class="label">City:</td>
+                        <td class="value"><%= HTML.TextBox(this, 'partners.' + i + '.city') %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>Level:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.level', {options: ['','Provincial','Federal']}) %></td>
+                        <td class="label">Level:</td>
+                        <td class="value"><%= HTML.Select(this, 'partners.' + i + '.level', {options: ['','Provincial','Federal']}) %></td>
                     </tr>
                     <tr>
-                        <td align="right"><b>Type:</b></td>
-                        <td><%= HTML.Select(this, 'partners.' + i + '.type', {options: [{value: '', option: '[Select Contribution Type]'},
+                        <td class="label">Type:</td>
+                        <td class="value"><%= HTML.Select(this, 'partners.' + i + '.type', {options: [{value: '', option: '[Select Contribution Type]'},
                                                                                         'Cash',
                                                                                         'Cash and In-Kind',
                                                                                         'In-Kind',
@@ -124,16 +124,16 @@
                                                                               class: 'partner_type'}) %></td>
                     </tr>
                     <tr id="amount">
-                        <td class="label" align="right"><b>Amount:</b></td>
-                        <td>
+                        <td class="label">Amount:</td>
+                        <td class="value">
                             <%= HTML.TextBox(this, 'partners.' + i + '.amounts.none', {style: 'width: 75px', class: 'amount'}) %>
                         </td>
                     </tr>
                     <tr id="cash">
-                        <td class="label" align="right"><b>Cash Amounts:</b></td>
-                        <td>
+                        <td class="label">Cash Amounts:</td>
+                        <td class="value">
                             <% _.each(cashMap, function(subType, subId){ %>
-                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px', class: 'amount'}) %>&nbsp;<%= subType %>
+                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px;margin-bottom:2px;', class: 'amount'}) %>&nbsp;<%= subType %>
                                 <% if(subId == "c_othe"){ %>
                                     <%= HTML.TextBox(this, 'partners.' + i + '.amounts.cash_other', {style: 'width: 250px', placeholder: 'Description'}) %>
                                 <% } %>
@@ -142,10 +142,10 @@
                         </td>
                     </tr>
                     <tr id="inkind">
-                        <td class="label" align="right"><b>In-Kind Amounts:</b></td>
+                        <td class="label">In-Kind Amounts:</td>
                         <td>
                             <% _.each(inkindMap, function(subType, subId){ %>
-                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px', class: 'amount'}) %>&nbsp;<%= subType %>
+                                <%= HTML.TextBox(this, 'partners.' + i + '.amounts.' + subId, {style: 'width: 75px;margin-bottom:2px;', class: 'amount'}) %>&nbsp;<%= subType %>
                                 <% if(subId == "othe"){ %>
                                     <%= HTML.TextBox(this, 'partners.' + i + '.amounts.inkind_other', {style: 'width: 250px', placeholder: 'Description'}) %>
                                 <% } %>
