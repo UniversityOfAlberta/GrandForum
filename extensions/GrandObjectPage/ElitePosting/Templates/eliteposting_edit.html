@@ -1,0 +1,61 @@
+<div>
+    <table>
+        <tr>
+            <td class="label required">Position Title:</td>
+            <td class="value"><%= HTML.TextBox(this, 'title', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label required">Company Name:</td>
+            <td class="value"><%= HTML.TextBox(this, 'companyName', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Company Website:</td>
+            <td class="value"><%= HTML.TextBox(this, 'articleLink', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Company Profile:</td>
+            <td clas="value"><%= HTML.TextArea(this, 'companyProfile', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Reports to:</td>
+            <td class="value"><%= HTML.TextBox(this, 'reportsTo', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Based at:</td>
+            <td class="value"><%= HTML.TextBox(this, 'basedAt', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Position Purpose:</td>
+            <td class="value"><%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Specific Responsibilities Include:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'responsibilities', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Qualifications and Experience:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'qualifications', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Skills and Capabilities:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'skills', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+    </table>
+</div>
+<div style="width:120px;display:inline-block;">
+    <button id="savePosting">
+        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %>
+    </button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:120px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>

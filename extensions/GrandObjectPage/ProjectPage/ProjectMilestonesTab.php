@@ -181,13 +181,13 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     min-width:22px;
                     -moz-appearance: none;
                     -webkit-appearance: none;
-                    padding-left: 6px;
+                    padding-left: 5px;
                     padding-right: 4px;
                 }
                 
                 @-moz-document url-prefix() {
                     .milestone {
-                        padding-left: 2px;
+                        padding-left: 1px;
                         padding-right: 5px;
                     }
                 }
@@ -293,6 +293,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             #milestones_table input[type=text], #milestones_table select {
                 box-sizing: border-box;
                 margin: 0;
+                padding-top: 3px;
                 width: 100%;
                 height: 24px;
             }

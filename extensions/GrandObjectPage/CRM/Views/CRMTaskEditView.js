@@ -58,7 +58,7 @@ CRMTaskEditView = Backbone.View.extend({
         _.each(this.model.get('transactions'), function(transaction, i){
             this.$("#transactions").append("<div>");
             this.$("#transactions div").last().append(HTML.Select(this, 'transactions.' + i + '.type', {options: this.transactionTree[this.model.opportunity.get('category')] }));
-            this.$("#transactions div").last().append(HTML.DatePicker(this, 'transactions.' + i + '.date', {format: 'yy-mm-dd', style: 'width:5em'}));
+            this.$("#transactions div").last().append("&nbsp;" + HTML.DatePicker(this, 'transactions.' + i + '.date', {format: 'yy-mm-dd', style: 'width:5em'}));
             this.$("#transactions div").last().append("<span data-id='" + i + "' class='delete-icon' style='vertical-align: middle; margin-left:5px;' title='Delete Transaction'></span>");
         }.bind(this));
         this.delegateEvents();

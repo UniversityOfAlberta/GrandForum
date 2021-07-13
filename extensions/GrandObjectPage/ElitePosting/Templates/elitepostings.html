@@ -1,0 +1,37 @@
+<% if(isAllowedToCreateElitePostings){ %>
+    <a href="#/new" class="button" id="add">Create New</a><br /><br />
+<% } %>
+<table id="postings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="1%" style="white-space: nowrap;">Date</th>
+            <th style="white-space: nowrap;">Company Name</th>
+            <th style="white-space: nowrap;">Position Title</th>
+            <% if(isAllowedToCreateElitePostings){ %>
+                <th width="1%">Delete?</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(posting){ %>
+            <tr>
+                <td style="white-space: nowrap;">
+                    <span style="display:none;"><%= posting.get('created') %></span><%= dateTimeHelpers.formatDate(posting.get('created')) %>
+                </td>
+                <td>
+                    <%= posting.get('companyName') %>
+                </td>
+                <td>
+                    <a href="<%= posting.get('url') %>" ><%= posting.get('title') %></a>
+                </td>
+                <% if(isAllowedToCreateElitePostings){ %>
+                    <td align="center">
+                        <% if(posting.get('isAllowedToEdit')){ %>
+                            <span id="<%= posting.get('id') %>" class="delete-icon"></span>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>

@@ -158,8 +158,9 @@
                         $('#table_AssessmentReadiness_prl tr.obj').each(function(i, el){
                             var selects = $('select', $(el));
                             var spans = $('span.recommended', $(el));
-                            var stage = $(selects[0]);
-                            var level = $(selects[1]);
+                            var type  = $(selects[0]);
+                            var stage = $(selects[1]);
+                            var level = $(selects[2]);
                             var val = stage.val();
                             var recommended = "1";
                             

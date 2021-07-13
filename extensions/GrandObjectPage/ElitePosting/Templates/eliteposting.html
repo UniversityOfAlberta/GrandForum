@@ -1,0 +1,76 @@
+<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:ElitePostingPage#" style="float: right;">Back to Project Proposals</a>
+<div>
+    <table>
+        <tr>
+            <td class="label">Position Title:</td>
+            <td class="value"><%= title %></td>
+        </tr>
+        <tr>
+            <td class="label">Company Name:</td>
+            <td class="value">
+                <% if(articleLink != ""){ %>
+                    <a target="_blank" href="<%= articleLink %>"><%= companyName %></a>
+                <% } else { %>
+                    <%= companyName %>
+                <% } %>
+            </td>
+        </tr>
+        <% if(companyProfile != ""){ %>
+            <tr>
+                <td class="label">Company Profile:</td>
+                <td clas="value"><%= nl2br(companyProfile) %></td>
+            </tr>
+        <% } %>
+        <% if(reportsTo != ""){ %>
+            <tr>
+                <td class="label">Reports to:</td>
+                <td class="value"><%= reportsTo %></td>
+            </tr>
+        <% } %>
+        <% if(basedAt != ""){ %>
+            <tr>
+                <td class="label">Based at:</td>
+                <td class="value"><%= basedAt %></td>
+            </tr>
+        <% } %>
+        <% if(summary != ""){ %>
+            <tr>
+                <td class="label">Position Purpose:</td>
+                <td class="value"><%= nl2br(summary) %></td>
+            </tr>
+        <% } %>
+        <% if(responsibilities != ""){ %>
+            <tr>
+                <td class="label left-align" colspan="2">Specific Responsibilities Include:</td>
+            </tr>
+            <tr>
+                <td class="value" colspan="2"><%= responsibilities %></td>
+            </tr>
+        <% } %>
+        <% if(qualifications != ""){ %>
+            <tr>
+                <td class="label left-align" colspan="2">Qualifications and Experience:</td>
+            </tr>
+            <tr>
+                <td class="value" colspan="2"><%= qualifications %></td>
+            </tr>
+        <% } %>
+        <% if(skills != ""){ %>
+            <tr>
+                <td class="label left-align" colspan="2">Skills and Capabilities:</td>
+            </tr>
+            <tr>
+                <td class="value" colspan="2"><%= skills %></td>
+            </tr>
+        <% } %>
+    </table>
+</div>
+<% if(isAllowedToEdit){ %>
+    <div id="deleteDialog" title="Delete" style="display:none;">
+        <h3>Interns</h3>
+        <small>Mention who was hired for this position</small>
+        <%= HTML.TextArea(this, 'deletedText', {style: 'height: 100px;'}) %>
+        <div class="throbber" style="float:right;display:none;"></div>
+    </div>
+    <button id='editPosting'>Edit</button>&nbsp;<button id='deletePosting'>Delete</button>
+<% } %>

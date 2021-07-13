@@ -375,7 +375,6 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 box-sizing: border-box;
                 margin: 0;
                 width: 100%;
-                height: 24px;
             }
         </style>";
         $commentsHeader = "";

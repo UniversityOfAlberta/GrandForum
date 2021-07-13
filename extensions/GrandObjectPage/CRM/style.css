@@ -31,6 +31,10 @@
     width: 100%;
 }
 
+#transactions > div {
+    padding: 2px 0;
+}
+
 #transactions td {
     width: 50%;
 }

@@ -106,6 +106,10 @@ table.dataTable tr.even td.sorting_3 { background-color: #F8F8F8; }
 	text-align: right;
 }
 
+.dataTables_filter input {
+    margin-left: 2px;
+}
+
 
 /*
  * Table information
