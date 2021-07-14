@@ -3,6 +3,7 @@ CRMContactsTableView = Backbone.View.extend({
     table: null,
     editDialog: null,
     deleteDialog: null,
+    groupBy: null,
 
     initialize: function(){
         this.model.fetch();
@@ -46,19 +47,20 @@ CRMContactsTableView = Backbone.View.extend({
         this.deleteDialog.dialog('open');
     },
     
-    render: function(){
+    initTable: function(){
         // Initialize order/filter
         var searchStr = "";
-        var order = [ 1, "asc" ];
+        var order = [1, "asc"];
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
         }
-        
-        this.$el.html(this.template(this.model.toJSON()));
         var rowsGroup = [1,0,2,3,4];
         if(isAllowedToCreateCRMContacts){
             rowsGroup = [1,0,2,3,4,5];
+        }
+        if(this.groupBy != null){
+            rowsGroup = [this.groupBy].concat(rowsGroup);
         }
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,
@@ -68,13 +70,27 @@ CRMContactsTableView = Backbone.View.extend({
             'aLengthMenu': [[-1], ['All']],
             'rowsGroup': rowsGroup
         });
+        table = this.table;
         this.table.order(order);
 	    this.table.search(searchStr);
 	    this.table.draw();
+	    this.table.on('order.dt', function(e, el, ord){
+            if(ord.length == 1){
+                this.groupBy = ord[0].src;
+                this.render();
+            }
+            else{
+                this.groupBy = null;
+            }
+        }.bind(this));
         this.$('#contacts_wrapper').prepend("<div id='contacts_length' class='dataTables_length'></div>");
 	    this.$("#contacts_length").empty();
 	    this.$("#contacts_length").append(this.$("#addContact").detach());
-	    
+    },
+    
+    render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        this.initTable();
 	    this.editDialog = this.$("#editDialog").dialog({
 	        autoOpen: false,
 	        modal: true,

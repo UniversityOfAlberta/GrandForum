@@ -58,13 +58,13 @@
                             <a href="<%= task.assignee.url %>"><%= task.assignee.name %></a><span style="display:none;"><%= opportunity.id %></span>
                         </td>
                         <td>
-                            <%= task.task %>
+                            <%= task.task %><span style="display:none;"><%= task.id %></span>
                         </td>
                         <td style="white-space:nowrap;">
-                            <%= task.status %>
+                            <%= task.status %><span style="display:none;"><%= task.id %></span>
                         </td>
                         <td align="center">
-                            <%= task.dueDate %>
+                            <%= task.dueDate %><span style="display:none;"><%= task.id %></span>
                         </td>
                     </tr>
         <%      })
