@@ -15,7 +15,7 @@ class ElitePostingAPI extends PostingAPI {
     }
     
     function extraVars($posting){
-        $posting->visibility = "Publish";
+        $posting->visibility = $this->POST('visibility');
         $posting->language = "English";
         $posting->companyName = $this->POST('companyName');
         $posting->companyProfile = $this->POST('companyProfile');

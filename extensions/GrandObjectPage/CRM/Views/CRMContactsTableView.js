@@ -56,9 +56,9 @@ CRMContactsTableView = Backbone.View.extend({
         }
         
         this.$el.html(this.template(this.model.toJSON()));
-        var rowsGroup = [0,1,2,3,4];
+        var rowsGroup = [1,0,2,3,4];
         if(isAllowedToCreateCRMContacts){
-            rowsGroup = [0,1,2,3,4,5];
+            rowsGroup = [1,0,2,3,4,5];
         }
         this.table = this.$("table#contacts").DataTable({
             "autoWidth": true,

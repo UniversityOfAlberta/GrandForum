@@ -320,7 +320,7 @@ HTML.Radio = function(view, attr, options){
 }
 
 HTML.DatePicker = function(view, attr, options){
-    options.style = (options.style != undefined) ? 'width:75px;' + options.style : 'width:72px;';
+    options.style = (options.style != undefined) ? 'width:72px;' + options.style : 'width:72px;';
     var el = HTML.Element("input", "datepicker", options);
     el.setAttribute('name', HTML.Name(attr));
     el.setAttribute('value', HTML.Value(view, attr));

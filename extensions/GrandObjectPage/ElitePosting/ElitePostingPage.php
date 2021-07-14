@@ -18,7 +18,8 @@ class ElitePostingPage extends BackbonePage {
         return array('Backbone/*',
                      'elitepostings',
                      'eliteposting',
-                     'eliteposting_edit');
+                     'eliteposting_edit',
+                     'elitepostings_admin');
     }
     
     function getViews(){
@@ -32,7 +33,8 @@ class ElitePostingPage extends BackbonePage {
         return array('Backbone/*',
                      'ElitePostingsView',
                      'ElitePostingView',
-                     'ElitePostingEditView');
+                     'ElitePostingEditView',
+                     'ElitePostingsAdminView');
     }
     
     function getModels(){
@@ -42,9 +44,9 @@ class ElitePostingPage extends BackbonePage {
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        if($me->isLoggedIn()){
+        /*if($me->isLoggedIn()){
             $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Jobs/Internships", "$wgServer$wgScriptPath/index.php/Special:ElitePostingPage");
-        }
+        }*/
         return true;
     }
 

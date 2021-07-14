@@ -8,6 +8,7 @@ ElitePosting = Posting.extend({
 
     defaults: function(){
         return _.extend(Object.assign({}, Posting.prototype.defaults), {
+            visibility: "Submitted",
             companyName: "",
             companyProfile: "",
             reportsTo: "",

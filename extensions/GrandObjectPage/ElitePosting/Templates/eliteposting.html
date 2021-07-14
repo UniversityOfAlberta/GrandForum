@@ -1,4 +1,6 @@
-<a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:ElitePostingPage#" style="float: right;">Back to Project Proposals</a>
+<% if(!this.isDialog){ %>
+    <a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:ElitePostingPage#" style="float: right;">Back to Project Proposals</a>
+<% } %>
 <div>
     <table>
         <tr>
@@ -65,7 +67,7 @@
         <% } %>
     </table>
 </div>
-<% if(isAllowedToEdit){ %>
+<% if(isAllowedToEdit && !this.isDialog){ %>
     <div id="deleteDialog" title="Delete" style="display:none;">
         <h3>Interns</h3>
         <small>Mention who was hired for this position</small>

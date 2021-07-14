@@ -19,6 +19,7 @@ PageRouter = Backbone.Router.extend({
     routes: {
         "": "showElitePostings",
         "new": "newElitePosting",
+        "admin": "showElitePostingsAdmin",
         ":id": "showElitePosting",
         ":id/edit": "editElitePosting"
     }
@@ -32,6 +33,13 @@ pageRouter.on('route:showElitePostings', function (id) {
     var postings = new ElitePostings();
     this.closeCurrentView();
     this.currentView = new ElitePostingsView({el: $("#currentView"), model: postings});
+});
+
+pageRouter.on('route:showElitePostingsAdmin', function (id) {
+    // Get multiple ElitePostings
+    var postings = new ElitePostings();
+    this.closeCurrentView();
+    this.currentView = new ElitePostingsAdminView({el: $("#currentView"), model: postings});
 });
 
 pageRouter.on('route:newElitePosting', function(){

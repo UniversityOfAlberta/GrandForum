@@ -1,6 +1,11 @@
 PostingView = Backbone.View.extend({
 
-    initialize: function(){
+    isDialog: false,
+
+    initialize: function(options){
+        if(options.isDialog != undefined){
+            this.isDialog = options.isDialog;
+        }
         this.model.fetch({
             error: function(e){
                 this.$el.html("This Posting does not exist");

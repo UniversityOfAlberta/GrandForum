@@ -1,0 +1,36 @@
+<div id="postingDialog" title="Project Proposal"></div>
+<table id="postings" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="1%" style="white-space: nowrap;">Created</th>
+            <th style="white-space: nowrap;">Position Title/Company Name</th>
+            <th style="white-space: nowrap;">Owner</th>
+            <th width="1%" style="white-space: nowrap;">Status</th>
+            <th width="1%" style="white-space: nowrap;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(posting){ %>
+            <tr>
+                <td style="white-space: nowrap;">
+                    <span style="display:none;"><%= posting.get('created') %></span><%= dateTimeHelpers.formatDate(posting.get('created')) %>
+                </td>
+                <td>
+                    <a class="postingLink" data-id="<%= posting.get('id') %>" style="cursor:pointer;"><%= posting.get('title') %></a><br />
+                    <%= posting.get('companyName') %>
+                </td>
+                <td>
+                    <a href="<%= posting.get('user').url %>"><%= posting.get('user').fullName %></a>
+                </td>
+                <td align="center">
+                    <%= posting.get('visibility') %>
+                </td>
+                <td style="white-space:nowrap;" align="center">
+                    <button data-id="<%= posting.get('id') %>">Accept</button>
+                    <button data-id="<%= posting.get('id') %>">More Info</button>
+                    <button data-id="<%= posting.get('id') %>">Reject</button>
+                </td>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>
