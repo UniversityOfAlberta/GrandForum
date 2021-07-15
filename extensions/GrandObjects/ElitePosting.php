@@ -32,6 +32,20 @@ class ElitePosting extends Posting {
         }
     }
     
+    function isAllowedToView(){
+        $me = Person::newFromWgUser();
+        if($this->getVisibility() == "Accepted" || $this->getVisibility() == "Publish"){
+            // Posting is Public
+            return true;
+        }
+        if(($me->getId() == $this->getUserId() && !isset($_GET['apiKey'])) ||  
+           ($me->isRoleAtLeast(STAFF) && $this->getPreviewCode() == @$_GET['previewCode']) ||
+           ($me->isRoleAtLeast(STAFF) && !isset($_GET['apiKey']))){
+            // Posting was created by the logged in user (or is Staff)
+            return true;
+        }
+    }
+    
     function getCompanyName(){
         return $this->companyName;
     }

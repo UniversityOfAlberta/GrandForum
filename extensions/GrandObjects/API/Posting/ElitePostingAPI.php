@@ -19,8 +19,8 @@ class ElitePostingAPI extends PostingAPI {
         $posting->language = "English";
         $posting->companyName = $this->POST('companyName');
         $posting->companyProfile = $this->POST('companyProfile');
-        $posting->reportsTo = $this->POST('reports_to');
-        $posting->basedAt = $this->POST('based_at');
+        $posting->reportsTo = $this->POST('reportsTo');
+        $posting->basedAt = $this->POST('basedAt');
         $posting->responsibilities = $this->POST('responsibilities');
         $posting->qualifications = $this->POST('qualifications');
         $posting->skills = $this->POST('skills');

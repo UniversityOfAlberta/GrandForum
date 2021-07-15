@@ -36,6 +36,9 @@ ElitePostingEditView = PostingEditView.extend({
     },
     
     postRender: function(){
+        if(this.model.get('visibility') == 'Requested More Info'){
+            this.model.set('visibility', 'Submitted More Info');
+        }
         this.renderTinyMCE('responsibilities');
         this.renderTinyMCE('qualifications');
         this.renderTinyMCE('skills');
