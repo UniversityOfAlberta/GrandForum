@@ -204,6 +204,47 @@
             ]]>
         </ReportItem>
         
+        <!-- Social Media Accounts -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2>Social Media Accounts</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="twitter" type="Text" blobItem="TWITTER" placeholder="https://twitter.com/Twitter" width="315px" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Twitter:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" placeholder="https://www.facebook.com/facebook" width="315px" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Facebook:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" placeholder="https://www.linkedin.com/in/first-last-00000000" width="315px" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">LinkedIn:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="website" type="Text" blobItem="WEBSITE" placeholder="https://mywebsite.com" width="315px" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Website:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
         <!-- Immigration and Work Eligibility -->
         <Static>
             <![CDATA[
