@@ -5,6 +5,8 @@ ElitePostingsView = PostingsView.extend({
     initialize: function(){
         this.model.fetch();
         main.set('title', 'Project Proposals');
+        this.listenTo(this.model, "sync", this.render);
+        this.listenTo(this.model, "remove", this.render);
     },
     
     render: function(){

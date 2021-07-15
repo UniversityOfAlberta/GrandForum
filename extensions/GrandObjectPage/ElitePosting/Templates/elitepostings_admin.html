@@ -1,4 +1,14 @@
-<div id="postingDialog" title="Project Proposal"></div>
+<div id="postingDialog" title="Project Proposal" style="display:none;"></div>
+<div id="acceptDialog" title="Accept Project Proposal" style="display:none;">
+    Are you sure you want to accept this proposal?
+</div>
+<div id="moreDialog" title="Request More Information" style="display:none;">
+    <b>Message:</b><br />
+    <textarea style="width:400px;height:100px;"></textarea>
+</div>
+<div id="rejectDialog" title="Reject Project Proposal" style="display:none;">
+    Are you sure you want to reject this proposal?
+</div>
 <table id="postings" frame="box" rules="all">
     <thead>
         <tr>
@@ -26,9 +36,9 @@
                     <%= posting.get('visibility') %>
                 </td>
                 <td style="white-space:nowrap;" align="center">
-                    <button data-id="<%= posting.get('id') %>">Accept</button>
-                    <button data-id="<%= posting.get('id') %>">More Info</button>
-                    <button data-id="<%= posting.get('id') %>">Reject</button>
+                    <button class="accept" data-id="<%= posting.get('id') %>">Accept</button>
+                    <button class="more" data-id="<%= posting.get('id') %>">More Info</button>
+                    <button class="reject" data-id="<%= posting.get('id') %>">Reject</button>
                 </td>
             </tr>
         <% }.bind(this)) %>

@@ -61,7 +61,9 @@ ElitePostingView = PostingView.extend({
     },
     
     render: function(){
-        main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
+        if(!this.isDialog){
+            main.set('title', showLanguage(this.model.get('language'), this.model.get('title'), this.model.get('titleFr')));
+        }
         this.$el.empty();
         var data = this.model.toJSON();
         _.extend(data, dateTimeHelpers);
