@@ -15,6 +15,7 @@ class ElitePosting extends Posting {
     var $responsibilities;
     var $qualifications;
     var $skills;
+    var $comments;
     
     function ElitePosting($data){
         if(count($data) > 0){
@@ -27,6 +28,7 @@ class ElitePosting extends Posting {
             $this->responsibilities = $row['responsibilities'];
             $this->qualifications = $row['qualifications'];
             $this->skills = $row['skills'];
+            $this->comments = $row['comments'];
         }
     }
     
@@ -58,6 +60,10 @@ class ElitePosting extends Posting {
         return $this->skills;
     }
     
+    function getComments(){
+        return ($this->isAllowedToEdit()) ? $this->comments : "";
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['companyName'] = $this->getCompanyName();
@@ -67,6 +73,7 @@ class ElitePosting extends Posting {
         $json['responsibilities'] = $this->getResponsibilities();
         $json['qualifications'] = $this->getQualifications();
         $json['skills'] = $this->getSkills();
+        $json['comments'] = $this->getComments();
         return $json;
     }
     
@@ -80,7 +87,8 @@ class ElitePosting extends Posting {
                                                 'based_at' => $this->basedAt,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,
-                                                'skills' => $this->skills),
+                                                'skills' => $this->skills,
+                                                'comments' => $this->comments),
                                           array('id' => $this->id));
         }
         return $status;
@@ -96,7 +104,8 @@ class ElitePosting extends Posting {
                                                 'based_at' => $this->basedAt,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,
-                                                'skills' => $this->skills),
+                                                'skills' => $this->skills,
+                                                'comments' => $this->comments),
                                           array('id' => $this->id));
         }
         return $status;

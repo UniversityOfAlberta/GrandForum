@@ -94,6 +94,7 @@ ElitePostingsAdminView = PostingsView.extend({
             buttons: {
                 "Submit": function(){
                     // Need to set comments aswell
+                    this.moreDialog.model.set('comments', $("#moreComments").val());
                     this.moreDialog.model.set('visibility', 'Requested More Info');
                     this.moreDialog.model.save();
                     this.moreDialog.dialog('close'); 

@@ -24,6 +24,9 @@ class ElitePostingAPI extends PostingAPI {
         $posting->responsibilities = $this->POST('responsibilities');
         $posting->qualifications = $this->POST('qualifications');
         $posting->skills = $this->POST('skills');
+        if($posting->isAllowedToEdit()){
+            $posting->comments = $this->POST('comments');
+        }
     }
 	
 }

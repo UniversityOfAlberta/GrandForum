@@ -12,7 +12,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan="2"><h2 style="margin-top:0;">Personally identifying information</h2></td>
+                        <td colspan="4"><h2 style="margin-top:0;">Personally identifying information</h2></td>
                     </tr>
             ]]>
         </Static>
@@ -20,7 +20,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Last Name:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -28,7 +28,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">First Name:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -36,7 +36,7 @@
             <![CDATA[
                 <tr>
                     <td class="label">Middle Name:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -44,15 +44,16 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Date of Birth:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
+        
         <!-- Self identifying Section -->
         <Static>
             <![CDATA[
                 <tr>
-                    <td colspan="2"><h2>Self identifying Section</h2></td>
+                    <td colspan="4"><h2>Self identifying Section</h2></td>
                 </tr>
             ]]>
         </Static>
@@ -60,7 +61,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Gender:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -68,15 +69,16 @@
             <![CDATA[
                 <tr>
                     <td class="label">Ethnic Group:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <!-- Skills and Abilities -->
+        
+        <!-- Education -->
         <Static>
             <![CDATA[
                 <tr>
-                    <td colspan="2"><h2>Skills and Abilities</h2></td>
+                    <td colspan="4"><h2>Education</h2></td>
                 </tr>
             ]]>
         </Static>
@@ -84,7 +86,39 @@
             <![CDATA[
                 <tr>
                     <td class="label">Education:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Enrollment in Fall:</td>
+                    <td class="value" colspan="3">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label tooltip" title="Name of the educational institution">Institution Name:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">City:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Province/State:</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -92,23 +126,29 @@
             <![CDATA[
                 <tr>
                     <td class="label">Official Languages:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
+        
         <!-- Contact Information -->
         <Static>
             <![CDATA[
                 <tr>
-                    <td colspan="2"><h2>Contact Information</h2></td>
+                    <td colspan="4"><h2>Contact Information</h2></td>
                 </tr>
             ]]>
         </Static>
         <ReportItem id="address1" type="Text" blobItem="ADDRESS1" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label tooltip" title="Street Name and number
-">Address Line 1:</td>
+                    <td class="label tooltip" title="Street Name and number">Address Line 1:</td>
+                    <td class="value" style="width:200px">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
+            <![CDATA[
+                    <td class="label required" style="width:1px;">E-mail:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
@@ -118,6 +158,12 @@
                 <tr>
                     <td class="label tooltip" title="House, Apt, Suite">Address Line 2:</td>
                     <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip required" title="Phone number of the individual">Cellphone Number:</td>
+                    <td class="value">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -126,6 +172,12 @@
                 <tr>
                     <td class="label tooltip" title="City">City:</td>
                     <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip required" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
+                    <td class="value">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -133,6 +185,12 @@
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="Province">Province/State:</td>
+                    <td class="value">{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
+            <![CDATA[
+                    <td class="label tooltip required" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
@@ -145,91 +203,12 @@
                 </tr>
             ]]>
         </ReportItem>
-        <!-- Educational Institution -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="2"><h2>Educational Institution</h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">Enrollment in Fall:</td>
-                    <td class="value">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip" title="Name of the educational institution">Institution Name:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">City:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">Province/State:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <!-- Electronic Contact Information -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="2"><h2>Electronic Contact Information</h2></td>
-                </tr>
-            ]]>
-        </Static>
-        <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label required">E-mail:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Phone number of the individual">Cellphone Number:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label tooltip required" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
-                    <td class="value">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
+        
         <!-- Immigration and Work Eligibility -->
         <Static>
             <![CDATA[
                 <tr>
-                    <td colspan="2"><h2>Immigration and Work Eligibility</h2></td>
+                    <td colspan="4"><h2>Immigration and Work Eligibility</h2></td>
                 </tr>
             ]]>
         </Static>
@@ -237,7 +216,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Canadian Immigration Status:</td>
-                    <td class="value">What is your immigration Status in Canada?{$item}</td>
+                    <td class="value" colspan="3">What is your immigration Status in Canada?{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -245,7 +224,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Eligibility to Work in Canada:</td>
-                    <td class="value">Are you Eligible to Work in Canada?{$item}</td>
+                    <td class="value" colspan="3">Are you Eligible to Work in Canada?{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -253,7 +232,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">ELITE Streams:</td>
-                    <td class="value">{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -261,15 +240,16 @@
             <![CDATA[
                 <tr>
                     <td class="label">Other Obligations:</td>
-                    <td class="value">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?{$item}</td>
+                    <td class="value" colspan="3">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <!-- File Submission -->
+        
+        <!-- Attachments -->
         <Static>
             <![CDATA[
                 </table>
-                <h2>File Submission</h2>
+                <h2>Attachments</h2>
             ]]>
         </Static>
         <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">

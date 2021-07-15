@@ -15,7 +15,8 @@ ElitePosting = Posting.extend({
             basedAt: "",
             responsibilities: "",
             qualifications: "",
-            skills: ""
+            skills: "",
+            comments: "",
         });
     }
     
