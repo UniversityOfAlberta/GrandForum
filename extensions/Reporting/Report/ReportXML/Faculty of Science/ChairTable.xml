@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="true">
+<Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
         <Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="rw" />
@@ -466,7 +466,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
         <Static>
             <![CDATA[
                 <style>
