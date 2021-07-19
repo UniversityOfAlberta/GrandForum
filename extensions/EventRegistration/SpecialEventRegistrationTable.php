@@ -41,7 +41,14 @@ class SpecialEventRegistrationTable extends SpecialPage{
             $similarEvents = ($registration->similarEvents) ? "&#10003;" : "";
             $misc = array();
             foreach($registration->misc as $field => $contents){
-                $misc[] = nl2br("<b>{$field}</b>: {$contents}");
+                if($field == "PDF"){
+                    if($contents != ""){
+                        $misc[] = nl2br("<b>{$field}</b>: <a href='data:application/pdf;base64,{$contents}'>PDF Download</a>");
+                    }
+                }
+                else{
+                    $misc[] = nl2br("<b>{$field}</b>: {$contents}");
+                }
             }
             $wgOut->addHTML("<tr>
                 <td>{$registration->getEvent()->title}</td>

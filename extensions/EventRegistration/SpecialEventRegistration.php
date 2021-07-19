@@ -28,6 +28,9 @@ class SpecialEventRegistration extends SpecialPage{
         else if(!isset($_POST['role']) || trim($_POST['name']) == ""){
             $wgMessage->addError("You must provide a role");
         }
+        else if(isset($_FILES["misc"]) && $_FILES["misc"]["size"] > 1024*1024*5){
+            $wgMessage->addError("The file must not be over 5MB");
+        }
         else{
             // Add Event Registration
             $eventRegistration = new EventRegistration(array());
@@ -42,6 +45,9 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->createProfile = isset($_POST['create_profile']);
             $eventRegistration->similarEvents = isset($_POST['similar_events']);
             $eventRegistration->misc = @$_POST['misc'];
+            if(isset($_FILES["misc"])){
+                $eventRegistration->misc["PDF"] = base64_encode(file_get_contents($_FILES["misc"]["tmp_name"]));
+            }
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
             $event = EventPosting::newFromId($_POST['event']);
@@ -105,6 +111,16 @@ class SpecialEventRegistration extends SpecialPage{
                      {$miscField->render()}";
             $roles = array("Audience", "Host/Judge");
         }
+        else if($default->title == "Reimagining Public Spaces and Built Environments in the Post-pandemic World"){
+            $misc = "<h3>Please upload ONE PDF with the following information:</h3>
+                     <ul>
+                         <li>Proposed paper title</li>
+                         <li>5 keywords</li>
+                         <li>Name of author/s, abstract (250 words)</li>
+                         <li>Short bio (100 words maximum)</li>
+                     </ul>
+                     <input type='file' name='misc' accept='application/pdf' />";
+        }
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
@@ -126,7 +142,7 @@ class SpecialEventRegistration extends SpecialPage{
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post'>
+        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post' enctype='multipart/form-data'>
             <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>

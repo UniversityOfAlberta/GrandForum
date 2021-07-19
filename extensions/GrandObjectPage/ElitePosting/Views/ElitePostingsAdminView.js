@@ -8,7 +8,7 @@ ElitePostingsAdminView = PostingsView.extend({
     
     initialize: function(){
         this.model.fetch();
-        main.set('title', 'Project Proposals Admin Panel');
+        main.set('title', 'ELITE Admin Panel');
         this.listenTo(this.model, "sync", this.render);
     },
     
