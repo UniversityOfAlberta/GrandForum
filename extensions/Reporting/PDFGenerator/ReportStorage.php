@@ -84,7 +84,8 @@ class ReportStorage {
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
         $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, encrypted, generation_user_id, submission_user_id, year 
                 FROM grand_pdf_report 
-                WHERE {$ext} token = '{$tok}' 
+                WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
+                              (encrypted = 1 AND token = '".decrypt($tok, true)."'))
                 ORDER BY timestamp DESC LIMIT 1";
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
@@ -148,14 +149,14 @@ class ReportStorage {
         // Load data from the DB.
         if ($tok === false) {
             // FIXME: token must be enforced --- no token-use must be removed.
-            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year 
+            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year, encrypted
                     FROM grand_pdf_report 
                     WHERE user_id = {$this->_uid}
                     AND proj_id = {$this->_pid}
                     ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
-            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year 
+            $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year, encrypted
                     FROM grand_pdf_report 
                     WHERE {$ext} token = '{$tok}' 
                     ORDER BY timestamp DESC LIMIT 1;";
@@ -173,7 +174,12 @@ class ReportStorage {
         $this->_cache['proj_id'] = $res[0]['proj_id'];
         $this->_cache['submitted'] = $res[0]['submitted'];
         $this->_cache['auto'] = $res[0]['auto'];
-        $this->_cache['token'] = $res[0]['token'];
+        if($res[0]['encrypted']){
+            $this->_cache['token'] = urlencode(encrypt($res[0]['token']));
+        }
+        else{
+            $this->_cache['token'] = $res[0]['token'];
+        }
         $this->_cache['year'] = $res[0]['year'];
         $this->_cache['timestamp'] = $res[0]['timestamp'];
         $this->_cache['len_pdf'] = $res[0]['len_pdf'];
@@ -222,7 +228,7 @@ class ReportStorage {
         if($year !== ""){
             $year = "AND year = {$year}";
         }
-        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year, encrypted
                 FROM grand_pdf_report 
                 WHERE user_id IN ({$uarr}) 
                 AND submitted = {$subm} 
@@ -231,7 +237,13 @@ class ReportStorage {
                 AND proj_id = 0
                 ORDER BY timestamp DESC
                 {$lim};";
-        return DBFunctions::execSQL($sql);
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $key => $row){
+            if($row['encrypted']){
+                $data[$key]['token'] = urlencode(encrypt($row['token']));
+            }
+        }
+        return $data;
     }
     
     static function list_project_reports($proj_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year=REPORTING_YEAR) {
@@ -241,15 +253,20 @@ class ReportStorage {
         else{
             $lim = "LIMIT {$lim}";
         }
-        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year, encrypted
                 FROM grand_pdf_report
                 WHERE proj_id = {$proj_id}
                 AND type = '{$type}' 
                 AND year = {$year} 
                 ORDER BY timestamp DESC
                 {$lim}";
-        $res = DBFunctions::execSQL($sql);
-        return $res;
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $key => $row){
+            if($row['encrypted']){
+                $data[$key]['token'] = urlencode(encrypt($row['token']));
+            }
+        }
+        return $data;
     }
     
     static function list_user_project_reports($proj_id, $user_id, $lim = 1, $special = 0, $type = RPTP_LEADER, $year = null){
@@ -265,7 +282,7 @@ class ReportStorage {
         if($year !== null || $year !== ""){
             $year = "AND year = '$year'";
         }
-        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year
+        $sql = "SELECT user_id, proj_id, generation_user_id, submission_user_id, report_id, submitted, auto, token, timestamp, year, encrypted
                 FROM grand_pdf_report
                 WHERE proj_id = {$proj_id}
                 AND user_id = {$user_id}
@@ -273,8 +290,13 @@ class ReportStorage {
                 {$year}
                 ORDER BY timestamp DESC
                 {$lim}";
-        $res = DBFunctions::execSQL($sql);
-        return $res;
+        $data = DBFunctions::execSQL($sql);
+        foreach($data as $key => $row){
+            if($row['encrypted']){
+                $data[$key]['token'] = urlencode(encrypt($row['token']));
+            }
+        }
+        return $data;
     }
 
 }

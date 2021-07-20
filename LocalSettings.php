@@ -574,8 +574,9 @@ function recursive_implode($glue, $array, $include_keys = false, $trim_all = tru
 	return (string) $glued_string;
 }
 
-function encrypt($plaintext){
+function encrypt($plaintext, $ignoreError=false){
     if(!isset($_SERVER['ENC_KEY'])){
+        if($ignoreError){ return $plaintext; }
         throw new Exception('ENC_KEY not defined');
     }
     $plaintext = str_pad($plaintext, 50, "\0", STR_PAD_LEFT); // Pad so that the response can't be inferred from the length of the encrypted string
@@ -588,8 +589,9 @@ function encrypt($plaintext){
     return $ciphertext;
 }
 
-function decrypt($ciphertext){
+function decrypt($ciphertext, $ignoreError=false){
     if(!isset($_SERVER['ENC_KEY'])){
+        if($ignoreError){ return $ciphertext; }
         throw new Exception('ENC_KEY not defined');
     }
     $key = $_SERVER['ENC_KEY'];

@@ -275,7 +275,12 @@ class ReportBlob {
 			                                   $dbdata['rp_item'], $dbdata['rp_subitem']);
 		$this->_changed = $dbdata['changed'];
 		$this->_type = $dbdata['blob_type'];
-		$this->_md5 = $dbdata['md5'];
+		if($dbdata['encrypted']){
+		    $this->_md5 = urlencode(encrypt($dbdata['md5']));
+		}
+		else{
+		    $this->_md5 = $dbdata['md5'];
+		}
 		$this->_encrypted = $dbdata['encrypted'];
 		
 		$this->_data = ($this->_encrypted) ? decrypt($dbdata['data']) : $dbdata['data'];
@@ -418,10 +423,11 @@ class ReportBlob {
 	public function loadFromMD5($id = null) {
 		if ($id == null)
 			return false;
-
-        $res = DBFunctions::select(array('grand_report_blobs'),
-                                   array('*'),
-                                   array('md5' => EQ($id)));
+        $id = DBFunctions::escape($id);
+        $res = DBFunctions::execSQL("SELECT *
+                                     FROM grand_report_blobs
+                                     WHERE (encrypted = 0 AND md5 = '{$id}')
+                                     OR (encrypted = 1 AND md5 = '".decrypt($id, true)."')");
 		if (count($res) > 0)
 			// MySQL enforces unique ID.
 			return $this->populate($res[0]);
