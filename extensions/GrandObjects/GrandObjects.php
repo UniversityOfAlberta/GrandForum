@@ -193,15 +193,6 @@ $apiRequest->addAction('Hidden','bsiposting/new/:date/:start/:count', 'BSIPostin
 $apiRequest->addAction('Hidden','bsiposting/:start/:count', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/:id', 'BSIPostingAPI');
 $apiRequest->addAction('Hidden','bsiposting/:id/image/:image_id/:md5', 'BSIPostingAPI');
-$apiRequest->addAction('Hidden','eliteposting', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/deleted', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/current', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/current/:start/:count', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/new/:date', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/new/:date/:start/:count', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/:start/:count', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/:id', 'ElitePostingAPI');
-$apiRequest->addAction('Hidden','eliteposting/:id/image/:image_id/:md5', 'ElitePostingAPI');
 
 // CRM
 $apiRequest->addAction('Hidden','crmcontact', 'CRMContactAPI');
@@ -236,7 +227,6 @@ function createModels(){
     addScript("Bibliography");
     addScript("Collaboration");
     addScript("University");
-    addScript("Virtu");
     addScript("WikiPage");
     addScript("PDF");
     addScript("MailingList");
@@ -247,7 +237,6 @@ function createModels(){
     addScript("NewsPosting");
     addScript("EventPosting");
     addScript("BSIPosting");
-    addScript("ElitePosting");
     addScript("CRMContact");
     addScript("CRMOpportunity");
     addScript("CRMTask");

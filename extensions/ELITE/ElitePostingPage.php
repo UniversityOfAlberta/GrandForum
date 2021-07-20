@@ -38,7 +38,8 @@ class ElitePostingPage extends BackbonePage {
     }
     
     function getModels(){
-        return array('Backbone/*');
+        return array('Backbone/*',
+                     'ElitePosting');
     }
     
     static function createToolboxLinks(&$toolbox){

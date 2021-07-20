@@ -252,6 +252,7 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
 		</script>
+		<?php createModels(); ?>
 		<?php echo $wgOut->getScript(); ?>
 		<!-- site js -->
 		<?php	if($this->data['jsvarurl']) { ?>
@@ -272,7 +273,6 @@ class CavendishTemplate extends QuickTemplate {
 		<?php	}
 				if($this->data['trackbackhtml']) print $this->data['trackbackhtml']; ?>
 
-		<?php createModels(); ?>
 		<script type='text/javascript'>
 		
 		    // Configs
