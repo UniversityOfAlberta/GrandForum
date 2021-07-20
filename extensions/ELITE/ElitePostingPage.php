@@ -28,6 +28,7 @@ class ElitePostingPage extends BackbonePage {
         
         $wgOut->addScript("<script type='text/javascript'>
             var allDepartments = $departments;
+            isAllowedToCreateElitePostings = ".json_encode(ElitePosting::isAllowedToCreate()).";
         </script>");
     
         return array('Backbone/*',
