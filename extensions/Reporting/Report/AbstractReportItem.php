@@ -376,7 +376,7 @@ abstract class AbstractReportItem {
     /**
      * Returns the MD5 code for this blob
      */
-    function getMD5(){
+    function getMD5($urlencode=true){
         $report = $this->getReport();
         $section = $this->getSection();
         $personId = $this->getAttr('personId', $this->getReport()->person->getId());
@@ -390,7 +390,7 @@ abstract class AbstractReportItem {
         $blob = new ReportBlob($this->blobType, $year, $personId, $projectId);
 	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
 	    $blob->load($blob_address, true);
-	    $md5 = $blob->getMD5();
+	    $md5 = $blob->getMD5($urlencode);
 	    return $md5;
     }
     

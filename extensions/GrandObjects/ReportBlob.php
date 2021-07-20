@@ -113,8 +113,13 @@ class ReportBlob {
 		return $this->_type;
 	}
 
-    public function getMD5(){
-        return $this->_md5;
+    public function getMD5($urlencode=true){
+        if($urlencode){
+            return urlencode($this->_md5);
+        }
+        else{
+            return $this->_md5;
+        }
     }
 
 	/// Stores the blob data at the specified address.  If the address is not
@@ -276,7 +281,7 @@ class ReportBlob {
 		$this->_changed = $dbdata['changed'];
 		$this->_type = $dbdata['blob_type'];
 		if($dbdata['encrypted']){
-		    $this->_md5 = urlencode(encrypt($dbdata['md5']));
+		    $this->_md5 = encrypt($dbdata['md5']);
 		}
 		else{
 		    $this->_md5 = $dbdata['md5'];
