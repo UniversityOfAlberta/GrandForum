@@ -306,83 +306,43 @@ class ApplicationsTable extends SpecialPage{
     function generateImpact(){
         global $wgOut;
         
-        $ceri1 = new AverageArrayReportItem();
-        $ceri1->setBlobType(BLOB_ARRAY);
-        $ceri1->setBlobItem('CERI');
-        $ceri1->setBlobSection("SECTION3");
-        $ceri1->setAttr("indices", "ceri_1_1|ceri_2_1|ceri_3_1|ceri_4_1|ceri_5_1|ceri_6_1|ceri_7_1|ceri_8_1|ceri_9_1|ceri_10_1|ceri_11_1|ceri_12_1|ceri_13_1");
+        $ceris = array();
+        $scores = array();
         
-        $ceri2 = new AverageArrayReportItem();
-        $ceri2->setBlobType(BLOB_ARRAY);
-        $ceri2->setBlobItem('CERI');
-        $ceri2->setBlobSection("SECTION3");
-        $ceri2->setAttr("indices", "ceri_1_2|ceri_2_2|ceri_3_2|ceri_4_2|ceri_5_2|ceri_6_2|ceri_7_2|ceri_8_2|ceri_9_2|ceri_10_2|ceri_11_2|ceri_12_2|ceri_13_2");
-        
-        $ceri3 = new AverageArrayReportItem();
-        $ceri3->setBlobType(BLOB_ARRAY);
-        $ceri3->setBlobItem('CERI');
-        $ceri3->setBlobSection("SECTION3");
-        $ceri3->setAttr("indices", "ceri_1_3|ceri_2_3|ceri_3_3|ceri_4_3|ceri_5_3|ceri_6_3|ceri_7_3|ceri_8_3|ceri_9_3|ceri_10_3|ceri_11_3|ceri_12_3|ceri_13_3");
-        
-        $ceri4 = new AverageArrayReportItem();
-        $ceri4->setBlobType(BLOB_ARRAY);
-        $ceri4->setBlobItem('CERI');
-        $ceri4->setBlobSection("SECTION3");
-        $ceri4->setAttr("indices", "ceri_1_4|ceri_2_4|ceri_3_4|ceri_4_4|ceri_5_4|ceri_6_4|ceri_7_4|ceri_8_4|ceri_9_4|ceri_10_4|ceri_11_4|ceri_12_4|ceri_13_4");
-        
-        $ceri1_score = new AverageArrayReportItem();
-        $ceri1_score->setBlobType(BLOB_ARRAY);
-        $ceri1_score->setBlobItem('CERI');
-        $ceri1_score->setBlobSection("SECTION3");
-        $ceri1_score->setAttr("indices", "ceri_1_1|ceri_2_1|ceri_3_1|ceri_4_1|ceri_5_1|ceri_6_1|ceri_7_1|ceri_8_1|ceri_9_1|ceri_10_1|ceri_11_1|ceri_12_1");
-        $ceri1_score->setAttr("denominator", "3");
-        
-        $ceri2_score = new AverageArrayReportItem();
-        $ceri2_score->setBlobType(BLOB_ARRAY);
-        $ceri2_score->setBlobItem('CERI');
-        $ceri2_score->setBlobSection("SECTION3");
-        $ceri2_score->setAttr("indices", "ceri_1_2|ceri_2_2|ceri_3_2|ceri_4_2|ceri_5_2|ceri_6_2|ceri_7_2|ceri_8_2|ceri_9_2|ceri_10_2|ceri_11_2|ceri_12_2");
-        $ceri2_score->setAttr("denominator", "3");
-        
-        $ceri3_score = new AverageArrayReportItem();
-        $ceri3_score->setBlobType(BLOB_ARRAY);
-        $ceri3_score->setBlobItem('CERI');
-        $ceri3_score->setBlobSection("SECTION3");
-        $ceri3_score->setAttr("indices", "ceri_1_3|ceri_2_3|ceri_3_3|ceri_4_3|ceri_5_3|ceri_6_3|ceri_7_3|ceri_8_3|ceri_9_3|ceri_10_3|ceri_11_3|ceri_12_3");
-        $ceri3_score->setAttr("denominator", "3");
-        
-        $ceri4_score = new AverageArrayReportItem();
-        $ceri4_score->setBlobType(BLOB_ARRAY);
-        $ceri4_score->setBlobItem('CERI');
-        $ceri4_score->setBlobSection("SECTION3");
-        $ceri4_score->setAttr("indices", "ceri_1_4|ceri_2_4|ceri_3_4|ceri_4_4|ceri_5_4|ceri_6_4|ceri_7_4|ceri_8_4|ceri_9_4|ceri_10_4|ceri_11_4|ceri_12_4");
-        $ceri4_score->setAttr("denominator", "3");
+        for($i = 1; $i <= 6; $i++){
+            $ceris[$i] = new AverageArrayReportItem();
+            $ceris[$i]->setBlobType(BLOB_ARRAY);
+            $ceris[$i]->setBlobItem('CERI');
+            $ceris[$i]->setBlobSection("SECTION3");
+            $ceris[$i]->setAttr("indices", "ceri_1_$i|ceri_2_$i|ceri_3_$i|ceri_4_$i|ceri_5_$i|ceri_6_$i|ceri_7_$i|ceri_8_$i|ceri_9_$i|ceri_10_$i|ceri_11_$i|ceri_12_$i|ceri_13_$i");
+            
+            $scores[$i] = new AverageArrayReportItem();
+            $scores[$i]->setBlobType(BLOB_ARRAY);
+            $scores[$i]->setBlobItem('CERI');
+            $scores[$i]->setBlobSection("SECTION3");
+            $scores[$i]->setAttr("indices", "ceri_1_$i|ceri_2_$i|ceri_3_$i|ceri_4_$i|ceri_5_$i|ceri_6_$i|ceri_7_$i|ceri_8_$i|ceri_9_$i|ceri_10_$i|ceri_11_$i|ceri_12_$i");
+            $scores[$i]->setAttr("denominator", "3");
+        }
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab2020 = new ApplicationTab('RP_IMPACT', $this->projects, 2020, "2020", array('Service-delivery agencies' => $ceri1,
-                                                                                                 'Indigenous community-based agencies and/or governing bodies' => $ceri2,
-                                                                                                 'Persons with lived experiences of homelessness' => $ceri3,
-                                                                                                 'Orders of Government' => $ceri4,
-                                                                                                 'CERI 1 Score' => $ceri1_score,
-                                                                                                 'CERI 2 Score' => $ceri2_score,
-                                                                                                 'CERI 3 Score' => $ceri3_score,
-                                                                                                 'CERI 4 Score' => $ceri4_score));
-                                                                                                 
-        $tab2020->addExtra($this->impactReportSummary(2020));
         
-        $tab2021 = new ApplicationTab('RP_IMPACT', $this->projects, 2021, "2021", array('Service-delivery agencies' => $ceri1,
-                                                                                                 'Indigenous community-based agencies and/or governing bodies' => $ceri2,
-                                                                                                 'Persons with lived experiences of homelessness' => $ceri3,
-                                                                                                 'Orders of Government' => $ceri4,
-                                                                                                 'CERI 1 Score' => $ceri1_score,
-                                                                                                 'CERI 2 Score' => $ceri2_score,
-                                                                                                 'CERI 3 Score' => $ceri3_score,
-                                                                                                 'CERI 4 Score' => $ceri4_score));
+        for($y = 2021; $y >= 2020; $y--){
+            $tab = new ApplicationTab('RP_IMPACT', $this->projects, $y, "$y", array('Service Delivery Agencies' => $ceris[1],
+                                                                                    'Indigenous community-based agencies and/or governing bodies' => $ceris[2],
+                                                                                    'Persons with lived experiences of homelessness' => $ceris[3],
+                                                                                    'Orders of Government' => $ceris[4],
+                                                                                    'Racialized Communities' => $ceris[5],
+                                                                                    '2SLGBTQIA+ community members' => $ceris[6],
+                                                                                    'CERI 1 Score' => $scores[1],
+                                                                                    'CERI 2 Score' => $scores[2],
+                                                                                    'CERI 3 Score' => $scores[3],
+                                                                                    'CERI 4 Score' => $scores[4],
+                                                                                    'CERI 5 Score' => $scores[5],
+                                                                                    'CERI 6 Score' => $scores[6]));
                                                                                                  
-        $tab2021->addExtra($this->impactReportSummary(2021));
-                                                                                                 
-        $tabbedPage->addTab($tab2021);
-        $tabbedPage->addTab($tab2020);
+            $tab->addExtra($this->impactReportSummary($y));
+            $tabbedPage->addTab($tab);
+        }
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
