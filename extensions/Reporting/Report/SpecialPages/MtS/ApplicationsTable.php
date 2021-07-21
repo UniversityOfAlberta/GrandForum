@@ -369,7 +369,19 @@ class ApplicationsTable extends SpecialPage{
                                                                                                  'CERI 4 Score' => $ceri4_score));
                                                                                                  
         $tab2020->addExtra($this->impactReportSummary(2020));
+        
+        $tab2021 = new ApplicationTab('RP_IMPACT', $this->projects, 2021, "2021", array('Service-delivery agencies' => $ceri1,
+                                                                                                 'Indigenous community-based agencies and/or governing bodies' => $ceri2,
+                                                                                                 'Persons with lived experiences of homelessness' => $ceri3,
+                                                                                                 'Orders of Government' => $ceri4,
+                                                                                                 'CERI 1 Score' => $ceri1_score,
+                                                                                                 'CERI 2 Score' => $ceri2_score,
+                                                                                                 'CERI 3 Score' => $ceri3_score,
+                                                                                                 'CERI 4 Score' => $ceri4_score));
                                                                                                  
+        $tab2021->addExtra($this->impactReportSummary(2021));
+                                                                                                 
+        $tabbedPage->addTab($tab2021);
         $tabbedPage->addTab($tab2020);
         $wgOut->addHTML($tabbedPage->showPage());
     }
