@@ -15,6 +15,7 @@ class PDF extends BackboneModel {
     var $type;
     var $submitted;
     var $timestamp;
+    var $encrypted;
     var $project = false;
     var $projectId = 0;
     
@@ -25,7 +26,7 @@ class PDF extends BackboneModel {
      */
     static function newFromId($id){
         $id = DBFunctions::escape($id);
-        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token, encrypted
                                       FROM `grand_pdf_report`
                                       WHERE report_id = '{$id}'");
         return new PDF($data);
@@ -38,14 +39,15 @@ class PDF extends BackboneModel {
      */
     static function newFromToken($tok){
         $tok = DBFunctions::escape($tok);
-        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token, encrypted
                                       FROM `grand_pdf_report`
-                                      WHERE token = '{$tok}'");
+                                      WHERE ((encrypted = 0 AND token = '{$tok}') OR 
+                                             (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
         return new PDF($data);
     }
     
     static function getAllPDFs(){
-        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token
+        $data = DBFunctions::execSQL("SELECT report_id, user_id, proj_id, generation_user_id, submission_user_id, year, type, submitted, timestamp, token, encrypted
                                       FROM `grand_pdf_report`
                                       GROUP BY user_id, proj_id, year, type");
         $pdfs = array();
@@ -67,6 +69,10 @@ class PDF extends BackboneModel {
             $this->type = $data[0]['type'];
             $this->submitted = $data[0]['submitted'];
             $this->timestamp = $data[0]['timestamp'];
+            $this->encrypted = $data[0]['encrypted'];
+            if($this->encrypted){
+                $this->id = encrypt($this->id);
+            }
         }
     }
     
@@ -112,7 +118,7 @@ class PDF extends BackboneModel {
     
     function getUrl(){
         global $wgScriptPath, $wgServer;
-        return "$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$this->id}";
+        return "$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf=".urlencode($this->id);
     }
     
     function getProjectId(){

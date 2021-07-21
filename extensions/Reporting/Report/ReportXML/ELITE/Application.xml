@@ -319,6 +319,7 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="elite" type="EliteSubmit" />
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />

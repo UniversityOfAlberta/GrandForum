@@ -1,0 +1,44 @@
+<div id="acceptDialog" title="Accept Profile" style="display:none;">
+    Are you sure you want to accept this profile?
+</div>
+<div id="moreDialog" title="Request More Information" style="display:none;">
+    <b>Message:</b><br />
+    <textarea id="moreComments" style="width:400px;height:100px;"></textarea>
+</div>
+<div id="rejectDialog" title="Reject Profile" style="display:none;">
+    Are you sure you want to reject this profile?
+</div>
+<table id="profiles" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="1%" style="white-space: nowrap;">Created</th>
+            <th style="white-space: nowrap;">Applicant</th>
+            <th width="1%">Profile</th>
+            <th width="1%" style="white-space: nowrap;">Status</th>
+            <th width="1%" style="white-space: nowrap;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(profile){ %>
+            <tr>
+                <td style="white-space: nowrap;">
+                    <span style="display:none;"><%= profile.get('created') %></span><%= dateTimeHelpers.formatDate(profile.get('created')) %>
+                </td>
+                <td>
+                    <a href="<%= profile.get('user').url %>"><%= profile.get('user').fullName %></a>
+                </td>
+                <td align="center" style="white-space:nowrap;">
+                    <a href="<%= profile.get('pdf') %>">Download PDF</a>
+                </td>
+                <td align="center">
+                    <%= profile.get('status') %>
+                </td>
+                <td style="white-space:nowrap;" align="center">
+                    <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
+                    <button class="more" data-id="<%= profile.get('id') %>">More Info</button>
+                    <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                </td>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>

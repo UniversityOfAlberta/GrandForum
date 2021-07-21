@@ -1,7 +1,6 @@
-ElitePostingsAdminView = PostingsView.extend({
+EliteProfilesAdminView = Backbone.View.extend({
 
-    template: _.template($('#elitepostings_admin_template').html()),
-    postingDialog: null,
+    template: _.template($('#eliteprofiles_admin_template').html()),
     acceptDialog: null,
     moreDialog: null,
     rejectDialog: null,
@@ -9,18 +8,6 @@ ElitePostingsAdminView = PostingsView.extend({
     initialize: function(){
         this.model.fetch();
         this.listenTo(this.model, "sync", this.render);
-    },
-    
-    openDialog: function(el){
-        var id = $(el.target).attr('data-id');
-        var model = new ElitePosting({id: id});
-        var view = new ElitePostingView({el: this.postingDialog, model: model, isDialog: true});
-        this.postingDialog.view = view;
-        this.postingDialog.dialog({
-            height: $(window).height()*0.75, 
-            width: 800
-        });
-        this.postingDialog.dialog('open');
     },
     
     openAcceptDialog: function(el){
@@ -42,7 +29,6 @@ ElitePostingsAdminView = PostingsView.extend({
     },
     
     events: {
-        "click .postingLink": "openDialog",
         "click .accept": "openAcceptDialog",
         "click .more": "openMoreDialog",
         "click .reject": "openRejectDialog",
@@ -50,22 +36,11 @@ ElitePostingsAdminView = PostingsView.extend({
     
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
-        this.$("table#postings").DataTable({
+        this.$("table#profiles").DataTable({
             "autoWidth": true,
             "order": [[ 0, "desc" ]]
         });
-        this.postingDialog = this.$("#postingDialog").dialog({
-            autoOpen: false,
-            modal: true,
-            show: 'fade',
-            resizable: false,
-            draggable: false,
-            beforeClose: function(){
-                this.postingDialog.view.stopListening();
-                this.postingDialog.view.undelegateEvents();
-                this.postingDialog.view.$el.empty();
-            }.bind(this)
-        });
+        /*
         this.acceptDialog = this.$("#acceptDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -120,9 +95,7 @@ ElitePostingsAdminView = PostingsView.extend({
                 }.bind(this)
             }
         });
-        $(window).resize(function(){
-            this.postingDialog.dialog({height: $(window).height()*0.75});
-        }.bind(this));
+        */
         return this.$el;
     }
 

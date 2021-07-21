@@ -888,7 +888,8 @@ class Person extends BackboneModel {
                       'name' => $this->getName(),
                       'realName' => $this->getRealName(),
                       'fullName' => $this->getNameForForms(),
-                      'reversedName' => $this->getReversedName());
+                      'reversedName' => $this->getReversedName(),
+                      'url' => $this->getUrl());
         return $json;
     }
     

@@ -1,6 +1,6 @@
 <?php
 
-BackbonePage::register('ElitePostingPage', 'Project Proposals', 'network-tools', dirname(__FILE__));
+BackbonePage::register('ElitePostingPage', 'ELITE', 'network-tools', dirname(__FILE__));
 
 $wgHooks['ToolboxLinks'][] = 'ElitePostingPage::createToolboxLinks';
 
@@ -19,7 +19,9 @@ class ElitePostingPage extends BackbonePage {
                      'elitepostings',
                      'eliteposting',
                      'eliteposting_edit',
-                     'elitepostings_admin');
+                     'elite_admin',
+                     'elitepostings_admin',
+                     'eliteprofiles_admin');
     }
     
     function getViews(){
@@ -35,12 +37,15 @@ class ElitePostingPage extends BackbonePage {
                      'ElitePostingsView',
                      'ElitePostingView',
                      'ElitePostingEditView',
-                     'ElitePostingsAdminView');
+                     'EliteAdminView',
+                     'ElitePostingsAdminView',
+                     'EliteProfilesAdminView');
     }
     
     function getModels(){
         return array('Backbone/*',
-                     'ElitePosting');
+                     'ElitePosting',
+                     'EliteProfile');
     }
     
     static function createToolboxLinks(&$toolbox){

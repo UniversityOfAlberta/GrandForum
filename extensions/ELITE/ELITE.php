@@ -3,6 +3,7 @@
 require_once("ElitePosting.php");
 require_once("EliteProfile.php");
 require_once("API/ElitePostingAPI.php");
+require_once("API/EliteProfileAPI.php");
 require_once("ElitePostingPage.php");
 
 global $apiRequest;
@@ -16,5 +17,8 @@ $apiRequest->addAction('Hidden','eliteposting/new/:date/:start/:count', 'ElitePo
 $apiRequest->addAction('Hidden','eliteposting/:start/:count', 'ElitePostingAPI');
 $apiRequest->addAction('Hidden','eliteposting/:id', 'ElitePostingAPI');
 $apiRequest->addAction('Hidden','eliteposting/:id/image/:image_id/:md5', 'ElitePostingAPI');
+
+$apiRequest->addAction('Hidden','eliteprofile', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/:id', 'EliteProfileAPI');
 
 ?>
