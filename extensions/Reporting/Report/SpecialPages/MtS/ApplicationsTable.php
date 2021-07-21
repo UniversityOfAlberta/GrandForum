@@ -180,12 +180,14 @@ class ApplicationsTable extends SpecialPage{
 	                    <th>Indigenous Partners</th>
 	                    <th>PWLE</th>
 	                    <th>Orders of Government</th>
+	                    <th>Racialized Communities</th>
+	                    <th>2SLGBTQIA+ community members</th>
                     </tr>
                     </thead>
                     <tbody>";
         for($i=1;$i<=13;$i++){
             $html .= "<tr><td><span style='display:none;'>{$i}.</span> {$activities[$i-1]}</td>";
-            for($j=1;$j<=4;$j++){
+            for($j=1;$j<=6;$j++){
                 $avg = (isset($ceris["{$i}_{$j}"])) ? number_format(array_sum($ceris["{$i}_{$j}"])/count($ceris["{$i}_{$j}"]), 2) : "0.00";
                 $html .= "<td>{$avg}</td>";
             }
