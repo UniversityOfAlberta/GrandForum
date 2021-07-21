@@ -22,7 +22,7 @@
                     <li>Encourage dialogue and collaborative reflection among research teams</li>
                     <li>Gather the information to inform MtS engagement and knowledge mobilization strategy</li>
                 </ol>
-                <p><i>(This reporting form is due for submission in 9 months after the funds receipt by projects. For projects that received funds in March 2020, the Impact Report is due by November 30, 2020).</i></p>
+                <p><i>(The Impact Report is <b>due no later than, end of day, August 31st</b> of each year.).</i></p>
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
@@ -70,7 +70,7 @@
                 <h4>Photo Release Form for PIs</h4>
                 <p>I understand that photos and/or video recordings of my research project shared as part of this report may be used for the purpose of MtS impact evaluation research, and subsequently published in knowledge mobilization products including but not limited to evaluation reports, blogs, summaries, etc. I acknowledge that these recordings may be used and published in the form of social media, audiovisual presentations, publications, promotional or other materials. I waive the right to approve any content that is created and published from the recordings, and I waive the right to any form of compensation related to usage of the recordings.</p>
                 {$item}
-                <p>If you have any questions about this release form, please contact Dr. Julia Fursova, MtS Post-Doctoral Fellow in Evaluation <a href='mailto:jfursova@yorku.ca'>jfursova@yorku.ca</a></p>
+                <p>If you have any questions about this release form, please contact the MtS team at <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a></p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -186,24 +186,27 @@
         <!-- CERI -->
         <Static>
             <![CDATA[
-                <h4>CERI - Community Engagement in Research Index</h4>
+                <h4>Community Engagement in Research Index (CERI)</h4>
+                <small>Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</small>
                 <p><small>
-                    This section of the report measures different levels of community participation in research projects. Pease rate the level of engagement among different types of non-academic partners in your research project activities according to the proposed scale.<br />
-                    1 - community partners do not participate in this activity<br />
-                    2 - community partners are consulted on or advise on this activity<br />
-                    3 - community partners are actively engaged in this activity as collaborators/co-investigators
-                </small></p>
-                <table class="wikitable">
+                    1 (Community partners do not participate in this activity) <br />
+                    2 (Community partners are consulted on or advise on this activity)<br />
+                    3 (Community partners are actively engaged in this activity as collaborators/co-investigators)
+                 </small></p>
+                 <table class="wikitable" frame="box" rules="all">
                     <tr>
                         <th width='100px;'>Research activities</th>
-                        <th width='100px;'>Service-delivery agencies</th>
+                        <th width='100px;'>Service Delivery Agencies</th>
                         <th width='100px;'>Indigenous community-based agencies and/or governing bodies</th>
                         <th width='100px;'>Persons with lived experiences of homelessness</th>
                         <th width='100px;'>Orders of Government</th>
+                        <th width='100px;'>Racialized Communities</th>
+                        <th width='100px;'>2SLGBTQIA+ community members</th>
                     </tr>
             ]]>
         </Static>
-        <For array="Grant proposal writing|Background research/literature review|Choosing research methods|Developing sampling procedures|Recruiting study participants|Engaging other research partners|Designing interview and/or survey questions|Collecting primary data|Analyzing collected data|Interpreting study findings|Writing reports and journal articles|Sharing findings at meetings, conferences and on social media">
+        <For array="Grant proposal writing|Background research/literature review|Choosing research methods|Developing sampling procedures|Recruiting study participants|Engaging other 
+research partners|Designing interview and/or survey questions|Collecting primary data|Analyzing collected data|Interpreting study findings|Writing reports and journal articles">
             <Static>
                 <![CDATA[
                     <tr>
@@ -211,7 +214,7 @@
                         {set(parentExtra, {add({$extraIndex},1)})}
                 ]]>
             </Static>
-            <For array="1|2|3|4">
+            <For array="1|2|3|4|5|6">
                 <ReportItem id="ceri_{get(parentExtra)}_{add({$extraIndex},1)}" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
                     <![CDATA[
                         <td align='center'>{$item}</td>
@@ -224,33 +227,6 @@
                 ]]>
             </Static>
         </For>
-        <ReportItem id="ceri_13_label" type="Text" blobType="BLOB_ARRAY" blobItem="CERI" placeholder="Other, what">
-            <![CDATA[
-                    <tr>
-                        <td>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ceri_13_1" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
-            <![CDATA[
-                        <td align='center'>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ceri_13_2" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
-            <![CDATA[
-                        <td align='center'>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ceri_13_3" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
-            <![CDATA[
-                        <td align='center'>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="ceri_13_4" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
-            <![CDATA[
-                        <td align='center'>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
         <Static>
             <![CDATA[
                 </table>
@@ -386,7 +362,7 @@
         </ReportItem>
         <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other">
             <![CDATA[
-                <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months (January 2021 to June 2021)?  Please select up to five items</h3>
+                <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months?  Please select up to five items</h3>
                 {$item}
             ]]>
         </ReportItem>
