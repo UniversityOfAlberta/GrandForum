@@ -114,7 +114,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" height="300px" limit="750">
+        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" height="300px" limit="1750">
             <![CDATA[
                 <h2>Relevance & Impact</h2>
                 {$item}
