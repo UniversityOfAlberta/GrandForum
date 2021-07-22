@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" pdfType="RPTP_SSA_FINAL_PROGRESS" ajax="true" personId="0" year="2020">
+<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" pdfType="RPTP_SSA_FINAL_PROGRESS" ajax="true" personId="0" year="2021">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="report" permissions="rw" />
@@ -16,7 +16,7 @@
     <ReportSection id="report" type="EditableReportSection" blobSection="SSA_REPORT" name="SSA Report">
         <Static>
             <![CDATA[
-                <p>For final funding to be released, the following conditions must be met by September 30, 2020:</p>
+                <p>For final funding to be released, the following conditions must be met by September 30, 2021:</p>
                 <ul>
                     <li>this report must be completed, signed and received by CFN</li>
                     <li>The SSA Institution Template must be downloaded, filled out, and uploaded</li>
@@ -108,7 +108,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2020-01-01" end="2020-12-31" table="false" details="true" totalOnly="true">
+        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2021-01-01" end="2021-12-31" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h1><b>Section 2 - Dissemination of Project Research Results</b></h1>
                 <p>Please add all refereed and non-refereed publications, including specialized publications, intellectual property and conference presentations (e.g. poster presentations etc…) by going to <a href='{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts' target='_blank'><b>Manage Products</b></a> by clicking the button below.  

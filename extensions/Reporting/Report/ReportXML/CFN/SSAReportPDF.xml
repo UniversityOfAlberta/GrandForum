@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" pdfType="RPTP_SSA_FINAL_PROGRESS" ajax="true" personId="0" year="2020">
+<Report name="SSA Report" reportType="RP_SSA_FINAL_PROGRESS" pdfFiles="SSAReportPDF" pdfType="RPTP_SSA_FINAL_PROGRESS" ajax="true" personId="0" year="2021">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
@@ -100,7 +100,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2020-01-01" end="2020-12-31" table="false" details="true" totalOnly="true">
+        <ReportItem id="dashboard_prod_details" type="DashboardReportItem" structure="PROJECT_REPORT_PRODUCTIVITY_STRUCTURE" start="2021-01-01" end="2021-12-31" table="false" details="true" totalOnly="true">
             <![CDATA[
                 <h2>Section 2 - Dissemination of Project Research Results</h2>
                 {$item}<br />

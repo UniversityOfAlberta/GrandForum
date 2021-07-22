@@ -91,7 +91,8 @@ class Report extends AbstractReport{
             }
         }
         foreach($person->getProjects() as $project){
-            if(strstr($project->getName(), "SSA2020") !== false ||
+            if(strstr($project->getName(), "SSA2021") !== false ||
+               strstr($project->getName(), "SSA2020") !== false ||
                strstr($project->getName(), "SSA2019") !== false ||
                strstr($project->getName(), "SSA2018") !== false){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSAReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
