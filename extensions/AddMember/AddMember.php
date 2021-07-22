@@ -225,7 +225,7 @@ class AddMember extends SpecialPage{
                 }
             }
             else{
-                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input type='submit' name='submit' value='Ignore' /></td>");
+                $wgOut->addHTML("<td><input type='submit' name='submit' value='Accept' /><br /><input style='margin-top:2px;' type='submit' name='submit' value='Ignore' /></td>");
             }
             $wgOut->addHTML("</form>
                     </tr>");
