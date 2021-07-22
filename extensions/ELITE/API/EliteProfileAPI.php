@@ -14,11 +14,18 @@ class EliteProfileAPI extends RESTAPI {
     }
     
     function doPOST(){
-        
+        $this->doPUT();
     }
     
     function doPUT(){
-        
+        $profile = EliteProfile::newFromUserId($this->getParam('id'));
+        if(!$profile->exists()){
+            $this->throwError("This profile does not exist");
+        }
+        $profile->status = $this->POST('status');
+        $profile->comments = $this->POST('comments');
+        $profile->update();
+        return $profile->toJSON();
     }
     
     function doDELETE(){

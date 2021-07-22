@@ -40,7 +40,6 @@ EliteProfilesAdminView = Backbone.View.extend({
             "autoWidth": true,
             "order": [[ 0, "desc" ]]
         });
-        /*
         this.acceptDialog = this.$("#acceptDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -49,7 +48,7 @@ EliteProfilesAdminView = Backbone.View.extend({
             draggable: false,
             buttons: {
                 "Accept": function(){
-                    this.acceptDialog.model.set('visibility', 'Accepted');
+                    this.acceptDialog.model.set('status', 'Accepted');
                     this.acceptDialog.model.save();
                     this.acceptDialog.dialog('close'); 
                 }.bind(this),
@@ -68,8 +67,8 @@ EliteProfilesAdminView = Backbone.View.extend({
             buttons: {
                 "Submit": function(){
                     // Need to set comments aswell
-                    this.moreDialog.model.set('comments', $("#moreComments").val());
-                    this.moreDialog.model.set('visibility', 'Requested More Info');
+                    this.moreDialog.model.set('comments', $("#moreComments", this.moreDialog).val());
+                    this.moreDialog.model.set('status', 'Requested More Info');
                     this.moreDialog.model.save();
                     this.moreDialog.dialog('close'); 
                 }.bind(this),
@@ -86,7 +85,7 @@ EliteProfilesAdminView = Backbone.View.extend({
             draggable: false,
             buttons: {
                 "Reject": function(){
-                    this.rejectDialog.model.set('visibility', 'Rejected');
+                    this.rejectDialog.model.set('status', 'Rejected');
                     this.rejectDialog.model.save();
                     this.rejectDialog.dialog('close'); 
                 }.bind(this),
@@ -95,7 +94,6 @@ EliteProfilesAdminView = Backbone.View.extend({
                 }.bind(this)
             }
         });
-        */
         return this.$el;
     }
 

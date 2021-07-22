@@ -8,6 +8,8 @@ class EliteProfile extends BackboneModel {
     
     var $person;
     var $pdf;
+    var $status;
+    var $comments;
     
     static function newFromUserId($userId){
         $userId = DBFunctions::escape($userId);
@@ -16,7 +18,7 @@ class EliteProfile extends BackboneModel {
                                       WHERE type = 'RPTP_ELITE'
                                       AND user_id = '$userId'
                                       ORDER BY report_id DESC");
-         return EliteProfile($data);
+         return new EliteProfile($data);
     }
     
     static function getAllProfiles(){
@@ -38,23 +40,27 @@ class EliteProfile extends BackboneModel {
             $row = $data[0];
             $this->person = Person::newFromId($row['user_id']);
             $this->pdf = PDF::newFromId($row['report_id']);
+            $this->status = $this->getBlobValue('STATUS');
+            $this->comments = $this->getBlobValue('COMMENTS');
         }
     }
     
     function toArray(){
         return array('id' => $this->person->getId(),
                      'user' => $this->person->toSimpleArray(),
-                     'status' => $this->getBlobValue('STATUS'),
+                     'status' => $this->status,
+                     'comments' => $this->comments,
                      'pdf' => $this->pdf->getUrl(),
                      'created' => $this->pdf->getTimestamp());
     }
     
     function create(){
-        
+        return $this->update();
     }
     
     function update(){
-        
+        $this->saveBlobValue('STATUS', $this->status);
+        $this->saveBlobValue('COMMENTS', $this->comments);
     }
     
     function delete(){
@@ -62,7 +68,7 @@ class EliteProfile extends BackboneModel {
     }
     
     function exists(){
-    
+        return ($this->person != null);
     }
     
     function getCacheId(){

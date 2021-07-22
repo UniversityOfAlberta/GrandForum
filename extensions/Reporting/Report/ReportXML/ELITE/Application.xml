@@ -8,6 +8,14 @@
     </Permissions>
     <!-- Personally identifying information -->
     <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
+        <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
+            <![CDATA[
+                <div class="info">
+                    <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b><br />
+                    {getText(RP_ELITE, PROFILE, COMMENTS, 0, {$user_id}, 0)}
+                </div>
+            ]]>
+        </If>
         <Static>
             <![CDATA[
                 <table>
