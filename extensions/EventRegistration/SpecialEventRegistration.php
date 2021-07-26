@@ -120,6 +120,7 @@ class SpecialEventRegistration extends SpecialPage{
                          <li>Short bio (100 words maximum)</li>
                      </ul>
                      <input type='file' name='misc' accept='application/pdf' />";
+            $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
