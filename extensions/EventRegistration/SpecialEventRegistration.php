@@ -1,6 +1,7 @@
 <?php
 
 require_once("EventRegistration.php");
+require_once("SpecialMaterialSubmission.php");
 require_once("SpecialEventRegistrationTable.php");
 
 $dir = dirname(__FILE__) . '/';
