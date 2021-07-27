@@ -125,6 +125,10 @@ class Report extends AbstractReport{
                 }
             }
         }
+        if(count($person->getEvaluates("Legacy", 2021)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyLOIReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Legacy LOI Review", "{$url}LegacyLOIReview", $selected);
+        }
         if(count($person->getEvaluates("SAB-Clinical", 2021)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABClinicalReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Clinical Review", "{$url}SABClinicalReview", $selected);
@@ -162,6 +166,9 @@ class Report extends AbstractReport{
            $person->isRole(RMC) ||
            $person->isRoleAtLeast(STAFF) ||
            $person->getId() == 2513){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyLOIReport")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Legacy LOI Report", "{$url}LegacyLOIReport", $selected);
+           
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CycleIILOIReport")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CycleII LOI Report", "{$url}CycleIILOIReport", $selected);
             
