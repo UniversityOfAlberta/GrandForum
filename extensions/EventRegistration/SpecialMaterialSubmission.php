@@ -29,10 +29,12 @@ class SpecialMaterialSubmission extends SpecialPage{
             // Add Event Registration
             $f = 1;
             foreach($_FILES as $file){
-                $fileName = "{$_POST['name']}_Event{$_POST['event']}_File{$f}_{$file['name']}";
-                move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}");
-                $_POST["misc"]["file{$f}"] = $fileName;
-                $f++;
+                if($file['name'] != ""){
+                    $fileName = "{$_POST['name']}_Event{$_POST['event']}_File{$f}_{$file['name']}";
+                    move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}");
+                    $_POST["misc"]["file{$f}"] = $fileName;
+                    $f++;
+                }
             }
             $eventRegistration = new EventRegistration(array());
             $eventRegistration->eventId = $_POST['event'];
