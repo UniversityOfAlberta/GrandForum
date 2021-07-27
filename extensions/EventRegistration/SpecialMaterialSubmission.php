@@ -100,17 +100,21 @@ class SpecialMaterialSubmission extends SpecialPage{
         $preamble = "";
         if($default->title == "Replaying Japan Conference"){
             $instructions = "Upload your conference video/slides/paper here. こちらに発表のビデオ・スライド・論文をアップロードして下さい。";
-            $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
-                           Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
-                        <p>Registration is FREE. Register so we can send you online participation information. You won’t get the links if you don’t register.<br />
-                           参加費は無料です。オンライン参加に必要なリンク情報をお送りするため、登録をお願いいたします。登録されない場合は、リンク情報が送信されません。</p>
-                        <p>To find out more about the conference, including scheduling, go to:<br />
-                           当学会の詳細並びにスケジュール等はこちらをご覧下さい。<br />
-                           <a href='http://replaying.jp' target='_blank'>http://replaying.jp</a></p>
-                        <p>Replaying Japan 2021 is hosted by the University of Alberta<br />
-                           ２０２１年度Replaying Japanはアルバータ大学が主催です。</p>
-                        <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
-                           その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
+            $preamble = "<p>Presenters are expected to upload their presentation by August 2nd. You can upload any of the following:<br />
+                            アップロードは、８月２日までに以下のいずれかの形態でお願いします。</p>
+                        <p>1. Video: a short video of what would have been your full presentation<br />
+                           ビデオ：発表に相当する短いビデオ </p>
+                        <p>2. Slides: a slide deck that explains your presentation<br />
+                           スライド：発表要旨を含むスライド</p>
+                        <p>3. Draft paper: a written conference paper for people to read<br />
+                           発表の草案：参加者が読むための原稿 <br />
+                           You are welcome to upload up to four files for each submission accepted.<br />
+                           一発表につき、４ファイルまで提出できます</p>
+                        <p>Please name your files in the following fashion:<br />
+                           提出されるファイルは、以下の形式でお願いします。</p>
+                        <p><Last Name of Contact Presenter>, <Short Title>, <Format of Upload File> (Eg. Rockwell, Moral Management, Paper.pdf or Rockwell, Moral Management of Game Companies, Slides.pptx)</p>
+                        <p>Remember: Register for the conference here: <a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>
+                        <p>カンファレンスの参加登録はこちらからおこなって下さい。<a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>";
             $roleLabel = "Are you a Grad Student?";
             $roles = array("Grad Student" => "Yes", 
                            "Not a Grad Student" => "No");
