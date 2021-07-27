@@ -24,6 +24,10 @@
                 <td class="label">Enable Registration:</td>
                 <td class="value"><%= HTML.Radio(this, 'enableRegistration', {options: [{option: 'No', value: 0}, {option: 'Yes', value: 1}]}) %></td>
             </tr>
+            <tr>
+                <td class="label">Enable Materials:</td>
+                <td class="value"><%= HTML.Radio(this, 'enableMaterials', {options: [{option: 'No', value: 0}, {option: 'Yes', value: 1}]}) %></td>
+            </tr>
             <!--tr>
                 <td class="label">Language:</td>
                 <td class="value"><%= HTML.Select(this, 'language', {options: [{value: 'en', option: 'English'},

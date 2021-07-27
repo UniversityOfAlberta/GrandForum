@@ -74,7 +74,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         $events = EventPosting::getAllPostings();
         foreach($events as $event){
-            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish" && $event->isRegistrationEnabled()){
+            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish" && $event->isMaterialSubmissionEnabled()){
                 $eventOptions[$event->id] = $event->title;
             }
         }
@@ -118,7 +118,7 @@ class SpecialMaterialSubmission extends SpecialPage{
             $roleLabel = "Are you a Grad Student?";
             $roles = array("Grad Student" => "Yes", 
                            "Not a Grad Student" => "No");
-            $roleField = new VerticalRadioBox("role", "role", "Presenter", $roles);
+            $roleField = new VerticalRadioBox("role", "role", "Yes", $roles);
         }
         
         $linksField = new TextareaField("misc[Links]", "misc", "");

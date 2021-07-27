@@ -80,3 +80,7 @@
     <br />
     <a class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:SpecialEventRegistration?event=' + id %>" style="margin-top:2px;">Register for this Event</a>
 <% } %>
+<% if(isExtensionEnabled('EventRegistration') && visibility == "Publish" && enableMaterials && today <= startDate){ %>
+    <br />
+    <a class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:SpecialMaterialSubmission?event=' + id %>" style="margin-top:2px;">Submit Materials</a>
+<% } %>

@@ -70,6 +70,7 @@ class EventPostingAPI extends PostingAPI {
         $posting->country = $this->POST('country');
         $posting->website = $this->POST('website');
         $posting->enableRegistration = $this->POST('enableRegistration');
+        $posting->enableMaterials = $this->POST('enableMaterials');
         $posting->image1 = $this->uploadFile(1, $posting);
         $posting->image2 = $this->uploadFile(2, $posting);
         $posting->image3 = $this->uploadFile(3, $posting);

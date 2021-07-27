@@ -19,6 +19,7 @@ class EventPosting extends Posting {
     var $banner1;
     var $banner2;
     var $enableRegistration;
+    var $enableMaterials;
     
     function EventPosting($data){
         if(count($data) > 0){
@@ -30,6 +31,7 @@ class EventPosting extends Posting {
             $this->country = $row['country'];
             $this->website = $row['website'];
             $this->enableRegistration = $row['enable_registration'];
+            $this->enableMaterials = $row['enable_materials'];
         }
     }
     
@@ -57,6 +59,10 @@ class EventPosting extends Posting {
         return ($this->enableRegistration == 1);
     }
     
+    function isMaterialSubmissionEnabled(){
+        return ($this->enableMaterials == 1);
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['address'] = $this->getAddress();
@@ -70,6 +76,7 @@ class EventPosting extends Posting {
         $json['banner1'] = $this->getImageUrl(4);
         $json['banner2'] = $this->getImageUrl(5);
         $json['enableRegistration'] = $this->isRegistrationEnabled();
+        $json['enableMaterials'] = $this->isMaterialSubmissionEnabled();
         return $json;
     }
     
@@ -82,7 +89,8 @@ class EventPosting extends Posting {
                                                 'province' => $this->province,
                                                 'country' => $this->country,
                                                 'website' => $this->website,
-                                                'enable_registration' => $this->enableRegistration),
+                                                'enable_registration' => $this->enableRegistration,
+                                                'enable_materials' => $this->enableMaterials),
                                           array('id' => $this->id));
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);
@@ -102,7 +110,8 @@ class EventPosting extends Posting {
                                                 'province' => $this->province,
                                                 'country' => $this->country,
                                                 'website' => $this->website,
-                                                'enable_registration' => $this->enableRegistration),
+                                                'enable_registration' => $this->enableRegistration,
+                                                'enable_materials' => $this->enableMaterials),
                                           array('id' => $this->id));
             $this->saveImage(1, $this->image1);
             $this->saveImage(2, $this->image2);

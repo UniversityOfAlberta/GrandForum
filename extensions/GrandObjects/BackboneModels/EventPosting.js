@@ -25,6 +25,7 @@ EventPosting = Posting.extend({
         country: "Canada",
         website: "",
         enableRegistration: false,
+        enableMaterials: false,
         image1: "", // For Uploads
         image2: "", // For Uploads
         image3: "", // For Uploads
