@@ -93,8 +93,29 @@ class SpecialMaterialSubmission extends SpecialPage{
         $nameField->attr('required', 'required');
 
         $roles = array("Keynote Speaker", "Host", "Presenter");
-        
+        $roleLabel = "Participant Role";
         $roleField = new SelectBox("role", "role", "Presenter", $roles);
+        
+        $instructions = "Please, upload here your material to be saved in our repository";
+        $preamble = "";
+        if($default->title == "Replaying Japan Conference"){
+            $instructions = "Upload your conference video/slides/paper here. こちらに発表のビデオ・スライド・論文をアップロードして下さい。";
+            $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
+                           Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
+                        <p>Registration is FREE. Register so we can send you online participation information. You won’t get the links if you don’t register.<br />
+                           参加費は無料です。オンライン参加に必要なリンク情報をお送りするため、登録をお願いいたします。登録されない場合は、リンク情報が送信されません。</p>
+                        <p>To find out more about the conference, including scheduling, go to:<br />
+                           当学会の詳細並びにスケジュール等はこちらをご覧下さい。<br />
+                           <a href='http://replaying.jp' target='_blank'>http://replaying.jp</a></p>
+                        <p>Replaying Japan 2021 is hosted by the University of Alberta<br />
+                           ２０２１年度Replaying Japanはアルバータ大学が主催です。</p>
+                        <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
+                           その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
+            $roleLabel = "Are you a Grad Student?";
+            $roles = array("Grad Student" => "Yes", 
+                           "Not a Grad Student" => "No");
+            $roleField = new VerticalRadioBox("role", "role", "Presenter", $roles);
+        }
         
         $linksField = new TextareaField("misc[Links]", "misc", "");
         
@@ -103,10 +124,11 @@ class SpecialMaterialSubmission extends SpecialPage{
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
         $maxFileSize = min((float)str_replace('M', '', ini_get('post_max_size')), (float)str_replace('M', '', ini_get('upload_max_filesize')));
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialMaterialSubmission{$getStr}' method='post' onSubmit='return validate()' enctype='multipart/form-data'>
-            <p>Please, upload here your material to be saved in our repository</p>
+            <p>{$instructions}</p>
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
                     <div style='text-align:center;width:100%;'>{$banner1}</div>
+                    {$preamble}
                     <h3>Participant information</h3>
                     <table class='wikitable' frame='box' rules='all'>
                         <tr>
@@ -122,8 +144,8 @@ class SpecialMaterialSubmission extends SpecialPage{
                             <td>{$nameField->render()}</td>
                         </tr>
                         <tr>
-                            <td class='label' style='vertical-align: middle;'>Participant Role</td>
-                            <td>{$roleField->render()}</td>
+                            <td class='label'>{$roleLabel}</td>
+                            <td class='value'>{$roleField->render()}</td>
                         </tr>
                     </table>
                     <h3>Please upload up to 4 files with your material here.</h3>
