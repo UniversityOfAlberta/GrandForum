@@ -36,6 +36,7 @@ class SpecialEventRegistration extends SpecialPage{
             // Add Event Registration
             $eventRegistration = new EventRegistration(array());
             $eventRegistration->eventId = $_POST['event'];
+            $eventRegistration->type = "Event Registration";
             $eventRegistration->email = $_POST['email'];
             $eventRegistration->name = $_POST['name'];
             $eventRegistration->role = $_POST['role'];

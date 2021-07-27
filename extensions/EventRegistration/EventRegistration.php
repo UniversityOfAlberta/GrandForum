@@ -4,6 +4,7 @@ class EventRegistration extends BackboneModel {
 
     var $id;
     var $eventId;
+    var $type;
     var $email;
     var $name;
     var $role;
@@ -37,6 +38,7 @@ class EventRegistration extends BackboneModel {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->eventId = $data[0]['event_id'];
+            $this->type = $data[0]['type'];
             $this->email = $data[0]['email'];
             $this->name = $data[0]['name'];
             $this->role = $data[0]['role'];
@@ -61,6 +63,7 @@ class EventRegistration extends BackboneModel {
     function toArray(){
         return array('id' => $this->id,
                      'event_id' => $this->eventId,
+                     'typ' => $this->type,
                      'email' => $this->email,
                      'name' => $this->name,
                      'role' => $this->role,
@@ -77,6 +80,7 @@ class EventRegistration extends BackboneModel {
     function create(){
         DBFunctions::insert('grand_event_registration',
                             array('event_id' => $this->eventId,
+                                  'type' => $this->type,
                                   'email' => $this->email,
                                   'name' => $this->name,
                                   'role' => $this->role,
@@ -94,6 +98,7 @@ class EventRegistration extends BackboneModel {
     function update(){
         DBFunctions::update('grand_event_registration',
                             array('event_id' => $this->eventId,
+                                  'type' => $this->type,
                                   'email' => $this->email,
                                   'name' => $this->name,
                                   'role' => $this->role,

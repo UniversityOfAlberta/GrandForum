@@ -20,6 +20,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
             <thead>
                 <tr>
                     <th>Event</th>
+                    <th>Type</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
@@ -52,6 +53,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
             }
             $wgOut->addHTML("<tr>
                 <td>{$registration->getEvent()->title}</td>
+                <td>{$registration->type}</td>
                 <td>{$registration->name}</td>
                 <td>{$registration->email}</td>
                 <td>{$registration->role}</td>

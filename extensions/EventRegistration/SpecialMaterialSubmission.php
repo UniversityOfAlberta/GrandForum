@@ -29,6 +29,7 @@ class SpecialMaterialSubmission extends SpecialPage{
             // Add Event Registration
             $eventRegistration = new EventRegistration(array());
             $eventRegistration->eventId = $_POST['event'];
+            $eventRegistration->type = "Material Submission";
             $eventRegistration->email = $_POST['email'];
             $eventRegistration->name = $_POST['name'];
             $eventRegistration->role = $_POST['role'];
