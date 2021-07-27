@@ -27,6 +27,13 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         else{
             // Add Event Registration
+            $f = 1;
+            foreach($_FILES as $file){
+                $fileName = "{$_POST['name']}_Event{$_POST['event']}_File{$f}_{$file['name']}";
+                move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}");
+                $_POST["misc"]["file{$f}"] = $fileName;
+                $f++;
+            }
             $eventRegistration = new EventRegistration(array());
             $eventRegistration->eventId = $_POST['event'];
             $eventRegistration->type = "Material Submission";
@@ -35,7 +42,7 @@ class SpecialMaterialSubmission extends SpecialPage{
             $eventRegistration->role = $_POST['role'];
             $eventRegistration->misc = @$_POST['misc'];
             $eventRegistration->create();
-            $wgMessage->addSuccess("Thank you for registering");
+            $wgMessage->addSuccess("Thank you for submitting your materials");
             $event = EventPosting::newFromId($_POST['event']);
             if($event != null && $event->title != ""){
                 redirect($event->getUrl());
@@ -92,7 +99,8 @@ class SpecialMaterialSubmission extends SpecialPage{
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post' enctype='multipart/form-data'>
+        $maxFileSize = min((float)str_replace('M', '', ini_get('post_max_size')), (float)str_replace('M', '', ini_get('upload_max_filesize')));
+        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialMaterialSubmission{$getStr}' method='post' onSubmit='return validate()' enctype='multipart/form-data'>
             <p>Please, upload here your material to be saved in our repository</p>
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
@@ -121,22 +129,22 @@ class SpecialMaterialSubmission extends SpecialPage{
                      <table class='wikitable' frame='box' rules='all'>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 1</td>
-                            <td><input type='file' name='drive1' /></td>
+                            <td><input id='file1' type='file' name='drive1' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 2</td>
-                            <td><input type='file' name='drive2' /></td>
+                            <td><input id='file2' type='file' name='drive2' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 3</td>
-                            <td><input type='file' name='drive3' /></td>
+                            <td><input id='file3' type='file' name='drive3' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 4</td>
-                            <td><input type='file' name='drive4' /></td>
+                            <td><input id='file4' type='file' name='drive4' /></td>
                         </tr>
                     </table>
-                    <b>NOTE: Total file limit is 750MB, if you need more space please upload them to a server and share the link with us here:</b>
+                    <b>NOTE: Total file limit is {$maxFileSize}MB, if you need more space please upload them to a server and share the link with us here:</b>
                     <h3>Link to your material (optional)</h3>
                     {$linksField->render()}<br />
                     <br />
@@ -146,7 +154,28 @@ class SpecialMaterialSubmission extends SpecialPage{
                     {$banner2}
                 </div>
             </div>
-        </form>");
+        </form>
+        <script type='text/javascript'>
+            function validate(){
+                var limit = 1024*1024*{$maxFileSize};
+                var file_size = 0;
+                if(document.getElementById('file1').files[0] != undefined)
+                    file_size += document.getElementById('file1').files[0].size;
+                if(document.getElementById('file2').files[0] != undefined)
+                    file_size += document.getElementById('file2').files[0].size;
+                if(document.getElementById('file3').files[0] != undefined)
+                    file_size += document.getElementById('file3').files[0].size;
+                if(document.getElementById('file4').files[0] != undefined)
+                    file_size += document.getElementById('file4').files[0].size;
+                    
+                if(file_size>=limit){
+                    alert('Files exceed {$maxFileSize}MB');
+                    return false;
+                }
+                return true;
+            }
+        </script>
+");
     }
 
 }
