@@ -144,7 +144,7 @@
                     <h2>Project Information</h2>
                     <table class='wikitable'>
                         <tr>
-                            <td valign='top' align='right'><b>Project Acronym:</b><br />
+                            <td valign='top' align='right'><b>Project Identifier:</b><br />
                             </td>
                             <td valign='top'>{getText(RP_HQP_SUMMER, DESCRIPTION, ACRONYM, {$parent_id}, {$user_id}, 0)}</td>
                         </tr>

@@ -39,8 +39,8 @@ class ProjectMainTab extends AbstractEditableTab {
         $title = "";
         if($edit){
             if($project->isSubProject()){
-                $acronymField = new TextField("acronym", "New Acronym", $this->project->getName());
-                $title .= "<tr><td class='label'>New Acronym:</td><td class='value'>{$acronymField->render()}</td></tr>";
+                $acronymField = new TextField("acronym", "New Identifier", $this->project->getName());
+                $title .= "<tr><td class='label'>New Identifier:</td><td class='value'>{$acronymField->render()}</td></tr>";
             }
             $fullNameField = new TextField("fullName", "New Title", $this->project->getFullName());
             $title .= "<tr><td class='label'>New Title:</td><td class='value'>{$fullNameField->render()}</td></tr>";

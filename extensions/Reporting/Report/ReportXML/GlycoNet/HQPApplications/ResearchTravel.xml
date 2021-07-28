@@ -284,10 +284,10 @@
     <ReportSection id="proposal" type="Editable" name="Proposal" tooltip="Proposal" title="Proposal" blobSection="PROPOSAL">
         <ReportItem id="acronym" type="Text" blobItem="ACRONYM">
             <![CDATA[
-                <p>If you are applying to travel for a conference or workshop, please put "N/A" under Project Acronym, and put the title of the conference/workshop under "Project Title." Please indicate the start date and end date of the conference/workshop.</p>
+                <p>If you are applying to travel for a conference or workshop, please put "N/A" under Project Identifier, and put the title of the conference/workshop under "Project Title." Please indicate the start date and end date of the conference/workshop.</p>
                 <table class='wikitable'>
                 <tr>
-                    <td valign='top' align='right'><b>Project Acronym:</b><br />
+                    <td valign='top' align='right'><b>Project Identifier:</b><br />
                         <small>(if project is funded by GlycoNet)</small>
                     </td>
                     <td valign='top'>{$item}</td>

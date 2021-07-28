@@ -289,7 +289,7 @@ class IndexTable {
     /**
      * Generates the Table for the projects
      * Consists of the following columns
-     * Acronym | Name 
+     * Identifier | Name 
      */
     private function generateProjectsTable($status, $type="Research"){
         global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
@@ -311,7 +311,7 @@ class IndexTable {
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr><th>Identifier</th><th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $subProjects = array();
@@ -380,7 +380,7 @@ class IndexTable {
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
-<thead><tr><th>Acronym</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
+<thead><tr><th>Identifier</th><th>Name</th><th>Leaders</th><th>Coordinators</th></tr></thead><tbody>
 ");
         $themes = Theme::getAllThemes($phase);
         foreach($themes as $theme){

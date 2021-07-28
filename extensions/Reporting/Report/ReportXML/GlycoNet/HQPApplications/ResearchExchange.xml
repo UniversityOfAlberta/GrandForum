@@ -284,7 +284,7 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
             <![CDATA[
                 <table class='wikitable'>
                 <tr>
-                    <td valign='top' align='right'><b>Project Acronym:</b><br />
+                    <td valign='top' align='right'><b>Project Identifier:</b><br />
                         <small>(if project is funded by GlycoNet)</small>
                     </td>
                     <td valign='top'>{$item}</td>

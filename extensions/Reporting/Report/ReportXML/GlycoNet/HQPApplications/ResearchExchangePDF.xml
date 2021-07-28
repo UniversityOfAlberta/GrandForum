@@ -152,7 +152,7 @@
             <![CDATA[
                 <table class='wikitable'>
                     <tr>
-                        <td valign='top' align='right'><b>Project Acronym:</b></td>
+                        <td valign='top' align='right'><b>Project Identifier:</b></td>
                         <td valign='top'>{getText(RP_HQP_EXCHANGE,PROPOSAL,ACRONYM,0,{$user_id},0}</td>
                     </tr>
                     <tr>

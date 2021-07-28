@@ -14,8 +14,8 @@ class CreateProjectTab extends ProjectTab {
         $table = new FormTable("{$pre}_form_table");
         
         $acronymRow = new FormTableRow("{$pre}_acronym_row");
-        $acronymLabel = new Label("{$pre}_acronym_label", "Acronym", "The acronym/name for the project ie. MEOW", VALIDATE_NOT_NULL);
-        $acronymField = new TextField("{$pre}_acronym", "Acronym", "", VALIDATE_NOT_NULL + VALIDATE_NOT_PROJECT);
+        $acronymLabel = new Label("{$pre}_acronym_label", "Identifier", "The identifier/acronym for the project ie. MEOW", VALIDATE_NOT_NULL);
+        $acronymField = new TextField("{$pre}_acronym", "Identifier", "", VALIDATE_NOT_NULL + VALIDATE_NOT_PROJECT);
         $acronymRow->append($acronymLabel)->append($acronymField->attr('size', 12));
         
         $fullNameRow = new FormTableRow("{$pre}_full_name_row");
