@@ -354,9 +354,14 @@ HTML.DatePicker = function(view, attr, options){
     view.delegate('change', 'input[name=' + HTML.Name(attr) + ']', view.events['change input[name=' + HTML.Name(attr) + ']']);
     $(el).wrap('div');
     _.defer(function(){
-        view.$('input[name=' + HTML.Name(attr) + ']').keydown(function() {
-            return false;
-        });
+        view.$('input[name=' + HTML.Name(attr) + ']').on("input change", function() {
+            if($(this).val().match(/^\d{4}-\d{2}-\d{2}/) == null){
+                $(this).css("background-color", "#feb8b8");
+            }
+            else{
+                $(this).css("background-color", "");
+            }
+        }).trigger("change");
     });
     return $(el).parent().html();
 }
