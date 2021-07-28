@@ -75,7 +75,7 @@ ProductListView = Backbone.View.extend({
                 }
             }
             row.push("<span style='white-space: nowrap;'>" + model.type + "</span>");
-            row.push("<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span><br />" + "<span style='float:right;'>" + ifranking.join('; ') + "</span>");
+            row.push("<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span>");
             row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
             row.push(model.status);
             row.push(model.citation);
