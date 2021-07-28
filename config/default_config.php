@@ -129,6 +129,9 @@
 
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
+    // Whether to include the middle name in most places
+    $config->setValue("includeMiddleName", false);
+    
     $config->setValue("hqpRegisterEmailWhitelist", array(".ca"));
     
     // Whether to prevent access to certain pages when a guess

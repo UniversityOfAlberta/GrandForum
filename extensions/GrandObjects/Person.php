@@ -1895,9 +1895,13 @@ class Person extends BackboneModel {
      * @return string This Person's name in the form "Last, First"
      */
     function getReversedName(){
+        global $config;
         $first = $this->getFirstName();
+        $middle = $this->getMiddleName();
         $last = $this->getLastName();
         if($first != ""){
+            if($config->getValue('includeMiddleName') && $middle != "")
+                return "{$last}, {$first} {$middle}";
             return "{$last}, {$first}";
         }
         else{
@@ -1910,7 +1914,10 @@ class Person extends BackboneModel {
      * @return string A name usable in forms
      */
     function getNameForForms($sep = ' ') {
-        if (!empty($this->realname))
+        global $config;
+        if($config->getValue('includeMiddleName') && $this->getMiddleName() != "")
+            return str_replace("\"", "<span class='noshow'>&quot;</span>", trim("{$this->getFirstName()} {$this->getMiddleName()} {$this->getLastName()}"));
+        else if (!empty($this->realname))
             return str_replace("\"", "<span class='noshow'>&quot;</span>", str_replace("&nbsp;", " ", ucfirst($this->realname)));
         else
             return str_replace("\"", "<span class='noshow'>&quot;</span>", trim($this->getFirstName()." ".$this->getLastName()));

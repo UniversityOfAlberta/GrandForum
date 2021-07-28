@@ -295,18 +295,23 @@ class IndexTable {
         global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $themesHeader = "";
+        $datesHeader = "";
         $idHeader = "";
         if($type != "Administrative"){
             $themesHeader = "<th>{$config->getValue('projectThemes')}</th>";
         }
+        if($me->isLoggedIn()){
+            $datesHeader = "<th style='white-space:nowrap;'>Start Date</th>
+                            <th style='white-space:nowrap;'>End Date</th>";
+        }
         if($me->isRoleAtLeast(ADMIN)){
-            $idHeader = "<th>Project Id</th>";
+            $idHeader = "<th style='white-space:nowrap;'>Project Id</th>";
         }
         $data = Project::getAllProjectsEver(($status != "Active"));
         $wgOut->addHTML("
             <table class='indexTable' style='display:none;' frame='box' rules='all'>
             <thead>
-            <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$idHeader}</tr></thead><tbody>");
+            <tr><th>Acronym</th><th>Name</th><th>Leaders</th>{$themesHeader}{$datesHeader}{$idHeader}</tr></thead><tbody>");
         foreach($data as $proj){
             if($proj->getStatus() == $status && ($proj->getType() == $type || $type == 'all')){
                 $subProjects = array();
@@ -341,8 +346,12 @@ class IndexTable {
                     }
                     $wgOut->addHTML("<td align='left'>".implode(", ", $text)."</td>");
                 }
+                if($datesHeader){
+                    $wgOut->addHTML("<td align='center' style='white-space:nowrap;'>".substr($proj->getStartDate(), 0, 10)."</td>
+                                     <td align='center' style='white-space:nowrap;'>".substr($proj->getEndDate(), 0, 10)."</td>");
+                }
                 if($idHeader){
-                    $wgOut->addHTML("<td>{$proj->getId()}</td>\n");
+                    $wgOut->addHTML("<td align='center'>{$proj->getId()}</td>\n");
                 }
                 $wgOut->addHTML("</tr>\n");
             }
