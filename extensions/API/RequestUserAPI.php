@@ -18,6 +18,8 @@ class RequestUserAPI extends API{
         $this->addPOST("position",false, "", "");
         $this->addPOST("nationality",false, "", "");
         $this->addPOST("employment",false, "", "");
+        $this->addPOST("recruitment",false, "", "");
+        $this->addPOST("recruitmentCountry",false,"","");
         $this->addPOST("start_date",false, "", "");
         $this->addPOST("end_date",false, "", "");
     }
@@ -115,6 +117,8 @@ class RequestUserAPI extends API{
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
 		$nationality = isset($_POST['nationality']) ? $_POST['nationality'] : "";
 		$employment = isset($_POST['employment']) ? $_POST['employment'] : "";
+		$recruitment = isset($_POST['recruitment']) ? $_POST['recruitment'] : "";
+		$recruitmentCountry = isset($_POST['recruitmentCountry']) ? $_POST['recruitmentCountry'] : "";
 		$startDate = isset($_POST['start_date']) ? $_POST['start_date'] : "";
 		$endDate = isset($_POST['end_date']) ? $_POST['end_date'] : "";
 		$candidate = isset($_POST['candidate']) ? $_POST['candidate'] : "0";
@@ -140,6 +144,8 @@ class RequestUserAPI extends API{
 		                          'position' => $position,
 		                          'nationality' => $nationality,
 		                          'employment' => $employment,
+		                          'recruitment' => $recruitment,
+		                          'recruitment_country' => $recruitmentCountry,
 		                          'start_date' => $startDate,
 		                          'end_date' => $endDate,
 		                          'candidate' => $candidate,

@@ -23,6 +23,8 @@ class UserCreateRequest {
     var $position;
     var $nationality;
     var $employment;
+    var $recruitment;
+    var $recruitmentCountry;
     var $startDate;
     var $endDate;
     var $candidate;
@@ -79,6 +81,8 @@ class UserCreateRequest {
             $this->position = $data[0]['position'];
             $this->nationality = $data[0]['nationality'];
             $this->employment = $data[0]['employment'];
+            $this->recruitment = $data[0]['recruitment'];
+            $this->recruitmentCountry = $data[0]['recruitment_country'];
             $this->startDate = $data[0]['start_date'];
             $this->endDate = $data[0]['end_date'];
             $this->candidate = $data[0]['candidate'];
@@ -154,6 +158,14 @@ class UserCreateRequest {
     
     function getEmployment(){
         return $this->employment;
+    }
+    
+    function getRecruitment(){
+        return $this->recruitment;
+    }
+    
+    function getRecruitmentCountry(){
+        return $this->recruitmentCountry;
     }
     
     function getStartDate(){

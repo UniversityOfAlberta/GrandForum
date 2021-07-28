@@ -171,6 +171,13 @@ class CreateUserAPI extends API{
                         APIRequest::doAction('AddHQPMovedOn', true);
                     }
                     
+                    if($_POST['recruitment'] != ""){
+                        DBFunctions::insert('grand_alumni',
+                                            array('user_id' => $person->getId(),
+                                                  'recruited' => $_POST['recruitment'],
+                                                  'recruited_country' => $_POST['recruitmentCountry']));
+                    }
+                    
                     if(isset($_POST['subtype']) && is_array($_POST['subtype'])){
                         // Adds the role subtype if it is set
                         foreach($_POST['subtype'] as $subtype){

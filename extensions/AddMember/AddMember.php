@@ -54,10 +54,18 @@ class AddMember extends SpecialPage{
                 $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('nationality_field')->setPOST('nationality');
                 $form->getElementById('employment_field')->setPOST('employment');
+                $form->getElementById('rec_field')->setPOST('recruitment');
+                $form->getElementById('rec_country_field')->setPOST('recruitmentCountry');
                 for($i = 0; $i < 3; $i++){
                     $form->getElementById("university_field{$i}")->setPOST("university{$i}");
                     $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
-                    $form->getElementById("position_field{$i}")->setPOST("position{$i}");
+                    if($form->getElementById("hqp_position_field{$i}")->value != ""){
+                        // For HQP Role
+                        $form->getElementById("hqp_position_field{$i}")->setPOST("position{$i}");
+                    }
+                    else{
+                        $form->getElementById("position_field{$i}")->setPOST("position{$i}");
+                    }
                     $form->getElementById("end_field{$i}")->setPOST("end_date{$i}");
                     $form->getElementById("start_field{$i}")->setPOST("start_date{$i}");
                 }
@@ -210,6 +218,8 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
                             <input type='hidden' name='employment' value='".str_replace("'", "&#39;", $request->getEmployment())."' />
+                            <input type='hidden' name='recruitment' value='".str_replace("'", "&#39;", $request->getRecruitment())."' />
+                            <input type='hidden' name='recruitmentCountry' value='".str_replace("'", "&#39;", $request->getRecruitmentCountry())."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
@@ -231,7 +241,13 @@ class AddMember extends SpecialPage{
                     </tr>");
         }
         $wgOut->addHTML("</tbody></table><script type='text/javascript'>
-                                            $('#requests').dataTable({'autoWidth': false}).fnSort([[2,'desc']]);
+                                            $('#requests').dataTable({
+                                                'autoWidth': false,
+                                                'dom': 'Blfrtip',
+                                                'buttons': [
+                                                    'excel', 'pdf'
+                                                ]
+                                            }).fnSort([[2,'desc']]);
                                             $('#requests').css('display', 'table');
                                          </script>");
     }
@@ -297,7 +313,8 @@ class AddMember extends SpecialPage{
 
         $universities = array_merge(array(""), Person::getAllUniversities());
         $departments = array_merge(array(""), Person::getAllDepartments());
-        $positions = array("", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
+        $positions = array_merge(array(""), Person::getAllPositions());
+        $hqpPositions = array("", "Graduate Student - Master's", "Graduate Student - Doctoral", "Post-Doctoral Fellow", "Research Associate", "Research Assistant", "Technician", "Professional End User", "Summer Student", "Undergraduate Student");
         
         $candLabel = new Label("cand_label", "Candidate?", "Whether or not this user should be a candidate (not officially in the network yet)", VALIDATE_NOTHING);
         $candField = new VerticalRadioBox("cand_field", "Roles", "No", array("0" => "No", "1" => "Yes"), VALIDATE_NOTHING);
@@ -333,6 +350,30 @@ class AddMember extends SpecialPage{
         $employmentRow2 = new FormTableRow("employment_row2");
         $employmentRow2->append($employmentLabel2)->append($employmentField);
         $employmentRow2->attr('id', 'employment_row2');
+        
+        $recruitmentLabel = new Label("recruitment_label", "Recruitment for {$config->getValue('networkName')} project", "", VALIDATE_NOTHING);
+        $recruitmentLabel->colon = "";
+        $recruitmentLabel->colspan = 2;
+        $recruitmentLabel->attr('style', 'text-align:left;max-width:400px;');
+        $recruitmentRow = new FormTableRow("recruitment_row");
+        $recruitmentRow->append($recruitmentLabel);
+        $recruitmentRow->attr('id', "recruitment_row");
+
+        $recLabel = new Label("rec_label", "Recruitment", "", VALIDATE_NOTHING);
+        $recField = new SelectBox("rec_field", "Recruitment", "", array('',
+                                                                        'Recruited from within UAlberta',
+                                                                        'Recruited from within Canada (outside UAlberta)',
+                                                                        'Recruited from outside Canada'), VALIDATE_NOTHING);
+        $recRow = new FormTableRow("rec_row");
+        $recRow->append($recLabel)->append($recField);
+        $recRow->attr('id', "rec_row");
+        
+        $recCountryLabel = new Label("rec_country_label", "Country", "", VALIDATE_NOTHING);
+        $recCountryField = new TextField("rec_country_field", "Country", "", VALIDATE_NOTHING);
+        $recCountryField->attr("style", "width: 200px;");
+        $recCountryRow = new FormTableRow("rec_country_row");
+        $recCountryRow->append($recCountryLabel)->append($recCountryField);
+        $recCountryRow->attr('id', "rec_country_row");
 
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -378,9 +419,16 @@ class AddMember extends SpecialPage{
             $deptRow->append($deptLabel)->append($deptField);
             $deptRow->attr('id', "dept_row$i");
             
-            $positionLabel = new Label("position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
-            $positionField = new SelectBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
-            $positionField->attr("style", "width: 260px;");
+            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
+            $hqpPositionField = new SelectBox("hqp_position_field$i", "Position", "", $hqpPositions, VALIDATE_NOTHING);
+            $hqpPositionField->attr("style", "width: 260px;");
+            $hqpPositionRow = new FormTableRow("hqp_position_row$i");
+            $hqpPositionRow->append($hqpPositionLabel)->append($hqpPositionField);
+            $hqpPositionRow->attr('id', "hqp_position_row$i");
+            
+            $positionLabel = new Label("position_label$i", "Position", "The title of this user", VALIDATE_NOTHING);
+            $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
+            $positionField->attr("style", "width: 250px;");
             $positionRow = new FormTableRow("position_row$i");
             $positionRow->append($positionLabel)->append($positionField);
             $positionRow->attr('id', "position_row$i");
@@ -400,10 +448,14 @@ class AddMember extends SpecialPage{
             $formTable->append($programRow)
                       ->append($universityRow)
                       ->append($deptRow)
+                      ->append($hqpPositionRow)
                       ->append($positionRow)
                       ->append($startRow)
                       ->append($endRow);
         }
+        $formTable->append($recruitmentRow)
+                  ->append($recRow)
+                  ->append($recCountryRow);
         $formTable->append($employmentRow1)
                   ->append($employmentRow2)
                   ->append($candRow)
@@ -411,6 +463,11 @@ class AddMember extends SpecialPage{
                   
         if(!$me->isRoleAtLeast(STAFF)){
             $formTable->getElementById("cand_row")->attr('style', 'display:none;');
+        }
+        if(!$config->getValue('alumniEnabled')){
+            $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
+            $formTable->getElementById("rec_row")->attr('style', 'display:none;');
+            $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
         }
         
         $formContainer->append($formTable);
@@ -442,9 +499,13 @@ class AddMember extends SpecialPage{
                     $('#program_row1').show();
                     $('#program_row2').show();
                     
-                    $('#position_row0').show();
-                    $('#position_row1').show();
-                    $('#position_row2').show();
+                    $('#hqp_position_row0').show();
+                    $('#hqp_position_row1').show();
+                    $('#hqp_position_row2').show();
+                    
+                    $('#position_row0').hide();
+                    $('#position_row1').hide();
+                    $('#position_row2').hide();
                     
                     $('#university_row1').show();
                     $('#university_row2').show();
@@ -469,7 +530,11 @@ class AddMember extends SpecialPage{
                     $('#program_row1').hide();
                     $('#program_row2').hide();
                     
-                    $('#position_row0').hide();
+                    $('#hqp_position_row0').hide();
+                    $('#hqp_position_row1').hide();
+                    $('#hqp_position_row2').hide();
+                    
+                    $('#position_row0').show();
                     $('#position_row1').hide();
                     $('#position_row2').hide();
                     
@@ -490,12 +555,19 @@ class AddMember extends SpecialPage{
                     $('#employment_row1').hide();
                     $('#employment_row2').hide();
                 }
+                if($('#rec_field').val() == 'Recruited from outside Canada'){
+                    $('#rec_country_row').show();
+                }
+                else{
+                    $('#rec_country_row').hide();
+                }
                 $('#roleWarning').remove();
                 if(found && otherFound){
                     $('#role_label').after('<div id=\'roleWarning\' style=\'width:156px;\' class=\'inlineWarning\'>HQP should not be selected with any other role.  Are you sure you want to proceed?</div>');
                 }
             }
             $('input[name=\"role_field[]\"]').change(fn);
+            $('#rec_field').change(fn);
             fn();
         </script>");
         $wgOut->addHTML("</form>");
