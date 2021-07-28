@@ -76,12 +76,14 @@ class ProjectFESReportTab extends AbstractEditableTab {
                             {$q2}
                             
                             <h3>5. Explain how equity, diversity, and inclusivity have been considered in the following aspects, and mention specific issues in your research field as applicable:</h3>
-                            <h4>Ongoing design and implementation of your research activities</h4>
-                            {$q3}
-                            <h4>Composition of the project team</h4>
-                            {$q8}
-                            <h4>Formation of the training plan for your HQP</h4>
-                            {$q9}
+                            <div style='margin-left:1.4em;'>
+                                <h4>Ongoing design and implementation of your research activities</h4>
+                                {$q3}
+                                <h4>Composition of the project team</h4>
+                                {$q8}
+                                <h4>Formation of the training plan for your HQP</h4>
+                                {$q9}
+                            </div>
                             
                             <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr$y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
                             {$q6}
@@ -136,12 +138,14 @@ class ProjectFESReportTab extends AbstractEditableTab {
                             <textarea name='report_q2[$y]' style='height:200px;resize: vertical;'>{$q2}</textarea>
                             
                             <h3>5. Explain how equity, diversity, and inclusivity have been considered in the following aspects, and mention specific issues in your research field as applicable:</h3>
-                            <h4>Ongoing design and implementation of your research activities</h4>
-                            <textarea name='report_q3[$y]' style='height:100px;resize: vertical;'>{$q3}</textarea>
-                            <h4>Composition of the project team</h4>
-                            <textarea name='report_q8[$y]' style='height:100px;resize: vertical;'>{$q8}</textarea>
-                            <h4>Formation of the training plan for your HQP</h4>
-                            <textarea name='report_q9[$y]' style='height:100px;resize: vertical;'>{$q9}</textarea>
+                            <div style='margin-left:1.4em;'>
+                                <h4>Ongoing design and implementation of your research activities</h4>
+                                <textarea name='report_q3[$y]' style='height:100px;resize: vertical;'>{$q3}</textarea>
+                                <h4>Composition of the project team</h4>
+                                <textarea name='report_q8[$y]' style='height:100px;resize: vertical;'>{$q8}</textarea>
+                                <h4>Formation of the training plan for your HQP</h4>
+                                <textarea name='report_q9[$y]' style='height:100px;resize: vertical;'>{$q9}</textarea>
+                            </div>
                             
                             <h3>6. Have you or your team attended any EDI events during the past fiscal year (Apr$y-Mar".($y+1).")? If so, list them and indicate who attended from your team.</h3>
                             <textarea name='report_q6[$y]' style='height:200px;resize: vertical;'>{$q6}</textarea>
