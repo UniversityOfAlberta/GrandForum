@@ -7,17 +7,20 @@ ManagePeopleEditUniversitiesView = Backbone.View.extend({
 
     initialize: function(options){
         this.person = options.person;
+        this.person.getRoles();
         this.model.fetch();
         this.template = _.template($('#edit_universities_template').html());
         this.universityViews = new Array();
     
         this.model.ready().then(function(){
-            this.universities = this.model;
-            this.listenTo(this.universities, "add", this.addRows);
-            this.universities.each(function(u){
-                u.startTracking();
-            });
-            this.render();
+            this.person.roles.ready().then(function(){
+                this.universities = this.model;
+                this.listenTo(this.universities, "add", this.addRows);
+                this.universities.each(function(u){
+                    u.startTracking();
+                });
+                this.render();
+            }.bind(this));
         }.bind(this));
         
         // Reposition the dialog when the window is resized or the dialog is resized
@@ -145,8 +148,8 @@ ManagePeopleEditUniversitiesRowView = Backbone.View.extend({
         this.$("[name=department]").css('max-width', '200px').css('width', '200px');
         this.$("[name=university]").combobox();
         this.$("[name=department]").combobox();
-        if(!(_.where(this.person.get('roles'), {role: HQP}).length > 0 && 
-             _.filter(this.person.get('roles'), function(r){ return !(r.role == HQP); }).length == 0)){
+        if(!(_.where(this.person.roles.toJSON(), {role: HQP}).length > 0 && 
+             _.filter(this.person.roles.toJSON(), function(r){ return !(r.role == HQP); }).length == 0)){
             this.$("[name=position]").css('max-width', '200px').css('width', '200px');
             this.$("[name=position]").combobox();
         }

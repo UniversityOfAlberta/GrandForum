@@ -378,6 +378,7 @@ PersonRole = RelationModel.extend({
     defaults: {
         personId: "",
         roleId: "",
+        role: "",
         startDate: new Date().toISOString().substr(0, 10),
         endDate: ""
     }

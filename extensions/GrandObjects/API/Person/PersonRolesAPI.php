@@ -8,6 +8,7 @@ class PersonRolesAPI extends RESTAPI {
         $roles = $person->getRoles(true);
         foreach($roles as $role){
             $json[] = array('roleId' => $role->getId(),
+                            'role' => $role->getRole(),
                             'personId' => $person->getId(),
                             'startDate' => $role->getStartDate(),
                             'endDate' => $role->getEndDate());
