@@ -167,12 +167,22 @@ ManagePeopleEditRolesRowView = Backbone.View.extend({
            this.model.get('projects').length == 0){
             this.$(".projectsCell").css("background", "#FDEEB2")
                                    .css("box-shadow", "inset 0 0 0 1px #9C600D");
-            this.$(".projError").text("There should be a project associated with this role").show();
+            this.$(".projectsCell .projError").text("There should be a project associated with this role").show();
         }
         else{
             this.$(".projectsCell").css("background", "")
                                    .css("box-shadow", "");
-            this.$(".projError").text("").hide();
+            this.$(".projectsCell .projError").text("").hide();
+        }
+        if((this.model.get('startDate') > this.model.get('endDate')) && this.model.get('endDate').substr(0,10) != "0000-00-00" && this.model.get('endDate') != ""){
+            this.$(".endDateCell").css("background", "#FDEEB2")
+                                  .css("box-shadow", "inset 0 0 0 1px #9C600D");
+            this.$(".endDateCell .projError").text("The end date should not be before the start date").show();
+        }
+        else{
+            this.$(".endDateCell").css("background", "")
+                                  .css("box-shadow", "");
+            this.$(".endDateCell .projError").text("").hide();
         }
     },
     
