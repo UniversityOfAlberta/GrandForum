@@ -115,7 +115,7 @@ ManagePeopleEditThemesRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('0000-00-00');
+        this.$("input[name=endDate]").val('0000-00-00').trigger("change");
         this.model.set('endDate', '0000-00-00');
     },
     

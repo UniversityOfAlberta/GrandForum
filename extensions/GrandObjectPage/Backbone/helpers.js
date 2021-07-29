@@ -355,7 +355,7 @@ HTML.DatePicker = function(view, attr, options){
     $(el).wrap('div');
     _.defer(function(){
         view.$('input[name=' + HTML.Name(attr) + ']').on("input change", function() {
-            if($(this).val().match(/^\d{4}-\d{2}-\d{2}/) == null){
+            if($(this).val() != "" && $(this).val().match(/^\d{4}-\d{2}-\d{2}/) == null){
                 $(this).css("background-color", "#feb8b8");
             }
             else{

@@ -9,6 +9,7 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
 
     initialize: function(options){
         this.person = options.person;
+        this.person.getRoles();
         this.model.fetch();
         this.relationViews = new Array();
         var extraRelationships = this.relations = new PersonRelations();
@@ -27,18 +28,20 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
         
         $.when(xhr).always(function(){
             this.model.ready().then(function(){
-                this.relations = this.model;
-                this.listenTo(this.relations, "add", this.addRows);
-                this.relations.each(function(r){
-                    r.startTracking();
-                });
-                this.render();
-                extraRelationships.ready().then(function(){
-                    this.relations.add(extraRelationships.models);
+                this.person.roles.ready().then(function(){
+                    this.relations = this.model;
+                    this.listenTo(this.relations, "add", this.addRows);
                     this.relations.each(function(r){
                         r.startTracking();
                     });
                     this.render();
+                    extraRelationships.ready().then(function(){
+                        this.relations.add(extraRelationships.models);
+                        this.relations.each(function(r){
+                            r.startTracking();
+                        });
+                        this.render();
+                    }.bind(this));
                 }.bind(this));
             }.bind(this));
         }.bind(this));
@@ -94,11 +97,23 @@ ManagePeopleEditRelationsView = Backbone.View.extend({
     },
     
     addRelation: function(){
+        var maxStart = "";
+        var maxEnd = "";
+        _.each(this.person.roles.toJSON(), function(role){
+            maxStart = (maxStart < role.startDate) ? role.startDate : maxStart;
+            maxEnd = (role.endDate == "0000-00-00 00:00:00" || maxEnd == "0000-00-00 00:00:00") ? "0000-00-00 00:00:00" : 
+                     (maxEnd < role.endDate) ? role.endDate : maxEnd;
+        }.bind(this));
+        
         var relation = new PersonRelation();
         relation.startTracking();
         relation.set("type", _.first(relationTypes));
         relation.set("user1", me.get('id'));
         relation.set("user2", this.person.get('id'));
+        if(maxStart != "" && maxStart != "0000-00-00 00:00:00"){
+            relation.set("startDate", maxStart);
+        }
+        relation.set("endDate", maxEnd);
         this.relations.add(relation);
         this.$el.scrollTop(this.el.scrollHeight);
     },
@@ -167,7 +182,7 @@ ManagePeopleEditRelationsRowView = Backbone.View.extend({
     
     // Sets the end date to infinite (0000-00-00)
     setInfinite: function(){
-        this.$("input[name=endDate]").val('0000-00-00');
+        this.$("input[name=endDate]").val('0000-00-00').trigger("change");
         this.model.set('endDate', '0000-00-00');
     },
     
