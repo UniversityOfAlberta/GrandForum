@@ -112,7 +112,7 @@ class SpecialMaterialSubmission extends SpecialPage{
                            一発表につき、４ファイルまで提出できます</p>
                         <p>Please name your files in the following fashion:<br />
                            提出されるファイルは、以下の形式でお願いします。</p>
-                        <p><Last Name of Contact Presenter>, <Short Title>, <Format of Upload File> (Eg. Rockwell, Moral Management, Paper.pdf or Rockwell, Moral Management of Game Companies, Slides.pptx)</p>
+                        <p>&lt;Last Name of Contact Presenter&gt;, &lt;Short Title&gt;, &lt;Format of Upload File&gt; (Eg. Rockwell, Moral Management, Paper.pdf or Rockwell, Moral Management of Game Companies, Slides.pptx)</p>
                         <p>Remember: Register for the conference here: <a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>
                         <p>カンファレンスの参加登録はこちらからおこなって下さい。<a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>";
             $roleLabel = "Are you a Grad Student?";
