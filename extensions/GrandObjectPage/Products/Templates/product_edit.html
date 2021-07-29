@@ -108,7 +108,7 @@
 <% if(!this.isDialog){ %>
     <br />
 <% } %>
-<% if(!this.isDialog){ %>
+<% if(!this.isDialog && !publicationsFrozen){ %>
     <div style="display:inline-block;">
         <button id='saveProduct'><% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %> <%= category %></button><span class="throbber" style="display:none;"></span>
     </div>

@@ -87,22 +87,24 @@ This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase
     </p>
 <% } %>
 <p>
-    <button id="addProductButton">Add <%= productsTerm %></button>
-    <button id="addFromDOIButton">Add From DOI</button>
-    <button id="uploadCCVButton">Upload CCV</button>
-    <button id="importBibTexButton">Import BibTeX</button>
-    <% if(orcidId != ""){ %>
-        <button id="importOrcidButton" style="height: 29px; vertical-align: middle;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
-    <% } %>
-    <% if(productStructure.categories['Activity'] != undefined && 
-          productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
-        <button id="uploadCalendarButton">Import ICS Calendar</button>
-    <% } %>
-    <% if(isExtensionEnabled('CrossForumExport')){ %>
-        <button id="crossForumExport">Import from other Forum</button>
+    <% if(!publicationsFrozen){ %>
+        <button id="addProductButton">Add <%= productsTerm %></button>
+        <button id="addFromDOIButton">Add From DOI</button>
+        <button id="uploadCCVButton">Upload CCV</button>
+        <button id="importBibTexButton">Import BibTeX</button>
+        <% if(orcidId != ""){ %>
+            <button id="importOrcidButton" style="height: 29px; vertical-align: middle;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" />&nbsp;Import ORCID</button>
+        <% } %>
+        <% if(productStructure.categories['Activity'] != undefined && 
+              productStructure.categories['Activity'].types['Meeting'] != undefined){ %>
+            <button id="uploadCalendarButton">Import ICS Calendar</button>
+        <% } %>
+        <% if(isExtensionEnabled('CrossForumExport')){ %>
+            <button id="crossForumExport">Import from other Forum</button>
+        <% } %>
+        <span style="margin-left:30px;">
     <% } %>
     <% if(_.contains(allowedRoles, MANAGER)){ %>
-        <span style="margin-left:30px;">
         <% if(!this.model.all){ %>
             <a class="button" href="#/all">Show All</a>
         <% } else { %>
@@ -115,19 +117,23 @@ This page is used to manage all of your <%= productsTerm.pluralize().toLowerCase
 <table id="listTable" frame="box" rules="all" style="display:none;">
     <thead>
         <tr style="border-bottom: 1px solid #C8C8C8; border-top: 1px solid #C8C8C8;">
-            <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
-            <% _.each(this.projects.models, function(p){ %>
-                <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
-            <% }) %>
+            <% if(!publicationsFrozen){ %>
+                <th class="angledTableHead" ><div class="angledTableBorder"></div><div class="angledTableText">Other</div></th>
+                <% _.each(this.projects.models, function(p){ %>
+                    <th class="angledTableHead checkboxCell"><div class="angledTableBorder"></div><div class="angledTableText"><%= p.get('name') %></div></th>
+                <% }) %>
+            <% } %>
             <th width="100%" colspan="7"><%= productsTerm %> Information</th>
         </tr>
         <tr style="border-bottom: 2px solid #C8C8C8;">
-            <th width="40px"></th>
-            <% _.each(this.projects.models, function(p){ %>
-                <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
-            <% }) %>
-            <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
-            <th width="1%">Private</th>
+            <% if(!publicationsFrozen){ %>
+                <th width="40px"></th>
+                <% _.each(this.projects.models, function(p){ %>
+                    <th width="40px" class="checkboxCell"><input class="selectAll" data-project="<%= p.id %>" type="checkbox" /></th>
+                <% }) %>
+                <th width="1%" style="border-left: 2px solid #C8C8C8;">Edit</th>
+                <th width="1%">Private</th>
+            <% } %>
             <th width="3%" style="min-width: 70px;">Date</th>
             <th width="12%">Category</th>
             <th width="13%">Type</th>

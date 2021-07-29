@@ -148,6 +148,9 @@ ManageProductsView = Backbone.View.extend({
     addRows: function(){
         var searchStr = "";
         var order = [this.projects.length + 3, 'desc'];
+        if(publicationsFrozen){
+            order = [0, 'desc']
+        }
         if(this.table != undefined){
             order = this.table.order();
             searchStr = this.table.search();
@@ -202,6 +205,10 @@ ManageProductsView = Backbone.View.extend({
     
     createDataTable: function(order, searchStr){
         var creating = true;
+        var bSortable = {};
+        if(!publicationsFrozen){
+            bSortable = {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) };
+        }
         this.table = this.$('#listTable').DataTable({'bPaginate': false,
                                                      'autoWidth': false,
                                                      'preDrawCallback': function(){
@@ -209,7 +216,7 @@ ManageProductsView = Backbone.View.extend({
                                                      },
                                                      'drawCallback': renderProductLinks,
                                                      'aoColumnDefs': [
-                                                        {'bSortable': false, 'aTargets': _.range(0, this.projects.length + 2) }
+                                                        bSortable
                                                      ],
 	                                                 'aLengthMenu': [[-1], ['All']]});
 	    creating = false;
@@ -218,10 +225,12 @@ ManageProductsView = Backbone.View.extend({
 	    this.table.search(searchStr);
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
-	    this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
-	    this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
-        this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
-	    this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
+	    if(!publicationsFrozen){
+	        this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
+	        this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
+            this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
+	        this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
+	    }
     },
     
     toggleSelect: function(e){

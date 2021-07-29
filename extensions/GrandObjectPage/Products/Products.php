@@ -20,6 +20,14 @@ class Products extends BackbonePage {
     }
     
     function getViews(){
+        global $wgOut;
+        $emptyProject = new Project(array());
+        $publicationsFrozen = json_encode($emptyProject->isFeatureFrozen("Publications"));
+        
+        $wgOut->addScript("<script type='text/javascript'>
+            var publicationsFrozen = $publicationsFrozen;
+        </script>");
+        
         return array('Backbone/*',
                      'ProductListView', 
                      'ProductView',
