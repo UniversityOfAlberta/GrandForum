@@ -4,7 +4,7 @@
         <tr><td align="right"><b><%= deptsTerm %>:</b></td><td><%= HTML.Select(this, 'department', {options: allDepartments}) %></td></tr>
         <tr><td align="right"><b>Position:</b></td><td>
         <% if(_.where(this.person.roles.toJSON(), {role: HQP}).length > 0 && 
-              _.filter(this.person.roles.toJSON(), function(r){ return !(r.role == HQP); }).length == 0){ %>
+              _.filter(this.person.roles.toJSON(), function(r){ return !(r.role == HQP || r.role == PL || r.role == PS); }).length == 0){ %>
             <%= HTML.Select(this, 'position', {options: ["Other", 
                                                          "Graduate Student - Master's", 
                                                          "Graduate Student - Doctoral", 
