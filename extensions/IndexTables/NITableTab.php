@@ -208,7 +208,9 @@ class NITableTab extends PeopleTableTab {
             'buttons': [
                 'excel', 'pdf'
             ]
-        });</script>";
+        });
+        $('.custom-title').hide();
+        </script>";
         if($count == 0){
             $this->html = "";
         }
