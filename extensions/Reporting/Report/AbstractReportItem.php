@@ -417,6 +417,18 @@ abstract class AbstractReportItem {
         }
     }
     
+    function delete(){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $personId = $this->getAttr('personId', $this->getReport()->person->getId());
+        $sec = $this->getAttr('blobSection', $section->sec);
+        $rep = $this->getAttr('blobReport', $report->reportType);
+
+        $blob = new ReportBlob($this->blobType, $this->getReport()->year, $personId, $this->projectId);
+	    $blob_address = ReportBlob::create_address($rep, $sec, $this->blobItem, $this->blobSubItem);
+        $blob->delete($blob_address);
+    }
+    
     function getAttr($attr, $default="", $varSubstitute=true){
         if($varSubstitute){
             $value = (isset($this->attributes[$attr])) ? $this->varSubstitute($this->attributes[$attr]) : $default;

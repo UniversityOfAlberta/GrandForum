@@ -238,7 +238,14 @@ class ReportBlob {
 		//Cache::store($this->getCacheId($address), $data);
 		return true;
 	}
-
+	
+	public function delete($address){
+        $this->load($address, true);
+        Cache::delete($this->getCacheId($address));
+        DBFunctions::delete('grand_report_blobs',
+                            array('blob_id' => $this->_blob_id));
+        DBFunctions::commit();
+    }
 
 	/// Populates internal state with a complete row from the database.
 	private function populate(&$dbdata) {
