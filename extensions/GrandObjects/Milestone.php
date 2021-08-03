@@ -69,7 +69,8 @@ class Milestone {
                                     array('*'),
                                     array('milestone_id' => EQ($milestone_id),
                                           'id' => LTEQ($id)),
-                                    array('id' => 'DESC'));
+                                    array('id' => 'DESC'),
+                                    array('2'));
         $milestone = new Milestone($data);
         self::$cache[$milestone_id."id".$id] = &$milestone;
         self::$cache[$milestone_id."id".$milestone->getId()] = &$milestone;
