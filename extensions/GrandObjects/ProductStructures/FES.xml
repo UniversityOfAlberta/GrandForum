@@ -24,8 +24,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field bibtex="school" label="University" type="String">university</field>
                 <field label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -33,6 +31,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Student"></authors>
@@ -60,8 +60,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -69,6 +67,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
@@ -98,8 +98,6 @@
                 <field label="HQP Led" type="Check">hqp</field>
                 <field ccv_id="b864a9512e89482487f83ed22c454e9d" ccv_name="Book Title" ccvtk="booktitle" label="Book Title" type="String">book_title</field>
                 <field ccv_id="45b9d02a4bb04ec782357741b53dc135" ccv_name="Page Range" ccvtk="pages" label="Page Range" type="String">pages</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="51a088349c1442238d5d0331d95f3205" ccv_name="Publisher" ccvtk="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="dcb27492e1554fc9838992ba7c70f416" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
                 <field label="ISBN" type="String">isbn</field>
@@ -107,6 +105,8 @@
                 <field label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="6f1c66fc402d4b0db3d9987e2c5d49e8" ccv_name="URL" ccvtk="url" label="Publication URL" type="URL">url</field>
                 <field ccv_id="51bd72e89f85442a9ae199e75fe5e765" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="c114eabcd4674f3c9467b2bf6820cbd6" ccv_name="Date"></date>
             <authors ccv_id="5bc7b0b361f843d296e0e035b4b87176" ccv_name="Authors"></authors>
@@ -134,8 +134,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <!--field>address</field--> <!-- In some entried in DB, but not in UI -->
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -143,6 +141,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field ccv_id="ecd4abd985ec4e9ab590f0ecb86811a7" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
             <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
@@ -175,8 +175,6 @@
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
                 <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
                 <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="707a6e0ca58341a5a82fb923b2842530" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
@@ -185,6 +183,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
@@ -217,8 +217,6 @@
                 <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" ccvtk="volume" bibtex="volume" label="Volume" type="String">volume</field>
                 <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" ccvtk="number" bibtex="number" label="Issue" type="String">number</field>
                 <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" ccvtk="pages" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" ccvtk="publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field ccv_id="707a6e0ca58341a5a82fb923b2842530" ccv_name="Editors" ccvtk="editors" label="Editors" type="String">editors</field>
@@ -227,6 +225,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" ccvtk="url" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" ccvtk="peer_reviewed" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
             <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
@@ -281,8 +281,6 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -290,6 +288,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url"  label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
@@ -318,8 +318,6 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -327,6 +325,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field ccv_id="e921d0d933bd48ed9192283bb16a83f6" ccv_name="URL" bibtex="url" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
@@ -360,14 +360,14 @@
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
                 <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field bibtex="url" ccv_id="61690b466fb748d99ed29b340c0ee60b" ccv_name="URL" label="Publication URL" type="URL">url</field>
                 <field ccv_id="560a2ce08e14497ba575af760eb12ba9" ccv_name="Refereed?" label="Refereed?" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="0318d139f3e0479083188ff8319a97b2" ccv_name="Date"></date>
             <authors ccv_id="3cc54d9bb92d421da46548979048396f" ccv_name="Authors"></authors>
@@ -403,8 +403,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
@@ -412,6 +410,8 @@
                 <field label="Publisher" type="String">publisher</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
@@ -428,8 +428,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field label="Impact Factor" type="String">impact_factor</field>
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
@@ -437,6 +435,8 @@
                 <field label="Publisher" type="String">publisher</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
             <date ccv_id="a1f619a230b5452b9f0c8337b23f43af" ccv_name="Date"></date>
             <authors ccv_id="0cf4ffe90f0b496483a8937b96a0224c" ccv_name="Authors"></authors>
@@ -458,8 +458,6 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field label="#Citations" type="String">citations</field>
-                <field label="Citation source URL" type="URL">citations_url</field>
                 <field label="Venue" type="String">venue</field>
                 <field bibtex="howpublished" label="How Published" type="String">how_published</field>
                 <field bibtex="note" label="Note" type="String">note</field>
@@ -468,6 +466,8 @@
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
                 <field bibtex="url" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
             </data>
         </Publication>
     </Publications>
