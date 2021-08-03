@@ -55,6 +55,7 @@ class FESPeopleTable extends SpecialPage {
                     <th style='display:none;'>Minority</th>
                     <th>Nationality</th>
                     <th>Status</th>
+                    <th>Supervises</th>
                     <th>Bio</th>
                     <th>Keywords</th>
                 </tr>
@@ -114,7 +115,7 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$person->getGender()}</td>");
             if($config->getValue('crcEnabled')){
                 $crcObj = $person->getCanadaResearchChair();
-                $wgOut->addHTML("<td>".@implode("<br />\n", $crcObj)."</td>");
+                $wgOut->addHTML("<td>".@implode("<br />", $crcObj)."</td>");
             }
             if($config->getValue('ecrEnabled')){
                 $wgOut->addHTML("<td>{$person->getEarlyCareerResearcher()}</td>");
@@ -122,11 +123,16 @@ class FESPeopleTable extends SpecialPage {
             if($config->getValue('mitacsEnabled')){
                 $wgOut->addHTML("<td>{$person->getMitacs()}</td>");
             }
+            $supervises = array();
+            foreach($person->getHQP(true) as $hqp){
+                $supervises[$hqp->getId()] = $hqp->getNameForForms();
+            }
             $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
                              <td style='display:none;'>{$person->getMinorityStatus()}</td>
                              <td>{$person->getNationality()}</td>
                              <td>{$status}</td>
+                             <td style='white-space:nowrap;'>".implode("<br />", $supervises)."</td>
                              <td>{$profile}</td>
                              <td>{$person->getKeywords(', ')}</td>
                             </tr>");
@@ -140,8 +146,18 @@ class FESPeopleTable extends SpecialPage {
             'autoWidth':false,
             'dom': 'Blfrtip',
             'buttons': [
-                'excel', 'pdf'
-            ]
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        format: {
+                            body: function ( data, column, row ) {
+                                return $('<div>' + data.replace( /<br\s*\/?>/ig, \"\\n\" ) + '</div>').text();
+                            }
+                        }
+                    }
+                }, 
+                'pdf'
+            ],
         });</script>");
 	}
 	
