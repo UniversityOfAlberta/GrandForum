@@ -151,7 +151,7 @@ class FESPeopleTable extends SpecialPage {
                     exportOptions: {
                         format: {
                             body: function ( data, column, row ) {
-                                return $('<div>' + data.replace( /<br\s*\/?>/ig, \"\\n\" ) + '</div>').text();
+                                return $('<div>' + data.replace( /<br\s*\/?>/ig, \"\\n\" ) + '</div>').text().trim();
                             }
                         }
                     }
