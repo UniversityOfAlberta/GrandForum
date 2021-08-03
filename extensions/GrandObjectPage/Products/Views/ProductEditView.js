@@ -199,7 +199,8 @@ ProductEditView = Backbone.View.extend({
             $(".ui-dialog-buttonset #projectsWarning", this.$el.parent()).remove();
             this.projectsWarning.css('display', 'inline-block')
                                 .css('margin', 0)
-                                .css('margin-top', '2px')
+                                .css('margin-top', '0')
+                                .css('margin-bottom', '5px')
                                 .css('font-size', '1em')
                                 .css('float', 'left')
                                 .css('padding-right', '15px');
