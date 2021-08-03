@@ -457,21 +457,14 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                           <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
                 $description = "<div style='display:inline-block;width:100%;padding:1px;box-sizing:border-box;'><textarea style='width:100%;height:auto;resize: vertical;margin:0;' name='milestone_description[$activityId][{$milestone->getMilestoneId()}]'>{$milestoneDescription}</textarea></div>";
-                if($milestone->isNew()){
-                    $title .= "<b>$milestoneTitle</b>";
-                }
-                else{
-                    $title .= $milestoneTitle;
-                }
+                $title .= $milestoneTitle;
             }
             else{
                 // Viewing
                 $title = $milestone->getTitle();
                 $description = nl2br(str_replace(">", "&gt;", str_replace("<", "&lt;", $milestone->getDescription())));
                 $description = "<div style='max-height:75px;overflow-y: auto;'>{$description}</div>";
-                if($milestone->isNew()){
-                    $title = "<b>$title</b>";
-                }
+                $title = "<b>$title</b>";
             }
             $height = "";
             if($pdf){
