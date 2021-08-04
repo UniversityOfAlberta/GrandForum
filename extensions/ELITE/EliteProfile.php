@@ -18,7 +18,11 @@ class EliteProfile extends BackboneModel {
                                       WHERE type = 'RPTP_ELITE'
                                       AND user_id = '$userId'
                                       ORDER BY report_id DESC");
-         return new EliteProfile($data);
+         $profile = new EliteProfile($data);
+         if($profile->isAllowedToView()){
+            return $profile;
+         }
+         return null;
     }
     
     static function getAllProfiles(){
@@ -30,7 +34,10 @@ class EliteProfile extends BackboneModel {
                                       GROUP BY t.user_id");
         $profiles = array();
         foreach($data as $row){
-            $profiles[] = new EliteProfile(array($row));
+            $profile = new EliteProfile(array($row));
+            if($profile->isAllowedToView()){
+                $profiles[] = $profile;
+            }
         }
         return $profiles;
     }
@@ -45,6 +52,24 @@ class EliteProfile extends BackboneModel {
         }
     }
     
+    function isAllowedToView(){
+        $me = Person::newFromWgUser();
+        // TODO: Need to also add 'HOSTs'
+        if($me->getId() == $this->person->getId() ||
+           $me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+    }
+    
+    function isAllowedToEdit(){
+        $me = Person::newFromWgUser();
+        // TODO: Need to also add 'HOSTs'
+        if($me->getId() == $this->person->getId() ||
+           $me->isRoleAtLeast(STAFF)){
+            return true;
+        }
+    }
+    
     function toArray(){
         return array('id' => $this->person->getId(),
                      'user' => $this->person->toSimpleArray(),
@@ -55,16 +80,22 @@ class EliteProfile extends BackboneModel {
     }
     
     function create(){
-        return $this->update();
+        if($this->isAllowedToEdit()){
+            return $this->update();
+        }
     }
     
     function update(){
-        $this->saveBlobValue('STATUS', $this->status);
-        $this->saveBlobValue('COMMENTS', $this->comments);
+        if($this->isAllowedToEdit()){
+            $this->saveBlobValue('STATUS', $this->status);
+            $this->saveBlobValue('COMMENTS', $this->comments);
+        }
     }
     
     function delete(){
+        if($this->isAllowedToEdit()){
         
+        }
     }
     
     function exists(){

@@ -38,9 +38,8 @@ class ElitePosting extends Posting {
             // Posting is Public
             return true;
         }
-        if(($me->getId() == $this->getUserId() && !isset($_GET['apiKey'])) ||  
-           ($me->isRoleAtLeast(STAFF) && $this->getPreviewCode() == @$_GET['previewCode']) ||
-           ($me->isRoleAtLeast(STAFF) && !isset($_GET['apiKey']))){
+        if($me->getId() == $this->getUserId() ||  
+           $me->isRoleAtLeast(STAFF)){
             // Posting was created by the logged in user (or is Staff)
             return true;
         }
