@@ -359,7 +359,7 @@
             <Static>
                 <![CDATA[
                         <td style='white-space:nowrap;'><span style='display:none;'>{getElitePostingField(created)}</span>{time2date({getElitePostingField(created)})}</td>
-                        <td>{getElitePostingField(title)}</td>
+                        <td><a id='{getElitePostingField(id)}' class='elite_link' style='cursor:pointer;'>{getElitePostingField(title)}</a></td>
                         <td>{getElitePostingField(companyName)}</td>
                     </tr>
                 ]]>
@@ -369,6 +369,37 @@
             <![CDATA[
                     </tbody>
                 </table>
+                <div id="postingDialog" title="Project Proposal" style="display:none;"></div>
+                <script type='text/javascript'>
+                    var postingDialog = $("#postingDialog").dialog({
+                        autoOpen: false,
+                        modal: true,
+                        show: 'fade',
+                        resizable: false,
+                        draggable: false,
+                        beforeClose: function(){
+                            postingDialog.view.stopListening();
+                            postingDialog.view.undelegateEvents();
+                            postingDialog.view.$el.empty();
+                        }.bind(this)
+                    });
+                    
+                    $(window).resize(function(){
+                        postingDialog.dialog({height: $(window).height()*0.75});
+                    }.bind(this));
+                    
+                    $('.elite_link').click(function(e){
+                        var id = $(e.target).attr('id');
+                        var model = new ElitePosting({id: id});
+                        var view = new ElitePostingView({el: postingDialog, model: model, isDialog: true});
+                        postingDialog.view = view;
+                        postingDialog.dialog({
+                            height: $(window).height()*0.75, 
+                            width: 800
+                        });
+                        postingDialog.dialog('open');
+                    });
+                </script>
             ]]>
         </Static>
     </ReportSection>
