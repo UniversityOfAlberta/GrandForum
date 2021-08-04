@@ -6,6 +6,21 @@ require_once("API/ElitePostingAPI.php");
 require_once("API/EliteProfileAPI.php");
 require_once("ElitePostingPage.php");
 
+$wgHooks['BeforePageDisplay'][] = 'initElitePosting';
+
+function initElitePosting($out, $skin){
+    global $wgServer, $wgScriptPath, $config;
+    $me = Person::newFromWgUser();
+    
+    BackbonePage::$dirs['elitepostingpage'] = dirname(__FILE__);
+    $elitePosting = new ElitePostingPage();
+    $elitePosting->loadTemplates();
+    $elitePosting->loadModels();
+    $elitePosting->loadHelpers();
+    $elitePosting->loadViews();
+    return true;
+}
+
 global $apiRequest;
 
 $apiRequest->addAction('Hidden','eliteposting', 'ElitePostingAPI');

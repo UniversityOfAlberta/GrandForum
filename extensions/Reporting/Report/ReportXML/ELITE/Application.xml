@@ -2,8 +2,9 @@
 <Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="Application" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
-            <SectionPermission id="section1" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
+            <SectionPermission id="projects" permissions="rw" />
         </Role>
     </Permissions>
     <!-- Personally identifying information -->
@@ -331,5 +332,44 @@
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+    <ReportSection id="projects" type="EditableReportSection" blobSection="PROJECTS" name="Projects" title="Projects" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <h3>Choose the projects you wish to apply for.</h3>
+                <table id='apply_table' class='wikitable' width='100%'>
+                    <thead>
+                        <tr>
+                            <th style='width:100px;'>Apply</th>
+                            <th style='width:100px;'>Date</th>
+                            <th style='width:50%;'>Company Name</th>
+                            <th style='width:50%;'>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet type="ElitePostings">
+            <ReportItem id="apply" type="Checkbox" blobItem="APPLY" blobType="BLOB_ARRAY" options="{getElitePostingField(id)}" labels="">
+                <![CDATA[
+                    <tr>
+                        <td align="center"><div style='margin-left:2px;'>{$item}</div></td>
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                        <td style='white-space:nowrap;'><span style='display:none;'>{getElitePostingField(created)}</span>{time2date({getElitePostingField(created)})}</td>
+                        <td>{getElitePostingField(title)}</td>
+                        <td>{getElitePostingField(companyName)}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>

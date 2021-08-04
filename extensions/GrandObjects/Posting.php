@@ -8,6 +8,7 @@ class Posting extends BackboneModel {
     
     static $dbTable = "";
     static $imageCache = null;
+    static $cache = array();
     
     var $id;
     var $userId;
@@ -29,16 +30,18 @@ class Posting extends BackboneModel {
     var $deleted;
     
     static function newFromId($id){
+        if(isset(self::$cache[static::$dbTable."_{$id}"])){
+            return self::$cache[static::$dbTable."_{$id}"];
+        }
         $data = DBFunctions::select(array(static::$dbTable),
                                     array('*'),
                                     array('id' => $id));
         $posting = new static($data);
-        if($posting->isAllowedToView()){
-            return $posting;
+        if(!$posting->isAllowedToView()){
+            $posting = new self(array());
         }
-        else{
-            return new self(array());
-        }
+        self::$cache[static::$dbTable."_{$id}"] = $posting;
+        return $posting;
     }
     
     /**
