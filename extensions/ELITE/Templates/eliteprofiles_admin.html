@@ -8,12 +8,16 @@
 <div id="rejectDialog" title="Reject Profile" style="display:none;">
     Are you sure you want to reject this profile?
 </div>
+<div id="matchDialog" title="Match Projects">
+    
+</div>
 <table id="profiles" frame="box" rules="all">
     <thead>
         <tr>
             <th width="1%" style="white-space: nowrap;">Created</th>
             <th style="white-space: nowrap;">Applicant</th>
             <th width="1%">Profile</th>
+            <th>Projects</th>
             <th width="1%" style="white-space: nowrap;">Status</th>
             <th width="1%" style="white-space: nowrap;">Actions</th>
         </tr>
@@ -30,13 +34,27 @@
                 <td align="center" style="white-space:nowrap;">
                     <a href="<%= profile.get('pdf') %>">Download PDF</a>
                 </td>
+                <td>
+                    <% _.each(profile.get('projects'), function(project){ %>
+                        <%= project.title %> (<%= project.companyName %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
+                    <% }) %>
+                </td>
                 <td align="center">
                     <%= profile.get('status') %>
                 </td>
                 <td style="white-space:nowrap;" align="center">
-                    <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
-                    <button class="more" data-id="<%= profile.get('id') %>">More Info</button>
-                    <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                    <% if(profile.get('status') != "Accepted"){ %>
+                        <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
+                        <button class="more" data-id="<%= profile.get('id') %>">More Info</button>
+                        <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                    <% } else { %>
+                        <button class="match" data-id="<%= profile.get('id') %>">Match</button>
+                        <div id="match_<%= profile.get('id') %>" style="display:none;">
+                            <% _.each(profile.get('projects'), function(project){ %>
+                                <input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.companyName %>)<br />
+                            <% }) %>
+                        </div>
+                    <% } %>
                 </td>
             </tr>
         <% }.bind(this)) %>

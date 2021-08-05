@@ -13,7 +13,9 @@ EliteProfile = Backbone.Model.extend({
             pdf: "",
             created: "",
             status: "",
-            comments: ""
+            comments: "",
+            projects: [],
+            matches: [],
         };
     }
     

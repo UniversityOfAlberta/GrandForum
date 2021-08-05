@@ -24,7 +24,9 @@ class EliteProfileAPI extends RESTAPI {
         }
         $profile->status = $this->POST('status');
         $profile->comments = $this->POST('comments');
+        $profile->matches = $this->POST('matches');
         $profile->update();
+        $profile = EliteProfile::newFromUserId($this->getParam('id'));
         return $profile->toJSON();
     }
     

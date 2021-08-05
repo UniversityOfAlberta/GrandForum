@@ -77,6 +77,12 @@ class ElitePosting extends Posting {
         return ($this->isAllowedToEdit()) ? $this->comments : "";
     }
     
+    function toSimpleArray(){
+        $json = parent::toArray();
+        $json['companyName'] = $this->getCompanyName();
+        return $json;
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['companyName'] = $this->getCompanyName();

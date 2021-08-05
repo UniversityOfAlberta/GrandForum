@@ -1,9 +1,11 @@
 EliteProfilesAdminView = Backbone.View.extend({
 
     template: _.template($('#eliteprofiles_admin_template').html()),
+    table: null,
     acceptDialog: null,
     moreDialog: null,
     rejectDialog: null,
+    matchDialog: null,
     
     initialize: function(){
         this.model.fetch();
@@ -28,18 +30,40 @@ EliteProfilesAdminView = Backbone.View.extend({
         this.rejectDialog.model = this.model.get(id);
     },
     
+    openMatchDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.matchDialog.html(this.$("#match_" + id).html());
+        this.matchDialog.dialog('open');
+        this.matchDialog.model = this.model.get(id);
+    },
+    
     events: {
         "click .accept": "openAcceptDialog",
         "click .more": "openMoreDialog",
         "click .reject": "openRejectDialog",
+        "click .match": "openMatchDialog",
+    },
+    
+    createDataTable: function(order, searchStr){
+        this.table = this.$("table#profiles").DataTable({
+            "autoWidth": true
+        });
+        this.table.order(order);
+	    this.table.search(searchStr);
+	    this.table.draw();
     },
     
     render: function(){
+        var order = [[ 0, "desc" ]];
+        var searchStr = "";
+        if(this.table != undefined){
+            order = this.table.order();
+            searchStr = this.table.search();
+            this.table.destroy();
+            this.table = null;
+        }
         this.$el.html(this.template(this.model.toJSON()));
-        this.$("table#profiles").DataTable({
-            "autoWidth": true,
-            "order": [[ 0, "desc" ]]
-        });
+        this.createDataTable(order, searchStr);
         this.acceptDialog = this.$("#acceptDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -91,6 +115,27 @@ EliteProfilesAdminView = Backbone.View.extend({
                 }.bind(this),
                 "Cancel": function(){
                     this.rejectDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        this.matchDialog = this.$("#matchDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Match": function(){
+                    var matches = [];
+                    $("input[type=checkbox]:checked", this.matchDialog).each(function(i, el){
+                        matches.push($(el).val());
+                    });
+                    this.matchDialog.model.set('matches', matches);
+                    this.matchDialog.model.save();
+                    this.matchDialog.dialog('close');
+                }.bind(this),
+                "Cancel": function(){
+                    this.matchDialog.dialog('close');
                 }.bind(this)
             }
         });

@@ -333,7 +333,7 @@
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
-    <ReportSection id="projects" type="EditableReportSection" blobSection="PROJECTS" name="Projects" title="Projects" renderpdf="false">
+    <ReportSection id="projects" type="EditableReportSection" blobSection="PROFILE" name="Projects" title="Projects" renderpdf="false">
         <Static>
             <![CDATA[
                 <h3>Choose the projects you wish to apply for.</h3>
@@ -350,7 +350,7 @@
             ]]>
         </Static>
         <ReportItemSet type="ElitePostings">
-            <ReportItem id="apply" type="Checkbox" blobItem="APPLY" blobType="BLOB_ARRAY" options="{getElitePostingField(id)}" labels="">
+            <ReportItem id="apply" type="Checkbox" blobItem="PROJECTS" blobType="BLOB_ARRAY" options="{getElitePostingField(id)}" labels="">
                 <![CDATA[
                     <tr>
                         <td align="center"><div style='margin-left:2px;'>{$item}</div></td>
