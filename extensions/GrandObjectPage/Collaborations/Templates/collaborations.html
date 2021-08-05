@@ -20,6 +20,7 @@
             <th>Email</th>
             <th>Sector</th>
             <th>Country</th>
+            <th># Collaborators</th>
             <th>Exists Prior to FES</th>
             <th>Cash</th>
             <th>In-Kind</th>
@@ -61,6 +62,9 @@
                 </td>
                 <td>
                     <%= collab.get('country') %>
+                </td>
+                <td align="right">
+                    <%= collab.get('number') %>
                 </td>
                 <td>
                     <%= collab.get('existed') %>

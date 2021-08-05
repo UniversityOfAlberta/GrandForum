@@ -32,6 +32,11 @@ CollaborationEditView = Backbone.View.extend({
             addWarning("This "+  this.model.getType().toLowerCase() + " does not have a contact name and position specified", true);
             return;
         }
+        if(this.model.get("number") == "" || !(parseInt(this.model.get("number")) >= 0 && parseInt(this.model.get("number")) <= 999)){
+            clearWarning();
+            addWarning("This "+  this.model.getType().toLowerCase() + " must have an estimated number of collaborators specified between 0 and 999", true);
+            return;
+        }
         if(!this.updateCountryWarning()){
             clearWarning();
             addWarning("This "+  this.model.getType().toLowerCase() + " does not have a country and sector specified", true);
@@ -220,6 +225,7 @@ CollaborationEditView = Backbone.View.extend({
         this.$el.html(this.template(_.extend({formType:formType}, this.model.toJSON())));
         //this.$('[name=sector]').chosen({width: "400px"});
         this.$('[name=country]').chosen({width: "400px"});
+        this.$('[name=number]').forceNumeric({max: 999, min: 0});
         return this.$el;
     },
 });

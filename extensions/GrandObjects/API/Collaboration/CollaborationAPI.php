@@ -47,6 +47,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->title = $this->POST('title');
         $collab->endYear = $this->POST('endYear');
         $collab->sector = $this->POST('sector');
+        $collab->number = $this->POST('number');
         $collab->country = $this->POST('country');
         $collab->planning = $this->POST('planning');
         $collab->designDataCollection = $this->POST('designDataCollection');
@@ -89,6 +90,7 @@ class CollaborationAPI extends RESTAPI {
         $collab->title = $this->POST('title');
         $collab->endYear = $this->POST('endYear');
         $collab->sector = $this->POST('sector');
+        $collab->number = $this->POST('number');
         $collab->country = $this->POST('country');
         $collab->planning = $this->POST('planning');
         $collab->designDataCollection = $this->POST('designDataCollection');
