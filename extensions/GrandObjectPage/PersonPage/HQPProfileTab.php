@@ -40,6 +40,9 @@ class HQPProfileTab extends AbstractEditableTab {
         $align    = nl2br($this->getBlobValue(HQP_APPLICATION_ALIGN, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
         $boundary = nl2br($this->getBlobValue(HQP_APPLICATION_BOUNDARY, BLOB_TEXT, HQP_APPLICATION_FORM, true, $year));
         $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS, true, $year);
+        if($boundary != ""){
+            $align .= "<br />{$boundary}";
+        }
         if($research    == "" &&
            $train       == "" &&
            $bio         == "" &&
@@ -50,14 +53,12 @@ class HQPProfileTab extends AbstractEditableTab {
         }
         $this->html .= "<h3>Statement of Research Focus</h3>";
         $this->html .= "<p>{$research}</p>";
-        $this->html .= "<h3>Statement of Training Focus</h3>";
+        $this->html .= "<h3>Statement of Training or Career Focus</h3>";
         $this->html .= "<p>{$train}</p>";
         $this->html .= "<h3>Biography and Career Goals</h3>";
         $this->html .= "<p>{$bio}</p>";
-        $this->html .= "<h3>Alignment of research, training, and/or career goals to the mission and goals of AGE-WELL</h3>";
+        $this->html .= "<h3>Alignment to the Mission and Goals of AGE-WELL</h3>";
         $this->html .= "<p>{$align}</p>";
-        $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries?</h3>";
-        $this->html .= "<p>{$boundary}</p>";
         $this->html .= "<h3>CV</h3>";
         $this->html .= "<p>{$cv}</p>";
         return $this->html;
@@ -74,6 +75,10 @@ class HQPProfileTab extends AbstractEditableTab {
         $align    = $this->getBlobValue(HQP_APPLICATION_ALIGN);
         $boundary = $this->getBlobValue(HQP_APPLICATION_BOUNDARY);
         $cv       = $this->getBlobValue(HQP_APPLICATION_CV, BLOB_RAW, HQP_APPLICATION_DOCS);
+        
+        if($boundary != ""){
+            $align .= "\n{$boundary}";
+        }
 
         $this->html .= "<h3>Statement of Research Focus (for HQP completing a research program) (½ page)</h3>
 <small>
@@ -94,7 +99,7 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
 </small>";
         $this->html .= "<textarea name='research' style='height:200px;'>{$research}</textarea>";
-        $this->html .= "<h3>Statement of Training Focus (for research associates and trainees in professional programs) (½ page)</h3>
+        $this->html .= "<h3>Statement of Training or Career Focus (for research associates and trainees in professional programs) (½ page)</h3>
 <small>
     <p>In this section please describe:</p>
     <ol>
@@ -113,22 +118,13 @@ class HQPProfileTab extends AbstractEditableTab {
     </ol>
 </small>";
         $this->html .= "<textarea name='bio' style='height:200px;'>{$bio}</textarea>";
-        $this->html .= "<h3>Alignment of research, training, and/or career goals to the mission and goals of AGE-WELL (½ page)</h3>
+        $this->html .= "<h3>Alignment to the Mission and Goals of AGE-WELL (½ page)</h3>
 <small>
     <p>AGE-WELL HQP will need to be aligned with the key strategic goals of AGE-WELL and are strongly encouraged to familiarize themselves with the document called AGE-WELL Network Goals available on the <a target='_blank' href='{$config->getValue('networkSite')}'>AGE-WELL website</a></p>
 
 <p>HQP will need to demonstrate that their research, training, and/or career goals has potential for real world impact. In this section, describe how these goals fit with AGE-WELL’s vision and strategic goals.</p>
 </small>";
         $this->html .= "<textarea name='align' style='height:200px;'>{$align}</textarea>";
-        $this->html .= "<h3>In what ways are you interested in going beyond conventional disciplinary boundaries (½ page)</h3>
-<small>
-    <p>Transdisciplinary working - that is working across and with other disciplines than your own – is an important aspect of AGE-WELL. In this section please address the following:</p>
-    <ol>
-        <li>Describe networking that may occur across disciplines and sites within AGE-WELL.</li>
-        <li>How does your work and goals link with other projects/activities in the AGE-WELL Network?</li>
-    </ol>
-</small>";
-        $this->html .= "<textarea name='boundary' style='height:200px;'>{$boundary}</textarea>";
         $this->html .= "<h3>CV Upload</h3>
         <p>{$cv}</p>
         <input type='file' name='cv' accept='.pdf' /><br />";
@@ -157,7 +153,7 @@ class HQPProfileTab extends AbstractEditableTab {
             if($checkRegistration){
                 $year = (!$checkYear) ? date('Y') : $checkYear;
                 $endYear = (!$checkYear) ? substr($this->person->getRegistration(), 0, 4) : $checkYear;
-                while($data == "" && $year >= $endYear){
+                while($data === null && $year >= $endYear){
                     // If it is empty, check to see if there was an entry for one of the other years
                     if(!isset(self::$cache[$personId][$blobItem][$type][$section][$checkRegistration][$year])){
                         $blb = new ReportBlob($type, $year, $personId, $projectId);
@@ -171,7 +167,7 @@ class HQPProfileTab extends AbstractEditableTab {
                 }
             }
             
-            if($data == ""){
+            if($data === null){
                 $data = $tmpdata;
             }
             if($type == BLOB_RAW && $data != null){
@@ -264,7 +260,7 @@ class HQPProfileTab extends AbstractEditableTab {
         $this->saveBlobValue(HQP_APPLICATION_TRAIN,      $_POST['train']);
         $this->saveBlobValue(HQP_APPLICATION_BIO,        $_POST['bio']);
         $this->saveBlobValue(HQP_APPLICATION_ALIGN,      $_POST['align']);
-        $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   $_POST['boundary']);
+        $this->saveBlobValue(HQP_APPLICATION_BOUNDARY,   @$_POST['boundary']);
         if(isset($_FILES['cv']) && $_FILES['cv']['size'] > 0){
             $this->saveBlobValue(HQP_APPLICATION_CV,     $_FILES['cv'], BLOB_RAW, HQP_APPLICATION_DOCS);
         }

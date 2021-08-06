@@ -21,31 +21,25 @@
     <ReportSection id="application" name="Application" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="1000" recommended="true">
             <![CDATA[
-                <h4>Statement of research focus</h4>
+                <h4>Statement of Research Focus</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_TRAIN" height="200px" limit="1000" recommended="true">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_TRAIN" limit="300" recommended="true">
             <![CDATA[
-                <h4>Statement of Training Focus</h4>
+                <h4>Statement of Training or Career Focus</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" limit="1000" recommended="true">
+        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" limit="300" recommended="true">
             <![CDATA[
-                <h4>Biography and career goals</h4>
+                <h4>Biography and Career Goals</h4>
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" limit="1000" recommended="true">
+        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" limit="300" recommended="true">
             <![CDATA[
-                <h4>Alignment to the mission and goals of AGE-WELL</h4>
-                {$item}<br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="boundary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BOUNDARY" limit="1000" recommended="true">
-            <![CDATA[
-                <h4>In what ways will your project go beyond conventional disciplinary boundaries?</h4>
+                <h4>Alignment to the Mission and Goals of AGE-WELL</h4>
                 {$item}<br />
             ]]>
         </ReportItem>

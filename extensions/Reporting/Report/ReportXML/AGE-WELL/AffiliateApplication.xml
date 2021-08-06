@@ -19,87 +19,95 @@
     <ReportSection id="background" tooltip="Background Information" name="Information" type="ReportSection">
         <Static>
             <![CDATA[
-                <p>Through our <a href='http://agewell-nce.ca/affiliates' target='_blank'>Affiliates Program</a>, AGE-WELL offers membership in a pan-Canadian knowledge community, access to our exclusive programming, and the opportunity to complete our <a href='http://agewell-nce.ca/epic-program' target='_blank'>EPIC</a> research and career development program to earn the <a href='http://agewell-nce.ca/epic-program#cert' target='_blank'>AGE-WELL Innovators of Tomorrow</a> certificate.</p>
+                <h2>TRAINING AT AGE-WELL</h2>
+                <p>At AGE-WELL, we know that our trainees and early career professionals are the catalyst that will drive Canada’s leadership in AgeTech. We are committed to fostering this innovative energy through EPIC, the <a href="https://agewell-nce.ca/epic" target="_blank">Early Professionals, Inspired Careers Program</a>. Aimed at students, postdoctoral fellows, early career researchers, research professionals, clinicians, and recent grads, EPIC provides AGE-WELL members access to exclusive educational programming, experiential opportunities, funding, and mentorship.</p>
+                
+                <h2>HQP AFFILIATE MEMBERSHIP PROGRAM</h2>
+                <p>We offer access to EPIC, entirely free of charge, through our Affiliates Membership Program.</p>
 
-                <p>In order to be considered for the AGE-WELL Affiliates Program you must be engaged in academic study or research aligned with the mission and vision of AGE-WELL.</p>
-                
-                <p>Once your application is reviewed, you will be notified via email and asked to sign and return the AGE-WELL Conflict of Interest and Non-Disclosure statements.</p>
-                
-                <p>Applications are accepted on a rolling basis.</p>
+                <h3>Eligibility</h3> 
+                <p>To be considered for the AGE-WELL Affiliates Membership you must be engaged in study, research or work aligned with the mission and vision of AGE-WELL.</p>
+
+                <h3>Benefits</h3>
+
+                Membership in AGE-WELL through our Affiliates Program grants access to:
+                <ol>
+                    <li>membership in a pan-Canadian knowledge community</li>
+                    <li>access to our communications and platforms to keep you informed about what’s happening in AgeTech and connect you with 1000+ others in this sector</li>
+                    <li>access to AGE-WELL exclusive programming including 60+ webinars and seminars per year</li>
+                    <li>access to resources on our members’ intranet, potential communications and participant recruitment support</li>
+                    <li>eligibility to apply for internal funding competitions and participate in activities such as our conferences, Summer Institute, video competitions, and hackathons</li>
+                    <li>eligibility to participate in AGE-WELL supported experiential learning opportunities including mentorship, internships, and lab exchanges</li>
+                    <li>access to AGE-WELL developed online courses including the AGE-WELL Innovators of Tomorrow certificate program.</li>
+                </ol>
+
+                <h3>Process</h3>
+                <p>Once your application is reviewed, you will be notified via email and asked to sign and return the AGE-WELL Conflict of Interest and Non-Disclosure statements to <a href="mailto:training@agewell-nce.ca">training@agewell-nce.ca</a>.</p>
+
+                <p>Applications are reviewed on a rolling basis throughout the year.</p>
             ]]>
         </Static>
     </ReportSection>
     <ReportSection id="application" tooltip="Core Research Program Highly Qualified Personnel (HQP) Application" name="Application" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection">
-        <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="1000" recommended="true">
+        <ReportItem id="research" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_RESEARCH" limit="300" recommended="true">
             <![CDATA[
-                <b>Statement of research focus</b>
+                <b>Statement of Research Focus</b>
                     <div style="font-size:smaller;">
-                        <p>AGE-WELL is inviting proposals in the broad area of technology and aging. The research project may be linked to one of AGE-WELL’s eight <a href='http://www.agewell-nce.ca/research' target='_blank'>Research Workpackages</a>, but does not need to limited to these.  Research should address at least one of our key research questions:</p>
-                        <ol>
-                            <li>What are the needs of older adults and caregivers?</li>
-                            <li>What technology-based systems and services should be used to meet those needs?</li>
-                            <li>How can we foster innovation in the technology and aging sector? </li>
-                        </ol>
-                        <p>The project may also support one of AGE-WELL’s four <a href='http://www.agewell-nce.ca/research' target='_blank'>Crosscutting (CC) Activity areas</a> - Knowledge Mobilization, Commercialization, Transdisciplinarity and Training and Mentorship.</p>
-                        <p>In this section, applicants should describe:</p>
-                        <ol>
-                            <li>How does your research connect to research foci of the AGE-WELL NCE?</li>
-                            <li>Why is your project important?</li>
-                            <li>Who is your target user population(s)?</li>
-                            <li>What is the expected impact of your research?</li>
-                        </ol>
+                        Membership in AGE-WELL is aimed at those studying, researching, or working in AgeTech. Recent graduates, clinicians, and those with an active interest in AgeTech that aligns with AGE-WELL’s mission and vision are also encouraged to apply.<br />
+                        
+                        In this section, applicants should describe their research foci or research interests as they relate to AGE-WELL and our <a href="https://agewell-nce.ca/challenge-areas" target="_blank">identified priorities</a>.<br />
+                        
+                        Please address the following in your response.
+                        <ul>
+                            <li>Are you currently engaged in research? If yes, please describe your work and how it connects to AGE-WELL. Why is your project important? Who is your target user population(s)? What is the expected impact of your research?</li>
+                            <li>If you are not currently engaged in research, please describe your research interests and how it connects to AGE-WELL.</li>
+                        </ul>
                     </div>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_TRAIN" height="200px" limit="1000" recommended="true">
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_TRAIN" height="200px" limit="300" recommended="true">
             <![CDATA[
-                <b>Statement of Training Focus</b>
+                <b>Statement of Training or Career Focus</b>
                     <div style="font-size:smaller;">
-                        <p>In this section please describe:</p>
+                        In this section, applicants should describe their current academic status or career status.<br />
+
+                        Please address the following in your response.<br />
+
                         <ol>
-                            <li>How does your training program and/or background relate to the AGE-WELL NCE?</li>
-                            <li>What is the expected impact of your work?</li>
+                            <li>Are you currently a student, postdoctoral fellow, or recent graduate (within 3 years)? If yes, please describe your current academic status. How does your current</li>
+                            <li>If not a student, are you currently working in this sector? Please describe. What is the expected impact of your work?</li>
                         </ol>
                     </div>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" limit="1000" recommended="true">
+        <ReportItem id="biography" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BIO" limit="300" recommended="true">
             <![CDATA[
-                <b>Biography and career goals</b>
+                <b>Biography and Career Goals</b>
                     <div style="font-size:smaller;">
-                        <p>In this section briefly describe:</p>
+                        AGE-WELL activities are geared towards the needs of our membership. In this section, applicants should describe their goals and why they are seeking membership in the network.<br />
+                        Please address the following in your response.
                         <ol>
-                            <li>Your current goals</li>
-                            <li>Where you see yourself in 5-10 years</li>
-                            <li>How you see AGE-WELL helping you to achieve your goals</li>
+                            <li>What are your current academic or career goals? Where you see yourself in 5-10 years?</li>
+                            <li>How you see AGE-WELL helping you to achieve your goals?</li>
                         </ol>
                     </div>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" limit="1000" recommended="true">
+        <ReportItem id="align" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_ALIGN" limit="300" recommended="true">
             <![CDATA[
-                <b>Alignment to the mission and goals of AGE-WELL</b>
+                <b>Alignment to the Mission and Goals of AGE-WELL</b>
                     <div style="font-size:smaller;">
-                        <p>Successful applications will need to be aligned with the key strategic goals of AGE-WELL. Applicants are strongly encouraged to familiarize themselves with the document entitled AGE-WELL Network Goals available on the <a href='http://www.agewell-nce.ca'>AGE-WELL website</a></p>
-                        <p>As well as scientific excellence, applicants will need to demonstrate that their research has potential for real world impact.  In this section, describe how your research fits with AGE-WELL’s vision and strategic goals.</p>
+                        AGE-WELL is a unique Canadian network that brings everyone together to develop technologies and services for healthy aging. We’re also training the next generation of innovators in this field, and making Canada a world leader in technologies that help aging populations everywhere.<br />
+                        In this section, describe how you and your research or work fits with AGE-WELL’s vision, mission and values.<br />
+Please address the following in your response.
+                        <ol>
+                            <li>How do you see yourself and/or your work making a real-world impact to improve the quality of life for older adults and/or caregivers?</li>
+                            <li>AGE-WELL members work outside of disciplinary boundaries. Please describe your comfort level or willingness to engage with methods and disciplines beyond your own. Why is this important?</li>
+                        </ol>
                     </div>
-                {$item}<br /><br />
-            ]]>
-        </ReportItem>
-        <ReportItem id="boundary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_BOUNDARY" limit="1000" recommended="true">
-            <![CDATA[
-                <b>In what ways will your project go beyond conventional disciplinary boundaries?</b>
-                <div style="font-size:smaller;">
-                    <p>Transdisciplinary working - that is working across and with other disciplines than your own – is an important aspect of AGE-WELL. In this section please address the following:</p>
-                    <ol>
-                        <li>Please explain how you will incorporate transdisciplinary elements within your project.</li>
-                        <li>Describe networking that may occur across disciplines and sites within AGE-WELL</li>
-                        <li>How does the project link with other projects/activities in the AGE-WELL Network?</li>
-                    </ol>
-                </div>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
