@@ -70,6 +70,7 @@ class ApplicationsTable extends SpecialPage{
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ifp'>IFP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=kt'>KT</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rcha'>RCHA</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         }
         
@@ -86,6 +87,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "kt" && $me->isRoleAtLeast(SD)){
             $this->generateKT();
+        }
+        else if($program == "rcha" && $me->isRoleAtLeast(SD)){
+            $this->generateRCHA();
         }
         else if($program == "cat" && $me->isRoleAtLeast(SD)){
             $this->generateCat();
@@ -119,7 +123,7 @@ class ApplicationsTable extends SpecialPage{
         
         $cis = new MultiTextReportItem();
         $cis->setBlobType(BLOB_ARRAY);
-        $cis->setBlobItem("PI");
+        $cis->setBlobItem("CI");
         $cis->setBlobSection("INTENT");
         $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
         $cis->setAttr("types", "text|text|text|text|text");
@@ -131,6 +135,37 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab("KT2019Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateRCHA(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $pis = new MultiTextReportItem();
+        $pis->setBlobType(BLOB_ARRAY);
+        $pis->setBlobItem("PI");
+        $pis->setBlobSection("INTENT");
+        $pis->setAttr("labels", "First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization");
+        $pis->setAttr("types", "text|text|text|text|text");
+        $pis->setAttr("multiple", "true");
+        $pis->setAttr("showHeader", "false");
+        $pis->setAttr("class", "wikitable");
+        $pis->setAttr("orientation", "list");
+        $pis->setId("pi");
+        
+        $cis = new MultiTextReportItem();
+        $cis->setBlobType(BLOB_ARRAY);
+        $cis->setBlobItem("CI");
+        $cis->setBlobSection("INTENT");
+        $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
+        $cis->setAttr("types", "text|text|text|text|text");
+        $cis->setAttr("multiple", "true");
+        $cis->setAttr("showHeader", "false");
+        $cis->setAttr("class", "wikitable");
+        $cis->setAttr("orientation", "list");
+        $cis->setId("ci");
+        //$tabbedPage->addTab(new ApplicationTab("KTRCHA2021Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array_merge($this->nis, $this->inactives), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
