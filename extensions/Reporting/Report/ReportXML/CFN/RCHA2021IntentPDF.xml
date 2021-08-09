@@ -21,7 +21,7 @@
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="18">
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="15">
             <![CDATA[
                 <h4>Term of RCHA Proposal</h4>
                 {$item}<br /><br />

@@ -18,10 +18,10 @@
                     <li>All sections of this document must be completed.</li>
                     <li>An Application will only be considered if the Intent to Apply has been properly submitted by the deadline.</li>   
                     <li>The Intent to Apply is for administrative purposes only and will not be adjudicated.</li>
-                    <li>Information in this document will be used to determine conflicts of interest when assigning reviewers.</li>
+                    <li>Information in this form will be used to determine conflicts of interest when assigning reviewers.</li>
                     <li><b>The title of proposal, Project Leader, other Principal Investigators and Co-Investigators cannot be changed, nor new team members added after this document has been submitted.</b></li> 
                     <li>Visit CFN’s website for project team role definitions <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf' target="_blank">https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a></li>
-                    <li>This document must be submitted to <a href="mailto:apply@CFN-nce.ca">apply@CFN-nce.ca</a> by <b>September 13, 2021 - Noon ET</b>.</li>
+                    <li>This form must be submitted by <b>September 13, 2021 - Noon ET</b>.</li>
                     <li>Please note that all information must be provided in English.</li>
                 </ul>
                 <table class="wikitable" width="100%">
@@ -39,10 +39,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="18">
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="15">
             <![CDATA[
                 <tr>
-                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 18 months)</small></td>
+                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 15 months)</small></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
