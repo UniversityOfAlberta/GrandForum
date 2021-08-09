@@ -538,6 +538,10 @@ table.wikitable > caption {
 	font-weight: bold;
 }
 
+table.inner.wikitable {
+    border: none;
+}
+
 /**
  * Hide collapsable rows in a collapsed table.
  *
