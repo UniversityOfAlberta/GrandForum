@@ -211,7 +211,7 @@ class PeopleTableTab extends AbstractTab {
                 foreach(@$person->getSubRoles() as $sub){
                     $subRoles[] = $config->getValue('subRoles', $sub);
                 }
-                $html .= "<td style='white-space:nowrap;' align='left'>".implode("<br />", $subRoles)."</td>";
+                $html .= "<td style='white-space:nowrap;' align='left'>".implode(",<br />", $subRoles)."</td>";
             }
             if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
                 $projects = array_merge($person->leadershipDuring($start, $end), $person->getProjectsDuring($start, $end));
