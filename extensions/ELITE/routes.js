@@ -30,9 +30,9 @@ var pageRouter = new PageRouter;
 
 pageRouter.on('route:showElitePostings', function (id) {
     // Get multiple ElitePostings
-    var postings = new ElitePostings();
     this.closeCurrentView();
-    this.currentView = new ElitePostingsView({el: $("#currentView"), model: postings});
+    this.currentView = new EliteHostView({el: $("#currentView")});
+    _.defer(this.currentView.render.bind(this.currentView));
 });
 
 pageRouter.on('route:showEliteAdmin', function (id) {

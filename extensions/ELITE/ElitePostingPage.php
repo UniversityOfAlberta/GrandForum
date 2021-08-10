@@ -16,12 +16,14 @@ class ElitePostingPage extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
-                     'elitepostings',
                      'eliteposting',
                      'eliteposting_edit',
+                     'elite_host',
+                     'elite_host_postings',
+                     'elite_host_profiles',
                      'elite_admin',
-                     'elitepostings_admin',
-                     'eliteprofiles_admin');
+                     'elite_admin_postings',
+                     'elite_admin_profiles');
     }
     
     function getViews(){
@@ -34,12 +36,10 @@ class ElitePostingPage extends BackbonePage {
         </script>");
     
         return array('Backbone/*',
-                     'ElitePostingsView',
+                     'EliteHostView',
                      'ElitePostingView',
                      'ElitePostingEditView',
-                     'EliteAdminView',
-                     'ElitePostingsAdminView',
-                     'EliteProfilesAdminView');
+                     'EliteAdminView');
     }
     
     function getModels(){
