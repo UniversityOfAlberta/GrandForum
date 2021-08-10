@@ -16,6 +16,15 @@ class SpecialEventRegistrationTable extends SpecialPage{
     function execute($par){
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         $registrations = EventRegistration::getAllEventRegistrations();
+        if(isset($_GET['pdf'])){
+            foreach($registrations as $registration){
+                if($_GET['pdf'] == $registration->getMD5()){
+                    header('Content-Type: application/pdf');
+                    echo base64_decode($registration->misc->PDF);
+                }
+            }
+            exit;
+        }
         $wgOut->addHTML("<table id='eventsTable' class='wikitable' frame='box' rules='all' width='100%'>
             <thead>
                 <tr>
@@ -44,7 +53,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
             foreach($registration->misc as $field => $contents){
                 if($field == "PDF"){
                     if($contents != ""){
-                        $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='data:application/pdf;base64,{$contents}'>PDF Download</a>");
+                        $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='{$registration->getPDFUrl()}'>PDF Download</a>");
                     }
                 }
                 else{

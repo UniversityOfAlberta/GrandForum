@@ -60,10 +60,19 @@ class EventRegistration extends BackboneModel {
         return EventPosting::newFromId($this->eventId);
     }
     
+    function getMD5(){
+        return @md5("{$this->id}_{$this->misc->PDF}");
+    }
+    
+    function getPDFUrl(){
+        global $wgServer, $wgScriptPath;
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistrationTable?pdf={$this->getMD5()}";
+    }
+    
     function toArray(){
         return array('id' => $this->id,
                      'event_id' => $this->eventId,
-                     'typ' => $this->type,
+                     'type' => $this->type,
                      'email' => $this->email,
                      'name' => $this->name,
                      'role' => $this->role,
