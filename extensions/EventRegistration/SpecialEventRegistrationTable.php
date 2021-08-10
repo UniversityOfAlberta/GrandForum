@@ -44,7 +44,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
             foreach($registration->misc as $field => $contents){
                 if($field == "PDF"){
                     if($contents != ""){
-                        $misc[] = nl2br("<b>{$field}</b>: <a href='data:application/pdf;base64,{$contents}'>PDF Download</a>");
+                        $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='data:application/pdf;base64,{$contents}'>PDF Download</a>");
                     }
                 }
                 else{
