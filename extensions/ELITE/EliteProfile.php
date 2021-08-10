@@ -44,6 +44,28 @@ class EliteProfile extends BackboneModel {
         return $profiles;
     }
     
+    static function getAllMatchedProfiles(){
+        $me = Person::newFromWgUser();
+        $data = DBFunctions::execSQL("SELECT * 
+                                      FROM `grand_report_blobs`
+                                      WHERE `rp_type` = 'RP_ELITE'
+                                      AND `rp_section` = 'PROFILE'
+                                      AND `rp_item` = 'MATCHES'");
+        $matchedProfiles = array();
+        foreach($data as $row){
+            $userId = $row['user_id'];
+            $matches = unserialize($row['data']);
+            foreach($matches as $match){
+                $posting = ElitePosting::newFromId($match);
+                if($posting->getUserId() == $me->getId()){
+                    $matchedProfiles[] = EliteProfile::newFromUserId($userId);
+                    break;
+                }
+            }
+        }
+        return $matchedProfiles;
+    }
+    
     function EliteProfile($data){
         if(count($data) > 0){
             $row = $data[0];

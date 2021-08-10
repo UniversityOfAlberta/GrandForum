@@ -7,6 +7,10 @@ class EliteProfileAPI extends RESTAPI {
             $profile = EliteProfile::newFromId($this->getParam('id'));
             return $profile->toJSON();
         }
+        else if($this->getParam('matched') != ""){
+            $profiles = new Collection(EliteProfile::getAllMatchedProfiles());
+            return $profiles->toJSON();
+        }
         else{
             $profiles = new Collection(EliteProfile::getAllProfiles());
             return $profiles->toJSON();

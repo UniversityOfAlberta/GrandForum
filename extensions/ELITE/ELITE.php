@@ -34,6 +34,7 @@ $apiRequest->addAction('Hidden','eliteposting/:id', 'ElitePostingAPI');
 $apiRequest->addAction('Hidden','eliteposting/:id/image/:image_id/:md5', 'ElitePostingAPI');
 
 $apiRequest->addAction('Hidden','eliteprofile', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/matched', 'EliteProfileAPI');
 $apiRequest->addAction('Hidden','eliteprofile/:id', 'EliteProfileAPI');
 
 ?>
