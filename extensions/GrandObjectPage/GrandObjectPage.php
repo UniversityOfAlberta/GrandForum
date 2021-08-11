@@ -35,9 +35,9 @@
         if($config->getValue('networkName') == "AI4Society"){
             require_once("BSIPosting/BSIPostingPage.php");
         }
-        else if($config->getValue('networkName') == "ELITE"){
-            require_once("extensions/ELITE/ELITE.php");
-        }
+    }
+    if($config->getValue('networkName') == "ELITE"){
+        require_once("extensions/ELITE/ELITE.php");
     }
     if(isExtensionEnabled("CRM")){
         require_once("CRM/CRM.php");
