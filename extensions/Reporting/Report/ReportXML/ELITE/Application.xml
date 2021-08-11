@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="Application" year="0" ajax="true" encrypt="true">
     <Permissions>
-        <Role start="REPORTING_CYCLE_START" end="REPORTING_CYCLE_END" role="NI">
+        <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
             <SectionPermission id="projects" permissions="rw" />
