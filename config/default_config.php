@@ -186,6 +186,9 @@
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     
+    // Whether or not to show the Other Tools in the sidebar
+    $config->setValue("showOtherTools", true);
+    
     // Whether to allow users to upload photos (if false, only Staff+ will be able to)
     $config->setValue("allowPhotoUpload", true);
     
