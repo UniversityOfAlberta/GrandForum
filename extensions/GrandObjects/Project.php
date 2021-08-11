@@ -567,6 +567,10 @@ class Project extends BackboneModel {
      * @returns boolean Whether or not the given feature is frozen
      */
     function isFeatureFrozen($feature){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(MANAGER)){
+            return false;
+        }
         $freeze = Freeze::newFromProjectFeature($this, $feature);
         return ($freeze != null && $freeze->getId() != "");
     }
