@@ -171,6 +171,9 @@
     // Whether or not wiki features are enabled
     $config->setValue("wikiEnabled", true);
     
+    // Whether or not Manage Products should be enabled
+    $config->setValue("productsEnabled", true);
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     
@@ -219,7 +222,6 @@
         'UI',
         'Notification',
         'GrandObjectPage',
-        'Cal',
         //'Twitter',
         'MailingList',
         'AddMember',

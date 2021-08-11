@@ -8,7 +8,10 @@
     require_once("ThemePage.php");
     require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");
-    require_once("ManageProducts/ManageProducts.php");
+    if($config->getValue("productsEnabled")){
+        require_once("ManageProducts/ManageProducts.php");
+    }
+    
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
     require_once("ProductSummary.php");
@@ -21,7 +24,9 @@
         require_once("Collaborations/Collaboration.php");
         require_once("Projections.php");
     }
-    require_once("Bibliography/Bibliography.php");
+    if($config->getValue("productsEnabled")){
+        require_once("Bibliography/Bibliography.php");
+    }
     if(isExtensionEnabled("Postings")){
         require_once("NewsPosting/NewsPostingPage.php");
         require_once("EventPosting/EventPostingPage.php");

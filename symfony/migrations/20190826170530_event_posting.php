@@ -41,7 +41,6 @@ class EventPosting extends AbstractMigration
               ->addColumn('image', 'text', array('limit' => MysqlAdapter::TEXT_MEDIUM))
               ->addColumn('image_caption', 'string', array('limit' => 500))
               ->addColumn('image_caption_fr', 'string', array('limit' => 500))
-              ->addColumn('preview_code', 'string', array('limit' => 32))
               ->addColumn('created', 'timestamp', array('default' => 'CURRENT_TIMESTAMP'))
               ->addColumn('deleted', 'boolean', array('default' => 0))
               ->addIndex('user_id')
