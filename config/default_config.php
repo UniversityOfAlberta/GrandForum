@@ -174,6 +174,9 @@
     // Whether or not Manage Products should be enabled
     $config->setValue("productsEnabled", true);
     
+    // Whether or not Profiles should be enabled
+    $config->setValue("profilesEnabled", true);
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     
