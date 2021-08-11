@@ -20,18 +20,18 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Applications"] = TabUtils::createTab("My Applications");
+        $tabs["Reports"] = TabUtils::createTab("ELITE Profile");
         return true;
     }
     
     static function createSubTabs(&$tabs){
-        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        if(!$person->isLoggedIn()){
-            return true;
-        }
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        
+        if($person->isRole(HQP)){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Application")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Profile", "{$url}Application", $selected);
+        }
         return true;
     }
     
