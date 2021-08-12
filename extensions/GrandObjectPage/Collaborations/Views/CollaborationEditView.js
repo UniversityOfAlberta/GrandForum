@@ -207,7 +207,7 @@ CollaborationEditView = Backbone.View.extend({
     updateFiles: function(){
         var tooBig = false;
         _.each(this.model.get('files'), function(file){
-            if(file.size > 1024*1024*2){
+            if(file != null && file.size > 1024*1024*2){
                 tooBig = true;
             }
         });
