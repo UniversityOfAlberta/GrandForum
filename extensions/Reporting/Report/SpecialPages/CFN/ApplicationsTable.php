@@ -165,7 +165,7 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
         //$tabbedPage->addTab(new ApplicationTab("KTRCHA2021Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array_merge($this->nis, $this->inactives), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array_merge($this->nis, $this->inactives, array(Person::newFromId("3124"))), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

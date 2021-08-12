@@ -10,6 +10,9 @@
         <Role role="INACTIVE">
             <SectionPermission id="intent" permissions="rw" />
         </Role>
+        <Person id="3124">
+            <SectionPermission id="intent" permissions="rw" />
+        </Person>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition Intent to Apply">
         <Static>
