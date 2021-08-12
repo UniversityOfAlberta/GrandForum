@@ -32,6 +32,11 @@ class ElitePosting extends Posting {
         }
     }
     
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return ($me->isRoleAtLeast(EXTERNAL));
+    }
+    
     function isAllowedToView(){
         $me = Person::newFromWgUser();
         if($this->getVisibility() == "Accepted" || $this->getVisibility() == "Publish"){
