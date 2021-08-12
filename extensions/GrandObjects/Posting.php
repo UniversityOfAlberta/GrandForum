@@ -348,7 +348,7 @@ class Posting extends BackboneModel {
     }
     
     function create(){
-        if(self::isAllowedToCreate()){
+        if(static::isAllowedToCreate()){
             $status = DBFunctions::insert(static::$dbTable,
                                           array('user_id' => $this->userId,
                                                 'visibility' => $this->visibility,
