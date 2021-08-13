@@ -29,7 +29,7 @@
                     <span style="display:none;"><%= profile.get('created') %></span><%= dateTimeHelpers.formatDate(profile.get('created')) %>
                 </td>
                 <td>
-                    <a href="<%= profile.get('user').url %>"><%= profile.get('user').fullName %></a>
+                    <%= profile.get('user').fullName %>
                 </td>
                 <td align="center" style="white-space:nowrap;">
                     <a href="<%= profile.get('pdf') %>">Download PDF</a>
