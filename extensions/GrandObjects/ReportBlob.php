@@ -112,6 +112,10 @@ class ReportBlob {
 	public function getType() {
 		return $this->_type;
 	}
+	
+	public function isEncrypted(){
+	    return $this->_encrypted;
+	}
 
     public function getMD5($urlencode=true){
         if($urlencode){

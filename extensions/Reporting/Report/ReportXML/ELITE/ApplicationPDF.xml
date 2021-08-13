@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true">
-    <Permissions>
-        <Role role="HQP">
-            <SectionPermission id="profile" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-            <SectionPermission id="projects" permissions="rw" />
-        </Role>
-    </Permissions>
+<Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" year="0" ajax="true" encrypt="true">
     <!-- Personally identifying information -->
-    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
-        <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
-            <![CDATA[
-                <div class="info">
-                    <b>{getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)}</b><br />
-                    {getText(RP_ELITE, PROFILE, COMMENTS, 0, {$user_id}, 0)}
-                </div>
-            ]]>
-        </If>
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true" pagebreak="false">
         <Static>
             <![CDATA[
-                <table>
+                <table width='100%'>
                     <tr>
                         <td colspan="4"><h2 style="margin-top:0;">Personally identifying information</h2></td>
                     </tr>
@@ -103,7 +88,7 @@
             <![CDATA[
                 <tr>
                     <td class="label">Enrollment in Fall:</td>
-                    <td class="value" colspan="3">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -152,12 +137,12 @@
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="Street Name and number">Address Line 1:</td>
-                    <td class="value" style="width:200px">{$item}</td>
+                    <td class="value">{$item}</td>
             ]]>
         </ReportItem>
         <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
             <![CDATA[
-                    <td class="label required" style="width:1px;">E-mail:</td>
+                    <td class="label required">E-mail:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
@@ -221,7 +206,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="twitter" type="Text" blobItem="TWITTER" placeholder="https://twitter.com/Twitter" width="315px" optional="true" encrypt="true">
+        <ReportItem id="twitter" type="Text" blobItem="TWITTER" placeholder="https://twitter.com/Twitter" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Twitter:</td>
@@ -229,7 +214,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" placeholder="https://www.facebook.com/facebook" width="315px" optional="true" encrypt="true">
+        <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" placeholder="https://www.facebook.com/facebook" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Facebook:</td>
@@ -237,7 +222,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" placeholder="https://www.linkedin.com/in/first-last-00000000" width="315px" optional="true" encrypt="true">
+        <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" placeholder="https://www.linkedin.com/in/first-last-00000000" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">LinkedIn:</td>
@@ -245,7 +230,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="website" type="Text" blobItem="WEBSITE" placeholder="https://mywebsite.com" width="315px" optional="true" encrypt="true">
+        <ReportItem id="website" type="Text" blobItem="WEBSITE" placeholder="https://mywebsite.com" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Website:</td>
@@ -266,7 +251,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Canadian Immigration Status:</td>
-                    <td class="value" colspan="3">What is your immigration Status in Canada?{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -274,7 +259,7 @@
             <![CDATA[
                 <tr>
                     <td class="label required">Eligibility to Work in Canada:</td>
-                    <td class="value" colspan="3">Are you Eligible to Work in Canada?{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -290,7 +275,7 @@
             <![CDATA[
                 <tr>
                     <td class="label">Other Obligations:</td>
-                    <td class="value" colspan="3">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?{$item}</td>
+                    <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -302,104 +287,27 @@
                 <h2>Attachments</h2>
             ]]>
         </Static>
-        <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="aspirations" type="UploadPDF" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Professional Aspirations and Academic Interests</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="transcript" type="Upload" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="transcript" type="UploadPDF" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Transcript</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="resume" type="Upload" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Resume</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
             <![CDATA[
                 <h3>Comments</h3>
-                <p>Comments that the candidate may have about the application and/or the program.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="elite" type="EliteSubmit" />
-    </ReportSection>
-    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
-    </ReportSection>
-    <ReportSection id="projects" type="EditableReportSection" blobSection="PROFILE" name="Projects" title="Projects" renderpdf="false">
-        <Static>
-            <![CDATA[
-                <h3>Choose the projects you wish to apply for.</h3>
-                <table id='apply_table' class='wikitable' width='100%'>
-                    <thead>
-                        <tr>
-                            <th style='width:100px;'>Apply</th>
-                            <th style='width:100px;'>Date</th>
-                            <th style='width:50%;'>Company Name</th>
-                            <th style='width:50%;'>Position</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet type="ElitePostings">
-            <ReportItem id="apply" type="Checkbox" blobItem="PROJECTS" blobType="BLOB_ARRAY" options="{getElitePostingField(id)}" labels="">
-                <![CDATA[
-                    <tr>
-                        <td align="center"><div style='margin-left:2px;'>{$item}</div></td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                        <td style='white-space:nowrap;'><span style='display:none;'>{getElitePostingField(created)}</span>{time2date({getElitePostingField(created)})}</td>
-                        <td><a id='{getElitePostingField(id)}' class='elite_link' style='cursor:pointer;'>{getElitePostingField(title)}</a></td>
-                        <td>{getElitePostingField(companyName)}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                    </tbody>
-                </table>
-                <div id="postingDialog" title="Project Proposal" style="display:none;"></div>
-                <script type='text/javascript'>
-                    var postingDialog = $("#postingDialog").dialog({
-                        autoOpen: false,
-                        modal: true,
-                        show: 'fade',
-                        resizable: false,
-                        draggable: false,
-                        beforeClose: function(){
-                            postingDialog.view.stopListening();
-                            postingDialog.view.undelegateEvents();
-                            postingDialog.view.$el.empty();
-                        }.bind(this)
-                    });
-                    
-                    $(window).resize(function(){
-                        postingDialog.dialog({height: $(window).height()*0.75});
-                    }.bind(this));
-                    
-                    $('.elite_link').click(function(e){
-                        var id = $(e.target).attr('id');
-                        var model = new ElitePosting({id: id});
-                        var view = new ElitePostingView({el: postingDialog, model: model, isDialog: true});
-                        postingDialog.view = view;
-                        postingDialog.dialog({
-                            height: $(window).height()*0.75, 
-                            width: 800
-                        });
-                        postingDialog.dialog('open');
-                    });
-                </script>
-            ]]>
-        </Static>
     </ReportSection>
 </Report>

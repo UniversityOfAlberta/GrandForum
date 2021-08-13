@@ -18,7 +18,7 @@ class UploadPDFReportItem extends UploadReportItem {
     
     function renderForPDF(){
         global $wgOut;
-        $md5 = $this->getMD5();
+        $md5 = $this->getMD5(false);
         if($md5 != ""){
             PDFGenerator::attachPDF($md5);
         }

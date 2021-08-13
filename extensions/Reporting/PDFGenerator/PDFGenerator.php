@@ -850,17 +850,18 @@ if ( isset($pdf) ) {
             $blob = new ReportBlob();
             $blob->loadFromMD5($pdf);
             $data = json_decode($blob->getData());
+            $md5 = md5($pdf);
             if($data != null){
-                file_put_contents("/tmp/{$pdf}", base64_decode($data->file));
+                file_put_contents("/tmp/{$md5}", base64_decode($data->file));
                 exec("$IP/extensions/Reporting/PDFGenerator/gs \\
                       -q \\
                       -dNOPAUSE \\
                       -dBATCH \\
                       -sDEVICE=pdfwrite \\
-                      -sOutputFile=\"/tmp/{$pdf}unencrypted\" \\
+                      -sOutputFile=\"/tmp/{$md5}unencrypted\" \\
                       -c .setpdfwrite \\
-                      -f \"/tmp/{$pdf}\"");
-                $attached[] = "\"/tmp/{$pdf}unencrypted\"";
+                      -f \"/tmp/{$md5}\"");
+                $attached[] = "\"/tmp/{$md5}unencrypted\"";
             }
         }
         $attached = implode(" ", $attached);
@@ -908,9 +909,10 @@ if ( isset($pdf) ) {
         unlink("/tmp/{$name}{$rand}pdf");
         unlink("/tmp/{$name}{$rand}withmarks");
         foreach($GLOBALS['attachedPDFs'] as $pdf){
-            if(file_exists("/tmp/{$pdf}")){
-                unlink("/tmp/{$pdf}");
-                unlink("/tmp/{$pdf}unencrypted");
+            $md5 = md5($pdf);
+            if(file_exists("/tmp/{$md5}")){
+                unlink("/tmp/{$md5}");
+                unlink("/tmp/{$md5}unencrypted");
             }
         }
         $GLOBALS['chapters'] = array();
