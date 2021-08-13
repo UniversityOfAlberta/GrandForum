@@ -322,7 +322,7 @@
         </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
             <![CDATA[
-                <h3>Comments</h3>
+                <h2>Comments</h2>
                 <p>Comments that the candidate may have about the application and/or the program.</p>
                 {$item}
             ]]>

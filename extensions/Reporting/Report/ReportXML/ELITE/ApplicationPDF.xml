@@ -284,27 +284,30 @@
         <Static>
             <![CDATA[
                 </table>
-                <h2>Attachments</h2>
             ]]>
         </Static>
         <ReportItem id="aspirations" type="UploadPDF" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
+                <h2>Attachments</h2>
+                <h3 class="required">Professional Aspirations and Academic Interests</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="transcript" type="UploadPDF" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
+                <h3 class="required">Transcript</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
+                <h3 class="required">Resume</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
             <![CDATA[
-                <h3>Comments</h3>
+                <h2>Comments</h2>
                 {$item}
             ]]>
         </ReportItem>

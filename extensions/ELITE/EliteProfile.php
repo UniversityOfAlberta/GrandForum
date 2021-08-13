@@ -140,9 +140,21 @@ class EliteProfile extends BackboneModel {
     
     function update(){
         if($this->isAllowedToEdit()){
+            $matches = array();
+            foreach($this->matches as $match){
+                if($match instanceof Posting){
+                    $matches[] = $match->getId();
+                }
+                else if(is_object($match)){
+                    $matches[] = $match->id;
+                }
+                else{
+                    $matches[] = $match;
+                }
+            }
             $this->saveBlobValue('STATUS', $this->status);
             $this->saveBlobValue('COMMENTS', $this->comments);
-            $this->saveBlobValue('MATCHES', $this->matches, BLOB_ARRAY);
+            $this->saveBlobValue('MATCHES', $matches, BLOB_ARRAY);
         }
     }
     
