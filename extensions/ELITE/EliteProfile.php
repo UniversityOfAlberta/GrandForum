@@ -95,6 +95,13 @@ class EliteProfile extends BackboneModel {
            $me->isRoleAtLeast(STAFF)){
             return true;
         }
+        if($me->isRole(EXTERNAL)){
+            foreach($this->matches as $match){
+                if($match->getUserId() == $me->getId()){
+                    return true;
+                }
+            }
+        }
     }
     
     function isAllowedToEdit(){
