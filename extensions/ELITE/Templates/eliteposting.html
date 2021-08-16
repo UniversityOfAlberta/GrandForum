@@ -26,7 +26,7 @@
         <% if(companyProfile != ""){ %>
             <tr>
                 <td class="label">Company Profile:</td>
-                <td clas="value"><%= nl2br(companyProfile) %></td>
+                <td clas="value"><%= companyProfile %></td>
             </tr>
         <% } %>
         <% if(reportsTo != ""){ %>
@@ -44,7 +44,7 @@
         <% if(summary != ""){ %>
             <tr>
                 <td class="label">Position Purpose:</td>
-                <td class="value"><%= nl2br(summary) %></td>
+                <td class="value"><%= summary %></td>
             </tr>
         <% } %>
         <% if(responsibilities != ""){ %>
