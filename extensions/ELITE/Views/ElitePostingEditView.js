@@ -42,6 +42,7 @@ ElitePostingEditView = PostingEditView.extend({
         if(this.model.get('visibility') == 'Requested More Info'){
             this.model.set('visibility', 'Submitted More Info');
         }
+        this.$("[name=basedAt]").combobox();
         this.renderTinyMCE('companyProfile');
         this.renderTinyMCE('summary');
         this.renderTinyMCE('responsibilities');

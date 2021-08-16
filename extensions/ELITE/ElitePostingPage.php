@@ -28,9 +28,9 @@ class ElitePostingPage extends BackbonePage {
     }
     
     function getViews(){
-        global $wgOut;
+        global $wgOut, $wgServer, $wgScriptPath;
         $departments = json_encode(array_values(Person::getAllDepartments()));
-        
+        $wgOut->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/ELITE/cities.js'></script>");
         $wgOut->addScript("<script type='text/javascript'>
             var allDepartments = $departments;
             isAllowedToCreateElitePostings = ".json_encode(ElitePosting::isAllowedToCreate()).";
