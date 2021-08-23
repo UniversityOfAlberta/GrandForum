@@ -22,6 +22,7 @@ Collaboration = Backbone.Model.extend({
             projects: new Array(),
             url: "",
             sector: "",
+            number: "",
             country: "",
             planning: "",
             designDataCollection: "",

@@ -4,7 +4,7 @@ class ComboBoxReportItem extends SelectReportItem {
 
     function render(){
         global $wgOut;
-        if(strstr($this->attributes['options'], $this->getBlobValue()) === false){
+        if(@strstr($this->attributes['options'], $this->getBlobValue()) === false){
             $this->attributes['options'] .= "|{$this->getBlobValue()}";
         }
         parent::render();

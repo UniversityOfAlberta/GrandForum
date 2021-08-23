@@ -12,7 +12,7 @@ class Collection {
      * @param array $objects The array of objects to populate this Collection
      */
     function Collection(&$objects){
-        $this->objects = $objects;
+        $this->objects = (is_array($objects)) ? $objects : array();
     }
 
     /**

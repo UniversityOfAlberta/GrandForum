@@ -32,15 +32,19 @@ class ElitePosting extends Posting {
         }
     }
     
+    static function isAllowedToCreate(){
+        $me = Person::newFromWgUser();
+        return ($me->isRoleAtLeast(EXTERNAL));
+    }
+    
     function isAllowedToView(){
         $me = Person::newFromWgUser();
         if($this->getVisibility() == "Accepted" || $this->getVisibility() == "Publish"){
             // Posting is Public
             return true;
         }
-        if(($me->getId() == $this->getUserId() && !isset($_GET['apiKey'])) ||  
-           ($me->isRoleAtLeast(STAFF) && $this->getPreviewCode() == @$_GET['previewCode']) ||
-           ($me->isRoleAtLeast(STAFF) && !isset($_GET['apiKey']))){
+        if($me->getId() == $this->getUserId() ||  
+           $me->isRoleAtLeast(STAFF)){
             // Posting was created by the logged in user (or is Staff)
             return true;
         }
@@ -76,6 +80,12 @@ class ElitePosting extends Posting {
     
     function getComments(){
         return ($this->isAllowedToEdit()) ? $this->comments : "";
+    }
+    
+    function toSimpleArray(){
+        $json = parent::toArray();
+        $json['companyName'] = $this->getCompanyName();
+        return $json;
     }
     
     function toArray(){

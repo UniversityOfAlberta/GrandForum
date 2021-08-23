@@ -1,0 +1,30 @@
+<table id="profiles" frame="box" rules="all">
+    <thead>
+        <tr>
+            <th width="1%" style="white-space: nowrap;">Created</th>
+            <th style="white-space: nowrap;">Applicant</th>
+            <th>Matched Projects</th>
+            <th width="1%">Profile</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% this.model.each(function(profile){ %>
+            <tr>
+                <td style="white-space: nowrap;">
+                    <span style="display:none;"><%= profile.get('created') %></span><%= dateTimeHelpers.formatDate(profile.get('created')) %>
+                </td>
+                <td>
+                    <%= profile.get('user').fullName %>
+                </td>
+                <td>
+                    <% _.each(_.filter(profile.get('matches'), function(match){ return match.userId == me.get('id'); }), function(match){ %>
+                        <%= match.title %> (<%= match.companyName %>)<br />
+                    <% }) %>
+                </td>
+                <td align="center" style="white-space:nowrap;">
+                    <a href="<%= profile.get('pdf') %>">Download PDF</a>
+                </td>
+            </tr>
+        <% }.bind(this)) %>
+    </tbody>
+</table>

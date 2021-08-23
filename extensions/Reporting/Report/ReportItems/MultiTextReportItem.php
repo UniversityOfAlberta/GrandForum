@@ -224,7 +224,7 @@ EOF;
                 else{
                     $(".table_{$this->getPostId()}").hide();
                 }
-                if($("#table_{$this->getPostId()} tr.obj").length == 0 && "$class" != "wikitable"){
+                if($("#table_{$this->getPostId()} tr.obj").length == 0 && "$class".indexOf("wikitable") === -1){
                     $("#table_{$this->getPostId()}").hide();
                 }
                 else{

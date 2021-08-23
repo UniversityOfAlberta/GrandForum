@@ -1602,7 +1602,7 @@ select span.noshow {
     cursor: pointer;
 }
 
-.projectIcon, .productIcon, .bibliographyIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
+.projectIcon, .productIcon, .bibliographyIcon, .eventIcon, .wikiIcon, .pdfIcon, .storyIcon, .threadIcon {
     width: 15px;
     height:15px;
     display: inline-block;
@@ -1618,6 +1618,10 @@ select span.noshow {
 
 .bibliographyIcon {
     background: url('../bibliography.gif');
+}
+
+.eventIcon {
+    background: url('../event.gif');
 }
 
 .wikiIcon {

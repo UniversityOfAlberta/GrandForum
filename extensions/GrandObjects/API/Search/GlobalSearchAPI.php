@@ -240,7 +240,7 @@ class GlobalSearchAPI extends RESTAPI {
 	            }
                 break;
             case 'bibliographies':
-                $data = array();
+                $results = array();
                 $bibs = DBFunctions::select(array('grand_bibliography'),
                                             array('title', 'description', 'id'));
                 Product::generateProductTagsCache();
@@ -285,6 +285,36 @@ class GlobalSearchAPI extends RESTAPI {
                     $percent = 0;
                     similar_text(unaccentChars($bibliography->getTitle()), unaccentChars($origSearch), $percent);
                     $results[$bibliography->getId()] = $percent;
+                }
+                asort($results);
+                $results = array_reverse($results, true);
+                foreach($results as $key => $row){
+                    $ids[] = intval($key);
+                }
+                break;
+            case 'events':
+                $data = array();
+                $events = EventPosting::getAllPostings();
+                foreach($events as $event){
+                    $title = unaccentChars($event->getTitle());
+                    $location = unaccentChars("{$event->getCountry()} {$event->getProvince()} {$event->getCity()}");
+                    $summary = unaccentChars(strip_tags($event->getSummary()));
+                    
+                    $names = array_merge(explode(" ", $title),
+                                         explode(" ", $location),
+                                         explode(" ", $summary));
+                    $found = true;
+                    foreach($searchNames as $name){
+                        $name = preg_quote($name);
+                        $grepped = preg_grep("/^$name.*/", $names);
+                        if(count($grepped) == 0){
+                            $found = false;
+                            break;
+                        }
+                    }
+                    if($found){
+                        $results[$event->getId()] = str_replace("0000-00-00", EOT, "{$event->getStartDate()} {$event->getEndDate()}");
+                    }
                 }
                 asort($results);
                 $results = array_reverse($results, true);

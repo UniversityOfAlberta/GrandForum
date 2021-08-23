@@ -71,10 +71,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Catalyst2018Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("CAT Application", "{$url}Catalyst2018Application", $selected);
         }*/
-        /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "KT2019Intent")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("KT Intent", "{$url}KT2019Intent", $selected);
-        }*/
+        if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate") || $person->getId() == "3124"){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);
+        }
         if(($person->isRole(HQP) || $person->isRole(HQP."-Candidate")) && $person->isSubRole("IFP2020Applicant")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IFPApplication")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("IFP Application", "{$url}IFPApplication", $selected);

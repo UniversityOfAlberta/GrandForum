@@ -171,6 +171,12 @@
     // Whether or not wiki features are enabled
     $config->setValue("wikiEnabled", true);
     
+    // Whether or not Manage Products should be enabled
+    $config->setValue("productsEnabled", true);
+    
+    // Whether or not Profiles should be enabled
+    $config->setValue("profilesEnabled", true);
+    
     // A list of api keys
     $config->setValue("apiKeys", array());
     
@@ -179,6 +185,9 @@
     
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
+    
+    // Whether or not to show the Other Tools in the sidebar
+    $config->setValue("showOtherTools", true);
     
     // Whether to allow users to upload photos (if false, only Staff+ will be able to)
     $config->setValue("allowPhotoUpload", true);
@@ -219,7 +228,6 @@
         'UI',
         'Notification',
         'GrandObjectPage',
-        'Cal',
         //'Twitter',
         'MailingList',
         'AddMember',

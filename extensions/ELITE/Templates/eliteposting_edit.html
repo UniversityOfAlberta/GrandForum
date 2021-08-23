@@ -2,7 +2,7 @@
     <table>
         <tr>
             <td class="label required">Position Title:</td>
-            <td class="value"><%= HTML.TextBox(this, 'title', {size: 50}) %></td>
+            <td class="value"><%= HTML.TextBox(this, 'title', {style: 'width: 675px;'}) %></td>
         </tr>
         <tr>
             <td class="label required">Company Name:</td>
@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td class="label">Based at:</td>
-            <td class="value"><%= HTML.TextBox(this, 'basedAt', {size: 50}) %></td>
+            <td class="value"><%= HTML.Select(this, 'basedAt', {options: _.pluck(cities, 'name')}) %></td>
         </tr>
         <tr>
             <td class="label">Position Purpose:</td>

@@ -11,6 +11,7 @@ class Collaboration extends BackboneModel{
     var $id = null;
     var $title = "";
     var $sector = "";
+    var $number = "";
     var $country = "";
     var $planning = "";
     var $designDataCollection = "";
@@ -142,6 +143,7 @@ class Collaboration extends BackboneModel{
             $this->year = $data[0]['year'];
             $this->endYear = $data[0]['end_year'];
             $this->sector = $data[0]['sector'];
+            $this->number = $data[0]['number'];
             $this->country = $data[0]['country'];
             $this->planning = $data[0]['planning'];
             $this->designDataCollection = $data[0]['design'];
@@ -179,6 +181,10 @@ class Collaboration extends BackboneModel{
     
     function getSector(){
         return $this->sector;
+    }
+    
+    function getNumber(){
+        return $this->number;
     }
 
     function getCountry(){
@@ -343,6 +349,7 @@ class Collaboration extends BackboneModel{
         $status = DBFunctions::insert('grand_collaborations',
                             array('organization_name' => $this->title,
                                   'sector' => $this->sector,
+                                  'number' => $this->number,
                                   'country' => $this->country,
                                   'planning' => $this->planning,
                                   'design' => $this->designDataCollection,
@@ -418,6 +425,7 @@ class Collaboration extends BackboneModel{
         $status = DBFunctions::update('grand_collaborations',
                             array('organization_name' => $this->title,
                                   'sector' => $this->sector,
+                                  'number' => $this->number,
                                   'country' => $this->country,
                                   'planning' => $this->planning,
                                   'design' => $this->designDataCollection,
@@ -533,6 +541,7 @@ class Collaboration extends BackboneModel{
                                'fullname' => $creator->getNameForForms(),
                                'url' => $creator->getUrl()),
             'sector' => $this->getSector(),
+            'number' => $this->getNumber(),
             'country' => $this->getCountry(),
             'planning' => $this->getPlanning(),
             'designDataCollection' => $this->getDesignDataCollection(),

@@ -2,7 +2,8 @@
 
 BackbonePage::register('ElitePostingPage', 'ELITE', 'network-tools', dirname(__FILE__));
 
-$wgHooks['ToolboxLinks'][] = 'ElitePostingPage::createToolboxLinks';
+$wgHooks['TopLevelTabs'][] = 'ElitePostingPage::createTab';
+$wgHooks['SubLevelTabs'][] = 'ElitePostingPage::createSubTabs';
 
 class ElitePostingPage extends BackbonePage {
     
@@ -16,30 +17,30 @@ class ElitePostingPage extends BackbonePage {
     
     function getTemplates(){
         return array('Backbone/*',
-                     'elitepostings',
                      'eliteposting',
                      'eliteposting_edit',
+                     'elite_host',
+                     'elite_host_postings',
+                     'elite_host_profiles',
                      'elite_admin',
-                     'elitepostings_admin',
-                     'eliteprofiles_admin');
+                     'elite_admin_postings',
+                     'elite_admin_profiles');
     }
     
     function getViews(){
-        global $wgOut;
+        global $wgOut, $wgServer, $wgScriptPath;
         $departments = json_encode(array_values(Person::getAllDepartments()));
-        
+        $wgOut->addScript("<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/ELITE/cities.js'></script>");
         $wgOut->addScript("<script type='text/javascript'>
             var allDepartments = $departments;
             isAllowedToCreateElitePostings = ".json_encode(ElitePosting::isAllowedToCreate()).";
         </script>");
     
         return array('Backbone/*',
-                     'ElitePostingsView',
+                     'EliteHostView',
                      'ElitePostingView',
                      'ElitePostingEditView',
-                     'EliteAdminView',
-                     'ElitePostingsAdminView',
-                     'EliteProfilesAdminView');
+                     'EliteAdminView');
     }
     
     function getModels(){
@@ -48,12 +49,27 @@ class ElitePostingPage extends BackbonePage {
                      'EliteProfile');
     }
     
-    static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath;
-        $me = Person::newFromWgUser();
-        /*if($me->isLoggedIn()){
-            $toolbox['Postings']['links'][] = TabUtils::createToolboxLink("Jobs/Internships", "$wgServer$wgScriptPath/index.php/Special:ElitePostingPage");
-        }*/
+    static function createTab(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
+        $tabs["ELITE"] = TabUtils::createTab("ELITE Panel");
+        return true;
+    }
+    
+    static function createSubTabs(&$tabs){
+        global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
+        $person = Person::newFromWgUser();
+        
+        if($person->isRole(EXTERNAL)){
+            // Host
+            $selected = @($wgTitle->getText() == "ElitePostingPage") ? "selected" : false;
+            $tabs["ELITE"]['subtabs'][] = TabUtils::createSubTab("Host", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage", $selected);
+        }
+        if($person->isRole(ADMIN)){
+            // Admin
+            $selected = @($wgTitle->getText() == "ElitePostingPage") ? "selected" : false;
+            $tabs["ELITE"]['subtabs'][] = TabUtils::createSubTab("Admin", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage#/admin", $selected);
+        }
+        
         return true;
     }
 

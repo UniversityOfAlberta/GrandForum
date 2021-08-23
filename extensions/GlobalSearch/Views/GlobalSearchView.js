@@ -104,6 +104,9 @@ GlobalSearchResultsView = Backbone.View.extend({
         "productResults" : function(){
             return new ProductResultsView({parent: this, model: new GlobalSearch({group: 'products', search: ''})});
         },
+        "eventResults" : function(){
+            return new EventResultsView({parent: this, model: new GlobalSearch({group: 'events', search: ''})});
+        },
         "bibliographyResults" : function(){
             return new BibliographyResultsView({parent: this, model: new GlobalSearch({group: 'bibliographies', search: ''})});
         },
@@ -430,6 +433,22 @@ ProductResultsView = ResultsView.extend({
     
     render: function(){
         this.$el.html(this.template({group: productsTerm.pluralize()}));
+    }
+});
+
+EventResultsView = ResultsView.extend({
+    maxResults: 4,
+    
+    createCardView: function(model){
+        return new SmallPostingCardView({model: model});
+    },
+    
+    createModel: function(obj){
+        return new EventPosting({id: obj});
+    },
+    
+    render: function(){
+        this.$el.html(this.template({group: "Events"}));
     }
 });
 

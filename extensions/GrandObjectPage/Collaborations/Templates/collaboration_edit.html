@@ -83,6 +83,8 @@
 
     <div style="margin-bottom: 10px;">
         <div style="display:inline-block; vertical-align: top;">
+            <h3>Estimated number of collaborators involved from<br />this organization:</h3>
+            <%= HTML.TextBox(this, 'number', {size: 4}) %>
             <h3>Country:</h3>
             <%= HTML.Select(this, 'country',
             {options: [

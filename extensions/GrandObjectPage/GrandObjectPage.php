@@ -3,12 +3,17 @@
     autoload_register('GrandObjectPage/TabbedPage');
     
     require_once("Backbone/BackbonePage.php");
-    require_once("PersonPage.php");
-    require_once("ProjectPage.php");
-    require_once("ThemePage.php");
+    if($config->getValue("profilesEnabled")){
+        require_once("PersonPage.php");
+        require_once("ProjectPage.php");
+        require_once("ThemePage.php");
+    }
     require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");
-    require_once("ManageProducts/ManageProducts.php");
+    if($config->getValue("productsEnabled")){
+        require_once("ManageProducts/ManageProducts.php");
+    }
+    
     require_once("ManagePeopleLog.php");
     require_once("Products/Products.php");
     require_once("ProductSummary.php");
@@ -21,16 +26,18 @@
         require_once("Collaborations/Collaboration.php");
         require_once("Projections.php");
     }
-    require_once("Bibliography/Bibliography.php");
+    if($config->getValue("productsEnabled")){
+        require_once("Bibliography/Bibliography.php");
+    }
     if(isExtensionEnabled("Postings")){
         require_once("NewsPosting/NewsPostingPage.php");
         require_once("EventPosting/EventPostingPage.php");
         if($config->getValue('networkName') == "AI4Society"){
             require_once("BSIPosting/BSIPostingPage.php");
         }
-        else if($config->getValue('networkName') == "ELITE"){
-            require_once("extensions/ELITE/ELITE.php");
-        }
+    }
+    if($config->getValue('networkName') == "ELITE"){
+        require_once("extensions/ELITE/ELITE.php");
     }
     if(isExtensionEnabled("CRM")){
         require_once("CRM/CRM.php");

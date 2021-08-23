@@ -74,6 +74,7 @@ class ReportItemCallback {
             "milestone_last_edited_by" => "getMilestoneLastEditedBy",
             // Reports
             "timestamp" => "getTimestamp",
+            "time2date" => "time2date",
             "post_id" => "getPostId",
             "report_name" => "getReportName",
             "report_xmlname" => "getReportXMLName",
@@ -144,6 +145,8 @@ class ReportItemCallback {
             "contribution_cash" => "getContributionCash",
             "contribution_inkind" => "getContributionInkind",
             "contribution_total" => "getContributionTotal",
+            // ELITE
+            "getElitePostingField" => "getElitePostingField",
             // Other
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
@@ -1682,6 +1685,11 @@ class ReportItemCallback {
         return $contribution->getTotal();
     }
     
+    function getElitePostingField($field){
+        $elitePosting = ElitePosting::newFromId($this->reportItem->productId);
+        return @$elitePosting->{$field};
+    }
+    
     function getWgUserId(){
         global $wgUser;
         return $wgUser->getId();
@@ -1995,6 +2003,10 @@ class ReportItemCallback {
     
     function getTimestamp($format="Y-m-d H:i:s T"){ 
         return date($format, time()); 
+    }
+    
+    function time2date($time, $format='F j, Y'){
+        return time2date($time, $format);
     }
     
     function getReportName(){

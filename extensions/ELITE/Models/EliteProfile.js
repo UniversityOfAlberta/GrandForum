@@ -13,7 +13,9 @@ EliteProfile = Backbone.Model.extend({
             pdf: "",
             created: "",
             status: "",
-            comments: ""
+            comments: "",
+            projects: [],
+            matches: [],
         };
     }
     
@@ -23,8 +25,15 @@ EliteProfiles = Backbone.Collection.extend({
     
     model: EliteProfile,
     
+    matched: false,
+    
     url: function(){
-        return 'index.php?action=api.eliteprofile';
+        if(this.matched){
+            return 'index.php?action=api.eliteprofile/matched';
+        }
+        else{
+            return 'index.php?action=api.eliteprofile';
+        }
     }
     
 });
