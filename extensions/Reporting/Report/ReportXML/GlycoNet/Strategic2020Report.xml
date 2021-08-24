@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2020" allowIdProjects="true" disabled="false">
+    <Permissions>
+        <Role role="" subRole="Strat2020">
+
+        </Role>
+        <Role role="STAFF+">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="General Instructions and Deadline" name="Strategic Initiatives" blobSection="SEC_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <h3>Background and Description of Opportunity</h3>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health. Areas of focus are neurodegenerative diseases, infectious diseases, chronic diseases, in particular diabetes & obesity, genetic diseases involving errors in glycan metabolism, and cancer. Additional information about Network research can be found at www.glyconet.ca.</p>
+
+                <p>A key goal of GlycoNet is the translation and commercialization of research advances. Accordingly, this Request for Proposals seeks to fund partner-led projects that address needs of the pharmaceutical or biotechnology industry.</p>
+                
+                <h3>Requirements</h3>
+                <p>Projects should:</p>
+                <ul>
+                    <li>Be aligned with one of the GlycoNet research themes (see glyconet.ca).</li>
+                    <li>Must have an articulated IP and patentability strategy.</li>
+                    <li>Be accompanied by a commercialization plan provided by the Technology Transfer Office of the project leader’s institution or the project’s industrial partner</li>
+                    <li>Must address partner’s research needs or challenges.</li>
+                    <li>Have an identified partner that could take over the outcomes of the research</li>
+                    <li>Partner matching of 1:1 is required, greater matching will be viewed more favorably by the committee. 50% of matching must be cash (for a $150,000 request, matching should be at least $75,000 cash and $75,000 in-kind). Partner funding must be NCE eligible; in particular, other Canadian Federal funding is ineligible for matching.</li>
+                </ul>
+                
+                <h3>Funding Available</h3>
+                <p>GlycoNet has set aside $800,000 for Strategic Initiatives in 2021–2022. Proposals may request up to $150,000 in funding. It is anticipated that projects will be completed within 12 months. Continued funding for projects past the 12-month period will be considered on a case-by-case basis after review by the Commercialization and Legacy Committee.</p>
+                
+                <h3>Eligibility</h3>
+                <p>This opportunity is open only to individuals eligible to hold Tri-Council funds; i.e., the Canadian Institutes of Health Research (CIHR), the Natural Sciences and Engineering Research Council of Canada (NSERC) or the Social Sciences and Humanities Research Council of Canada (SSHRC).</p>
+                
+                <h3>Application Form and Submission</h3>
+                <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability. Please check the website for the next deadline.</p>
+
+                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
+                
+                <h3>Additional Information</h3>
+                <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="EditableReportSection" renderpdf="false">
+        <!-- Theme -->
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
+            <![CDATA[
+                <h3>Theme</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Project Title -->
+        <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TITLE" width="400px">
+            <![CDATA[
+                <h3>Project Title</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Lead Investigator -->
+        <ReportItem id="lead" type="MultiTextReportItem" 
+                              blobType="BLOB_ARRAY" 
+                              blobItem="CAT_DESC_LEAD" 
+                              multiple="true" 
+                              max="2" 
+                              labels="Name|Affiliation|Phone|E-Mail" 
+                              types="NI|text|text|text"
+                              sizes="0|150|125|150">
+            <![CDATA[
+                <h2>Lead Investigator</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Other Investigators -->
+        <ReportItem id="other" type="MultiTextReportItem" 
+                               blobType="BLOB_ARRAY" 
+                               blobItem="CAT_DESC_OTHER" 
+                               multiple="true" 
+                               labels="Name|Affiliation|Phone|E-Mail" 
+                               types="NI|text|text|text"
+                               sizes="0|150|125|150">
+            <![CDATA[
+                <h2>Other Investigators</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
+            <![CDATA[
+                <h2>Equity, Diversity and Inclusion</h2>
+                <p>Demonstrate how equity, diversity and inclusion (EDI) has been incorporated into the project (see application instructions for more details).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  sizes="150"
+                                  max="10">
+            <![CDATA[
+                <h2>Key Words</h2>
+                <p>A minimum of 5 keywords must be provided.  There can be no more than 10 keywords</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Partners involved (Companies, agencies etc) -->
+        <ReportItem id="part" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_PART" multiple="true" labels="Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind" types="text|text|text|text">
+            <![CDATA[
+                <h2>Partners involved (Companies, agencies etc)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Suggested reviewers -->
+        <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
+            <![CDATA[
+                <h2>Suggested Reviewers</h2>
+                Please suggest at least 5 reviewers for the application.  At least three of the five suggested reviewers must be working at locations outside of Canada. Suggested reviewers should not be members of the GlycoNet  Scientific Advisory Board or Research Management Committee.  In addition, the Network follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>; please consult that policy before suggesting reviewers.
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Question -->
+        <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h2>Environmental Impact</h2>
+                Does any phase of the research described in this proposal take place outside an office or a laboratory?
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Upload -->
+        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_DESC_ENV_UP">
+            <![CDATA[
+                <p>
+                If Yes, please go to the NSERC web site (<a href="http://www.nserc.ca" target="_blank">www.nserc.ca</a>) and obtain the environmental impact form (Appendix A), complete this and submit it with your application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Question -->
+        <ReportItem id="conflict_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_CONFLICT" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h2>Conflict of Interest</h2>
+                Do any of the researchers involved in this project stand to receive a potential personal financial gain (i.e. ownership of shares in an industrial partner, consulting fees with industry partner, etc.) from the results of the proposed research?
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Multi -->
+        <ReportItem id="conflict_which" type="MultiTextReportItem" blobType="BLOB_ARRAY" optional="true" blobItem="CAT_DESC_CONFLICT_WHICH" multiple="true" labels="Name|Company" types="NI|text">
+            <![CDATA[
+                <p>If Yes, please indicate which researcher and the relevant company.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Conflict of Interest Companies -->
+        <ReportItem id="conflict_comp" type="MultiTextReportItem" blobType="BLOB_ARRAY" optional="true" blobItem="CAT_DESC_CONFLICT_COMP" multiple="true" labels="Company" types="text">
+            <![CDATA[
+                <p>Will any company benefit substantially if this grant is awarded? If so, please identify the companies below</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="resub" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESUB" options="Yes|No">
+            <![CDATA[
+                <p>Is this application a resubmission of a previously unsuccessful GlycoNet Strategic Initiatives grant</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" height="300px">
+            <![CDATA[
+                <h2>Response to Reviewer's Comments (if applicable)</h2>
+                <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px">
+            <![CDATA[
+                <h2>Project Summary (500 words maximum)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Figures & Schemes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px">
+            <![CDATA[
+                <h2>Project Proposal (7000 words maximum)</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <h3>References</h3>
+                <p>Use the following format for references (Journal of Biological Chemistry style): Stover, C. K., de la Cruz, V. F., Fuerst, T. R., Burlein, J. E., Benson, L. A., Bennett, L. T., Bansal, G. P., Young, J. F., Lee, M. H., Hatfull, G. F., Snapper, S. B., Barletta, R. G., Jacobs, W. R., Jr., and Bloom, B. R. (1991) New use of BCG for recombinant vaccines. Nature <b>351</b>, 456–460</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- KTEE -->
+        <ReportItem id="knowledge" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_KNOW" rich="true" height="300px" limit="500">
+            <![CDATA[
+                <h2>Relevance and Impact</h2>
+                <p>Relevance and impact (including socio-economic) of the project, and identify the key deliverables.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Training -->
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500" recommended="true">
+            <![CDATA[
+                <h2>Training Potential</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template.xlsx">
+            <![CDATA[
+                Budget Guidelines:
+                <ul>
+                    <li>Projects can request up to $150,000 for 12 months.</li>
+                    <li>Projects require a minimum 1:1 match with Partner funding; at least 50% of the matching funds should be cash.  Partner funding must be NCE eligible; other Canadian Federal funding is ineligible for matching.</li>
+                    <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
+                    <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
+                    <li>Equipment is capped at $2,000</li>
+                    <li>Travel
+                        <ul>
+                            <li>Conference travel is capped at $1,500/NI. This fund can be used for the annual Canadian Glycomics Symposium.</li>
+                            <li>Travel and accommodation for trainees to visit collaborating labs should be included in project budgets.</li>
+                            <li>Travel to the Annual General Meeting will be funded centrally through the Network. It should not be incorporated into project budgets.</li>
+                        </ul>
+                    </li>
+                    <li>Chemical Synthesis and Glycan Structure Analysis Cores
+                        <ul>
+                            <li>Those of you who have an anticipated need for these core services should contact Warren Wakarchuk (<a href='mailto:warren.wakarchuk@ualberta.ca'>warren.wakarchuk@ualberta.ca</a>).  We will generate an estimate that can be incorporated into the budget.</li>
+                        </ul>
+                    </li>
+                    <li>All partner contributions need to be supported by a letter from the partner institution (see below)
+                        <ul>
+                            <li>Based on NCE guidelines, teaching assistantship support cannot be counted as matching. Similarly, student and PDF fellowships from CIHR, NSERC or SSHRC cannot be counted as matching. Therefore, please do not include these as a partner contribution in your budget. Research fellowships provided by universities or non-federal agencies should be listed as matching and a supporting letter documenting support is needed.</li>
+                        </ul>
+                    </li> 
+                    <li>Up to $5,000 of the requested budget can be used to reimburse expenses associated with development of a commercialization plan. These expenses should be budgeted under “Animal Work or Other Services”.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_justification" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUSTIF">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                <ul>
+                    <li>Provide concise, but sufficient, justification for expenses. Benefit rates for employees should be clearly stipulated.</li>
+                    <li>The project leader is responsible for generating a single budget justification document containing information from all NI groups.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="ReportSection">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="CAT_MIL_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls">milestone template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="commercial" name="Commercialization" blobSection="CAT_COMM" tooltip="Commercialization Plan" type="ReportSection">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_COMM_UPLOAD" mimeType="application/pdf">
+            <![CDATA[
+                <b>Commercialization Plan Guidelines:</b>
+                <ul>
+                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution or the Project’s Industrial Partner.</li>
+                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch</li>
+                    <li>The plan should address the following items:
+                        <ul>
+                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
+                            <li>Market</li>
+                            <li>Barriers</li>
+                            <li>Commercialization Opportunity</li>
+                            <li>Competitive Advantage over other Technologies</li>
+                            <li>Business Expertise</li>
+                            <li>Commercialization Strategy</li>
+                            <li>Timelines</li>
+                        </ul>
+                    </li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="ReportSection">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
+            <![CDATA[
+                <p>You can upload up to 5 Partner Support Letters</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" name="NI CCVs" blobSection="CAT_CCV" tooltip="Common CV" type="ReportSection">
+        <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD1" mimeType="application/pdf">
+            <![CDATA[
+                <p>You can upload up to 10 CCVs</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD2" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD3" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD4" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD5" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD6" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload7" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD7" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload8" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD8" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload9" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD9" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload10" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV_UPLOAD10" mimeType="application/pdf">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+    </ReportSection>
+</Report>
