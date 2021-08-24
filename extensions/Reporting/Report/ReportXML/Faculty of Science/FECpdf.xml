@@ -539,6 +539,7 @@
             <![CDATA[
                 <h2>Pandemic Impact Statement</h2>
                 {$item}
+                {getArray(RP_FEC,FEC_ADDITIONAL_INFO,COVID_CONFIRM,0,{$user_id},0,covid_confirm)}
             ]]>
         </ReportItem>
         

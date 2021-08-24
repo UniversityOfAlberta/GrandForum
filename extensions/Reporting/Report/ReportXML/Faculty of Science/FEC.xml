@@ -837,6 +837,38 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="covid_confirm" type="Checkbox" blobType="BLOB_ARRAY" blobItem="COVID_CONFIRM" options="I do not wish to provide an impact statement">
+            <![CDATA[
+                <div id='covid_container' style='display:none;'>
+                    <p><b>Please confirm that you do not wish to provide an impact statement</b></p>
+                    {$item}
+                </div>
+                
+                <script type='text/javascript'>
+                    $('#AdditionalInfo_covid').on("change keyup", function(){
+                        if($('#AdditionalInfo_covid').val() == "" && 
+                           $('#fileFrameAdditionalInfo_covid_upload').contents().find("a").text().indexOf("Download") === -1){
+                            $('#covid_container').slideDown();
+                        }
+                        else{
+                            $('#covid_container').slideUp();
+                            $('#covid_container input').prop('checked', false);
+                        }
+                    });
+                    
+                    $('#AdditionalInfo_covid').change();
+                    
+                    if(typeof covidInterval != "undefined"){
+                        clearInterval(covidInterval);
+                    }
+                    
+                    covidInterval = setInterval(function(){
+                        $('#AdditionalInfo_covid').change();
+                    }, 250);
+                    
+                </script>
+            ]]>
+        </ReportItem>
         <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
                 <h2>Sabbatical Report</h2>
