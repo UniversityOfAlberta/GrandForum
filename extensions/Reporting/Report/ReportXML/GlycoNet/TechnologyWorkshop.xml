@@ -132,6 +132,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
     </ReportSection>
 </Report>

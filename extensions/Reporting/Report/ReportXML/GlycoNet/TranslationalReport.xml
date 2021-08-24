@@ -36,7 +36,7 @@
                 <h3>Application Form and Submission</h3>
                 <p>This is a rolling competition. Applicants can submit their proposals when they are ready. Competitions will be offered on a quarterly basis and will depend on funding availability. Please check the website for the next deadline.</p>
 
-                <p>Potential applicants must register by email to Claude Larrivee Aboussafy (clarrivee@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
+                <p>Potential applicants must register by email to the GlycoNet Administrative Office (info@glyconet.ca). Please provide the project title, anticipated budget request, a 500-word (maximum) summary of the project, and list of investigators involved in the project. This information can be modified when the application is submitted although the overall focus must remain the same. Upon registration, applicants will receive instructions for completing the application.</p>
                 
                 <h3>Additional Information</h3>
                 <p>Questions about this opportunity can be sent to glyconet@ualberta.ca.</p>
@@ -397,6 +397,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission to the RMC" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
     </ReportSection>
 </Report>

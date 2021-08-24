@@ -493,6 +493,6 @@ GlycoNet has set aside $50,000 annually for this program. The Network will contr
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca" />
     </ReportSection>
 </Report>

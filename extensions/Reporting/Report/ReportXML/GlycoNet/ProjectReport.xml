@@ -122,7 +122,7 @@
                 </ul><br />
                 <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
                 <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Claude Larrivee Aboussafy (clarrivee@glyconet.ca).</p>
+                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
             ]]>
         </If>
         <If id="not_pl1" if="{and({or({contains({$my_full_roles},CI)},{contains({$my_full_roles},AR)},{contains({$my_full_roles},FAKENI)})},{!contains({$my_full_roles},PL)})}">
@@ -156,7 +156,7 @@
                 </ul><br />
                 <p>*Managing numerous publications can be challenging for investigators.  Therefore, <b>it is highly recommended that this task be delegated to trainees as much as possible.</b></p>
                 <p><b>Need further assistance?</b></p>
-                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Claude Larrivee Aboussafy (clarrivee@glyconet.ca).</p>
+                <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
             ]]>
         </If>
         <If id="not_pl2" if="{and({contains({$my_full_roles},HQP)},{!contains({$my_full_roles},PL)})}">
@@ -174,7 +174,7 @@
                         <li>Fill in the HQP section in the Project Report</li>
                     </ul>
                     <p><b>Need further assistance?</b></p>
-                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact Claude Larrivee Aboussafy (clarrivee@glyconet.ca).</p>
+                    <p>Please visit the “Forum Help and FAQs” page on the GlycoNet website (<a href='http://canadianglycomics.ca/forum-help-and-faqs/' target='_blank'>http://canadianglycomics.ca/forum-help-and-faqs/</a>), or contact the GlycoNet Administrative Office (info@glyconet.ca).</p>
                 ]]>
             </ReportItem>
         </If>
@@ -1007,7 +1007,7 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},clarrivee@glyconet.ca,enanak@ualberta.ca" />
+        <ReportItem id="review" type="ReviewSubmitReportItem" emails="{$my_email},info@glyconet.ca,enanak@ualberta.ca" />
         <Static>
             <![CDATA[
                 <br />
