@@ -32,6 +32,10 @@ class UserGsmsBulkUploadAPI extends API{
             if($application_year != YEAR+1){
                 continue;
             }
+            if($row[13] == "Master of Science (Crse)"){
+                // Ignore Course Based rows
+                continue;
+            }
             $in_data_array = false;
             $student_name = $row[2]." ".$row[1];
             $gsms_id = $row[3];
