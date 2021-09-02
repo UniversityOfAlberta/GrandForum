@@ -171,6 +171,7 @@ ProductEditView = Backbone.View.extend({
     
     renderAuthorsWidget: function(){
         var objs = {};
+        var availableTags = {};
         this.allPeople.each(function(p){
             var fullname = p.get('fullName');
             if(p.get('email') != ""){
@@ -182,9 +183,9 @@ ProductEditView = Backbone.View.extend({
             objs[p.get('fullName')] = {id: p.get('id'),
                                        name: p.get('name'),
                                        fullname: fullname};
+            availableTags[fullname] = fullname;
         });
-
-        var availableTags = _.uniq(_.pluck(objs, 'fullname'));
+        availableTags = _.values(availableTags);
         var delimiter = ';';
         var tagLimit = (this.model.isSingleAuthor()) ? 1 : 1000;
         var placeholderText = (this.model.isSingleAuthor()) ? 'Enter ' + this.model.getAuthorsLabel().toLowerCase() + ' here...'
@@ -219,7 +220,6 @@ ProductEditView = Backbone.View.extend({
                 }
             }
         });
-        
         this.$("#productAuthors").html(html);
         if(!this.model.isSingleAuthor()){
             this.$("#productAuthors").append("<p><i>Drag to re-order each " + this.model.getAuthorsLabel().toLowerCase() + "</i></p>");
