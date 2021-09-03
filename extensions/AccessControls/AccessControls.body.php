@@ -110,7 +110,7 @@ function createExtraTables() {
 	 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
          ";
 
-	$dbw = wfGetDB(DB_MASTER);
+	$dbw = wfGetDB(DB_PRIMARY);
 	$dbw->query($pagePerm);	
 	$dbw->query($extraNS);
 	$dbw->query($uploadPerm);
@@ -518,7 +518,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
   if ($pageID == 0) { //TODO error?
     return;
   }
-  $dbw = wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_PRIMARY );
   $dbw->delete("${egAnnokiTablePrefix}pagepermissions", array("page_id" => $pageID));
   
   $newPermissions = array();

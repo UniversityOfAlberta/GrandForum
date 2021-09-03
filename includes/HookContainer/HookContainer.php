@@ -113,6 +113,7 @@ class HookContainer implements SalvageableService {
 	 *     hooks to the DeprecatedHooks::$deprecatedHooks array literal. New extension code should
 	 *     use the DeprecatedHooks attribute.
 	 *   - silent: (bool) If true, do not raise a deprecation warning
+	 *   - noServices: (bool) If true, do not allow hook handlers with service dependencies
 	 * @return bool True if no handler aborted the hook
 	 * @throws UnexpectedValueException if handlers return an invalid value
 	 */
@@ -147,8 +148,8 @@ class HookContainer implements SalvageableService {
 			}
 		}
 
-		$handlers = $this->getHandlers( $hook );
-		$funcName = 'on' . str_replace( ':', '_',  ucfirst( $hook ) );
+		$handlers = $this->getHandlers( $hook, $options );
+		$funcName = 'on' . strtr( ucfirst( $hook ), ':-', '__' );
 
 		foreach ( $handlers as $handler ) {
 			$return = $handler->$funcName( ...$args );
@@ -259,7 +260,7 @@ class HookContainer implements SalvageableService {
 
 		$firstArg = $normalizedHandler[0];
 
-		// Extract function name, handler object, and any arguments for handler object
+		// Extract function name, handler callback, and any arguments for the callback
 		if ( $firstArg instanceof Closure ) {
 			$functionName = "hook-$hook-closure";
 			$callback = array_shift( $normalizedHandler );
@@ -275,17 +276,25 @@ class HookContainer implements SalvageableService {
 				if ( $colonPos !== false ) {
 					// Some extensions use [ $object, 'Class::func' ] which
 					// worked with call_user_func_array() but doesn't work now
-					// that we use a plain varadic call
+					// that we use a plain variadic call
 					$functionName = substr( $functionName, $colonPos + 2 );
 				}
 			}
 
 			$callback = [ $object, $functionName ];
 		} elseif ( is_string( $firstArg ) ) {
-			$functionName = $callback = array_shift( $normalizedHandler );
+			if ( is_callable( $normalizedHandler, true, $functionName )
+				&& class_exists( $firstArg ) // $firstArg can be a function in global scope
+			) {
+				$callback = $normalizedHandler;
+				$normalizedHandler = []; // Can't pass arguments here
+			} else {
+				$functionName = $callback = array_shift( $normalizedHandler );
+			}
 		} else {
 			throw new UnexpectedValueException( 'Unknown datatype in hooks for ' . $hook );
 		}
+
 		return [
 			'callback' => $callback,
 			'args' => $normalizedHandler,
@@ -375,26 +384,34 @@ class HookContainer implements SalvageableService {
 	 * Return array of handler objects registered with given hook in the new system
 	 * @internal For use by Hooks.php
 	 * @param string $hook Name of the hook
+	 * @param array $options Handler options, which may include:
+	 *   - noServices: Do not allow hook handlers with service dependencies
 	 * @return array non-deprecated handler objects
 	 */
-	public function getHandlers( string $hook ) : array {
+	public function getHandlers( string $hook, array $options = [] ) : array {
 		$handlers = [];
 		$deprecatedHooks = $this->registry->getDeprecatedHooks();
 		$registeredHooks = $this->registry->getExtensionHooks();
 		if ( isset( $registeredHooks[$hook] ) ) {
 			foreach ( $registeredHooks[$hook] as $hookReference ) {
 				// Non-legacy hooks have handler attributes
-				$handlerObject = $hookReference['handler'];
+				$handlerSpec = $hookReference['handler'];
 				// Skip hooks that both acknowledge deprecation and are deprecated in core
 				$flaggedDeprecated = !empty( $hookReference['deprecated'] );
 				$deprecated = $deprecatedHooks->isHookDeprecated( $hook );
 				if ( $deprecated && $flaggedDeprecated ) {
 					continue;
 				}
-				$handlerName = $handlerObject['name'];
+				$handlerName = $handlerSpec['name'];
+				if ( !empty( $options['noServices'] ) && isset( $handlerSpec['services'] ) ) {
+					throw new UnexpectedValueException(
+						"The handler for the hook $hook registered in " .
+						"{$hookReference['extensionPath']} has a service dependency, " .
+						"but this hook does not allow it." );
+				}
 				if ( !isset( $this->handlersByName[$handlerName] ) ) {
 					$this->handlersByName[$handlerName] =
-						$this->objectFactory->createObject( $handlerObject );
+						$this->objectFactory->createObject( $handlerSpec );
 				}
 				$handlers[] = $this->handlersByName[$handlerName];
 			}

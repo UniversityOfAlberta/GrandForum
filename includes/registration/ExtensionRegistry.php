@@ -196,7 +196,9 @@ class ExtensionRegistry {
 			'checkDev' => $this->checkDev,
 			'queue' => $this->queued,
 		];
-		return $cache->makeKey(
+
+		// Allow reusing cached ExtensionRegistry metadata between wikis (T274648)
+		return $cache->makeGlobalKey(
 			"registration-$component",
 			// We vary the cache on the current queue (what will be or already was loaded)
 			// plus various versions of stuff for VersionChecker
@@ -469,6 +471,13 @@ class ExtensionRegistry {
 				$mergeStrategy = 'array_merge';
 			}
 
+			if ( $mergeStrategy === 'provide_default' ) {
+				if ( !array_key_exists( $key, $GLOBALS ) ) {
+					$GLOBALS[$key] = $val;
+				}
+				continue;
+			}
+
 			// Optimistic: If the global is not set, or is an empty array, replace it entirely.
 			// Will be O(1) performance.
 			if ( !array_key_exists( $key, $GLOBALS ) || ( is_array( $GLOBALS[$key] ) && !$GLOBALS[$key] ) ) {
@@ -486,7 +495,7 @@ class ExtensionRegistry {
 					$GLOBALS[$key] = array_merge_recursive( $GLOBALS[$key], $val );
 					break;
 				case 'array_replace_recursive':
-					$GLOBALS[$key] = array_replace_recursive( $GLOBALS[$key], $val );
+					$GLOBALS[$key] = array_replace_recursive( $val, $GLOBALS[$key] );
 					break;
 				case 'array_plus_2d':
 					$GLOBALS[$key] = wfArrayPlus2d( $GLOBALS[$key], $val );

@@ -996,19 +996,19 @@ abstract class Skin extends ContextSource {
 		if ( is_string( $icon ) ) {
 			$html = $icon;
 		} else { // Assuming array
-			$url = $icon["url"] ?? null;
-			unset( $icon["url"] );
-			if ( isset( $icon["src"] ) && $withImage === 'withImage' ) {
+			$url = $icon['url'] ?? null;
+			unset( $icon['url'] );
+			if ( isset( $icon['src'] ) && $withImage === 'withImage' ) {
 				// Lazy-load footer icons, since they're not part of the printed view.
-				$icon["loading"] = 'lazy';
+				$icon['loading'] = 'lazy';
 				// do this the lazy way, just pass icon data as an attribute array
 				$html = Html::element( 'img', $icon );
 			} else {
-				$html = htmlspecialchars( $icon["alt"] );
+				$html = htmlspecialchars( $icon['alt'] ?? '' );
 			}
 			if ( $url ) {
 				$html = Html::rawElement( 'a',
-					[ "href" => $url, "target" => $this->getConfig()->get( 'ExternalLinkTarget' ) ],
+					[ 'href' => $url, 'target' => $this->getConfig()->get( 'ExternalLinkTarget' ) ],
 					$html );
 			}
 		}
@@ -1524,14 +1524,15 @@ abstract class Skin extends ContextSource {
 		}
 
 		$user = $this->getRelevantUser();
+		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
+
 		// The relevant user should only be set if it exists. However, if it exists but is hidden,
 		// and the viewer cannot see hidden users, this exposes the fact that the user exists;
 		// pretend like the user does not exist in such cases, by setting $user to null, which
 		// is what getRelevantUser returns if there is no user set (though it is documented as
 		// always returning a User...) See T120883
 		if ( $user && $user->isRegistered() && $user->isHidden() &&
-			 !MediaWikiServices::getInstance()
-				->getPermissionManager()->userHasRight( $this->getUser(), 'hideuser' )
+			 !$permissionManager->userHasRight( $this->getUser(), 'hideuser' )
 		) {
 			$user = null;
 		}
@@ -1549,11 +1550,7 @@ abstract class Skin extends ContextSource {
 				'href' => self::makeSpecialUrlSubpage( 'Log', $rootUser )
 			];
 
-			if (
-				MediaWikiServices::getInstance()
-					->getPermissionManager()
-					->userHasRight( $this->getUser(), 'block' )
-			) {
+			if ( $permissionManager->userHasRight( $this->getUser(), 'block' ) ) {
 				$nav_urls['blockip'] = [
 					'text' => $this->msg( 'blockip', $rootUser )->text(),
 					'href' => self::makeSpecialUrlSubpage( 'Block', $rootUser )
@@ -2055,7 +2052,7 @@ abstract class Skin extends ContextSource {
 			$toolbox['recentchangeslinked']['id'] = 't-recentchangeslinked';
 			$toolbox['recentchangeslinked']['rel'] = 'nofollow';
 		}
-		if ( $feedUrls ?? null ) {
+		if ( $feedUrls ) {
 			$toolbox['feeds']['id'] = 'feedlinks';
 			$toolbox['feeds']['links'] = [];
 			foreach ( $feedUrls as $key => $feed ) {
@@ -2252,6 +2249,7 @@ abstract class Skin extends ContextSource {
 			}
 			while ( count( $wrapper ) > 0 ) {
 				$element = array_pop( $wrapper );
+				// @phan-suppress-next-line PhanTypeArraySuspiciousNullable
 				$html = Html::rawElement( $element['tag'], $element['attributes'] ?? null, $html );
 			}
 		}

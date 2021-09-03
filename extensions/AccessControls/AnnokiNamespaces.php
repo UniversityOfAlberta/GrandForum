@@ -114,7 +114,7 @@ function addNewNamespace($nsName, $user = null) {
   if ($egNamespaceAllowUsersWithoutNamespaces && trim($nsName) == "")
     return false;
   
-  $dbw = wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_PRIMARY );
   $result = $dbw->selectRow("${egAnnokiTablePrefix}extranamespaces", "MAX(nsId) AS maxId", "");
   $nsId = (int) $result->maxId;
   
@@ -146,7 +146,7 @@ function renameNamespace($nsName, $newNsName)  {
 	if ($nsId == -1) {
 		return;
 	}
-	$dbw = wfGetDB( DB_MASTER );
+	$dbw = wfGetDB( DB_PRIMARY );
 	$dbw->update("${egAnnokiTablePrefix}extranamespaces", array("nsName" => $newNsName), array("nsId" => $nsId));
 	$this->registerExtraNamespaces();
 }

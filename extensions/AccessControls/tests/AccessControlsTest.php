@@ -7,7 +7,7 @@ class AccessControlsTest extends PHPUnit_Framework_TestCase {
 		//$this->buildTestDatabase(array("user"));
 		global $egAnnokiNamespaces;
 		$this->nsObj = $egAnnokiNamespaces;
-		$dbw = wfGetDB(DB_MASTER);
+		$dbw = wfGetDB(DB_PRIMARY);
 
 		$user = User::newFromName("AccessTestUser1");
 

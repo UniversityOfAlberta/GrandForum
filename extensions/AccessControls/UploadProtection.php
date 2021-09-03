@@ -85,7 +85,7 @@ class UploadProtection {
     if ($namespace == '')
       return true;
     
-    $dbw = wfGetDB( DB_MASTER );
+    $dbw = wfGetDB( DB_PRIMARY );
     //$uploadName = self::sanitize($uploadFormObj->mDesiredDestName);
     $uploadName = $uploadFormObj->mDesiredDestName; //replace does sanitize
     $dbw->replace("${egAnnokiTablePrefix}upload_perm_temp", array('upload_name'), array('upload_name' => $uploadName, 'nsName' => $namespace));
@@ -134,7 +134,7 @@ class UploadProtection {
     if ($selectedNamespace == self::no_option || !$selectedNamespace)
       $selectedNamespace = null;
   
-    $dbw = wfGetDB( DB_MASTER );
+    $dbw = wfGetDB( DB_PRIMARY );
     //$uploadName = self::sanitize($image->mDestName);
     $uploadName = $image->getTitle(); //replace does sanitize
     $dbw->replace("${egAnnokiTablePrefix}upload_permissions", array('upload_name'), array('upload_name' => $uploadName, 'nsName' => $selectedNamespace));
@@ -153,7 +153,7 @@ class UploadProtection {
     $title = $article->getTitle();
     if ($title->getNamespace() == NS_FILE){
       print "Deleting";
-      $dbw = wfGetDB( DB_MASTER );
+      $dbw = wfGetDB( DB_PRIMARY );
       $dbw->delete("${egAnnokiTablePrefix}upload_permissions", array('upload_name=\''.$title->getDBkey()."'"));
     }
     return true;

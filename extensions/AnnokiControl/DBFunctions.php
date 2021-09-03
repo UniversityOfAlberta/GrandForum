@@ -119,7 +119,7 @@ class DBFunctions {
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
             DBFunctions::$dbr = wfGetDB(DB_REPLICA);
-            DBFunctions::$dbw = wfGetDB(DB_MASTER);
+            DBFunctions::$dbw = wfGetDB(DB_PRIMARY);
             DBFunctions::$mysqlnd = function_exists('mysqli_fetch_all');
         }
     }
