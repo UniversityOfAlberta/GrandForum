@@ -1389,7 +1389,7 @@ class Project extends BackboneModel {
                 }
             }
             $sql = "SELECT r.user_id, r.start_date 
-                    FROM grand_roles r, grand_roles_projects rp
+                    FROM grand_roles r, grand_role_projects rp
                     WHERE rp.project_id = '{$this->id}'
                     AND r.id = rp.role_id";
             $data = DBFunctions::execSQL($sql);
@@ -1429,7 +1429,7 @@ class Project extends BackboneModel {
                 }
             }
             $sql = "SELECT r.user_id, r.end_date 
-                    FROM grand_roles r, grand_roles_projects rp
+                    FROM grand_roles r, grand_role_projects rp
                     WHERE rp.project_id = '{$this->id}'
                     AND r.id = rp.role_id";
             $data = DBFunctions::execSQL($sql);
