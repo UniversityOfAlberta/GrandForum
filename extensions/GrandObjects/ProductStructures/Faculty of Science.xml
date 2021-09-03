@@ -308,7 +308,7 @@
             <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="Misc" status="Submitted|To Appear|Under Revision|Published|Rejected">
+        <Publication type="Misc" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <data>
                 <field label="Venue" type="String">venue</field>
                 <field label="Location" type="String">location</field>
