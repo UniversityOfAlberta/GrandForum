@@ -127,6 +127,7 @@
                             <th>Case#</th>
                             <th>Name</th>
                             <th>Rank</th>
+                            <th width="1%">{$2_years_ago} Report</th>
                             <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
@@ -147,6 +148,13 @@
                         <td>{$user_level}</td>
                 ]]>
             </Static>
+            <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
@@ -501,6 +509,7 @@
                             <th>Case#</th>
                             <th>Name</th>
                             <th>Rank</th>
+                            <th width="1%">{$2_years_ago} Report</th>
                             <th width="1%">{$last_year} Report</th>
                             <th width="1%">Annual Report</th>
                             <th width="1%">Locked</th>
@@ -520,6 +529,13 @@
                         <td>{$user_level}</td>
                 ]]>
             </Static>
+            <ReportItem id="previous2_download" type="PDFReportItem" reportType="FECpdf" year="{$2_years_ago}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                ]]>
+            </ReportItem>
             <ReportItem id="previous_download" type="PDFReportItem" reportType="FECpdf" year="{$last_year}" class="" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
                 <![CDATA[
                         <td align='center'>
