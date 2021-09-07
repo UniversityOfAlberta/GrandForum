@@ -89,6 +89,7 @@ EOF;
                         }
                         if(@$types[$j] == "Milestones"){
                             $project = Project::newFromHistoricId($this->projectId);
+                            $names = array("");
                             $milestones = array("");
                             $people = Person::getAllPeople(NI);
                             foreach($project->getMilestones() as $milestone){
