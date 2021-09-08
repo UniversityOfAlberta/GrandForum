@@ -162,13 +162,8 @@ class Milestone {
      */
     function getActivity(){
         if($this->activity == null){
-            $data = DBFunctions::select(array('grand_activities'),
-                                        array('name'),
-                                        array('id' => EQ($this->activity_id)));
-            if(isset($data[0])){
-                $this->activity = Activity::newFromId($this->activity_id);
-                return $this->activity;
-            }
+            $activity = Activity::newFromId($this->activity_id);
+            $this->activity = ($activity != null && $activity->getId() != 0) ? $activity : null;
         }
         return $this->activity;
     }
