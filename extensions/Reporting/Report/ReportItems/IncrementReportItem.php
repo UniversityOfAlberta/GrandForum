@@ -126,6 +126,7 @@ class IncrementReportItem extends SelectReportItem {
 	}
 	
 	function render(){
+	    global $wgServer, $wgScriptPath;
 	    $person = Person::newFromId($this->blobSubItem);
 	    $popup = "<div id='previousIncrements{$this->blobSubItem}' title='Previous Increments' style='display:none;'>
 	                <center><b>{$person->getNameForForms()}</b></center>
@@ -133,11 +134,19 @@ class IncrementReportItem extends SelectReportItem {
 	                    <tr>
 	                        <th>FEC Year</th>
 	                        <th>Increment</th>
+	                        <th>PDF</th>
 	                    </tr>";
+	                    
+	    $report = new DummyReport("ChairTable", $person, null, $this->getReport()->year, true);
+	    $report->person = $person;
 	    for($year=$this->getReport()->year; $year >= $this->getReport()->year - 6; $year--){
-	        $popup .= "<tr>
+	        $report->year = $year;
+	        $pdf = $report->getPDF(false, "Recommendations");
+	        $pdfIcon = (isset($pdf[0])) ? "<a class='recommendationPDF' target='_blank' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}'><img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' /></a>" : "";
+	        $popup .= @"<tr>
 	            <td align='center'>{$year}</td>
 	            <td align='center' class='increment{$year}'>{$person->getIncrement($year)}</td>
+	            <td align='center'>{$pdfIcon}</td>
 	        </tr>";
 	    }
 	    $popup .= "</table></div>";
