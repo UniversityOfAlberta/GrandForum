@@ -2671,6 +2671,9 @@ class Person extends BackboneModel {
         $type = DBFunctions::escape($type);
         $startRange = DBFunctions::escape($startRange);
         $endRange = DBFunctions::escape($endRange);
+        if(isset($this->relations["{$type}{$startRange}{$endRange}"])){
+            return $this->relations["{$type}{$startRange}{$endRange}"];
+        }
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'\n";
@@ -2696,6 +2699,7 @@ class Person extends BackboneModel {
                 $relations[] = $relation;
             }
         }
+        $this->relations["{$type}{$startRange}{$endRange}"] = $relations;
         return $relations;
     }
     
