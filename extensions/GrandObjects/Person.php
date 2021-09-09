@@ -3728,7 +3728,7 @@ class Person extends BackboneModel {
         foreach($data as $row){
             $productHistory = ProductHistory::newFromId($row['id']);
             if($productHistory != null && $productHistory->getId() != 0){
-                $histories[] = ProductHistory::newFromId($row['id']);
+                $histories[] = $productHistory;
             }
         }
         return $histories;
@@ -3739,6 +3739,15 @@ class Person extends BackboneModel {
         $year = "";
         foreach($histories as $history){
             $year = max($year, $history->getYear());
+        }
+        return $year;
+    }
+    
+    function getProductHistoryEarliestYear(){
+        $histories = $this->getProductHistories();
+        $year = 9999;
+        foreach($histories as $history){
+            $year = min($year, $history->getYear());
         }
         return $year;
     }
