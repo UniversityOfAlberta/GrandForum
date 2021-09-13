@@ -69,7 +69,7 @@
                 <div style="margin-left:0.5em;">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="evidence" type="Textarea" blobItem="EVIDENCE" rich="true" limit="500" height="175px">
+        <ReportItem id="evidence" type="Textarea" blobItem="SUMMARY" rich="true" limit="500" height="175px">
             <![CDATA[
                 <h4>Non-Confidential Project Summary</h4>
                 {$item}<br /><br />
