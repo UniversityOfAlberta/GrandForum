@@ -337,9 +337,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="acknowledgment" type="Textarea" blobItem="ACKNOWLEDGMENT" optional="true" encrypt="true">
+        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2>Acknowledgment and Agreement</h2>
+                <h2 class="required">Acknowledgment and Agreement</h2>
                 <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
                 {$item}
             ]]>
