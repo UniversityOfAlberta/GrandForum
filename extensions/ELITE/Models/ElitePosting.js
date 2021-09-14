@@ -13,9 +13,12 @@ ElitePosting = Posting.extend({
             companyProfile: "",
             reportsTo: "",
             basedAt: "",
+            training: "",
             responsibilities: "",
             qualifications: "",
             skills: "",
+            level: "Any Level",
+            positions: "",
             comments: "",
         });
     }

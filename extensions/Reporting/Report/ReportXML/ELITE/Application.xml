@@ -7,8 +7,13 @@
             <SectionPermission id="projects" permissions="rw" />
         </Role>
     </Permissions>
-    <!-- Personally identifying information -->
+    <!-- Personal Information -->
     <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
+        <Static>
+            <![CDATA[
+                <b>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/wp-content/uploads/2021/06/EliteProgram_Brochure-for-Interns_FINAL.pdf" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</b>
+            ]]>
+        </Static>
         <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
             <![CDATA[
                 <div class="info">
@@ -21,7 +26,7 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td colspan="4"><h2 style="margin-top:0;">Personally identifying information</h2></td>
+                        <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
                     </tr>
             ]]>
         </Static>
@@ -57,15 +62,6 @@
                 </tr>
             ]]>
         </ReportItem>
-        
-        <!-- Self identifying Section -->
-        <Static>
-            <![CDATA[
-                <tr>
-                    <td colspan="4"><h2>Self identifying Section</h2></td>
-                </tr>
-            ]]>
-        </Static>
         <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-binary|Other|I prefer not to say" encrypt="true">
             <![CDATA[
                 <tr>
@@ -78,6 +74,14 @@
             <![CDATA[
                 <tr>
                     <td class="label">Ethnic Group:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label">Official Languages:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -127,14 +131,6 @@
             <![CDATA[
                 <tr>
                     <td class="label">Province/State:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" optional="true" encrypt="true">
-            <![CDATA[
-                <tr>
-                    <td class="label">Official Languages:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -278,19 +274,52 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="streams" type="Select" blobItem="STREAMS" options="Working with an internship host with a Coaching series|Working with an ELITE Industry or Government Partner" encrypt="true">
+        
+        <!-- Other Obligations -->
+        <Static>
             <![CDATA[
                 <tr>
-                    <td class="label required">ELITE Streams:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td colspan="4"><h2>Other Obligations</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="enrolled" type="Checkbox" blobItem="ENROLLED" blobType="BLOB_ARRAY" options="High School|College/Vocational School|University|Will Not Enroll" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="obligations" type="Select" blobItem="OBLIGATIONS" options="Yes|No|Not Sure" encrypt="true">
+        <ReportItem id="major" type="Text" blobItem="MAJOR" width="250px" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Other Obligations:</td>
-                    <td class="value" colspan="3">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?{$item}</td>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are enrolled in studies at a post-secondary institution (college/vocational school or university), what is your major or program of study?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Radio" blobItem="OTHER" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other2" type="Radio" blobItem="OTHER2" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
@@ -320,10 +349,17 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
+            <![CDATA[
+                <h2 class="required">Acknowledgment and Agreement</h2>
+                <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
             <![CDATA[
                 <h2>Comments</h2>
-                <p>Comments that the candidate may have about the application and/or the program.</p>
+                <p>Please provide any comments that you would like to share with the ELITE Program and the Review Committee.</p>
                 {$item}
             ]]>
         </ReportItem>

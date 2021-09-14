@@ -45,9 +45,11 @@ ElitePostingEditView = PostingEditView.extend({
         this.$("[name=basedAt]").combobox();
         this.renderTinyMCE('companyProfile');
         this.renderTinyMCE('summary');
+        this.renderTinyMCE('training');
         this.renderTinyMCE('responsibilities');
         this.renderTinyMCE('qualifications');
         this.renderTinyMCE('skills');
+        this.renderTinyMCE('positions');
     }
 
 });

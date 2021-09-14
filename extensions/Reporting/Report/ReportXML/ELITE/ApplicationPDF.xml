@@ -263,19 +263,51 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="streams" type="Select" blobItem="STREAMS" options="Working with an internship host with a Coaching series|Working with an ELITE Industry or Government Partner" encrypt="true">
+        <!-- Other Obligations -->
+        <Static>
             <![CDATA[
                 <tr>
-                    <td class="label required">ELITE Streams:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td colspan="4"><h2>Other Obligations</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="enrolled" type="Checkbox" blobItem="ENROLLED" blobType="BLOB_ARRAY" options="High School|College/Vocational School|University|Will Not Enroll" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}<br /><br /></td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="obligations" type="Select" blobItem="OBLIGATIONS" options="Yes|No|Not Sure" encrypt="true">
+        <ReportItem id="major" type="Text" blobItem="MAJOR" width="250px" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Other Obligations:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are enrolled in studies at a post-secondary institution (college/vocational school or university), what is your major or program of study?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}<br /><br /></td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Radio" blobItem="OTHER" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}<br /><br /></td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other2" type="Radio" blobItem="OTHER2" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?</td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="4">{$item}<br /><br /></td>
                 </tr>
             ]]>
         </ReportItem>
@@ -302,6 +334,13 @@
         <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Resume</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="acknowledgment" type="Textarea" blobItem="ACKNOWLEDGMENT" optional="true" encrypt="true">
+            <![CDATA[
+                <h2>Acknowledgment and Agreement</h2>
+                <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
                 {$item}
             ]]>
         </ReportItem>

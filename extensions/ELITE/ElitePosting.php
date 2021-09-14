@@ -12,9 +12,12 @@ class ElitePosting extends Posting {
     var $companyProfile;
     var $reportsTo;
     var $basedAt;
+    var $training;
     var $responsibilities;
     var $qualifications;
     var $skills;
+    var $level;
+    var $positions;
     var $comments;
     
     function ElitePosting($data){
@@ -25,9 +28,12 @@ class ElitePosting extends Posting {
             $this->companyProfile = $row['company_profile'];
             $this->reportsTo = $row['reports_to'];
             $this->basedAt = $row['based_at'];
+            $this->training = $row['training'];
             $this->responsibilities = $row['responsibilities'];
             $this->qualifications = $row['qualifications'];
             $this->skills = $row['skills'];
+            $this->level = $row['level'];
+            $this->positions = $row['positions'];
             $this->comments = $row['comments'];
         }
     }
@@ -66,6 +72,10 @@ class ElitePosting extends Posting {
         return $this->basedAt;
     }
     
+    function getTraining(){
+        return $this->training;
+    }
+    
     function getResponsibilities(){
         return $this->responsibilities;
     }
@@ -76,6 +86,14 @@ class ElitePosting extends Posting {
     
     function getSkills(){
         return $this->skills;
+    }
+    
+    function getLevel(){
+        return $this->level;
+    }
+    
+    function getPositions(){
+        return $this->positions;
     }
     
     function getComments(){
@@ -94,9 +112,12 @@ class ElitePosting extends Posting {
         $json['companyProfile'] = $this->getCompanyProfile();
         $json['reportsTo'] = $this->getReportsTo();
         $json['basedAt'] = $this->getBasedAt();
+        $json['training'] = $this->getTraining();
         $json['responsibilities'] = $this->getResponsibilities();
         $json['qualifications'] = $this->getQualifications();
         $json['skills'] = $this->getSkills();
+        $json['level'] = $this->getLevel();
+        $json['positions'] = $this->getPositions();
         $json['comments'] = $this->getComments();
         return $json;
     }
@@ -109,9 +130,12 @@ class ElitePosting extends Posting {
                                                 'company_profile' => $this->companyProfile,
                                                 'reports_to' => $this->reportsTo,
                                                 'based_at' => $this->basedAt,
+                                                'training' => $this->training,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,
                                                 'skills' => $this->skills,
+                                                'level' => $this->level,
+                                                'positions' => $this->positions,
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
         }
@@ -126,9 +150,12 @@ class ElitePosting extends Posting {
                                                 'company_profile' => $this->companyProfile,
                                                 'reports_to' => $this->reportsTo,
                                                 'based_at' => $this->basedAt,
+                                                'training' => $this->training,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,
                                                 'skills' => $this->skills,
+                                                'level' => $this->level,
+                                                'positions' => $this->positions,
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
         }

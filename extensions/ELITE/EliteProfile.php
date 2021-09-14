@@ -72,7 +72,7 @@ class EliteProfile extends BackboneModel {
             $this->person = Person::newFromId($row['user_id']);
             $this->pdf = PDF::newFromId($row['report_id']);
             $this->status = $this->getBlobValue('STATUS');
-            $this->comments = $this->getBlobValue('COMMENTS');
+            $this->comments = $this->getBlobValue('ADMIN_COMMENTS');
             $projects = $this->getBlobValue('PROJECTS', BLOB_ARRAY);
             if($projects != null && isset($projects['apply'])){
                 foreach($projects['apply'] as $proj){
@@ -153,7 +153,7 @@ class EliteProfile extends BackboneModel {
                 }
             }
             $this->saveBlobValue('STATUS', $this->status);
-            $this->saveBlobValue('COMMENTS', $this->comments);
+            $this->saveBlobValue('ADMIN_COMMENTS', $this->comments);
             $this->saveBlobValue('MATCHES', $matches, BLOB_ARRAY);
         }
     }
