@@ -61,11 +61,8 @@
             <td class="value"><%= HTML.Select(this, 'level', {options: ["High School","Post-secondary","Any Level"] }) %></td>
         </tr>
         <tr>
-            <td class="label left-align" colspan="2">Number of Positions Available:</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="value"><%= HTML.TextArea(this, 'positions', {style: 'height: 200px; width:685px;'}) %></td>
+            <td class="label" title="Number of Positions Available"># Positions Available:</td>
+            <td class="value"><%= HTML.TextBox(this, 'positions', {size: 4}) %></td>
         </tr>
     </table>
 </div>

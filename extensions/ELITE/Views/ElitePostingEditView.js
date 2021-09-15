@@ -43,6 +43,7 @@ ElitePostingEditView = PostingEditView.extend({
             this.model.set('visibility', 'Submitted More Info');
         }
         this.$("[name=basedAt]").combobox();
+        this.$("[name=positions]").forceNumeric({min: 0, max: 1000,includeCommas: false});
         this.renderTinyMCE('companyProfile');
         this.renderTinyMCE('summary');
         this.renderTinyMCE('training');
