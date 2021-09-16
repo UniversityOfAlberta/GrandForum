@@ -70,8 +70,7 @@
             <![CDATA[
                 <tr>
                     <td colspan="2" align="center">
-                        Visit CFN’s website for project team role definitions<br />
-                        <a target='_blank' href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a>
+                        See <a href='{$wgServer}{$wgScriptPath}/data/2021-09-16_CFN RCHA2021 - Intent to Apply.docx' target='_blank'>Appendix</a> for project team role definitions
                     </td>
                 </tr>
                 <tr>
