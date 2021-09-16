@@ -31,7 +31,7 @@
                     <li>The Intent to Apply is for administrative purposes only and will not be adjudicated.</li>
                     <li>Information in this form will be used to determine conflicts of interest when assigning reviewers.</li>
                     <li><b>The title of proposal, Project Leader, other Principal Investigators and Co-Investigators cannot be changed, nor new team members added after this document has been submitted.</b></li> 
-                    <li>Visit CFN’s website for project team role definitions <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf' target="_blank">https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a></li>
+                    <li>See <a href='{$wgServer}{$wgScriptPath}/data/2021-09-16_CFN RCHA2021 - Intent to Apply.docx' target='_blank'>Appendix</a> for project team role definitions</li>
                     <li>This form must be submitted by <b>November 1, 2021 - Noon ET</b>.</li>
                     <li>Please note that all information must be provided in English.</li>
                 </ul>
