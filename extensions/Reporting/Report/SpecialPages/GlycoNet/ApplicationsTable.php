@@ -28,86 +28,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-    
-        $this->nis = Person::getAllPeople(NI);
-        $this->allNis = array_merge($this->nis, 
-                                    Person::getAllCandidates(NI), 
-                                    Person::getAllPeople(EXTERNAL), 
-                                    Person::getAllCandidates(EXTERNAL));
-        
-        $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        $this->projects = Project::getAllProjectsEver();
-        
-        $this->startUpLegal2018Applicants = array();
-        $this->startUpLegal2019Applicants = array();
-        $this->startUpLegal2020Applicants = array();
-        $this->startUpDev2018Applicants = array();
-        $this->cycleIILOIApplicants = array();
-        $this->legacyLOIApplicants = array();
-        $this->strat2017 = array();
-        $this->strat2019 = array();
-        $this->strat2020 = array();
-        $this->strat2021 = array();
-        $this->collab2020 = array();
-        $this->international2021 = array();
-        $this->clinical2020 = array();
-        $this->clinical2021 = array();
-        $this->trans2020 = array();
-        $this->trans2021 = array();
-        $this->tsfHQP = array();
-        foreach(Person::getAllCandidates() as $person){
-            if($person->isSubRole('TSF HQP')){
-                $this->tsfHQP[] = $person;
-            }
-            if($person->isSubRole('Trans2020')){
-                $this->trans2020[] = $person;
-            }
-            if($person->isSubRole('Trans2021')){
-                $this->trans2021[] = $person;
-            }
-            if($person->isSubRole('Strat2017')){
-                $this->strat2017[] = $person;
-            }
-            if($person->isSubRole('Strat2019')){
-                $this->strat2019[] = $person;
-            }
-            if($person->isSubRole('Strat2020')){
-                $this->strat2020[] = $person;
-            }
-            if($person->isSubRole('Strat2021')){
-                $this->strat2021[] = $person;
-            }
-            if($person->isSubRole('Collab2020')){
-                $this->collab2020[] = $person;
-            }
-            if($person->isSubRole('International2021')){
-                $this->international2021[] = $person;
-            }
-            if($person->isSubRole('Clinical2020')){
-                $this->clinical2020[] = $person;
-            }
-            if($person->isSubRole('Clinical2021')){
-                $this->clinical2021[] = $person;
-            }
-            if($person->isSubRole('StartUpLegal2018')){
-                $this->startUpLegal2018Applicants[] = $person;
-            }
-            if($person->isSubRole('StartUpLegal2019')){
-                $this->startUpLegal2019Applicants[] = $person;
-            }
-            if($person->isSubRole('StartUpLegal2020')){
-                $this->startUpLegal2020Applicants[] = $person;
-            }
-            if($person->isSubRole('StartUpDev2018')){
-                $this->startUpDev2018Applicants[] = $person;
-            }
-            if($person->isSubRole('CycleIILOI')){
-                $this->cycleIILOIApplicants[] = $person;
-            }
-            if($person->isSubRole('LegacyLOI')){
-                $this->legacyLOIApplicants[] = $person;
-            }
-        }
+
     }
     
     function generateHTML($wgOut){
@@ -258,9 +179,9 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2017, "2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2016, "2016", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), $this->allNis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), array(), 2017, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), array(), 2016, "2016", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_CATALYST), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -278,17 +199,17 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->trans2021, 2021, "2021", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->trans2020, 2020, "2020", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2016, "2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, $this->allNis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, array(), 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, array(), 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, array(), 2016, "2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateAlberta(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_ALBERTA', $this->allNis, 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ALBERTA', array(), 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -306,12 +227,12 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->collab2020, 2020, "2020", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->allNis, 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', $this->allNis, 2018, "LOI 2018", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_08_2017', $this->allNis, 2017, "08-2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_04_2017', $this->allNis, 2017, "04-2017", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', $this->allNis, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', array(), 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', array(), 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', array(), 2018, "LOI 2018", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_08_2017', array(), 2017, "08-2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_04_2017', array(), 2017, "04-2017", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', array(), 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -329,7 +250,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_INTERNATIONAL', $this->international2021, 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_INTERNATIONAL', array(), 2021, "2021", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -347,8 +268,8 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2021, 2021, "2021", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), $this->clinical2020, 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), array(), 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), array(), 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -366,7 +287,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', $this->cycleIILOIApplicants, 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', array(), 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -384,7 +305,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_LEGACY', $this->legacyLOIApplicants, 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_LEGACY', array(), 2021, "2021", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -402,137 +323,137 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2021, 2021, "2021", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2020, 2020, "2020", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2019, 2019, "2019", array($reviewers)));
-        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', $this->strat2017, 2017, "2017-18", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', array(), 2021, "2021", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', array(), 2020, "2020", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', array(), 2019, "2019", array($reviewers)));
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', array(), 2017, "2017-18", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateStartUp(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2020Applicants, 2020, "Legal2020", array(), false, array(0,1,2)));
-        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2019Applicants, 2019, "Legal2019", array(), false, array(0,1,2)));
-        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', $this->startUpLegal2018Applicants, 2018, "Legal2018"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), $this->startUpDev2018Applicants, 2018, "Dev2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', array(), 2020, "Legal2020", array(), false, array(0,1,2)));
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', array(), 2019, "Legal2019", array(), false, array(0,1,2)));
+        $tabbedPage->addTab(new ApplicationTab('RP_START_UP_LEGAL', array(), 2018, "Legal2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_START_UP_DEV'), array(), 2018, "Dev2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateHQPResearch(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), $this->hqps, 2021, "2021"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), $this->hqps, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), array(), 2021, "2021"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), array(), 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateExchange(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2018, "2018", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2017, "2017", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), $this->hqps, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), array(), 2018, "2018", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), array(), 2017, "2017", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), array(), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_EXCHANGE', 'RP_HQP_EXCHANGE_REPORT'), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2021, "2021", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2020, "2020", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2018, "2018", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2017, "2017", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), $this->hqps, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2021, "2021", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2020, "2020", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2018, "2018", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2017, "2017", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateATOP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2021, "2021", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2020, "2020", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2018, "2018", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2017, "2017", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), $this->hqps, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), array(), 2021, "2021", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), array(), 2020, "2020", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), array(), 2018, "2018", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), array(), 2017, "2017", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), array(), 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateBioTalent(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_BIO_TALENT'), $this->hqps, 2021, "2021", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_BIO_TALENT'), array(), 2021, "2021", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateTSF(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_SKILLS_SURVEY'), $this->tsfHQP, 0, "Survey", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_SKILLS_SURVEY'), array(), 0, "Survey", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCSPC(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), $this->hqps, 2020, "2020", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), $this->hqps, 2019, "2019", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), array(), 2020, "2020", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CSPC'), array(), 2019, "2019", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateTech(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $this->nis, 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), $this->nis, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), array(), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_TECH_WORKSHOP'), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateRegional(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array_merge(Person::getAllPeople(HQP), $this->nis), 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array_merge(Person::getAllPeople(HQP), $this->nis), 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array(), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_REGIONAL_MEETING'), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateSeminar(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2018, "2018", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2017, "2017", array(), true));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), $this->nis, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), array(), 2018, "2018", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), array(), 2017, "2017", array(), true));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_SEMINAR_SERIES'), array(), 2016, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateProject(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2017, "2017"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), $this->projects, 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(array(RP_PROGRESS), array(), 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateProjectMilestones(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), $this->projects, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), array(), 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), array(), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), array(), 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab(array('RP_MILE_REPORT'), array(), 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateProjectProposals(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab(array('RP_PROJECT_PROPOSAL_ZIP'), $this->projects, 2015, "2015");
+        $tab = new ApplicationTab(array('RP_PROJECT_PROPOSAL_ZIP'), array(), 2015, "2015");
         $tab->showAllWithPDFs = true;
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
