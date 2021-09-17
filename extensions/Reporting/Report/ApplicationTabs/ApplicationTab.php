@@ -35,11 +35,15 @@ class ApplicationTab extends AbstractTab {
             foreach($data as $row){
                 if($row['user_id'] != 0){
                     $person = Person::newFromId($row['user_id']);
-                    $this->people[$person->getId()] = $person;
+                    if($person != null && $person->getId() != 0){
+                        $this->people[$person->getId()] = $person;
+                    }
                 }
                 else{
                     $project = Project::newFromId($row['proj_id']);
-                    $this->people[$project->getId()] = $project;
+                    if($project != null && $project->getId() != 0){
+                        $this->people[$project->getId()] = $project;
+                    }
                 }
             }
         }
