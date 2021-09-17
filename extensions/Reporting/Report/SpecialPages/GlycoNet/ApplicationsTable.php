@@ -28,7 +28,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-
+        $this->projects = Project::getAllProjectsEver();
     }
     
     function generateHTML($wgOut){
@@ -453,7 +453,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectProposals(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab(array('RP_PROJECT_PROPOSAL_ZIP'), array(), 2015, "2015");
+        $tab = new ApplicationTab(array('RP_PROJECT_PROPOSAL_ZIP'), $this->projects, 2015, "2015");
         $tab->showAllWithPDFs = true;
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
