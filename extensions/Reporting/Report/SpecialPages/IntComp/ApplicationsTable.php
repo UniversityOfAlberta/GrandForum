@@ -146,15 +146,15 @@ class ApplicationsTable extends SpecialPage{
         $secondary_other->setId("secondary_other");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab1 = new ApplicationTab('RP_LOI' array(), 2018, "Winter 2019", array('Title' => $title, 
-                                                                                'Duration' => $duration,
-                                                                                'Budget ($K)' => $budget,
-                                                                                'PI' => $pi,
-                                                                                'Contact' => $contact,
-                                                                                'Primary' => $primary,
-                                                                                'Primary (Other)' => $primary_other,
-                                                                                'Secondary' => $secondary,
-                                                                                'Secondary (Other)' => $secondary_other));
+        $tab1 = new ApplicationTab('RP_LOI', array(), 2018, "Winter 2019", array('Title' => $title, 
+                                                                                 'Duration' => $duration,
+                                                                                 'Budget ($K)' => $budget,
+                                                                                 'PI' => $pi,
+                                                                                 'Contact' => $contact,
+                                                                                 'Primary' => $primary,
+                                                                                 'Primary (Other)' => $primary_other,
+                                                                                 'Secondary' => $secondary,
+                                                                                 'Secondary (Other)' => $secondary_other));
         $tab1->idProjectRange = array(0,1);
         
         $tab2 = new ApplicationTab('RP_LOI_FALL_2019', array(), 2018, "Fall 2019", array('Title' => $title, 
