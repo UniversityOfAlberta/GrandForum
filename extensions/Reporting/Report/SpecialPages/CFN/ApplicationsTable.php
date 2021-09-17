@@ -46,6 +46,9 @@ class ApplicationsTable extends SpecialPage{
         
         $this->hqps = array_merge($this->fullHQPs,
                                   Person::getAllCandidates(HQP));
+                                  
+        $this->everyone = array_merge(Person::getAllPeople(),
+                                      Person::getAllCandidates());
 
         $this->projects = Project::getAllProjects();
     }
@@ -132,9 +135,9 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("class", "wikitable");
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
-        $tabbedPage->addTab(new ApplicationTab("KT2019Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array_merge($this->nis, $this->inactives), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
-        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->nis, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Application", $this->everyone, 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", $this->everyone, 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", $this->everyone, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -165,15 +168,15 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
         //$tabbedPage->addTab(new ApplicationTab("KTRCHA2021Application", array_merge($this->nis, $this->inactives), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array_merge($this->nis, $this->inactives, array(Person::newFromId("3124"))), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", $this->everyone, 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("Catalyst2018Application", $this->nis, 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", $this->nis, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2018Application", $this->everyone, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", $this->everyone, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
