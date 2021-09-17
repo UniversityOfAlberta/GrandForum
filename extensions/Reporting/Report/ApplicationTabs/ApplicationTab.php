@@ -10,7 +10,7 @@ class ApplicationTab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function ApplicationTab($rp, $people, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
+    function ApplicationTab($rp, $people=array(), $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
@@ -26,6 +26,22 @@ class ApplicationTab extends AbstractTab {
         }
         else{
             $report = new DummyReport($this->rp, $me, null, $year);
+        }
+        if(count($this->people) == 0){
+            $data = DBFunctions::select(array('grand_report_blobs'),
+                                        array('user_id', 'proj_id'),
+                                        array('rp_type' => $report->reportType,
+                                              'year' => $year));
+            foreach($data as $row){
+                if($row['user_id'] != 0){
+                    $person = Person::newFromId($row['user_id']);
+                    $this->people[$person->getId()] = $person;
+                }
+                else{
+                    $project = Project::newFromId($row['proj_id']);
+                    $this->people[$project->getId()] = $project;
+                }
+            }
         }
         if($title == null){
             parent::AbstractTab($report->name);
