@@ -28,15 +28,7 @@ class ApplicationsTable extends SpecialPage{
     }
     
     function initArrays(){
-        $this->allPeople = Person::getAllCandidates(); 
-        $this->nis = Person::getAllPeople(NI);
-        $this->allNis = array_merge($this->nis, 
-                                    Person::getAllCandidates(NI), 
-                                    Person::getAllPeople(EXTERNAL), 
-                                    Person::getAllCandidates(EXTERNAL));
         
-        $this->hqps = array_merge(Person::getAllPeople(HQP), Person::getAllCandidates(HQP));
-        $this->projects = Project::getAllProjectsEver();
     }
     
     function generateHTML($wgOut){
@@ -154,32 +146,32 @@ class ApplicationsTable extends SpecialPage{
         $secondary_other->setId("secondary_other");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab1 = new ApplicationTab('RP_LOI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title, 
+        $tab1 = new ApplicationTab('RP_LOI' array(), 2018, "Winter 2019", array('Title' => $title, 
+                                                                                'Duration' => $duration,
+                                                                                'Budget ($K)' => $budget,
+                                                                                'PI' => $pi,
+                                                                                'Contact' => $contact,
+                                                                                'Primary' => $primary,
+                                                                                'Primary (Other)' => $primary_other,
+                                                                                'Secondary' => $secondary,
+                                                                                'Secondary (Other)' => $secondary_other));
+        $tab1->idProjectRange = array(0,1);
+        
+        $tab2 = new ApplicationTab('RP_LOI_FALL_2019', array(), 2018, "Fall 2019", array('Title' => $title, 
                                                                                          'Duration' => $duration,
                                                                                          'Budget ($K)' => $budget,
                                                                                          'PI' => $pi,
                                                                                          'Contact' => $contact,
                                                                                          'Primary' => $primary,
-                                                                                         'Primary (Other)' => $primary_other,
-                                                                                         'Secondary' => $secondary,
-                                                                                         'Secondary (Other)' => $secondary_other));
-        $tab1->idProjectRange = array(0,1);
-        
-        $tab2 = new ApplicationTab('RP_LOI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title, 
-                                                                                                  'Duration' => $duration,
-                                                                                                  'Budget ($K)' => $budget,
-                                                                                                  'PI' => $pi,
-                                                                                                  'Contact' => $contact,
-                                                                                                  'Primary' => $primary,
-                                                                                                  'Secondary' => $secondary));
+                                                                                         'Secondary' => $secondary));
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         
-        $tab3 = new ApplicationTab('RP_LOI_2021', $this->allPeople, 2021, "Spring 2021", array('Title' => $title, 
-                                                                                               'Duration' => $duration,
-                                                                                               'PI' => $pi,
-                                                                                               'Contact' => $contact,
-                                                                                               'Primary' => $primary,
-                                                                                               'Secondary' => $secondary));
+        $tab3 = new ApplicationTab('RP_LOI_2021', array(), 2021, "Spring 2021", array('Title' => $title, 
+                                                                                      'Duration' => $duration,
+                                                                                      'PI' => $pi,
+                                                                                      'Contact' => $contact,
+                                                                                      'Primary' => $primary,
+                                                                                      'Secondary' => $secondary));
         $tab3->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         
         $tabbedPage->addTab($tab3);
@@ -199,10 +191,10 @@ class ApplicationsTable extends SpecialPage{
         $title->setId("title");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab1 = new ApplicationTab('RP_HUAWEI', $this->allPeople, 2018, "Winter 2019", array('Title' => $title));
+        $tab1 = new ApplicationTab('RP_HUAWEI', array(), 2018, "Winter 2019", array('Title' => $title));
         $tab1->idProjectRange = array(0,1);
         
-        $tab2 = new ApplicationTab('RP_HUAWEI_FALL_2019', $this->allPeople, 2018, "Fall 2019", array('Title' => $title));
+        $tab2 = new ApplicationTab('RP_HUAWEI_FALL_2019', array(), 2018, "Fall 2019", array('Title' => $title));
         $tab2->idProjectRange = array(0,1,2,3,4,5,6,7,8,9);
         $tabbedPage->addTab($tab2);
         $tabbedPage->addTab($tab1);
@@ -213,8 +205,8 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2021, "May 2021"));
-        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", $this->projects, 2018, "2020"));
+        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", array(), 2021, "May 2021"));
+        $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", array(), 2018, "2020"));
         
         $wgOut->addHTML($tabbedPage->showPage());
     }
