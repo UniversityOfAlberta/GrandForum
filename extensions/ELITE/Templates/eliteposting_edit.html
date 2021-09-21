@@ -25,6 +25,18 @@
             <td class="value"><%= HTML.Select(this, 'basedAt', {options: _.pluck(cities, 'name')}) %></td>
         </tr>
         <tr>
+            <td class="label">Contact Person:</td>
+            <td class="value"><%= HTML.TextBox(this, 'contact', {size: 20}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Email Address:</td>
+            <td class="value"><%= HTML.TextBox(this, 'email', {size: 20}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Phone Number:</td>
+            <td class="value"><%= HTML.TextBox(this, 'phone', {size: 20}) %></td>
+        </tr>
+        <tr>
             <td class="label">Project Description:</td>
             <td class="value"><%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %></td>
         </tr>

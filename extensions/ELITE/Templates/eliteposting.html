@@ -26,7 +26,7 @@
         <% if(companyProfile != ""){ %>
             <tr>
                 <td class="label">Company Profile:</td>
-                <td clas="value"><%= companyProfile %></td>
+                <td class="value"><%= companyProfile %></td>
             </tr>
         <% } %>
         <% if(reportsTo != ""){ %>
@@ -39,6 +39,24 @@
             <tr>
                 <td class="label">Based in:</td>
                 <td class="value"><%= basedAt %></td>
+            </tr>
+        <% } %>
+        <% if(contact != ""){ %>
+            <tr>
+                <td class="label">Contact Person:</td>
+                <td class="value"><%= contact %></td>
+            </tr>
+        <% } %>
+        <% if(email != ""){ %>
+            <tr>
+                <td class="label">Email Address:</td>
+                <td class="value"><a href="mailto:<%= email %>"><%= email %></a></td>
+            </tr>
+        <% } %>
+        <% if(phone != ""){ %>
+            <tr>
+                <td class="label">Phone Number:</td>
+                <td class="value"><%= phone %></td>
             </tr>
         <% } %>
         <% if(summary != ""){ %>

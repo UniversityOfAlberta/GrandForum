@@ -1175,6 +1175,11 @@ del {
     top: 0;
 }
 
+.value p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
 .required {
     position: relative;
 }

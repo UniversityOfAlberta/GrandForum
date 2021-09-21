@@ -12,6 +12,9 @@ class ElitePosting extends Posting {
     var $companyProfile;
     var $reportsTo;
     var $basedAt;
+    var $contact;
+    var $email;
+    var $phone;
     var $training;
     var $responsibilities;
     var $qualifications;
@@ -28,6 +31,9 @@ class ElitePosting extends Posting {
             $this->companyProfile = $row['company_profile'];
             $this->reportsTo = $row['reports_to'];
             $this->basedAt = $row['based_at'];
+            $this->contact = $row['contact'];
+            $this->email = $row['email'];
+            $this->phone = $row['phone'];
             $this->training = $row['training'];
             $this->responsibilities = $row['responsibilities'];
             $this->qualifications = $row['qualifications'];
@@ -72,6 +78,18 @@ class ElitePosting extends Posting {
         return $this->basedAt;
     }
     
+    function getContact(){
+        return $this->contact;
+    }
+    
+    function getEmail(){
+        return $this->email;
+    }
+    
+    function getPhone(){
+        return $this->phone;
+    }
+    
     function getTraining(){
         return $this->training;
     }
@@ -112,6 +130,9 @@ class ElitePosting extends Posting {
         $json['companyProfile'] = $this->getCompanyProfile();
         $json['reportsTo'] = $this->getReportsTo();
         $json['basedAt'] = $this->getBasedAt();
+        $json['contact'] = $this->getContact();
+        $json['email'] = $this->getEmail();
+        $json['phone'] = $this->getPhone();
         $json['training'] = $this->getTraining();
         $json['responsibilities'] = $this->getResponsibilities();
         $json['qualifications'] = $this->getQualifications();
@@ -130,6 +151,9 @@ class ElitePosting extends Posting {
                                                 'company_profile' => $this->companyProfile,
                                                 'reports_to' => $this->reportsTo,
                                                 'based_at' => $this->basedAt,
+                                                'contact' => $this->contact,
+                                                'email' => $this->email,
+                                                'phone' => $this->phone,
                                                 'training' => $this->training,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,
@@ -150,6 +174,9 @@ class ElitePosting extends Posting {
                                                 'company_profile' => $this->companyProfile,
                                                 'reports_to' => $this->reportsTo,
                                                 'based_at' => $this->basedAt,
+                                                'contact' => $this->contact,
+                                                'email' => $this->email,
+                                                'phone' => $this->phone,
                                                 'training' => $this->training,
                                                 'responsibilities' => $this->responsibilities,
                                                 'qualifications' => $this->qualifications,

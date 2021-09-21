@@ -33,7 +33,7 @@
         <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Last Name:</td>
+                    <td class="label required" style="width: 100px;">Last Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -321,13 +321,26 @@
                 <tr>
                     <td class="value" colspan="4">{$item}</td>
                 </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <!-- Available Projects -->
+        <Static>
+            <![CDATA[
+                <h2>Available Projects</h2>
+                <p>Internship hosts have provided brief descriptions of possible projects. Please review all the internship host project descriptions. Select your top five projects in order of preference. If there are more than five projects that interest you, please state the additional ones in the Comments Box below.</p>
+            ]]>
+        </Static>
+        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
         
         <!-- Attachments -->
         <Static>
             <![CDATA[
-                </table>
                 <h2>Attachments</h2>
             ]]>
         </Static>
@@ -368,7 +381,7 @@
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
-    <ReportSection id="projects" type="EditableReportSection" blobSection="PROFILE" name="Projects" title="Projects" renderpdf="false">
+    <!--ReportSection id="projects" type="EditableReportSection" blobSection="PROFILE" name="Projects" title="Projects" renderpdf="false">
         <Static>
             <![CDATA[
                 <h3>Choose the projects you wish to apply for.</h3>
@@ -437,5 +450,5 @@
                 </script>
             ]]>
         </Static>
-    </ReportSection>
+    </ReportSection-->
 </Report>

@@ -14,11 +14,11 @@ ElitePostingEditView = PostingEditView.extend({
                 menubar: false,
                 relative_urls : false,
                 convert_urls: false,
-                plugins: 'link image charmap lists table paste',
+                plugins: 'link charmap lists table paste',
                 toolbar: [
                     'undo redo | bold italic underline | link charmap | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
                 ],
-                paste_data_images: true,
+                paste_data_images: false,
                 invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
                 imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
                 setup: function(ed){
