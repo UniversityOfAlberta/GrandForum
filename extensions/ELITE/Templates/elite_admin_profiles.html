@@ -50,9 +50,11 @@
                     <% } else { %>
                         <button class="match" data-id="<%= profile.get('id') %>">Match</button>
                         <div id="match_<%= profile.get('id') %>" style="display:none;">
-                            <% _.each(profile.get('projects'), function(project){ %>
-                                <input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.companyName %>)<br />
-                            <% }) %>
+                            <ol>
+                                <% _.each(profile.get('projects'), function(project){ %>
+                                    <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.companyName %>)</li>
+                                <% }) %>
+                            </ol>
                         </div>
                     <% } %>
                 </td>

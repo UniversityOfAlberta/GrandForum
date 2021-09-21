@@ -76,6 +76,12 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                                 $('#projects #available_projects').append(row);
                             }
                         });
+                        if($('#projects #selected_projects li').length >= 5){
+                            $('#projects #available_projects input').prop('disabled', true);
+                        }
+                        else {
+                            $('#projects #available_projects input').prop('disabled', false);
+                        }
                     }
                     
                     $('#projects input').change(updateProjects);
