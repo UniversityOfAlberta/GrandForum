@@ -125,7 +125,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Antimicrobials|Chronic diseases|Diabetes and obesity|Rare genetic diseases|Therapeutic proteins and vaccines">
+        <ReportItem id="theme" type="Radio" blobItem="THEME" orientation="vertical" options="Cancer|Chronic Diseases|Infectious Diseases|Neurodegenerative Diseases">
             <![CDATA[
                 <tr>
                     <td valign='top' align='right'><b>Theme:</b></td>

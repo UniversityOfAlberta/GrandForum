@@ -328,7 +328,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="theme" type="Radio" blobItem="THEME" blobSubItem="{$user_id}" orientation="vertical" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
+                <ReportItem id="theme" type="Radio" blobItem="THEME" blobSubItem="{$user_id}" orientation="vertical" options="Cancer|Chronic Diseases|Infectious Diseases|Neurodegenerative Diseases">
                     <![CDATA[
                         <tr>
                             <td valign='top' align='right'><b>Theme:</b></td>
