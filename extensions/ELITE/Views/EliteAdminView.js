@@ -285,14 +285,14 @@ EliteAdminProfilesView = Backbone.View.extend({
             draggable: false,
             buttons: {
                 "Match": function(){
-                    $("ul", this.matchConfirmDialog).empty();
+                    $("#matchConfirmDialog ul").empty();
                     if($("input[type=checkbox]:checked", this.matchDialog).length > 0){
                         $("input[type=checkbox]:checked", this.matchDialog).each(function(i, el){
-                            $("ul", this.matchConfirmDialog).append("<li>" + $(el).parent().text() + "</li>");
+                            $("#matchConfirmDialog ul").append("<li>" + $(el).parent().text() + "</li>");
                         });
                     }
                     else{
-                        $("ul", this.matchConfirmDialog).append("<li>No Projects Selected</li>");
+                        $("#matchConfirmDialog ul").append("<li>No Projects Selected</li>");
                     }
                     this.matchConfirmDialog.dialog('open');
                 }.bind(this),
