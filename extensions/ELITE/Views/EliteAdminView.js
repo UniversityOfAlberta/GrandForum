@@ -32,6 +32,8 @@ EliteAdminPostingsView = PostingsView.extend({
     acceptDialog: null,
     moreDialog: null,
     rejectDialog: null,
+    matchDialog: null,
+    matchConfirmDialog: null,
     
     initialize: function(){
         this.model.fetch();
@@ -283,16 +285,41 @@ EliteAdminProfilesView = Backbone.View.extend({
             draggable: false,
             buttons: {
                 "Match": function(){
+                    $("ul", this.matchConfirmDialog).empty();
+                    if($("input[type=checkbox]:checked", this.matchDialog).length > 0){
+                        $("input[type=checkbox]:checked", this.matchDialog).each(function(i, el){
+                            $("ul", this.matchConfirmDialog).append("<li>" + $(el).parent().text() + "</li>");
+                        });
+                    }
+                    else{
+                        $("ul", this.matchConfirmDialog).append("<li>No Projects Selected</li>");
+                    }
+                    this.matchConfirmDialog.dialog('open');
+                }.bind(this),
+                "Cancel": function(){
+                    this.matchDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        this.matchConfirmDialog = this.$("#matchConfirmDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Match": function(){
                     var matches = [];
                     $("input[type=checkbox]:checked", this.matchDialog).each(function(i, el){
                         matches.push($(el).val());
                     });
                     this.matchDialog.model.set('matches', matches);
                     this.matchDialog.model.save();
+                    this.matchConfirmDialog.dialog('close');
                     this.matchDialog.dialog('close');
                 }.bind(this),
                 "Cancel": function(){
-                    this.matchDialog.dialog('close');
+                    this.matchConfirmDialog.dialog('close');
                 }.bind(this)
             }
         });
