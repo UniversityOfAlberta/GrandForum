@@ -13,7 +13,7 @@
         <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Last Name:</td>
+                    <td class="label">Last Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -21,7 +21,7 @@
         <ReportItem id="first_name" type="Text" blobItem="FIRST_NAME" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">First Name:</td>
+                    <td class="label">First Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -37,7 +37,7 @@
         <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Date of Birth:</td>
+                    <td class="label">Date of Birth:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -54,19 +54,31 @@
         <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-binary|Other|I prefer not to say" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Gender:</td>
+                    <td class="label">Gender:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese Filipino Arab Southeast Asian|West Asian|Other(s)|I prefer not to say" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples)|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese Filipino Arab Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.) Korean Japanese|Other(s)|I prefer not to say" optional="true" encrypt="true">
+        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Ethnic Group:</td>
-                    <td class="value" colspan="3">{$item}</td>
-                </tr>
+                    <td class="value" colspan="3"><i>{replace(Other,,{getArray(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic)})}</i>
             ]]>
         </ReportItem>
+        <If if="{contains({getArray(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic,;)},Other)}">
+            <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" placeholder="Other...">
+                <![CDATA[
+                    <i>{$item}</i>
+                ]]>
+            </ReportItem>
+        </If>
+        <Static>
+            <![CDATA[
+                        </td>
+                    </tr>
+            ]]>
+        </Static>
         
         <!-- Education -->
         <Static>
@@ -76,7 +88,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High-school|Post-secondary|Transitioning from High School to Post secondary|Other" optional="true" encrypt="true">
+        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High-school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Education:</td>
@@ -84,7 +96,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" optional="true" encrypt="true">
+        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Enrollment in Fall:</td>
@@ -92,7 +104,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" optional="true" encrypt="true">
+        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="Name of the educational institution">Institution Name:</td>
@@ -100,7 +112,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" optional="true" encrypt="true">
+        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">City:</td>
@@ -108,7 +120,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" optional="true" encrypt="true">
+        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Province/State:</td>
@@ -116,7 +128,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" optional="true" encrypt="true">
+        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Official Languages:</td>
@@ -133,7 +145,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" optional="true" encrypt="true">
+        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="Street Name and number">Address Line 1:</td>
@@ -142,7 +154,7 @@
         </ReportItem>
         <ReportItem id="email" type="Text" blobItem="EMAIL" encrypt="true">
             <![CDATA[
-                    <td class="label required">E-mail:</td>
+                    <td class="label">E-mail:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
@@ -156,12 +168,12 @@
         </ReportItem>
         <ReportItem id="phone" type="Text" blobItem="PHONE" encrypt="true">
             <![CDATA[
-                    <td class="label tooltip required" title="Phone number of the individual">Cellphone Number:</td>
+                    <td class="label tooltip" title="Phone number of the individual">Cellphone Number:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="city" type="Text" blobItem="CITY" optional="true" encrypt="true">
+        <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="City">City:</td>
@@ -170,12 +182,12 @@
         </ReportItem>
         <ReportItem id="contact_name" type="Text" blobItem="CONTACT_NAME" encrypt="true">
             <![CDATA[
-                    <td class="label tooltip required" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
+                    <td class="label tooltip" title="Name of the individual's emergency contact">Emergency Contact Name:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="prov" type="Text" blobItem="PROV" optional="true" encrypt="true">
+        <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label tooltip" title="Province">Province/State:</td>
@@ -184,12 +196,12 @@
         </ReportItem>
         <ReportItem id="contact" type="Text" blobItem="CONTACT" encrypt="true">
             <![CDATA[
-                    <td class="label tooltip required" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
+                    <td class="label tooltip" title="Phone number of the individual's emergency contact">Emergency Contact:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="zip" type="Text" blobItem="ZIP" optional="true" encrypt="true">
+        <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Zip/Postal Code:</td>
@@ -250,7 +262,7 @@
         <ReportItem id="immigration" type="ComboBoxReportItem" blobItem="IMMIGRATION" options="Citizen Permanent Resident|Refugee|International Student|Work Permit Holder" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Canadian Immigration Status:</td>
+                    <td class="label">Canadian Immigration Status:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -258,7 +270,7 @@
         <ReportItem id="eligibility" type="Select" blobItem="ELIGIBILITY" options="Yes|No|Not sure" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Eligibility to Work in Canada:</td>
+                    <td class="label">Eligibility to Work in Canada:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -321,25 +333,25 @@
         <ReportItem id="aspirations" type="UploadPDF" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h2>Attachments</h2>
-                <h3 class="required">Professional Aspirations and Academic Interests</h3>
+                <h3>Professional Aspirations and Academic Interests</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="transcript" type="UploadPDF" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Transcript</h3>
+                <h3>Transcript</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Resume</h3>
+                <h3>Résumé</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2 class="required">Acknowledgment and Agreement</h2>
+                <h2>Acknowledgment and Agreement</h2>
                 <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
                 {$item}
             ]]>

@@ -11,7 +11,7 @@
     <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
         <Static>
             <![CDATA[
-                <b>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/wp-content/uploads/2021/06/EliteProgram_Brochure-for-Interns_FINAL.pdf" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</b>
+                <b>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</b>
             ]]>
         </Static>
         <If if="{==({getText(RP_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
@@ -46,10 +46,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
+        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Middle Name:</td>
+                    <td class="label required">Middle Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -70,18 +70,24 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese Filipino Arab Southeast Asian|West Asian|Other(s)|I prefer not to say" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples)|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese Filipino Arab Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.) Korean Japanese|Other(s)|I prefer not to say" optional="true" encrypt="true">
+        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Ethnic Group:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td class="label required">Ethnic Group:</td>
+                    <td class="value" colspan="3">{$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" optional="true" placeholder="Other...">
+            <![CDATA[
+                        <div style="position: absolute; margin-top: -28px; margin-left: 24px;">{$item}</div>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" optional="true" encrypt="true">
+        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Official Languages:</td>
+                    <td class="label required">Official Languages:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -95,42 +101,42 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High-school|Post-secondary|Transitioning from High School to Post secondary|Other" optional="true" encrypt="true">
+        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High-school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Education:</td>
+                    <td class="label required">Education:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" optional="true" encrypt="true">
+        <ReportItem id="enrollment" type="Select" blobItem="ENROLLMENT" options="High School|College/Vocational School|University|WILL NOT ENROLL" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Enrollment in Fall:</td>
+                    <td class="label required">Enrollment in Fall:</td>
                     <td class="value" colspan="3">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" optional="true" encrypt="true">
+        <ReportItem id="institution_name" type="Text" blobItem="INSTITUTION_NAME" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label tooltip" title="Name of the educational institution">Institution Name:</td>
+                    <td class="label tooltip required" title="Name of the educational institution">Institution Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" optional="true" encrypt="true">
+        <ReportItem id="institution_city" type="Text" blobItem="INSTITUTION_CITY" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">City:</td>
+                    <td class="label required">City:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" optional="true" encrypt="true">
+        <ReportItem id="institution_prov" type="Text" blobItem="INSTITUTION_PROV" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Province/State:</td>
+                    <td class="label required">Province/State:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
@@ -144,10 +150,10 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" optional="true" encrypt="true">
+        <ReportItem id="address1" type="Text" blobItem="ADDRESS1" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label tooltip" title="Street Name and number">Address Line 1:</td>
+                    <td class="label tooltip required" title="Street Name and number">Address Line 1:</td>
                     <td class="value" style="width:200px">{$item}</td>
             ]]>
         </ReportItem>
@@ -172,10 +178,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="city" type="Text" blobItem="CITY" optional="true" encrypt="true">
+        <ReportItem id="city" type="Text" blobItem="CITY" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label tooltip" title="City">City:</td>
+                    <td class="label tooltip required" title="City">City:</td>
                     <td class="value">{$item}</td>
             ]]>
         </ReportItem>
@@ -186,10 +192,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="prov" type="Text" blobItem="PROV" optional="true" encrypt="true">
+        <ReportItem id="prov" type="Text" blobItem="PROV" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label tooltip" title="Province">Province/State:</td>
+                    <td class="label tooltip required" title="Province">Province/State:</td>
                     <td class="value">{$item}</td>
             ]]>
         </ReportItem>
@@ -200,10 +206,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="zip" type="Text" blobItem="ZIP" optional="true" encrypt="true">
+        <ReportItem id="zip" type="Text" blobItem="ZIP" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label">Zip/Postal Code:</td>
+                    <td class="label required">Zip/Postal Code:</td>
                     <td class="value">{$item}</td>
                 </tr>
             ]]>
@@ -283,10 +289,10 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="enrolled" type="Checkbox" blobItem="ENROLLED" blobType="BLOB_ARRAY" options="High School|College/Vocational School|University|Will Not Enroll" optional="true" encrypt="true">
+        <ReportItem id="enrolled" type="Checkbox" blobItem="ENROLLED" blobType="BLOB_ARRAY" options="High School|College/Vocational School|University|Will Not Enroll" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</td>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
                 </tr>
                 <tr>
                     <td class="value" colspan="4">{$item}</td>
@@ -303,20 +309,20 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other" type="Radio" blobItem="OTHER" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" optional="true" encrypt="true">
+        <ReportItem id="other" type="Radio" blobItem="OTHER" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?</td>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
                 </tr>
                 <tr>
                     <td class="value" colspan="4">{$item}</td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other2" type="Radio" blobItem="OTHER2" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" optional="true" encrypt="true">
+        <ReportItem id="other2" type="Radio" blobItem="OTHER2" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?</td>
+                    <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
                 </tr>
                 <tr>
                     <td class="value" colspan="4">{$item}</td>
@@ -347,18 +353,20 @@
         <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Professional Aspirations and Academic Interests</h3>
+                Please see the Brochure for Interns for a template with requirements and tips.
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="transcript" type="Upload" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Transcript</h3>
+                For high school applicants, please submit a full Government transcript, or a full high school transcript obtained from your school. An example of a full Government transcript can be found <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>HERE</a>. If you attend a school in the Edmonton Public School system, you or your parent or guardian can visit SchoolZone at https://www.epsb.ca/schools/schoolzone/ to get a copy of your full high school transcript. Please speak with your schoolteacher, guidance counsellor, or school office if you need help.
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="resume" type="Upload" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
-                <h3 class="required">Resume</h3>
+                <h3 class="required">Résumé</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -381,74 +389,4 @@
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
     </ReportSection>
-    <!--ReportSection id="projects" type="EditableReportSection" blobSection="PROFILE" name="Projects" title="Projects" renderpdf="false">
-        <Static>
-            <![CDATA[
-                <h3>Choose the projects you wish to apply for.</h3>
-                <table id='apply_table' class='wikitable' width='100%'>
-                    <thead>
-                        <tr>
-                            <th style='width:100px;'>Apply</th>
-                            <th style='width:100px;'>Date</th>
-                            <th style='width:50%;'>Company Name</th>
-                            <th style='width:50%;'>Position</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet type="ElitePostings">
-            <ReportItem id="apply" type="Checkbox" blobItem="PROJECTS" blobType="BLOB_ARRAY" options="{getElitePostingField(id)}" labels="">
-                <![CDATA[
-                    <tr>
-                        <td align="center"><div style='margin-left:2px;'>{$item}</div></td>
-                ]]>
-            </ReportItem>
-            <Static>
-                <![CDATA[
-                        <td style='white-space:nowrap;'><span style='display:none;'>{getElitePostingField(created)}</span>{time2date({getElitePostingField(created)})}</td>
-                        <td><a id='{getElitePostingField(id)}' class='elite_link' style='cursor:pointer;'>{getElitePostingField(title)}</a></td>
-                        <td>{getElitePostingField(companyName)}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                    </tbody>
-                </table>
-                <div id="postingDialog" title="Project Proposal" style="display:none;"></div>
-                <script type='text/javascript'>
-                    var postingDialog = $("#postingDialog").dialog({
-                        autoOpen: false,
-                        modal: true,
-                        show: 'fade',
-                        resizable: false,
-                        draggable: false,
-                        beforeClose: function(){
-                            postingDialog.view.stopListening();
-                            postingDialog.view.undelegateEvents();
-                            postingDialog.view.$el.empty();
-                        }.bind(this)
-                    });
-                    
-                    $(window).resize(function(){
-                        postingDialog.dialog({height: $(window).height()*0.75});
-                    }.bind(this));
-                    
-                    $('.elite_link').click(function(e){
-                        var id = $(e.target).attr('id');
-                        var model = new ElitePosting({id: id});
-                        var view = new ElitePostingView({el: postingDialog, model: model, isDialog: true});
-                        postingDialog.view = view;
-                        postingDialog.dialog({
-                            height: $(window).height()*0.75, 
-                            width: 800
-                        });
-                        postingDialog.dialog('open');
-                    });
-                </script>
-            ]]>
-        </Static>
-    </ReportSection-->
 </Report>
