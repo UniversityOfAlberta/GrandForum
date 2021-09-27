@@ -54,7 +54,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" encrypt="true">
+        <ReportItem id="birthdate" type="Calendar" blobItem="BIRTHDATE" yearRange="c-50:{$year}" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required">Date of Birth:</td>

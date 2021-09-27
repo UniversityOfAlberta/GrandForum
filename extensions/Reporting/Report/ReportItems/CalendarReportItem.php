@@ -10,6 +10,7 @@ class CalendarReportItem extends AbstractReportItem {
 		if($value === null && $default != ''){
 		    $value = $default;
 		}
+		$yearRange = $this->getAttr('yearRange', 'c-10:c+10');
 		$width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
 		$format = $this->getAttr('format', 'yy-mm-dd');
 		$item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};' value='{$value}' />";
@@ -18,7 +19,8 @@ class CalendarReportItem extends AbstractReportItem {
 		    $('input[name={$this->getPostId()}]').datepicker(
 		        {dateFormat: '$format',
 		         changeMonth: true,
-                 changeYear: true
+                 changeYear: true,
+                 yearRange: '{$yearRange}'
 		        });
             $('input[name={$this->getPostId()}]').keydown(function(){
                 return false;
