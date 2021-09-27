@@ -73,7 +73,13 @@ class MultiTextReportItem extends AbstractReportItem {
         else{
             $max = max(array_keys($values));
         }
+        $heights = explode("|", $this->getAttr("heights"));
         $widths = explode("|", $this->getAttr("widths"));
+        foreach($types as $i => $type){
+            if(@$heights[$i] == ""){
+                $heights[$i] = "100%;";
+            }
+        }
         $item = <<<EOF
         <script type='text/javascript'>
             var max{$this->getPostId()} = {$max}+1;
@@ -120,7 +126,7 @@ EOF;
                             $item .= @"\"<td width='{$widths[2]}' align='center'><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;' value='1' /></td>\" + \n";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
-                            $item .= @"\"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
+                            $item .= @"\"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:{$heights[$j]}px;'></textarea></td>\" + \n";
                         }
                         else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                             if(!$isVertical){
@@ -314,7 +320,7 @@ EOF;
                         $item .= @"<td width='{$widths[2]}' align='center'><input type='checkbox' name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;' value='1' $checked /></td>";
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
-                        $item .= @"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
+                        $item .= @"<td width='{$widths[2]}' align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:{$heights[$j]}px;'>{$value[$index]}</textarea></td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                         if(!$isVertical){
@@ -517,9 +523,11 @@ EOF;
             foreach($values as $i => $value){
                 if($i > -1 && $count < $maxEntries){
                     if($isVertical){
-                        $item .= "<table id='table_{$this->getPostId()}' class='$class' rules='$rules' frame='$frame' width='100%'>";
+                        $item .= "<table id='table_{$this->getPostId()}_{$i}' class='$class' rules='$rules' frame='$frame' width='100%'>";
                     }
-                    $item .= "<tr class='obj'>";
+                    else{
+                        $item .= "<tr class='obj'>";
+                    }
                     if(strtolower($showCount) == 'true'){
                         $item .= "<td style='width:1px;' valign='top'><b>{$i}.</b></td>";
                     }
@@ -529,29 +537,30 @@ EOF;
                     }
                     foreach($indices as $j => $index){
                         if($isVertical){
-                            $item .= @"<tr><td align='right'><b>{$labels[$j]}:</b></td>";
+                            $item .= @"<tr><td align='right' valign='top'><b>{$labels[$j]}:</b></td>";
                         }
                         $size = (isset($sizes[$j])) ? "width:{$sizes[$j]};" : "";
                         if(strstr(strtolower(@$types[$j]), "select") !== false || 
                            strstr(strtolower(@$types[$j]), "combobox") !== false || 
                            strstr(strtolower(@$types[$j]), "radio") !== false){
-                           $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $align = ($isVertical) ? "left" : "center";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
-                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(", ", $value[$index])."</td>";
+                            $align = ($isVertical) ? "left" : "center";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(", ", $value[$index])."</td>";
                         }
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "integer"){
-                            $item .= @"<td align='right' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
+                            $align = ($isVertical) ? "left" : "right";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "checkbox"){
-                            $check = "";
-                            if(isset($value[$index]) && $value[$index] == "1"){
-                                $check = "&#10003;";
-                            }
-                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
+                            $check = (isset($value[$index]) && $value[$index] == "1") ? "&#10003;" : "";
+                            $align = ($isVertical) ? "left" : "center";
+                            $item .= @"<td align='{$align}' valign='top' style='padding:0 3px 0 3px; {$size}'>{$check}</td>";
                         }
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"<td valign='top' style='padding:0 3px 0 3px; {$size}'>".nl2br($value[$index])."</td>";

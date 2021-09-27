@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Plan Update 2020-21" reportType="RP_PROJ_PLAN_UPDATE" pdfType="RPTP_PROJ_PLAN_UPDATE" pdfFiles="ProjectPlanUpdatePDF" personId="0" ajax="true" year="2020" disabled="false">
+<Report name="2021-22 Annual Project Progress Evaluation Report" reportType="RP_PROJ_PLAN_UPDATE" pdfType="RPTP_PROJ_PLAN_UPDATE" pdfFiles="ProjectPlanUpdatePDF" personId="0" ajax="true" year="2021" disabled="false">
     <Permissions>
         <Role role="SD+">
 
@@ -18,225 +18,467 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="Project Plan Update 2020-21: {$project_name}">
+    <ReportSection id="overview" type="ReportSection" tooltip="Overview" name="Overview" title="2021-22 Annual Project Progress Evaluation Report: {$project_name}">
         <Static>
             <![CDATA[
-                <p>In light of research disruptions and delays due to COVID-19, AGE-WELL will not undertake an Annual Project Progress Evaluation (APPE) of its multi-year projects this fall as planned. Instead, projects funded through the AGE-WELL Core Research Program and Platform Project Program will complete the project update process outlined in this module consisting of updates to project status, project plans and project outputs by <u><b>January 15, 2021</b></u>.</p>
-                
-                <p>The Forum portal is the primary mechanism for preparing and submitting progress reports and funding requests, and serves as a central repository for information about people, projects, and activities within AGE-WELL. The project update process requires Project Leads to ensure that their Forum project profiles are up to date and that all project HQP have been added to the portal. How-to guides for Forum reporting and adding HQP are included in this document. A separate Budget Update process will proceed as usual in February 2021. Project Leads will prepare and submit a revised project budget at that time including an estimate of unspent funds at year-end.</p>
-                
-                <p>The intent of the revised 2020-21 process is to ensure that RMC is able to assess how newly funded AGE-WELL projects and programs are faring in light of COVID-19 and to understand how projects have changed or will change their approaches in this new environment.  Project teams will have the opportunity to meet with network Scientific Directors and Network Management Office team members following the project update process to ensure the appropriate network supports are available to their teams.</p>
-                
-                <p>Projects will <u>not</u> be evaluated against specific performance metrics as part of the update process; therefore the second instalments of funding that are usually tied to mid-term reviews will be released in November as planned prior to receipt of updated project plans. Any adjustments required to term lengths, budgets, and project plans will be in place for April 1, 2021.</p>
-                
-                <h3>Important Dates:</h3>
-                <table class="wikitable">
-                    <tr>
-                        <td><b>January 15, 2021</b></td>
-                        <td>Completion of Project Status, Plan Update and Project Output Reporting in Forum</td>
-                    </tr>
-                    <tr>
-                        <td><b>February 19, 2021</b></td>
-                        <td>Completion of Budget Update module in Forum<br /><i>Instructions will circulate in January. This is the standard Forum budget module for AGE-WELL funded projects.</i></td>
-                    </tr>
-                    <tr>
-                        <td><b>April 1, 2021</b></td>
-                        <td>Release of 2021-22 Funding Letters</td>
-                    </tr>
-                </table>
+                <p>The aim of this form is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress and performance against key impact objectives of the network. Given the disruption of COVID-19 to network research programs, this form also provides Project Leads with an opportunity to demonstrate project evolution following the January 2021 Project Update process.</p> 
+
+                <h2>Completing the Report</h2>
+                The report consists of four sections:
+                <ol type="A">
+                    <li><b>Project Status:</b> description of overall project status in light of disruptions of the past year.</li>
+                    <li><b>Product Development / Product Readiness:</b> assignment of current and projected product readiness levels associated with “products” of the research (i.e. technologies, services, practices, policies). Additional information on determining product readiness below.</li>
+                    <li><b>Impact Statement and Case Study:</b> projected impact of the research against timelines—that is, within and beyond the funding period, and a short case study of project achievement.</li>
+                    <li><b>Progress Update / Planning Scorecards:</b> project progress and planning across the following network program criteria: scientific excellence, development of HQP, knowledge mobilization and commercialization, and networking and partnerships. Additional information below.</li>
+                </ol>
+
+                <h2>Product Readiness Levels</h2>
+                <p>AGE-WELL produces a broad range of products or solutions (e.g. technologies, services and policies). Progress towards achieving impact can be defined and measured across all projects in a consistent fashion. The Product Readiness Levels (PRL) is a method of estimating maturity and progress across 5 stages that overlay the Technology Readiness Levels (TRL). The five stage progression is based on the funding continuum of the innovation pipeline developed for CIHR’s eHealth innovations Partnership Program.</p>
+
+                <p>AGE-WELL has adapted both scales to be inclusive of the types of technology-based solutions that are part of the network. Please refer to the <a href="http://members.agewell-nce.ca/wp-content/uploads/2016/08/AGE-WELL-PRL-Guidelines_final.docx">Product Readiness Levels Guideline</a> for definitions of the PRL levels, as well as example outputs at each level across product type.</p>
+
+                <p>Projects are required to justify the current PRL stage of each product and projected PRL stage one year later. It is expected that projects will progress through these stages at an appropriate pace. However it should be noted that it is expected that some products may remain at a specific PRL longer than others.</p>
+
+                <h2>Progress Report and Balanced Scorecard</h2>
+                <p>Each project is required to provide project detail in the form of a Progress Report and Planning Scorecard in the following areas: Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training. The Progress Report should capture activity to date; the planning scorecard should capture proposed activity for 2022-23. All projects are asked to complete the sections of the tables that are relevant to their project; for example, not all projects may be able to complete both the knowledge mobilization and commercialization sections of the tables.  The tables were developed based on the <i>Balanced Scorecard</i> approach and will be used by the RMC to review projects progress from year to year.</p>
             ]]>
         </Static>
     </ReportSection>
     <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
-        <ReportItem id="active" type="Checkbox" blobItem="ACTIVE" blobType="BLOB_ARRAY" options="Active">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="400px">
             <![CDATA[
-                <h3>1. What is the current status of the AGE-WELL funded project?</h3>
-                <ol type="i">
-                    <li>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="active_1" type="Radio" blobItem="ACTIVE_1" options="Yes|No" orientation="horizontal">
-            <![CDATA[
-                        <ul>
-                            <li>Was project start delayed by COVID-19? {$item}</li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="active_2" type="Calendar" blobItem="ACTIVE_2">
-            <![CDATA[
-                            <li>If Yes, what was the project restart date? {$item}</li>
-                        </ul>
-                    </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="inactive" type="Checkbox" blobItem="INACTIVE" blobType="BLOB_ARRAY" options="Inactive">
-            <![CDATA[
-                    <li>{$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="inactive_1" type="Radio" blobItem="INACTIVE_1" options="Yes|No" orientation="horizontal">
-            <![CDATA[
-                        <ul>
-                            <li>If inactive, was it delayed by COVID-19? {$item}</li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="inactive_2" type="Calendar" blobItem="INACTIVE_2">
-            <![CDATA[
-                            <li>Anticipated start date: {$item}</li>
-                        </ul>
-                    </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="information" type="Textarea" blobItem="INFORMATION" rich="true">
-            <![CDATA[
-                    <li>
-                        Additional information to clarify the status of your project (optional):
-                        {$item}
-                    </li>
-                </ol>
-            ]]>
-        </ReportItem>
-        <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true">
-            <![CDATA[
-               <h3>2. Please describe how you think the COVID-19 situation will impact your project in the longer-term.</h3>
-               {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="pivots" type="Textarea" blobItem="PIVOTS" rich="true">
-            <![CDATA[
-               <h3>3. Please summarize any solutions or pivots that have been or will be implemented (e.g. switching to online or virtual stakeholder meetings, alternative recruitment methods, etc.). You will be asked to detail specific changes to your project plan in the next section.</h3>
-               {$item}
+                <p>Provide a brief summary of the status of this project in light of disruptions over the past 18 months. Please include 1) adaptations to challenges outlined in your January 2021 Project Progress Update (e.g. changes to partnerships, access to participants, HQP retention etc.) and 2) ongoing challenges and plans to address them.</p>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="update" type="EditableReportSection" blobSection="UPDATE" tooltip="B. Project Plan Update" name="Project Plan Update" title="B. Project Plan Update">
+    <ReportSection id="prl" type="EditableReportSection" blobSection="PRL" tooltip="B. Product Development / Product Readiness" name="Product Development" title="B. Product Development / Product Readiness">
+        <ReportItem id="product_type" type="Checkbox" blobItem="PRODUCT_TYPE" blobType="BLOB_ARRAY" options="Technology product - a device or system that someone will buy or adopt|Policy/practice product - information that will be used by stakeholder or end-user, including others in the network|Service product - a service or information product that will be used by another entity">
+            <![CDATA[
+                <p>AGE-WELL recognizes different types of products: Technologies, Services, Policies/Practices. Projects can be at different stages of product readiness, from concept to deployment and adoption.  Please refer to the guidelines in order to define which stage best characterises your project.</p>
+                
+                <h2>1. What kind of product(s) are you developing (check all that apply):</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="nProducts" blobItem="N_PRODUCTS" type="Integer" min="0" max="100" size="3">
+            <![CDATA[
+                <h2>2. Use the attached supporting documents (AGE-WELL PRL Guidelines) to determine the “Product Readiness Level” (PRL) your product(s) are currently at.</h2>
+                <p><b>How many products has your project developed?</b></p> {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="prl" type="MultiText" multiple="true" blobItem="PRL_LEVEL" blobType="BLOB_ARRAY" indices="Product|Product Type|Stage|PRL Level|Future PRL" labels="Product|Product Type|Stage|PRL Level|&lt;div style='max-width:200px;display:inline-block;'>Which PRL level do you expect to be at one year from now?&lt;div class='small' style='float:left;white-space:wrap;'>Provide a brief justification and key steps you will be taking if you project a different (higher) PRL level from what was indicated above. (500 words max)&lt;/div>&lt;/div>" types="Text|Select(Technology,Policy/Practice,Service)|Select(INNOVATION RESEARCH,INCUBATOR,PROTOTYPE,EXPERIMENTAL IMPLEMENTATION,OUTCOMES)|Select(1,2,3,4,5,6,7,8,9)|Textarea" sizes="||||600" heights="||||200" orientation="vertical">
+            <![CDATA[
+                <h3>Use the attached supporting documents (<a style='color:inherit;text-decoration:underline;' href='{$wgServer}{$wgScriptPath}/data/AGE-WELL PRL Guidelines.docx'>AGE-WELL PRL Guidelines</a>), determine the “Product Readiness Level” (PRL) your product(s) currently at:</h3>
+                    <b>PRL Levels</b>
+                    <ul>
+                        <li><b>INNOVATION RESEARCH</b> (PRL 1) basic principles observed</li>
+                        <li><b>INCUBATOR</b> (PRL 2-3) technology concept formulated; experimental proof of concept</li>
+                        <li><b>PROTOTYPE</b> (PRL 4-5) technology validated in lab; technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies)</li>
+                        <li><b>EXPERIMENTAL IMPLEMENTATION</b> (PRL 6-7) technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies); system prototype demonstration in operational environment</li>
+                        <li><b>OUTCOMES</b> (PRL 8-9) system complete and qualified; actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space)</li>
+                    </ul>
+                    <p>
+                {$item}
+                <script type='text/javascript'>
+                    setInterval(function(){
+                        $('#table_ProductDevelopment_prl tr.obj').each(function(i, el){
+                            var selects = $('select', $(el));
+                            var spans = $('span.recommended', $(el));
+                            var type  = $(selects[0]);
+                            var stage = $(selects[1]);
+                            var level = $(selects[2]);
+                            var val = stage.val();
+                            var recommended = "1";
+                            
+                            if(spans.length > 0){
+                                spans.remove();
+                            }
+                            
+                            switch(val){
+                                case "INNOVATION":
+                                    recommended = "1";
+                                    break;
+                                case "INCUBATOR":
+                                    recommended = "2-3"
+                                    break;
+                                case "PROTOTYPE":
+                                    recommended = "4-5";
+                                    break;
+                                case "EXPERIMENTAL IMPLEMENTATION":
+                                    recommended = "6-7"
+                                    break;
+                                case "OUTCOMES":
+                                    recommended = "8-9";
+                                    break;
+                            }
+                            
+                            level.after("<span class='recommended' style='width:50px;display:inline-block;font-weight:bold;vertical-align:middle;line-height:25px;'>(" + recommended + ")</span>");
+                        });
+                    }, 100);
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="impact" type="EditableReportSection" blobSection="IMPACT" tooltip="C. Impact Statement and Case Study" name="Impact Statement" title="C. Impact Statement and Case Study">
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true">
+            <![CDATA[
+                <h2>1. Impact Statement</h2>
+                <p>AGE-WELL is expected to deliver social and economic benefits to Canadians, including but not limited to improved health or quality of life; improved policy, practice and services; new products or enterprises; job creation; value-added training etc. To fulfill our mandate we invest in a variety of projects and programs ranging from multi-year research funding to policy engagement and startup support programs. Keeping the broader mandate of AGE-WELL in mind:</p>
+                <h3>What is the expected value and impact of this research within the timeframe of the funding term?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="longterm" type="Textarea" blobItem="LONGTERM" rich="true">
+            <![CDATA[
+                <h3>What are the anticipated longer-term outcomes and impact for partners, older adults and/or caregivers?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="case_study" type="Textarea" blobItem="case_studty" rich="true">
+            <![CDATA[
+                <h2>2. Case Study</h2>
+                <p>Please provide a short <b>case study</b> of outstanding work or achievement in any of the above evaluation areas (Scientific Excellence, Networking and Partnerships, Knowledge Mobilization and Commercialization, and HQP Training). Case studies provide an opportunity for a better understanding of the work being completed and its impact in the real world. These stories are a great opportunity to promote the amazing work being accomplished within AGE-WELL. The following should be provided for the case study (500 words max):</p>
+                <ul>
+                    <li>A clear explanation of the process or means through which the research led to, underpinned or made a contribution to the impact (for example, how it was disseminated, how it came to influence users or beneficiaries, or how it came to be exploited, taken up or applied).</li>
+                    <li>Where the case study was part of a wider body of research that contributed to the impact (for example, where there has been research collaboration with other institutions or grants), the case study should specify the particular contribution of the case study and acknowledge other key research contributions.</li>
+                    <li>Details of the beneficiaries – who or what community, constituency or organisation has benefitted or been affected.</li>
+                    <li>Details of the nature of the impact – how they have benefitted or been affected.</li>
+                    <li>Evidence or indicators of the extent of the impact described, as appropriate to the case being made.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="progress" type="EditableReportSection" blobSection="PROGRESS" tooltip="D. Progress Report and Planning Scorecards" name="Progress / Plans" title="D. Progress Report and Planning Scorecards">
+        <!-- Scientific Excellence - Progress Report -->
+        <ReportItem id="progress" type="Textarea" blobItem="PROGRESS" rich="true">
+            <![CDATA[
+                <h2>1. Scientific Excellence - Progress Report</h2>
+                <p>The AGE-WELL Core Research Program (CRP) must address Canadian needs and problems and demonstrate world-class scientific achievements. AGE-WELL is committed to a transdisciplinary approach and the involvement of stakeholders in all aspects of the project. In this section we ask that you document completed objectives, deliverables and project activities related to scientific excellence of this program of research. Include highlights from the project team with respect to national/international leadership (e.g. international collaborations, leadership positions held of relevance to the project), advancing knowledge (e.g. scientific and other publications and presentations etc.) and the project’s stakeholder-driven approach, including detail about the involvement of older adults, caregivers, policy makers, or partners in the project. Please specify the roles of stakeholders in this project) (e.g. advisory committee members, affiliated researchers, co-authors etc.). In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="progress_narrative" type="Textarea" blobItem="PROGRESS_NARRATIVE" rich="true" limit="250">
+            <![CDATA[
+                <h3>Scientific Excellence - Planning Scorecard</h3>
+                <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
+                
+                <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
-                <p>The majority of AGE-WELL funded projects reported in May that their project plans would require adjustment in light of COVID-19. In this section, teams are asked to describe in detail those specific challenges, changes or adjustments. Materials from your last Project Plan Update (Jan 2020) are accessible in this section for reference. You will have the opportunity (optional) to append supplementary material (e.g revised project summary or project plan) at the bottom of this section. If helpful for project planning, Project Leads have the option to request a one-year no-cost extension to their current three-year award at this time, with justification. Note that a no-cost extension may be requested in the final year of the project as per usual process.</p>
+                <table rules="all" frame="box" class="small wikitable">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives – Main objectives for the upcoming year</th>
+                        <th align="left" width="25%">Planned Outputs – Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Project Activities – Activities required to generate outputs</th>
+                    </tr>
             ]]>
         </Static>
-        <ReportItem id="timeline" type="Textarea" blobItem="TIMELINE" rich="true">
+        <ReportItem id="prog_1_1" blobItem="PROG_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <h3>1. Describe the specific challenges, changes or adjustments to project plans in the context of COVID-19 related to:</h3>
-                <ol type="a">
-                <li>Project timeline:<br />
-                    {$item}
+                <tr style='height:100%;'>
+                <td><b>National & International leadership</b> (e.g. developing international collaborations, being invited to international meetings, workshops, etc)</td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="extension" type="Radio" blobItem="EXTENSION" options="Yes|No" orientation="horizontal">
+        <ReportItem id="prog_1_2" blobItem="PROG_1_2" type="Textarea" height="100%">
             <![CDATA[
-                    <p>Project Leads have the option to request a no-cost extension now to the current award term (Apr 1, 2020- Mar 31, 2023) to assist with project planning. This would change your award term end to Mar 31, 2024. If choose <u>not</u> to extend your award term now, you will be able to choose to extend in 2023 as per usual process.</p>
-                    <b>Would you like to request an extension now?</b>
-                    {$item}
-                    If Yes, please ensure that a justification is included in the project timeline section above.
-                    <br />
-                </li>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="goals" type="Textarea" blobItem="GOALS" rich="true">
+        <ReportItem id="prog_1_3" blobItem="PROG_1_3" type="Textarea" height="100%">
             <![CDATA[
-                <li>
-                    Research goals and objectives, including whether COVID-19 considerations or research questions that have been incorporated into your project:
-                    {$item}
-                </li>
+                <td style='height:100%;'>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="methods" type="Textarea" blobItem="METHODS" rich="true">
+        <ReportItem id="prog_2_1" blobItem="PROG_2_1" type="Textarea" height="100%">
             <![CDATA[
-                <li>
-                    Research methods (e.g. participant recruitment and data collection, community outreach activities, etc.)
-                    {$item}
-                </li>
+                <tr style='height:100%;'>
+                <td><b>Advancing knowledge</b> (e.g. publishing in journals and other publications, presenting at conferences and other meetings)</td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="partnerships" type="Textarea" blobItem="PARTNERSHIPS" rich="true">
+        <ReportItem id="prog_2_2" blobItem="PROG_2_2" type="Textarea" height="100%">
             <![CDATA[
-                <li>
-                    Networking and partnerships (e.g. changes in partner organization’s ability to contribute cash or in-kind contributions to your project, including access to participants, need to identify new partners, etc.)
-                    {$item}
-                </li>
+                <td style='height:100%;'>{$item}</td>
             ]]>
         </ReportItem>
-        <ReportItem id="ktee" type="Textarea" blobItem="KTEE" rich="true">
+        <ReportItem id="prog_2_3" blobItem="PROG_2_3" type="Textarea" height="100%">
             <![CDATA[
-                <li>
-                    Knowledge mobilization and commercialization:
-                    {$item}
-                </li>
+                <td style='height:100%;'>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
+        <ReportItem id="prog_3_1" blobItem="PROG_3_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Stakeholder driven research</b> (e.g. partner/organization driven research or older adult & caregiver involvement)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog_3_2" blobItem="PROG_3_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog_3_3" blobItem="PROG_3_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog_4_1" blobItem="PROG_4_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Other</b> (TBD by the Project Lead)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog_4_2" blobItem="PROG_4_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="prog_4_3" blobItem="PROG_4_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Networking and Partnerships – Progress Report -->
+        <ReportItem id="networking" type="Textarea" blobItem="NETWORKING" rich="true">
+            <![CDATA[
+                <h2>2. Networking and Partnerships – Progress Report</h2>
+                <p>The project must demonstrate that it has brought together the key individuals and organizations needed to generate and implement multifaceted solutions to the complex challenges it is designed to address. It must be built on relationships with partners and the receptor community that will accelerate the activities, outcomes and impact of the project. In this section we ask that you document completed objectives, deliverables and project activities related to networking and partnerships of this program of research, including examples of effective collaboration with the private, public and not-for-profit sectors in technology, market development, and public policy development, as well as national and international partnerships that are integral to this project’s success. Please specify <b>national or international partners by sector</b> (e.g. Industry, community, federal, provincial. Activity noted here must also be updated in Forum via the <i>Manage Outputs and Manage Contributions</i> modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="networking_narrative" type="Textarea" blobItem="NETWORKING_NARRATIVE" rich="true">
+            <![CDATA[
+                <h3>Networking and Partnerships - Planning Scorecard</h3>
+                <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
+                <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <table rules="all" frame="box" class="small wikitable">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives – Main objectives for the upcoming year</th>
+                        <th align="left" width="25%">Planned Outputs – Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Project Activities – Activities required to generate outputs</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="net_1_1" blobItem="NET_1_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>National/international partnerships</b> (e.g. partners involved at a national and international level across sectors)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_1_2" blobItem="NET_1_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_1_3" blobItem="NET_1_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_2_1" blobItem="NET_2_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Other</b> (TBD by the Project Lead)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_2_2" blobItem="NET_2_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="net_2_3" blobItem="NET_2_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Knowledge Mobilization & Commercialization – Progress Report -->
+        <ReportItem id="kmc" type="Textarea" blobItem="KMC" rich="true">
+            <![CDATA[
+                <h2>3. Knowledge Mobilization & Commercialization – Progress Report</h2>
+                <p>NCE Networks are expected to generate social and economic benefits by ensuring the rapid flow of knowledge, ideas and innovations from researchers to Canadian receptors. Projects are expected to demonstrate that the appropriate activities will be undertaken and the appropriate resources allocated to maximize those benefits through effective stakeholder engagement and communication. In this section we ask that you document completed objectives, deliverables and project activities related to <b>knowledge mobilization</b> and/or commercialization, including examples of knowledge dissemination (e.g. academic and non-academic knowledge dissemination activities; media interviews; policy briefs etc.), <b>product development or management of intellectual property (IP)</b> (e.g. patents, provisional patents, IP disclosures, startup company development etc.). Activity noted here must also be updated in Forum via the <i>Manage Outputs</i> module. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_narrative" type="Textarea" blobItem="KMC_NARRATIVE" rich="true">
+            <![CDATA[
+                <h3>Knowledge Mobilization and Commercialization - Planning Scorecard</h3>
+                <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
+                <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <table rules="all" frame="box" class="small wikitable">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives – Main objectives for the upcoming year</th>
+                        <th align="left" width="25%">Planned Outputs – Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Project Activities – Activities required to generate outputs</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="kmc_1_1" blobItem="KMC_1_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Knowledge Dissemination</b> (e.g. academic and non-academic dissemination activities, communications)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_1_2" blobItem="KMC_1_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_1_3" blobItem="KMC_1_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_2_1" blobItem="KMC_2_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Product Development & IP Management</b> (e.g. patents, licensing agreements, copyrights, startup development etc.)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_2_2" blobItem="KMC_2_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_2_3" blobItem="KMC_2_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_3_1" blobItem="KMC_3_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Other</b> (TBD by the Project Lead)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_3_2" blobItem="KMC_3_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="kmc_3_3" blobItem="KMC_3_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Training of HQP – Progress Report -->
         <ReportItem id="hqp" type="Textarea" blobItem="HQP" rich="true">
             <![CDATA[
-                <li>
-                    Recruitment and/or training of HQP:
-                    {$item}
-                </li>
-                </ol>
-            ]]>
-        </ReportItem>
-        <ReportItem id="platform_pdf" type="PDFReportItem" buttonName="Platform Report" project="true" reportType="PlatformReport" year="2019">
-            <![CDATA[
-                <h3>Previous Project Report</h3>
-                <small>If a report was previously filled out, it will be listed below</small><br />
+                <h2>4. Training of HQP – Progress Report</h2>
+                <p>AGE-WELL’s EPIC training program is designed to add value to the formal training initiatives already available through the academic community and should aim at helping HQP find employment in the Canadian economy, particularly in sectors related to technology and aging.  HQP should be directly involved in the range of activities in a multi-disciplinary team research project and should have opportunities to collaborate with project partners and network members. In this section we ask that you document completed objectives, deliverables and project activities related to the development of HQP for this program of research, including a summary of the project’s training portfolio (e.g. recruitment and retention metrics, HQP-led publications, internships completed etc.) and engagement of HQP in network training opportunities (e.g. enrolment in EPIC training program).Activity noted here must also be updated in Forum via the Manage Outputs and EPIC modules. In addition, project Leads should include any other updates and metrics relevant to their specific projects.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="catalyst_pdf" type="PDFReportItem" buttonName="Catalyst Report" project="true" reportType="CatalystReport" year="2019">
+        <ReportItem id="hqp_narrative" type="Textarea" blobItem="HQP_NARRATIVE" rich="true">
             <![CDATA[
+                <h3>HQP Training - Planning Scorecard</h3>
+                <p>In this section we ask you to complete the planning table below to outline objectives, outputs and activities for the next year in the same categories as above. Room is provided for Project Leads to include project-specific activities and metrics beyond those required in the planning template.</p>
+                <p><b>Narrative:</b> Please provide any additional details needed to support the information in the table below (250 words max).</p>
                 {$item}
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-                <h3>Additional Project Materials</h3>
-                <p>If you have additional documents to submit at this time (e.g. new letters of support, revised project summary or project plan etc.) you may attach them here.</p>
+                <table rules="all" frame="box" class="small wikitable">
+                    <tr>
+                        <th align="left" width="5%">Category</th>
+                        <th align="left" width="25%">Planned Objectives – Main objectives for the upcoming year</th>
+                        <th align="left" width="25%">Planned Outputs – Deliverables required to meet project objectives</th>
+                        <th align="left" width="25%">Planned Project Activities – Activities required to generate outputs</th>
+                    </tr>
             ]]>
         </Static>
-        <For from="1" to="20">
-            <ReportItem id="file{$index}" type="Upload" blobItem="FILES{$index}" blobType="BLOB_RAW" fileSize="5">
-                <![CDATA[
-                    <div class='files' id='file{$index}' style='display:none;'>
-                        {$item}
-                    </div>
-                    <script type='text/javascript'>
-                        if('{getBlobMD5()}' != '' || '{$index}' == 1){
-                            $('#file{$index}').show();
-                        }
-                    </script>
-                ]]>
-            </ReportItem>
-        </For>
-        <Static>
+        <ReportItem id="hqp_1_1" blobItem="HQP_1_1" type="Textarea" height="100%">
             <![CDATA[
-                <button id='addFile' type='button'>Add another file</button>
-                <script type='text/javascript'>
-                    $('#addFile').click(function(){
-                        $('.files:not(:visible)').first().show();
-                        $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
-                        if($('.files:not(:visible)').length == 0){
-                            $('#addFile').prop('disabled', true);
-                        }
-                    });
-                </script>
-                <br /><br />
+                <tr style='height:100%;'>
+                <td><b>Development of HQP</b> (e.g. involvement of HQP in the project and Network; HQP-led publications, internships, enrolment in EPIC)</td>
+                <td style='height:100%;'>{$item}</td>
             ]]>
-        </Static>
-    </ReportSection>
-    <ReportSection id="reporting" type="ReportSection" tooltip="C. Project Reporting 2020-21" name="Project Reporting" title="C. Project Reporting 2020-21">
+        </ReportItem>
+        <ReportItem id="hqp_1_2" blobItem="HQP_1_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_1_3" blobItem="HQP_1_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_2_1" blobItem="HQP_2_1" type="Textarea" height="100%">
+            <![CDATA[
+                <tr style='height:100%;'>
+                <td><b>Other</b> (TBD by the Project Lead)</td>
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_2_2" blobItem="HQP_2_2" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_2_3" blobItem="HQP_2_3" type="Textarea" height="100%">
+            <![CDATA[
+                <td style='height:100%;'>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <Static>
             <![CDATA[
-                <p>AGE-WELL’s performance management framework typically combines a balanced scorecard approach with output reporting via the Forum research portal. For fiscal year 2020-21, the network will defer use of the balanced scorecard as part of a mid-year evaluation process but will retain project output reporting via Forum as part of its annual reporting process. Project Leads as are asked to report project outputs, achievements and partner contributions via Forum by <b>January 15, 2021</b>.</p>
-                
-                <p>As mentioned above, projects will not be evaluated against specific performance metrics; project output reporting through Forum is also used by the Network Management Office to support network annual reporting and to understand network performance. Project teams will be asked to update Forum again at the end of fiscal year.</p>
-                
-                <p>Forum reporting updates can be made to Forum at any time and it is expected that Project Leads keep project information up to date in Forum throughout the life of the project. Information about AGE-WELL reporting is maintained on the <a href="http://members.agewell-nce.ca/annual-reporting">network intranet</a>: A “How-To” reporting guide has been prepared and can be found here: <a href="http://members.agewell-nce.ca/wp-content/uploads/2017/02/Annual-Reporting-on-Forum-How-To-Guide_Jan-2019.pdf">Annual Reporting on Forum – How-To Guide</a>. (<a href="{$wgServer}{$wgScriptPath}/data/APPENDIX A - Project Plan Update 2020-21.pdf">See also Appendix A</a>)</p>
-                
-                Key links are included below:
-                <ul>
-                    <li>All project outputs and outcomes that have been produced in this last fiscal year (publications, presentations, patents etc.), partially funded by AGE-WELL and/or related to their AGE-WELL research agenda, must be entered in the Forum: <a href="https://forum.agewell-nce.ca/index.php/Special:ManageProducts">https://forum.agewellnce.ca/index.php/Special:ManageProducts</a></li>
-                    <li>All financial contributions (cash and in-kind)  from partners and other sources enhancing AGE-WELL funded activities must be entered in the system: <a href="https://forum.agewell-nce.ca/index.php/Special:Contributions">https://forum.agewell-nce.ca/index.php/Special:Contributions</a></li>
-                    <li>Forum profiles must be complete for all Network Investigators and HQP, including university affiliations, bio tab in full, associated projects, supervisory relations. It is the supervisor’s responsibility to ensure project HQP are set up in Forum. Project Leads may designate a team member to create Forum accounts for HQP using the Project Support role in Forum. (<a href="{$wgServer}{$wgScriptPath}/data/APPENDIX B - Project Plan Update 2020-21.pdf">See also Appendix B</a>)</li>
-                    <li>EPIC tabs must be up-to-date for HQP</li>
-                </ul>
+                </table>
             ]]>
         </Static>
     </ReportSection>
