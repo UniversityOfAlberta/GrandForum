@@ -24,6 +24,7 @@
         </If>
         <Static>
             <![CDATA[
+                <p>All items with a <span style="color:red;">*</span> require mandatory responses</p>
                 <table>
                     <tr>
                         <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
@@ -70,7 +71,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
+        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples)|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required">Ethnic Group:</td>
