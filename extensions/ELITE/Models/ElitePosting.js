@@ -9,19 +9,8 @@ ElitePosting = Posting.extend({
     defaults: function(){
         return _.extend(Object.assign({}, Posting.prototype.defaults), {
             visibility: "Submitted",
-            companyName: "",
-            companyProfile: "",
-            reportsTo: "",
-            basedAt: "",
-            contact: "",
-            email: "",
-            phone: "",
-            training: "",
-            responsibilities: "",
-            qualifications: "",
-            skills: "",
-            level: "Any Level",
-            positions: "",
+            type: "",
+            extra: {},
             comments: "",
         });
     }

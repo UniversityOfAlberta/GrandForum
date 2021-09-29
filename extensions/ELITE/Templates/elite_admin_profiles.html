@@ -42,7 +42,7 @@
                 </td>
                 <td>
                     <% _.each(profile.get('projects'), function(project){ %>
-                        <%= project.title %> (<%= project.companyName %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
+                        <%= project.title %> (<%= project.extra.companyName %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
                     <% }) %>
                 </td>
                 <td align="center">
@@ -58,7 +58,7 @@
                         <div id="match_<%= profile.get('id') %>" style="display:none;">
                             <ol>
                                 <% _.each(profile.get('projects'), function(project){ %>
-                                    <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.companyName %>)</li>
+                                    <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.extra.companyName %>)</li>
                                 <% }) %>
                             </ol>
                         </div>

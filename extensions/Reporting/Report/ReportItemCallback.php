@@ -158,6 +158,7 @@ class ReportItemCallback {
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
             "extraIndex" => "getExtraIndex",
+            "getProgress" => "getProgress",
             "getDepartments" => "getDepartments",
             "getProjects" => "getProjects",
             "getProjectNames" => "getProjectNames",
@@ -1797,6 +1798,18 @@ class ReportItemCallback {
             }
         }
         return 0;
+    }
+    
+    function getProgress($sect=""){
+        $report = $this->reportItem->getReport();
+        foreach($report->sections as $section){
+            if($section instanceof EditableReportSection){
+                if($section->id == $sect){
+                    return $section->getPercentComplete();
+                }
+            }
+        }
+        return 100;
     }
     
     function getBlobMD5($rp="", $section="", $blobId="", $subId="", $personId="", $projectId="", $year=null){

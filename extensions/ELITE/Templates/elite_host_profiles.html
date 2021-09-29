@@ -18,7 +18,7 @@
                 </td>
                 <td>
                     <% _.each(_.filter(profile.get('matches'), function(match){ return match.userId == me.get('id'); }), function(match){ %>
-                        <%= match.title %> (<%= match.companyName %>)<br />
+                        <%= match.title %> (<%= match.extra.companyName %>)<br />
                     <% }) %>
                 </td>
                 <td align="center" style="white-space:nowrap;">

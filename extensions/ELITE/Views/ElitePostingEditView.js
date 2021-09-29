@@ -44,13 +44,12 @@ ElitePostingEditView = PostingEditView.extend({
         }
         this.$("[name=basedAt]").combobox();
         this.$("[name=positions]").forceNumeric({min: 0, max: 1000,includeCommas: false});
-        this.renderTinyMCE('companyProfile');
+        this.renderTinyMCE('extra_companyProfile');
         this.renderTinyMCE('summary');
-        this.renderTinyMCE('training');
-        this.renderTinyMCE('responsibilities');
-        this.renderTinyMCE('qualifications');
-        this.renderTinyMCE('skills');
-        this.renderTinyMCE('positions');
+        this.renderTinyMCE('extra_training');
+        this.renderTinyMCE('extra_responsibilities');
+        this.renderTinyMCE('extra_qualifications');
+        this.renderTinyMCE('extra_skills');
     }
 
 });

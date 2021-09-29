@@ -17,46 +17,46 @@
             <td class="label">Company Name:</td>
             <td class="value">
                 <% if(articleLink != ""){ %>
-                    <a target="_blank" href="<%= articleLink %>"><%= companyName %></a>
+                    <a target="_blank" href="<%= articleLink %>"><%= extra.companyName %></a>
                 <% } else { %>
-                    <%= companyName %>
+                    <%= extra.companyName %>
                 <% } %>
             </td>
         </tr>
-        <% if(companyProfile != ""){ %>
+        <% if(extra.companyProfile != ""){ %>
             <tr>
                 <td class="label">Company Profile:</td>
-                <td class="value"><%= companyProfile %></td>
+                <td class="value"><%= extra.companyProfile %></td>
             </tr>
         <% } %>
-        <% if(reportsTo != ""){ %>
+        <% if(extra.reportsTo != ""){ %>
             <tr>
                 <td class="label">Reports to:</td>
-                <td class="value"><%= reportsTo %></td>
+                <td class="value"><%= extra.reportsTo %></td>
             </tr>
         <% } %>
-        <% if(basedAt != ""){ %>
+        <% if(extra.basedAt != ""){ %>
             <tr>
                 <td class="label">Based in:</td>
-                <td class="value"><%= basedAt %></td>
+                <td class="value"><%= extra.basedAt %></td>
             </tr>
         <% } %>
-        <% if(contact != ""){ %>
+        <% if(extra.contact != ""){ %>
             <tr>
                 <td class="label">Contact Person:</td>
-                <td class="value"><%= contact %></td>
+                <td class="value"><%= extra.contact %></td>
             </tr>
         <% } %>
-        <% if(email != ""){ %>
+        <% if(extra.email != ""){ %>
             <tr>
                 <td class="label">Email Address:</td>
-                <td class="value"><a href="mailto:<%= email %>"><%= email %></a></td>
+                <td class="value"><a href="mailto:<%= extra.email %>"><%= extra.email %></a></td>
             </tr>
         <% } %>
-        <% if(phone != ""){ %>
+        <% if(extra.phone != ""){ %>
             <tr>
                 <td class="label">Phone Number:</td>
-                <td class="value"><%= phone %></td>
+                <td class="value"><%= extra.phone %></td>
             </tr>
         <% } %>
         <% if(summary != ""){ %>
@@ -65,52 +65,52 @@
                 <td class="value"><%= summary %></td>
             </tr>
         <% } %>
-        <% if(training != ""){ %>
+        <% if(extra.training != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Specialized Training and Skills Development:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= training %></td>
+                <td class="value" colspan="2"><%= extra.training %></td>
             </tr>
         <% } %>
-        <% if(responsibilities != ""){ %>
+        <% if(extra.responsibilities != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Specific Responsibilities Include:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= responsibilities %></td>
+                <td class="value" colspan="2"><%= extra.responsibilities %></td>
             </tr>
         <% } %>
-        <% if(qualifications != ""){ %>
+        <% if(extra.qualifications != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Required Qualifications:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= qualifications %></td>
+                <td class="value" colspan="2"><%= extra.qualifications %></td>
             </tr>
         <% } %>
-        <% if(skills != ""){ %>
+        <% if(extra.skills != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Desired Qualifications:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= skills %></td>
+                <td class="value" colspan="2"><%= extra.skills %></td>
             </tr>
         <% } %>
-        <% if(level != ""){ %>
+        <% if(extra.level != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Desired Academic Level:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= level %></td>
+                <td class="value" colspan="2"><%= extra.level %></td>
             </tr>
         <% } %>
-        <% if(positions != ""){ %>
+        <% if(extra.positions != ""){ %>
             <tr>
                 <td class="label left-align" colspan="2">Number of Positions Available:</td>
             </tr>
             <tr>
-                <td class="value" colspan="2"><%= positions %></td>
+                <td class="value" colspan="2"><%= extra.positions %></td>
             </tr>
         <% } %>
     </table>

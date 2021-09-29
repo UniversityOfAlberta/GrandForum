@@ -310,7 +310,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other" type="Radio" blobItem="OTHER" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
+        <ReportItem id="other" type="Radio" blobItem="OTHER" options="Yes|No|Not Sure" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you plan to pursue other employment or take courses at any time on Mondays to Fridays, between 8 AM and 5 PM?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
@@ -320,7 +320,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="other2" type="Radio" blobItem="OTHER2" blobType="BLOB_ARRAY" options="Yes|No|Not Sure" encrypt="true">
+        <ReportItem id="other2" type="Radio" blobItem="OTHER2" options="Yes|No|Not Sure" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are accepted as an intern in the ELITE Program for Black Youth, do you have any other employment or extra-curricular commitments between May and August (for post-secondary applicants) or between July and August (for high school applicants) that would take you away from work with ELITE Program internship hosts?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
@@ -388,6 +388,13 @@
         <ReportItem id="elite" type="EliteSubmit" />
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <If if="{!=({getProgress(profile)},100)}">
+            <![CDATA[
+                You have not completed the application.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </Else>
     </ReportSection>
 </Report>

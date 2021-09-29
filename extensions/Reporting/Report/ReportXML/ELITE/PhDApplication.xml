@@ -270,12 +270,12 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="transcripts2" type="Upload" blobItem="TRANSCRIPTS2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="transcripts2" type="Upload" blobItem="TRANSCRIPTS2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="transcripts3" type="Upload" blobItem="TRANSCRIPTS3" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="transcripts3" type="Upload" blobItem="TRANSCRIPTS3" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
             <![CDATA[
                 {$item}
             ]]>
@@ -338,6 +338,22 @@
         <ReportItem id="elite" type="EliteSubmit" />
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <If if="{or({==({getText(RP_PHD_ELITE, PROFILE, IMMIGRATION, 0, {$user_id}, 0)},International Student)}, 
+                    {==({getText(RP_PHD_ELITE, PROFILE, IMMIGRATION, 0, {$user_id}, 0)},Other)},
+                    {==({getText(RP_PHD_ELITE, PROFILE, PROGRAM, 0, {$user_id}, 0)},Yes)},
+                    {==({getText(RP_PHD_ELITE, PROFILE, ACKNOWLEDGMENT1, 0, {$user_id}, 0)},No)},
+                    {==({getText(RP_PHD_ELITE, PROFILE, ACKNOWLEDGMENT2, 0, {$user_id}, 0)},No)})}">
+            <![CDATA[
+                You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.
+            ]]>
+        </If>
+        <ElseIf if="{!=({getProgress(profile)},100)}">
+            <![CDATA[
+                You have not completed the application.
+            ]]>
+        </ElseIf>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </Else>
     </ReportSection>
 </Report>

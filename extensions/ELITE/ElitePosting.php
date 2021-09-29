@@ -8,39 +8,20 @@ class ElitePosting extends Posting {
     
     static $dbTable = 'grand_elite_postings';
 
-    var $companyName;
-    var $companyProfile;
-    var $reportsTo;
-    var $basedAt;
-    var $contact;
-    var $email;
-    var $phone;
-    var $training;
-    var $responsibilities;
-    var $qualifications;
-    var $skills;
-    var $level;
-    var $positions;
+    var $type;
+    var $extra = array();
     var $comments;
     
     function ElitePosting($data){
         if(count($data) > 0){
             $row = $data[0];
             parent::posting($data);
-            $this->companyName = $row['company_name'];
-            $this->companyProfile = $row['company_profile'];
-            $this->reportsTo = $row['reports_to'];
-            $this->basedAt = $row['based_at'];
-            $this->contact = $row['contact'];
-            $this->email = $row['email'];
-            $this->phone = $row['phone'];
-            $this->training = $row['training'];
-            $this->responsibilities = $row['responsibilities'];
-            $this->qualifications = $row['qualifications'];
-            $this->skills = $row['skills'];
-            $this->level = $row['level'];
-            $this->positions = $row['positions'];
+            $this->type = $row['type'];
             $this->comments = $row['comments'];
+            $this->extra = json_decode($row['extra'], true);
+            if(!is_array($this->extra)){
+                $this->extra = array();
+            }
         }
     }
     
@@ -62,56 +43,15 @@ class ElitePosting extends Posting {
         }
     }
     
-    function getCompanyName(){
-        return $this->companyName;
+    function getType(){
+        return $this->type;
     }
     
-    function getCompanyProfile(){
-        return $this->companyProfile;
-    }
-    
-    function getReportsTo(){
-        return $this->reportsTo;
-    }
-    
-    function getBasedAt(){
-        return $this->basedAt;
-    }
-    
-    function getContact(){
-        return $this->contact;
-    }
-    
-    function getEmail(){
-        return $this->email;
-    }
-    
-    function getPhone(){
-        return $this->phone;
-    }
-    
-    function getTraining(){
-        return $this->training;
-    }
-    
-    function getResponsibilities(){
-        return $this->responsibilities;
-    }
-    
-    function getQualifications(){
-        return $this->qualifications;
-    }
-    
-    function getSkills(){
-        return $this->skills;
-    }
-    
-    function getLevel(){
-        return $this->level;
-    }
-    
-    function getPositions(){
-        return $this->positions;
+    function getExtra($field=null){
+        if($field == null){
+            return $this->extra;
+        }
+        return @$this->extra[$field];
     }
     
     function getComments(){
@@ -120,25 +60,14 @@ class ElitePosting extends Posting {
     
     function toSimpleArray(){
         $json = parent::toArray();
-        $json['companyName'] = $this->getCompanyName();
+        $json['extra'] = $this->getExtra();
         return $json;
     }
     
     function toArray(){
         $json = parent::toArray();
-        $json['companyName'] = $this->getCompanyName();
-        $json['companyProfile'] = $this->getCompanyProfile();
-        $json['reportsTo'] = $this->getReportsTo();
-        $json['basedAt'] = $this->getBasedAt();
-        $json['contact'] = $this->getContact();
-        $json['email'] = $this->getEmail();
-        $json['phone'] = $this->getPhone();
-        $json['training'] = $this->getTraining();
-        $json['responsibilities'] = $this->getResponsibilities();
-        $json['qualifications'] = $this->getQualifications();
-        $json['skills'] = $this->getSkills();
-        $json['level'] = $this->getLevel();
-        $json['positions'] = $this->getPositions();
+        $json['type'] = $this->getType();
+        $json['extra'] = $this->getExtra();
         $json['comments'] = $this->getComments();
         return $json;
     }
@@ -147,19 +76,8 @@ class ElitePosting extends Posting {
         $status = parent::create();
         if($status){
             $status = DBFunctions::update(self::$dbTable,
-                                          array('company_name' => $this->companyName,
-                                                'company_profile' => $this->companyProfile,
-                                                'reports_to' => $this->reportsTo,
-                                                'based_at' => $this->basedAt,
-                                                'contact' => $this->contact,
-                                                'email' => $this->email,
-                                                'phone' => $this->phone,
-                                                'training' => $this->training,
-                                                'responsibilities' => $this->responsibilities,
-                                                'qualifications' => $this->qualifications,
-                                                'skills' => $this->skills,
-                                                'level' => $this->level,
-                                                'positions' => $this->positions,
+                                          array('type' => $this->type,
+                                                'extra' => json_encode($this->extra),
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
         }
@@ -170,19 +88,8 @@ class ElitePosting extends Posting {
         $status = parent::update();
         if($status){
             $status = DBFunctions::update(self::$dbTable,
-                                          array('company_name' => $this->companyName,
-                                                'company_profile' => $this->companyProfile,
-                                                'reports_to' => $this->reportsTo,
-                                                'based_at' => $this->basedAt,
-                                                'contact' => $this->contact,
-                                                'email' => $this->email,
-                                                'phone' => $this->phone,
-                                                'training' => $this->training,
-                                                'responsibilities' => $this->responsibilities,
-                                                'qualifications' => $this->qualifications,
-                                                'skills' => $this->skills,
-                                                'level' => $this->level,
-                                                'positions' => $this->positions,
+                                          array('type' => $this->type,
+                                                'extra' => json_encode($this->extra),
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
         }
