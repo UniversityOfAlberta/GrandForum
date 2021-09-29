@@ -214,6 +214,38 @@
             ]]>
         </ReportItem>
         
+        <!-- Academic Background -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2>Academic Background<span style="display:inline-block;line-height:1em;" class="label required"></span> (include only current and past degree programs)</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="academic" type="MultiText" blobItem="ACADEMIC" blobType="BLOB_ARRAY" indices="degree|discipline|department|started|awarded" labels="Degree|Name of Discipline|Department, Institution, Country|Month and Year Started|Month and Year awarded/expected" types="Select(Bachelor's,Master's,Doctorate)|Text|Text|Text|Text" sizes="100|200|200|150|150" multiple="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <!-- Scholarships and Other Awards Offered -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td colspan="4"><h2>Scholarships and Other Awards Offered (start with most recent)</h2></td>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held (yyyy/mm – yyyy/mm)" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" sizes="200|100|150|150|150|150" multiple="true" optional="true" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="value" colspan="4">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
         <!-- Academic, Research and Other Relevant Work Experience -->
         <Static>
             <![CDATA[
@@ -222,7 +254,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="experience" type="MultiText" blobItem="EXPERIENCE" blobType="BLOB_ARRAY" indices="positions|organization|supervisor|period" labels="Position Held and Nature of Work Full Time/Part Time (begin with current)|Organization and Department|Supervisor Name|Period&lt;br />(yyyy/mm – yyyy/mm)" types="Textarea|Textarea|Text|Text" sizes="200|200|200|150" multiple="true" encrypt="true">
+        <ReportItem id="experience" type="MultiText" blobItem="EXPERIENCE" blobType="BLOB_ARRAY" indices="positions|organization|supervisor|period" labels="Position Held and Nature of Work Full Time/Part Time (begin with current)|Organization and Department|Supervisor Name|Period&lt;br />(yyyy/mm – yyyy/mm)" types="Textarea|Textarea|Text|Text" sizes="200|200|200|150" multiple="true" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="value" colspan="4">{$item}</td>
