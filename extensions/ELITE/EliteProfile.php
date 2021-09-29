@@ -4,7 +4,7 @@
  * @package GrandObjects
  */
 
-class EliteProfile extends BackboneModel {
+abstract class EliteProfile extends BackboneModel {
     
     var $person;
     var $pdf;
@@ -17,10 +17,10 @@ class EliteProfile extends BackboneModel {
         $userId = DBFunctions::escape($userId);
         $data = DBFunctions::execSQL("SELECT user_id, report_id
                                       FROM grand_pdf_report
-                                      WHERE type = 'RPTP_ELITE'
+                                      WHERE type = 'RPTP_".static::$rpType."'
                                       AND user_id = '$userId'
                                       ORDER BY report_id DESC");
-         $profile = new EliteProfile($data);
+         $profile = new static($data);
          if($profile->isAllowedToView()){
             return $profile;
          }
@@ -31,12 +31,12 @@ class EliteProfile extends BackboneModel {
         $data = DBFunctions::execSQL("SELECT t.user_id, t.report_id
                                       FROM (SELECT user_id, report_id
                                             FROM grand_pdf_report
-                                            WHERE type = 'RPTP_ELITE'
+                                            WHERE type = 'RPTP_".static::$rpType."'
                                             ORDER BY report_id DESC) t
                                       GROUP BY t.user_id");
         $profiles = array();
         foreach($data as $row){
-            $profile = new EliteProfile(array($row));
+            $profile = new static(array($row));
             if($profile->isAllowedToView()){
                 $profiles[] = $profile;
             }
@@ -48,7 +48,7 @@ class EliteProfile extends BackboneModel {
         $me = Person::newFromWgUser();
         $data = DBFunctions::execSQL("SELECT * 
                                       FROM `grand_report_blobs`
-                                      WHERE `rp_type` = 'RP_ELITE'
+                                      WHERE `rp_type` = 'RP_".static::$rpType."'
                                       AND `rp_section` = 'PROFILE'
                                       AND `rp_item` = 'MATCHES'");
         $matchedProfiles = array();
@@ -58,7 +58,7 @@ class EliteProfile extends BackboneModel {
             foreach($matches as $match){
                 $posting = ElitePosting::newFromId($match);
                 if($posting->getUserId() == $me->getId()){
-                    $matchedProfiles[] = EliteProfile::newFromUserId($userId);
+                    $matchedProfiles[] = static::newFromUserId($userId);
                     break;
                 }
             }
@@ -178,7 +178,7 @@ class EliteProfile extends BackboneModel {
         $projectId = 0;
         
         $blb = new ReportBlob($blobType, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address('RP_ELITE', 'PROFILE', $blobItem, 0);
+        $addr = ReportBlob::create_address("RP_".static::$rpType, 'PROFILE', $blobItem, 0);
         $result = $blb->load($addr);
         $data = $blb->getData();
         
@@ -191,7 +191,7 @@ class EliteProfile extends BackboneModel {
         $projectId = 0;
         
         $blb = new ReportBlob($blobType, $year, $personId, $projectId);
-        $addr = ReportBlob::create_address('RP_ELITE', 'PROFILE', $blobItem, 0);
+        $addr = ReportBlob::create_address("RP_".static::$rpType, 'PROFILE', $blobItem, 0);
         $blb->store($value, $addr);
     }
     

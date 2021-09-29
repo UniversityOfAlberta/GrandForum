@@ -14,7 +14,7 @@ class EliteSubmitReportItem extends AbstractReportItem {
     function renderForPDF(){
         global $wgOut;
         if(isset($_GET['generatePDF']) && !isset($_GET['preview'])){
-            $this->setAttr("blobReport", "RP_ELITE");
+            $this->setAttr("blobReport", $this->getReport()->reportType);
             $this->setAttr("blobSection", "PROFILE");
             $this->blobItem = "STATUS";
             if($this->getBlobValue() == "Requested More Info" || 

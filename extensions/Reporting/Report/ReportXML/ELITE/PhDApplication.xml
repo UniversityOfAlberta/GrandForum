@@ -238,7 +238,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held (yyyy/mm – yyyy/mm)" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" sizes="200|100|150|150|150|150" multiple="true" optional="true" encrypt="true">
+        <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held&lt;br />(yyyy/mm – yyyy/mm)" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" sizes="200|100|150|150|150|150" multiple="true" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="value" colspan="4">{$item}</td>

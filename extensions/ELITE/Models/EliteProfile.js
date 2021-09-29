@@ -23,16 +23,47 @@ EliteProfile = Backbone.Model.extend({
 
 EliteProfiles = Backbone.Collection.extend({
     
-    model: EliteProfile,
-    
     matched: false,
+    
+});
+
+InternEliteProfile = EliteProfile.extend({
+
+    urlRoot: 'index.php?action=api.eliteprofile/intern',
+    
+});
+
+InternEliteProfiles = EliteProfiles.extend({
+    
+    model: InternEliteProfile,
     
     url: function(){
         if(this.matched){
-            return 'index.php?action=api.eliteprofile/matched';
+            return 'index.php?action=api.eliteprofile/intern/matched';
         }
         else{
-            return 'index.php?action=api.eliteprofile';
+            return 'index.php?action=api.eliteprofile/intern';
+        }
+    }
+    
+});
+
+PhDEliteProfile = EliteProfile.extend({
+
+    urlRoot: 'index.php?action=api.eliteprofile/phd',
+    
+});
+
+PhDEliteProfiles = EliteProfiles.extend({
+    
+    model: PhDEliteProfile,
+    
+    url: function(){
+        if(this.matched){
+            return 'index.php?action=api.eliteprofile/phd/matched';
+        }
+        else{
+            return 'index.php?action=api.eliteprofile/phd';
         }
     }
     

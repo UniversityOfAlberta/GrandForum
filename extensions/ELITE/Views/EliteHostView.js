@@ -12,8 +12,13 @@ EliteHostView = PostingsView.extend({
             var postings = new ElitePostings();
             return new EliteHostPostingsView({model: postings});
         },
-        "profiles": function(){
-            var profiles = new EliteProfiles();
+        "intern_profiles": function(){
+            var profiles = new InternEliteProfiles();
+            profiles.matched = true;
+            return new EliteHostProfilesView({model: profiles});
+        },
+        "phd_profiles": function(){
+            var profiles = new PhDEliteProfiles();
             profiles.matched = true;
             return new EliteHostProfilesView({model: profiles});
         }

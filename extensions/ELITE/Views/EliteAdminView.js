@@ -12,8 +12,12 @@ EliteAdminView = PostingsView.extend({
             var postings = new ElitePostings();
             return new EliteAdminPostingsView({model: postings});
         },
-        "profiles": function(){
-            var profiles = new EliteProfiles();
+        "intern_profiles": function(){
+            var profiles = new InternEliteProfiles();
+            return new EliteAdminProfilesView({model: profiles});
+        },
+        "phd_profiles": function(){
+            var profiles = new PhDEliteProfiles();
             return new EliteAdminProfilesView({model: profiles});
         }
     },

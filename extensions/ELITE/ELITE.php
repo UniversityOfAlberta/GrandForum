@@ -2,6 +2,8 @@
 
 require_once("ElitePosting.php");
 require_once("EliteProfile.php");
+require_once("InternEliteProfile.php");
+require_once("PhDEliteProfile.php");
 require_once("API/ElitePostingAPI.php");
 require_once("API/EliteProfileAPI.php");
 require_once("ElitePostingPage.php");
@@ -33,8 +35,12 @@ $apiRequest->addAction('Hidden','eliteposting/:start/:count', 'ElitePostingAPI')
 $apiRequest->addAction('Hidden','eliteposting/:id', 'ElitePostingAPI');
 $apiRequest->addAction('Hidden','eliteposting/:id/image/:image_id/:md5', 'ElitePostingAPI');
 
-$apiRequest->addAction('Hidden','eliteprofile', 'EliteProfileAPI');
-$apiRequest->addAction('Hidden','eliteprofile/matched', 'EliteProfileAPI');
-$apiRequest->addAction('Hidden','eliteprofile/:id', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/intern', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/intern/matched', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/intern/:id', 'EliteProfileAPI');
+
+$apiRequest->addAction('Hidden','eliteprofile/phd', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/phd/matched', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/phd/:id', 'EliteProfileAPI');
 
 ?>
