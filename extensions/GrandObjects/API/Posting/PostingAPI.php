@@ -17,12 +17,13 @@ abstract class PostingAPI extends RESTAPI {
             $previewCode = @$previewCode[1];
             $_GET['previewCode'] = $previewCode;
             $posting = $className::newFromId($id);
-            if($posting->id != ""){
-                if(($previewCode != "" && $previewCode == $posting->getPreviewCode()) || 
-                   ($previewCode == "" && $previewCode == $posting->getPreviewCode())){
-                    $posting->visibility = "Publish";
-                    $posting->generatePreviewCode();
-                }
+            if($posting->id == ""){
+                $this->throwError("Posting doesn't exist");
+            }
+            if(($previewCode != "" && $previewCode == $posting->getPreviewCode()) || 
+               ($previewCode == "" && $previewCode == $posting->getPreviewCode())){
+                $posting->visibility = "Publish";
+                $posting->generatePreviewCode();
             }
             if($image){
                 header('Content-Type: '.$posting->getImageMime($image_id));
