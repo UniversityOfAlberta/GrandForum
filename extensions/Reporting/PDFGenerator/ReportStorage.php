@@ -28,7 +28,8 @@ class ReportStorage {
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
         $res = DBFunctions::execSQL("SELECT user_id 
                                      FROM grand_pdf_report 
-                                     WHERE {$ext} token = '{$tok}'");
+                                     WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
+                                                   (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
         if(DBFunctions::getNRows() > 0){
             $this->load_metadata($tok, $strict);
             return $this->_cache['token'];
@@ -158,7 +159,8 @@ class ReportStorage {
         else {
             $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year, encrypted
                     FROM grand_pdf_report 
-                    WHERE {$ext} token = '{$tok}' 
+                    WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
+                                  (encrypted = 1 AND token = '".decrypt($tok, true)."'))
                     ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);

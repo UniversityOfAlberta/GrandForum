@@ -66,9 +66,8 @@ abstract class AbstractReport extends SpecialPage {
     static function newFromToken($tok, $type=""){
         global $wgUser;
         $person = Person::newFromId($wgUser->getId());
-        $sto = new ReportStorage($person, null);
+        $sto = new ReportStorage(null, null);
         $sto->select_report($tok, false);
-        
         $pers = Person::newFromId($sto->metadata('user_id'));
         $pers->id = $sto->metadata('user_id');
         $year = $sto->metadata('year');
