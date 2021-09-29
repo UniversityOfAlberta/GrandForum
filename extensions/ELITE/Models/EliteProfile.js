@@ -1,10 +1,9 @@
+// Parent Classes
 EliteProfile = Backbone.Model.extend({
 
     initialize: function(){
         
     },
-
-    urlRoot: 'index.php?action=api.eliteprofile',
 
     defaults: function(){
         return {
@@ -27,6 +26,7 @@ EliteProfiles = Backbone.Collection.extend({
     
 });
 
+// Intern Classes
 InternEliteProfile = EliteProfile.extend({
 
     urlRoot: 'index.php?action=api.eliteprofile/intern',
@@ -48,6 +48,7 @@ InternEliteProfiles = EliteProfiles.extend({
     
 });
 
+// PhD Classes
 PhDEliteProfile = EliteProfile.extend({
 
     urlRoot: 'index.php?action=api.eliteprofile/phd',
