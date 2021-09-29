@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Report" reportType="RP_PHD_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true">
+<Report name="Report" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" pdfFiles="PhDApplicationPDF" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />

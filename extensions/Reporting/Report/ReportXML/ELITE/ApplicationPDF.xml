@@ -6,7 +6,7 @@
             <![CDATA[
                 <table width='100%'>
                     <tr>
-                        <td colspan="4"><h2 style="margin-top:0;">Personally identifying information</h2></td>
+                        <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
                     </tr>
             ]]>
         </Static>
@@ -330,25 +330,9 @@
                 </table>
             ]]>
         </Static>
-        <ReportItem id="aspirations" type="UploadPDF" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h2>Attachments</h2>
-                <h3>Professional Aspirations and Academic Interests</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="transcript" type="UploadPDF" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h3>Transcript</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
-            <![CDATA[
-                <h3>Résumé</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+        <ReportItem id="aspirations" type="UploadPDF" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="transcript" type="UploadPDF" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
             <![CDATA[
                 <h2>Acknowledgment and Agreement</h2>
