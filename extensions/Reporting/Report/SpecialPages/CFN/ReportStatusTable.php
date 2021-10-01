@@ -97,7 +97,7 @@ class ReportStatusTable extends SpecialPage{
                 }
             }
         }
-        foreach(Project::getAllProjects() as $project){
+        foreach(Project::getAllProjectsEver() as $project){
             if(strstr($project->getName(), "SSA2016") !== false){
                 $ssa2016[$project->getName()] = $project;
             }
