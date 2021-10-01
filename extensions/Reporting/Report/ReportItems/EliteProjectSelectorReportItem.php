@@ -6,7 +6,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
 		global $wgOut;
 		$output = "";
 		$blob = $this->getBlobValue();
-		//var_dump($blob);
+		$limit = $this->getAttr("limit", 5);
         $set = new ElitePostingsReportItemSet();
         $data = $set->getData();
         $output = "<style>
@@ -76,7 +76,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                                 $('#projects #available_projects').append(row);
                             }
                         });
-                        if($('#projects #selected_projects li').length >= 5){
+                        if($('#projects #selected_projects li').length >= $limit){
                             $('#projects #available_projects input').prop('disabled', true);
                         }
                         else {
