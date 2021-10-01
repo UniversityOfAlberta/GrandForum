@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="CS Form" reportType="RP_CS" pdfType="RPTP_CS" pdfFiles="CSFormFullPDF" ajax="true" disabled="false">
     <Permissions>
-        <!--Role role="Applicant">
+        <Role role="Applicant">
             <SectionPermission id="personal" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="eula" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        </Role-->
+        </Role>
     </Permissions>
 
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
@@ -21,12 +21,7 @@
                     <li>If you have any questions about the appliation process (FGSR/GSMS) please contact <a href='mailto:csapplygrad@ualberta.ca'>csapplygrad@ualberta.ca</a></li></ul>
                 <br />
                 <p><b>CS/GARS Application Deadline:</b><br />
-                Jan 31 11:59pm MST System Closure to current applications for uploading any pending, missing, or incomplete documentation such as reference letters, transcripts, degrees, etc. All applicants that are missing their GARS applications by Jan 31 will be rejected.</p>
-
-                <p><b>FGSR/GSMS Application Deadline EXTENDED:</b><br />
-                Feb 13 11:59pm MST System Closure to current applications for uploading any pending, missing, or incomplete documentation such as reference letters, transcripts, degrees, etc.</p>
-
-                <p>All required documents for applications must be received by GSMS <b>by Feb 13, 2021,11:59pm MST</b> in order for applications to be considered. All GSMS applications that are incomplete by the end of Feb 13 will be rejected.</p>
+                Computing Science graduate programs that require BOTH a GARS and GSMS application are: M.Sc Thesis-Based, Ph.D, and M.Sc/Ph.D Statistical Machine Learning. Applicants for these M.Sc and Ph.D programs must submit both GARS and GSMS applications by <b>Jan 31, 2022, 11:59pm MST</b>.</p>
             ]]>
         </ReportItem>
     </ReportSection>
