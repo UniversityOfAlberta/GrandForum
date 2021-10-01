@@ -19,6 +19,7 @@ class ElitePostingPage extends BackbonePage {
         return array('Backbone/*',
                      'eliteposting',
                      'eliteposting_edit',
+                     'eliteposting_phd_edit',
                      'elite_host',
                      'elite_host_postings',
                      'elite_host_profiles',

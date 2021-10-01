@@ -2,6 +2,28 @@ ElitePostingEditView = PostingEditView.extend({
 
     template: _.template($('#eliteposting_edit_template').html()),
     
+    initialize: function(){
+         this.model.fetch({
+            error: function(e){
+                this.$el.html("This Posting does not exist");
+            }.bind(this)
+        });
+        this.listenTo(this.model, "sync", function(){
+            this.render();
+        }.bind(this));
+        this.listenTo(this.model, "change:type", this.changeType);
+    },
+    
+    changeType: function(){
+        if(this.model.get('type') == "Intern"){
+            this.template = _.template($('#eliteposting_edit_template').html());
+        }
+        else if(this.model.get('type') == "PhD"){
+            this.template = _.template($('#eliteposting_phd_edit_template').html());
+        }
+        this.render();
+    },
+    
     characterCount: function(){
         return true;
     },
@@ -50,6 +72,24 @@ ElitePostingEditView = PostingEditView.extend({
         this.renderTinyMCE('extra_responsibilities');
         this.renderTinyMCE('extra_qualifications');
         this.renderTinyMCE('extra_skills');
+        this.$("input[name=extra_ack1]").change(function(){
+            var value = this.$("input[name=extra_ack1]:checked").val();
+            if(value == "No"){
+                this.$("#acknowledgment1Warning").slideDown();
+            }
+            else{
+                this.$("#acknowledgment1Warning").slideUp();
+            }
+        }.bind(this)).change();
+        this.$("input[name=extra_ack2]").change(function(){
+            var value = this.$("input[name=extra_ack2]:checked").val();
+            if(value == "No"){
+                this.$("#acknowledgment2Warning").slideDown();
+            }
+            else{
+                this.$("#acknowledgment2Warning").slideUp();
+            }
+        }.bind(this)).change();
     }
 
 });

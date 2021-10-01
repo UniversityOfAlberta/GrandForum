@@ -9,8 +9,10 @@ ElitePosting = Posting.extend({
     defaults: function(){
         return _.extend(Object.assign({}, Posting.prototype.defaults), {
             visibility: "Submitted",
-            type: "",
-            extra: {},
+            type: "Intern",
+            extra: {
+                level: "Any Level"
+            },
             comments: "",
         });
     }

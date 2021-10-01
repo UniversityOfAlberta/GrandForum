@@ -1,0 +1,141 @@
+<div>
+    <table>
+        <tr>
+            <td class="label required" style="width: 1%;">Type:</td>
+            <td class="value"><%= HTML.Select(this, 'type', {options: ["Intern", "PhD"]}) %></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>Professor Information</h3></td>
+        </tr>
+        <tr>
+            <td class="label">Name:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.name', {size: 20}) %></td>
+        </tr>
+        <tr>
+            <td class="label required">Title:</td>
+            <td class="value"><%= HTML.Select(this, 'extra.title', {options: ["Professor", "Associate", "Professor", "Assistant Professor", "Faculty Researcher"]}) %></td>
+        </tr>
+        <tr>
+            <td class="label required">Department:</td>
+            <td class="value"><%= HTML.Select(this, 'extra.companyName', {options: ["Biomedical Engineering", "Chemical and Materials Engineering", "Civil and Environmental Engineering", "Electrical and Computer Engineering", "Mechanical Engineering"]}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Email Address:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.email', {size: 20}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Phone Number:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.phone', {size: 20}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Research Website:</td>
+            <td class="value"><%= HTML.TextBox(this, 'articleLink', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>Social Media Accounts</h3></td>
+        </tr>
+        <tr>
+            <td class="label">Twitter:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.twitter', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Facebook:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.facebook', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">LinkedIn:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.linkedin', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Google Scholar:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.googlescholar', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Scopus:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.scopus', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">ResearchGate:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.researchgate', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Other:</td>
+            <td class="value"><%= HTML.TextBox(this, 'extra.other', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>Project Information</h3></td>
+        </tr>
+        <tr>
+            <td class="label">Project Title:</td>
+            <td class="value"><%= HTML.TextBox(this, 'title', {size: 50}) %></td>
+        </tr>
+        <tr>
+            <td class="label">Project Description:</td>
+            <td class="value"><%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Specialized Training and Skills Development:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'extra.training', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Specific Responsibilities Include:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'extra.responsibilities', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>PhD Candidate Qualifications</h3></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Required Qualifications:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'extra.qualifications', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Desired Qualifications:</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.TextArea(this, 'extra.skills', {style: 'height: 200px; width:685px;'}) %></td>
+        </tr>
+        <tr>
+            <td class="label" title="Desired Academic Level">Desired Academic Level:</td>
+            <td class="value"><%= HTML.Select(this, 'extra.level', {options: ["Any Level","Bachelor's","Master's"] }) %></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>Acknowledgement and Agreement</h3></td>
+        </tr>
+        <tr>
+            <td class="left-align" colspan="2"><b>If you are matched with a successful candidate accepted to the PhD Fellowship Program, you will agree to provide a supplementary cash contribution of either $5,000 or $15,000 per year, as determined by the fellowship award received by the PhD candidate. Your contribution will bring the salary of the PhD candidate to $30,000 per year.</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.Radio(this, 'extra.ack1', {options: ["Yes", "No"]}) %><br />
+                <div id="acknowledgment1Warning" class="warning" style="display:none;">You are not eligible to support a PhD candidate through this fellowship. Please revisit your response to confirm your selection.</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="left-align" colspan="2"><b>If you are matched with a successful candidate accepted to the PhD Fellowship Program, you agree to permit them to participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="value"><%= HTML.Radio(this, 'extra.ack2', {options: ["Yes", "No"]}) %><br />
+                <div id="acknowledgment2Warning" class="warning" style="display:none;">You are not eligible to support a PhD candidate through this fellowship. Please revisit your response to confirm your selection.</div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div style="width:120px;display:inline-block;">
+    <button id="savePosting">
+        <% if(this.model.isNew()){ %>Create<% } else { %>Save<% } %>
+    </button><span class="throbber" style="display:none;"></span>
+</div>
+<div style="width:120px;display:inline-block;">
+    <button id="cancel">Cancel</button>
+</div>
