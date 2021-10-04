@@ -20,7 +20,8 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Reports"] = TabUtils::createTab("ELITE Profile");
+        $tabs["Intern"] = TabUtils::createTab("Intern Profile");
+        $tabs["PhD"] = TabUtils::createTab("PhD Profile");
         return true;
     }
     
@@ -30,7 +31,10 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isRole(HQP)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Application")) ? "selected" : false;
-            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("Profile", "{$url}Application", $selected);
+            $tabs["Intern"]['subtabs'][] = TabUtils::createSubTab("Intern Profile", "{$url}Application", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PhDApplication")) ? "selected" : false;
+            $tabs["PhD"]['subtabs'][] = TabUtils::createSubTab("PhD Profile", "{$url}PhDApplication", $selected);
         }
         return true;
     }
