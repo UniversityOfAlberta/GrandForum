@@ -84,9 +84,6 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair") && $person->getName() == "Deanna.Singhal"){
                     continue;
                 }
-                if(($me->getName() == "Linda.Christensen" || $me->getName() == "David.Coltman") && $person->getName() == "Douglas.Wylie"){
-                    continue;
-                }
                 create:
                     $tuple = self::createTuple();
                     $tuple['person_id'] = $person->getId();
