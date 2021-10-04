@@ -1,0 +1,124 @@
+<% if(!this.isDialog){ %>
+    <a class="button" href="<%= wgServer + wgScriptPath %>/index.php/Special:ElitePostingPage#" style="position: absolute; top: 15px; right: 20px;">Back to Project Proposals</a>
+<% } %>
+<div>
+    <% if(visibility == "Requested More Info"){ %>
+        <div class="info">
+            <b><%= visibility %></b><br />
+            <%= nl2br(comments) %>
+        </div>
+    <% } %>
+    <table>
+        <tr>
+            <td colspan="2"><h3>Professor Information</h3></td>
+        </tr>
+        <tr>
+            <td class="label">Name:</td>
+            <td class="value"><%= extra.name %></td>
+        </tr>
+        <tr>
+            <td class="label">Title:</td>
+            <td class="value"><%= extra.title %></td>
+        </tr>
+        <tr>
+            <td class="label">Department:</td>
+            <td class="value"><%= extra.companyName %></td>
+        </tr>
+        <tr>
+            <td class="label">Email Address:</td>
+            <td class="value"><a href="mailto:<%= extra.email %>"><%= extra.email %></a></td>
+        </tr>
+        <tr>
+            <td class="label">Phone Number:</td>
+            <td class="value"><%= extra.phone %></td>
+        </tr>
+        <tr>
+            <td class="label">Research Website:</td>
+            <td class="value"><a target="_blank" href="<%= articleLink %>"><%= articleLink %></a></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h3>Social Media Accounts</h3></td>
+        </tr>
+        <% if(!_.isEmpty(extra.twitter)){ %>
+            <tr>
+                <td class="label">Twitter:</td>
+                <td class="value"><a href="<%= extra.twitter %>" target="_blank"><%= extra.twitter %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.facebook)){ %>
+            <tr>
+                <td class="label">Facebook:</td>
+                <td class="value"><a href="<%= extra.facebook %>" target="_blank"><%= extra.facebook %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.linkedin)){ %>
+            <tr>
+                <td class="label">LinkedIn:</td>
+                <td class="value"><a href="<%= extra.linkedin %>" target="_blank"><%= extra.linkedin %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.googlescholar)){ %>
+            <tr>
+                <td class="label">Google Scholar:</td>
+                <td class="value"><a href="<%= extra.googlescholar %>" target="_blank"><%= extra.googlescholar %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.scopus)){ %>
+            <tr>
+                <td class="label">Scopus:</td>
+                <td class="value"><a href="<%= extra.scopus %>" target="_blank"><%= extra.scopus %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.researchgate)){ %>
+            <tr>
+                <td class="label">ResearchGate:</td>
+                <td class="value"><a href="<%= extra.researchgate %>" target="_blank"><%= extra.researchgate %></a></td>
+            </tr>
+        <% } %>
+        <% if(!_.isEmpty(extra.other)){ %>
+            <tr>
+                <td class="label">Other:</td>
+                <td class="value"><a href="<%= extra.other %>" target="_blank"><%= extra.other %></a></td>
+            </tr>
+        <% } %>
+        
+        <tr>
+            <td colspan="2"><h3>Project Information</h3></td>
+        </tr>
+        <tr>
+            <td class="label">Project Title:</td>
+            <td class="value"><%= title %></td>
+        </tr>
+        <tr>
+            <td class="label">Project Description:</td>
+            <td class="value"><%= summary %></td>
+        </tr>
+        
+        <tr>
+            <td colspan="2"><h3>PhD Candidate Qualifications</h3></td>
+        </tr>
+        <tr>
+            <td class="label left-align" colspan="2">Required Qualifications:</td>
+        </tr>
+        <tr>
+            <td class="value" colspan="2"><%= extra.qualifications %></td>
+        </tr>
+        <% if(!_.isEmpty(extra.skills)){ %>
+            <tr>
+                <td class="label left-align" colspan="2">Required Qualifications:</td>
+            </tr>
+            <tr>
+                <td class="value" colspan="2"><%= extra.skills %></td>
+            </tr>
+        <% } %>
+        <tr>
+            <td class="label left-align" colspan="2">Desired Academic Level:</td>
+        </tr>
+        <tr>
+            <td class="value" colspan="2"><%= extra.level %></td>
+        </tr>
+    </table>
+</div>
+<% if(isAllowedToEdit && !this.isDialog){ %>
+    <button id='editPosting'>Edit</button>&nbsp;<button id='deletePosting'>Delete</button>
+<% } %>

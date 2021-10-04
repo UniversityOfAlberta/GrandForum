@@ -3,7 +3,7 @@ ElitePostingEditView = PostingEditView.extend({
     template: _.template($('#eliteposting_edit_template').html()),
     
     initialize: function(){
-         this.model.fetch({
+        this.model.fetch({
             error: function(e){
                 this.$el.html("This Posting does not exist");
             }.bind(this)
