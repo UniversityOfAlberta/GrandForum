@@ -45,14 +45,37 @@ ElitePostingEditView = PostingEditView.extend({
                 imagemanager_insert_template : '<img src="{$url}" width="{$custom.width}" height="{$custom.height}" />',
                 setup: function(ed){
                     var update = function(){
-                        model.set(name, ed.getContent());
-                    };
+                        if(name.indexOf('_') != -1){
+                            var elems = name.split("_");
+                            var recurse = function(data, depth) {
+                                if (depth < elems.length) {
+                                    if((data == undefined || data == '') && (!_.isArray(data[elems[depth]]) || !_.isObject(data[elems[depth]]))) {
+                                        data = {};
+                                        data[elems[depth]] = {};
+                                    }
+                                    data[elems[depth]] = recurse(data[elems[depth]], depth+1);
+                                    return data;
+                                } else {
+                                    return ed.getContent();
+                                }
+                            }
+                            
+                            var data = this.model.get(elems[0]);
+                            data = recurse(data, 1);
+                            this.model.set(elems[0], _.clone(data));
+                            this.model.trigger('change', this.model);
+                            this.model.trigger('change:' + elems[0], this.model);
+                        }
+                        else{
+                            this.model.set(name, ed.getContent());
+                        }
+                    }.bind(this);
                     ed.on('keydown', update);
                     ed.on('keyup', update);
                     ed.on('change', update);
                     ed.on('init', update);
                     ed.on('blur', update);
-                }
+                }.bind(this)
             });
         }.bind(this));
     },
@@ -80,7 +103,7 @@ ElitePostingEditView = PostingEditView.extend({
             else{
                 this.$("#acknowledgment1Warning").slideUp();
             }
-        }.bind(this)).change();
+        }.bind(this));
         this.$("input[name=extra_ack2]").change(function(){
             var value = this.$("input[name=extra_ack2]:checked").val();
             if(value == "No"){
@@ -89,7 +112,7 @@ ElitePostingEditView = PostingEditView.extend({
             else{
                 this.$("#acknowledgment2Warning").slideUp();
             }
-        }.bind(this)).change();
+        }.bind(this));
     }
 
 });

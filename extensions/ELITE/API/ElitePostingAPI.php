@@ -8,6 +8,26 @@ class ElitePostingAPI extends PostingAPI {
         if(trim($this->POST('title')) == ""){
             $this->throwError("A title must be provided");
         }
+        if($this->POST('type') == "PhD"){
+            $extra = $this->POST('extra');
+            if(@$extra->title == "" ||
+               @$extra->name == "" ||
+               @$extra->companyName == "" ||
+               @$extra->email == "" ||
+               @$extra->phone == "" ||
+               $this->POST('articleLink') == "" ||
+               $this->POST('summary') == "" ||
+               @$extra->qualifications == "" ||
+               @$extra->level == "" ||
+               @$extra->ack1 == "" ||
+               @$extra->ack2 == ""){
+                $this->throwError("Not all required fields have been filled.");
+            }
+            else if($extra->ack1 == "No" ||
+                    $extra->ack2 == "No"){
+                $this->throwError("You are not eligible to support a PhD candidate through this fellowship. Please revisit your response to confirm your selection.");
+            }
+        }
         return true;
     }
     
