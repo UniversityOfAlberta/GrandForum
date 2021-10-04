@@ -60,16 +60,15 @@ class ElitePostingPage extends BackbonePage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $person = Person::newFromWgUser();
-        
         if($person->isRole(EXTERNAL)){
             // Host
-            $selected = @($wgTitle->getText() == "ElitePostingPage") ? "selected" : false;
-            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage", $selected);
+            $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'host' || $_GET['page'] == "")) ? "selected" : false;
+            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=host", $selected);
         }
         if($person->isRole(ADMIN)){
             // Admin
-            $selected = @($wgTitle->getText() == "ElitePostingPage") ? "selected" : false;
-            $tabs["ELITEAdmin"]['subtabs'][] = TabUtils::createSubTab("Admin Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage#/admin", $selected);
+            $selected = @($wgTitle->getText() == "ElitePostingPage" && $_GET['page'] == 'admin') ? "selected" : false;
+            $tabs["ELITEAdmin"]['subtabs'][] = TabUtils::createSubTab("Admin Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=admin#/admin", $selected);
         }
         
         return true;
