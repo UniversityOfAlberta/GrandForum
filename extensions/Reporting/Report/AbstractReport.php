@@ -1091,7 +1091,7 @@ abstract class AbstractReport extends SpecialPage {
                             <div id='optionsDiv'>");
         $this->renderOptions();
         if($this->extends == "" && !$this->hasSubReport()){
-            $this->renderBackup();  
+            //$this->renderBackup();  
         }
         $wgOut->addHTML("</div></div>
                             </div>");

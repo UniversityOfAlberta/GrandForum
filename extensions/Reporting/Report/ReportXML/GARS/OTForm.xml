@@ -63,27 +63,27 @@
     </ReportSection>
 
     <ReportSection id="questions" tooltip="Letter of Intent Questions" name="Letter of Intent" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" limit="1800">
+        <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" rich="true" limit="300">
             <![CDATA[
-		<h3>Describe how your personal work, volunteer, and or life experiences will contribute towards making you an effective occupational therapist.</h3>
+                <h3>Why do you want to be an Occupational Therapist? (*knowledge of OT)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" limit="1800">
+        <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="300">
             <![CDATA[
-                <h3>Tell us about your academic experiences and how they have prepared you for being successful in the MScOT program at the University of Alberta.</h3>
+                <h3>Describe how your personal life, work, and/or volunteer experience will contribute to making you an effective Occupational Therapist. (*motivation and what the applicant will bring to the program)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" limit="1800">
+        <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" rich="true" limit="200">
             <![CDATA[
-                <h3>Why are you choosing to apply to the Department of Occupational Therapy at the University of Alberta?</h3>
+                <h3>Why are you choosing to apply to the MScOT program at the University of Alberta? (*why us?)</h3>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" limit="900" optional="true">
+        <ReportItem id="q4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q5" rich="true" limit="200" optional="true">
             <![CDATA[
-		<h3>Are there any extenuating circumstances that you would like the Admissions Committee to consider in making their decision? Extenuating circumstances might include gaps in your education or experience, or leaves of absence from previous programs. Note: if there are no extenuating circumstances, please leave this question blank.</h3>
+                <h3>Are there extenuating circumstances that you would like the admissions committee to consider in making their decision? Examples of extenuating circumstances would be gaps in your program or a leave of absence from a previous program. Note, if there are no extenuating circumstances to speak of, please leave this answer blank.</h3>
                 {$item}
             ]]>
         </ReportItem>
