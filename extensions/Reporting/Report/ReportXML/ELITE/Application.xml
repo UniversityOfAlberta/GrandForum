@@ -289,7 +289,7 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="enrolled" type="Checkbox" blobItem="ENROLLED" blobType="BLOB_ARRAY" options="High School|College/Vocational School|University|Will Not Enroll" encrypt="true">
+        <ReportItem id="enrolled" type="Radio" blobItem="ENROLLED" options="High School|College/Vocational School|University|Will Not Enroll" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label" style="text-align: left; white-space:normal;" colspan="4">Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?<span style="display:inline-block;line-height:1em;" class="label required"></span></td>
