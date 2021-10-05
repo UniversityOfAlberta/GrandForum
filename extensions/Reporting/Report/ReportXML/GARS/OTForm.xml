@@ -65,19 +65,19 @@
     <ReportSection id="questions" tooltip="Letter of Intent Questions" name="Letter of Intent" blobSection="OT_QUESTIONS" type="EditableReportSection" pagebreak="false">
         <ReportItem id="q1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q1" rich="true" limit="300">
             <![CDATA[
-                <h3>Why do you want to be an Occupational Therapist? (*knowledge of OT)</h3>
+                <h3>Why do you want to be an Occupational Therapist?</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="300">
             <![CDATA[
-                <h3>Describe how your personal life, work, and/or volunteer experience will contribute to making you an effective Occupational Therapist. (*motivation and what the applicant will bring to the program)</h3>
+                <h3>Describe how your personal life, work, and/or volunteer experience will contribute to making you an effective Occupational Therapist.</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q4" rich="true" limit="200">
             <![CDATA[
-                <h3>Why are you choosing to apply to the MScOT program at the University of Alberta? (*why us?)</h3>
+                <h3>Why are you choosing to apply to the MScOT program at the University of Alberta?</h3>
                 {$item}
             ]]>
         </ReportItem>
