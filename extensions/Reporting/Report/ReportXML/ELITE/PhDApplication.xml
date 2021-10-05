@@ -284,14 +284,14 @@
         <ReportItem id="summary" type="Upload" blobItem="SUMMARY" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Summary of Thesis or Research Project Work</h3>
-                Please attach a one-page summary of the most recent thesis or research project work completed or in progress.
+                <p><b>Please attach a one-page summary of the most recent thesis or research project work completed or in progress.</b></p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="statement" type="Upload" blobItem="STATEMENT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Statement of Research, Service, Community, and Leadership Activities</h3>
-                Please attach a statement pertaining to research, service, community, leadership, and other relevant activities, not to exceed two pages.
+                <p><b>Please attach a statement pertaining to research, service, community, leadership, and other relevant activities, not to exceed two pages.</b></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -320,7 +320,7 @@
         <ReportItem id="letter1" type="Upload" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Letters of Reference</h3>
-                Please attach two letters of reference.
+                <p><b>Please attach two letters of reference.</b></p>
                 {$item}
             ]]>
         </ReportItem>
