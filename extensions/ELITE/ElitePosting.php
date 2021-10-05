@@ -47,6 +47,19 @@ class ElitePosting extends Posting {
         return $this->type;
     }
     
+    /**
+     * Returns the url of this Posting's page
+     * @return string The url of this Posting's page
+     */
+    function getUrl(){
+        global $wgServer, $wgScriptPath;
+        $class = get_class($this);
+        if(!isset($_GET['embed']) || $_GET['embed'] == 'false'){
+            return "{$wgServer}{$wgScriptPath}/index.php/Special:{$class}Page?page=".strtolower($this->getType())."#/{$this->getId()}";
+        }
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:{$class}Page?page=".strtolower($this->getType())."&embed#/{$this->getId()}";
+    }
+    
     function getExtra($field=null){
         if($field == null){
             return $this->extra;

@@ -23,7 +23,7 @@ ElitePostings = Backbone.Collection.extend({
     
     model: ElitePosting,
     
-    type: "Intern",
+    type: "",
     
     deleted: false,
     
