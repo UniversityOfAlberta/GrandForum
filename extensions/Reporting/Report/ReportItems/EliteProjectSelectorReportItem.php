@@ -8,6 +8,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
 		$blob = $this->getBlobValue();
 		$limit = $this->getAttr("limit", 5);
         $set = new ElitePostingsReportItemSet();
+        $set->projectType = $this->getAttr("projectType", "");
         $data = $set->getData();
         if(count($data) == 0){
             $output = "There are currently no available projects";

@@ -269,7 +269,7 @@
                 <p>Engineering faculty professors have provided brief descriptions of possible PhD projects. Please review all the project descriptions. Select your top three projects in order of preference.</p>
             ]]>
         </Static>
-        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" limit="3">
+        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="PhD" limit="3">
             <![CDATA[
                 {$item}
             ]]>

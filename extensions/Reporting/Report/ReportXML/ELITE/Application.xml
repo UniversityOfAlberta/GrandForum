@@ -338,7 +338,7 @@
                 <p>Internship hosts have provided brief descriptions of possible projects. Please review all the internship host project descriptions. Select your top five projects in order of preference. If there are more than five projects that interest you, please state the additional ones in the Comments Box below.</p>
             ]]>
         </Static>
-        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" limit="5">
+        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="Intern" limit="5">
             <![CDATA[
                 {$item}
             ]]>
