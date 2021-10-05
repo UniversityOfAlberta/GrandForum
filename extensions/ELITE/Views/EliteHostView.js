@@ -1,15 +1,26 @@
 EliteHostView = PostingsView.extend({
-
-    template: _.template($('#elite_host_template').html()),
     
-    initialize: function(){
-        main.set('title', 'ELITE Host Panel');
+    type: "Intern",
+    
+    initialize: function(options){
+        if(options.type != undefined){
+            this.type = options.type;
+        }
+        if(this.type == "Intern"){
+            main.set('title', 'ELITE Internship Host Panel');
+            this.template = _.template($('#elite_host_template').html());
+        }
+        else if (this.type == "PhD"){
+            main.set('title', 'PhD Fellowship Supervisor Panel');
+            this.template = _.template($('#elite_phd_template').html());
+        }
         Backbone.Subviews.add(this);
     },
     
     subviewCreators: {
         "postings" : function() {
             var postings = new ElitePostings();
+            postings.type = this.type;
             return new EliteHostPostingsView({model: postings});
         },
         "intern_profiles": function(){

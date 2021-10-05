@@ -4,6 +4,24 @@ class ElitePostingAPI extends PostingAPI {
     
     static $className = "ElitePosting";
     
+    function doGET(){
+        $id = $this->getParam('id');
+        $className = static::$className;
+        if($id == "intern" || $id == "phd"){
+            $postings = array();
+            foreach($className::getAllPostings() as $posting){
+                if(strtolower($posting->type) == $id){
+                    $postings[] = $posting;
+                }
+            }
+            $postings = new Collection($postings);
+            return $postings->toJSON();
+        }
+        else{
+            return parent::doGET();
+        }
+    }
+    
     function validate(){
         if(trim($this->POST('title')) == ""){
             $this->throwError("A title must be provided");

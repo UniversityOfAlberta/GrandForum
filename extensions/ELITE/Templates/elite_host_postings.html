@@ -1,5 +1,5 @@
 <% if(isAllowedToCreateElitePostings){ %>
-    <a href="#/new" class="button" id="add">Create New</a><br /><br />
+    <a href="#/<%= this.model.type.toLowerCase() %>/new" class="button" id="add">Create New</a><br /><br />
 <% } %>
 <table id="postings" frame="box" rules="all">
     <thead>

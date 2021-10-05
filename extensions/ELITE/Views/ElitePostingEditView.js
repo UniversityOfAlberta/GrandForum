@@ -9,9 +9,18 @@ ElitePostingEditView = PostingEditView.extend({
             }.bind(this)
         });
         this.listenTo(this.model, "sync", function(){
-            this.render();
+            this.changeType();
         }.bind(this));
         this.listenTo(this.model, "change:type", this.changeType);
+    },
+    
+    cancel: function(){
+        if(!this.model.isNew()){
+            document.location = this.model.get('url');
+        }
+        else{
+            document.location = "#/" + this.model.get('type').toLowerCase();
+        }
     },
     
     changeType: function(){

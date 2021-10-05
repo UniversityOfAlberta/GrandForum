@@ -1,14 +1,10 @@
 <div>
     <table>
         <tr>
-            <td class="label required" style="width: 1%;">Type:</td>
-            <td class="value"><%= HTML.Select(this, 'type', {options: ["Intern", "PhD"]}) %></td>
-        </tr>
-        <tr>
             <td colspan="2"><h3>Professor Information</h3></td>
         </tr>
         <tr>
-            <td class="label required">Name:</td>
+            <td class="label required" style="width: 1%;">Name:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.name', {size: 20}) %></td>
         </tr>
         <tr>

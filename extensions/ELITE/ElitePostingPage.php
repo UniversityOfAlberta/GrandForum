@@ -22,6 +22,7 @@ class ElitePostingPage extends BackbonePage {
                      'eliteposting_edit',
                      'eliteposting_phd_edit',
                      'elite_host',
+                     'elite_phd',
                      'elite_host_postings',
                      'elite_host_profiles',
                      'elite_admin',
@@ -53,8 +54,9 @@ class ElitePostingPage extends BackbonePage {
     
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["ELITEHost"] = TabUtils::createTab("Host Panel");
         $tabs["ELITEAdmin"] = TabUtils::createTab("Admin Panel");
+        $tabs["ELITEHost"] = TabUtils::createTab("ELITE Internship Host Panel");
+        $tabs["ELITEPhd"] = TabUtils::createTab("PhD Fellowship Supervisor Panel");
         return true;
     }
     
@@ -63,8 +65,13 @@ class ElitePostingPage extends BackbonePage {
         $person = Person::newFromWgUser();
         if($person->isRole(EXTERNAL)){
             // Host
-            $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'host' || $_GET['page'] == "")) ? "selected" : false;
-            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=host", $selected);
+            $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'intern' || $_GET['page'] == "")) ? "selected" : false;
+            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("ELITE Internship Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=intern#/intern", $selected);
+        }
+        if($person->isRole(EXTERNAL)){
+            // PhD Supervisor
+            $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'phd' || $_GET['page'] == "")) ? "selected" : false;
+            $tabs["ELITEPhd"]['subtabs'][] = TabUtils::createSubTab("PhD Fellowship Supervisor Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=phd#/phd", $selected);
         }
         if($person->isRole(ADMIN)){
             // Admin
