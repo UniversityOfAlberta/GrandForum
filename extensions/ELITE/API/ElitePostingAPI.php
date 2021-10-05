@@ -26,7 +26,24 @@ class ElitePostingAPI extends PostingAPI {
         if(trim($this->POST('title')) == ""){
             $this->throwError("A title must be provided");
         }
-        if($this->POST('type') == "PhD"){
+        if($this->POST('type') == "Intern"){
+            $extra = $this->POST('extra');
+            if(@$extra->companyName == "" ||
+               @$extra->reportsTo == "" ||
+               @$extra->basedAt == "" ||
+               @$extra->contact == "" ||
+               @$extra->email == "" ||
+               @$extra->phone == "" ||
+               $this->POST('summary') == "" ||
+               @$extra->training == "" ||
+               @$extra->responsibilities == "" ||
+               @$extra->qualifications == "" ||
+               @$extra->level == "" ||
+               @$extra->positions == ""){
+                $this->throwError("Not all required fields have been filled.");
+            }
+        }
+        else if($this->POST('type') == "PhD"){
             $extra = $this->POST('extra');
             if(@$extra->title == "" ||
                @$extra->name == "" ||
