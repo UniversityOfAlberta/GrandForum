@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" year="0" ajax="true" encrypt="true">
+<Report name="ELITE Intern Application" reportType="RP_ELITE" pdfType="RPTP_ELITE" year="0" ajax="true" encrypt="true">
     <!-- Personally identifying information -->
-    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true" pagebreak="false">
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="ELITE Intern Application" title="ELITE Intern Application" showProgress="true" pagebreak="false">
         <Static>
             <![CDATA[
                 <table width='100%'>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Report" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true">
+<Report name="ELITE Intern Application" reportType="RP_ELITE" pdfType="RPTP_ELITE" pdfFiles="ApplicationPDF" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-            <SectionPermission id="projects" permissions="rw" />
         </Role>
     </Permissions>
     <!-- Personal Information -->
-    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="ELITE Intern Application" showProgress="true">
         <Static>
             <![CDATA[
                 <b>Welcome to the Intern Application Portal for the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Please read our Brochure for Interns before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the Freedom of Information and Protection of Privacy Act, R.S.A. 2000, c. F-25 (as amended).</b>

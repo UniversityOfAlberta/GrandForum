@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Report" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" pdfFiles="PhDApplicationPDF" year="0" ajax="true" encrypt="true">
+<Report name="ELITE PhD Application" reportType="RP_PHD_ELITE" pdfType="RPTP_PHD_ELITE" pdfFiles="PhDApplicationPDF" year="0" ajax="true" encrypt="true">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="profile" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-            <SectionPermission id="projects" permissions="rw" />
         </Role>
     </Permissions>
     <!-- Personal Information -->
-    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Profile" title="Profile" showProgress="true">
+    <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="ELITE PhD Application" showProgress="true">
         <Static>
             <![CDATA[
                 <b>Welcome to the PhD Fellowship Application Portal for the Indigenous and Black Engineering and Technology (IBET) Momentum Fellowship sponsored by the <a href="https://www.ualberta.ca/engineering/index.html" target="_blank">Faculty of Engineering</a> and the <a href="https://www.eliteprogram.ca/" target="_blank">Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth</a> at the <a href="https://www.ualberta.ca/index.html" target="_blank">University of Alberta</a>. Please read our Brochure for Applicants before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. The complete Terms of Reference for the Fellowship Program are available HERE. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the <i>Freedom of Information and Protection of Privacy Act</i>, R.S.A. 2000, c. F-25 (as amended).</b>
