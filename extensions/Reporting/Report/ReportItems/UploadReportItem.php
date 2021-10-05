@@ -172,7 +172,12 @@ class UploadReportItem extends AbstractReportItem {
                         <button id='delete' type='button' class='button'>Delete</button>";
         }
         else{
-            echo "<div>You have not uploaded a file yet</div>";
+            if($this->getAttr('mimeType') == "application/pdf"){
+                echo "<div>You have not uploaded a PDF file yet</div>";
+            }
+            else{
+                echo "<div>You have not uploaded a file yet</div>";
+            }
         }
         echo "      </div>
                 </body>
