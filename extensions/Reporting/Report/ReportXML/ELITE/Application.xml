@@ -375,6 +375,18 @@
                 <h2 class="required">Acknowledgment and Agreement</h2>
                 <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
                 {$item}
+                <div id="acknowledgmentWarning" class="warning" style="display:none;">You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</div>
+                <script type="text/javascript">
+                    $("input[name=Application_acknowledgment]").change(function(){
+                        var value = $("input[name=Application_acknowledgment]:checked").val();
+                        if(value == "No"){
+                            $("#acknowledgmentWarning").slideDown();
+                        }
+                        else{
+                            $("#acknowledgmentWarning").slideUp();
+                        }
+                    }).change();
+                </script>
             ]]>
         </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
@@ -387,13 +399,20 @@
         <ReportItem id="elite" type="EliteSubmit" />
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <If if="{!=({getProgress(profile)},100)}">
+        <If if="{or({==({getText(RP_ELITE, PROFILE, ACKNOWLEDGMENT, 0, {$user_id}, 0)},No)})}">
             <![CDATA[
-                You have not completed the application.
+                You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.
             ]]>
         </If>
         <Else>
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+            <If if="{!=({getProgress(profile)},100)}">
+                <![CDATA[
+                    You have not completed the application.
+                ]]>
+            </If>
+            <Else>
+                <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+            </Else>
         </Else>
     </ReportSection>
 </Report>

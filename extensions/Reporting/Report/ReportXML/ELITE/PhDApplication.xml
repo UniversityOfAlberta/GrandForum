@@ -92,8 +92,8 @@
                         Only Canadian citizens, permanent residents, and refugees are eligible for this fellowship.{$item}
                         <div id="immigrationWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                         <script type="text/javascript">
-                            $("select[name=Profile_immigration]").change(function(){
-                                var value = $("select[name=Profile_immigration]").val();
+                            $("select[name=Application_immigration]").change(function(){
+                                var value = $("select[name=Application_immigration]").val();
                                 if(value == "International Student" || value == "Other"){
                                     $("#immigrationWarning").slideDown();
                                 }
@@ -125,8 +125,8 @@
                         {$item}
                         <div id="programWarning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                         <script type="text/javascript">
-                            $("input[name=Profile_program]").change(function(){
-                                var value = $("input[name=Profile_program]:checked").val();
+                            $("input[name=Application_program]").change(function(){
+                                var value = $("input[name=Application_program]:checked").val();
                                 if(value == "Yes"){
                                     $("#programWarning").slideDown();
                                 }
@@ -336,8 +336,8 @@
                 {$item}
                 <div id="acknowledgment1Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                 <script type="text/javascript">
-                    $("input[name=Profile_acknowledgment1]").change(function(){
-                        var value = $("input[name=Profile_acknowledgment1]:checked").val();
+                    $("input[name=Application_acknowledgment1]").change(function(){
+                        var value = $("input[name=Application_acknowledgment1]:checked").val();
                         if(value == "No"){
                             $("#acknowledgment1Warning").slideDown();
                         }
@@ -354,8 +354,8 @@
                 {$item}
                 <div id="acknowledgment2Warning" class="warning" style="display:none;">You are not eligible for this fellowship. Please visit the website of the engineering department that offers training in your field of interest to learn more about applying to the PhD program.</div>
                 <script type="text/javascript">
-                    $("input[name=Profile_acknowledgment2]").change(function(){
-                        var value = $("input[name=Profile_acknowledgment2]:checked").val();
+                    $("input[name=Application_acknowledgment2]").change(function(){
+                        var value = $("input[name=Application_acknowledgment2]:checked").val();
                         if(value == "No"){
                             $("#acknowledgment2Warning").slideDown();
                         }
