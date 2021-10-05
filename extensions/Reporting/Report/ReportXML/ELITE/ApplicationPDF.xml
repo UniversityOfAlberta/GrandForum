@@ -59,14 +59,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
+        <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|White|Indigenous|South Asian|Chinese|Filipino|Arab|Southeast Asian|West Asian|Korean|Japanese|Other" labels="Black|White|Indigenous (North American, Central American, South American Indigenous peoples|South Asian (e.g., East Indian, Pakistani, Sri Lankan, etc.)|Chinese|Filipino|Arab|Southeast Asian (e.g., Vietnamese, Cambodian, Laotian, Thai, etc.)|West Asian (e.g., Iranian, Afghan, etc.)|Korean|Japanese|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Ethnic Group:</td>
-                    <td class="value" colspan="3"><i>{replace(Other,,{getArray(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic)})}</i>
+                    <td class="value" colspan="3"><i>{replace(Other,,{getText(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})})}</i>
             ]]>
         </ReportItem>
-        <If if="{contains({getArray(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic,;)},Other)}">
+        <If if="{contains({getText(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})},Other)}">
             <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" placeholder="Other...">
                 <![CDATA[
                     <i>{$item}</i>

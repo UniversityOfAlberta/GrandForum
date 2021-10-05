@@ -50,14 +50,14 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
+        <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label">Ethnic Group:</td>
-                    <td class="value" colspan="3"><i>{replace(Other,,{getArray(RP_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic)})}</i>
+                    <td class="value" colspan="3"><i>{replace(Other,,{getText(RP_PHD_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})})}</i>
             ]]>
         </ReportItem>
-        <If if="{contains({getArray(RP_PHD_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id},ethnic,;)},Other)}">
+        <If if="{contains({getText(RP_PHD_ELITE,PROFILE,ETHNIC,0,{$user_id},{$project_id})},Other)}">
             <ReportItem id="ethnic_other" type="Text" blobItem="ETHNIC_OTHER" placeholder="Other...">
                 <![CDATA[
                     <i>{$item}</i>

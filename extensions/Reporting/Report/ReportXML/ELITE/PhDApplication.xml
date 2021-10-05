@@ -70,7 +70,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnic" type="Checkbox" blobItem="ETHNIC" blobType="BLOB_ARRAY" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
+        <ReportItem id="ethnic" type="Radio" blobItem="ETHNIC" options="Black|Indigenous|Other" labels="Black|Indigenous (First Nations, Inuit, and Métis)|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required">Ethnic Group:</td>
