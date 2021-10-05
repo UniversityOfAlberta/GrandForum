@@ -62,7 +62,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Other" encrypt="true">
+        <ReportItem id="gender" type="Select" blobItem="GENDER" options="Male|Female|Non-Binary|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required">Gender:</td>
