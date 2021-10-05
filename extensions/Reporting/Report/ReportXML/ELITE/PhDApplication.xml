@@ -46,10 +46,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" encrypt="true">
+        <ReportItem id="middle_name" type="Text" blobItem="MIDDLE_NAME" optional="true" encrypt="true">
             <![CDATA[
                 <tr>
-                    <td class="label required">Middle Name:</td>
+                    <td class="label">Middle Name:</td>
                     <td class="value" colspan="3">{$item}</td>
                 </tr>
             ]]>
