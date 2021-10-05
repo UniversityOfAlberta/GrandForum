@@ -360,7 +360,7 @@
         <ReportItem id="transcript" type="Upload" blobItem="TRANSCRIPT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required">Transcript</h3>
-                For high school applicants, please submit a full Government transcript, or a full high school transcript obtained from your school. An example of a full Government transcript can be found <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>HERE</a>. If you attend a school in the Edmonton Public School system, you or your parent or guardian can visit SchoolZone at https://www.epsb.ca/schools/schoolzone/ to get a copy of your full high school transcript. Please speak with your schoolteacher, guidance counsellor, or school office if you need help.
+                <p><b>For high school applicants, please submit a full Government transcript, or a full high school transcript obtained from your school. An example of a full Government transcript can be found <a href='{$wgServer}{$wgScriptPath}/data/Example Government Transcript.pdf' target='_blank'>HERE</a>. If you attend a school in the Edmonton Public School system, you or your parent or guardian can visit SchoolZone at https://www.epsb.ca/schools/schoolzone/ to get a copy of your full high school transcript. Please speak with your schoolteacher, guidance counsellor, or school office if you need help.</b></p>
                 {$item}
             ]]>
         </ReportItem>
