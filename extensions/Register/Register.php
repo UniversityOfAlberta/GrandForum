@@ -78,6 +78,7 @@ class Register extends SpecialPage{
     }
     
     function createForm(){
+        global $config;
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
@@ -96,6 +97,11 @@ class Register extends SpecialPage{
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
+
+        $typeLabel = new Label("type_label", "Please select your role", "The role of user", VALIDATE_NOT_NULL);
+        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "Candidate (ELITE Program Intern, PhD Fellowship Candidate)", EXTERNAL => "Host (ELITE Program Internship Host, PhD Fellowship Supervisor)"), VALIDATE_NOT_NULL);
+        $typeRow = new FormTableRow("type_row");
+        $typeRow->append($typeLabel)->append($typeField);
         
         $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOT_NULL);
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
@@ -109,8 +115,11 @@ class Register extends SpecialPage{
         
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
-                  ->append($emailRow)
-                  ->append($captchaRow)
+                  ->append($emailRow);
+        if($config->getValue('networkName') == 'ELITE'){
+            $formTable->append($typeRow);
+        }
+        $formTable->append($captchaRow)
                   ->append($submitRow);
         
         $formContainer->append($formTable);
@@ -169,6 +178,13 @@ class Register extends SpecialPage{
             }
             else if($config->getValue('networkName') == "IntComp"){
                 $_POST['wpUserType'] = CI;
+            }
+            else if($config->getValue('networkName') == "ELITE"){
+                $form->getElementById('type_field')->setPOST('wpUserType');
+                if($_POST['wpUserType'] != HQP && 
+                   $_POST['wpUserType'] != EXTERNAL){
+                    $_POST['wpUserType'] = HQP;
+                }
             }
             else{
                 $_POST['wpUserType'] = HQP;
