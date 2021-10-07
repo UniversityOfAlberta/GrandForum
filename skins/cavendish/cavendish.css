@@ -1186,12 +1186,12 @@ del {
 
 .required:after {
     content:" *";
-    width: 7px;
-    margin-left: 1px;
-    color: red;
-    display: inline-block;
-    position: absolute;
-    top: 0;
+    width: 7px !important;
+    margin-left: 1px !important;
+    color: red !important;
+    display: inline-block !important;
+    position: absolute !important;
+    top: 0 !important;
 }
 
 .left-align {
