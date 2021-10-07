@@ -9,6 +9,7 @@ require_once("API/EliteProfileAPI.php");
 require_once("ElitePostingPage.php");
 
 $wgHooks['BeforePageDisplay'][] = 'initElitePosting';
+$wgHooks['AddNewAccount'][] = 'afterCreateEliteUser';
 
 function initElitePosting($out, $skin){
     global $wgServer, $wgScriptPath, $config;
@@ -20,6 +21,11 @@ function initElitePosting($out, $skin){
     $elitePosting->loadModels();
     $elitePosting->loadHelpers();
     $elitePosting->loadViews();
+    return true;
+}
+
+function afterCreateEliteUser($wgUser, $byEmail=true){
+    $_POST['candidate'] = 0;
     return true;
 }
 
