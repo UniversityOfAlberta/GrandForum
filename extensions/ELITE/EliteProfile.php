@@ -90,6 +90,9 @@ abstract class EliteProfile extends BackboneModel {
     
     function isAllowedToView(){
         $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            return false;
+        }
         // TODO: Need to also add 'HOSTs'
         if($me->getId() == $this->person->getId() ||
            $me->isRoleAtLeast(STAFF)){
@@ -102,6 +105,7 @@ abstract class EliteProfile extends BackboneModel {
                 }
             }
         }
+        return false;
     }
     
     function isAllowedToEdit(){

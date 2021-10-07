@@ -32,6 +32,9 @@ class ElitePosting extends Posting {
     
     function isAllowedToView(){
         $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            return false;
+        }
         if($this->getVisibility() == "Accepted" || $this->getVisibility() == "Publish"){
             // Posting is Public
             return true;
@@ -41,6 +44,7 @@ class ElitePosting extends Posting {
             // Posting was created by the logged in user (or is Staff)
             return true;
         }
+        return false;
     }
     
     function getType(){
