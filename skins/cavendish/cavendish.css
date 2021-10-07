@@ -1158,17 +1158,17 @@ del {
     vertical-align: top;
 }
 
-.value:before {
+.value::before {
     content: " ";
     line-height: 25px;
     vertical-align: bottom;
 }
 
-.label::first-line {
+.label {
     line-height: 29px;
 }
 
-.label:after {
+.label::after {
     content:"";
     margin-left: 3px;
     position: absolute;
@@ -1184,7 +1184,7 @@ del {
     position: relative;
 }
 
-.required:after {
+.required::after {
     content:" *";
     width: 7px !important;
     margin-left: 1px !important;
