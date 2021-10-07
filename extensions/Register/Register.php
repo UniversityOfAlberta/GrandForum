@@ -176,6 +176,10 @@ class Register extends SpecialPage{
             $_POST['wpSendMail'] = "true";
             $_POST['candidate'] = "1";
             
+            if($config->getValue('networkName') == "ELITE"){
+                $_POST['candidate'] = "0";
+            }
+            
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
             
