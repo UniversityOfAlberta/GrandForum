@@ -25,6 +25,15 @@ class SpecialEventRegistrationTable extends SpecialPage{
             }
             exit;
         }
+        else if(isset($_GET['doc'])){
+            foreach($registrations as $registration){
+                if($_GET['doc'] == $registration->getDocMD5()){
+                    header('Content-Type: application/msword');
+                    echo base64_decode($registration->misc->DOC);
+                }
+            }
+            exit;
+        }
         $wgOut->addHTML("<table id='eventsTable' class='wikitable' frame='box' rules='all' width='100%'>
             <thead>
                 <tr>
@@ -54,6 +63,11 @@ class SpecialEventRegistrationTable extends SpecialPage{
                 if($field == "PDF"){
                     if($contents != ""){
                         $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='{$registration->getPDFUrl()}'>PDF Download</a>");
+                    }
+                }
+                if($field == "DOC"){
+                    if($contents != ""){
+                        $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='{$registration->getDocUrl()}'>Doc Download</a>");
                     }
                 }
                 else{

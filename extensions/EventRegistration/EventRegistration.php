@@ -64,9 +64,18 @@ class EventRegistration extends BackboneModel {
         return @md5("{$this->id}_{$this->misc->PDF}");
     }
     
+    function getDocMD5(){
+        return @md5("{$this->id}_{$this->misc->DOC}");
+    }
+    
     function getPDFUrl(){
         global $wgServer, $wgScriptPath;
         return "{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistrationTable?pdf={$this->getMD5()}";
+    }
+    
+    function getDocUrl(){
+        global $wgServer, $wgScriptPath;
+        return "{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistrationTable?doc={$this->getDocMD5()}";
     }
     
     function toArray(){

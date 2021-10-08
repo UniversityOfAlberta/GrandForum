@@ -32,6 +32,9 @@ class SpecialEventRegistration extends SpecialPage{
         else if(isset($_FILES["misc"]) && $_FILES["misc"]["size"] > 1024*1024*5){
             $wgMessage->addError("The file must not be over 5MB");
         }
+        else if(isset($_FILES["misc_doc"]) && $_FILES["misc_doc"]["size"] > 1024*1024*5){
+            $wgMessage->addError("The file must not be over 5MB");
+        }
         else{
             // Add Event Registration
             $eventRegistration = new EventRegistration(array());
@@ -49,6 +52,9 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->misc = @$_POST['misc'];
             if(isset($_FILES["misc"])){
                 $eventRegistration->misc["PDF"] = base64_encode(file_get_contents($_FILES["misc"]["tmp_name"]));
+            }
+            if(isset($_FILES["misc_doc"])){
+                $eventRegistration->misc["DOC"] = base64_encode(file_get_contents($_FILES["misc_doc"]["tmp_name"]));
             }
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
@@ -114,14 +120,16 @@ class SpecialEventRegistration extends SpecialPage{
             $roles = array("Audience", "Host/Judge");
         }
         else if($default->title == "Reimagining Public Spaces and Built Environments in the Post-pandemic World"){
-            $misc = "<h3>Please upload ONE PDF with the following information:</h3>
+            $misc = "<h3>Please upload ONE Word document by <b>December 1st, 2021</b>.  Be sure to include:</h3>
                      <ul>
-                         <li>Proposed paper title</li>
-                         <li>5 keywords</li>
-                         <li>Name of author/s, abstract (250 words)</li>
-                         <li>Short bio (100 words maximum)</li>
+                        <li>Paper title</li>
+                        <li>Name of author/s, abstract (250 words)</li>
+                        <li>5 keywords</li>
+                        <li>Body of the text (3500 words)</li>
+                        <li>References</li>
+                        <li>Short bio (100 words maximum)</li>
                      </ul>
-                     <input type='file' name='misc' accept='application/pdf' />";
+                     <input type='file' name='misc_doc' accept='.doc,.docx' />";
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
         
