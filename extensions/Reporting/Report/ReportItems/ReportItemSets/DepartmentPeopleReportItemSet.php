@@ -74,7 +74,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Sturdy should only see Deanna
                     continue;
                 }
-                if(($me->getName() == "Linda.Christensen" || $me->getName() == "David.Coltman") && $person->getName() == "Mark.Lewis"){
+                if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && $person->getName() == "Mark.Lewis"){
                     // Not reviewed by BioSci, only Math
                     continue;
                 }
