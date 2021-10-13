@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="LOI for Legacy Projects" reportType="RP_LEGACY" pdfType="RPTP_LEGACY" ajax="true" allowIdProjects="true" disabled="false" year="2021">
+     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static>
+            <![CDATA[
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="description" tooltip="General Information about the project" name="Description" blobSection="CAT_DESC" type="HeaderReportSection">
+        <!-- Theme -->
+        <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Neurodegenerative Diseases|Cancer">
+            <![CDATA[
+                <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
+                <br />
+                <br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Project Title -->
+        <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TITLE" width="400px">
+            <![CDATA[
+                <p><b><u>Project Title</u></b></p>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Lead Investigator -->
+        <ReportItem id="lead" type="MultiTextReportItem" 
+                              blobType="BLOB_ARRAY" 
+                              blobItem="CAT_DESC_LEAD" 
+                              multiple="true" 
+                              max="2" 
+                              labels="Name|Affiliation|Phone|E-Mail" 
+                              sizes="25%|25%|25%|25%"
+                              showHeader="false">
+            <![CDATA[
+                <p><b><u>Lead Investigator</u> (Name, Affiliation, Telephone, E-mail)</b></p>
+                <div style='font-size: smaller;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <!-- Other Investigators -->
+        <ReportItem id="other" type="MultiTextReportItem" 
+                               blobType="BLOB_ARRAY" 
+                               blobItem="CAT_DESC_OTHER" 
+                               multiple="true" 
+                               labels="Name|Affiliation|Phone|E-Mail" 
+                               sizes="25%|25%|25%|25%"
+                               showHeader="false">
+            <![CDATA[
+                <p><b><u>Other Investigators</u> (Name, Affiliation, Telephone, E-mail)</b></p>
+                <div style='font-size: smaller;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        
+        <!-- Key Words -->
+        <ReportItem id="keywords" type="MultiTextReportItem" 
+                                  blobType="BLOB_ARRAY" 
+                                  blobItem="CAT_DESC_WORDS" 
+                                  multiple="true" 
+                                  labels="Key Word" 
+                                  types="text"
+                                  max="10"
+                                  showHeader="false"
+                                  orientation="list">
+            <![CDATA[
+                <p><b><u>Keywords</u></b></p>
+                <div style='font-size: smaller;'>{$item}</div><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="250">
+            <![CDATA[
+                <p><b><u>Equity, Diversity and Inclusion</u></b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Partners involved (Companies, agencies etc) -->
+        <ReportItem id="part" type="MultiTextReportItem" 
+                              blobType="BLOB_ARRAY" 
+                              blobItem="CAT_DESC_PART" 
+                              labels="Partner Name|Contact Name|Dollars requested|Partner Dollars: Cash|Partner Dollars: In-Kind"
+                              multiple="true"
+                              sizes="20%|20%|20%|20%|20%"
+                              showHeader="false">
+            <![CDATA[
+                <p><b><u>Partners involved</u> (Partner Name, Contact Name, Dollars requested, Cash, In-Kind)</b></p>
+                <div style='font-size: smaller;'>{$item}</div><br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Question -->
+        <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h2>Environmental Impact</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- Environmental Impact Upload -->
+        <ReportItem id="env_u" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_DESC_ENV_UP">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="250">
+            <![CDATA[
+                <h2>Project Summary</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" height="300px" limit="1750">
+            <![CDATA[
+                <h2>Relevance & Impact</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="1500">
+            <![CDATA[
+                <h2>Project Description</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <b>References</b>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Figures & Schemes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" structure="GLYCONET_BUDGET_STRUCTURE" downloadOnly="true">
+            <![CDATA[
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
+        </ReportItem>
+    </ReportSection>
+</Report>
