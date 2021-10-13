@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="LOI for Legacy Projects" reportType="RP_LEGACY" pdfType="RPTP_LEGACY" ajax="true" allowIdProjects="true" disabled="false" year="2021">
+<Report name="Application for Legacy Projects" reportType="RP_LEGACY_APPLICATION" pdfType="RPTP_LEGACY_APPLICATION" pdfFiles="LegacyApplicationPDF" ajax="true" allowIdProjects="true" disabled="false" year="2021">
      <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
@@ -11,9 +11,8 @@
         <!-- Theme -->
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Antimicrobials|Chronic Diseases|Neurodegenerative Diseases|Cancer">
             <![CDATA[
-                <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
-                <br />
-                <br />
+                <p><b><u>Theme</u></b></p>
+                <div>{$item}</div><br />
             ]]>
         </ReportItem>
         
@@ -21,7 +20,7 @@
         <ReportItem id="title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TITLE" width="400px">
             <![CDATA[
                 <p><b><u>Project Title</u></b></p>
-                {$item}<br /><br />
+                <div>{$item}</div><br />
             ]]>
         </ReportItem>
         
@@ -32,6 +31,7 @@
                               multiple="true" 
                               max="2" 
                               labels="Name|Affiliation|Phone|E-Mail" 
+                              types="NI|text|text|text"
                               sizes="25%|25%|25%|25%"
                               showHeader="false">
             <![CDATA[
@@ -46,11 +46,12 @@
                                blobItem="CAT_DESC_OTHER" 
                                multiple="true" 
                                labels="Name|Affiliation|Phone|E-Mail" 
+                               types="NI|text|text|text"
                                sizes="25%|25%|25%|25%"
                                showHeader="false">
             <![CDATA[
                 <p><b><u>Other Investigators</u> (Name, Affiliation, Telephone, E-mail)</b></p>
-                <div style='font-size: smaller;'>{$item}</div>
+                <div style='font-size: smaller;'>{$item}</div><br />
             ]]>
         </ReportItem>
         
@@ -71,10 +72,25 @@
         </ReportItem>
         
         <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="250">
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
                 <p><b><u>Equity, Diversity and Inclusion</u></b></p>
                 {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <!-- Suggested reviewers -->
+        <ReportItem id="reviewers" type="MultiTextReportItem" 
+                                   blobType="BLOB_ARRAY" 
+                                   blobItem="CAT_DESC_REV" 
+                                   multiple="true" 
+                                   labels="Name|E-Mail|Affiliation" 
+                                   types="text|text|text"
+                                   sizes="33%|33%|33%"
+                                   showHeader="false">
+            <![CDATA[
+                <p><b><u>Suggested Reviewers</u> (Name, E-Mail, Affiliation)</b></p>
+                {$item}
             ]]>
         </ReportItem>
         
@@ -92,6 +108,20 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" limit="500">
+            <![CDATA[
+                <h2>Project Summary</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
+            <![CDATA[
+                <h2>Response to Reviewer's Comments</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <!-- Environmental Impact Question -->
         <ReportItem id="env_q" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ENV" orientation="horizontal" options="Yes|No">
             <![CDATA[
@@ -106,46 +136,78 @@
                 {$item}
             ]]>
         </ReportItem>
-        
-        <ReportItem id="summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_SUMMARY" rich="true" height="300px" limit="250">
+
+        <!-- Proposal -->
+        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="7000">
             <![CDATA[
-                <h2>Project Summary</h2>
+                <h2>Project Proposal</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" height="300px" limit="1750">
+        <!-- Figures -->
+        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h3>Figures & Schemes</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- References -->
+        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+            <![CDATA[
+                <h3>References</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" limit="500">
             <![CDATA[
                 <h2>Relevance & Impact</h2>
                 {$item}
             ]]>
         </ReportItem>
-
-        <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" height="300px" limit="1500">
+        
+        <!-- Legacy Summary -->
+        <ReportItem id="legacy" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_LEGACY" rich="true" limit="300">
             <![CDATA[
-                <h2>Project Description</h2>
+                <h2>Legacy Research</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="bib" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_BIB" rich="true">
+        <!-- Training -->
+        <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" limit="500">
             <![CDATA[
-                <b>References</b>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="abstract_upload" type="UploadReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_ABSTRACT_UPLOAD" mimeType="application/pdf" fileSize="5">
-            <![CDATA[
-                <h2>Figures & Schemes</h2>
+                <h2>Training Potential</h2>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" structure="GLYCONET_BUDGET_STRUCTURE" downloadOnly="true">
+        <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                {$item}<br /><br />
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_BUD_JUST" rich="true">
+            <![CDATA[
+                <h2>Budget Justification</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="milestones" name="Milestones" blobSection="CAT_MILESTONES" tooltip="Project Milestones" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ccv" name="Investigator CCVs" blobSection="CAT_CCV" tooltip="Investigator CCVs" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="ccv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_CCV" mimeType="application/zip" fileSize="10">
+            <![CDATA[
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
