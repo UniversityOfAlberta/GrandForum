@@ -42,6 +42,15 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                           $person->isSubRole("DA") ||
                           $person->isSubRole("DR"));
             }
+            // SPECIAL CASES FOR PEOPLE FROM OTHER DEPARTMENTS BELOW
+            if(($me->getName() == "Lin.Ferguson" || $me->getName() == "Rik.Tykwinski") && $person->getName() == "Lisa.Willis"){
+                // This is also a special case, but needs to be put here
+                goto create;
+            }
+            if(($me->getName() == "Manveen.Maadhra" || $me->getName() == "Thomas.Chacko") && $person->getName() == "Jonathan.Dennis"){
+                // This is also a special case, but needs to be put here
+                goto create;
+            }
             if(($dept == "") || 
                ($person->isInDepartment($dept, $uni, $start, $end)) || 
                ($found)){
@@ -74,7 +83,9 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Sturdy should only see Deanna
                     continue;
                 }
-                if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && $person->getName() == "Mark.Lewis"){
+                if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis" || 
+                                                                                                   $person->getName() == "Jonathan.Dennis" ||
+                                                                                                   $person->getName() == "Lisa.Willis")){
                     // Not reviewed by BioSci, only Math
                     continue;
                 }
