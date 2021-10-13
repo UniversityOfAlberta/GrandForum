@@ -104,7 +104,7 @@
         
         <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
             <![CDATA[
-                <h2>Response to Reviewer's Comments (if applicable)</h2>
+                <h2>Response to Reviewer's Comments</h2>
                 <p>Provide a point-by-point response to the reviewers’ comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
                 {$item}
             ]]>
@@ -241,7 +241,7 @@
         </Static>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx"><b>Budget Template</b></a></p>
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template2.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -261,7 +261,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
             <![CDATA[
                 <ul>
-                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls'><b>Milestones Template</b></a></li>
+                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template2.xlsx'><b>Milestones Template</b></a></li>
                     <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
                     <li>Add an “X” to the shaded boxes.</li>
                     <li>Names should be added in the format: First Name Last Name.</li>
