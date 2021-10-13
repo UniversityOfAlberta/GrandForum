@@ -151,6 +151,7 @@ class ReportItemCallback {
             "wgUserId" => "getWgUserId",
             "wgServer" => "getWgServer",
             "wgScriptPath" => "getWgScriptPath",
+            "GET" => "getGet",
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
@@ -170,6 +171,7 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "getPDFUserId" => "getPDFUserId",
             "concat" =>"concat",
             "add" => "add",
             "subtract" => "subtract",
@@ -1706,6 +1708,13 @@ class ReportItemCallback {
         return $wgScriptPath;
     }
     
+    function getGet($var1){
+        if(isset($_GET[$var1])){
+            return $_GET[$var1];
+        }
+        return "";
+    }
+    
     function getNetworkName(){
         global $config;
         return $config->getValue('networkName');
@@ -2008,6 +2017,16 @@ class ReportItemCallback {
             return $set[$index];
         }
         return "";
+    }
+    
+    function getPDFUserId($tok){
+        // This actually needs to be decrypted always, and sometimes twice
+        $tok = decrypt($tok, true);
+        $data = DBFunctions::execSQL("SELECT user_id
+                                      FROM grand_pdf_report
+                                      WHERE ((encrypted = 0 AND token = '{$tok}') OR 
+                                             (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
+        return @$data[0]['user_id'];
     }
     
     function getPostId(){

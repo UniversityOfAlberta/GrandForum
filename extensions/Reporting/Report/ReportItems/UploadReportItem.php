@@ -30,6 +30,9 @@ class UploadReportItem extends AbstractReportItem {
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
         
+        $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
+        $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
+        
         $report = $this->getReport();
         $section = $this->getSection();
         
@@ -42,7 +45,7 @@ class UploadReportItem extends AbstractReportItem {
                             </script>";
         $html .= "<div>";
         
-        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
+        $html .= "<div id='budgetDiv'><iframe id='fileFrame{$this->getPostId()}' class='uploadFrame' frameborder='0' style='border-width:0;height:65px;width:100%;min-height:65px;' scrolling='none' src='../index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}{$candidate}{$id}'></iframe></div>";
         $html .= "</div>";
         
         $item = $this->processCData($html);
@@ -93,6 +96,7 @@ class UploadReportItem extends AbstractReportItem {
     
     function fileUploadForm(){
         global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         $projectGet = "";
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
@@ -101,6 +105,9 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
         }
+        
+        $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
+        $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
         
         $report = $this->getReport();
         $section = $this->getSection();
@@ -159,7 +166,7 @@ class UploadReportItem extends AbstractReportItem {
                 });
             </script>";
         }
-        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+        echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}{$candidate}{$id}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
                             <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB<br />
                             <small><i><b>NOTE:</b> Uploading a new file replaces the old one</i></small>
@@ -168,7 +175,8 @@ class UploadReportItem extends AbstractReportItem {
         if($data !== null && $data !== ""){
             $json = json_decode($data);
             $name = $json->name;
-            echo "<br /><a href='{$this->getDownloadLink()}'>Download <b>{$name}</b></a>&nbsp;
+            $downloadText = ($me->isLoggedIn()) ? "<a href='{$this->getDownloadLink()}'>Download <b>{$name}</b></a>&nbsp;" : "<b>File Uploaded</b>&nbsp;";
+            echo "<br />{$downloadText}
                         <button id='delete' type='button' class='button'>Delete</button>";
         }
         else{
@@ -190,7 +198,7 @@ class UploadReportItem extends AbstractReportItem {
                     
                     $('#delete').click(function(){
                         if(confirm('Are you sure you want to delete this upload?')){
-                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}', function(){
+                            $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&delete={$this->getMD5()}{$projectGet}{$year}{$candidate}{$id}', function(){
                                 parent.updateProgress();
                                 window.location = window.location;
                             });

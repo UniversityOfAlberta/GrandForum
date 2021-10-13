@@ -217,7 +217,7 @@ abstract class AbstractReport extends SpecialPage {
                     $realPerson = Person::newFromUser($wgRealUser);
                     $managerImpersonating = $realPerson->isRoleAtLeast(MANAGER);
                 }
-                if(!$managerImpersonating && (!$wgUser->isLoggedIn() || ($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
+                if(!$managerImpersonating && (($wgImpersonating && !$this->checkPermissions()) || !DBFunctions::DBWritable() || (isset($_POST['user']) && $_POST['user'] != $wgUser->getName()))){
                     header('HTTP/1.1 403 Authentication Required');
                     exit;
                 }
@@ -697,14 +697,17 @@ abstract class AbstractReport extends SpecialPage {
         $rResult = $me->isRoleAtLeast(MANAGER);
         $pResult = false;
         $nProjectTags = 0;
-        if(!$me->isLoggedIn()){
-            return false;
-        }
         foreach($this->permissions as $type => $perms){
             foreach($perms as $perm){
                 switch($type){
                     case "Role":
-                        if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
+                        if($perm['perm']['role'] != "LoggedOut" && !$me->isLoggedIn()){
+                            return false;
+                        }
+                        if($perm['perm']['role'] == "LoggedOut" && !$me->isLoggedIn()){
+                            $rResult = true;
+                        }
+                        else if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
                             $rResult = true;
                         }
                         else if($perm['perm']['role'] == INACTIVE."-Candidate" && !$me->isActive() && $me->isCandidate()){
@@ -950,6 +953,7 @@ abstract class AbstractReport extends SpecialPage {
                         if($submit){
                             $report->submitReport($person);
                         }
+                        wfRunHooks('AfterGeneratePDF', array($sto));
                     }
                 }
             }
@@ -981,6 +985,7 @@ abstract class AbstractReport extends SpecialPage {
                     mail($email, "Report Submitted", $message, $headers);
                 }
             }
+            wfRunHooks('AfterGeneratePDF', array($sto));
         }
         if($submit){
             $this->submitReport($person);

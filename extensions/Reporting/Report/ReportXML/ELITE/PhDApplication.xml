@@ -10,7 +10,7 @@
     <ReportSection id="profile" type="EditableReportSection" blobSection="PROFILE" name="Application" title="PhD Fellowship Application" showProgress="true">
         <Static>
             <![CDATA[
-                <b>Welcome to the PhD Fellowship Application Portal for the Indigenous and Black Engineering and Technology (IBET) Momentum Fellowship sponsored by the <a href="https://www.ualberta.ca/engineering/index.html" target="_blank">Faculty of Engineering</a> and the <a href="https://www.eliteprogram.ca/" target="_blank">Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth</a> at the <a href="https://www.ualberta.ca/index.html" target="_blank">University of Alberta</a>. Please read our Brochure for Applicants before completing your application: <a href="https://www.eliteprogram.ca/program/" target="_blank">DOWNLOAD IT HERE</a>. The complete Terms of Reference for the Fellowship Program are available HERE. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the <i>Freedom of Information and Protection of Privacy Act</i>, R.S.A. 2000, c. F-25 (as amended).</b>
+                <b>Welcome to the PhD Fellowship Application Portal for the Indigenous and Black Engineering and Technology (IBET) Momentum Fellowship sponsored by the <a href="https://www.ualberta.ca/engineering/index.html" target="_blank">Faculty of Engineering</a> and the <a href="https://www.eliteprogram.ca/" target="_blank">Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth</a> at the <a href="https://www.ualberta.ca/index.html" target="_blank">University of Alberta</a>. Please read our Brochure for Applicants before completing your application: <a href="data/Eng-IBET-ELITE PhD Fellowship Candidate Brochure.pdf">DOWNLOAD IT HERE</a>. The complete Terms of Reference for the Fellowship Program are available <a href="data/Eng-IBET-ELITE Momentum Fellowship_ToR_FINAL.pdf">HERE</a>. Personal information submitted through this form will be held as confidential and will be stored, used, and disclosed only to the extent permitted by the <i>Freedom of Information and Protection of Privacy Act</i>, R.S.A. 2000, c. F-25 (as amended).</b>
             ]]>
         </Static>
         <If if="{==({getText(RP_PHD_ELITE, PROFILE, STATUS, 0, {$user_id}, 0)},Requested More Info)}">
@@ -266,7 +266,7 @@
         <Static>
             <![CDATA[
                 <h2 class="required">Available Projects</h2>
-                <p>Engineering faculty professors have provided brief descriptions of possible PhD projects. Please review all the project descriptions. Select your top three projects in order of preference.</p>
+                <p>Engineering faculty professors have provided brief descriptions of possible PhD projects. You may have already engaged with Engineering faculty professors regarding a PhD project. Please select at least one project and no more than three projects in order of preference from the list below. Or, please indicate the name(s) and email address(es) of the professor with whom you have arranged for a project. They will receive an email message to confirm participation.</p>
             ]]>
         </Static>
         <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="PhD" limit="3">
@@ -317,15 +317,21 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="letter1" type="Upload" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" optional="true" encrypt="true">
             <![CDATA[
                 <h3 class="required">Letters of Reference</h3>
                 <p><b>Please attach two letters of reference.</b></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
+        <ReportItem id="letter2" type="Upload" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW"  optional="true" encrypt="true">
             <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2"  optional="true">
+            <![CDATA[
+                <p><b>Or, please provide the names and email addresses of the referees. An automated request for reference letters will be issued to them.</b></p>
                 {$item}
             ]]>
         </ReportItem>

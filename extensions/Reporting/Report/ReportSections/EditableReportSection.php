@@ -60,6 +60,9 @@ class EditableReportSection extends AbstractReportSection {
                 $action .= "&project=".urlencode($this->getParent()->project->getAcronym());
             }
         }
+        $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
+        $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
+        $action .= "{$candidate}{$id}";
         $autosave = " class='noautosave'";
         if($this->autosave && $this->checkPermission('w') && DBFunctions::DBWritable()){
             $autosave = " class='autosave'";

@@ -233,6 +233,7 @@
         <ReportItem id="resume" type="UploadPDF" blobItem="RESUME" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="letter1" type="UploadPDF" blobItem="LETTER1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="letter2" type="UploadPDF" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
+        <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
         
         <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
             <![CDATA[
