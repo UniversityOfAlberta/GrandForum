@@ -56,6 +56,8 @@ class FESPeopleTable extends SpecialPage {
                     <th>Nationality</th>
                     <th>Status</th>
                     <th>Supervises</th>
+                    <th>Mentors</th>
+                    <th>Works With</th>
                     <th>Bio</th>
                     <th>Keywords</th>
                 </tr>
@@ -127,15 +129,31 @@ class FESPeopleTable extends SpecialPage {
                 $wgOut->addHTML("<td>{$person->getMitacs()}</td>");
             }
             $supervises = array();
+            $mentors = array();
+            $worksWith = array();
             foreach($person->getHQP(true) as $hqp){
-                $supervises[$hqp->getId()] = $hqp->getNameForForms();
+                $supervises[$hqp->getId()] = "<span style='white-space:nowrap;'>{$hqp->getNameForForms()}</span>";
+            }
+            foreach($person->getRelations(MENTORS, true) as $r){
+                $mentors[$r->getUser2()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser2()->getNameForForms()}</span>";
+            }
+            foreach($person->getRelations(MENTORS, true, true) as $r){
+                $mentors[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
+            }
+            foreach($person->getRelations(WORKS_WITH, true) as $r){
+                $worksWith[$r->getUser2()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser2()->getNameForForms()}</span>";
+            }
+            foreach($person->getRelations(WORKS_WITH, true, true) as $r){
+                $worksWith[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
             }
             $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
                              <td style='display:none;'>{$person->getMinorityStatus()}</td>
                              <td>{$person->getNationality()}</td>
                              <td>{$status}</td>
-                             <td style='white-space:nowrap;'>".implode("<br />", $supervises)."</td>
+                             <td>".implode(", ", $supervises)."</td>
+                             <td>".implode(", ", $mentors)."</td>
+                             <td>".implode(", ", $worksWith)."</td>
                              <td>{$profile}</td>
                              <td>{$person->getKeywords(', ')}</td>
                             </tr>");
