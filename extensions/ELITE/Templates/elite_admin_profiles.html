@@ -39,6 +39,9 @@
                 </td>
                 <td align="center" style="white-space:nowrap;">
                     <a href="<%= profile.get('pdf') %>">Download PDF</a>
+                    <% _.each(_.first(profile.get('letters'), 2), function(letter, i){ %>
+                        <div><a href="<%= letter %>">Reference <%= i+1 %></a></div>
+                    <% }) %>
                 </td>
                 <td>
                     <% _.each(profile.get('projects'), function(project){ %>

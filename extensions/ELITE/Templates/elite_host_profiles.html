@@ -1,3 +1,6 @@
+<div id="reviewDialog" title="Review of Candidate Interview">
+    
+</div>
 <table id="profiles" frame="box" rules="all">
     <thead>
         <tr>
@@ -5,6 +8,7 @@
             <th style="white-space: nowrap;">Applicant</th>
             <th>Matched Projects</th>
             <th width="1%">Profile</th>
+            <!--th>Interview/Review</th-->
         </tr>
     </thead>
     <tbody>
@@ -23,7 +27,20 @@
                 </td>
                 <td align="center" style="white-space:nowrap;">
                     <a href="<%= profile.get('pdf') %>">Download PDF</a>
+                    <% _.each(_.first(profile.get('letters'), 2), function(letter, i){ %>
+                        <div><a href="<%= letter %>">Reference <%= i+1 %></a></div>
+                    <% }) %>
                 </td>
+                <!--td>
+                    <button class="review" data-id="<%= profile.get('id') %>">Review</button>
+                    <div id="review_<%= profile.get('id') %>" style="display:none;">
+                        <h3>Review</h3>
+                        <textarea></textarea>
+                        <h3>Would you like to hire this candidate?</h3>
+                        <input type="radio" value="Yes" /> Yes<br />
+                        <input type="radio" value="No" /> No
+                    </div>
+                </td-->
             </tr>
         <% }.bind(this)) %>
     </tbody>

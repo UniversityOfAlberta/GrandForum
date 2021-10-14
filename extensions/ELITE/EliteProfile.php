@@ -117,6 +117,56 @@ abstract class EliteProfile extends BackboneModel {
         }
     }
     
+    function getReferenceLetters(){
+        global $wgServer, $wgScriptPath;
+        $md5s = array();
+        // First check letters uploaded by the candidate
+        $letter1 = DBFunctions::select(array('grand_report_blobs'),
+                                       array('md5'),
+                                       array('year' => 0,
+                                             'user_id' => $this->person->getId(),
+                                             'rp_type' => "RP_".static::$rpType,
+                                             'rp_section' => 'PROFILE',
+                                             'rp_item' => 'LETTER1'));
+        $letter2 = DBFunctions::select(array('grand_report_blobs'),
+                                       array('md5'),
+                                       array('year' => 0,
+                                             'user_id' => $this->person->getId(),
+                                             'rp_type' => "RP_".static::$rpType,
+                                             'rp_section' => 'PROFILE',
+                                             'rp_item' => 'LETTER2'));
+        if(count($letter1) > 0){
+            $md5s[] = $letter1[0]['md5'];
+        }
+        if(count($letter2) > 0){
+            $md5s[] = $letter2[0]['md5'];
+        }
+        // Check Other reference letters uploaded by the references themselves
+        $other_letters = $this->getBlobValue('LETTER_OTHER', BLOB_ARRAY);
+        foreach($other_letters['letter_other'] as $letter){
+            $email = trim($letter['email']);
+            $id = trim($letter['id']);
+            $md5 = md5("{$email}:{$id}");
+            $reference = DBFunctions::select(array('grand_report_blobs'),
+                                             array('md5'),
+                                             array('year' => 0,
+                                                   'user_id' => $this->person->getId(),
+                                                   'rp_type' => "RP_".static::$rpType,
+                                                   'rp_section' => 'PROFILE',
+                                                   'rp_item' => 'LETTER',
+                                                   'rp_subitem' => $md5));
+            if(count($reference) > 0){
+                $md5s[] = $reference[0]['md5'];
+            }
+        }
+        $urls = array();
+        foreach($md5s as $md5){
+            $md5 = urlencode(encrypt($md5));
+            $urls[] = "{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$md5}";
+        }
+        return $urls;
+    }
+    
     function toArray(){
         $projects = array();
         foreach($this->projects as $project){
@@ -133,6 +183,7 @@ abstract class EliteProfile extends BackboneModel {
                      'projects' => $this->projects,
                      'matches' => $this->matches,
                      'pdf' => $this->pdf->getUrl(),
+                     'letters' => $this->getReferenceLetters(),
                      'created' => $this->pdf->getTimestamp());
     }
     
