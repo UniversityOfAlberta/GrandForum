@@ -13,6 +13,7 @@ class TenureReportItem extends SelectReportItem {
 	            // Faculty eligible for tenure: not tenured AND not a professor. The second condition is superfluous, because all professors have tenure.
 	            $options = array("n/a", 
 	                             "i recommend that an appointment with tenure be offered", 
+	                             "i recommend a second probationary appointment be offered to the staff member",
 	                             "i recommend that the second probationary period be extended by one year",
 	                             "i recommend that no further appointment be offered to the staff member",
 	                             "i recommend tenure as per clause 12.17 (special recommendation for tenure)");
