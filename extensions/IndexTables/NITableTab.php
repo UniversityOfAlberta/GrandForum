@@ -157,7 +157,10 @@ class NITableTab extends PeopleTableTab {
                 $this->html .= "<td align='left'>{$person->getGender()}</td>";
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
-                    $this->html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
+                    if($crcObj != null){
+                        $crcObj = array_filter($crcObj);
+                    }
+                    $this->html .= "<td>".@implode("<br />", $crcObj)."</td>";
                 }
                 if($config->getValue('ecrEnabled')){
                     $this->html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";

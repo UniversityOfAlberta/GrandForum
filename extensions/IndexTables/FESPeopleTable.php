@@ -115,7 +115,10 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$person->getGender()}</td>");
             if($config->getValue('crcEnabled')){
                 $crcObj = $person->getCanadaResearchChair();
-                $wgOut->addHTML("<td>".@implode("<br />", $crcObj)."</td>");
+                if($crcObj != null){
+                    $crcObj = array_filter($crcObj);
+                }
+                $wgOut->addHTML("<td>".@implode("<br />\n", $crcObj)."</td>");
             }
             if($config->getValue('ecrEnabled')){
                 $wgOut->addHTML("<td>{$person->getEarlyCareerResearcher()}</td>");

@@ -281,7 +281,10 @@ class PeopleTableTab extends AbstractTab {
                 }
                 if($config->getValue('crcEnabled')){
                     $crcObj = $person->getCanadaResearchChair();
-                    $html .= "<td align='left'>".@implode("<br />\n", $crcObj)."</td>";
+                    if($crcObj != null){
+                        $crcObj = array_filter($crcObj);
+                    }
+                    $html .= "<td>".@implode("<br />", $crcObj)."</td>";
                 }
                 if($config->getValue('ecrEnabled')){
                     $html .= "<td align='left'>{$person->getEarlyCareerResearcher()}</td>";
