@@ -22,6 +22,7 @@
         <tr>
             <th width="1%" style="white-space: nowrap;">Created</th>
             <th style="white-space: nowrap;">Applicant</th>
+            <th style="white-space: nowrap;">Region</th>
             <th width="1%">Profile</th>
             <th>Projects</th>
             <th width="1%" style="white-space: nowrap;">Status</th>
@@ -37,6 +38,9 @@
                 <td>
                     <%= profile.get('user').fullName %>
                 </td>
+                <td>
+                    <%= profile.get('region') %>
+                </td>
                 <td align="center" style="white-space:nowrap;">
                     <a href="<%= profile.get('pdf') %>">Download PDF</a>
                     <% _.each(_.first(profile.get('letters'), 2), function(letter, i){ %>
@@ -45,7 +49,7 @@
                 </td>
                 <td>
                     <% _.each(profile.get('projects'), function(project){ %>
-                        <%= project.title %> (<%= project.extra.companyName %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
+                        <%= project.title %> - <%= project.extra.companyName %> (<%= project.extra.region %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
                     <% }) %>
                 </td>
                 <td align="center">
@@ -61,7 +65,7 @@
                         <div id="match_<%= profile.get('id') %>" style="display:none;">
                             <ol>
                                 <% _.each(profile.get('projects'), function(project){ %>
-                                    <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> (<%= project.extra.companyName %>)</li>
+                                    <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> - <%= project.extra.companyName %> (<%= project.extra.region %>)</li>
                                 <% }) %>
                             </ol>
                         </div>

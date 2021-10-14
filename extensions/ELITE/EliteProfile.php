@@ -8,6 +8,7 @@ abstract class EliteProfile extends BackboneModel {
     
     var $person;
     var $pdf;
+    var $region;
     var $status;
     var $comments;
     var $projects = array();
@@ -71,6 +72,7 @@ abstract class EliteProfile extends BackboneModel {
             $row = $data[0];
             $this->person = Person::newFromId($row['user_id']);
             $this->pdf = PDF::newFromId($row['report_id']);
+            $this->region = $this->getBlobValue('REGION');
             $this->status = $this->getBlobValue('STATUS');
             $this->comments = $this->getBlobValue('ADMIN_COMMENTS');
             $projects = $this->getBlobValue('PROJECTS', BLOB_ARRAY);
@@ -178,6 +180,7 @@ abstract class EliteProfile extends BackboneModel {
         }
         return array('id' => $this->person->getId(),
                      'user' => $this->person->toSimpleArray(),
+                     'region' => $this->region,
                      'status' => $this->status,
                      'comments' => $this->comments,
                      'projects' => $this->projects,

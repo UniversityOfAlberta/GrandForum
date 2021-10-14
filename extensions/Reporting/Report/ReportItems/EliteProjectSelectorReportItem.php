@@ -45,7 +45,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                     $posting = ElitePosting::newFromId($row);
                     $output .= "<li>
                                     <input type='checkbox' name='{$this->getPostId()}[]' value='{$posting->getId()}' checked />
-                                    <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()}</a>
+                                    <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()} ({$posting->getExtra('region')})</a>
                                 </li>";
                 }
             }
@@ -58,7 +58,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                 
                 $output .= "<li>
                                 <input type='checkbox' name='{$this->getPostId()}[]' value='{$posting->getId()}' />
-                                <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()}</a>
+                                <a id='{$posting->getId()}' class='elite_link' style='cursor:pointer;'>{$posting->getExtra('companyName')} - {$posting->getTitle()} ({$posting->getExtra('region')})</a>
                             </li>";
             }
             $output .= "</ul></div>

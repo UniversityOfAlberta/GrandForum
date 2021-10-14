@@ -28,7 +28,8 @@ class ElitePostingAPI extends PostingAPI {
         }
         if($this->POST('type') == "Intern"){
             $extra = $this->POST('extra');
-            if(@$extra->companyName == "" ||
+            if(@$extra->region == "" ||
+               @$extra->companyName == "" ||
                @$extra->reportsTo == "" ||
                @$extra->basedAt == "" ||
                @$extra->contact == "" ||
@@ -45,7 +46,8 @@ class ElitePostingAPI extends PostingAPI {
         }
         else if($this->POST('type') == "PhD"){
             $extra = $this->POST('extra');
-            if(@$extra->title == "" ||
+            if(@$extra->region == "" ||
+               @$extra->title == "" ||
                @$extra->name == "" ||
                @$extra->companyName == "" ||
                @$extra->email == "" ||

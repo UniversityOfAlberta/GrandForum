@@ -2,6 +2,10 @@
     <p>All items with a <span style="color:red;">*</span> require mandatory responses</p>
     <table>
         <tr>
+            <td class="label required" style="width: 1%;">Region:</td>
+            <td class="value"><%= HTML.Select(this, 'extra.region', {options: ["Edmonton", "Ottawa"]}) %></td>
+        </tr>
+        <tr>
             <td class="label required" style="width: 1%;">Position Title:</td>
             <td class="value"><%= HTML.TextBox(this, 'title', {style: 'width: 675px;'}) %></td>
         </tr>

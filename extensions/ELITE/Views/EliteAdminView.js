@@ -285,6 +285,8 @@ EliteAdminProfilesView = Backbone.View.extend({
             autoOpen: false,
             modal: true,
             show: 'fade',
+            width: 'auto',
+            maxWidth: 800,
             resizable: false,
             draggable: false,
             buttons: {

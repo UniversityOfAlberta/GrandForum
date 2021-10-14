@@ -5,13 +5,22 @@
         <Static>
             <![CDATA[
                 <table width='100%'>
-                    <tr>
-                        <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
-                    </tr>
+                    
             ]]>
         </Static>
+        <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label required">Region:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
             <![CDATA[
+                <tr>
+                    <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
+                </tr>
                 <tr>
                     <td class="label">Last Name:</td>
                     <td class="value" colspan="3">{$item}</td>
@@ -293,7 +302,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="major" type="Text" blobItem="MAJOR" width="250px" encrypt="true">
+        <ReportItem id="major" type="Text" blobItem="MAJOR" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label" style="text-align: left; white-space:normal;" colspan="4">If you are enrolled in studies at a post-secondary institution (college/vocational school or university), what is your major or program of study?</td>

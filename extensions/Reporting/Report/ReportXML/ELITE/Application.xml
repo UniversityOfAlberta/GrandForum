@@ -25,13 +25,22 @@
             <![CDATA[
                 <p>All items with a <span style="color:red;">*</span> require mandatory responses</p>
                 <table>
-                    <tr>
-                        <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
-                    </tr>
+                    
             ]]>
         </Static>
+        <ReportItem id="region" type="Select" blobItem="REGION" options="|Edmonton|Ottawa" encrypt="true">
+            <![CDATA[
+                <tr>
+                    <td class="label required" style="width: 100px;">Region:</td>
+                    <td class="value" colspan="3">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="last_name" type="Text" blobItem="LAST_NAME" encrypt="true">
             <![CDATA[
+                <tr>
+                    <td colspan="4"><h2 style="margin-top:0;">Personal Information</h2></td>
+                </tr>
                 <tr>
                     <td class="label required" style="width: 100px;">Last Name:</td>
                     <td class="value" colspan="3">{$item}</td>

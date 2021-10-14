@@ -16,6 +16,7 @@
             <th style="white-space: nowrap;">Position Title/Company Name</th>
             <th style="white-space: nowrap;">Owner</th>
             <th width="1%" style="white-space: nowrap;">Type</th>
+            <th width="1%" style="white-space: nowrap;">Region</th>
             <th width="1%" style="white-space: nowrap;">Status</th>
             <th width="1%" style="white-space: nowrap;">Actions</th>
         </tr>
@@ -35,6 +36,9 @@
                 </td>
                 <td align="center">
                     <%= posting.get('type') %>
+                </td>
+                <td align="center">
+                    <%= posting.get('extra').region %>
                 </td>
                 <td align="center">
                     <%= posting.get('visibility') %>
