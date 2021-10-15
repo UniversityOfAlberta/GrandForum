@@ -153,6 +153,12 @@ class CavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.simplePagination.js"></script>
         <script type='text/javascript'>
         
+            if (typeof String.prototype.replaceAll == "undefined"){  
+                String.prototype.replaceAll = function(match, replace){
+                    return this.replace(new RegExp(match, 'g'), () => replace);
+                }
+            }
+        
             $.ajaxSetup({ cache: false, 
                           data: {embed: <?php if(isset($_GET['embed']) && $_GET['embed'] != "false"){ echo "true"; } else { echo "false"; } ?>},
                           headers : { "cache-control": "no-cache" } 
