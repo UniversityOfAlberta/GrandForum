@@ -137,9 +137,6 @@ class FESPeopleTable extends SpecialPage {
             foreach($person->getRelations(MENTORS, true) as $r){
                 $mentors[$r->getUser2()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser2()->getNameForForms()}</span>";
             }
-            foreach($person->getRelations(MENTORS, true, true) as $r){
-                $mentors[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
-            }
             foreach($person->getRelations(WORKS_WITH, true) as $r){
                 $worksWith[$r->getUser2()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser2()->getNameForForms()}</span>";
             }
@@ -168,15 +165,8 @@ class FESPeopleTable extends SpecialPage {
             'dom': 'Blfrtip',
             'buttons': [
                 {
-                    extend: 'excel',
-                    exportOptions: {
-                        format: {
-                            body: function ( data, column, row ) {
-                                return $('<div>' + data.replace( /<br\s*\/?>/ig, \"\\n\" ) + '</div>').text().trim();
-                            }
-                        }
-                    }
-                }, 
+                    extend: 'excel'
+                },
                 'pdf'
             ],
         });</script>");
