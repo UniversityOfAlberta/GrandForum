@@ -584,6 +584,13 @@ class CavendishTemplate extends QuickTemplate {
             </script>
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
+		<?php if(!(!TESTING && $wgScriptPath != "" && !DEMO)){ ?>
+		    <style>
+		        .mce-path-item {
+		            opacity: 0;
+		        }
+		    </style>
+		<?php } ?>
 		<?php if(isset($_GET['embed'])){ ?>
 		    <style>
 		        <?php if(isset($_GET['scroll'])){ ?>
