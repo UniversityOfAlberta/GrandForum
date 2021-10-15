@@ -165,7 +165,14 @@ class FESPeopleTable extends SpecialPage {
             'dom': 'Blfrtip',
             'buttons': [
                 {
-                    extend: 'excel'
+                    extend: 'excel',
+                    exportOptions: {
+                        format: {
+                            body: function ( data, column, row ) {
+                                return $('<div>' + data.replace( /<br\s*\/?>/ig, \"\\n\" ) + '</div>').text().trim();
+                            }
+                        }
+                    }
                 },
                 'pdf'
             ],
