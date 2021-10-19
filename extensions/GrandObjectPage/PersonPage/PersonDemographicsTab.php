@@ -52,6 +52,12 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "</table>";   
         
             $this->html .= "</table>";
+            
+            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+            
+                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
+                            
+                            <p>To learn more about the FES EDI program, <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>visit the EDI pages</a> on our website, or contact FES EDI Coordinator, <a href='mailto:ctays@ualberta.ca'>Dr. Catherine Tays</a>.</p>";
         }
         
         return $this->html;
@@ -104,10 +110,10 @@ class PersonDemographicsTab extends AbstractEditableTab {
                             <h3>Date of birth</h3>
                             <input type='date' name='birthDate' value='".str_replace("'", "&#39;", $person->getBirthDate())."'>
                             
-                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=410445' target='_blank'>Statistics Canada</a>, gender refers to the gender that a person internally feels ('gender identity' along the gender spectrum) and/or the gender a person publicly expresses ('gender expression') in their daily life. What gender group do you belong to?</h3>
+                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=410445' target='_blank'>Statistics Canada</a>, gender refers to the gender that a person internally feels ('gender identity' along the gender spectrum) and/or the gender a person publicly expresses ('gender expression') in their daily life. Which gender group do you belong to?</h3>
                             {$genderField->render()}
                             
-                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DECI&Id=1324435' target='_blank'>Statistics Canada</a>, Indigenous group refers to whether the person is First Nations (North American Indian), Métis and/or Inuk (Inuit). A person may be included in more than one of these three specific groups, Status or Non-Status. Do you belong to or have family ancestry in one of these groups?</h3>
+                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DECI&Id=1324435' target='_blank'>Statistics Canada</a>, Indigenous group refers to whether a person is First Nations (North American Indian), Métis and/or Inuk (Inuit). A person may be included in more than one of these three specific groups, Status or Non-Status. Do you belong to or have family ancestry in one of these groups?</h3>
                             {$indigenousField->render()}
                             
                             <h3>The Canadian Survey on Disability (CSD) identifies persons with disabilities as those whose everyday activities are limited due to a long-term condition or health-related problem. Do you live with a <a href='https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1310034501' target='blank'>disability of any type</a>?</h3>

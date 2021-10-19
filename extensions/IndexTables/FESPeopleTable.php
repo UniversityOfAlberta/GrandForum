@@ -53,6 +53,7 @@ class FESPeopleTable extends SpecialPage {
                     <th style='display:none;'>Indigenous</th>
                     <th style='display:none;'>Disability</th>
                     <th style='display:none;'>Minority</th>
+                    <th style='display:none;'>Ethnicity</th>
                     <th>Nationality</th>
                     <th>Status</th>
                     <th>Supervises</th>
@@ -146,6 +147,7 @@ class FESPeopleTable extends SpecialPage {
             $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
                              <td style='display:none;'>{$person->getMinorityStatus()}</td>
+                             <td style='display:none;'>{$person->getEthnicity()}</td>
                              <td>{$person->getNationality()}</td>
                              <td>{$status}</td>
                              <td>".implode(", ", $supervises)."</td>
