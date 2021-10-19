@@ -136,10 +136,9 @@ class PersonPage {
                 $tabbedPage->singleHeader = false;
                 $tabbedPage->addTab(new PersonProfileTab($person, $visibility));
                 if($config->getValue('networkName') != 'AI4Society'){
-                    if($config->getValue('networkName') == 'ADA' || $config->getValue('networkName') == 'FES'){
+                    if($config->getValue('networkName') == 'FES'){
                         $tabbedPage->addTab(new PersonDemographicsTab($person, $visibility));
-                    }                
-                    
+                    }
                     if($config->getValue('networkName') == 'AGE-WELL' && ($person->isRole(HQP) || $person->isRole(HQP."-Candidate"))){
                         $tabbedPage->addTab(new HQPProfileTab($person, $visibility));
                     }

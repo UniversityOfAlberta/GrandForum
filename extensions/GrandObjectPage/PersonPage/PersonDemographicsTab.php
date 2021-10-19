@@ -22,6 +22,13 @@ class PersonDemographicsTab extends AbstractEditableTab {
             if($age != ''){
                 $age = @date_diff(date_create($this->person->getBirthDate()), date_create('today'))->y;            
             }
+            $ethnicity = ($this->person->getMinorityStatus() == "Yes" && 
+                          $this->person->getEthnicity() != "") ? " ({$this->person->getEthnicity()})" : "";
+            
+            $this->html .= "<tr>
+                <td align='right'><b>Pronouns:</b></td>
+                <td>".str_replace("'", "&#39;", $this->person->getPronouns())."</td>
+            </tr>";
             $this->html .= "<tr>
                  <td align='right'><b>Age:</b></td>
                  <td>".str_replace("'", "&#39;",$age)."</td>
@@ -29,7 +36,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<tr>
                 <td align='right'><b>Gender:</b></td>
                 <td>".str_replace("'", "&#39;", $this->person->getGender())."</td>
-            </tr>";  
+            </tr>";
             $this->html .= "<tr>
                 <td align='right'><b>Indigenous:</b></td>
                 <td>".str_replace("'", "&#39;", $this->person->getIndigenousStatus())."</td>
@@ -37,10 +44,10 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<tr>
                 <td align='right'><b>Disability:</b></td>
                 <td>".str_replace("'", "&#39;", $this->person->getDisabilityStatus())."</td>
-            </tr>";          
+            </tr>";
             $this->html .= "<tr>
                 <td align='right'><b>Minority:</b></td>
-                <td>".str_replace("'", "&#39;", $this->person->getMinorityStatus())."</td>
+                <td>".str_replace("'", "&#39;", $this->person->getMinorityStatus())."{$ethnicity}</td>
             </tr>";
             $this->html .= "</table>";   
         
@@ -65,9 +72,11 @@ class PersonDemographicsTab extends AbstractEditableTab {
     function handleEdit(){
         $this->person->gender = $_POST['gender'];
         $this->person->birthDate = $_POST['birthDate']; 
+        $this->person->pronouns = $_POST['pronouns'];
         $this->person->indigenousStatus = $_POST['indigenousStatus']; 
         $this->person->minorityStatus = $_POST['minorityStatus']; 
         $this->person->disabilityStatus = $_POST['disabilityStatus']; 
+        $this->person->ethnicity = $_POST['ethnicity']; 
         $this->person->update();
 
         Person::$rolesCache = array();
@@ -82,81 +91,51 @@ class PersonDemographicsTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($person)){
-            $birthDate = "<tr>
-                <td align='right'><b>Date of birth:</b></td>
-                <td><input type='date' name='birthDate' value='".str_replace("'", "&#39;", $person->getBirthDate())."'></td>
-            </tr>";
-            $blankSelected = ($person->getGender() == "") ? "selected='selected'" : "";
-            $maleSelected = ($person->getGender() == "Male") ? "selected='selected'" : "";
-            $femaleSelected = ($person->getGender() == "Female") ? "selected='selected'" : "";
-            $genderFluidSelected = ($person->getGender() == "Gender-fluid") ? "selected='selected'" : "";
-            $nonBinarySelected = ($person->getGender() == "Non-binary") ? "selected='selected'" : "";
-            $twoSpiritSelected = ($person->getGender() == "Two-spirit") ? "selected='selected'" : "";
-            $declinedSelected = ($person->getGender() == "Not disclosed") ? "selected='selected'" : "";
-            $gender = "<tr>
-                <td align='right'><b>Gender:</b></td>
-                <td>
-                    <select name='gender'>
-                        <option value='' $blankSelected>---</option>
-                        <option value='Male' $maleSelected>Male</option>
-                        <option value='Female' $femaleSelected>Female</option>
-                        <option value='Gender-fluid' $genderFluidSelected>Gender-fluid</option>
-                        <option value='Non-binary' $nonBinarySelected>Non-binary</option>
-                        <option value='Two-spirit' $twoSpiritSelected>Two-spirit</option>
-                        <option value='Not disclosed' $declinedSelected>I prefer not to answer</option>
-                    </select>
-                </td>
-            </tr>";
-            $indigenousYes = ($person->getIndigenousStatus() == "Yes") ? "selected='selected'" : "";
-            $indigenousNo = ($person->getIndigenousStatus() == "No") ? "selected='selected'" : "";
-            $indigenousDeclined = ($person->getIndigenousStatus() == "Not disclosed") ? "selected='selected'" : "";
-            $indigenous = "<tr>
-                <td align='right'><b>Do you identify as Indigenous?:</b></td>
-                <td>
-                    <select name='indigenousStatus'>
-                        <option value=''>---</option>
-                        <option value='Yes' $indigenousYes>Yes</option>
-                        <option value='No' $indigenousNo>No</option>
-                        <option value='Not disclosed' $indigenousDeclined>I prefer not to answer</option>
-                    </select>
-                </td>
-            </tr>";
-            $disabilityYes = ($person->getDisabilityStatus() == "Yes") ? "selected='selected'" : "";
-            $disabilityNo = ($person->getDisabilityStatus() == "No") ? "selected='selected'" : "";
-            $disabilityDeclined = ($person->getDisabilityStatus() == "Not disclosed") ? "selected='selected'" : "";
-            $disability = "<tr>
-                <td align='right'><b>Are you a person with a disability?:</b></td>
-                <td>
-                    <select name='disabilityStatus'>
-                        <option value=''>---</option>
-                        <option value='Yes' $disabilityYes>Yes</option>
-                        <option value='No' $disabilityNo>No</option>
-                        <option value='Not disclosed' $disabilityDeclined>I prefer not to answer</option>
-                    </select>
-                </td>
-            </tr>";
-            $minorityYes = ($person->getMinorityStatus() == "Yes") ? "selected='selected'" : "";
-            $minorityNo = ($person->getMinorityStatus() == "No") ? "selected='selected'" : "";
-            $minorityDeclined = ($person->getMinorityStatus() == "Not disclosed") ? "selected='selected'" : "";
-            $minority = "<tr>
-                <td align='right'><b>Do you identify as a member<br> of a visible minority in Canada:</b></td>
-                <td>
-                    <select name='minorityStatus'>
-                        <option value=''>---</option>
-                        <option value='Yes' $minorityYes>Yes</option>
-                        <option value='No' $minorityNo>No</option>
-                        <option value='Not disclosed' $minorityDeclined>I prefer not to answer</option>
-                    </select>
-                </td>
-            </tr>";
+            $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
+            $genderField = new SelectBox("gender", "Gender", $person->getGender(), array("", "Female", "Male", "Gender-Fluid", "Non-Binary", "Two-Spirit", "Other (not listed)", "I prefer not to answer"));
+            $indigenousField = new SelectBox("indigenousStatus", "Indigenous", $person->getIndigenousStatus(), array("", "Yes", "No", "I prefer not to answer"));
+            $disabilityField = new SelectBox("disabilityStatus", "Disability", $person->getDisabilityStatus(), array("", "Yes", "No", "I prefer not to answer"));
+            $minorityField = new SelectBox("minorityStatus", "Minority", $person->getMinorityStatus(), array("", "Yes", "No", "I prefer not to answer"));
+            $ethnicityField = new SelectBox("ethnicity", "Ethnicity", $person->getEthnicity(), array("", "South Asian", "Chinese", "Black", "Filipino", "Latin American", "Arab", "Southeast Asian", "West Asian", "Korean", "Japanese", "Other visible minority (not listed)", "Multiple visible minorities"));
+            
+            $this->html .= "<h3>Pronouns</h3>
+                            {$pronounsField->render()}
+                            
+                            <h3>Date of birth</h3>
+                            <input type='date' name='birthDate' value='".str_replace("'", "&#39;", $person->getBirthDate())."'>
+                            
+                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=410445' target='_blank'>Statistics Canada</a>, gender refers to the gender that a person internally feels ('gender identity' along the gender spectrum) and/or the gender a person publicly expresses ('gender expression') in their daily life. What gender group do you belong to?</h3>
+                            {$genderField->render()}
+                            
+                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DECI&Id=1324435' target='_blank'>Statistics Canada</a>, Indigenous group refers to whether the person is First Nations (North American Indian), Métis and/or Inuk (Inuit). A person may be included in more than one of these three specific groups, Status or Non-Status. Do you belong to or have family ancestry in one of these groups?</h3>
+                            {$indigenousField->render()}
+                            
+                            <h3>The Canadian Survey on Disability (CSD) identifies persons with disabilities as those whose everyday activities are limited due to a long-term condition or health-related problem. Do you live with a <a href='https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1310034501' target='blank'>disability of any type</a>?</h3>
+                            {$disabilityField->render()}
+                            
+                            <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=45152' target='_blank'>Statistics Canada</a>, the Employment Equity Act defines visible minorities as \"persons, other than Aboriginal peoples, who are non-Caucasian in race or non-white in colour\". Do you belong to or have family ancestry in one of these groups: South Asian, Chinese, Black, Filipino, Latin American, Arab, Southeast Asian, West Asian, Korean, Japanese, Other visible minority (not listed), Multiple visible minorities?</h3>
+                            {$minorityField->render()}
+                            <span id='ethnicity' style='display:none;'>{$ethnicityField->render()}</span>
+
+                            <p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+            
+                            <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
+                            
+                            <p>To learn more about the FES EDI program, <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>visit the EDI pages</a> on our website, or contact FES EDI Coordinator, <a href='mailto:ctays@ualberta.ca'>Dr. Catherine Tays</a>.</p>
+                            
+                            <script type='text/javascript'>
+                                $('[name=minorityStatus]').change(function(){
+                                    var value = $('[name=minorityStatus]').val();
+                                    console.log(value);
+                                    if(value == 'Yes'){
+                                        $('#ethnicity').show();
+                                    }
+                                    else{
+                                        $('#ethnicity').hide();
+                                    }
+                                }).change();
+                            </script>";
         }
-        $this->html .= "<table>
-                          {$birthDate}
-                          {$gender}
-                          {$indigenous}
-                          {$disability}
-                          {$minority}
-                        </table>";
     }
     
 }

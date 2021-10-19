@@ -38,6 +38,7 @@ class Person extends BackboneModel {
     var $mitacs;
     var $canadaResearchChair;
     var $gender;
+    var $pronouns;
     var $photo;
     var $twitter;
     var $website;
@@ -59,8 +60,9 @@ class Person extends BackboneModel {
     var $language;
     var $birthDate;
     var $indigenousStatus;
-    var $disabilityStatus;
     var $minorityStatus;
+    var $disabilityStatus;
+    var $ethnicity;
     var $projects;
     var $university;
     var $universityDuring;
@@ -336,10 +338,12 @@ class Person extends BackboneModel {
                                               'user_mitacs',
                                               'user_crc',
                                               'user_gender',
+                                              'user_pronouns',
                                               'user_birth_date',
                                               'user_indigenous_status',
                                               'user_minority_status',
                                               'user_disability_status',
+                                              'user_ethnicity',
                                               'candidate'),
                                         array('deleted' => NEQ(1)));
             foreach($data as $row){
@@ -856,9 +860,11 @@ class Person extends BackboneModel {
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
+            $this->pronouns = @$data[0]['user_pronouns'];
             $this->birthDate = @$data[0]['user_birth_date'];
             $this->indigenousStatus = @$data[0]['user_indigenous_status'];
             $this->disabilityStatus = @$data[0]['user_disability_status'];
+            $this->ethnicity = @$data[0]['user_ethnicity'];
             $this->minorityStatus = @$data[0]['user_minority_status'];
             $this->nationality = @$data[0]['user_nationality'];
             $this->stakeholder = @$data[0]['user_stakeholder'];
@@ -939,10 +945,12 @@ class Person extends BackboneModel {
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
                       'gender' => $this->getGender(),
+                      'pronouns' => $this->getPronouns(),
                       'birthDate' => $this->getBirthDate(),
                       'indigenousStatus' => $this->getIndigenousStatus(),
                       'minorityStatus' => $this->getMinorityStatus(),
                       'disabilityStatus' => $this->getDisabilityStatus(),
+                      'ethnicity' => $this->getEthnicity(),
                       'nationality' => $this->getNationality(),
                       'stakeholder' => $this->getStakeholder(),
                       'earlyCareerResearcher' => $this->getEarlyCareerResearcher(),
@@ -1042,10 +1050,12 @@ class Person extends BackboneModel {
             }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
-                                        array('user_birthDate' => $this->getBirthDate(),
+                                        array('user_pronouns' => $this->getPronouns(),
+                                              'user_birthDate' => $this->getBirthDate(),
                                               'user_indigenous_status' => $this->getIndigenousStatus(),
                                               'user_minority_status' => $this->getMinorityStatus(),
-                                              'user_disability_status' => $this->getDisabilityStatus()),
+                                              'user_disability_status' => $this->getDisabilityStatus(),
+                                              'user_ethnicity' => $this->getEthnicity()),
                                         array('user_name' => EQ($this->getName())));      
             }
             DBFunctions::commit();
@@ -1121,10 +1131,12 @@ class Person extends BackboneModel {
             }
             if($status && $me->isAllowedToEditDemographics($this)){
                 $status = DBFunctions::update('mw_user',
-                                              array('user_birth_date' => $this->getBirthDate(),
+                                              array('user_pronouns' => $this->getPronouns(),
+                                                    'user_birth_date' => $this->getBirthDate(),
                                                     'user_indigenous_status' => $this->getIndigenousStatus(),
                                                     'user_minority_status' => $this->getMinorityStatus(),
-                                                    'user_disability_status' => $this->getDisabilityStatus()),
+                                                    'user_disability_status' => $this->getDisabilityStatus(),
+                                                    'user_ethnicity' => $this->getEthnicity()),
                                               array('user_id' => EQ($this->getId())));      
             }
             $this->getUser()->invalidateCache();
@@ -4692,7 +4704,19 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns whether the person identifies as indigenous 
+     * Returns This Person's pronouns
+     * @return string This Person's pronouns
+     */
+    function getPronouns(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->pronouns;
+        }
+        return "";
+    }
+    
+    /**
+     * Returns whether the Person identifies as indigenous 
      * @return string The indigenous status of this person
      */
     function getIndigenousStatus(){
@@ -4704,7 +4728,7 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the if this person has a disability
+     * Returns the if this Person has a disability
      * @return string The disability status of this Person
      */
     function getDisabilityStatus(){
@@ -4716,7 +4740,7 @@ class Person extends BackboneModel {
     }
     
     /**
-     * Returns the if this person is a visible minority
+     * Returns the if this Person is a visible minority
      * @return string The minority status of this Person
      */
     function getMinorityStatus(){
@@ -4725,7 +4749,19 @@ class Person extends BackboneModel {
             return $this->minorityStatus;
         }
         return "";
-    }    
+    }
+    
+    /**
+     * Returns This Person's ethnicity
+     * @return string This Person's ethnicity
+     */
+    function getEthnicity(){
+        $me = Person::newFromWgUser();
+        if($me->isAllowedToEditDemographics($this)){
+            return $this->ethnicity;
+        }
+        return "";
+    }
 }
 if(isset($facultyMap)){
     Person::$facultyMap = array_flip(array_flatten($facultyMap));
