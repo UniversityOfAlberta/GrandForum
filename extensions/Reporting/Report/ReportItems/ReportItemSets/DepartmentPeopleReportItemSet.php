@@ -51,6 +51,10 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 // This is also a special case, but needs to be put here
                 goto create;
             }
+            if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && $person->getName() == "Deanna.Singhal"){
+                // This is also a special case, but needs to be put here
+                goto create;
+            }
             if(($dept == "") || 
                ($person->isInDepartment($dept, $uni, $start, $end)) || 
                ($found)){
@@ -92,7 +96,8 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 if(($me->getName() == ".Psychair") && $person->getName() == "Anthony.Singhal"){
                     continue;
                 }
-                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair") && $person->getName() == "Deanna.Singhal"){
+                if(($me->getName() == "Anthony.Singhal" || $me->getName() == ".Psychair" || 
+                    $me->getName() == "PSYCH.ExecutiveAssistant" || $me->getName() == "Llyn.Madsen") && $person->getName() == "Deanna.Singhal"){
                     continue;
                 }
                 create:
