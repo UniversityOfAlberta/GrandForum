@@ -50,6 +50,7 @@ class FESPeopleTable extends SpecialPage {
             $wgOut->addHTML("<th>MITACS</th>");
         }
         $wgOut->addHTML("
+                    <th style='display:none;'>Pronouns</th>
                     <th style='display:none;'>Indigenous</th>
                     <th style='display:none;'>Disability</th>
                     <th style='display:none;'>Minority</th>
@@ -144,7 +145,8 @@ class FESPeopleTable extends SpecialPage {
             foreach($person->getRelations(WORKS_WITH, true, true) as $r){
                 $worksWith[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
             }
-            $wgOut->addHTML("<td style='display:none;'>{$person->getIndigenousStatus()}</td>
+            $wgOut->addHTML("<td style='display:none;'>{$person->getPronouns()}</td>
+                             <td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
                              <td style='display:none;'>{$person->getMinorityStatus()}</td>
                              <td style='display:none;'>{$person->getEthnicity()}</td>
