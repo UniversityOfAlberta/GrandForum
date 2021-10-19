@@ -83,10 +83,6 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 // SPECIAL CASES BELOW
-                if($me->getName() == "Christopher.Sturdy" && $person->getName() != "Deanna.Singhal"){
-                    // Sturdy should only see Deanna
-                    continue;
-                }
                 if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis" || 
                                                                                                    $person->getName() == "Jonathan.Dennis" ||
                                                                                                    $person->getName() == "Lisa.Willis")){
