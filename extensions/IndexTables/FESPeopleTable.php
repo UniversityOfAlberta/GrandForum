@@ -53,7 +53,7 @@ class FESPeopleTable extends SpecialPage {
                     <th style='display:none;'>Indigenous</th>
                     <th style='display:none;'>Disability</th>
                     <th style='display:none;'>Minority</th>
-                    <th style='display:none;'>Ethnicity</th>
+                    <th style='display:none;'>Group</th>
                     <th>Nationality</th>
                     <th>Status</th>
                     <th>Supervises</th>

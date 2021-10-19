@@ -102,7 +102,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $indigenousField = new SelectBox("indigenousStatus", "Indigenous", $person->getIndigenousStatus(), array("", "Yes", "No", "I prefer not to answer"));
             $disabilityField = new SelectBox("disabilityStatus", "Disability", $person->getDisabilityStatus(), array("", "Yes", "No", "I prefer not to answer"));
             $minorityField = new SelectBox("minorityStatus", "Minority", $person->getMinorityStatus(), array("", "Yes", "No", "I prefer not to answer"));
-            $ethnicityField = new SelectBox("ethnicity", "Ethnicity", $person->getEthnicity(), array("", "South Asian", "Chinese", "Black", "Filipino", "Latin American", "Arab", "Southeast Asian", "West Asian", "Korean", "Japanese", "Other visible minority (not listed)", "Multiple visible minorities"));
+            $ethnicityField = new SelectBox("ethnicity", "Ethnicity", $person->getEthnicity(), array("", "South Asian", "Chinese", "Black", "Filipino", "Latin American", "Arab", "Southeast Asian", "West Asian", "Korean", "Japanese", "Other visible minority (not listed)", "Multiple visible minorities", "Prefer not to answer"));
             
             $this->html .= "<h3>Pronouns</h3>
                             {$pronounsField->render()}
