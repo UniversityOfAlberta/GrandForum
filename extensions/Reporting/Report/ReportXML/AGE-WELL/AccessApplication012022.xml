@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Access Award" reportType="RP_ACCESS_01_2022" pdfType="RPTP_ACCESS_01_2022" pdfFiles="AccessApplication102021PDF" year="2022" ajax="true" disabled="false">
+<Report name="AGE-WELL Access Award" reportType="RP_ACCESS_01_2022" pdfType="RPTP_ACCESS_01_2022" pdfFiles="AccessApplication012022PDF" year="2022" ajax="true" disabled="false">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="description" permissions="rw" />
@@ -134,7 +134,7 @@
                 <h3>Supervisor Information</h3>
             ]]>
         </Static>
-        <ReportItemSet id="supervisors" type="PersonSupervisors" startDate="2020-10-15" endDate="2021-10-15">
+        <ReportItemSet id="supervisors" type="PersonSupervisors" startDate="2021-01-31" endDate="2022-01-31">
             <Static>
                 <![CDATA[
                     <table>
