@@ -405,7 +405,6 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="elite" type="EliteSubmit" />
     </ReportSection>
     <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If if="{or({==({getText(RP_ELITE, PROFILE, ACKNOWLEDGMENT, 0, {$user_id}, 0)},No)})}">
