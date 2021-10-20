@@ -75,6 +75,65 @@ class ElitePosting extends Posting {
         return ($this->isAllowedToEdit()) ? $this->comments : "";
     }
     
+    function sendMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        if($this->type == "Intern"){
+            $subject = "ELITE Program for Black Youth - Confirmation of Receipt of Submission";
+            $message = "Dear Internship Host,
+
+Thank you for your project submission to the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. This message confirms that we received a project application from you.
+
+We will include your project in a list for selection by intern applicants. Should your project be selected by any candidates who are shortlisted, we will advise you. We highly encourage you to arrange and conduct interviews with those short-listed candidates who have been matched to your project.
+
+In the interim, please do not hesitate to contact us should you have any questions.
+
+Thank you for your interest and continued support of the ELITE Program for Black Youth.
+
+With kind regards,
+
+André G. McDonald, Ph.D., B.S. Law, P.Eng., FASM, FIMMM
+Professor
+Lead Editor, <i>Journal of Thermal Spray Technology</i>
+Director, ELITE Program for Black Youth (www.eliteprogram.ca)
+<i>for</i> 
+ELITE Program for Black Youth
+<a href='http://www.eliteprogram.ca'>www.eliteprogram.ca</a>
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>
+<i>Work-integrated Training for Upward Mobility</i>
+**************************************
+Programme ELITE pour la Jeunesse Noire
+<a href='http://www.eliteprogram.ca/fr/'>www.eliteprogram.ca/fr/</a>
+<a href='http://www.eliteprogram.ca/fr/contactez-nous/'>www.eliteprogram.ca/fr/contactez-nous/</a>
+<i>Formation intégrée au travail pour la mobilité ascendante</i>";
+        }
+        else if($this->type == "PhD"){
+            $subject = "Engineering-ELITE-IBET PhD Fellowship - Confirmation of Receipt of Submission";
+            $message = "Dear Supervisor,
+
+Thank you for your submission to the Engineering-ELITE-IBET PhD Fellowship competition led by the Faculty of Engineering at the University of Alberta. This message confirms that we received a project application from you.
+
+We will include your project in a list for selection by PhD Fellowship applicants who may not have already arranged for a PhD program supervisor or for those applicants who wish to learn more about other research programs in the Faculty. Should your project be selected by any candidates who are shortlisted, we will advise you. We highly encourage you to arrange and conduct interviews with those short-listed candidates who have been matched to your project.
+
+In the interim, please do not hesitate to contact us should you have any questions.
+
+Thank you for your interest and continued support of the Engineering-ELITE-IBET PhD Fellowship Program.
+
+With kind regards,
+
+The Advisory and Nominating Committee
+Faculty of Engineering, University of Alberta
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>";
+        }
+        if($message != ""){
+            $message = nl2br($message);
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+        }
+    }
+    
     function toSimpleArray(){
         $json = parent::toArray();
         $json['extra'] = $this->getExtra();
@@ -97,6 +156,7 @@ class ElitePosting extends Posting {
                                                 'extra' => json_encode($this->extra),
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
+            $this->sendMail();
         }
         return $status;
     }
