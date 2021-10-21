@@ -1323,7 +1323,9 @@ class Project extends BackboneModel {
         $data = DBFunctions::select(array('grand_top_products'),
                                     array('product_type','product_id'),
                                     array('type' => EQ('PROJECT'),
-                                          'obj_id' => EQ($this->getId())));
+                                          'obj_id' => EQ($this->getId())),
+                                    array(),
+                                    array($config->getValue('nProjectTopProducts')));
         foreach($data as $row){
             if($row['product_type'] == "CONTRIBUTION"){
                 $product = Contribution::newFromId($row['product_id']);
