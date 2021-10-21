@@ -1319,6 +1319,7 @@ class Project extends BackboneModel {
     }
     
     function getTopProducts(){
+        global $config;
         $products = array();
         $data = DBFunctions::select(array('grand_top_products'),
                                     array('product_type','product_id'),
