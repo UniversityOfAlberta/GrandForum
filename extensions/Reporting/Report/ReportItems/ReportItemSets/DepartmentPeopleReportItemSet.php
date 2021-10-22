@@ -66,8 +66,8 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     // Should not see themselves in recommendations
                     continue;
                 }
-                if($person->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(DEAN) || $person->isSubRole("VPR")){
-                    // Dean should not be in recommendations
+                if(($person->isRoleDuring(DEAN, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(DEAN) || $person->isSubRole("VPR")) && !$person->isSubRole("CR")){
+                    // Dean should not be in recommendations, unless they have an explicit Chair's Recommendation
                     continue;
                 }
                 if($me->isRoleDuring(EA, REPORTING_CYCLE_START, REPORTING_CYCLE_END) && ($person->isRoleDuring(CHAIR, REPORTING_CYCLE_START, REPORTING_CYCLE_END) || $person->isRole(CHAIR))){
