@@ -19,6 +19,10 @@ class DeansPeopleReportItemSet extends ReportItemSet {
                 continue;
                 // Don't show if no case number
             }
+            if($person->isMe()){
+                // Should not see themselves in recommendations
+                continue;
+            }
             $found = ($person->isSubRole("DD") || 
                       $person->isSubRole("DA") ||
                       $person->isSubRole("DR"));
