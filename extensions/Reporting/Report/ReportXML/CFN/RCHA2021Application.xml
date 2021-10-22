@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_APPLICATION" pdfFiles="RCHA2021Application" year="2021" disabled="false" ajax="true">
+    <Permissions>
+        <Role role="INACTIVE+" subType="RCHA2021Applicant">
+
+        </Role>
+    </Permissions>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
+        <ReportItem id="title" blobItem="TITLE" type="Text">
+            <![CDATA[
+                <div style="text-align: center; width:100%;border: 1px solid black;">
+                    <p>Please read the Application Instructions and RFP documents before completing this online application. See <a href='http://www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/' target="_blank">www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/</a></p>
+                    <p><b>CFN will reject all submissions that are incomplete.</b></p> 
+                    <p><b>Rejected submissions will not be reviewed/considered for funding.</b></p>
+                </div><br />
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>Title of RCHA Proposal:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="12">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Term of KT Proposal:</b><br />
+                            <small>(Maximum 12 months)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Funding Requested from CFN:</b><br />
+                            <small>(Maximum $250,000)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds" blobItem="FUNDS" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Total Partnership Funds Secured:</b><br />
+                            <small>(This must be at least 100% of funding being requested from<br /> CFN, and match the funds listed in the excel budget document)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
+            <![CDATA[
+                <h2>Please provide information on the Principal Investigator who will act as Project Leader for proposal</h2>
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td align="right">
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" blobItem="LAST_NAME" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" blobItem="DESIGNATIONS" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Designations:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" blobItem="EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="day_phone" blobItem="DAY_PHONE" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Daytime Phone:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
+            <![CDATA[
+                        <td align="right">
+                            <b>Other Phone (optional):</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" blobItem="INSTITUTION" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td colspan='3' align="right">
+                            <b>Host Institution that will receive and administer funds:</b>
+                        </td>
+                        <td colspan='3'>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Secondary Contact Name:</b>
+                        </td>
+                        <td colspan="2">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
+            <![CDATA[
+                        <td colspan="2" align="right">
+                            <b>Secondary Telephone Number:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="2" align="right">
+                            <b>Secondary Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="region" type="Radio" blobItem="REGION" options="BC|AB|SK|YT &amp; NWT|NVT|MB|ON &amp; QC|NB|NS|PEI &amp; NFLD/LAB">
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td valign="top"><b>Geographic Region of RCHA (Select only one):</b>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="community" type="Checkbox" blobItem="COMMUNITY" blobType="BLOB_ARRAY" options="Rural|Suburban|Urban">
+            <![CDATA[
+                        <td valign="top"><b>Type of Community (Select all that apply):</b>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="350" rich="true">
+            <![CDATA[
+                <h2>2.1: Lay Summary</h2>
+                <ul>
+                    <li>Within the text box provide a non-confidential summary in lay terms of the RCHA proposal.</li>
+                    <li>A lay summary is an overview of a project described in a way that can be easily understood by those without prior expertise or experience of the subject.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Proposal" title="Section 3 - Proposal - Full Details">
+        <ReportItem id="proposal" blobItem="PROPOSAL" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Upload a single PDF document named <b>RCHA2021-Surname_Proposal.pdf</b>.  In the document header, include the name and affiliation of the implementation lead (Project Leader). <u>Ensure that the proposal does not exceed 5 pages, single spaced in Calibri 12 font with 1-inch margins</u>.</p>
+                The Proposal must include the following six subheadings and descriptions:
+                <ol>
+                    <li>Rationale and Impact
+                        <ul>
+                            <li>Describe your community.</li>
+                            <li>Explain how your community and its members would benefit from implementing the AVOID Frailty Program.</li>
+                        </ul>
+                    </li>
+                    <li>Objectives and Deliverables
+                        <ul>
+                            <li>Provide clear implementation objectives.</li>
+                            <li>Describe all milestones, anticipated deliverables, outputs, and outcomes for the duration of the project.</li>
+                            <li>Provide a project schedule with dates for all milestones and anticipated deliverables, outputs, and outcomes for the duration of the project, including all knowledge translation activities.</li>
+                            <li>Note: <u>The project schedule is mandatory</u> and will be used to track progress of the study.</li>
+                            <li>Describe how this project will be managed and deliverables tracked.</li>
+                         </ul>
+                     </li>
+                    <li>Description of Team Member Expertise
+                        <ul>
+                            <li>Please describe the expertise and experience of each Team Member (e.g., each Principal Investigator, Co-investigator, Partner, community member, and stakeholder) to demonstrate that the team can deliver on the proposed outputs and achieve the goals and objectives of the proposed RCHA.</li>
+                        </ul>
+                    </li>
+                    <li>Readiness to Implement and Plan for Adaptation
+                        <ul>
+                            <li>Describe alignment and preparedness of the community to ensure the implementation of the AVOID Frailty Program can be completed as per the project schedule.</li>
+                            <li>Identify all feasibility issues, barriers, challenges and limitations to the successful implementation and management of the RCHA and how these will be mitigated.</li>
+                            <li>Specifically address issues related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay RCHA implementation and how these may be mitigated.</li>
+                            <li>Discuss strategies for community outreach, and digital platform integration.</li>
+                        </ul>
+                    </li>
+                    <li>Evaluation
+                        <ul>
+                            <li>Discuss the plan for collection and analysis of individual and community-level indicators of AVOID Frailty related behaviour change using the CFN-modified digital platform.</li>
+                            <li>Outline an approach for iterative process evaluation to describe conditions surrounding implementation.<li>
+                            <li>Provide clear rationale and descriptions of planned community-tailored data collection and analyses.</li>
+                        </ul>
+                    </li>
+                    <li>Budget Description and Justification
+                        <ul>
+                            <li>In addition to the information provided in the budget excel document please justify your overall budget and the need for the budget items listed, and associated costs.</li>
+                        </ul>
+                    </li>
+                </ol>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="4 - Supporting Information" title="Section 4 - Supporting Information">
+        <ReportItem id="proposal" blobItem="APPENDIX" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                Upload a <b>single document named RCHA2021-Surname_Proposal_Appendix.pdf</b>. Appendix document can include tables, figures, and references to support full proposal. The Appendix document does not contribute to the 5-page limit of the full proposal.
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships" title="Section 5 - Partnerships &amp; Support Letters">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
+            <![CDATA[
+                <p>List within the table all Partners and upload a <b>single PDF file named RCHA2021-Surname_Partners.pdf</b> that contains letters of support for each partner or collaborator etc. (The Surname refers to the Project Leader’s surname).</p>
+                <ul>
+                    <li>Make sure that each letter of funding support is on the organization’s letterhead, detailing the partnership and specifically listing in an itemized fashion their cash and/or in-kind contribution(s) and the total partner funding amount. The letter should also specifically include reference to CFN, the AVOID Frailty RCHA, and any conditions placed on funding.</li>
+                    <li>All financial information provided in the table below must also appear in the submitted Excel budget document.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Letters of Support</h3>
+                <p>Upload a single PDF file named RCHA2021-Surname_Partners.pdf that contains letters of support for each partner or collaborator etc. (The Surname refers to the Project Leader’s surname).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Budget Document" title="Section 6 - Budget Document">
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <ul>
+                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/RCHA2021 - Budget Excel Document.xlsx'>Budget Excel template document</a>.</li>
+                    <li>All Investigators and organizations receiving funds directly from CFN must submit a budget Excel document. Duplicate worksheets within the budget Excel document as needed. The Excel file contains four (4) worksheets. Refer to the first worksheet for budget instructions.</li>
+                    <li>Upload a <b>single completed budget Excel document named RCHA2021-Surname_Budget</b>.  (The Surname refers to the Project Leader’s surname).</li>
+                    <li>For budget purposes use April 1, 2022 as the fiscal start date.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="7 - Project Team" title="Section 7 - Project Team Information">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/RCHA2021 - Project Team Information.xlsx'>project team information Excel document</a> and upload a <b>single Excel file named RCHA2021-Surname_TeamList.xlsx</b>. (The Surname refers to the Project Leader’s surname).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="cv" type="ReportSection" blobSection="CV" name="8 - CVs" title="Section 8 - CVs of Project Team">
+        <ReportItem id="cv" blobItem="CV" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Upload a <b>single PDF file named RCHA2021-Surname_TeamCVs.pdf</b>. (The Surname refers to the Project Leader’s surname).</p>
+                <ul>
+                    <li>Provide summary CVs (or resumés for non-academic team members) <u>for other Project Team members (i.e., not a Project Leader)</u>, in the order they appear in the Project Team List spreadsheet (Document 1).</li>
+                    <li>Each summary CV or resumé cannot be more than <u>5 pages</u> and should highlight relevant knowledge translation, research, education, and work or volunteer related experience. A copy of a CIHR Biosketch CV will also be accepted.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="signatures" type="ReportSection" blobSection="SIGNATURES" name="9 - Signatures" title="Section 9 - Signatures">
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/RCHA2021 - Required Signatures.docx'>Required Signature Word template document</a> and upload as <b>a single PDF named RCHA2021-Surname_Signatures.pdf</b>.  (The Surname refers to the Project Leader’s surname).</p>
+                <p>Separate signatures are required from each Principal Investigator expected to receive CFN funds and from the host institution or organization receiving and administering CFN funds.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="ethics" type="ReportSection" blobSection="ETHICS" name="10 - Ethics" title="Section 10 - Proof of Study Submission to Research Ethics Board">
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Upload a single PDF containing proof of ethics submission for each Principal Investigator or Co-Investigator to carry out their component of the project.  Name the PDF document <b>RCHA2021-Surname_REB.pdf</b>.  (The Surname refers to the Project Leader’s surname). If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>
