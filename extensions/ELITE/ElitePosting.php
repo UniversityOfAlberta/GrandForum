@@ -134,6 +134,48 @@ Faculty of Engineering, University of Alberta
         }
     }
     
+    function checkMatches(){
+        if($this->type == "PhD"){
+            // Only do this matching for PhD Projects
+            $postings = DBFunctions::select(array('grand_elite_postings'),
+                                            array('*'), 
+                                            array('user_id' => $this->getUser()->getId(),
+                                                  'type' => $this->type));
+            if(count($postings) == 1){
+                // Make sure only 1 project exists
+                $posting = $postings[0];
+                $other_projects = DBFunctions::select(array('grand_report_blobs'),
+                                                      array('user_id', 'data'),
+                                                      array('rp_type' => 'RP_PHD_ELITE',
+                                                            'rp_section' => 'PROFILE',
+                                                            'rp_item' => 'PROJECTS_OTHER'));
+                foreach($other_projects as $other_project){
+                    $applicantId = $other_project['user_id'];
+                    $projects = unserialize($other_project['data']);
+                    $projects = $projects['apply_other'];
+                    foreach($projects as $project){
+                        if(strtolower(trim($project['email'])) == strtolower(trim($this->getUser()->getEmail()))){
+                            // Add this ElitePosting to the matched projects of the applicant
+                            $blb = new ReportBlob(BLOB_ARRAY, 0, $applicantId, 0);
+                            $addr = ReportBlob::create_address("RP_PHD_ELITE", 'PROFILE', 'PROJECTS', 0);
+                            $result = $blb->load($addr);
+                            $data = $blb->getData();
+                            @$data['apply'][] = $posting['id'];
+                            $blb->store($data, $addr);
+                            
+                            $blb = new ReportBlob(BLOB_ARRAY, 0, $applicantId, 0);
+                            $addr = ReportBlob::create_address("RP_PHD_ELITE", 'PROFILE', 'MATCHES', 0);
+                            $result = $blb->load($addr);
+                            $data = $blb->getData();
+                            @$data[] = $posting['id'];
+                            $blb->store($data, $addr);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     function toSimpleArray(){
         $json = parent::toArray();
         $json['extra'] = $this->getExtra();
@@ -157,6 +199,7 @@ Faculty of Engineering, University of Alberta
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
             $this->sendMail();
+            $this->checkMatches();
         }
         return $status;
     }
