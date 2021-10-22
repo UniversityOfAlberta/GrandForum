@@ -248,8 +248,8 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="4 - Supporting Information" title="Section 4 - Supporting Information">
-        <ReportItem id="proposal" blobItem="APPENDIX" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information">
+        <ReportItem id="supporting" blobItem="SUPPORTING" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 Upload a <b>single document named RCHA2021-Surname_Proposal_Appendix.pdf</b>. Appendix document can include tables, figures, and references to support full proposal. The Appendix document does not contribute to the 5-page limit of the full proposal.
                 {$item}
