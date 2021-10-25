@@ -132,6 +132,13 @@ class SpecialEventRegistration extends SpecialPage{
                      <input type='file' name='misc_doc' accept='.doc,.docx' />";
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
+        else if($default->title == "Ethical Data and AI - Salon #2"){
+            $misc = "<h3>How do you plan to assist?</h3>
+                     <select name='misc[Assist]'>
+                        <option>Online</option>
+                        <option>In person</option>
+                     </select>";
+        }
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
