@@ -133,7 +133,7 @@ class SpecialEventRegistration extends SpecialPage{
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
         else if($default->title == "Ethical Data and AI - Salon #2"){
-            $misc = "<h3>How do you plan to assist?</h3>
+            $misc = "<h3>How do you plan to attend?</h3>
                      <select name='misc[Assist]'>
                         <option>Online</option>
                         <option>In person</option>
