@@ -5,15 +5,26 @@
 
         </Role>
     </Permissions>
-    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
-        <ReportItem id="title" blobItem="TITLE" type="Text">
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" showProgress="true">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text" optional="true">
             <![CDATA[
                 <div style="text-align: center; width:100%;border: 1px solid black;">
                     <p>Please read the Application Instructions and RFP documents before completing this online application. See <a href='http://www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/' target="_blank">www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/</a></p>
+                    <p><b>Please provide all information in English</b></p>
                     <p><b>CFN will reject all submissions that are incomplete.</b></p> 
                     <p><b>Rejected submissions will not be reviewed/considered for funding.</b></p>
                 </div><br />
                 <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b><br /><small>A CFN File Number will be assigned to you after Intent to Apply<br />has been received</small>
+                        </td>
+                        <td>{$value}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text" width="250px">
+            <![CDATA[
                     <tr>
                         <td>
                             <b>Title of RCHA Proposal:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
@@ -22,18 +33,18 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="12">
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="12" width="30px">
             <![CDATA[
                     <tr>
                         <td>
-                            <b>Term of KT Proposal:</b><br />
+                            <b>Term of RCHA Proposal:</b><br />
                             <small>(Maximum 12 months)</small>
                         </td>
                         <td>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="budget" blobItem="BUDGET" type="Text">
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer" width="75px">
             <![CDATA[
                     <tr>
                         <td>
@@ -44,7 +55,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="funds" blobItem="FUNDS" type="Text">
+        <ReportItem id="funds" blobItem="FUNDS" type="Integer" width="75px">
             <![CDATA[
                     <tr>
                         <td>
@@ -185,8 +196,8 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary">
-        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="350" rich="true">
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary" showProgress="true">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
             <![CDATA[
                 <h2>2.1: Lay Summary</h2>
                 <ul>
@@ -197,7 +208,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Proposal" title="Section 3 - Proposal - Full Details">
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Proposal" title="Section 3 - Proposal - Full Details" showProgress="true">
         <ReportItem id="proposal" blobItem="PROPOSAL" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p>Upload a single PDF document named <b>RCHA2021-Surname_Proposal.pdf</b>.  In the document header, include the name and affiliation of the implementation lead (Project Leader). <u>Ensure that the proposal does not exceed 5 pages, single spaced in Calibri 12 font with 1-inch margins</u>.</p>
@@ -234,7 +245,7 @@
                     <li>Evaluation
                         <ul>
                             <li>Discuss the plan for collection and analysis of individual and community-level indicators of AVOID Frailty related behaviour change using the CFN-modified digital platform.</li>
-                            <li>Outline an approach for iterative process evaluation to describe conditions surrounding implementation.<li>
+                            <li>Outline an approach for iterative process evaluation to describe conditions surrounding implementation.</li>
                             <li>Provide clear rationale and descriptions of planned community-tailored data collection and analyses.</li>
                         </ul>
                     </li>
@@ -248,7 +259,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information">
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information" showProgress="true">
         <ReportItem id="supporting" blobItem="SUPPORTING" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 Upload a <b>single document named RCHA2021-Surname_Proposal_Appendix.pdf</b>. Appendix document can include tables, figures, and references to support full proposal. The Appendix document does not contribute to the 5-page limit of the full proposal.
@@ -256,7 +267,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships" title="Section 5 - Partnerships &amp; Support Letters">
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships" title="Section 5 - Partnerships &amp; Support Letters" showProgress="true">
         <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
             <![CDATA[
                 <p>List within the table all Partners and upload a <b>single PDF file named RCHA2021-Surname_Partners.pdf</b> that contains letters of support for each partner or collaborator etc. (The Surname refers to the Project Leader’s surname).</p>
@@ -275,7 +286,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Budget Document" title="Section 6 - Budget Document">
+    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Budget Document" title="Section 6 - Budget Document" showProgress="true">
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <ul>
@@ -288,7 +299,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="ReportSection" blobSection="DOCUMENTS" name="7 - Project Team" title="Section 7 - Project Team Information">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Project Team" title="Section 7 - Project Team Information" showProgress="true">
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/RCHA2021 - Project Team Information.xlsx'>project team information Excel document</a> and upload a <b>single Excel file named RCHA2021-Surname_TeamList.xlsx</b>. (The Surname refers to the Project Leader’s surname).</p>
@@ -296,19 +307,19 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="cv" type="ReportSection" blobSection="CV" name="8 - CVs" title="Section 8 - CVs of Project Team">
+    <ReportSection id="cv" type="EditableReportSection" blobSection="CV" name="8 - CVs" title="Section 8 - CVs of Project Team" showProgress="true">
         <ReportItem id="cv" blobItem="CV" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p>Upload a <b>single PDF file named RCHA2021-Surname_TeamCVs.pdf</b>. (The Surname refers to the Project Leader’s surname).</p>
                 <ul>
-                    <li>Provide summary CVs (or resumés for non-academic team members) <u>for other Project Team members (i.e., not a Project Leader)</u>, in the order they appear in the Project Team List spreadsheet (Document 1).</li>
+                    <li>Provide summary CVs (or resumés for non-academic team members) <u>for other Project Team members (i.e., not a Project Leader)</u>, in the order they appear in the Project Team List spreadsheet.</li>
                     <li>Each summary CV or resumé cannot be more than <u>5 pages</u> and should highlight relevant knowledge translation, research, education, and work or volunteer related experience. A copy of a CIHR Biosketch CV will also be accepted.</li>
                 </ul>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="signatures" type="ReportSection" blobSection="SIGNATURES" name="9 - Signatures" title="Section 9 - Signatures">
+    <ReportSection id="signatures" type="EditableReportSection" blobSection="SIGNATURES" name="9 - Signatures" title="Section 9 - Signatures" showProgress="true">
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/RCHA2021 - Required Signatures.docx'>Required Signature Word template document</a> and upload as <b>a single PDF named RCHA2021-Surname_Signatures.pdf</b>.  (The Surname refers to the Project Leader’s surname).</p>
@@ -317,7 +328,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="ethics" type="ReportSection" blobSection="ETHICS" name="10 - Ethics" title="Section 10 - Proof of Study Submission to Research Ethics Board">
+    <ReportSection id="ethics" type="EditableReportSection" blobSection="ETHICS" name="10 - Ethics" title="Section 10 - Proof of Study Submission to Research Ethics Board" showProgress="true">
         <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p>Upload a single PDF containing proof of ethics submission for each Principal Investigator or Co-Investigator to carry out their component of the project.  Name the PDF document <b>RCHA2021-Surname_REB.pdf</b>.  (The Surname refers to the Project Leader’s surname). If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed.</p>
@@ -331,6 +342,23 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        <If if="{or({!=({getProgress(information)},100)},
+                    {!=({getProgress(summary)},100)},
+                    {!=({getProgress(proposal)},100)},
+                    {!=({getProgress(supporting)},100)},
+                    {!=({getProgress(partnerships)},100)},
+                    {!=({getProgress(funding)},100)},
+                    {!=({getProgress(documents)},100)},
+                    {!=({getProgress(cv)},100)},
+                    {!=({getProgress(signatures)},100)},
+                    {!=({getProgress(ethics)},100)}
+                )}">
+            <![CDATA[
+                You have not completed the application.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+        </Else>
     </ReportSection>
 </Report>
