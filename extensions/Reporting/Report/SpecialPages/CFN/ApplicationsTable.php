@@ -151,7 +151,7 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("class", "wikitable");
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
-        //$tabbedPage->addTab(new ApplicationTab("KTRCHA2021Application", array(), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Application", array(), 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array(), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
