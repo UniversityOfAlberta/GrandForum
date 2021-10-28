@@ -164,6 +164,7 @@ require_once("$IP/extensions/CrossForumExport/CrossForumExport.php");
 require_once("AnnokiControl_body.php");
 $wgHooks['SpecialPageBeforeExecute'][] = 'showSpecialPageHeader';
 $wgHooks['MessagesPreLoad'][] = 'AnnokiControl::onMessagesPreLoad';
+$wgHooks['UserGetLanguageObject'][] = 'AnnokiControl::onUserGetLanguageObject';
 
 $wgExtensionCredits['specialpage'][] = array(
                          'name' => 'AnnokiControl',

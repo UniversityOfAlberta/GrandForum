@@ -141,6 +141,9 @@
     // Whether or not to show outputs unrelated to projects or not.
     $config->setValue("showNonNetwork", true);
     
+    // Whether to enable French/English options
+    $config->setValue("bilingual", false);
+    
     // Whether or not the gender field is enabled
     $config->setValue("genderEnabled", true);
     

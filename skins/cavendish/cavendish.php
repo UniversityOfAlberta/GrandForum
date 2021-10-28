@@ -42,7 +42,7 @@ class CavendishTemplate extends QuickTemplate {
 	 * @access private
 	 */
 	function execute() {
-		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config;
+		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config, $wgLang;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
@@ -97,6 +97,18 @@ class CavendishTemplate extends QuickTemplate {
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/skins/cavendish/highlights.css.php" />
 		<link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/skins/markitup/style.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/markitup/sets/wiki/style.css" />
+        <style>
+		    <?php
+		        
+		        if($wgLang->getCode() == "en"){
+		            echo ".fr { display: none !important; }";
+		        }
+		        else if($wgLang->getCode() == "fr"){
+		            echo ".en { display: none !important; }";
+		        }
+		        
+		    ?>
+		</style>
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.2/css/fixedColumns.dataTables.min.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" />
@@ -251,6 +263,7 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
 		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
+		    var wgLang = "<?php echo $wgLang->getCode(); ?>";
 		</script>
 		<?php createModels(); ?>
 		<?php echo $wgOut->getScript(); ?>
@@ -452,6 +465,35 @@ class CavendishTemplate extends QuickTemplate {
 	        if(sideToggled == undefined){
 	            sideToggled = 'out';
 	        }
+
+	        if(wgLang == 'fr'){
+                $.extend( true, $.fn.dataTable.defaults, {
+                    "language":{
+                        "decimal":        "",
+                        "emptyTable":     "Aucune Donnée Disponible",
+                        "info":           "Affichage _START_ à _END_ des entrées de _TOTAL_",
+                        "infoEmpty":      "Affichage 0 à 0 de 0 entrées",
+                        "infoFiltered":   "(Filtré _Max_ Entrées Totales)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Afficher les entrées de _MENU_",
+                        "loadingRecords": "Chargement...",
+                        "processing":     "En traitement...",
+                        "search":         "Chercher:",
+                        "zeroRecords":    "Aucun enregistrements correspondants trouvés",
+                        "paginate": {
+                            "first":      "Premier",
+                            "last":       "Dernier",
+                            "next":       "Prochain",
+                            "previous":   "Précédent"
+                        },              
+                        "aria": {           
+                            "sortAscending":  ": activer pour trier la colonne ascendante",
+                            "sortDescending": ": activer pour trier la colonne descendante"
+                        }           
+                    }   
+                });
+            }
 	        
 		    $(document).ready(function(){
 		        renderProductLinks();
@@ -711,7 +753,7 @@ class CavendishTemplate extends QuickTemplate {
 <div id="container">
 	<div id="topheader">
         <?php
-            global $wgSitename, $notifications, $notificationFunctions, $config;
+            global $wgSitename, $notifications, $notificationFunctions, $config, $wgLang;
             if(count($notifications) == 0){
                 foreach($notificationFunctions as $function){
                     call_user_func($function);
@@ -720,6 +762,20 @@ class CavendishTemplate extends QuickTemplate {
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
             echo "<div class='login'>";
+            if($config->getValue('bilingual')){
+                echo "<select name='lang' style='vertical-align:middle;'>";
+                echo ($wgLang->getCode() == "en") ? "<option value='en' selected>English</option>" : "<option value='en'>English</option>";
+                echo ($wgLang->getCode() == "fr") ? "<option value='fr' selected>Français</option>" : "<option value='fr'>Français</option>";
+                echo "</select>
+                <script type='text/javascript'>
+                    $('select[name=lang]').change(function(){
+                        var search = (document.location.search != '') ? 
+                            '?lang=' + $('select[name=lang]').val() + document.location.search.replace('?', '&').replace(/&lang=(en|fr)/, ''): 
+                            '?lang=' + $('select[name=lang]').val();
+                        document.location = search + document.location.hash;
+                    });
+                </script>";
+            }
             echo "<div style='display:none;' id='share_template'>";
             foreach($config->getValue("socialLinks") as $social => $link){
                 $img = "";

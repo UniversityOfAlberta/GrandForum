@@ -44,6 +44,26 @@ You should log in and change your password now.';
     return true;
   }
   
+  static function onUserGetLanguageObject($user, &$code){
+        if(@$_GET['lang'] == 'fr' || @$_GET['lang'] == 'en'){
+            if($user->isLoggedIn()){
+                $user->setOption("language", $_GET['lang']);
+                $user->saveSettings();
+                DBFunctions::commit();
+            }
+            else{
+                setcookie('lang', $_GET['lang'], time()+60*60*24*30);
+            }
+            if($code != $_GET['lang']){
+                $code = $_GET['lang'];
+            }
+        }
+        else if(!$user->isLoggedIn() && isset($_COOKIE['lang'])){
+            $code = $_COOKIE['lang'];
+        }
+        return true;
+    }
+  
   function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
