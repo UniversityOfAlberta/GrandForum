@@ -285,7 +285,7 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab2021 = new ApplicationTab(RP_PROGRESS, array(), 2021, "2021", array());                                           
+        $tab2021 = new ApplicationTab(RP_PROGRESS, null, 2021, "2021", array());                                           
         $tabbedPage->addTab($tab2021);
         $wgOut->addHTML($tabbedPage->showPage());
     }
@@ -314,18 +314,18 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new InnerTabbedPage("reports");
         
         for($y = 2021; $y >= 2020; $y--){
-            $tab = new ApplicationTab('RP_IMPACT', array(), $y, "$y", array('Service Delivery Agencies' => $ceris[1],
-                                                                            'Indigenous community-based agencies and/or governing bodies' => $ceris[2],
-                                                                            'Persons with lived experiences of homelessness' => $ceris[3],
-                                                                            'Orders of Government' => $ceris[4],
-                                                                            'Racialized Communities' => $ceris[5],
-                                                                            '2SLGBTQIA+ community members' => $ceris[6],
-                                                                            'CERI 1 Score' => $scores[1],
-                                                                            'CERI 2 Score' => $scores[2],
-                                                                            'CERI 3 Score' => $scores[3],
-                                                                            'CERI 4 Score' => $scores[4],
-                                                                            'CERI 5 Score' => $scores[5],
-                                                                            'CERI 6 Score' => $scores[6]));
+            $tab = new ApplicationTab('RP_IMPACT', null, $y, "$y", array('Service Delivery Agencies' => $ceris[1],
+                                                                         'Indigenous community-based agencies and/or governing bodies' => $ceris[2],
+                                                                         'Persons with lived experiences of homelessness' => $ceris[3],
+                                                                         'Orders of Government' => $ceris[4],
+                                                                         'Racialized Communities' => $ceris[5],
+                                                                         '2SLGBTQIA+ community members' => $ceris[6],
+                                                                         'CERI 1 Score' => $scores[1],
+                                                                         'CERI 2 Score' => $scores[2],
+                                                                         'CERI 3 Score' => $scores[3],
+                                                                         'CERI 4 Score' => $scores[4],
+                                                                         'CERI 5 Score' => $scores[5],
+                                                                         'CERI 6 Score' => $scores[6]));
                                                                                                  
             $tab->addExtra($this->impactReportSummary($y));
             $tabbedPage->addTab($tab);
@@ -371,7 +371,7 @@ class ApplicationsTable extends SpecialPage{
         }
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_DATA_TECH', array(), 2020, "2020", $fields));
+        $tabbedPage->addTab(new ApplicationTab('RP_DATA_TECH', null, 2020, "2020", $fields));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -412,7 +412,7 @@ class ApplicationsTable extends SpecialPage{
         }
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_OPEN2', array(), 2020, "2020", $fields));
+        $tabbedPage->addTab(new ApplicationTab('RP_OPEN2', null, 2020, "2020", $fields));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

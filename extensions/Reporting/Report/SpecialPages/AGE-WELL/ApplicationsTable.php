@@ -162,24 +162,24 @@ class ApplicationsTable extends SpecialPage{
     function generateSIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_CRP', array(), 2020, "CRP", array(), false, array(0,1,2)));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2019', array(), 2019, "Accelerator 5", array(), false, array(0,1,2)));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018_2', array(), 2018, "Accelerator 4"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018', array(), 2018, "Accelerator 3"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_09_2017', array(), 2017, "Accelerator 2"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC', array(), 2017, "Accelerator"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_01_2017', array(), 2015, "01-2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_10_2016', array(), 2015, "10-2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_07_2016', array(), 2015, "07-2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', array(), 2015, "04-2016"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SIP', array(), 2015, "01-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_CRP', null, 2020, "CRP", array(), false, array(0,1,2)));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2019', null, 2019, "Accelerator 5", array(), false, array(0,1,2)));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018_2', null, 2018, "Accelerator 4"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_2018', null, 2018, "Accelerator 3"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC_09_2017', null, 2017, "Accelerator 2"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_ACC', null, 2017, "Accelerator"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_01_2017', null, 2015, "01-2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_10_2016', null, 2015, "10-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_07_2016', null, 2015, "07-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP_04_2016', null, 2015, "04-2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SIP', null, 2015, "01-2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCIP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CIP', array(), 2015, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CIP', null, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -256,42 +256,42 @@ class ApplicationsTable extends SpecialPage{
         $orgs->setId("team");
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CRP', array(), 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs, 'Product' => $section2, 'Organizations' => $orgs)));
+        $tabbedPage->addTab(new ApplicationTab('RP_CRP', null, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs, 'Product' => $section2, 'Organizations' => $orgs)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCatalyst(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_CAT', array(), 2017, "2018"));
-        $tabbedPage->addTab(new ApplicationTab('RP_CAT', array(), 2016, "2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_CAT', array(), 2015, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2017, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2016, "2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2022', array(), 2021, "2022-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2021', array(), 2021, "2021-10"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2021', array(), 2021, "2021-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2021', array(), 2021, "2021-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2021', array(), 2021, "2021-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2020', array(), 2020, "2020-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2020', array(), 2020, "2020-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2020', array(), 2020, "2020-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2019', array(), 2019, "2019-10"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', array(), 2019, "2019-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', array(), 2019, "2019-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', array(), 2019, "2019-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', array(), 2018, "2018-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', array(), 2018, "2018-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2018', array(), 2018, "2018-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2017', array(), 2017, "2017-10"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2017', array(), 2017, "2017-07"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', array(), 2017, "2017-04"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', array(), 2017, "2017-01"));
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2016', array(), 2016, "2016-10"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2022', null, 2021, "2022-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2021', null, 2021, "2021-10"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2021', null, 2021, "2021-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2021', null, 2021, "2021-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2021', null, 2021, "2021-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2020', null, 2020, "2020-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2020', null, 2020, "2020-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2020', null, 2020, "2020-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2019', null, 2019, "2019-10"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2019', null, 2019, "2019-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2019', null, 2019, "2019-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2019', null, 2019, "2019-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2018', null, 2018, "2018-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2018', null, 2018, "2018-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2018', null, 2018, "2018-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2017', null, 2017, "2017-10"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2017', null, 2017, "2017-07"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2017', null, 2017, "2017-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2017', null, 2017, "2017-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2016', null, 2016, "2016-10"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -402,91 +402,91 @@ class ApplicationsTable extends SpecialPage{
         $shrf->setBlobSection(HQP_APPLICATION_FORM);
         $shrf->setId("SHRF");
         
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2021, "2021", array("Level" => $level,
-                                                                                               "Michael F. Harcourt" => $michael,
-                                                                                               "Indigenous" => $ind,
-                                                                                               "MIRA" => $mira,
-                                                                                               "UofT" => $uoft,
-                                                                                               "UBC" => $ubc,
-                                                                                               "NBHRF" => $nbhrf,
-                                                                                               "SHRF" => $shrf,
-                                                                                               "Supervisor" => $sup,
-                                                                                               "Institution" => $uni,
-                                                                                               "Status/Department" => $dept,
-                                                                                               "Project Title" => $title,
-                                                                                               "Keywords" => $keywords)));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2021, "2021", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "UBC" => $ubc,
+                                                                                             "NBHRF" => $nbhrf,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords)));
         
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2020, "2020", array("Level" => $level,
-                                                                                               "Michael F. Harcourt" => $michael,
-                                                                                               "Indigenous" => $ind,
-                                                                                               "MIRA" => $mira,
-                                                                                               "UofT" => $uoft,
-                                                                                               "SFU" => $sfu,
-                                                                                               "NBHRF" => $nbhrf,
-                                                                                               "SHRF" => $shrf,
-                                                                                               "Supervisor" => $sup,
-                                                                                               "Institution" => $uni,
-                                                                                               "Status/Department" => $dept,
-                                                                                               "Project Title" => $title,
-                                                                                               "Keywords" => $keywords)));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2020, "2020", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "SFU" => $sfu,
+                                                                                             "NBHRF" => $nbhrf,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords)));
         
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2019, "2019", array("Level" => $level,
-                                                                                               "Michael F. Harcourt" => $michael,
-                                                                                               "MIRA" => $mira,
-                                                                                               "NBHRF" => $nbhrf,
-                                                                                               "TRP" => $trp)));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2019, "2019", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "MIRA" => $mira,
+                                                                                             "NBHRF" => $nbhrf,
+                                                                                             "TRP" => $trp)));
         
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2018, "2018", array("Level" => $level,
-                                                                                               "Michael F. Harcourt" => $michael,
-                                                                                               "BME" => $bme,
-                                                                                               "WBHI" => $wbhi,
-                                                                                               "MIRA" => $mira,
-                                                                                               "NBHRF" => $nbhrf)));
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2017, "2017"));
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2016, "2016"));
-        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, array(), 2015, "2015"));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2018, "2018", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "BME" => $bme,
+                                                                                             "WBHI" => $wbhi,
+                                                                                             "MIRA" => $mira,
+                                                                                             "NBHRF" => $nbhrf)));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2016, "2016"));
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2015, "2015"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', array(), 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', array(), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', array(), 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', array(), 2016, "2017"));
-        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', array(), 2015, "2016"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2016, "2017"));
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2015, "2016"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateEpicConference(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', array(), 2021, "2021"));
-        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', array(), 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2021, "2021"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateFellow(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_FELLOW', array(), 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab('RP_FELLOW', null, 2018, "2018"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateEEA(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EEA', array(), 2021, "2021"));
-        $tabbedPage->addTab(new ApplicationTab('RP_EEA', array(), 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab('RP_EEA', array(), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2021, "2021"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateEdge(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EDGE', array(), 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EDGE', null, 2019, "2019"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

@@ -86,10 +86,10 @@ class ApplicationsTable extends SpecialPage{
     function generateIFP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", array(), 2020, "2020"));
-        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", array(), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", array(), 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", array(), 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", null, 2020, "2020"));
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", null, 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", null, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab("RP_IFP_APPLICATION", null, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -119,14 +119,23 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("class", "wikitable");
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
-        $tabbedPage->addTab(new ApplicationTab("KT2019Application", array(), 2019, "2019"));
-        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", array(), 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
-        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", array(), 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Application", null, 2019, "2019"));
+        $tabbedPage->addTab(new ApplicationTab("KT2019Intent", null, 2019, "2019 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $tabbedPage->addTab(new ApplicationTab("RP_KT_APPLICATION", null, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateRCHA(){
         global $wgOut;
+        
+        $allPeople = array_merge(Person::getAllCandidates(), Person::getAllPeople());
+        $fullApplicants = array();
+        foreach($allPeople as $person){
+            if($person->isSubRole('RCHA2021Applicant')){
+                $fullApplicants[$person->getId()] = $person;
+            }
+        }
+        
         $tabbedPage = new InnerTabbedPage("reports");
         $pis = new MultiTextReportItem();
         $pis->setBlobType(BLOB_ARRAY);
@@ -151,16 +160,16 @@ class ApplicationsTable extends SpecialPage{
         $cis->setAttr("class", "wikitable");
         $cis->setAttr("orientation", "list");
         $cis->setId("ci");
-        $tabbedPage->addTab(new ApplicationTab("RCHA2021Application", array(), 2021, "2021"));
-        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", array(), 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Application", $fullApplicants, 2021, "2021"));
+        $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", null, 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
     function generateCat(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab("Catalyst2018Application", array(), 2018, "2018"));
-        $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", array(), 2017, "2017"));
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2018Application", null, 2018, "2018"));
+        $tabbedPage->addTab(new ApplicationTab("Catalyst2017Application", null, 2017, "2017"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

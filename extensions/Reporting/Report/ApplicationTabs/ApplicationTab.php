@@ -10,24 +10,31 @@ class ApplicationTab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function ApplicationTab($rp, $people=array(), $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
+    function ApplicationTab($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
         $this->extraCols = $extraCols;
         $this->showAllWithPDFs = $showAllWithPDFs;
-        $newPeople = array();
-        foreach($people as $person){
-            $newPeople[$person->getId()] = $person;
+        if($people !== null){
+            $newPeople = array();
+            foreach($people as $person){
+                $newPeople[$person->getId()] = $person;
+            }
+            $this->people = $newPeople;
         }
-        $this->people = $newPeople;
+        else{
+            $this->people = null;
+        }
+        
         if(is_array($this->rp)){
             $report = new DummyReport($this->rp[0], $me, null, $year);
         }
         else{
             $report = new DummyReport($this->rp, $me, null, $year);
         }
-        if(count($this->people) == 0){
+        if($this->people === null){
+            $this->people = array();
             $data = DBFunctions::select(array('grand_report_blobs'),
                                         array('user_id', 'proj_id'),
                                         array('rp_type' => $report->reportType,
