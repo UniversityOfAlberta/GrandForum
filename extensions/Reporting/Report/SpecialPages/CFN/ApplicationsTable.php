@@ -151,7 +151,7 @@ class ApplicationsTable extends SpecialPage{
         
         $cis = new MultiTextReportItem();
         $cis->setBlobType(BLOB_ARRAY);
-        $cis->setBlobItem("CI");
+        $cis->setBlobItem(CI);
         $cis->setBlobSection("INTENT");
         $cis->setAttr("labels", "First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization");
         $cis->setAttr("types", "text|text|text|text|text");
