@@ -25,11 +25,12 @@ class ReportStorage {
     /// match, the request is denied and the state of the object is not
     /// changed.
     function select_report($tok, $strict = true) {
+        $tok = DBFunctions::escape($tok);
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
         $res = DBFunctions::execSQL("SELECT user_id 
                                      FROM grand_pdf_report 
                                      WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
-                                                   (encrypted = 1 AND token = '".decrypt($tok, true)."'))");
+                                                   (encrypted = 1 AND token = '".@decrypt($tok, true)."'))");
         if(DBFunctions::getNRows() > 0){
             $this->load_metadata($tok, $strict);
             return $this->_cache['token'];
@@ -82,11 +83,12 @@ class ReportStorage {
     /// Retrieves a specific report (PDF) for the user.  The PDF returned
     /// (if any) is a string.
     function fetch_pdf($tok, $strict = true) {
+        $tok = DBFunctions::escape($tok);
         $ext = ($strict) ? "user_id = {$this->_uid} AND proj_id = {$this->_pid} AND" : "";
         $sql = "SELECT report_id, user_id, proj_id, type, submitted, auto, timestamp, len_pdf, pdf, encrypted, generation_user_id, submission_user_id, year 
                 FROM grand_pdf_report 
                 WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
-                              (encrypted = 1 AND token = '".decrypt($tok, true)."'))
+                              (encrypted = 1 AND token = '".@decrypt($tok, true)."'))
                 ORDER BY timestamp DESC LIMIT 1";
         $res = DBFunctions::execSQL($sql);
         if (count($res) <= 0) {
@@ -157,10 +159,11 @@ class ReportStorage {
                     ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
+            $tok = DBFunctions::escape($tok);
             $sql = "SELECT report_id, type, user_id, proj_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year, encrypted
                     FROM grand_pdf_report 
                     WHERE {$ext} ((encrypted = 0 AND token = '{$tok}') OR 
-                                  (encrypted = 1 AND token = '".decrypt($tok, true)."'))
+                                  (encrypted = 1 AND token = '".@decrypt($tok, true)."'))
                     ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);
