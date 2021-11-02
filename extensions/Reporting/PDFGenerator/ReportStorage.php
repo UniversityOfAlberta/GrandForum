@@ -17,6 +17,7 @@ class ReportStorage {
     /// match, the request is denied and the state of the object is not
     /// changed.
     function select_report($tok, $strict = true) {
+        $tok = DBFunctions::escape($tok);
         $uid = ($this->_uid == "") ? 0 : $this->_uid;
         if ($strict)
             $ext = "user_id = $uid AND";
@@ -73,7 +74,7 @@ class ReportStorage {
                 isset($this->_cache['token']) && $this->_cache['token'] === $tok) {
             return $this->_cache['pdf'];
         }
-
+        $tok = DBFunctions::escape($tok);
         $user = ($strict) ? "user_id = {$this->_uid} AND" : '';
         $sql = "SELECT report_id, user_id, type, submitted, auto, timestamp, len_pdf, pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$user} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
         $res = DBFunctions::execSQL($sql);
@@ -204,6 +205,7 @@ class ReportStorage {
             $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE user_id = {$uid} ORDER BY timestamp DESC LIMIT 1;";
         }
         else {
+            $tok = DBFunctions::escape($tok);
             $sql = "SELECT report_id, type, user_id, submitted, auto, token, timestamp, len_pdf, generation_user_id, submission_user_id, year FROM grand_pdf_report WHERE {$ext} token = '{$tok}' ORDER BY timestamp DESC LIMIT 1;";
         }
         $res = DBFunctions::execSQL($sql);
