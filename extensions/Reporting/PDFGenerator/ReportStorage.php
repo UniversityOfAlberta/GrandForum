@@ -284,18 +284,6 @@ class ReportStorage {
         exit;
     }
 
-    function get_report_project_id(){
-        $report_id = $this->_cache['report_id'];
-        $sql = "SELECT sub_id FROM grand_pdf_index WHERE report_id={$report_id}";
-        $res = DBFunctions::execSQL($sql);
-        $sub_id = 0;
-        if (count($res) > 0) {
-            $sub_id = $res[0]['sub_id'];
-        }
-
-        return $sub_id;
-    }
-
     /// Returns an array of report entries for users #uarr with as many as #lim
     /// entries per user.  By default, submitted reports are considered, which
     /// can be changed with #subm.  #uarr is either an array of numeric user IDs
