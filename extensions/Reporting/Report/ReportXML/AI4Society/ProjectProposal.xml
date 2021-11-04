@@ -17,6 +17,20 @@
         </Static>
     </ReportSection>
     <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="Proposal" title="Proposal">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>
+                            Title:
+                        </td>
+                        <td class='value'>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
         <ReportItem id="scientific_rational_new" type="Select" blobItem="SCIENTIFIC_RATIONAL_NEW" options="Yes|No">
             <![CDATA[
                 <h2>Scientific Rationale</h2>
