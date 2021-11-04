@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Proposal 2021-22" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2021" disabled="false" ajax="true">
+    <ReportSection id="proposal" type="HeaderReportSection" blobSection="PROPOSAL" name="Project Proposal 2021-22" title="Project Proposal 2021-22" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <h4 style='font-size:1.20em;'>Project Proposal 2021-22</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>
+                            Title:
+                        </td>
+                        <td class='value'>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true">
+            <![CDATA[
+                <h2>Scientific Rationale</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_team" type="MultiText"  class="wikitable" blobItem="PROJECT_TEAM" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" multiple="true">
+            <![CDATA[
+                <h2>Team</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true">
+            <![CDATA[
+                <h2>Proposal</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description|Contributors" types="Text|Textarea|Textarea">
+            <![CDATA[
+                <h2>Project Milestones</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true">
+            <![CDATA[
+                <h2>Success Criteria / Outcomes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx">
+            <![CDATA[
+                <h3>Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
+            <![CDATA[
+                <h3>Justification</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="plans" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="PLANS" multiple="true" indices="name|url|date|description" labels="Program Name|Program URL|Date|Description of Project" types="Text|Text|Date|Textarea">
+            <![CDATA[
+                <h2>Further Grant Application Plans</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -72,7 +72,7 @@
         </ReportItem>
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx">
             <![CDATA[
-                <h3>Budget</h2>
+                <h3>Budget</h3>
                 <p>Please make sure to use the <b><a href='{$wgServer}{$wgScriptPath}/data/AI4S_Budget_Template.xlsx'>budget template</a></b> to fill in your budget.</p>
                 <p>Please provide student names, or indicate if a student would be a new student. Indicate the terms during which you expect students will TA or RA (officially a GRAF). Once your list of students and TA/RA terms is complete, ask nicely and Melanie will total your student expenses using standard Amii rates and top-ups. It is recommended that M.Sc. students TA at least 2-3 times during their program (including one intro-level course and one advanced course); and Ph.D. students at least 3-4 times (doing both intro-level and advanced courses). It is expected that these will be done during the department guaranteed support period. While RAs can be good recruiting tools, TAships are good training opportunities that we want to encourage.</p>
                 <p>Remember that RAP funds can be used to pay staff (e.g. interns, research programmers).  Consider how such staff could help with your project, and consider incorporating their pay (or a portion of it) into this budget.</p>
