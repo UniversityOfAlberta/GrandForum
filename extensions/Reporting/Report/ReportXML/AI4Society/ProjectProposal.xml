@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Proposal 2021-22" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2021" disabled="false" ajax="true">
+    <Permissions>
+        
+    </Permissions>
+    <ReportSection id="instructions" type="ReportSection" name="Instructions" title="Project Proposal 2021-22">
+        <Static>
+            <![CDATA[
+                <p>This template is for proposals of funding to Amii’s Resource Allocation Panel (RAP) for the period of <b>May 2021 to April 2022</b>. Edit the details for your project above. If the lead of the project is not an Amii Fellow, you should also provide the name of the Amii Fellow(s) sponsoring the project.</p>
+                
+                <p>Proposals are <b>suggested</b> to be 1 page plus 1-2 pages for each $50,000 requested. Continuing projects that include a project report are likely at the high-end of this range, while new projects may be at the low-end. Proposals should be written to your colleagues, not a funding agency – no need to exaggerate, over-promise, or convince an MLA about how the average Albertan will benefit from the outcome. However, please remember that your colleagues may not be working in your specific research area, and so some background will be required for them to understand your proposed work.</p>
+
+                <p>Please see the RAP Applicant Handbook for details of the process. In general, consider your proposal an opportunity to get scientific and operational direction from your colleagues. You will receive two reviews, and there will be some back and forth during the first review (so please be prepared to answer questions promptly during the period Jan 25-Feb 23, 2020). The full details of the RAP process is described here. When your proposal is complete, <b>you must submit via the submission form</b>.</p>
+
+                <p>RAP for 2021-22 is forecasted to have $2,600,000 to allocate to projects; an average of $113,000 per Amii Fellow. Amii Fellows are not guaranteed any particular funding nor is there a limit on what you can request, although RAP will consider each Fellow’s total funding request (including their sponsored projects led by non-Amii researchers). Total requests from a single Fellow over double this average will be far less likely to receive their full request than Fellows requesting half of the average.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="Proposal" title="Proposal">
+        <ReportItem id="scientific_rational_new" type="Select" blobItem="SCIENTIFIC_RATIONAL_NEW" options="Yes|No">
+            <![CDATA[
+                <h2>Scientific Rationale</h2>
+                <p>Discuss the scientific rationale for the project, starting with a very high-level description. What is the longer-term research agenda that forms the context for this annual proposal? Why is this a valuable research endeavour? What are the medium to long-term goals (2-5 years) that might be achieved if this research agenda were successful? At the top of the section select “no” if this proposal is a continuing project and the rationale is copied from the previous proposal. Otherwise, select “yes”.</p>
+                <b>New?</b> <span style='display:inline-block; vertical-align:middle;'>{$item}</span>
+            ]]>
+        </ReportItem>
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true">
+            <![CDATA[
+                <h2>Team</h2>
+                <p>Has to be interdisciplinary</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true">
+            <![CDATA[
+                <h2>Proposal</h2>
+                <p>Briefly outline the proposed research over the next year.  Where possible connect with your long-term scientific rationale. This overview should then be broken down into smaller concrete chunks of research / work in the subsection below.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="milestones" type="MultiText" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description&lt;br />&lt;small>Describe the concrete, measurable goal.  No need to repeat anything from the scientific rationale or proposal sections.&lt;/small>|Contributors&lt;br />&lt;small>List of names (students, fellows, externals, etc.; identify affiliation of external collaborators)&lt;/small>" types="Text|Textarea|Textarea" sizes="200|250|250">
+            <![CDATA[
+                <h2>Project Milestones</h2>
+                <p>The ideal proposal has concrete, measurable goals (i.e., milestones) to accomplish over the year. Think of a milestone as a chunk of work that one person could accomplish in a year (e.g., a piece of published research such as an M.Sc. thesis project). It may involve more than one person, and contributors may be involved in more than one milestone. Cut and paste to add more milestones.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true">
+            <![CDATA[
+                <h2>Success Criteria / Outcomes</h2>
+                <p>Describe how you will judge the success of this project in the coming year. In addition, give a summary of the targeted outcomes (e.g., papers, code releases, prototypes, student training, accomplishments, etc.). This should outline what you hope to include in your progress report at the end of the period.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx">
+            <![CDATA[
+                <h3>Budget</h2>
+                <p>Please provide student names, or indicate if a student would be a new student. Indicate the terms during which you expect students will TA or RA (officially a GRAF). Once your list of students and TA/RA terms is complete, ask nicely and Melanie will total your student expenses using standard Amii rates and top-ups. It is recommended that M.Sc. students TA at least 2-3 times during their program (including one intro-level course and one advanced course); and Ph.D. students at least 3-4 times (doing both intro-level and advanced courses). It is expected that these will be done during the department guaranteed support period. While RAs can be good recruiting tools, TAships are good training opportunities that we want to encourage.</p>
+                <p>Remember that RAP funds can be used to pay staff (e.g. interns, research programmers).  Consider how such staff could help with your project, and consider incorporating their pay (or a portion of it) into this budget.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
+            <![CDATA[
+                <h3>Justification</h3>
+                <p>Briefly describe the rationale for the budget. Student or staff contributors already connected to project milestones, <b>need no justification</b>. Travel costs inline with one conference trip per student per year, and equipment costs inline with laptop renewal of one laptop per two students (i.e., laptop renewal on a 2 year cycle), <b>need no justification</b>. Thus, in some cases, this section can be very short. If you ask for more than summer support for a student, the budget justification should explain why an RA is important (e.g., no longer TA eligible), and whether they have met, or how they plan to meet the TA guidelines above.</p>
+
+                <p>If you are requesting time from a member of Amii’s Applied Science team, please describe the role you hope they would fill and whether you have already discussed involvement with a specific person or are making a generic request.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="commitment" type="Integer" blobItem="COMMITMENT" rich="true" min="0" max="9999999" align="left">
+            <![CDATA[
+                <h3>Next-Year Commitment</h3>
+                <p>If a portion of the project’s budget needs a multi-year commitment to be viable (e.g., making a 2 year post-doc offer), use this subsection to provide a justification. At the top of the section, give the total amount for which you are asking to be guaranteed for next year. You should make such requests sparingly. In general, student funding does not meet the requirement for a multi-year commitment. If you are not making such a request, remove this subsection.</p>
+                <b>Amount:</b> $ {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="plans" type="MultiText" blobType="BLOB_ARRAY" blobItem="PLANS" multiple="true" indices="name|url|date|description" labels="Program Name|Program URL|Date|Description of Project" types="Text|Text|Date|Textarea" sizes="200|200|75|250">
+            <![CDATA[
+                <h2>Further Grant Application Plans</h2>
+                <p>The ideal proposal has concrete, measurable goals (i.e., milestones) to accomplish over the year. Think of a milestone as a chunk of work that one person could accomplish in a year (e.g., a piece of published research such as an M.Sc. thesis project). It may involve more than one person, and contributors may be involved in more than one milestone. Cut and paste to add more milestones.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" />
+    </ReportSection>
+</Report>
