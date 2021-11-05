@@ -131,10 +131,10 @@
                         <tr>
                             <td style="white-space:nowrap;width:10%;">
                                 {getExtra(classprefix)} {getExtra(number)}<br />
-                                &nbsp;&nbsp;#{getExtra(type)}: 1
+                                &nbsp;&nbsp;#{getExtra(type)}: {add({occurrences({getExtra(term)},;)},1)}
                             </td>
                             <td width="">{getExtra(title)}</td>
-                            <td style="width:45%;"><b>{getExtra(term)}</b>: 1 {getExtra(type)} ({getExtra(enrolment)})</td>
+                            <td style="width:45%;"><b>{getExtra(term)}</b>: {add({occurrences({getExtra(term)},;)},1)} {getExtra(type)} ({getExtra(enrolment)})</td>
                         </tr>
                     ]]>
                 </Static>

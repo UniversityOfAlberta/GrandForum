@@ -167,6 +167,7 @@ class ReportItemCallback {
             "getArray" => "getArray",
             "getExtra" => "getExtra",
             "strip_html" => "strip_html",
+            "occurrences" => "occurrences",
             "count" => "count",
             "add" => "add",
             "subtract" => "subtract",
@@ -1125,6 +1126,10 @@ class ReportItemCallback {
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year);
     }
     
+    function occurrences($val1, $val2){
+        return substr_count($val1, $val2);
+    }
+    
     function count($val){
         return count($val);
     }
@@ -1235,15 +1240,19 @@ class ReportItemCallback {
     
     function getExtra($index=null){
         $set = $this->reportItem->extra;
+        $ret = "";
         if($index == null){
-            return str_replace(")", "&#41;", 
+            $ret = str_replace(")", "&#41;", 
                    str_replace("(", "&#40;", $set));
         }
         if(isset($set[$index])){
-            return str_replace(")", "&#41;", 
+            $ret = str_replace(")", "&#41;", 
                    str_replace("(", "&#40;", $set[$index]));
         }
-        return "";
+        if(is_array($ret)){
+            $ret = implode("; ", $ret);
+        }
+        return $ret;
     }
     
     function strip_html($html){

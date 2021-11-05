@@ -103,6 +103,20 @@ EOF;
                         else if(strtolower(@$types[$j]) == "textarea"){
                             $item .= @"\"<td align='$align'><textarea name='{$this->getPostId()}[\" + i + \"][$index]' style='width:{$sizes[$j]}px;min-height:60px;height:100%;'></textarea></td>\" + \n";
                         }
+                        else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
+                            if(!$isVertical){
+                                $align = "left";
+                            }
+                            $item .= @"\"<td align='$align'>";
+                            $matches = array();
+                            preg_match("/^(Checkbox)\((.*)\)$/i", $types[$j], $matches);
+                            $matches = @explode(",", $matches[2]);
+                            foreach($matches as $match){
+                                $match = trim($match);
+                                $item .= "<div><input type='checkbox' name='{$this->getPostId()}[\" + i + \"][$index][]' value='{$match}'> {$match}</div>";
+                            }
+                            $item .= "</td>\" + \n";
+                        }
                         else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                             if(!$isVertical){
                                 $align = "left";
@@ -285,6 +299,25 @@ EOF;
                     }
                     else if(strtolower(@$types[$j]) == "textarea"){
                         $item .= @"<td align='$align'><textarea name='{$this->getPostId()}[$i][$index]' style='width:{$sizes[$j]}px;min-height:65px;height:100%;'>{$value[$index]}</textarea></td>";
+                    }
+                    else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
+                        if(!$isVertical){
+                            $align = "left";
+                        }
+                        $item .= @"<td align='$align'>";
+                        $matches = array();
+                        preg_match("/^(Checkbox)\((.*)\)$/i", $types[$j], $matches);
+                        $matches = @explode(",", $matches[2]);
+                        foreach($matches as $match){
+                            $match = trim($match);
+                            if((is_array(@$value[$index]) && in_array($match, @$value[$index])) || ($match == @$value[$index])){
+                                $item .= "<div><input type='checkbox' name='{$this->getPostId()}[$i][$index][]' value='{$match}' checked> {$match}</div>";
+                            }
+                            else{
+                                $item .= "<div><input type='checkbox' name='{$this->getPostId()}[$i][$index][]' value='{$match}'> {$match}</div>";
+                            }
+                        }
+                        $item .= "</td>";
                     }
                     else if(strstr(strtolower(@$types[$j]), "radio") !== false){
                         if(!$isVertical){
@@ -506,6 +539,9 @@ EOF;
                            strstr(strtolower(@$types[$j]), "radio") !== false){
                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>{$value[$index]}</td>";
                         }
+                        else if(strstr(strtolower(@$types[$j]), "checkbox") !== false){
+                            $item .= @"<td align='center' valign='top' style='padding:0 3px 0 3px; {$size}'>".implode(";", $value[$index])."</td>";
+                        }
                         else if(strtolower(@$types[$j]) == "random"){
                             //$item .= "<td align='right' valign='top' style='display:none; {$size}'>{$value[$index]}</td>";
                         }
@@ -549,6 +585,7 @@ EOF;
         $wgOut->addHTML($item);
         return $item;
     }
+
 }
 
 ?>

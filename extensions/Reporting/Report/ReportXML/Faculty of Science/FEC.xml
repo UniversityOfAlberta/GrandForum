@@ -243,7 +243,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Select(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|||50" multiple="true" addText="Add New" optional="true">
+        <ReportItem id="projectCourses" type="MultiTextReportItem" blobItem="FEC_PROJECT_COURSES" blobType="BLOB_ARRAY" labels="Class Prefix|Number|Title|Type|Term|Enrolment" types="Text|Text|Text|Select(LEC,SEM,LAB)|Checkbox(Summer {$last_year}, Fall {$last_year},Winter {$this_year},Spring {$this_year})|Integer" sizes="100|50|200|||50" multiple="true" addText="Add New" optional="true">
             <![CDATA[
                 <h3>Project Courses <span class='clicktooltip' style='font-weight:normal;font-size:1.25em;' title='This section should be used for project courses, not individually recorded in Beartracks.<br />If you have taught such a course, and it does not appear above, please enter it below. <br />Click &#39;Add New&#39; to add a line for each such course.'>&#9432;</span></h3>
                 {$item}
