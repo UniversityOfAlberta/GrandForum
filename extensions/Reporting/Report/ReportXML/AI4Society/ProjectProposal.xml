@@ -31,9 +31,9 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true">
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
             <![CDATA[
-                <h2>Scientific Rationale</h2>
+                <h2>Overview - Scientific Rationale</h2>
                 <p>Discuss the scientific rationale for the project, starting with a very high-level description. What is the longer-term research agenda that forms the context for this annual proposal? Why is this a valuable research endeavour? What are the medium to long-term goals (2-5 years) that might be achieved if this research agenda were successful?.</p>
                 {$item}
             ]]>
@@ -62,7 +62,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true">
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1500">
             <![CDATA[
                 <h2>Proposal</h2>
                 <p>Briefly outline the proposed research over the next year.  Where possible connect with your long-term scientific rationale. This overview should then be broken down into smaller concrete chunks of research / work in the subsection below.</p>

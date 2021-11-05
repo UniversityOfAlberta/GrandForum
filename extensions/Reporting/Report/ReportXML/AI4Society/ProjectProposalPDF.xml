@@ -29,9 +29,9 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true">
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
             <![CDATA[
-                <h2>Scientific Rationale</h2>
+                <h2>Overview - Scientific Rationale</h2>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -58,7 +58,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true">
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1500">
             <![CDATA[
                 <h2>Proposal</h2>
                 {$item}<br />
