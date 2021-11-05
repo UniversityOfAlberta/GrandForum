@@ -39,10 +39,25 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_team" type="MultiText"  class="wikitable" blobItem="PROJECT_TEAM" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
             <![CDATA[
                 <h2>Team</h2>
                 <p>Has to be interdisciplinary</p>
+                <h3>UofA Faculty</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_external" type="MultiText"  class="wikitable" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+            <![CDATA[
+                <h3>External Faculty</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_trainees" type="MultiText"  class="wikitable" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+            <![CDATA[
+                <h3>Trainees</h3>
                 {$item}
             ]]>
         </ReportItem>
