@@ -72,7 +72,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true">
+        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true" limit="250">
             <![CDATA[
                 <h2>Success Criteria / Outcomes</h2>
                 {$item}

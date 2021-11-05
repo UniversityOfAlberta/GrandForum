@@ -107,7 +107,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true">
+        <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true" limit="250">
             <![CDATA[
                 <h2>Success Criteria / Outcomes</h2>
                 <p>Describe how you will judge the success of this project in the coming year. In addition, give a summary of the targeted outcomes (e.g., papers, code releases, prototypes, student training, accomplishments, etc.). This should outline what you hope to include in your progress report at the end of the period.</p>
