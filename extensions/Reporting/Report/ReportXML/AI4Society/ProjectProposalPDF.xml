@@ -65,7 +65,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description|Contributors" types="Text|Textarea|Textarea">
+        <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description|Contributors" types="Text|Textarea|Text">
             <![CDATA[
                 <h2>Project Milestones</h2>
                 {$item}
