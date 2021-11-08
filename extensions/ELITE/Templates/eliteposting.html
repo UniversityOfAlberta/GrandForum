@@ -10,15 +10,15 @@
     <% } %>
     <table>
         <tr>
-            <td class="label">Region:</td>
+            <td class="label"><span class='en'>Region</span><span class='fr'>Région</span>:</td>
             <td class="value"><%= extra.region %></td>
         </tr>
         <tr>
-            <td class="label">Position Title:</td>
+            <td class="label"><span class='en'>Position Title</span><span class='fr'>Titre de la position</span>:</td>
             <td class="value"><%= title %></td>
         </tr>
         <tr>
-            <td class="label">Company Name:</td>
+            <td class="label"><span class='en'>Company Name</span><span class='fr'>Nom de la compagnie</span>:</td>
             <td class="value">
                 <% if(articleLink != ""){ %>
                     <a target="_blank" href="<%= articleLink %>"><%= extra.companyName %></a>
@@ -29,49 +29,49 @@
         </tr>
         <% if(extra.companyProfile != ""){ %>
             <tr>
-                <td class="label">Company Profile:</td>
+                <td class="label"><span class='en'>Company Profile</span><span class='fr'>Profil de la compagnie</span>:</td>
                 <td class="value"><%= extra.companyProfile %></td>
             </tr>
         <% } %>
         <% if(extra.reportsTo != ""){ %>
             <tr>
-                <td class="label">Reports to:</td>
+                <td class="label"><span class='en'>Reports to</span><span class='fr'>Rapporte à</span>:</td>
                 <td class="value"><%= extra.reportsTo %></td>
             </tr>
         <% } %>
         <% if(extra.basedAt != ""){ %>
             <tr>
-                <td class="label">Based in:</td>
+                <td class="label"><span class='en'>Based in</span><span class='fr'>Basé à</span>:</td>
                 <td class="value"><%= extra.basedAt %></td>
             </tr>
         <% } %>
         <% if(extra.contact != ""){ %>
             <tr>
-                <td class="label">Contact Person:</td>
+                <td class="label"><span class='en'>Contact Person</span><span class='fr'>Personne contact</span>:</td>
                 <td class="value"><%= extra.contact %></td>
             </tr>
         <% } %>
         <% if(extra.email != ""){ %>
             <tr>
-                <td class="label">Email Address:</td>
+                <td class="label"><span class='en'>Email Address</span><span class='fr'>Adresse courriel</span>:</td>
                 <td class="value"><a href="mailto:<%= extra.email %>"><%= extra.email %></a></td>
             </tr>
         <% } %>
         <% if(extra.phone != ""){ %>
             <tr>
-                <td class="label">Phone Number:</td>
+                <td class="label"><span class='en'>Phone Number</span><span class='fr'>Numéro de téléphone</span>:</td>
                 <td class="value"><%= extra.phone %></td>
             </tr>
         <% } %>
         <% if(summary != ""){ %>
             <tr>
-                <td class="label">Project Description:</td>
+                <td class="label"><span class='en'>Project Description</span><span class='fr'>Description du projet</span>:</td>
                 <td class="value"><%= summary %></td>
             </tr>
         <% } %>
         <% if(extra.training != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Specialized Training and Skills Development:</td>
+                <td class="label left-align" colspan="2"><span class='en'>Specialized Training and Skills Development</span><span class='fr'>Formation spécialisée et développement des compétences</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.training %></td>
@@ -79,7 +79,7 @@
         <% } %>
         <% if(extra.responsibilities != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Specific Responsibilities Include:</td>
+                <td class="label left-align" colspan="2"><span class='en'>Specific Responsibilities Include</span><span class='fr'>Les responsabilités spécifiques comprendront</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.responsibilities %></td>
@@ -87,7 +87,7 @@
         <% } %>
         <% if(extra.qualifications != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Required Qualifications:</td>
+                <td class="label left-align" colspan="2"><span class='en'>Required Qualifications</span><span class='fr'>Qualifications obligatoires</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.qualifications %></td>
@@ -95,7 +95,7 @@
         <% } %>
         <% if(extra.skills != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Desired Qualifications:</td>
+                <td class="label left-align" colspan="2"><span class='en'>Desired Qualifications</span><span class='fr'>Qualifications souhaitées</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.skills %></td>
@@ -103,7 +103,7 @@
         <% } %>
         <% if(extra.level != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Desired Academic Level:</td>
+                <td class="label left-align" colspan="2"><span class='en'>Desired Academic Level</span><span class='fr'>Niveau d’étude souhaité</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.level %></td>
@@ -111,7 +111,7 @@
         <% } %>
         <% if(extra.positions != ""){ %>
             <tr>
-                <td class="label left-align" colspan="2">Number of Positions Available:</td>
+                <td class="label left-align" colspan="2"><span class='en'># Positions Available</span><span class='fr'># De positions disponibles</span>:</td>
             </tr>
             <tr>
                 <td class="value" colspan="2"><%= extra.positions %></td>
