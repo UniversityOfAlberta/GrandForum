@@ -173,6 +173,10 @@ body {
     background-color: rgba(0,0,0,0.10);
 }
 
+.top-nav-mid span {
+    text-decoration: none !important;
+}
+
 /* Random HTML Styles */
 input::-ms-clear {
     width : 0;

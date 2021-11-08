@@ -56,8 +56,8 @@ class ElitePostingPage extends BackbonePage {
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["ELITEAdmin"] = TabUtils::createTab("Admin Panel");
-        $tabs["ELITEHost"] = TabUtils::createTab("ELITE Internship Host Panel");
-        $tabs["ELITEPhd"] = TabUtils::createTab("PhD Fellowship Supervisor Panel");
+        $tabs["ELITEHost"] = TabUtils::createTab("<span class='en'>ELITE Internship Host Panel</span><span class='fr'>Panneau pour les responsables de stage ELITE</span>");
+        $tabs["ELITEPhd"] = TabUtils::createTab("<span class='en'>PhD Fellowship Supervisor Panel</span><span class='fr'>Panneau pour les superviseur-e-s des candidat-e-s de bourses doctorales</span>");
         return true;
     }
     
