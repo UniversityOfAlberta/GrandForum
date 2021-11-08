@@ -1,88 +1,98 @@
 <div>
-    <p>All items with a <span style="color:red;">*</span> require mandatory responses</p>
+    <p>
+        <span class='en'>All items with a <span style="color:red;">*</span> require mandatory responses</span>
+        <span class='fr'>Tous les éléments ayant un <span style="color:red;">*</span> nécessite obligatoirement une réponse</span>
+    </p>
     <table>
         <tr>
-            <td class="label required" style="width: 1%;">Region:</td>
+            <td class="label required" style="width: 1%;"><span class='en'>Region</span><span class='fr'>Région</span>:</td>
             <td class="value"><%= HTML.Select(this, 'extra.region', {options: ["Edmonton", "Ottawa"]}) %></td>
         </tr>
         <tr>
-            <td class="label required" style="width: 1%;">Position Title:</td>
+            <td class="label required" style="width: 1%;"><span class='en'>Position Title</span><span class='fr'>Titre de la position</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'title', {style: 'width: 675px;'}) %></td>
         </tr>
         <tr>
-            <td class="label required">Company Name:</td>
+            <td class="label required"><span class='en'>Company Name</span><span class='fr'>Nom de la compagnie</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.companyName', {size: 50}) %></td>
         </tr>
         <tr>
-            <td class="label">Company Website:</td>
+            <td class="label"><span class='en'>Company Website</span><span class='fr'>Site web de la compagnie</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'articleLink', {size: 50}) %></td>
         </tr>
         <tr>
-            <td class="label required">Company Profile:</td>
+            <td class="label required"><span class='en'>Company Profile</span><span class='fr'>Profil de la compagnie</span>:</td>
             <td clas="value"><%= HTML.TextArea(this, 'extra.companyProfile', {style: 'height: 150px; width:685px;'}) %></td>
         </tr>
         <tr>
-            <td class="label required">Reports to:</td>
+            <td class="label required"><span class='en'>Reports to</span><span class='fr'>Rapporte à</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.reportsTo', {size: 50}) %></td>
         </tr>
         <tr>
-            <td class="label required">Based in:</td>
+            <td class="label required"><span class='en'>Based in</span><span class='fr'>Basé à</span>:</td>
             <td class="value"><%= HTML.Select(this, 'extra.basedAt', {options: _.pluck(cities, 'name')}) %></td>
         </tr>
         <tr>
-            <td class="label required">Contact Person:</td>
+            <td class="label required"><span class='en'>Contact Person</span><span class='fr'>Personne contact</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.contact', {size: 20}) %></td>
         </tr>
         <tr>
-            <td class="label required">Email Address:</td>
+            <td class="label required"><span class='en'>Email Address</span><span class='fr'>Adresse courriel</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.email', {size: 20}) %></td>
         </tr>
         <tr>
-            <td class="label required">Phone Number:</td>
+            <td class="label required"><span class='en'>Phone Number</span><span class='fr'>Numéro de téléphone</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.phone', {size: 20}) %></td>
         </tr>
         <tr>
-            <td class="label required">Project Description:</td>
+            <td class="label required"><span class='en'>Project Description</span><span class='fr'>Description du projet</span>:</td>
             <td class="value"><%= HTML.TextArea(this, 'summary', {style: 'height: 150px; width:685px;'}) %></td>
         </tr>
         <tr>
-            <td class="label left-align required" colspan="2">Specialized Training and Skills Development:</td>
+            <td class="label left-align required" colspan="2"><span class='en'>Specialized Training and Skills Development</span><span class='fr'>Formation spécialisée et développement des compétences</span>:</td>
         </tr>
         <tr>
             <td></td>
             <td class="value"><%= HTML.TextArea(this, 'extra.training', {style: 'height: 200px; width:685px;'}) %></td>
         </tr>
         <tr>
-            <td class="label left-align required" colspan="2">Specific Responsibilities Include:</td>
+            <td class="label left-align required" colspan="2"><span class='en'>Specific Responsibilities Include</span><span class='fr'>Les responsabilités spécifiques comprendront</span>:</td>
         </tr>
         <tr>
             <td></td>
             <td class="value"><%= HTML.TextArea(this, 'extra.responsibilities', {style: 'height: 200px; width:685px;'}) %><br /></td>
         </tr>
         <tr>
-            <td class="label required">Required Qualifications:</td>
+            <td class="label required"><span class='en'>Required Qualifications</span><span class='fr'>Qualifications obligatoires</span>:</td>
             <td class="value"><%= HTML.TextArea(this, 'extra.qualifications', {style: 'height: 200px; width:685px;'}) %><br /></td>
         </tr>
         <tr>
-            <td class="label">Desired Qualifications:</td>
+            <td class="label"><span class='en'>Desired Qualifications</span><span class='fr'>Qualifications souhaitées</span>:</td>
             <td class="value"><%= HTML.TextArea(this, 'extra.skills', {style: 'height: 200px; width:685px;'}) %><br /></td>
         </tr>
         <tr>
-            <td class="label required" title="Desired Academic Level of Intern">Desired Academic Level:</td>
+            <td class="label required" title="Desired Academic Level of Intern"><span class='en'>Desired Academic Level</span><span class='fr'>Niveau d’étude souhaité</span>:</td>
             <td class="value"><%= HTML.Select(this, 'extra.level', {options: ["Any Level","High School","Post-secondary"] }) %></td>
         </tr>
         <tr>
-            <td class="label required" title="Number of Positions Available"># Positions Available:</td>
+            <td class="label required" title="Number of Positions Available"><span class='en'># Positions Available</span><span class='fr'># De positions disponibles</span>:</td>
             <td class="value"><%= HTML.TextBox(this, 'extra.positions', {size: 4}) %></td>
         </tr>
     </table>
 </div>
-<div style="width:150px;display:inline-block;">
+<div style="display:inline-block;">
     <button id="savePosting">
-        Save/Submit
-    </button><span class="throbber" style="display:none;"></span>
+        <span class='en'>Save/Submit</span>
+        <span class='fr'>Sauvegarder/Soumettre</span>
+    </button>
 </div>
-<div style="width:120px;display:inline-block;">
-    <button id="cancel">Cancel</button>
+<div style="width:25px;display:inline-block;">
+    <span class="throbber" style="display:none;"></span>
 </div>
-<p>Click the "Save/Submit" button to save and submit the project. You may return at any time before the deadline to edit your submitted project.</p>
+<div style="display:inline-block;">
+    <button id="cancel"><span class='en'>Cancel</span><span class='fr'>Annuler</span></button>
+</div>
+<p>
+    <span class='en'>Click the "Save/Submit" button to save and submit the project. You may return at any time before the deadline to edit your submitted project.</span>
+    <span class='fr'>Cliquez sur le bouton "Sauvegarder/Soumettre" pour sauvegarder et soumettre le projet. Vous pouvez revenir à tout moment avant la date limite pour modifier votre projet que vous avez soumis.</span>
+</p>

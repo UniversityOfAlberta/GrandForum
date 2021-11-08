@@ -67,7 +67,7 @@ class ElitePostingPage extends BackbonePage {
         if($person->isRole(EXTERNAL)){
             // Host
             $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'intern' || $_GET['page'] == "")) ? "selected" : false;
-            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("ELITE Internship Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=intern#/intern", $selected);
+            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>ELITE Internship Host Panel</span><span class='fr'>Panneau pour les responsables de stage ELITE</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=intern#/intern", $selected);
         }
         if($person->isRole(EXTERNAL)){
             // PhD Supervisor

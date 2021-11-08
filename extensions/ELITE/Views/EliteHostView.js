@@ -7,7 +7,12 @@ EliteHostView = PostingsView.extend({
             this.type = options.type;
         }
         if(this.type == "Intern"){
-            main.set('title', 'ELITE Internship Host Panel');
+            if(wgLang == 'en'){
+                main.set('title', 'ELITE Internship Host Panel');
+            }
+            else{
+                main.set('title', 'Panneau pour les responsables de stage ELITE');
+            }
             this.template = _.template($('#elite_host_template').html());
         }
         else if (this.type == "PhD"){

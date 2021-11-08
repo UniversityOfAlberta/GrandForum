@@ -524,6 +524,10 @@ input.custom-combobox-input {
     background: #fff url("../icons/gray_light/pen_12x12.png") no-repeat scroll right 4px center !important;
 }
 
+a.button span {
+    text-decoration: none !important;
+}
+
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;

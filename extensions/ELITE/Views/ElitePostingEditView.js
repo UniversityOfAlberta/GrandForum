@@ -91,7 +91,12 @@ ElitePostingEditView = PostingEditView.extend({
     
     postRender: function(){
         if(this.model.isNew()){
-            main.set('title', 'New Project Proposal');
+            if(wgLang == 'en'){
+                main.set('title', 'New Project Proposal');
+            }
+            else{
+                main.set('title', 'Nouvelle proposition de projet');
+            }
         }
         if(this.model.get('visibility') == 'Requested More Info'){
             this.model.set('visibility', 'Submitted More Info');
