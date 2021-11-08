@@ -824,7 +824,7 @@ class CavendishTemplate extends QuickTemplate {
 	                  </a>";
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_8x16.png' />&nbsp;&nbsp;Help/FAQ</a>";
+            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_8x16.png' />&nbsp;&nbsp;<span class='en'>Help/FAQ</span><span class='fr'>Aide/FAQ</span></a>";
             if(count($config->getValue("socialLinks")) > 0){
 	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_16x16.png' />&nbsp;▼</a>";
 	        }
@@ -1006,9 +1006,9 @@ class CavendishTemplate extends QuickTemplate {
                     echo "&nbsp;&nbsp;<a target='_blank' href='{$config->getValue('networkSite')}'>{$config->getValue('networkName')} Website</a>&nbsp;&nbsp;";
                 }
                 if(!isExtensionEnabled("ContactUs")){
-                    echo "&nbsp;&nbsp;<a href='mailto:{$config->getValue('supportEmail')}'>Support</a>&nbsp;&nbsp;";
+                    echo "&nbsp;&nbsp;<a href='mailto:{$config->getValue('supportEmail')}'><span class='en'>Support</span><span class='fr'>Soutien</span></a>&nbsp;&nbsp;";
                 }
-                echo "    <p style='text-align:left;'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</p>
+                echo "    <p style='text-align:left;'><span class='en'>The following NCEs have contributed to the development of the Forum: <br />GRAND, AGE-WELL, GlycoNet, CFN</span><span class='fr'>Les RCE suivants ont contribué au développement du Forum : GRAND, AGE-WELL, GlycoNet, CFN</span></p>
                       </div>";
             ?>
 		</div><!-- end of SIDE div -->
@@ -1290,7 +1290,7 @@ If you have forgotten your password please enter your login and ID and request a
 		    $token = LoginForm::getLoginToken();
 		    $name = $wgRequest->getText('wpName');
 		    $name = sanitizeInput($name);
-		    echo "<span class='highlights-text pBodyLogin'>Login</span>
+		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>
 			<ul class='pBody pBodyLogin'>";
 		    echo <<< EOF
 <form style='position:relative;left:10px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
@@ -1300,16 +1300,24 @@ If you have forgotten your password please enter your login and ID and request a
         </div>
         $message
         <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpName" value="$name" id="wpName1" tabindex="1" size='20' placeholder='Username (First.Last)' /><br />
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpName" value="$name" id="wpName1" placeholder='Username (First.Last)' tabindex="1" size='20' /><br />
         <input type='password' class='loginPassword dark' 
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpPassword" id="wpPassword1" tabindex="2" size='20' placeholder='Password' /><br />
+               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpPassword" id="wpPassword1" placeholder='Password' tabindex="2" size='20' /><br />
         <input type='checkbox' name="wpRemember"
-               tabindex="4" value="1" id="wpRemember" /> <label for="wpRemember">Remember my login on this computer</label><br />
+               tabindex="4" value="1" id="wpRemember" /> <label class='en' for="wpRemember">Remember my login on this computer</label><label class='fr' for="wpRemember">Se souvenir de mes informations de connexion sur cet ordinateur</label><br />
         <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:10px;" value="Log in" />
         <input type="hidden" name="wpLoginToken" value="$token" />
     </div>
 </form>
 $emailPassword
+<script type='text/javascript'>
+    if(wgLang == 'fr'){
+        $('#wpName1').attr('placeholder', 'Mot d’utilisateur');
+        $('#wpPassword1').attr('placeholder', 'Mot de passe');
+        $('#wpLoginattempt').attr('value', 'Connexion');
+        $('#wpMailmypassword').attr('value', 'E-mail nouveau mot de passe').css('font-size', '0.75em');
+    }
+</script>
 </li></ul>
 EOF;
             if(isExtensionEnabled("Shibboleth")){
