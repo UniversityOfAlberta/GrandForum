@@ -77,7 +77,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
         
             $this->html .= "</table>";
             
-            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
