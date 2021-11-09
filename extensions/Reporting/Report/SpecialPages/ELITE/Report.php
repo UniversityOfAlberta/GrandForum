@@ -20,8 +20,8 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Intern"] = TabUtils::createTab("ELITE Intern Application");
-        $tabs["PhD"] = TabUtils::createTab("PhD Fellowship Application");
+        $tabs["Intern"] = TabUtils::createTab("<span class='en'>ELITE Intern Application</span><span class='fr'>Formulaire de demande pour les stagiaires ELITE</span>");
+        $tabs["PhD"] = TabUtils::createTab("<span class='en'>PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>");
         return true;
     }
     
@@ -31,10 +31,10 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isRole(HQP)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Application")) ? "selected" : false;
-            $tabs["Intern"]['subtabs'][] = TabUtils::createSubTab("ELITE Intern Application", "{$url}Application", $selected);
+            $tabs["Intern"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>ELITE Intern Application</span><span class='fr'>Formulaire de demande pour les stagiaires ELITE</span>", "{$url}Application", $selected);
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PhDApplication")) ? "selected" : false;
-            $tabs["PhD"]['subtabs'][] = TabUtils::createSubTab("PhD Fellowship Application", "{$url}PhDApplication", $selected);
+            $tabs["PhD"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>", "{$url}PhDApplication", $selected);
         }
         return true;
     }

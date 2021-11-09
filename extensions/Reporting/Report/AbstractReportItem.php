@@ -261,7 +261,7 @@ abstract class AbstractReportItem {
             $postId = @$parent->getPostId()."_person{$this->personId}_project{$this->projectId}_milestone{$this->milestoneId}_extra{$extraId}".$postId;
         }
         else{
-            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", $parent->name))).$postId;
+            $postId = str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($parent->name)))).$postId;
         }
         $postId = str_replace("-", "", $postId);
         $postId = str_replace(" ", "", $postId);

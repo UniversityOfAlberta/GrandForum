@@ -16,7 +16,12 @@ EliteHostView = PostingsView.extend({
             this.template = _.template($('#elite_host_template').html());
         }
         else if (this.type == "PhD"){
-            main.set('title', 'PhD Fellowship Supervisor Panel');
+            if(wgLang == 'en'){
+                main.set('title', 'PhD Fellowship Supervisor Panel');
+            }
+            else{
+                main.set('title', 'Panneau pour les superviseur-e-s des candidat-e-s de bourses doctorales');
+            }
             this.template = _.template($('#elite_phd_template').html());
         }
         Backbone.Subviews.add(this);

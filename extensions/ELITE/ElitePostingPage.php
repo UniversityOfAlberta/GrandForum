@@ -72,7 +72,7 @@ class ElitePostingPage extends BackbonePage {
         if($person->isRole(EXTERNAL)){
             // PhD Supervisor
             $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'phd' || $_GET['page'] == "")) ? "selected" : false;
-            $tabs["ELITEPhd"]['subtabs'][] = TabUtils::createSubTab("PhD Fellowship Supervisor Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=phd#/phd", $selected);
+            $tabs["ELITEPhd"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>PhD Fellowship Supervisor Panel</span><span class='fr'>Panneau pour les superviseur-e-s des candidat-e-s de bourses doctorales</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=phd#/phd", $selected);
         }
         if($person->isRole(ADMIN)){
             // Admin

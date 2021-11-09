@@ -95,7 +95,7 @@ class UploadReportItem extends AbstractReportItem {
     }
     
     function fileUploadForm(){
-        global $wgServer, $wgScriptPath;
+        global $wgServer, $wgScriptPath, $wgLang;
         $me = Person::newFromWgUser();
         $projectGet = "";
         if(isset($_GET['project'])){
@@ -143,8 +143,16 @@ class UploadReportItem extends AbstractReportItem {
                             box-shadow: none;
                             border-width:0;
                             padding:0;
-                        }
+                        }";
                         
+                        if($wgLang->getCode() == "en"){
+		                    echo ".fr { display: none !important; }";
+		                }
+		                else if($wgLang->getCode() == "fr"){
+		                    echo ".en { display: none !important; }";
+		                }
+                        
+                        echo "
                         table {
                             line-height: 1.5em;
                             font-size: 9pt;
@@ -168,16 +176,16 @@ class UploadReportItem extends AbstractReportItem {
         }
         echo "          <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report->xmlName}&section=".urlencode($section->name)."&fileUploadForm={$this->getPostId()}{$projectGet}{$year}{$candidate}{$id}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='file' accept='{$this->getAttr('mimeType')}' />
-                            <input type='submit' name='upload' value='Upload' /> <b>Max File Size:</b> {$this->getAttr('fileSize', 1)} MB<br />
-                            <small><i><b>NOTE:</b> Uploading a new file replaces the old one</i></small>
+                            <button type='submit' name='upload' value='Upload'><span class='en'>Upload</span><span class='fr'>Télécharger</span></button> <b><span class='en'>Max File Size</span><span class='fr'>Taille maximale du fichier</span>:</b> {$this->getAttr('fileSize', 1)} MB<br />
+                            <small><i><b><span class='en'>NOTE</span><span class='fr'>NB</span>:</b> <span class='en'>Uploading a new file replaces the old one</span><span class='fr'>Téléchargé un nouveau fichier remplace l’ancien</span></i></small>
                         </form>";
         $data = $this->getBlobValue();
         if($data !== null && $data !== ""){
             $json = json_decode($data);
             $name = $json->name;
-            $downloadText = ($me->isLoggedIn()) ? "<a href='{$this->getDownloadLink()}'>Download <b>{$name}</b></a>&nbsp;" : "<b>File Uploaded</b>&nbsp;";
+            $downloadText = ($me->isLoggedIn()) ? "<a href='{$this->getDownloadLink()}'><span class='en'>Download</span><span class='fr'>Télécharger</span> <b>{$name}</b></a>&nbsp;" : "<b>File Uploaded</b>&nbsp;";
             echo "<br />{$downloadText}
-                        <button id='delete' type='button' class='button'>Delete</button>";
+                        <button id='delete' type='button' class='button'><span class='en'>Delete</span><span class='fr'>Supprimer</span></button>";
         }
         else{
             if($this->getAttr('mimeType') == "application/pdf"){
