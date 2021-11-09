@@ -4,7 +4,7 @@ class EditableReportSection extends AbstractReportSection {
     
     var $autosave;
     var $reportCharLimits = true;
-    var $saveText = "Save";
+    var $saveText = "<span class='en'>Save</span><span class='fr'>Sauvegarder</span>";
     
     // Creates a new EditableReportSection()
     function EditableReportSection(){

@@ -417,10 +417,13 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
+        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No"
+                                        labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
+                                                &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Non&lt;/span>" 
+                                        encrypt="true">
             <![CDATA[
-                <h2 class="required">Acknowledgment and Agreement</h2>
-                <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
+                <h2 class="required"><span class='en'>Acknowledgment and Agreement</span><span class='fr'>Engagement</span></h2>
+                <p><span class='en'>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</span><span class='fr'>Je m’engage à faire deux présentations orales ou par affiches lors des ateliers du Programme si je suis admis-e au Programme ELITE pour la jeunesse noire.</span></p>
                 {$item}
                 <div id="acknowledgmentWarning" class="warning" style="display:none;">You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</div>
                 <script type="text/javascript">
@@ -438,8 +441,8 @@
         </ReportItem>
         <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
             <![CDATA[
-                <h2>Comments</h2>
-                <p>Please provide any comments that you would like to share with the ELITE Program and the Review Committee.</p>
+                <h2><span class='en'>Comments</span><span class='fr'>Commentaires</span></h2>
+                <p><span class='en'>Please provide any comments that you would like to share with the ELITE Program and the Review Committee.</span><span class='fr'>Veuillez donner des commentaires que vous voulez partager avec le Programme ELITE et le Comité de révision.</span></p>
                 {$item}
             ]]>
         </ReportItem>
