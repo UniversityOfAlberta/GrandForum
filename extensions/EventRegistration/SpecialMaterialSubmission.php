@@ -63,7 +63,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         $defaultEvent = "";
         $eventOptions = array();
         $event = EventPosting::newFromId(@$_GET['event']);
-        if($event->getId() != 0 && date('Y-m-d') >= $event->getStartDate()){
+        if($event->getId() != 0 && date('Y-m-d', time() - 3600*24*30) >= $event->getStartDate()){
             $wgOut->addHTML("This event has already past");
             return;
         }
@@ -74,7 +74,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         $events = EventPosting::getAllPostings();
         foreach($events as $event){
-            if($event->startDate >= date('Y-m-d') && $event->getVisibility() == "Publish" && $event->isMaterialSubmissionEnabled()){
+            if($event->startDate >= date('Y-m-d', time() - 3600*24*30) && $event->getVisibility() == "Publish" && $event->isRegistrationEnabled()){
                 $eventOptions[$event->id] = $event->title;
             }
         }
