@@ -72,7 +72,9 @@
         </tr>
         <tr>
             <td class="label required" title="Desired Academic Level of Intern"><span class='en'>Desired Academic Level</span><span class='fr'>Niveau d’étude souhaité</span>:</td>
-            <td class="value"><%= HTML.Select(this, 'extra.level', {options: ["Any Level","High School","Post-secondary"] }) %></td>
+            <td class="value"><%= HTML.Select(this, 'extra.level', {options: [{option: showLanguage(wgLang, "Any Level",      "N'importe quel niveau"),    value: "Any Level"},
+                                                                              {option: showLanguage(wgLang, "High School",    "École secondaire (lycée)"), value: "High School"},
+                                                                              {option: showLanguage(wgLang, "Post-secondary", "École supérieure"),         value: "Post-secondary"}] }) %></td>
         </tr>
         <tr>
             <td class="label required" title="Number of Positions Available"><span class='en'># Positions Available</span><span class='fr'># De positions disponibles</span>:</td>

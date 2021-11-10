@@ -5,6 +5,12 @@ class SelectReportItem extends AbstractReportItem {
 	function render(){
 		global $wgOut;
         $options = $this->parseOptions();
+        if($this->getAttr('labels', '') == ""){
+            $labels = array();
+        }
+        else {
+            $labels = explode("|", $this->getAttr('labels', ''));
+        }
         $value = $this->getBlobValue();
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "";
         $inline = (strtolower($this->getAttr("inline", "false")) == "true");
@@ -16,7 +22,12 @@ class SelectReportItem extends AbstractReportItem {
 		        $selected = "selected";
 		    }
 		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<option value='{$option}' $selected >{$option}</option>";
+		    if(isset($labels[$key])){
+		        $items[] = "<option value='{$option}' $selected >{$labels[$key]}</option>";
+		    }
+		    else {
+		        $items[] = "<option value='{$option}' $selected >{$option}</option>";
+		    }
 		}
 
         $output = "<select style='text-overflow:ellipsis;width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";

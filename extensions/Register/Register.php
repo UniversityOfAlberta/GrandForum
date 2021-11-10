@@ -82,34 +82,39 @@ class Register extends SpecialPage{
         $formContainer = new FormContainer("form_container");
         $formTable = new FormTable("form_table");
         
-        $firstNameLabel = new Label("first_name_label", "First Name", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $firstNameLabel = new Label("first_name_label", "<span class='en'>First Name</span><span class='fr'>Prénom</span>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
-        $lastNameLabel = new Label("last_name_label", "Last Name", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
+        $lastNameLabel = new Label("last_name_label", "<span class='en'>Last Name</span><span class='fr'>Nom</span>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
         $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
         $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
-        $emailLabel = new Label("email_label", "Email", "The email address of the user", VALIDATE_NOT_NULL);
+        $emailLabel = new Label("email_label", "<span class='en'>Email</span><span class='fr'>Courriel</span>", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
 
-        $typeLabel = new Label("type_label", "Please select your role", "The role of user", VALIDATE_NOT_NULL);
-        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "Candidate (ELITE Program Intern, PhD Fellowship Candidate)", EXTERNAL => "Host (ELITE Program Internship Host, PhD Fellowship Supervisor)"), VALIDATE_NOT_NULL);
+        $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
+        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
+                                                                                   <span class='fr'>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</span>", 
+                                                                           EXTERNAL => "<span class='en'>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</span>
+                                                                                        <span class='fr'>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</span>"), VALIDATE_NOT_NULL);
         $typeRow = new FormTableRow("type_row");
         $typeRow->append($typeLabel)->append($typeField);
         
-        $captchaLabel = new Label("captcha_label", "Enter Code", "Enter the code you see in the image", VALIDATE_NOT_NULL);
+        $captchaLabel = new Label("captcha_label", "<span class='en'>Enter Code</span><span class='fr'>Entrez le code</span>", "Enter the code you see in the image", VALIDATE_NOT_NULL);
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
         $captchaRow = new FormTableRow("captcha_row");
         $captchaRow->append($captchaLabel)->append($captchaField);
         
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
+        $submitField->buttonText = "<span class='en'>Submit Request</span>
+                                    <span class='fr'>Soumettre la demande</span>";
         $submitRow = new FormTableRow("submit_row");
         $submitRow->append($submitCell)->append($submitField);
         
@@ -127,7 +132,7 @@ class Register extends SpecialPage{
     }
     
      function generateFormHTML($wgOut){
-        global $wgServer, $wgScriptPath, $wgRoles, $config;
+        global $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang;
         $user = Person::newFromWgUser();
         if($config->getValue('networkName') == "ADA" || $config->getValue('networkName') == "CFN"){
             $wgOut->setPageTitle("Member Registration");
@@ -143,8 +148,16 @@ class Register extends SpecialPage{
             Applicants may register using their institutional email address only. For permission to use a non .ca email address, please contact <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == 'ELITE'){
-            $wgOut->setPageTitle("Member Registration");
-            $wgOut->addHTML("Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+            if($wgLang->getCode() == 'en'){
+                $wgOut->setPageTitle("Member Registration");
+            }
+            else{
+                $wgOut->setPageTitle("Inscription des membres");
+            }
+            $wgOut->addHTML("<span class='en'>Your registration with {$config->getValue('networkName')} Program Application Portal will grant you access. You will receive a registration email within a few minutes after submission of your information. If you do not receive the registration email in your main inbox, please check your spam or junk mail folder. If you did not receive the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.</span>
+                            <span class='fr'>
+                                Votre inscription au portail du formulaire de demande pour le Programme ELITE vous donnera accès au portail. Vous recevrez un courriel d'inscription quelques minutes après la soumission de vos informations. Si vous ne recevez pas le courriel d'inscription dans votre boîte de réception principale, veuillez vérifier votre dossier de courriels indésirables. Si vous n'avez pas reçu le courriel, veuillez contacter <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
+                            </span><br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");

@@ -81,7 +81,17 @@
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Gender</span><span class='fr'>Genre</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td class="value" colspan="3">{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_gender] option[value='Male']").text('Homme');
+                                $("select[name=ApplicationDemande_gender] option[value='Female']").text('Femme');
+                                $("select[name=ApplicationDemande_gender] option[value='Non-binary']").text('Non binaire');
+                                $("select[name=ApplicationDemande_gender] option[value='Other']").text('Autre');
+                                $("select[name=ApplicationDemande_gender] option[value='I prefer not to say']").text('Je préfère ne pas dire');
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -109,20 +119,26 @@
                         <div style="position: absolute; margin-top: -28px; margin-left: 24px;">
                             {$item}
                             <script type='text/javascript'>
-                                if(wgLang == 'fr'){
-                                    $('[name=ApplicationDemande_ethnic_other]').attr('placeholder', 'Autre...');
-                                }
+                                $('[name=ApplicationDemande_ethnic_other]').attr('placeholder', showLanguage(wgLang, "Other...", "Autre..."));
                             </script>
                         </div>
                     </td>
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English" encrypt="true">
+        <ReportItem id="language" type="Select" blobItem="LANGUAGE" options="French|English|Both" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Official Languages</span><span class='fr'>Langues officielles</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td class="value" colspan="3">{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_language] option[value='French']").text('Français');
+                                $("select[name=ApplicationDemande_language] option[value='English']").text('Anglais');
+                                $("select[name=ApplicationDemande_language] option[value='Both']").text('Les deux');
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -135,11 +151,20 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High-school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
+        <ReportItem id="education" type="Select" blobItem="EDUCATION" options="High school|Post-secondary|Transitioning from High School to Post secondary|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Education</span><span class='fr'>Éducation</span>:</td>
-                    <td class="value" colspan="3">{$item}</td>
+                    <td class="value" colspan="3">{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_education] option[value='High school']").text('École secondaire (lycée)');
+                                $("select[name=ApplicationDemande_education] option[value='Post-secondary']").text('École supérieure');
+                                $("select[name=ApplicationDemande_education] option[value='Transitioning from High School to Post secondary']").text('Transition du secondaire au postsecondaire');
+                                $("select[name=ApplicationDemande_education] option[value='Other']").text('Autre');
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -147,7 +172,16 @@
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Enrollment in Fall</span><span class='fr'>Inscription en automne</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à temps plein dans un établissement d’enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d’automne?</span>{$item}</td>
+                    <td class="value" colspan="3"><span class='en'>Will you be enrolled in full-time studies at an academic institution (high school, college/vocational school, or university) in the Fall term?</span><span class='fr'>Serez-vous inscrit-e à temps plein dans un établissement d’enseignement (école secondaire, collège/école vocationnelle, ou l’université) lors de la session d’automne?</span>{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_enrollment] option[value='High School']").text('École secondaire');
+                                $("select[name=ApplicationDemande_enrollment] option[value='College/Vocational School']").text('Collège/école vocationnelle');
+                                $("select[name=ApplicationDemande_enrollment] option[value='University']").text('Université');
+                                $("select[name=ApplicationDemande_enrollment] option[value='WILL NOT ENROLL']").text("NE S'INSCRIRE PAS");
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -298,11 +332,21 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItem id="immigration" type="ComboBoxReportItem" blobItem="IMMIGRATION" options="Citizen Permanent Resident|Refugee|International Student|Work Permit Holder" encrypt="true">
+        <ReportItem id="immigration" type="ComboBoxReportItem" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Work Permit Holder" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Canadian Immigration Status</span><span class='fr'>Statut d’immigration canadienne</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>What is your immigration Status in Canada?</span><span class='fr'>Quel est votre statut d’immigrant au Canada?</span>{$item}</td>
+                    <td class="value" colspan="3"><span class='en'>What is your immigration Status in Canada?</span><span class='fr'>Quel est votre statut d’immigrant au Canada?</span>{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_immigration] option[value='Citizen Permanent Resident']").text('Citoyen-ne');
+                                $("select[name=ApplicationDemande_immigration] option[value='Permanent Resident']").text('Résident-e permanent-e');
+                                $("select[name=ApplicationDemande_immigration] option[value='Refugee']").text('Réfugié-e');
+                                $("select[name=ApplicationDemande_immigration] option[value='International Student']").text('Élève international');
+                                $("select[name=ApplicationDemande_immigration] option[value='Work Permit Holder']").text('Permis de travail');
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
@@ -310,7 +354,15 @@
             <![CDATA[
                 <tr>
                     <td class="label required"><span class='en'>Eligibility to Work in Canada</span><span class='fr'>Autorisation de travail au Canada</span>:</td>
-                    <td class="value" colspan="3"><span class='en'>Are you Eligible to Work in Canada?</span><span class='fr'>Êtes vous autorisé-e à travailler au Canada</span>{$item}</td>
+                    <td class="value" colspan="3"><span class='en'>Are you Eligible to Work in Canada?</span><span class='fr'>Êtes vous autorisé-e à travailler au Canada</span>{$item}
+                        <script type='text/javascript'>
+                            if(wgLang == 'fr'){
+                                $("select[name=ApplicationDemande_eligibility] option[value='Yes']").text('Oui');
+                                $("select[name=ApplicationDemande_eligibility] option[value='No']").text('Non');
+                                $("select[name=ApplicationDemande_eligibility] option[value='Not sure']").text('Je ne sais pas');
+                            }
+                        </script>
+                    </td>
                 </tr>
             ]]>
         </ReportItem>
