@@ -2,7 +2,7 @@ $(document).ready(function(){
     
     var dataToSend = {};
     
-    $("div#side").append("<div id='reportIssue'><button>Report Issue</button><span class='throbber' style='display:none;'></span></div>");
+    $("div#side").append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
     if(isExtensionEnabled("ContactUs")){
         $("div#side").append("<div id='contactUs'><button>Contact Us</button></div>");
     }

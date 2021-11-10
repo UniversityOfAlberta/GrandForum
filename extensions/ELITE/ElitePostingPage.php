@@ -56,8 +56,8 @@ class ElitePostingPage extends BackbonePage {
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["ELITEAdmin"] = TabUtils::createTab("Admin Panel");
-        $tabs["ELITEHost"] = TabUtils::createTab("ELITE Internship Host Panel");
-        $tabs["ELITEPhd"] = TabUtils::createTab("PhD Fellowship Supervisor Panel");
+        $tabs["ELITEHost"] = TabUtils::createTab("<span class='en'>ELITE Internship Host Panel</span><span class='fr'>Panneau pour les responsables de stage ELITE</span>");
+        $tabs["ELITEPhd"] = TabUtils::createTab("<span class='en'>PhD Fellowship Supervisor Panel</span><span class='fr'>Panneau pour les superviseur-e-s des candidat-e-s de bourses doctorales</span>");
         return true;
     }
     
@@ -67,12 +67,12 @@ class ElitePostingPage extends BackbonePage {
         if($person->isRole(EXTERNAL)){
             // Host
             $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'intern' || $_GET['page'] == "")) ? "selected" : false;
-            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("ELITE Internship Host Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=intern#/intern", $selected);
+            $tabs["ELITEHost"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>ELITE Internship Host Panel</span><span class='fr'>Panneau pour les responsables de stage ELITE</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=intern#/intern", $selected);
         }
         if($person->isRole(EXTERNAL)){
             // PhD Supervisor
             $selected = @($wgTitle->getText() == "ElitePostingPage" && ($_GET['page'] == 'phd' || $_GET['page'] == "")) ? "selected" : false;
-            $tabs["ELITEPhd"]['subtabs'][] = TabUtils::createSubTab("PhD Fellowship Supervisor Panel", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=phd#/phd", $selected);
+            $tabs["ELITEPhd"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>PhD Fellowship Supervisor Panel</span><span class='fr'>Panneau pour les superviseur-e-s des candidat-e-s de bourses doctorales</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:ElitePostingPage?page=phd#/phd", $selected);
         }
         if($person->isRole(ADMIN)){
             // Admin

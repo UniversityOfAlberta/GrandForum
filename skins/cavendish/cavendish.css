@@ -173,6 +173,10 @@ body {
     background-color: rgba(0,0,0,0.10);
 }
 
+.top-nav-mid span {
+    text-decoration: none !important;
+}
+
 /* Random HTML Styles */
 input::-ms-clear {
     width : 0;
@@ -518,6 +522,10 @@ input.custom-combobox-input {
     background-origin: padding-box;
     padding-right: 20px;
     background: #fff url("../icons/gray_light/pen_12x12.png") no-repeat scroll right 4px center !important;
+}
+
+a.button span {
+    text-decoration: none !important;
 }
 
 input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {

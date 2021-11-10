@@ -11,7 +11,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
         $set->projectType = $this->getAttr("projectType", "");
         $data = $set->getData();
         if(count($data) == 0){
-            $output = "There are currently no available projects";
+            $output = "<span class='en'>There are currently no available projects</span><span class='fr'>Actuellement, il n’y a pas de projets disponibles</span>";
         }
         else{
             $output = "<style>
@@ -28,7 +28,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                         </style>
                         <div id='projects' style='display:flex;border: 1px solid #dfdfdf;'>
                         <div style='width:50%;padding:0 10px;border-right: 1px solid #dfdfdf;'>
-                            <h3 style='margin-top: 0;'>Selected Projects</h3>
+                            <h3 style='margin-top: 0;'><span class='en'>Selected Projects</span><span class='fr'>Projets sélectionnés</span></h3>
                             <div class='listcontainer'>
                                 <ol id='selected_projects'>
                                     
@@ -36,7 +36,7 @@ class EliteProjectSelectorReportItem extends CheckboxReportItem {
                             </div>
                         </div>
                         <div style='width:50%;padding:0 10px;'>
-                            <h3 style='margin-top: 0;'>Available Projects</h3>
+                            <h3 style='margin-top: 0;'><span class='en'>Available Projects</span><span class='fr'>Projets disponibles</span></h3>
                             <input type='hidden' name='{$this->getPostId()}[]' value='' />
                             <div class='listcontainer'>
                                 <ul id='available_projects' >";

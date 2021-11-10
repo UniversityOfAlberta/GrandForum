@@ -20,7 +20,31 @@ class PersonDemographicsTab extends AbstractEditableTab {
             $this->html .= "<table>";
             $age = $this->person->getBirthDate();
             if($age != ''){
-                $age = @date_diff(date_create($this->person->getBirthDate()), date_create('today'))->y;            
+                $age = @date_diff(date_create($this->person->getBirthDate()), date_create('today'))->y;   
+                if($age < 15){
+                    $age = "Less than 15";
+                }  
+                else if($age >= 15 && $age < 25){
+                    $age = "15 - 24 years";
+                }
+                else if($age >= 25 && $age < 35){
+                    $age = "25 - 34 years";
+                }
+                else if($age >= 35 && $age < 45){
+                    $age = "35 - 44 years";
+                }
+                else if($age >= 45 && $age < 55){
+                    $age = "45 - 54 years";
+                }
+                else if($age >= 55 && $age < 65){
+                    $age = "55 - 64 years";
+                }
+                else if($age >= 65 && $age < 75){
+                    $age = "65 - 74 years";
+                }
+                else if($age >= 75){
+                    $age = "75 years and over";
+                }
             }
             $ethnicity = ($this->person->getMinorityStatus() == "Yes" && 
                           $this->person->getEthnicity() != "") ? " ({$this->person->getEthnicity()})" : "";
@@ -53,7 +77,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
         
             $this->html .= "</table>";
             
-            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+            $this->html .= "<p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
@@ -123,7 +147,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
                             {$minorityField->render()}
                             <span id='ethnicity' style='display:none;'>{$ethnicityField->render()}</span>
 
-                            <p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
+                            <p style='margin-top:2em;'>Future Energy Systems (FES) is focused on leading the energy transition with a vision of optimal, fair, and environmentally responsible energy systems. Achieving this vision will rely on the research of many individuals across many fields, contributing to an interdisciplinary, multidisciplinary, transdisciplinary, intersectional environment where progress and pursuit of knowledge comes first, free from personal, social, or political bias.</p>
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
@@ -132,7 +156,6 @@ class PersonDemographicsTab extends AbstractEditableTab {
                             <script type='text/javascript'>
                                 $('[name=minorityStatus]').change(function(){
                                     var value = $('[name=minorityStatus]').val();
-                                    console.log(value);
                                     if(value == 'Yes'){
                                         $('#ethnicity').show();
                                     }

@@ -221,9 +221,9 @@ $(document).ready(function(){
                 uploadFramesSaving = [];
                 try{
                     $('iframe.uploadFrame:visible').each(function(i, el){
-                        if(!el.contentWindow.$('input[name=upload]').is(":disabled")){
+                        if(!el.contentWindow.$('button[name=upload]').is(":disabled")){
                             uploadFramesSaving[el.id] = true;
-                            el.contentWindow.$('input[name=upload]').click();
+                            el.contentWindow.$('button[name=upload]').click();
                         }
                     });
                 }

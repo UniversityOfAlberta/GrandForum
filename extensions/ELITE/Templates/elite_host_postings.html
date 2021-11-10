@@ -1,17 +1,17 @@
 <% if(isAllowedToCreateElitePostings){ %>
-    <a href="#/<%= this.model.type.toLowerCase() %>/new" class="button" id="add">Create New</a><br /><br />
+    <a href="#/<%= this.model.type.toLowerCase() %>/new" class="button" id="add"><span class='en'>Create New</span><span class='fr'>Créer un nouveau</span></a><br /><br />
 <% } %>
 <table id="postings" frame="box" rules="all">
     <thead>
         <tr>
             <th width="1%" style="white-space: nowrap;">Date</th>
             
-            <th style="white-space: nowrap;">Company Name</th>
-            <th style="white-space: nowrap;">Position Title</th>
-            <th width="1%" style="white-space: nowrap;">Status</th>
+            <th style="white-space: nowrap;"><span class='en'>Company Name</span><span class='fr'>Nom de la compagnie</span></th>
+            <th style="white-space: nowrap;"><span class='en'>Position Title</span><span class='fr'>Titre de la position</span></th>
+            <th width="1%" style="white-space: nowrap;"><span class='en'>Status</span><span class='fr'>Statut</span></th>
             <% if(isAllowedToCreateElitePostings){ %>
-                <th width="1%">Clone</th>
-                <th width="1%">Delete</th>
+                <th width="1%"><span class='en'>Clone</span><span class='fr'>Dupliquer</span></th>
+                <th width="1%"><span class='en'>Delete</span><span class='fr'>Supprimer</span></th>
             <% } %>
         </tr>
     </thead>
