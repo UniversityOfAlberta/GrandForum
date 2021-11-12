@@ -52,9 +52,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
+        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4">
             <![CDATA[
-                <h3>Rank <span style="font-size: 100%;font-weight: normal;">(10 is the best)</span></h3>
+                <h3>Rank <span style="font-size: 100%;font-weight: normal;">(4 is the best)</span></h3>
                 {$item}
             ]]>
         </ReportItem>
