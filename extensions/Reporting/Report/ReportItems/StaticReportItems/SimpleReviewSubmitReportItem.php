@@ -6,7 +6,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
 		$emails = $this->getAttr('emails', '');
-		$text = $this->getAttr('text', 'By generating a PDF your application is automatically submitted');
+		$text = $this->getAttr('text', "<span class='en'>By generating a PDF your application is automatically submitted</span><span class='fr'>En créant un PDF votre formulaire de demande sera soumis automatiquement.</span>");
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
@@ -96,12 +96,12 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		if(!$this->getReport()->isComplete() && $showWarning){
 		    $wgOut->addHTML("<div class='warning'>The report is not 100% complete.  Double check to make sure you did not miss any fields.</div>");
 		}
-		$wgOut->addHTML("<h3>Generate a new PDF</h3>");
-		$wgOut->addHTML("<p><button id='generateButton' $disabled>Submit</button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
+		$wgOut->addHTML("<h3><span class='en'>Generate a new PDF</span><span class='fr'>Créer un nouveau PDF</span></h3>");
+		$wgOut->addHTML("<p><button id='generateButton' $disabled><span class='en'>Submit</span><span class='fr'>Soumettre</span></button><img id='generate_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' /><br />
 		                    {$text}<br />
 		                    <div style='display:none;' class='error' id='generate_error'></div><div style='display:none;' class='success' id='generate_success'></div></p>");
 
-		$wgOut->addHTML("<h3>Download the PDF</h3>");
+		$wgOut->addHTML("<h3><span class='en'>Download the PDF</span><span class='fr'>Télécharger le PDF</span></h3>");
 		
 		$gmt_date = date('P');
 		$temp_html =<<<EOF
@@ -157,7 +157,7 @@ EOF;
 		    $subm_table_row =<<<EOF
 		    <tr>
             <td>
-            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}>{$report->name} PDF</button>
+            	<button id='download_button_{$file}' type='button' name='{$tok}' onClick='clickButton(this)' {$style1}><span class='fr'>PDF pour le </span>{$report->name}<span class='en'> PDF</span></button>
             </td>
 EOF;
 

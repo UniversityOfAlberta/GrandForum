@@ -477,7 +477,9 @@
                 <h2 class="required"><span class='en'>Acknowledgment and Agreement</span><span class='fr'>Engagement</span></h2>
                 <p><span class='en'>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</span><span class='fr'>Je m’engage à faire deux présentations orales ou par affiches lors des ateliers du Programme si je suis admis-e au Programme ELITE pour la jeunesse noire.</span></p>
                 {$item}
-                <div id="acknowledgmentWarning" class="warning" style="display:none;">You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</div>
+                <div id="acknowledgmentWarning" class="warning" style="display:none;">
+                    <span class='en'>You selected "No". Are you sure? You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
+                    <span class='fr'>Vous avez sélectionné « Non ». Êtes vous certain-e ? Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span></div>
                 <script type="text/javascript">
                     $("input[name=ApplicationDemande_acknowledgment]").change(function(){
                         var value = $("input[name=ApplicationDemande_acknowledgment]:checked").val();
@@ -502,13 +504,15 @@
     <ReportSection id="submit" name="&lt;span class='en'>Submit&lt;/span>&lt;span class='fr'>Soumettre&lt;/span>" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If if="{or({==({getText(RP_ELITE, PROFILE, ACKNOWLEDGMENT, 0, {$user_id}, 0)},No)})}">
             <![CDATA[
-                You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.
+                <span class='en'>You are not eligible to participate in the ELITE Program for Black Youth if you are unable to participate in the Program workshops.</span>
+                <span class='fr'>Vous ne pouvez pas être admis-e au Programme ELITE pour la jeunesse noire si vous ne participez pas aux ateliers.</span>
             ]]>
         </If>
         <Else>
             <If if="{!=({getProgress(profile)},100)}">
                 <![CDATA[
-                    You have not completed the application.
+                    <span class='en'>You have not completed the application.</span>
+                    <span class='fr'>Vous n’avez pas complété le formulaire demande.</span>
                 ]]>
             </If>
             <Else>
