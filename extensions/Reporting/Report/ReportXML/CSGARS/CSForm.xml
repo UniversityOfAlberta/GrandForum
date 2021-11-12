@@ -66,7 +66,7 @@
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" limit="900" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
             <![CDATA[
             <style>
                     .flex-container {
@@ -100,14 +100,14 @@
                     margin-top: 8px;
                     margin-right: 8px;" >
                     <h1>Research Interests</h1>
-                    <h3>*Area of Study<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Area of Study (Choose between 1-3)<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
     
-        <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
+        <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" max="5" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose between 1-5)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
@@ -217,6 +217,14 @@
                         {$item}
                     </div>
             
+            ]]>
+        </ReportItem>
+        <ReportItem id="q21_manual" idLabel="Manual GPA" type="Integer" decimals="2" blobType="BLOB_TEXT" editable="false" blobItem="Q21_MANUAL" width="40px" optional="true" max="4">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>Manual GPA out of 4<span title="You can also enter your GPA out of 4 if your own calculation differs from the automatically calculated one." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="q23" idLabel="GRE" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="100px" optional="true">
