@@ -10,7 +10,7 @@
     </Permissions>
 
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
-        <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100" >
+        <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100">
             <![CDATA[
                 <h3>The Department of Computing Science uses the Graduate Admission Review System (GARS) to collect information supplemental to that you submit through U of A's Graduate Studies Management System (GSMS), for review of your application.</h3>
                 </br>
@@ -275,8 +275,28 @@
         <ReportItem id="qCountry" idLabel="Country of Citizenship" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry">
             <![CDATA[
                     <h1>Citizenship</h1>
-                    <h3>Country of Citizenship</h3>
-                    {$item}
+                    <div style='display:flex;width:100%;'>
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Country of Citizenship</h3>
+                            {$item}
+                        </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry1" idLabel="Country of Degree" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry1">
+            <![CDATA[
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Country of Degree</h3>
+                            {$item}
+                        </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry2" idLabel="Current Country" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry2">
+            <![CDATA[
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Current Country</h3>
+                            {$item}
+                        </div>
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="qImmigrationStatus" idLabel="Immigration Status" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">

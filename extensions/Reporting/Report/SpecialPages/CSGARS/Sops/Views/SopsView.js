@@ -156,7 +156,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '30px' },  // GSMS PDF
                                                         { 'width': '55px' },  // Folder
                                                         { 'width': '70px' },  // DoB
-                                                        { 'width': '70px' },  // Country
+                                                        { 'width': '140px' }, // Country
                                                         { 'width': '70px' },  // Applicant Type
                                                         { 'width': '140px' }, // Education history
                                                         { 'width': '140px' }, // Country of Degrees
@@ -326,9 +326,7 @@ SopsView = Backbone.View.extend({
         var value = filtercountry.val();
         var studentcountry = data[5];
         if (!_.isEmpty(value)) {
-            if ($.inArray(studentcountry, value) == -1) {
-                return false;
-            }
+            return _.reduce(value, function(memo, val){ return (memo || (studentcountry.indexOf(val) !== -1)); }, false);
         }
         return true;
     },

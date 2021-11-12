@@ -164,15 +164,31 @@
                     <h1>Citizenship</h1>
                     <table width='100%'>
                         <tr width='100%'>
-                            <td style='width:50%;'>
+                            <td style='width:25%;'>
                                 <h3>Country of Citizenship</h3>
+                                {$item}
+                            </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry1" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry1">
+            <![CDATA[
+                            <td style='width:25%;'>
+                                <h3>Country of Degree</h3>
+                                {$item}
+                            </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry2" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry2">
+            <![CDATA[
+                            <td style='width:25%;'>
+                                <h3>Current Country</h3>
                                 {$item}
                             </td>
             ]]>
         </ReportItem>
         <ReportItem id="qImmigrationStatus" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">
             <![CDATA[
-                            <td style='width:50%;'>
+                            <td style='width:25%;'>
                                 <h3>Immigration Status</h3>
                                 {$item}
                             </td>

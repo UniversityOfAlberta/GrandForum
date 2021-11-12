@@ -28,10 +28,10 @@ class Report extends AbstractReport{
         if($wgTitle->getText() == "FAQs") {
             return true;
         }
-        if(@$_GET['report'] == "CSForm" && !($me->getSopPdfUrl()== false)){
+        if(@$_GET['report'] == "CSForm" && !($me->getSopPdfUrl() == false)){
             redirect($me->getUrl());
         }
-        elseif(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI) && !($me->getSopPdfUrl()== false) && $_GET['action'] != "viewNotifications"){
+        elseif(($wgTitle->getText() == "Main Page" || $wgTitle->getText() == "UserLogin") && $me->isRole(CI) && !($me->getSopPdfUrl() == false) && $_GET['action'] != "viewNotifications"){
             redirect($me->getUrl());
         }
         elseif(($wgTitle->getText() == "Main Page"|| $wgTitle->getText() == "UserLogin") && $me->isRole(HQP) && $_GET['action'] != "viewNotifications"){
