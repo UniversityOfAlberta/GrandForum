@@ -105,8 +105,19 @@
                             	   {$item}
                        	        </td>
                             </tr>
-                        </table>
+                        
             
+            ]]>
+        </ReportItem>
+        <ReportItem id="q21_manual" idLabel="Manual GPA" type="Integer" decimals="2" blobType="BLOB_TEXT" editable="false" blobItem="Q21_MANUAL" width="40px" optional="true">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <h3>Manual GPA</h3>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="100px" optional="true">
