@@ -331,7 +331,11 @@ abstract class AbstractReport extends SpecialPage {
         else{
             // File not found
             $wgOut->setPageTitle("Report not Found");
-            $wgOut->addHTML("The report specified does not exist");
+            $wgOut->addHTML("<span class='en'>The report specified does not exist</span>
+                             <span class='fr'>Le rapport spécifié n'existe pas.</span>");
+            $wgOut->addHTML("<script type='text/javascript'>
+                                $('h1').html(\"<span class='en'>Report not Found</span><span class='fr'>Rapport introuvable</span>\");
+                            </script>");
         }
     }
     

@@ -24,7 +24,8 @@ class ElitePostingAPI extends PostingAPI {
     
     function validate(){
         if(trim($this->POST('title')) == ""){
-            $this->throwError("A title must be provided");
+            $this->throwError("<span class='en'>A title must be provided.</span>
+                               <span class='fr'>Un titre doit être fourni.</span>");
         }
         if($this->POST('type') == "Intern"){
             $extra = $this->POST('extra');
@@ -41,7 +42,8 @@ class ElitePostingAPI extends PostingAPI {
                @$extra->qualifications == "" ||
                @$extra->level == "" ||
                @$extra->positions == ""){
-                $this->throwError("Not all required fields have been filled.");
+                $this->throwError("<span class='en'>Not all required fields have been filled.</span>
+                                   <span class='fr'>Tous les champs obligatoires n'ont pas été remplis.</span>");
             }
         }
         else if($this->POST('type') == "PhD"){
@@ -58,11 +60,13 @@ class ElitePostingAPI extends PostingAPI {
                @$extra->level == "" ||
                @$extra->ack1 == "" ||
                @$extra->ack2 == ""){
-                $this->throwError("Not all required fields have been filled.");
+                $this->throwError("<span class='en'>Not all required fields have been filled.</span>
+                                   <span class='fr'>Tous les champs obligatoires n'ont pas été remplis.</span>");
             }
             else if($extra->ack1 == "No" ||
                     $extra->ack2 == "No"){
-                $this->throwError("You are not eligible to support a PhD candidate through this fellowship. Please revisit your response to confirm your selection.");
+                $this->throwError("<span class='en'>You are not eligible to support a PhD candidate through this fellowship. Please revisit your response to confirm your selection.</span>
+                                   <span class='fr'>Vous n'êtes pas admissible à soutenir un candidat au doctorat grâce à cette bourse. Veuillez revoir votre réponse pour confirmer votre sélection.</span>");
             }
         }
         return true;
