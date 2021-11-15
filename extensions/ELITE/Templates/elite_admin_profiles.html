@@ -67,6 +67,9 @@
                                 <% _.each(profile.get('projects'), function(project){ %>
                                     <li><input type="checkbox" value="<%= project.id %>" <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> checked <% } %> /> <%= project.title %> - <%= project.extra.companyName %> (<%= project.extra.region %>)</li>
                                 <% }) %>
+                                <% _.each(profile.get('otherProjects'), function(project){ %>
+                                    <li><%= project.name %> <% if(project.email != ''){ %> (<%= project.email %>) <% } %></li>
+                                <% }) %>
                             </ol>
                         </div>
                     <% } %>

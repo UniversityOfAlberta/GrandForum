@@ -12,6 +12,7 @@ abstract class EliteProfile extends BackboneModel {
     var $status;
     var $comments;
     var $projects = array();
+    var $otherProjects = array();
     var $matches = array();
     
     static function newFromUserId($userId){
@@ -76,9 +77,21 @@ abstract class EliteProfile extends BackboneModel {
             $this->status = $this->getBlobValue('STATUS');
             $this->comments = $this->getBlobValue('ADMIN_COMMENTS');
             $projects = $this->getBlobValue('PROJECTS', BLOB_ARRAY);
+            $otherProjects1 = $this->getBlobValue('PROJECTS_OTHER', BLOB_ARRAY);
+            $otherProjects2 = $this->getBlobValue('PROJECTS_OTHER2', BLOB_ARRAY);
             if($projects != null && isset($projects['apply'])){
                 foreach($projects['apply'] as $proj){
                     $this->projects[] = ElitePosting::newFromId($proj);
+                }
+            }
+            if($otherProjects1 != null && isset($otherProjects1['apply_other'])){
+                foreach($otherProjects1['apply_other'] as $proj){
+                    $this->otherProjects[] = array('name' => $proj['name'], 'email' => $proj['email']);
+                }
+            }
+            if($otherProjects2 != null && isset($otherProjects2['apply_other2'])){
+                foreach($otherProjects2['apply_other2'] as $proj){
+                    $this->otherProjects[] = array('name' => $proj['name'], 'email' => '');
                 }
             }
             $matches = $this->getBlobValue('MATCHES', BLOB_ARRAY);
@@ -184,6 +197,7 @@ abstract class EliteProfile extends BackboneModel {
                      'status' => $this->status,
                      'comments' => $this->comments,
                      'projects' => $this->projects,
+                     'otherProjects' => $this->otherProjects,
                      'matches' => $this->matches,
                      'pdf' => $this->pdf->getUrl(),
                      'letters' => $this->getReferenceLetters(),

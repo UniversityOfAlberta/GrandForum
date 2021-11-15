@@ -15,6 +15,7 @@ EliteProfile = Backbone.Model.extend({
             status: "",
             comments: "",
             projects: [],
+            otherProjects: [],
             matches: [],
         };
     }
