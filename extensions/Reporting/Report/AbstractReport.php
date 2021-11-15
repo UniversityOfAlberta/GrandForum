@@ -226,11 +226,18 @@ abstract class AbstractReport extends SpecialPage {
                 if(!$me->isLoggedIn()){
                     $register = "";
                     if(isExtensionEnabled('Register')){
-                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Register'>register</a>";
+                        $register = "or <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Register'>
+                                            <span class='en'>register</span>
+                                            <span class='fr'>inscrire</span>
+                                        </a>";
                     }
                     $wgOut->clearHTML();
                     $wgOut->setPageTitle("Not logged in");
-                    $wgOut->addHTML("Please login {$register} in order to access this page.");
+                    $wgOut->addHTML("<span class='en'>Please login {$register} in order to access this page.</span>
+                                     <span class='fr'>Veuillez vous connecter ou vous {$register} pour accéder au site web.</span>");
+                    $wgOut->addHTML("<script type='text/javascript'>
+                        $('h1').html(\"<span class='en'>Not logged in</span><span class='fr'>Pas connecté</span>\");
+                    </script>");
                     return;
                 }
                 permissionError();
