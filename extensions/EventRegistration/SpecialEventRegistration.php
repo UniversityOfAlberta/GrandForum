@@ -139,6 +139,9 @@ class SpecialEventRegistration extends SpecialPage{
                         <option>In person</option>
                      </select>";
         }
+        else if($default->title == "Digital Law Forum 2022 - Myths & Reality, Artificial Intelligence and the Law"){
+            $roles = array("Industry Partner", "Researcher");
+        }
         
         $roleField = new SelectBox("role", "role", "Audience", $roles);
         
