@@ -112,6 +112,7 @@ class SpecialEventRegistration extends SpecialPage{
         $webpageField = new TextField("webpage", "webpage", $webpage);
 
         $roles = array("Audience", "Presenter", "Host");
+        $defaultRole = "Audience";
         $misc = "";
         if($default->title == "Energy Hackathon 2021 - APIC"){
             $miscField = new TextareaField("misc[Programming]", "misc", "");
@@ -141,9 +142,10 @@ class SpecialEventRegistration extends SpecialPage{
         }
         else if($default->title == "Digital Law Forum 2022 - Myths & Reality, Artificial Intelligence and the Law"){
             $roles = array("Industry Partner", "Researcher");
+            $defaultRole = "Industry Partner";
         }
         
-        $roleField = new SelectBox("role", "role", "Audience", $roles);
+        $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
         $preamble = "";
         if($default->title == "Replaying Japan Conference"){
