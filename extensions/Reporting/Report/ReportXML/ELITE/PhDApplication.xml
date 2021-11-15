@@ -288,6 +288,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="apply_other2" type="MultiText" blobItem="PROJECTS_OTHER2" blobType="BLOB_ARRAY" labels="Name" max="3" optional="true" multiple="true">
+            <![CDATA[
+                <p>Or, please indicate the name(s) of any professor with whom you would consider working, if accepted for a Fellowship. If you do not have a name in mind yet, please indicate "None".</p>
+                {$item}
+            ]]>
+        </ReportItem>
         
         <!-- Attachments -->
         <Static>
