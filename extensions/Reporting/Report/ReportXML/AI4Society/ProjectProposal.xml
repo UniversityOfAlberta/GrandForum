@@ -6,13 +6,29 @@
     <ReportSection id="instructions" type="ReportSection" name="Instructions" title="Project Proposal 2021-22">
         <Static>
             <![CDATA[
-                <p>This template is for proposals of funding to Amii’s Resource Allocation Panel (RAP) for the period of <b>May 2021 to April 2022</b>. Edit the details for your project above. If the lead of the project is not an Amii Fellow, you should also provide the name of the Amii Fellow(s) sponsoring the project.</p>
-                
-                <p>Proposals are <b>suggested</b> to be 1 page plus 1-2 pages for each $50,000 requested. Continuing projects that include a project report are likely at the high-end of this range, while new projects may be at the low-end. Proposals should be written to your colleagues, not a funding agency – no need to exaggerate, over-promise, or convince an MLA about how the average Albertan will benefit from the outcome. However, please remember that your colleagues may not be working in your specific research area, and so some background will be required for them to understand your proposed work.</p>
+                <p>Thank you for submitting your proposal to AI4Society. Please, complete this template to share your idea with us. Note that projects should be approved before the end of March and will have a length of (unless there is a specific reason for a different timeline) one year from the approval date.</p>
 
-                <p>Please see the RAP Applicant Handbook for details of the process. In general, consider your proposal an opportunity to get scientific and operational direction from your colleagues. You will receive two reviews, and there will be some back and forth during the first review (so please be prepared to answer questions promptly during the period Jan 25-Feb 23, 2020). The full details of the RAP process is described here. When your proposal is complete, <b>you must submit via the submission form</b>.</p>
+                <h3>Applications should:</h3>
+                <ul>
+                    <li>Be led by a full-time faculty member of the University of Alberta.</li>
+                    <li>Include an interdisciplinary team of researchers. Researchers at other universities and community researchers are welcome as team members.</li>
+                    <li>Be relevant to the focus of the AI4Society Signature Area.</li>
+                </ul>
 
-                <p>RAP for 2021-22 is forecasted to have $2,600,000 to allocate to projects; an average of $113,000 per Amii Fellow. Amii Fellows are not guaranteed any particular funding nor is there a limit on what you can request, although RAP will consider each Fellow’s total funding request (including their sponsored projects led by non-Amii researchers). Total requests from a single Fellow over double this average will be far less likely to receive their full request than Fellows requesting half of the average.</p>
+                <p>Please consult our Initiatives and Support Protocols (<a href="https://ai4society.ca/protocols/" target="_blank">https://ai4society.ca/protocols/</a>) web page to learn more about how AI4Society can support the formation of a collaboratory, or the development of teaching materials, or the development of other types of partnerships.</p>
+
+                <p>Here are the types of proposals we are prioritizing for this coming academic year:</p>
+
+                <ol>
+                    <li><b>Projects.</b> Do you have a research project you would like to start that would bring researchers together and develop a new agenda? AI4Society has set aside funding for seed grants for research initiatives associated with the existing collaboratories. AI4Society will provide up to $10,000 in funding and in-kind support to viable projects that fit our mandate and which have the potential to develop into self-funded projects. The proposal should identify grant programs that the team plans to apply for funding the activities of the research beyond the seed funding allocated by AI4Society.</li>
+                    <li><b>Grant Preparation Support.</b> Are you thinking of writing a grant? AI4Society can help you with mentoring, peer review and with funding for grant preparation activities. Depending on the size of the grant you plan to apply for AI4Society can provide up to $5,000 in preparation support. (Talk to us if you are preparing a very large grant and need more; we can help get you support.)</li>
+                    <li><b>Big Questions for Society.</b> Are there interesting questions you would like to see addressed in public? AI4Society seeks proposals for questions, formats and potential speakers to address these questions. AI4Society will support the organization and fees of three public events. We encourage researchers to think big and to talk to us about potential events that could involve the public./li>
+                </ol> 
+
+<h3>Process</h3>
+<p>Proposals are reviewed as they come. We will continue to accept applications over the academic year or until our funding is exhausted.</p>
+<p>Applicants are encouraged to talk to the Director (Eleni Stroulia) or Associate Director (Geoffrey Rockwell) before preparing a full proposal.</p>
+<p>If you have any question please contact Nicolás Arnáez: <a href="mailto:ai4s@ualberta.ca">ai4s@ualberta.ca</a></p>
             ]]>
         </Static>
     </ReportSection>
@@ -22,7 +38,7 @@
                 <table>
                     <tr>
                         <td class='label'>
-                            Title:
+                            Title of the initiative:
                         </td>
                         <td class='value'>
                             {$item}
@@ -33,39 +49,37 @@
         </ReportItem>
         <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
             <![CDATA[
-                <h2>Overview - Scientific Rationale</h2>
-                <p>Discuss the scientific rationale for the project, starting with a very high-level description. What is the longer-term research agenda that forms the context for this annual proposal? Why is this a valuable research endeavour? What are the medium to long-term goals (2-5 years) that might be achieved if this research agenda were successful?.</p>
+                <h2>Overview - Scientific Rationale and Fit with AI4Society</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
             <![CDATA[
-                <h2>Team</h2>
-                <p>Has to be interdisciplinary</p>
+                <h2>Interdisciplinary Team</h2>
                 <h3>UofA Faculty</h3>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_external" type="MultiText"  class="wikitable" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+        <ReportItem id="project_external" type="MultiText"  class="wikitable" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
             <![CDATA[
-                <h3>External Faculty</h3>
+                <h3>Investigators outside UofA</h3>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_trainees" type="MultiText"  class="wikitable" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
+        <ReportItem id="project_trainees" type="MultiText"  class="wikitable" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" sizes="100|100|150|150|150" multiple="true">
             <![CDATA[
-                <h3>Trainees</h3>
+                <h3>Trainees/HQP</h3>
                 {$item}
             ]]>
         </ReportItem>
         
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1500">
             <![CDATA[
-                <h2>Proposal</h2>
-                <p>Briefly outline the proposed research over the next year.  Where possible connect with your long-term scientific rationale. This overview should then be broken down into smaller concrete chunks of research / work in the subsection below.</p>
+                <h2>Proposal and brief discussion of the suitability of the team</h2>
+                <p>Please describe briefly your proposal and how the team members will contribute to the work.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -73,7 +87,7 @@
         <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description&lt;br />&lt;small>Describe the concrete, measurable goal.  No need to repeat anything from the scientific rationale or proposal sections.&lt;/small>|Contributors&lt;br />&lt;small>List of names (students, fellows, externals, etc.; identify affiliation of external collaborators)&lt;/small>" types="Text|Textarea|Text" sizes="200|250|250">
             <![CDATA[
                 <h2>Project Milestones</h2>
-                <p>The ideal proposal has concrete, measurable goals (i.e., milestones) to accomplish over the year. Think of a milestone as a chunk of work that one person could accomplish in a year (e.g., a piece of published research such as an M.Sc. thesis project). It may involve more than one person, and contributors may be involved in more than one milestone. Cut and paste to add more milestones.</p>
+                <p>Tell us about the concrete goals you will aim to achieve during your project.</p>
                 {$item}
                 
                 <script type='text/javascript'>
@@ -109,33 +123,22 @@
         
         <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true" limit="250">
             <![CDATA[
-                <h2>Success Criteria / Outcomes</h2>
-                <p>Describe how you will judge the success of this project in the coming year. In addition, give a summary of the targeted outcomes (e.g., papers, code releases, prototypes, student training, accomplishments, etc.). This should outline what you hope to include in your progress report at the end of the period.</p>
+                <h2>Evaluation / Outcomes</h2>
+                <p>How will you evaluate your work? Include the key outcomes you expect to achieve, and some possible outputs/deliverables that this work will produce.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx">
             <![CDATA[
                 <h3>Budget</h3>
-                <p>Please make sure to use the <b><a href='{$wgServer}{$wgScriptPath}/data/AI4S_Budget_Template.xlsx'>budget template</a></b> to fill in your budget.</p>
-                <p>Please provide student names, or indicate if a student would be a new student. Indicate the terms during which you expect students will TA or RA (officially a GRAF). Once your list of students and TA/RA terms is complete, ask nicely and Melanie will total your student expenses using standard Amii rates and top-ups. It is recommended that M.Sc. students TA at least 2-3 times during their program (including one intro-level course and one advanced course); and Ph.D. students at least 3-4 times (doing both intro-level and advanced courses). It is expected that these will be done during the department guaranteed support period. While RAs can be good recruiting tools, TAships are good training opportunities that we want to encourage.</p>
-                <p>Remember that RAP funds can be used to pay staff (e.g. interns, research programmers).  Consider how such staff could help with your project, and consider incorporating their pay (or a portion of it) into this budget.</p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
-            <![CDATA[
-                <h3>Justification</h3>
-                <p>Briefly describe the rationale for the budget. Student or staff contributors already connected to project milestones, <b>need no justification</b>. Travel costs inline with one conference trip per student per year, and equipment costs inline with laptop renewal of one laptop per two students (i.e., laptop renewal on a 2 year cycle), <b>need no justification</b>. Thus, in some cases, this section can be very short. If you ask for more than summer support for a student, the budget justification should explain why an RA is important (e.g., no longer TA eligible), and whether they have met, or how they plan to meet the TA guidelines above.</p>
-
-                <p>If you are requesting time from a member of Amii’s Applied Science team, please describe the role you hope they would fill and whether you have already discussed involvement with a specific person or are making a generic request.</p>
+                <p>Please use this <b><a href='{$wgServer}{$wgScriptPath}/data/AI4S_Budget_Template.xlsx'>template</a></b>. Fill out Just the Green cells, do not change the yellow ones.  Budget for the event including in-kind resources needed. Remember our normal maximum is $10,000.00</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="plans" type="MultiText" blobType="BLOB_ARRAY" blobItem="PLANS" multiple="true" indices="name|url|date|description" labels="Program Name|Program URL|Date|Description of Project" types="Text|Text|Date|Textarea" sizes="200|200|75|250">
             <![CDATA[
-                <h2>Further Grant Application Plans</h2>
-                <p>The ideal proposal has concrete, measurable goals (i.e., milestones) to accomplish over the year. Think of a milestone as a chunk of work that one person could accomplish in a year (e.g., a piece of published research such as an M.Sc. thesis project). It may involve more than one person, and contributors may be involved in more than one milestone. Cut and paste to add more milestones.</p>
+                <h2>Grant Applications</h2>
+                <p>Grant applications to be submitted based on the work supported by the seed funding.</p>
                 {$item}
             ]]>
         </ReportItem>

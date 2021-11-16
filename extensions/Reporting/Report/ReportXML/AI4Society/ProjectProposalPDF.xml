@@ -20,7 +20,7 @@
                 <table>
                     <tr>
                         <td class='label'>
-                            Title:
+                            Title of the initiative:
                         </td>
                         <td class='value'>
                             {$item}
@@ -31,36 +31,36 @@
         </ReportItem>
         <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
             <![CDATA[
-                <h2>Overview - Scientific Rationale</h2>
+                <h2>Overview - Scientific Rationale and Fit with AI4Society</h2>
                 {$item}<br />
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" multiple="true">
+        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" multiple="true">
             <![CDATA[
-                <h2>Team</h2>
+                <h2>Interdisciplinary Team</h2>
                 <h3>UofA Faculty</h3>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_external" type="MultiText"  class="wikitable" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" multiple="true">
+        <ReportItem id="project_external" type="MultiText"  class="wikitable" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" multiple="true">
             <![CDATA[
                 <h3>External Faculty</h3>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_trainees" type="MultiText"  class="wikitable" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty|University" types="Text|Text|Text|Text|Text|Text" multiple="true">
+        <ReportItem id="project_trainees" type="MultiText"  class="wikitable" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="first|last|email|dept|faculty|university" labels="First Name|Last Name|Email|Department|Faculty/Unit|University/Organization" types="Text|Text|Text|Text|Text|Text" multiple="true">
             <![CDATA[
-                <h3>Trainees</h3>
+                <h3>Trainees/HQP</h3>
                 {$item}
             ]]>
         </ReportItem>
         
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1500">
             <![CDATA[
-                <h2>Proposal</h2>
+                <h2>Proposal and brief discussion of the suitability of the team</h2>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -74,7 +74,7 @@
         
         <ReportItem id="success" type="Textarea" blobItem="SUCCESS" rich="true" limit="250">
             <![CDATA[
-                <h2>Success Criteria / Outcomes</h2>
+                <h2>Evaluation / Outcomes</h2>
                 {$item}
             ]]>
         </ReportItem>
@@ -84,15 +84,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="justification" type="Textarea" blobItem="JUSTIFICATION" rich="true">
-            <![CDATA[
-                <h3>Justification</h3>
-                {$item}<br />
-            ]]>
-        </ReportItem>
         <ReportItem id="plans" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="PLANS" multiple="true" indices="name|url|date|description" labels="Program Name|Program URL|Date|Description of Project" types="Text|Text|Date|Textarea">
             <![CDATA[
-                <h2>Further Grant Application Plans</h2>
+                <h2>Grant Applications</h2>
                 {$item}
             ]]>
         </ReportItem>
