@@ -13,12 +13,12 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <!--Role role="RMC">
+        <Role role="RMC">
             <SectionPermission id="materials" permissions="r" />
             <SectionPermission id="table" permissions="" />
             <SectionPermission id="review" permissions="r" />
             <SectionPermission id="submit" permissions="" />
-        </Role-->
+        </Role>
         <Role role="MANAGER">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="table" permissions="rw" />
