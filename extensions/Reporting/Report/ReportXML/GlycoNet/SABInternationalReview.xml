@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="International Partnerships Review" reportType="RP_INTERNATIONAL_REVIEW" ajax="true" disabled="false" year="2021">
+    <Permissions>
+        <Role role="SAB">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="RMC">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="Evaluator">
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="materials" tooltip="Download Project Proposal PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+            <table align="left" class="wikitable">
+                <tr>
+                    <th style="min-width:110px;">Project Code</th>
+                    <th style="min-width:110px;">PI Name</th>
+                    <th style="min-width:110px;">Project Name</th>
+                    <th style="min-width:125px;">Project Proposal PDF</th>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-International">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="InternationalPartnershipsReport" project="false">
+                <![CDATA[<tr><td>{getText(RP_INTERNATIONAL_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_INTERNATIONAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <p>In Cycle II we have an enhanced requirement for Equity, Diversity and Inclusion (EDI) at all levels of the network. For these applications we require a specific comment about the EDI section (like you would give for knowledge translation or training). Please comment if this section conveys to the reviewer that the team has considered how EDI is incorporated into the project (not just the team composition).</p>
+                <p>For details of what EDI considerations could be included see the following link: <a href='https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf' target='_blank'>https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf</a></p>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-International">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_INTERNATIONAL_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_INTERNATIONAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+                <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Proposal Strengths</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="weakness" type="TextareaReportItem"  blobType="BLOB_TEXT" blobItem="SAB_REVIEW_WEAKNESS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>Proposal Weaknesses</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ranking" type="RadioReportItem" orientation="vertical" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_RANKING" blobSubItem="{$user_id}" options="High|Medium|Low">
+                    <![CDATA[
+                        <h2>Proposal Ranking</h2>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
+        <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
+            <![CDATA[
+                <div style='display:none;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_INTERNATIONAL_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},{$project_id})},Submitted)}">
+            <![CDATA[
+                <div class="success">Your review(s) have been submitted.</div>
+            ]]>
+        </If>
+        <Static>
+            <![CDATA[
+                <div>
+                    Submitting your review will mark your reviews as 'submitted', however you may continue to edit your reviews after submitting if needed.
+                </div><br />
+                <a class='button' id='submit_review'>Submit Review</a>
+                <script type='text/javascript'>
+                    $('#reportFooter').prev().hide();
+                    $('#reportFooter').hide();
+                    $('#submit_review').click(function(){
+                        $('input[name=Submit_submitted]').val('Submitted');
+                        $('#Submit').click();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

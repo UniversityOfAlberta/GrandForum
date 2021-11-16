@@ -125,6 +125,10 @@ class Report extends AbstractReport{
                 }
             }
         }
+        if(count($person->getEvaluates("International", 2021)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABInternationalReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("International Partnerships Review", "{$url}SABInternationalReview", $selected);
+        }
         if(count($person->getEvaluates("Legacy", 2021)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyLOIReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Legacy LOI Review", "{$url}LegacyLOIReview", $selected);
@@ -166,6 +170,9 @@ class Report extends AbstractReport{
            $person->isRole(RMC) ||
            $person->isRoleAtLeast(STAFF) ||
            $person->getId() == 2513){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABInternationalReport")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("International Report", "{$url}SABInternationalReport", $selected);
+           
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "LegacyLOIReport")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Legacy LOI Report", "{$url}LegacyLOIReport", $selected);
            
