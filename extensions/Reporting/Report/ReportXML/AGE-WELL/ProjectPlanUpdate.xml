@@ -45,6 +45,17 @@
         </Static>
     </ReportSection>
     <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
+        <ReportItem id="pdf" type="PDFReportItem" buttonName="{$this_year} Report PDF" project="true" reportType="ProjectPlanUpdate" year="{$last_year}">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ext" type="Radio" blobItem="EXT" options="Yes|No">
+            <![CDATA[
+                <p style='margin-bottom: 0.25em;'>At this time, do you anticipate needing a one-year no-cost extension to the original project term (i.e. to Mar 31, 2024)?</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="400px">
             <![CDATA[
                 <p>Provide a brief summary of the status of this project in light of disruptions over the past 18 months. Please include 1) adaptations to challenges outlined in your January 2021 Project Progress Update (e.g. changes to partnerships, access to participants, HQP retention etc.) and 2) ongoing challenges and plans to address them.</p>
