@@ -36,6 +36,7 @@ class PDFReportItem extends StaticReportItem {
         $found = false;
         foreach($projects as $project){
             $report = new DummyReport($reportType, $person, $project, $year, true);
+            $report->year = $year;
             if($report->allowIdProjects){
                 // Handle allowIdProjects
                 $report->project = new Project(array());
