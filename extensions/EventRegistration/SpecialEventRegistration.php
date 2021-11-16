@@ -140,7 +140,7 @@ class SpecialEventRegistration extends SpecialPage{
                         <option>In person</option>
                      </select>";
         }
-        else if($default->title == "Digital Law Forum 2022 - Myths & Reality, Artificial Intelligence and the Law"){
+        else if($default->title == "AI in Construction - Academia and Industry Meet and Greet Event"){
             $roles = array("Industry Partner", "Researcher");
             $defaultRole = "Industry Partner";
         }
