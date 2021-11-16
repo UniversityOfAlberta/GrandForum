@@ -21,8 +21,15 @@
         </Static>
     </ReportSection>
     <ReportSection id="status" type="EditableReportSection" blobSection="STATUS" tooltip="A. Project Status" name="Project Status" title="A. Project Status">
+        <ReportItem id="ext" type="Radio" blobItem="EXT" options="Yes|No">
+            <![CDATA[
+                <p>At this time, do you anticipate needing a one-year no-cost extension to the original project term (i.e. to Mar 31, 2024)?</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" height="400px">
             <![CDATA[
+                <h3>Summary</h3>
                 {$item}
             ]]>
         </ReportItem>
