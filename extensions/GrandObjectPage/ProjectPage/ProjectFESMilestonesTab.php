@@ -237,32 +237,49 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     function generateBody(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
-            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+            $this->html .= "<div id='activitySchedule'><h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             $this->showMilestones(false, false, true);
+            $this->html .= "</div>";
             $this->addScript();
             $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
             $this->showFESMilestones();
+            if(!$me->isRoleAtLeast(STAFF)){
+                $this->html .= "<style type='text/css' rel='stylesheet'>
+                    #activitySchedule {
+                        display: none;
+                    }
+                </style>";
+            }
         }
     }
     
     function generateEditBody(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || $me->isRoleAtLeast(STAFF))){
-            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
+            $this->html .= "<div id='activitySchedule'><h2 style='margin-top:0;padding-top:0;'>Activity Schedule</h2>";
             $this->showMilestones(false, false, true);
+            $this->html .= "<hr style='clear:both;' />";
+            $this->html .= "</div>";
             $this->addScript();
-            $this->html .= "<hr style='clear:both;' /><h2 style='clear:both;'>Milestones</h2>";
+            $this->html .= "<h2 style='clear:both;'>Milestones</h2>";
             $this->showFESMilestones();
             $this->html .= "<hr style='clear:both;' />";
+            if(!$me->isRoleAtLeast(STAFF)){
+                $this->html .= "<style type='text/css' rel='stylesheet'>
+                    #activitySchedule {
+                        display: none;
+                    }
+                </style>";
+            }
         }
     }
     
     function generatePDFBody(){
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
-            $this->html .= "<h2>Activity Schedule</h2>";
-            $this->showMilestones(true, false, true);
-            $this->html .= "<div style='page-break-after:always;'></div>";
+            //$this->html .= "<h2>Activity Schedule</h2>";
+            //$this->showMilestones(true, false, true);
+            //$this->html .= "<div style='page-break-after:always;'></div>";
             $this->html .= "<h2>Milestones</h2>";
             $this->showFESMilestones(true);
         }
