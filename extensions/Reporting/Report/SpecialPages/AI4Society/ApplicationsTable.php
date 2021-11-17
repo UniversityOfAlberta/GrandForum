@@ -69,7 +69,7 @@ class ApplicationsTable extends SpecialPage{
     function generateProjectProposals(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab = new ApplicationTab('RP_PROJECT_PROPOSAL', null, 2021, "2021");
+        $tab = new ApplicationTab(RP_PROJECT_PROPOSAL, null, 2021, "2021");
         $tab->showAllWithPDFs = true;
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());
