@@ -5,6 +5,8 @@ $wgSpecialPages['Report'] = 'Report'; # Let MediaWiki know about the special pag
 $wgExtensionMessagesFiles['Report'] = $dir . 'Report.i18n.php';
 $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
+require_once("ApplicationsTable.php");
+
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 $wgHooks['ToolboxHeaders'][] = 'Report::createToolboxHeaders';
