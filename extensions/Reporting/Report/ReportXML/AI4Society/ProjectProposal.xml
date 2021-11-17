@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Project Proposal 2021-22" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2021" disabled="false" ajax="true">
     <Permissions>
-        <Role role="STAFF"></Role>
+        <Role role="INACTIVE+"></Role>
+        <Role role="INACTIVE-Candidate+"></Role>
     </Permissions>
     <ReportSection id="instructions" type="ReportSection" name="Instructions" title="Project Proposal 2021-22">
         <Static>
