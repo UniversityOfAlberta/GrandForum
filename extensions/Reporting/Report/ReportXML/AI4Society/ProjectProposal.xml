@@ -131,7 +131,7 @@
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx">
             <![CDATA[
                 <h3>Budget</h3>
-                <p>Please use this <b><a href='{$wgServer}{$wgScriptPath}/data/AI4S_Budget_Template.xlsx'>template</a></b>. Fill out Just the Green cells, do not change the yellow ones.  Budget for the event including in-kind resources needed. Remember our normal maximum is $10,000.00</p>
+                <p>Please use this <b><a href='{$wgServer}{$wgScriptPath}/data/AI4Society Budget proposal.xlsx'>template</a></b>. Fill out Just the Green cells, do not change the yellow ones.  Budget for the event including in-kind resources needed. Remember our normal maximum is $10,000.00</p>
                 {$item}
             ]]>
         </ReportItem>
