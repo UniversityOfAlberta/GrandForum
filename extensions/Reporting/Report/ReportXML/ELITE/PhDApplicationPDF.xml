@@ -79,7 +79,7 @@
                     </tr>
             ]]>
         </Static>
-        <ReportItem id="immigration" type="Select" blobItem="IMMIGRATION" options="Citizen|	Permanent Resident|Refugee|International Student|Other" encrypt="true">
+        <ReportItem id="immigration" type="Select" blobItem="IMMIGRATION" options="Citizen|Permanent Resident|Refugee|International Student|Other" encrypt="true">
             <![CDATA[
                 <tr>
                     <td class="label required">Canadian Immigration Status:</td>
