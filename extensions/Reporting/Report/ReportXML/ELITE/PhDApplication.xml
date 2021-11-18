@@ -277,7 +277,7 @@
                 <p>Engineering faculty professors have provided brief descriptions of possible PhD projects. You may have already engaged with Engineering faculty professors regarding a PhD project. Please select at least one project and no more than three projects in order of preference from the list below.</p>
             ]]>
         </Static>
-        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="PhD" limit="3">
+        <ReportItem id="apply" type="EliteProjectSelector" blobItem="PROJECTS" blobType="BLOB_ARRAY" projectType="PhD" optional="true" limit="3">
             <![CDATA[
                 {$item}
             ]]>
