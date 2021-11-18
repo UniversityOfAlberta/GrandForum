@@ -27,7 +27,7 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Reports"] = TabUtils::createTab("My Reports");
-        $tabs["Applications"] = TabUtils::createTab("HQP Application");
+        $tabs["Applications"] = TabUtils::createTab("My Proposals");
         return true;
     }
     

@@ -140,7 +140,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
             }
             else {
-                $html .= "<th colspan='2' class='left_border'>FY".($y+1)."<br />Apr{$year} – Sep".($year)."</th>";
+                $html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
             }
         }
         return $html;
@@ -157,7 +157,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             else {
                 $html .= "<th class='left_border'>Q1</th>
-                          <th>Q2</th>";
+                          <th>Q2</th>
+                          <th>Q3</th>
+                          <th>Q4</th>";
             }
         }
         return $html;
@@ -176,7 +178,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
             if($y == $this->maxNYears+$startYear-1){
-                $nQuarters = 2;
+                $nQuarters = 4;
             }
             for($q=1;$q<=$nQuarters;$q++){
                 if(isset($quarters[$y][$q])){
@@ -188,7 +190,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
             if($y == $this->maxNYears+$startYear-1){
-                $nQuarters = 2;
+                $nQuarters = 4;
             }
             for($q=1;$q<=$nQuarters;$q++){
                 $class = ($q == 1) ? "class='left_border'" : "";
@@ -429,13 +431,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $statusColspan++;
             }
         }
-        if(!$pdf){
-            $commentsHeader = "<th></th>";
-        }
-        else{
-            $commentsHeader = "<th style='width:35%;'>Comments</th>";
-        }
-        $statusColspan+=2;
+        $statusColspan+=1;
 
         $header = "<tr>
                        <th colspan='1'></th>
@@ -500,7 +496,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}-{$key}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
             }
             $this->html .= "<tr class='top_border' data-id='{$activityId}-{$key}'>
-                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1-2+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title} {$uniText}</td>
+                                <td style='background:#555555;font-weight:bold;color:white;' colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."' style='white-space:nowrap;{$height};'>{$title} {$uniText}</td>
                             </tr>";
             
             $this->html .= "<tr>
@@ -509,7 +505,6 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             
             $comment = str_replace("'", "&#39;", $milestone->getComment());
             $doubleEscapeComment = nl2br(str_replace("&", "&amp;", $comment));
-            $commentIcon = ($comment != "" || $this->visibility['edit'] == 1) ? "<img src='$wgServer$wgScriptPath/skins/icons/gray_light/comment_stroke_16x14.png' title='{$doubleEscapeComment}' />" : "";
             $leaderText = ($leader->getName() != "") ? "<a href='{$leader->getUrl()}'>{$leader->getNameForForms()}</a>" : "";
             
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
@@ -526,18 +521,11 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 else{
                     $leaderText = "<input type='hidden' name='milestone_leader[$activityId][{$milestone->getMilestoneId()}][]' value='{$leader->getId()}' />$leaderText";
                 }
-                $commentIcon = "<div style='cursor:pointer;' class='comment'>{$commentIcon}</div><div title='Edit Comment' class='comment_dialog' style='display:none;'><textarea style='width:400px;height:150px;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></div>";
                 $personnel = str_replace("'", "&#39;", $milestone->getPeopleText());
                 $peopleText = "<input type='text' class='milestone_people' name='milestone_people[$activityId][{$milestone->getMilestoneId()}]' value='{$personnel}' />";
             }
             $this->html .= "<td class='left_border' align='center'>{$leaderText}</td>";
             $this->html .= "<td class='left_comment' align='center'>{$peopleText}</td>";
-            if(!$pdf){
-                $this->html .= "<td class='comment' align='center'>{$commentIcon}</td>";
-            }
-            else{
-                $this->html .= "<td class='comment'>".nl2br($comment)."</td>";
-            }
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $statuses = array();
                 foreach(Milestone::$fesStatuses as $status => $color){
@@ -563,6 +551,14 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $this->html .= "<td id='status' class='left_comment' align='center'></td>";
             }
             $this->html .= "</tr>";
+            if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                $this->html .= "<tr>
+                        <td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'><textarea style='height:100px;width:100%;' placeholder='Add comment here' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></td>
+                    </tr>";
+            }
+            else{
+                $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'>".nl2br("{$comment}")."</td></tr>";
+            }
         }
         $this->html .= "</tbody>
                         </table>";
@@ -604,8 +600,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                             </tr>";
         }
         $this->html .= "</table><br style='clear:both;' />";
-        
-        
+
         if(!$pdf){
             $this->html .= "<script type='text/javascript'>
                 var colors = ".json_encode(array_merge(Milestone::$statuses, Milestone::$fesStatuses)).";

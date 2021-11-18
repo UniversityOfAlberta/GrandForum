@@ -429,7 +429,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                 $deleteColspan = 1;
             }
             if($this instanceof ProjectFESMilestonesTab){
-                $deleteColspan += 2;
+                //$deleteColspan += 2;
             }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
             $this->html .= str_replace("<tr", "<tr data-activity='{$activityId}' style='display:none;'", str_replace("<th", "<th style='background:#CCCCCC;color:black;font-weight:bold;'", $header));
