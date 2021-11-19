@@ -30,7 +30,7 @@
             ]]>
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-International">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="InternationalPartnershipsReport" project="false">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="InternationalPartnerships" project="false">
                 <![CDATA[<tr><td>{getText(RP_INTERNATIONAL_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_INTERNATIONAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>

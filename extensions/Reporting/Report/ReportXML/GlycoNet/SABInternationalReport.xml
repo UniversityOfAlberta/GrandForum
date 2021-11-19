@@ -50,7 +50,7 @@
                     <tr><td>{$item}</td>
                 ]]>
             </ReportItem>
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="InternationalReport" project="false">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="InternationalPartnerships" project="false">
                 <![CDATA[<td>{$user_name}</td><td>{getText(RP_INTERNATIONAL,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
             </ReportItem>
         </ReportItemSet>
