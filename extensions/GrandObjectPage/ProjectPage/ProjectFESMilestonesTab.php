@@ -114,7 +114,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $_POST['people'] = "";
             $_POST['end_date'] = ($startYear+2)."-12-31 00:00:00";
             $_POST['quarters'] = "";
-            $_POST['comment'] = "";
+            $_POST['comment'] = "Created " . date('Y-m-d');
             $_POST['id'] = "";
             unset($_POST['id']);
             //unset($_POST['activity_id']);
@@ -469,7 +469,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $milestoneDescription = str_replace(">", "&gt;", str_replace("<", "&lt;", $milestone->getDescription()));
                 $title = "<input type='hidden' name='milestone_old[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />
                           <input type='hidden' name='milestone_title[$activityId][{$milestone->getMilestoneId()}]' value='{$milestoneTitle}' />";
-                $description = "<div style='display:inline-block;width:100%;padding:1px;box-sizing:border-box;'><textarea style='width:100%;height:auto;resize: vertical;margin:0;' name='milestone_description[$activityId][{$milestone->getMilestoneId()}]'>{$milestoneDescription}</textarea></div>";
+                $description = "<div style='display:inline-block;width:100%;padding:1px;box-sizing:border-box;'><textarea style='width:100%;height:auto;resize: vertical;margin:0;' name='milestone_description[$activityId][{$milestone->getMilestoneId()}]' placeholder='Description'>{$milestoneDescription}</textarea></div>";
                 $title .= $milestoneTitle;
             }
             else{
@@ -557,7 +557,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     </tr>";
             }
             else{
-                $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'>".nl2br("{$comment}")."</td></tr>";
+                $this->html .= "<tr><td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'><div style='max-height:100px;overflow-y: auto;'>".nl2br("{$comment}")."</div></td></tr>";
             }
         }
         $this->html .= "</tbody>
@@ -706,6 +706,21 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 
                 $('input.single').click(clickFn);
                 $('#milestones_table_fes td#status select').change();
+                
+                $(document).ready(function(){
+                    $('textarea, input, select', $('#milestones_table_fes .top_border').next()).change(function(e){
+                        var el = e.currentTarget;
+                        var textbox = $('textarea', $(el).closest('tr').next());
+                        if(!textbox.hasClass('alreadyChanged')){
+                            var nl = '';
+                            if($(textbox).val() != ''){
+                                nl = \"\\n\";
+                            }
+                            $(textbox).val($(textbox).val() + nl + \"Updated \" + new Date().toLocaleDateString('en-CA'));
+                            textbox.addClass('alreadyChanged');
+                        }
+                    });
+                });
                 
             </script>";
         }
