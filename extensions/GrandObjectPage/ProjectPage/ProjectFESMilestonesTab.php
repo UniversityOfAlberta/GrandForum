@@ -559,8 +559,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $this->html .= "<tr>
                         <td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'>
                             <div style='position:relative;height:100px;'>
-                                <textarea style='height:100px;width:100%;position:absolute;top:0;left:0;z-index:0;'>Testing</textarea>
-                                <textarea style='height:100px;width:100%;position:absolute;top:0;left:0;z-index:1;background:transparent;' placeholder='Add comment here' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea>
+                                <textarea class='placeholder' style='height:100px;width:100%;padding-bottom:1.5em !important;position:absolute;top:0;left:0;z-index:0;color:#AAAAAA;resize:none;overflow-y:scroll;'></textarea>
+                                <textarea class='comment' style='height:100px;width:100%;padding-bottom:1.5em !important;position:absolute;top:0;left:0;z-index:1;background:transparent;resize:none;overflow-y:scroll;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea>
                             </div>
                         </td>
                     </tr>";
@@ -719,19 +719,37 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $(document).ready(function(){
                     $('input.milestone, td#status select', $('#milestones_table_fes .top_border').next()).change(function(e){
                         var el = e.currentTarget;
-                        var textbox = $('textarea', $(el).closest('tr').next());
+                        var textbox = $('textarea.comment', $(el).closest('tr').next());
+                        var placeholder = $(textbox).parent().children('.placeholder');
                         if(!textbox.hasClass('alreadyChanged')){
                             var nl = '';
                             if(textbox.val() != ''){
                                 nl = \"\\n\";
                             }
-                            textbox.val(textbox.val() + nl + \"Updated \" + new Date().toLocaleDateString('en-CA'));
+                            textbox.val(textbox.val() + nl + \"Updated \" + new Date().toLocaleDateString('en-CA') + nl);
                             textbox.addClass('alreadyChanged');
-                            textbox.addClass('requiresChange');
+                            placeholder.addClass('requiresChange');
+                            textbox.scrollTop(10000000000000);
+                            textbox.change();
                             textbox.change(function(){
-                                textbox.removeClass('requiresChange');
+                                placeholder.removeClass('requiresChange');
                             });
                         }
+                    });
+                    
+                    $(document).ready(function(){
+                        $('#milestones_table_fes textarea.comment').on('change keyup keydown keypress paste scroll', function(e){
+                            var textarea = $(e.currentTarget);
+                            var placeholder = $(textarea).parent().children('.placeholder');
+
+                            if(textarea.val().slice(-1) == \"\\n\" || textarea.val() == ''){
+                                placeholder.val(textarea.val() + \"Add comment here...\");
+                            }
+                            else{
+                                placeholder.val(textarea.val() + \"\\nAdd comment here...\");
+                            }
+                            placeholder.scrollTop(textarea.scrollTop());
+                        }).change();
                     });
                 });
                 
