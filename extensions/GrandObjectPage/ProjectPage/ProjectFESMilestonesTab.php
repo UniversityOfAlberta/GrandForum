@@ -738,7 +738,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                     });
                     
                     $(document).ready(function(){
-                        $('#milestones_table_fes textarea.comment').on('change keyup keydown keypress paste scroll', function(e){
+                        $('#milestones_table_fes textarea.comment').on('change input scroll', function(e){
                             var textarea = $(e.currentTarget);
                             var placeholder = $(textarea).parent().children('.placeholder');
 
