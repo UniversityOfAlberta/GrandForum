@@ -140,6 +140,10 @@ class SpecialEventRegistration extends SpecialPage{
                         <option>In person</option>
                      </select>";
         }
+        else if($default->title == "AI in Construction - Academia and Industry, Meet and Greet Event"){
+            $roles = array("Industry Partner", "Researcher");
+            $defaultRole = "Industry Partner";
+        }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         

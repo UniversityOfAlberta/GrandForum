@@ -395,6 +395,10 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 margin: 0;
                 width: 100%;
             }
+            
+            .requiresChange {
+                background: #fdeeb2;
+            }
         </style>";
         $commentsHeader = "";
         $statusHeader = "";
@@ -553,7 +557,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             $this->html .= "</tr>";
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
                 $this->html .= "<tr>
-                        <td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'><textarea style='height:100px;width:100%;' placeholder='Add comment here' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea></td>
+                        <td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'>
+                            <div style='position:relative;height:100px;'>
+                                <textarea style='height:100px;width:100%;position:absolute;top:0;left:0;z-index:0;'>Testing</textarea>
+                                <textarea style='height:100px;width:100%;position:absolute;top:0;left:0;z-index:1;background:transparent;' placeholder='Add comment here' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea>
+                            </div>
+                        </td>
                     </tr>";
             }
             else{
@@ -708,18 +717,30 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $('#milestones_table_fes td#status select').change();
                 
                 $(document).ready(function(){
-                    $('textarea, input, select', $('#milestones_table_fes .top_border').next()).change(function(e){
+                    $('input.milestone, td#status select', $('#milestones_table_fes .top_border').next()).change(function(e){
                         var el = e.currentTarget;
                         var textbox = $('textarea', $(el).closest('tr').next());
                         if(!textbox.hasClass('alreadyChanged')){
                             var nl = '';
-                            if($(textbox).val() != ''){
+                            if(textbox.val() != ''){
                                 nl = \"\\n\";
                             }
-                            $(textbox).val($(textbox).val() + nl + \"Updated \" + new Date().toLocaleDateString('en-CA'));
+                            textbox.val(textbox.val() + nl + \"Updated \" + new Date().toLocaleDateString('en-CA'));
                             textbox.addClass('alreadyChanged');
+                            textbox.addClass('requiresChange');
+                            textbox.change(function(){
+                                textbox.removeClass('requiresChange');
+                            });
                         }
                     });
+                });
+                
+                $('form').submit(function(e){
+                    if($('.requiresChange').length > 0){
+                        alert('You must enter a comment in the highlighted milestones');
+                        e.preventDefault();
+                        return false;
+                    }
                 });
                 
             </script>";
