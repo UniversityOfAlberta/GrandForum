@@ -402,8 +402,8 @@
         </ReportItem>
         <ReportItem id="other" type="Radio" blobItem="OTHER" options="Yes|No|Not Sure"
                                labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                       &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Non&lt;/span>|
-                                       &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
+                                       &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
+                                       &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
                                encrypt="true">
             <![CDATA[
                 <tr>
@@ -416,8 +416,8 @@
         </ReportItem>
         <ReportItem id="other2" type="Radio" blobItem="OTHER2" options="Yes|No|Not Sure"
                                 labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                        &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Non&lt;/span>|
-                                        &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
+                                        &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>|
+                                        &lt;span class='en'>Not Sure&lt;/span>&lt;span class='fr'>Je ne sais pas&lt;/span>"
                                 encrypt="true">
             <![CDATA[
                 <tr>
@@ -471,7 +471,7 @@
         </ReportItem>
         <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No"
                                         labels="&lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Oui&lt;/span>|
-                                                &lt;span class='en'>Yes&lt;/span>&lt;span class='fr'>Non&lt;/span>" 
+                                                &lt;span class='en'>No&lt;/span>&lt;span class='fr'>Non&lt;/span>" 
                                         encrypt="true">
             <![CDATA[
                 <h2 class="required"><span class='en'>Acknowledgment and Agreement</span><span class='fr'>Engagement</span></h2>
