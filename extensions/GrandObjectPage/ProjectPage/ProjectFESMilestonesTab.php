@@ -755,6 +755,9 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 });
                 
                 $('form').submit(function(e){
+                    if($(e.originalEvent.submitter).val() == 'Cancel'){
+                        return true;
+                    }
                     if($('.requiresChange').length > 0){
                         alert('You must enter a comment in the highlighted milestones');
                         e.preventDefault();
