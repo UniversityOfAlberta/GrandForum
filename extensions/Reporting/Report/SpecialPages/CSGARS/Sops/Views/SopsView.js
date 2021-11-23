@@ -214,6 +214,7 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.filterSelectAoI = this.filterSelectAoI.chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' }).val();
                                                         SopsView.filtersSelected.filterSelectSupervisors = this.filterSelectSupervisors.chosen({ placeholder_text_multiple: 'Select Supervisor(s)' }).val();
                                                         SopsView.filtersSelected.filterSelectReviewers = this.filterSelectReviewers.chosen({ placeholder_text_multiple: 'Select Reviewers' }).val();
+                                                        SopsView.filtersSelected.filterUniversity = this.filterUniversity.val();
                                                         SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
                                                         SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
                                                         SopsView.filtersSelected.filterDoB = this.filterDoB.val();
@@ -443,6 +444,15 @@ SopsView = Backbone.View.extend({
             return false;
         }
         return true;
+   },
+   
+   filterUniversities: function(settings,data,dataIndex){
+        var input = this.filterUniversity.val().toUpperCase();
+        var history = data[7];
+        if(history.toUpperCase().indexOf(input) > -1){
+                return true;
+        }
+        return false;
    },
 
    filterNumPubs: function(settings,data,dataIndex){
@@ -717,6 +727,7 @@ SopsView = Backbone.View.extend({
         this.filterSelectAoI = this.$('#filterSelectAoI');
         this.filterSelectSupervisors = this.$('#filterSelectSupervisors');
         this.filterSelectReviewers = this.$('#filterSelectReviewers');
+        this.filterUniversity = this.$('#filterUniversity');
         this.numPubsInputMin = this.$('#numPubsInputMin');
         this.numPubsInputMax = this.$('#numPubsInputMax');
         this.numAwardsInputMin = this.$('#numAwardsInputMin');
@@ -774,6 +785,7 @@ SopsView = Backbone.View.extend({
         fnChosen('filterSelectSupervisors');
         fnChosen('filterSelectReviewers');
 
+        fnField('filterUniversity');
         fnField('referenceGPAInputMin');
         fnField('referenceGPAInputMax');
         fnField('filterDoB');
@@ -841,6 +853,7 @@ SopsView = Backbone.View.extend({
             this.filterByAreasOfInterest.bind(this),
             this.filterSupervisors.bind(this),
             this.filterReviewers.bind(this),
+            this.filterUniversities.bind(this),
             this.filterEPLTest.bind(this),
             this.filterEPLScore.bind(this)
         );
@@ -871,6 +884,7 @@ SopsView.filtersSelected = {
     filterSelectAoI: null, //
     filterSelectSupervisors: null, //
     filterSelectReviewers: null, //
+    filterUniversity: null,
     numPubsInputMin: null,
     numPubsInputMax: null,
     numAwardsInputMin: null,
