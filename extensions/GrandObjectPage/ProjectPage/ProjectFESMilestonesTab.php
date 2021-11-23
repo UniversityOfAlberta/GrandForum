@@ -556,11 +556,12 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             $this->html .= "</tr>";
             if($this->visibility['edit'] == 1 && $this->canEditMilestone($milestone)){
+                $firstChange = ($milestone->getParent() == null) ? "firstChange" : "";
                 $this->html .= "<tr>
                         <td colspan='".($statusColspan+1+($this->nYears*4) + $yearOffset)."'>
                             <div style='position:relative;height:100px;'>
                                 <textarea class='placeholder' style='height:100px;width:100%;padding-bottom:1.5em !important;position:absolute;top:0;left:0;z-index:0;color:#AAAAAA;resize:none;overflow-y:scroll;'></textarea>
-                                <textarea class='comment' style='height:100px;width:100%;padding-bottom:1.5em !important;position:absolute;top:0;left:0;z-index:1;background:transparent;resize:none;overflow-y:scroll;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea>
+                                <textarea class='comment $firstChange' style='height:100px;width:100%;padding-bottom:1.5em !important;position:absolute;top:0;left:0;z-index:1;background:transparent;resize:none;overflow-y:scroll;' name='milestone_comment[$activityId][{$milestone->getMilestoneId()}]'>{$comment}</textarea>
                             </div>
                         </td>
                     </tr>";
@@ -721,7 +722,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                         var el = e.currentTarget;
                         var textbox = $('textarea.comment', $(el).closest('tr').next());
                         var placeholder = $(textbox).parent().children('.placeholder');
-                        if(!textbox.hasClass('alreadyChanged')){
+                        if(!textbox.hasClass('alreadyChanged') && !textbox.hasClass('firstChange')){
                             var nl = '';
                             if(textbox.val() != ''){
                                 nl = \"\\n\";
