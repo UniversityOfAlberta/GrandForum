@@ -1093,7 +1093,7 @@ abstract class AbstractReport extends SpecialPage {
             foreach($md5s as $md5){
                 if($md5 != ""){
                     $pdf = PDF::newFromToken($md5);
-                    $zip->addFromString(ucwords(unaccentChars($pdf->getTitle())).".pdf", $pdf->getPDF());
+                    $zip->addFromString(utf8_decode(ucwords($pdf->getTitle()).".pdf"), $pdf->getPDF());
                 }
             }
             $zip->close();
