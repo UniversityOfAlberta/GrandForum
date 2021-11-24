@@ -29,21 +29,32 @@ class MilestonesLog extends SpecialPage{
 	        $data = array();
 	        $projects = Project::getAllProjectsEver();
 		    $milestones = array();
-	        foreach($projects as $project){
-	            $milestones = array_merge($milestones, array_merge($project->getMilestones(true, false),
-	                                                               $project->getMilestones(true, true)));
-	        }
-	        foreach($milestones as $milestone){
+		    foreach($projects as $project){
+		        foreach($project->getMilestones(true, false) as $milestone){
+		            // Regular Milestones
+		            $milestones[] = $milestone;
+		        }
+		        foreach($project->getMilestones(true, true) as $milestone){
+		            // FES Milestones
+		            $milestones[] = $milestone;
+		        }
+		    }
+	        foreach($milestones as $key => $milestone){
+	            $tmp = $milestone;
 	            do {
-	                $action = ($milestone->getParent() == null) ? "Created" : "Updated";
+	                $action = ($tmp->getParent() == null) ? "Created" : "Updated";
 	                $data[] = array($action, 
-	                                $milestone->editedBy->getNameForForms(), 
-	                                $milestone->getTitle(),
-	                                $milestone->getDescription(),
-	                                $milestone->getProject()->getName(),
-	                                $milestone->getCreated());
+	                                $tmp->editedBy->getNameForForms(), 
+	                                $tmp->getTitle(),
+	                                $tmp->getDescription(),
+	                                $tmp->getProject()->getName(),
+	                                $tmp->getCreated());
 	            }
-	            while($milestone=$milestone->getParent());
+	            while($tmp=$tmp->getParent());
+	            $milestones[$key] = null;
+	            unset($milestone->parent);
+	            unset($milestone);
+	            Milestone::$cache = array();
 	        }
 	        header('Content-Type: application/json');
 	        echo json_encode(array("data" => $data));
