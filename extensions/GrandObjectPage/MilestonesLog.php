@@ -47,8 +47,8 @@ class MilestonesLog extends SpecialPage{
 	                                $tmp->editedBy->getNameForForms(), 
 	                                $tmp->getTitle(),
 	                                $tmp->getDescription(),
-	                                $tmp->getProject()->getName(),
-	                                $tmp->getCreated());
+	                                "<span style='white-space:nowrap;'>{$tmp->getProject()->getName()}</span>",
+	                                "<span style='white-space:nowrap;'>{$tmp->getCreated()}</span>");
 	            }
 	            while($tmp=$tmp->getParent());
 	            $milestones[$key] = null;
@@ -65,12 +65,6 @@ class MilestonesLog extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-		$projects = Project::getAllProjectsEver();
-		$milestones = array();
-	    foreach($projects as $project){
-	        $milestones = array_merge($milestones, array_merge($project->getMilestones(true, false),
-	                                                           $project->getMilestones(true, true)));
-	    }
 	    $wgOut->addHTML("<table id='milestonesHistory' frame='box' rules='all'>
 	                        <thead>
 	                            <tr>
@@ -88,7 +82,7 @@ class MilestonesLog extends SpecialPage{
 	    $wgOut->addHTML("<script type='text/javascript'>
 	        $('#milestonesHistory').dataTable({
 	            'iDisplayLength': 100,
-                'aaSorting': [[4,'desc']],
+                'aaSorting': [[5,'desc']],
                 'ajax': '{$wgServer}{$wgScriptPath}/index.php?action=milestoneData',
                 'deferRender': true,
                 'autoWidth': false,
