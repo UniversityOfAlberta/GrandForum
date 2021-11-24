@@ -7,6 +7,7 @@
         require_once("PersonPage.php");
         require_once("ProjectPage.php");
         require_once("ThemePage.php");
+        require_once("MilestonesLog.php");
     }
     require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");

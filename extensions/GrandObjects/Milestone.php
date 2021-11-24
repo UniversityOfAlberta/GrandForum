@@ -54,6 +54,7 @@ class Milestone {
     var $end_date;
     var $quarters;
     var $comment;
+    var $created;
     
     /**
      * Creates a Milestone from the given milestone_id and id
@@ -145,6 +146,7 @@ class Milestone {
             $this->projected_end_date = $data[0]['projected_end_date'];
             $this->comment = $data[0]['comment'];
             $this->editedBy = Person::newFromId($data[0]['edited_by']);
+            $this->created = $data[0]['created'];
         }
     }
     
@@ -408,6 +410,10 @@ class Milestone {
                str_replace("\n\n", "\n", 
                str_replace("&lt;br /&gt;", "\n", 
                str_replace("&lt;br/&gt;", "\n", $this->comment)))));
+    }
+    
+    function getCreated(){
+        return $this->created;
     }
 }
 ?>
