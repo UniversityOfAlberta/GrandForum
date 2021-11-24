@@ -74,7 +74,7 @@ class MilestonesLog extends SpecialPage{
 	    $wgOut->addHTML("<table id='milestonesHistory' frame='box' rules='all'>
 	                        <thead>
 	                            <tr>
-	                                <th>Type</th>
+	                                <th>Action</th>
 	                                <th>User Name</th>
 	                                <th>Milestone</th>
 	                                <th>Description</th>
