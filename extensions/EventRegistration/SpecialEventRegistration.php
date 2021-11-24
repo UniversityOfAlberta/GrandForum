@@ -133,9 +133,10 @@ class SpecialEventRegistration extends SpecialPage{
                      <input type='file' name='misc_doc' accept='.doc,.docx' />";
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
-        else if($default->title == "Ethical Data and AI - Salon #2"){
+        else if($default->title == "Ethical Data and AI - Salon #2" ||
+                $default->title == "Ethical Data and AI - Salon #3"){
             $misc = "<h3>How do you plan to attend?</h3>
-                     <select name='misc[Attend]'>
+                     <select name='misc[Attend]' required>
                         <option>Online</option>
                         <option>In person</option>
                      </select>";
