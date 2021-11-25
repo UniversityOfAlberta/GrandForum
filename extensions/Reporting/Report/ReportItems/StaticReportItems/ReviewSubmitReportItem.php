@@ -6,6 +6,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
 		$emails = $this->getAttr('emails', '');
+		$subject = $this->getAttr('subject', 'Report Submitted');
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
 		if($this->getReport()->project != null){
@@ -123,7 +124,7 @@ class ReviewSubmitReportItem extends StaticReportItem {
 		            function submitReport(button){
 		                $('#submitButton').prop('disabled', true);
 		                $('#submit_throbber').css('display', 'inline-block');
-		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&emails={$emails}&tok=' + $(button).val() ,function(data){
+		                $.get('$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&submitReport&emails={$emails}&subject={$subject}&tok=' + $(button).val() ,function(data){
 		                    updateEvalReport();
 		                    $('#submitButton').removeAttr('disabled');
 		                    $('#submit_throbber').css('display', 'none');

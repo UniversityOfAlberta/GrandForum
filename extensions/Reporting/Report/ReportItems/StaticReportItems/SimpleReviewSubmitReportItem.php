@@ -6,6 +6,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgImpersonating, $config;
 		$reportname = $this->getReport()->name;
 		$emails = $this->getAttr('emails', '');
+		$subject = $this->getAttr('subject', 'Report Submitted');
 		$text = $this->getAttr('text', "<span class='en'>By generating a PDF your application is automatically submitted</span><span class='fr'>En créant un PDF votre formulaire de demande sera soumis automatiquement.</span>");
 		$person = Person::newFromId($wgUser->getId());
 		$projectGet = "";
@@ -41,7 +42,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 	                    $.ajax({
-	                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}', 
+	                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}&subject={$subject}', 
 	                            success : function(data){
 	                                            //var data = jQuery.parseJSON(response);
 	                                            for(index in data){
