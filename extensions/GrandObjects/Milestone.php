@@ -66,12 +66,21 @@ class Milestone {
         if(isset(self::$cache[$milestone_id."id".$id])){
             return self::$cache[$milestone_id."id".$id];
         }
-        $data = DBFunctions::select(array('grand_milestones'),
-                                    array('*'),
-                                    array('milestone_id' => EQ($milestone_id),
-                                          'id' => LTEQ($id)),
-                                    array('id' => 'DESC'),
-                                    array('2'));
+        $key = "milestone_{$milestone_id}_{$id}";
+        if($id != 2147483647 && Cache::exists($key)){
+            $data = Cache::fetch($key);
+        }
+        else{
+            $data = DBFunctions::select(array('grand_milestones'),
+                                        array('*'),
+                                        array('milestone_id' => EQ($milestone_id),
+                                              'id' => LTEQ($id)),
+                                        array('id' => 'DESC'),
+                                        array('2'));
+            if($id != 2147483647){
+                Cache::store($key, $data);
+            }
+        }
         $milestone = new Milestone($data);
         self::$cache[$milestone_id."id".$id] = &$milestone;
         self::$cache[$milestone_id."id".$milestone->getId()] = &$milestone;
