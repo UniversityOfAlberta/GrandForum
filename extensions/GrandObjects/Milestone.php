@@ -77,6 +77,9 @@ class Milestone {
                                               'id' => LTEQ($id)),
                                         array('id' => 'DESC'),
                                         array('2'));
+            if(isset($data[1])){
+                $data[1] = array('id' => $data[1]['id']);
+            }
             if($id != 2147483647){
                 Cache::store($key, $data);
             }

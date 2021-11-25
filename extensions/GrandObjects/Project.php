@@ -1508,7 +1508,7 @@ class Project extends BackboneModel {
                 }
             }
         }
-        $sql = "SELECT DISTINCT milestone_id
+        $sql = "SELECT DISTINCT milestone_id, MAX(id) as id
                 FROM grand_milestones
                 WHERE project_id = '{$this->id}'";
         if(!$history){
@@ -1520,11 +1520,12 @@ class Project extends BackboneModel {
         else{
             $sql .= "\nAND activity_id = '0'";
         }
+        $sql .= "\nGROUP BY `milestone_id`";
         $sql .= "\nORDER BY `order`, activity_id, milestone_id";
         $data = DBFunctions::execSQL($sql);
         
         foreach($data as $row){
-            $milestone = Milestone::newFromId($row['milestone_id']);
+            $milestone = Milestone::newFromId($row['milestone_id'], $row['id']);
             $activity = $milestone->getActivity();
             if($milestone->getStatus() == 'Deleted' || ($activity != null && $milestone->getActivity()->isDeleted())){
                 continue;
