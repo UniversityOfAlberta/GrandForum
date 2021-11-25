@@ -10,7 +10,7 @@ class ElitePostingAPI extends PostingAPI {
         if($id == "intern" || $id == "phd"){
             $postings = array();
             foreach($className::getAllPostings() as $posting){
-                if(strtolower($posting->type) == $id){
+                if(strtolower($posting->type) == $id && $posting->isAllowedToEdit()){
                     $postings[] = $posting;
                 }
             }
