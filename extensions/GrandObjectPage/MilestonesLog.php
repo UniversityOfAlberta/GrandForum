@@ -41,6 +41,9 @@ class MilestonesLog extends SpecialPage{
 		    }
 	        foreach($milestones as $key => $milestone){
 	            $tmp = $milestone;
+	            if(!Cache::exists("milestone_{$milestone->milestone_id}_{$milestone->id}")){
+	                $milestone->prepareParents();
+	            }
 	            do {
 	                $action = ($tmp->getParent() == null) ? "Created" : "Updated";
 	                $data[] = array($action, 

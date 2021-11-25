@@ -215,6 +215,21 @@ class Milestone {
         return $this->parent;
     }
     
+    function prepareParents(){
+        $data = DBFunctions::select(array('grand_milestones'),
+                                    array('*'),
+                                    array('milestone_id' => EQ($this->milestone_id)),
+                                    array('id' => 'DESC'));
+        foreach($data as $key => $row){
+            $tmp = array($row);
+            if(isset($data[$key+1])){
+                $tmp[1] = array('id' => $data[$key+1]['id']);
+            }
+            $key = "milestone_{$row['milestone_id']}_{$row['id']}";
+            Cache::store($key, $tmp);
+        }
+    }
+    
     /**
      * Returns the Milestone revision closest to the given date
      * @param string $date The date of the revision
