@@ -59,6 +59,8 @@ class NewsPostingAPI extends PostingAPI {
         $posting->author = $this->POST('author');
         $posting->sourceName = $this->POST('sourceName');
         $posting->sourceLink = $this->POST('sourceLink');
+        $posting->enableRegistration = $this->POST('enableRegistration');
+        $posting->enableMaterials = $this->POST('enableMaterials');
     }
 	
 }

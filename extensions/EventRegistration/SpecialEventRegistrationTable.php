@@ -37,7 +37,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
         $wgOut->addHTML("<table id='eventsTable' class='wikitable' frame='box' rules='all' width='100%'>
             <thead>
                 <tr>
-                    <th>Event</th>
+                    <th>Posting</th>
                     <th>Type</th>
                     <th>Name</th>
                     <th>Email</th>

@@ -1,14 +1,14 @@
 <?php
 
 $dir = dirname(__FILE__) . '/';
-$wgSpecialPages['SpecialMaterialSubmission'] = 'SpecialMaterialSubmission'; # Let MediaWiki know about the special page.
-$wgExtensionMessagesFiles['SpecialMaterialSubmission'] = $dir . 'SpecialMaterialSubmission.i18n.php';
-$wgSpecialPageGroups['SpecialMaterialSubmission'] = 'network-tools';
+$wgSpecialPages['SpecialNewsMaterialSubmission'] = 'SpecialNewsMaterialSubmission'; # Let MediaWiki know about the special page.
+$wgExtensionMessagesFiles['SpecialNewsMaterialSubmission'] = $dir . 'SpecialNewsMaterialSubmission.i18n.php';
+$wgSpecialPageGroups['SpecialNewsMaterialSubmission'] = 'network-tools';
 
-class SpecialMaterialSubmission extends SpecialPage{
+class SpecialNewsMaterialSubmission extends SpecialPage{
 
-    function SpecialMaterialSubmission() {
-        parent::__construct("SpecialMaterialSubmission", '', true);
+    function SpecialNewsMaterialSubmission() {
+        parent::__construct("SpecialNewsMaterialSubmission", '', true);
     }
     
     function handleEdit(){
@@ -21,9 +21,6 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         else if(!isset($_POST['name']) || trim($_POST['name']) == ""){
             $wgMessage->addError("You must provide your name");
-        }
-        else if(!isset($_POST['role']) || trim($_POST['name']) == ""){
-            $wgMessage->addError("You must provide a role");
         }
         else{
             // Add Event Registration
@@ -38,16 +35,16 @@ class SpecialMaterialSubmission extends SpecialPage{
             }
             $eventRegistration = new EventRegistration(array());
             $eventRegistration->eventId = $_POST['event'];
-            $eventRegistration->type = "Material Submission";
+            $eventRegistration->type = "News Material Submission";
             $eventRegistration->email = $_POST['email'];
             $eventRegistration->name = $_POST['name'];
-            $eventRegistration->role = $_POST['role'];
+            $eventRegistration->role = @$_POST['role'];
             $eventRegistration->misc = @$_POST['misc'];
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for submitting your materials");
-            $event = EventPosting::newFromId($_POST['event']);
-            if($event != null && $event->title != ""){
-                redirect($event->getUrl());
+            $news = NewsPosting::newFromId($_POST['event']);
+            if($news != null && $news->title != ""){
+                redirect($news->getUrl());
             }
         }
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
@@ -60,27 +57,23 @@ class SpecialMaterialSubmission extends SpecialPage{
         if(isset($_POST['submit'])){
             $this->handleEdit();
         }
-        $defaultEvent = "";
-        $eventOptions = array();
-        $event = EventPosting::newFromId(@$_GET['event']);
-        if($event->getId() != 0 && date('Y-m-d', time() - 3600*24*30) >= $event->getStartDate()){
-            $wgOut->addHTML("This event has already past");
-            return;
+        $defaultNews = "";
+        $newsOptions = array();
+        $news = NewsPosting::newFromId(@$_GET['event']);
+        $default = $news;
+        if($news != null && $news->title != "" && $news->getVisibility() == "Publish"){
+            $newsOptions[$news->id] = $news->title;
+            $defaultNews = $news->id;
         }
-        $default = $event;
-        if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
-            $eventOptions[$event->id] = $event->title;
-            $defaultEvent = $event->id;
-        }
-        $events = EventPosting::getAllPostings();
-        foreach($events as $event){
-            if($event->startDate >= date('Y-m-d', time() - 3600*24*30) && $event->getVisibility() == "Publish" && $event->isMaterialSubmissionEnabled()){
-                $eventOptions[$event->id] = $event->title;
+        $newses = NewsPosting::getAllPostings();
+        foreach($newses as $news){
+            if($news->getVisibility() == "Publish" && $news->isMaterialSubmissionEnabled()){
+                $newsOptions[$news->id] = $news->title;
             }
         }
-        $eventField = new SelectBox("event", "event", $defaultEvent, $eventOptions);
-        $eventField->attr('required', 'required');
-        $eventField->forceKey = true;
+        $newsField = new SelectBox("event", "event", $defaultNews, $newsOptions);
+        $newsField->attr('required', 'required');
+        $newsField->forceKey = true;
         
         $email = ($me->isLoggedIn()) ? $me->getEmail() : 
                 ((isset($_SERVER['uid']) && isset($_SERVER['sn'])) ? $_SERVER['uid']."@ualberta.ca" : "");
@@ -91,35 +84,9 @@ class SpecialMaterialSubmission extends SpecialPage{
                 ((isset($_SERVER['givenName']) && isset($_SERVER['sn'])) ? ucfirst($_SERVER['givenName'])." ".ucfirst($_SERVER['sn']) : "");
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
-
-        $roles = array("Keynote Speaker", "Host", "Presenter");
-        $roleLabel = "Participant Role";
-        $roleField = new SelectBox("role", "role", "Presenter", $roles);
         
         $instructions = "Please, upload here your material to be saved in our repository";
         $preamble = "";
-        if($default->title == "Replaying Japan Conference"){
-            $instructions = "Upload your conference video/slides/paper here. こちらに発表のビデオ・スライド・論文をアップロードして下さい。";
-            $preamble = "<p>Presenters are expected to upload their presentation by August 2nd. You can upload any of the following:<br />
-                            アップロードは、８月２日までに以下のいずれかの形態でお願いします。</p>
-                        <p>1. Video: a short video of what would have been your full presentation<br />
-                           ビデオ：発表に相当する短いビデオ </p>
-                        <p>2. Slides: a slide deck that explains your presentation<br />
-                           スライド：発表要旨を含むスライド</p>
-                        <p>3. Draft paper: a written conference paper for people to read<br />
-                           発表の草案：参加者が読むための原稿 <br />
-                           You are welcome to upload up to four files for each submission accepted.<br />
-                           一発表につき、４ファイルまで提出できます</p>
-                        <p>Please name your files in the following fashion:<br />
-                           提出されるファイルは、以下の形式でお願いします。</p>
-                        <p>&lt;Last Name of Contact Presenter&gt;, &lt;Short Title&gt;, &lt;Format of Upload File&gt; (Eg. Rockwell, Moral Management, Paper.pdf or Rockwell, Moral Management of Game Companies, Slides.pptx)</p>
-                        <p>Remember: Register for the conference here: <a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>
-                        <p>カンファレンスの参加登録はこちらからおこなって下さい。<a href='https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33'>https://forum.ai4society.ca/index.php/Special:SpecialEventRegistration?event=33</a></p>";
-            $roleLabel = "Are you a Grad Student?";
-            $roles = array("Grad Student" => "Yes", 
-                           "Not a Grad Student" => "No");
-            $roleField = new VerticalRadioBox("role", "role", "Yes", $roles);
-        }
         
         $linksField = new TextareaField("misc[Links]", "misc", "");
         
@@ -127,7 +94,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
         $maxFileSize = min((float)str_replace('M', '', ini_get('post_max_size')), (float)str_replace('M', '', ini_get('upload_max_filesize')));
-        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialMaterialSubmission{$getStr}' method='post' onSubmit='return validate()' enctype='multipart/form-data'>
+        $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialNewsMaterialSubmission{$getStr}' method='post' onSubmit='return validate()' enctype='multipart/form-data'>
             <p>{$instructions}</p>
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
@@ -136,8 +103,8 @@ class SpecialMaterialSubmission extends SpecialPage{
                     <h3>Participant information</h3>
                     <table class='wikitable' frame='box' rules='all'>
                         <tr>
-                            <td class='label' style='vertical-align: middle;'>Event</td>
-                            <td>{$eventField->render()}</td>
+                            <td class='label' style='vertical-align: middle;'>News</td>
+                            <td>{$newsField->render()}</td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>Your Email</td>
@@ -146,10 +113,6 @@ class SpecialMaterialSubmission extends SpecialPage{
                         <tr>
                             <td class='label' style='vertical-align: middle;'>Your Name</td>
                             <td>{$nameField->render()}</td>
-                        </tr>
-                        <tr>
-                            <td class='label'>{$roleLabel}</td>
-                            <td class='value'>{$roleField->render()}</td>
                         </tr>
                     </table>
                     <h3>Please upload up to 4 files with your material here.</h3>

@@ -21,7 +21,9 @@ NewsPosting = Posting.extend({
     defaults: _.extend(Object.assign({}, Posting.prototype.defaults), {
         author: "",
         sourceName: "",
-        sourceLink: ""
+        sourceLink: "",
+        enableRegistration: false,
+        enableMaterials: false
     })
     
 });
