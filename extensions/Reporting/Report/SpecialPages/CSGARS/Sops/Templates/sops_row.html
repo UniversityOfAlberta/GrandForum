@@ -214,6 +214,10 @@
 </td>
 
 <td>
+    <%= _.pluck(_.where(reviewers.concat(other_reviewers), {wantToSupervise: true}), 'name').join(",<br />") %>
+</td>
+
+<td>
     <%= _.pluck(_.where(reviewers.concat(other_reviewers), {willingToSupervise: true}), 'name').join(",<br />") %>
 </td>
 

@@ -186,6 +186,10 @@ class SOP extends AbstractSop{
         }
     }
 
+    function getWantToSupervise($user){
+        return false;
+    }
+
     function getWillingToSupervise($user){
         return false;
     }

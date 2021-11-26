@@ -74,6 +74,7 @@ SopsView = Backbone.View.extend({
         COL_FACULTY = counter++;
         COL_FACULTY_RANK = counter++;
         COL_NOTES = counter++;
+        COL_WANT = counter++;
         COL_WILLING = counter++;
         COL_SUPERVISOR = counter++;
         COL_COMMENTS = counter++;
@@ -213,6 +214,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
                                                         { 'width': '120px' }, // Notes
+                                                        { 'width': '85px' },  // Want to Supervise
                                                         { 'width': '85px' },  // Willing to Supervise
                                                         { 'width': '85px' },  // Supervisor
                                                         { 'width': '70px' },  // Comments
@@ -250,6 +252,8 @@ SopsView = Backbone.View.extend({
                                                         SopsView.filtersSelected.filterSelectAoI = this.filterSelectAoI.chosen({ placeholder_text_multiple: 'Select Area(s) of Interest' }).val();
                                                         SopsView.filtersSelected.filterSelectSupervisors = this.filterSelectSupervisors.chosen({ placeholder_text_multiple: 'Select Supervisor(s)' }).val();
                                                         SopsView.filtersSelected.filterSelectReviewers = this.filterSelectReviewers.chosen({ placeholder_text_multiple: 'Select Reviewers' }).val();
+                                                        SopsView.filtersSelected.filterSelectWant = this.filterSelectWant.chosen({ placeholder_text_multiple: 'Select Professor' }).val();
+                                                        SopsView.filtersSelected.filterSelectWilling = this.filterSelectWilling.chosen({ placeholder_text_multiple: 'Select Professor' }).val();
                                                         SopsView.filtersSelected.filterUniversity = this.filterUniversity.val();
                                                         SopsView.filtersSelected.referenceGPAInputMin = this.referenceGPAInputMin.val();
                                                         SopsView.filtersSelected.referenceGPAInputMax = this.referenceGPAInputMax.val();
@@ -474,6 +478,34 @@ SopsView = Backbone.View.extend({
         if (!_.isEmpty(filterreviewers)) {
             for (var i = 0; i < filterreviewers.length; ++i) {
                 if (reviewers.indexOf(unaccentChars(filterreviewers[i])) != -1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+   },
+   
+   filterWant: function(settings,data,dataIndex){
+        var filterwant = this.filterSelectWant.chosen().val();
+        var want = unaccentChars(data[COL_WANT]);
+        if (!_.isEmpty(filterwant)) {
+            for (var i = 0; i < filterwant.length; ++i) {
+                if (want.indexOf(unaccentChars(filterwant[i])) != -1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+   },
+   
+   filterWilling: function(settings,data,dataIndex){
+        var filterwilling = this.filterSelectWilling.chosen().val();
+        var willing = unaccentChars(data[COL_WILLING]);
+        if (!_.isEmpty(filterwilling)) {
+            for (var i = 0; i < filterwilling.length; ++i) {
+                if (willing.indexOf(unaccentChars(filterwilling[i])) != -1) {
                     return true;
                 }
             }
@@ -763,6 +795,8 @@ SopsView = Backbone.View.extend({
         this.filterSelectAoI = this.$('#filterSelectAoI');
         this.filterSelectSupervisors = this.$('#filterSelectSupervisors');
         this.filterSelectReviewers = this.$('#filterSelectReviewers');
+        this.filterSelectWant = this.$('#filterSelectWant');
+        this.filterSelectWilling = this.$('#filterSelectWilling');
         this.filterUniversity = this.$('#filterUniversity');
         this.numPubsInputMin = this.$('#numPubsInputMin');
         this.numPubsInputMax = this.$('#numPubsInputMax');
@@ -820,6 +854,8 @@ SopsView = Backbone.View.extend({
         fnChosen('filterSelectAoI');
         fnChosen('filterSelectSupervisors');
         fnChosen('filterSelectReviewers');
+        fnChosen('filterSelectWant');
+        fnChosen('filterSelectWilling');
 
         fnField('filterUniversity');
         fnField('referenceGPAInputMin');
@@ -889,6 +925,8 @@ SopsView = Backbone.View.extend({
             this.filterByAreasOfInterest.bind(this),
             this.filterSupervisors.bind(this),
             this.filterReviewers.bind(this),
+            this.filterWant.bind(this),
+            this.filterWilling.bind(this),
             this.filterUniversities.bind(this),
             this.filterEPLTest.bind(this),
             this.filterEPLScore.bind(this)
@@ -920,6 +958,8 @@ SopsView.filtersSelected = {
     filterSelectAoI: null, //
     filterSelectSupervisors: null, //
     filterSelectReviewers: null, //
+    filterSelectWant: null, //
+    filterSelectWilling: null, //
     filterUniversity: null,
     numPubsInputMin: null,
     numPubsInputMax: null,

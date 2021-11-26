@@ -227,6 +227,14 @@ class SOP extends AbstractSop{
         return $blob;
     }
     
+    function getWantToSupervise($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_SuperviseWant", $user, $gsms->id);
+        return ($blob == "Yes");
+    }
+    
     function getWillingToSupervise($user){
         $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);

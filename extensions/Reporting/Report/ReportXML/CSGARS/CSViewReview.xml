@@ -64,6 +64,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="q6" type="RadioReportItem" blobItem="CS_Review_SuperviseWant" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h3>Do you want to supervise this student?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="q5" type="RadioReportItem" blobItem="CS_Review_Supervise" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
             <![CDATA[
                 <h3>Are you willing to supervise this student?</h3>
