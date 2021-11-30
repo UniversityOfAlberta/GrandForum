@@ -393,58 +393,28 @@
 
     </ReportSection>
 
-
-    <!--
-    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
-
-        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
+    <ReportSection id="edi" tooltip="Equity, Diversity &amp; Inclusion" name="EDI" title="Equity, Diversity &amp; Inclusion" blobSection="EDI" type="EditableReportSection">
+        <ReportItem id="edi" type="Radio" blobItem="EDI" blobType="BLOB_TEXT" options="Yes|No" optional="true">
             <![CDATA[
-                <h3>Course History</h3>
-                {$item}
-                <div id='warning_container'></div>
+                <h3>I identify as</h3>
+                <ul style="line-height:1em;">
+                    <li>a woman,</li>
+                    <li>non-binary,</li>
+                    <li>a person with disabilities,</li>
+                    <li>an indigenous person (First Nations, Inuit, or Métis), and/or</li>
+                    <li>a member of the LGBTQ2+ community</li>
+                </ul>
+                <div style="margin-left: 2em;">{$item}</div>
             ]]>
         </ReportItem>
-
-        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" width="100px" optional="true">
+        <ReportItem id="details" type="Textarea" blobItem="DETAILS" height="100px" width="600px" optional="true">
             <![CDATA[
-                <h3>GPA<span title="Auto-calculated value from above courses" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>Additional Details</h3>
+                Optional: You may provide additional information if you'd like<br />
                 {$item}
-                <script type="text/javascript">
-
-                    var calculateGPAfull = function() {
-                        _.defer(function() {
-                            // get all the gpas from report item above this one
-                            var elArray = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                            
-                            // Calculate gpa
-                            var sumGPA = 0;
-                            for (var a = 0; a < elArray.length; a++) {
-                                if (!_.isNaN(parseFloat(elArray[a].value))) {
-                                    sumGPA += parseFloat(elArray[a].value);
-                                }
-                            }
-                            var avg = sumGPA / Math.max(elArray.length, 1);                            
-                            $('[name=BestFullYearGPA_qpaFullq2]').val(Number(Math.round(avg+'e2')+'e-2'));
-                            
-                        });
-                    };
-
-                    // set onChangeListeners
-                    $(document).off("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                    $(document).off("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
-                    $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']", calculateGPAfull);
-                    $(document).on("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
-                    calculateGPAfull();
-
-                </script>
             ]]>
         </ReportItem>
-
     </ReportSection>
--->
-
-
-
 
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
