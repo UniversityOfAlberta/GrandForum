@@ -168,7 +168,7 @@ class Project extends BackboneModel {
         }
     }
     
-    function generateProjectCache(){
+    static function generateProjectCache(){
         if(count(self::$projectDataCache) == 0){
             $data = DBFunctions::execSQL("SELECT p.id, p.name, p.phase, p.parent_id, e.new_id, e.action, e.effective_date, e.id as evolutionId, e.clear, s.type, s.status, s.start_date, s.end_date, s.private
                                           FROM grand_project p, grand_project_evolution e, grand_project_status s
@@ -363,7 +363,7 @@ class Project extends BackboneModel {
     
     // Constructor
     // Takes in a resultset containing the 'project id' and 'project name'
-    function Project($data){
+    function __construct($data){
         if(isset($data[0])){
             $this->id = $data[0]['id'];
             $this->name = $data[0]['name'];

@@ -3,11 +3,11 @@
  * Deletes a batch of pages.
  * Usage: php deleteBatch.php [-u <user>] [-r <reason>] [-i <interval>] [listfile]
  * where
- *	[listfile] is a file where each line contains the title of a page to be
- *             deleted, standard input is used if listfile is not given.
- *	<user> is the username
- *	<reason> is the delete reason
- *	<interval> is the number of seconds to sleep for after each delete
+ *   [listfile] is a file where each line contains the title of a page to be
+ *     deleted, standard input is used if listfile is not given.
+ *   <user> is the username
+ *   <reason> is the delete reason
+ *   <interval> is the number of seconds to sleep for after each delete
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -39,7 +41,7 @@ class DeleteBatch extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Deletes a batch of pages";
+		$this->addDescription( 'Deletes a batch of pages' );
 		$this->addOption( 'u', "User to perform deletion", false, true );
 		$this->addOption( 'r', "Reason to delete page", false, true );
 		$this->addOption( 'i', "Interval to sleep between deletions" );
@@ -55,28 +57,32 @@ class DeleteBatch extends Maintenance {
 		chdir( $oldCwd );
 
 		# Options processing
-		$username = $this->getOption( 'u', 'Delete page script' );
+		$username = $this->getOption( 'u', false );
 		$reason = $this->getOption( 'r', '' );
 		$interval = $this->getOption( 'i', 0 );
 
-		$user = User::newFromName( $username );
+		if ( $username === false ) {
+			$user = User::newSystemUser( 'Delete page script', [ 'steal' => true ] );
+		} else {
+			$user = User::newFromName( $username );
+		}
 		if ( !$user ) {
-			$this->error( "Invalid username", true );
+			$this->fatalError( "Invalid username" );
 		}
 		$wgUser = $user;
 
-		if ( $this->hasArg() ) {
-			$file = fopen( $this->getArg(), 'r' );
+		if ( $this->hasArg( 0 ) ) {
+			$file = fopen( $this->getArg( 0 ), 'r' );
 		} else {
 			$file = $this->getStdin();
 		}
 
 		# Setup
 		if ( !$file ) {
-			$this->error( "Unable to read file, exiting", true );
+			$this->fatalError( "Unable to read file, exiting" );
 		}
 
-		$dbw = wfGetDB( DB_MASTER );
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		# Handle each entry
 		for ( $linenum = 1; !feof( $file ); $linenum++ ) {
@@ -85,7 +91,7 @@ class DeleteBatch extends Maintenance {
 				continue;
 			}
 			$title = Title::newFromText( $line );
-			if ( is_null( $title ) ) {
+			if ( $title === null ) {
 				$this->output( "Invalid title '$line' on line $linenum\n" );
 				continue;
 			}
@@ -95,18 +101,28 @@ class DeleteBatch extends Maintenance {
 			}
 
 			$this->output( $title->getPrefixedText() );
-			$dbw->begin( __METHOD__ );
 			if ( $title->getNamespace() == NS_FILE ) {
-				$img = wfFindFile( $title );
-				if ( $img && $img->isLocal() && !$img->delete( $reason ) ) {
+				$img = MediaWikiServices::getInstance()->getRepoGroup()->findFile(
+					$title, [ 'ignoreRedirect' => true ]
+				);
+				if ( $img && $img->isLocal() && !$img->deleteFile( $reason, $user ) ) {
 					$this->output( " FAILED to delete associated file... " );
 				}
 			}
 			$page = WikiPage::factory( $title );
 			$error = '';
-			$success = $page->doDeleteArticle( $reason, false, 0, false, $error, $user );
-			$dbw->commit( __METHOD__ );
-			if ( $success ) {
+			$status = $page->doDeleteArticleReal(
+				$reason,
+				$user,
+				false,
+				null,
+				$error,
+				null,
+				[],
+				'delete',
+				true
+			);
+			if ( $status->isOK() ) {
 				$this->output( " Deleted!\n" );
 			} else {
 				$this->output( " FAILED to delete article\n" );
@@ -115,10 +131,10 @@ class DeleteBatch extends Maintenance {
 			if ( $interval ) {
 				sleep( $interval );
 			}
-			wfWaitForSlaves();
+			$lbFactory->waitForReplication();
 		}
 	}
 }
 
-$maintClass = "DeleteBatch";
+$maintClass = DeleteBatch::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

@@ -21,18 +21,24 @@
  * @ingroup Maintenance ExternalStorage
  */
 
-$optionsWithArgs = array( 'start', 'limit', 'type' );
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
+
+$optionsWithArgs = [ 'start', 'limit', 'type' ];
 require __DIR__ . '/../commandLine.inc';
 
-if ( !isset( $args[0] )  ) {
-	echo "Usage: php testCompression.php [--type=<type>] [--start=<start-date>] [--limit=<num-revs>] <page-title>\n";
+if ( !isset( $args[0] ) ) {
+	echo "Usage: php testCompression.php [--type=<type>] [--start=<start-date>] " .
+		"[--limit=<num-revs>] <page-title>\n";
 	exit( 1 );
 }
 
+$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
 $title = Title::newFromText( $args[0] );
 if ( isset( $options['start'] ) ) {
 	$start = wfTimestamp( TS_MW, strtotime( $options['start'] ) );
-	echo "Starting from " . $wgLang->timeanddate( $start ) . "\n";
+	echo "Starting from " . $lang->timeanddate( $start ) . "\n";
 } else {
 	$start = '19700101000000';
 }
@@ -43,29 +49,34 @@ if ( isset( $options['limit'] ) ) {
 	$limit = 1000;
 	$untilHappy = true;
 }
-$type = isset( $options['type'] ) ? $options['type'] : 'ConcatenatedGzipHistoryBlob';
+$type = $options['type'] ?? ConcatenatedGzipHistoryBlob::class;
 
-$dbr = wfGetDB( DB_SLAVE );
+$dbr = wfGetDB( DB_REPLICA );
+$revStore = MediaWikiServices::getInstance()->getRevisionStore();
+$revQuery = $revStore->getQueryInfo( [ 'page' ] );
 $res = $dbr->select(
-	array( 'page', 'revision', 'text' ),
-	'*',
-	array(
+	$revQuery['tables'],
+	$revQuery['fields'],
+	[
 		'page_namespace' => $title->getNamespace(),
 		'page_title' => $title->getDBkey(),
-		'page_id=rev_page',
 		'rev_timestamp > ' . $dbr->addQuotes( $dbr->timestamp( $start ) ),
-		'rev_text_id=old_id'
-	), __FILE__, array( 'LIMIT' => $limit )
+	],
+	__FILE__,
+	[ 'LIMIT' => $limit ],
+	$revQuery['joins']
 );
 
 $blob = new $type;
-$hashes = array();
-$keys = array();
+$hashes = [];
+$keys = [];
 $uncompressedSize = 0;
 $t = -microtime( true );
 foreach ( $res as $row ) {
-	$revision = new Revision( $row );
-	$text = $revision->getSerializedData();
+	$revRecord = $revStore->newRevisionFromRow( $row );
+	$text = $revRecord->getSlot( SlotRecord::MAIN, RevisionRecord::RAW )
+		->getContent()
+		->serialize();
 	$uncompressedSize += strlen( $text );
 	$hashes[$row->rev_id] = md5( $text );
 	$keys[$row->rev_id] = $blob->addItem( $text );
@@ -82,7 +93,7 @@ printf( "%s\nCompression ratio for %d revisions: %5.2f, %s -> %d\n",
 	$type,
 	count( $hashes ),
 	$uncompressedSize / strlen( $serialized ),
-	$wgLang->formatSize( $uncompressedSize ),
+	$lang->formatSize( $uncompressedSize ),
 	strlen( $serialized )
 );
 printf( "Compression time: %5.2f ms\n", $t * 1000 );

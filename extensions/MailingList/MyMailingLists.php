@@ -13,7 +13,7 @@ function runMyMailingLists($par) {
 
 class MyMailingLists extends SpecialPage{
 
-    function MyMailingLists() {
+    function __construct() {
         SpecialPage::__construct("MyMailingLists", null, true, 'runMyMailingLists');
     }
     

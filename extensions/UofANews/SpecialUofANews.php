@@ -11,7 +11,7 @@ function runSpecialUofANews($par) {
 
 class SpecialUofANews extends SpecialPage{
 
-    function SpecialUofANews() {
+    function __construct() {
         SpecialPage::__construct("SpecialUofANews", null, false, 'runSpecialUofANews');
     }
     

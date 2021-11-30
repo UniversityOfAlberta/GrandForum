@@ -204,12 +204,12 @@ $apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTask
 $apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
 
-function createModels(){
+function addScript($file){
+    global $wgServer, $wgScriptPath;
+    echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
+}
 
-    function addScript($file){
-        global $wgserver, $wgScriptPath;
-        echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
-    }
+function createModels(){
 
     addScript("RelationModel");
     addScript("RangeCollection");

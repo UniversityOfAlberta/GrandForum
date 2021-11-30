@@ -4,7 +4,7 @@ $wgHooks['UnknownAction'][] = 'PublicUniversityMapTab::getPublicUniversityMapDat
 
 class PublicUniversityMapTab extends AbstractTab {
 	
-	function PublicUniversityMapTab(){
+	function __construct(){
         parent::AbstractTab("University Map");
     }
 

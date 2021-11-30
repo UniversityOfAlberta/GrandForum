@@ -9,7 +9,7 @@ $wgHooks['SubLevelTabs'][] = 'SpecialEventRegistrationTable::createSubTabs';
 
 class SpecialEventRegistrationTable extends SpecialPage{
 
-    function SpecialEventRegistrationTable() {
+    function __construct() {
         parent::__construct("SpecialEventRegistrationTable", STAFF.'+', true);
     }
 

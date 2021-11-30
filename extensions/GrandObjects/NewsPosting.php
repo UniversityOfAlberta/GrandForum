@@ -12,7 +12,7 @@ class NewsPosting extends Posting {
     var $sourceName;
     var $sourceLink;
     
-    function NewsPosting($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             parent::posting($data);

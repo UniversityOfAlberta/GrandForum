@@ -21,37 +21,44 @@
  * @ingroup SpecialPage
  */
 
+use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\MediaWikiServices;
+use Wikimedia\IPUtils;
+use Wikimedia\Rdbms\IDatabase;
+
 /**
  * A special page that lists existing blocks
  *
  * @ingroup SpecialPage
  */
 class SpecialBlockList extends SpecialPage {
+	protected $target;
 
-	protected $target, $options;
+	protected $options;
 
-	function __construct() {
+	protected $blockType;
+
+	public function __construct() {
 		parent::__construct( 'BlockList' );
 	}
 
 	/**
-	 * Main execution point
-	 *
-	 * @param string $par title fragment
+	 * @param string|null $par Title fragment
 	 */
 	public function execute( $par ) {
 		$this->setHeaders();
 		$this->outputHeader();
+		$this->addHelpLink( 'Help:Blocking_users' );
 		$out = $this->getOutput();
-		$lang = $this->getLanguage();
 		$out->setPageTitle( $this->msg( 'ipblocklist' ) );
-		$out->addModuleStyles( 'mediawiki.special' );
+		$out->addModuleStyles( [ 'mediawiki.special' ] );
 
 		$request = $this->getRequest();
 		$par = $request->getVal( 'ip', $par );
 		$this->target = trim( $request->getVal( 'wpTarget', $par ) );
 
-		$this->options = $request->getArray( 'wpOptions', array() );
+		$this->options = $request->getArray( 'wpOptions', [] );
+		$this->blockType = $request->getVal( 'blockType' );
 
 		$action = $request->getText( 'action' );
 
@@ -63,87 +70,104 @@ class SpecialBlockList extends SpecialPage {
 			return;
 		}
 
+		# setup BlockListPager here to get the actual default Limit
+		$pager = $this->getBlockListPager();
+
 		# Just show the block list
-		$fields = array(
-			'Target' => array(
-				'type' => 'text',
-				'label-message' => 'ipadressorusername',
+		$fields = [
+			'Target' => [
+				'type' => 'user',
+				'label-message' => 'ipaddressorusername',
 				'tabindex' => '1',
 				'size' => '45',
 				'default' => $this->target,
-			),
-			'Options' => array(
+			],
+			'Options' => [
 				'type' => 'multiselect',
-				'options' => array(
-					$this->msg( 'blocklist-userblocks' )->text() => 'userblocks',
-					$this->msg( 'blocklist-tempblocks' )->text() => 'tempblocks',
-					$this->msg( 'blocklist-addressblocks' )->text() => 'addressblocks',
-					$this->msg( 'blocklist-rangeblocks' )->text() => 'rangeblocks',
-				),
+				'options-messages' => [
+					'blocklist-tempblocks' => 'tempblocks',
+					'blocklist-indefblocks' => 'indefblocks',
+					'blocklist-userblocks' => 'userblocks',
+					'blocklist-addressblocks' => 'addressblocks',
+					'blocklist-rangeblocks' => 'rangeblocks',
+				],
 				'flatlist' => true,
-			),
-			'Limit' => array(
-				'class' => 'HTMLBlockedUsersItemSelect',
-				'label-message' => 'table_pager_limit_label',
-				'options' => array(
-					$lang->formatNum( 20 ) => 20,
-					$lang->formatNum( 50 ) => 50,
-					$lang->formatNum( 100 ) => 100,
-					$lang->formatNum( 250 ) => 250,
-					$lang->formatNum( 500 ) => 500,
-				),
-				'name' => 'limit',
-				'default' => 50,
-			),
-		);
+			],
+		];
+
+		$fields['BlockType'] = [
+			'type' => 'select',
+			'label-message' => 'blocklist-type',
+			'options' => [
+				$this->msg( 'blocklist-type-opt-all' )->escaped() => '',
+				$this->msg( 'blocklist-type-opt-sitewide' )->escaped() => 'sitewide',
+				$this->msg( 'blocklist-type-opt-partial' )->escaped() => 'partial',
+			],
+			'name' => 'blockType',
+			'cssclass' => 'mw-field-block-type',
+		];
+
+		$fields['Limit'] = [
+			'type' => 'limitselect',
+			'label-message' => 'table_pager_limit_label',
+			'options' => $pager->getLimitSelectList(),
+			'name' => 'limit',
+			'default' => $pager->getLimit(),
+			'cssclass' => 'mw-field-limit mw-has-field-block-type',
+		];
+
 		$context = new DerivativeContext( $this->getContext() );
 		$context->setTitle( $this->getPageTitle() ); // Remove subpage
-		$form = new HTMLForm( $fields, $context );
-		$form->setMethod( 'get' );
-		$form->setWrapperLegendMsg( 'ipblocklist-legend' );
-		$form->setSubmitTextMsg( 'ipblocklist-submit' );
-		$form->prepareForm();
+		$form = HTMLForm::factory( 'ooui', $fields, $context );
+		$form
+			->setMethod( 'get' )
+			->setFormIdentifier( 'blocklist' )
+			->setWrapperLegendMsg( 'ipblocklist-legend' )
+			->setSubmitTextMsg( 'ipblocklist-submit' )
+			->prepareForm()
+			->displayForm( false );
 
-		$form->displayForm( '' );
-		$this->showList();
+		$this->showList( $pager );
 	}
 
-	function showList() {
-		# Purge expired entries on one in every 10 queries
-		if ( !mt_rand( 0, 10 ) ) {
-			Block::purgeExpired();
-		}
-
-		$conds = array();
+	/**
+	 * Setup a new BlockListPager instance.
+	 * @return BlockListPager
+	 */
+	protected function getBlockListPager() {
+		$conds = [];
+		$db = $this->getDB();
 		# Is the user allowed to see hidden blocks?
-		if ( !$this->getUser()->isAllowed( 'hideuser' ) ) {
+		if ( !MediaWikiServices::getInstance()
+			->getPermissionManager()
+			->userHasRight( $this->getUser(), 'hideuser' )
+		) {
 			$conds['ipb_deleted'] = 0;
 		}
 
 		if ( $this->target !== '' ) {
-			list( $target, $type ) = Block::parseTarget( $this->target );
+			list( $target, $type ) = DatabaseBlock::parseTarget( $this->target );
 
 			switch ( $type ) {
-				case Block::TYPE_ID:
-				case Block::TYPE_AUTO:
+				case DatabaseBlock::TYPE_ID:
+				case DatabaseBlock::TYPE_AUTO:
 					$conds['ipb_id'] = $target;
 					break;
 
-				case Block::TYPE_IP:
-				case Block::TYPE_RANGE:
-					list( $start, $end ) = IP::parseRange( $target );
-					$dbr = wfGetDB( DB_SLAVE );
-					$conds[] = $dbr->makeList(
-						array(
+				case DatabaseBlock::TYPE_IP:
+				case DatabaseBlock::TYPE_RANGE:
+					list( $start, $end ) = IPUtils::parseRange( $target );
+					$conds[] = $db->makeList(
+						[
 							'ipb_address' => $target,
-							Block::getRangeCond( $start, $end )
-						),
+							DatabaseBlock::getRangeCond( $start, $end )
+						],
 						LIST_OR
 					);
 					$conds['ipb_auto'] = 0;
 					break;
 
-				case Block::TYPE_USER:
+				case DatabaseBlock::TYPE_USER:
 					$conds['ipb_address'] = $target->getName();
 					$conds['ipb_auto'] = 0;
 					break;
@@ -154,9 +178,6 @@ class SpecialBlockList extends SpecialPage {
 		if ( in_array( 'userblocks', $this->options ) ) {
 			$conds['ipb_user'] = 0;
 		}
-		if ( in_array( 'tempblocks', $this->options ) ) {
-			$conds['ipb_expiry'] = 'infinity';
-		}
 		if ( in_array( 'addressblocks', $this->options ) ) {
 			$conds[] = "ipb_user != 0 OR ipb_range_end > ipb_range_start";
 		}
@@ -164,27 +185,47 @@ class SpecialBlockList extends SpecialPage {
 			$conds[] = "ipb_range_end = ipb_range_start";
 		}
 
-		# Check for other blocks, i.e. global/tor blocks
-		$otherBlockLink = array();
-		wfRunHooks( 'OtherBlockLogLink', array( &$otherBlockLink, $this->target ) );
+		$hideTemp = in_array( 'tempblocks', $this->options );
+		$hideIndef = in_array( 'indefblocks', $this->options );
+		if ( $hideTemp && $hideIndef ) {
+			// If both types are hidden, ensure query doesn't produce any results
+			$conds[] = '1=0';
+		} elseif ( $hideTemp ) {
+			$conds['ipb_expiry'] = $db->getInfinity();
+		} elseif ( $hideIndef ) {
+			$conds[] = "ipb_expiry != " . $db->addQuotes( $db->getInfinity() );
+		}
 
+		if ( $this->blockType === 'sitewide' ) {
+			$conds['ipb_sitewide'] = 1;
+		} elseif ( $this->blockType === 'partial' ) {
+			$conds['ipb_sitewide'] = 0;
+		}
+
+		return new BlockListPager( $this, $conds );
+	}
+
+	/**
+	 * Show the list of blocked accounts matching the actual filter.
+	 * @param BlockListPager $pager The BlockListPager instance for this page
+	 */
+	protected function showList( BlockListPager $pager ) {
 		$out = $this->getOutput();
+
+		# Check for other blocks, i.e. global/tor blocks
+		$otherBlockLink = [];
+		$this->getHookRunner()->onOtherBlockLogLink( $otherBlockLink, $this->target );
 
 		# Show additional header for the local block only when other blocks exists.
 		# Not necessary in a standard installation without such extensions enabled
 		if ( count( $otherBlockLink ) ) {
 			$out->addHTML(
-				Html::element( 'h2', array(), $this->msg( 'ipblocklist-localblock' )->text() ) . "\n"
+				Html::element( 'h2', [], $this->msg( 'ipblocklist-localblock' )->text() ) . "\n"
 			);
 		}
 
-		$pager = new BlockListPager( $this, $conds );
 		if ( $pager->getNumRows() ) {
-			$out->addHTML(
-				$pager->getNavigationBar() .
-					$pager->getBody() .
-					$pager->getNavigationBar()
-			);
+			$out->addParserOutputContent( $pager->getFullOutput() );
 		} elseif ( $this->target ) {
 			$out->addWikiMsg( 'ipblocklist-no-results' );
 		} else {
@@ -195,290 +236,32 @@ class SpecialBlockList extends SpecialPage {
 			$out->addHTML(
 				Html::rawElement(
 					'h2',
-					array(),
+					[],
 					$this->msg( 'ipblocklist-otherblocks', count( $otherBlockLink ) )->parse()
 				) . "\n"
 			);
 			$list = '';
 			foreach ( $otherBlockLink as $link ) {
-				$list .= Html::rawElement( 'li', array(), $link ) . "\n";
+				$list .= Html::rawElement( 'li', [], $link ) . "\n";
 			}
-			$out->addHTML( Html::rawElement( 'ul', array( 'class' => 'mw-ipblocklist-otherblocks' ), $list ) . "\n" );
+			$out->addHTML( Html::rawElement(
+				'ul',
+				[ 'class' => 'mw-ipblocklist-otherblocks' ],
+				$list
+			) . "\n" );
 		}
 	}
 
 	protected function getGroupName() {
 		return 'users';
 	}
-}
-
-class BlockListPager extends TablePager {
-	protected $conds;
-	protected $page;
 
 	/**
-	 * @param $page SpecialPage
-	 * @param $conds Array
-	 */
-	function __construct( $page, $conds ) {
-		$this->page = $page;
-		$this->conds = $conds;
-		$this->mDefaultDirection = true;
-		parent::__construct( $page->getContext() );
-	}
-
-	function getFieldNames() {
-		static $headers = null;
-
-		if ( $headers === null ) {
-			$headers = array(
-				'ipb_timestamp' => 'blocklist-timestamp',
-				'ipb_target' => 'blocklist-target',
-				'ipb_expiry' => 'blocklist-expiry',
-				'ipb_by' => 'blocklist-by',
-				'ipb_params' => 'blocklist-params',
-				'ipb_reason' => 'blocklist-reason',
-			);
-			foreach ( $headers as $key => $val ) {
-				$headers[$key] = $this->msg( $val )->text();
-			}
-		}
-
-		return $headers;
-	}
-
-	function formatValue( $name, $value ) {
-		static $msg = null;
-		if ( $msg === null ) {
-			$msg = array(
-				'anononlyblock',
-				'createaccountblock',
-				'noautoblockblock',
-				'emailblock',
-				'blocklist-nousertalk',
-				'unblocklink',
-				'change-blocklink',
-				'infiniteblock',
-			);
-			$msg = array_combine( $msg, array_map( array( $this, 'msg' ), $msg ) );
-		}
-
-		/** @var $row object */
-		$row = $this->mCurrentRow;
-
-		$formatted = '';
-
-		switch ( $name ) {
-			case 'ipb_timestamp':
-				$formatted = $this->getLanguage()->userTimeAndDate( $value, $this->getUser() );
-				break;
-
-			case 'ipb_target':
-				if ( $row->ipb_auto ) {
-					$formatted = $this->msg( 'autoblockid', $row->ipb_id )->parse();
-				} else {
-					list( $target, $type ) = Block::parseTarget( $row->ipb_address );
-					switch ( $type ) {
-						case Block::TYPE_USER:
-						case Block::TYPE_IP:
-							$formatted = Linker::userLink( $target->getId(), $target );
-							$formatted .= Linker::userToolLinks(
-								$target->getId(),
-								$target,
-								false,
-								Linker::TOOL_LINKS_NOBLOCK
-							);
-							break;
-						case Block::TYPE_RANGE:
-							$formatted = htmlspecialchars( $target );
-					}
-				}
-				break;
-
-			case 'ipb_expiry':
-				$formatted = $this->getLanguage()->formatExpiry( $value, /* User preference timezone */true );
-				if ( $this->getUser()->isAllowed( 'block' ) ) {
-					if ( $row->ipb_auto ) {
-						$links[] = Linker::linkKnown(
-							SpecialPage::getTitleFor( 'Unblock' ),
-							$msg['unblocklink'],
-							array(),
-							array( 'wpTarget' => "#{$row->ipb_id}" )
-						);
-					} else {
-						$links[] = Linker::linkKnown(
-							SpecialPage::getTitleFor( 'Unblock', $row->ipb_address ),
-							$msg['unblocklink']
-						);
-						$links[] = Linker::linkKnown(
-							SpecialPage::getTitleFor( 'Block', $row->ipb_address ),
-							$msg['change-blocklink']
-						);
-					}
-					$formatted .= ' ' . Html::rawElement(
-						'span',
-						array( 'class' => 'mw-blocklist-actions' ),
-						$this->msg( 'parentheses' )->rawParams(
-							$this->getLanguage()->pipeList( $links ) )->escaped()
-					);
-				}
-				break;
-
-			case 'ipb_by':
-				if ( isset( $row->by_user_name ) ) {
-					$formatted = Linker::userLink( $value, $row->by_user_name );
-					$formatted .= Linker::userToolLinks( $value, $row->by_user_name );
-				} else {
-					$formatted = htmlspecialchars( $row->ipb_by_text ); // foreign user?
-				}
-				break;
-
-			case 'ipb_reason':
-				$formatted = Linker::formatComment( $value );
-				break;
-
-			case 'ipb_params':
-				$properties = array();
-				if ( $row->ipb_anon_only ) {
-					$properties[] = $msg['anononlyblock'];
-				}
-				if ( $row->ipb_create_account ) {
-					$properties[] = $msg['createaccountblock'];
-				}
-				if ( $row->ipb_user && !$row->ipb_enable_autoblock ) {
-					$properties[] = $msg['noautoblockblock'];
-				}
-
-				if ( $row->ipb_block_email ) {
-					$properties[] = $msg['emailblock'];
-				}
-
-				if ( !$row->ipb_allow_usertalk ) {
-					$properties[] = $msg['blocklist-nousertalk'];
-				}
-
-				$formatted = $this->getLanguage()->commaList( $properties );
-				break;
-
-			default:
-				$formatted = "Unable to format $name";
-				break;
-		}
-
-		return $formatted;
-	}
-
-	function getQueryInfo() {
-		$info = array(
-			'tables' => array( 'ipblocks', 'user' ),
-			'fields' => array(
-				'ipb_id',
-				'ipb_address',
-				'ipb_user',
-				'ipb_by',
-				'ipb_by_text',
-				'by_user_name' => 'user_name',
-				'ipb_reason',
-				'ipb_timestamp',
-				'ipb_auto',
-				'ipb_anon_only',
-				'ipb_create_account',
-				'ipb_enable_autoblock',
-				'ipb_expiry',
-				'ipb_range_start',
-				'ipb_range_end',
-				'ipb_deleted',
-				'ipb_block_email',
-				'ipb_allow_usertalk',
-			),
-			'conds' => $this->conds,
-			'join_conds' => array( 'user' => array( 'LEFT JOIN', 'user_id = ipb_by' ) )
-		);
-
-		# Is the user allowed to see hidden blocks?
-		if ( !$this->getUser()->isAllowed( 'hideuser' ) ) {
-			$info['conds']['ipb_deleted'] = 0;
-		}
-
-		return $info;
-	}
-
-	public function getTableClass() {
-		return 'TablePager mw-blocklist';
-	}
-
-	function getIndexField() {
-		return 'ipb_timestamp';
-	}
-
-	function getDefaultSort() {
-		return 'ipb_timestamp';
-	}
-
-	function isFieldSortable( $name ) {
-		return false;
-	}
-
-	/**
-	 * Do a LinkBatch query to minimise database load when generating all these links
-	 * @param ResultWrapper $result
-	 */
-	function preprocessResults( $result ) {
-		wfProfileIn( __METHOD__ );
-		# Do a link batch query
-		$lb = new LinkBatch;
-		$lb->setCaller( __METHOD__ );
-
-		$userids = array();
-
-		foreach ( $result as $row ) {
-			$userids[] = $row->ipb_by;
-
-			# Usernames and titles are in fact related by a simple substitution of space -> underscore
-			# The last few lines of Title::secureAndSplit() tell the story.
-			$name = str_replace( ' ', '_', $row->ipb_address );
-			$lb->add( NS_USER, $name );
-			$lb->add( NS_USER_TALK, $name );
-		}
-
-		$ua = UserArray::newFromIDs( $userids );
-		foreach ( $ua as $user ) {
-			$name = str_replace( ' ', '_', $user->getName() );
-			$lb->add( NS_USER, $name );
-			$lb->add( NS_USER_TALK, $name );
-		}
-
-		$lb->execute();
-		wfProfileOut( __METHOD__ );
-	}
-}
-
-/**
- * Items per page dropdown. Essentially a crap workaround for bug 32603.
- */
-class HTMLBlockedUsersItemSelect extends HTMLSelectField {
-	/**
-	 * Basically don't do any validation. If it's a number that's fine. Also,
-	 * add it to the list if it's not there already
+	 * Return a IDatabase object for reading
 	 *
-	 * @param $value
-	 * @param $alldata
-	 * @return bool
+	 * @return IDatabase
 	 */
-	function validate( $value, $alldata ) {
-		if ( $value == '' ) {
-			return true;
-		}
-
-		// Let folks pick an explicit limit not from our list, as long as it's a real numbr.
-		if ( !in_array( $value, $this->mParams['options'] ) && $value == intval( $value ) && $value > 0 ) {
-			// This adds the explicitly requested limit value to the drop-down,
-			// then makes sure it's sorted correctly so when we output the list
-			// later, the custom option doesn't just show up last.
-			$this->mParams['options'][$this->mParent->getLanguage()->formatNum( $value )] = intval( $value );
-			asort( $this->mParams['options'] );
-		}
-
-		return true;
+	protected function getDB() {
+		return wfGetDB( DB_REPLICA );
 	}
 }

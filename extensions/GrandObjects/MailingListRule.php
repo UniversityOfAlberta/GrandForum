@@ -25,7 +25,7 @@ class MailingListRule extends BackboneModel {
         return $rule;
     }
 
-    function MailingListRule($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->type = $data[0]['type'];

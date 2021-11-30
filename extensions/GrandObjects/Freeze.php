@@ -40,7 +40,7 @@ class Freeze extends BackboneModel {
         return $freezes;
     }
     
-    function Freeze($data) {
+    function __construct($data) {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->projectId = $data[0]['project_id'];

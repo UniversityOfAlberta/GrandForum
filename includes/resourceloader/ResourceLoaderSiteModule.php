@@ -1,7 +1,5 @@
 <?php
 /**
- * Resource loader module for site customizations.
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -23,44 +21,37 @@
  */
 
 /**
- * Module for site customizations
+ * Module for site customizations.
+ *
+ * @ingroup ResourceLoader
+ * @internal
  */
 class ResourceLoaderSiteModule extends ResourceLoaderWikiModule {
-
-	/* Protected Methods */
+	/** @var string[] What client platforms the module targets (e.g. desktop, mobile) */
+	protected $targets = [ 'desktop', 'mobile' ];
 
 	/**
-	 * Gets list of pages used by this module
+	 * Get list of pages used by this module
 	 *
-	 * @param $context ResourceLoaderContext
-	 *
-	 * @return Array: List of pages
+	 * @param ResourceLoaderContext $context
+	 * @return array List of pages
 	 */
 	protected function getPages( ResourceLoaderContext $context ) {
-		global $wgUseSiteJs, $wgUseSiteCss;
-
-		$pages = array();
-		if ( $wgUseSiteJs ) {
-			$pages['MediaWiki:Common.js'] = array( 'type' => 'script' );
-			$pages['MediaWiki:' . ucfirst( $context->getSkin() ) . '.js'] = array( 'type' => 'script' );
+		$pages = [];
+		if ( $this->getConfig()->get( 'UseSiteJs' ) ) {
+			$skin = $context->getSkin();
+			$pages['MediaWiki:Common.js'] = [ 'type' => 'script' ];
+			$pages['MediaWiki:' . ucfirst( $skin ) . '.js'] = [ 'type' => 'script' ];
+			$this->getHookRunner()->onResourceLoaderSiteModulePages( $skin, $pages );
 		}
-		if ( $wgUseSiteCss ) {
-			$pages['MediaWiki:Common.css'] = array( 'type' => 'style' );
-			$pages['MediaWiki:' . ucfirst( $context->getSkin() ) . '.css'] = array( 'type' => 'style' );
-
-		}
-		$pages['MediaWiki:Print.css'] = array( 'type' => 'style', 'media' => 'print' );
 		return $pages;
 	}
 
-	/* Methods */
-
 	/**
-	 * Gets group name
-	 *
-	 * @return String: Name of group
+	 * @param ResourceLoaderContext|null $context
+	 * @return array
 	 */
-	public function getGroup() {
-		return 'site';
+	public function getDependencies( ResourceLoaderContext $context = null ) {
+		return [ 'site.styles' ];
 	}
 }

@@ -136,7 +136,7 @@ class Collaboration extends BackboneModel{
         return $collabs;
     }
  
-    function Collaboration($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->title = $data[0]['organization_name'];

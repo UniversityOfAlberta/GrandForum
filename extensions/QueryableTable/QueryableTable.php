@@ -82,7 +82,7 @@ abstract class QueryableTable {
     var $xls;
     var $class;
     
-    function QueryableTable(){
+    function __construct(){
         self::$idCounter++;
         $this->class = get_class($this);
     }

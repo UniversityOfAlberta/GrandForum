@@ -13,7 +13,7 @@ function runSpecialUofANewsTable($par) {
 
 class SpecialUofANewsTable extends SpecialPage{
 
-    function SpecialUofANewsTable(){
+    function __construct(){
         SpecialPage::__construct("SpecialUofANewsTable", null, false, 'runSpecialUofANewsTable');
     }
     
@@ -67,7 +67,7 @@ class SpecialUofANewsTable extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "SpecialUofANewsTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("UofA News Table", "$wgServer$wgScriptPath/index.php/Special:SpecialUofANewsTable", $selected);
         }

@@ -23,7 +23,7 @@ class BSIPosting extends Posting {
     var $skills;
     var $deletedText;
     
-    function BSIPosting($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             parent::posting($data);

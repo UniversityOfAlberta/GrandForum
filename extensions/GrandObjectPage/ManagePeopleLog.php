@@ -14,7 +14,7 @@ function runManagePeopleLog($par){
 
 class ManagePeopleLog extends SpecialPage{
 
-	function ManagePeopleLog() {
+	function __construct() {
 		SpecialPage::__construct("ManagePeopleLog", null, false, 'runManagePeopleLog');
 	}
 	
@@ -74,7 +74,7 @@ class ManagePeopleLog extends SpecialPage{
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
 
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ManagePeopleLog") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Manage People Log", "$wgServer$wgScriptPath/index.php/Special:ManagePeopleLog", $selected);
         }

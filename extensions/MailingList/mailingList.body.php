@@ -12,7 +12,7 @@ $wgHooks['userCan'][] = 'MailList::userCanExecute';
 
 class MailList{
     
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
         if($action == "read"){
             $me = Person::newFromUser($user);
@@ -131,7 +131,7 @@ class MailList{
         return implode("\n\n", $bodyLines);
     }
     
-    function createMailListTable($action, $article){
+    static function createMailListTable($action, $article){
         global $wgOut, $wgTitle, $wgScriptPath, $wgServer, $wgUser, $config;
         $result = true;
         if($wgTitle->getText() == "Mail Index" || $wgTitle->getNsText() == "Mail" && strpos($wgTitle->getText(), "MAIL") !== 0){

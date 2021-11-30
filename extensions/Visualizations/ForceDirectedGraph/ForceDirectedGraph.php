@@ -8,7 +8,7 @@ class ForceDirectedGraph extends Visualization {
     var $width = "1000px";
     var $fn = "undefined";
     
-    function ForceDirectedGraph($url){
+    function __construct($url){
         $this->url = $url;
         self::Visualization();
     }

@@ -34,7 +34,7 @@ class CRMOpportunity extends BackboneModel {
 	    return $opportunities;
 	}
 	
-	function CRMOpportunity($data){
+	function __construct($data){
 	    if(count($data) > 0){
 		    $this->id = $data[0]['id'];
 		    $this->contact = $data[0]['contact'];

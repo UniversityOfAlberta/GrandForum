@@ -14,7 +14,6 @@
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
 if(PHP_SAPI != 'cli'){
-    session_start();
     if(phpversion() < 5.4){
         error_reporting(E_ALL);
     }
@@ -54,6 +53,7 @@ require_once( "$IP/config/Config.php" );
 
 ## Path settings
 $wgSitename         = $config->getValue("siteName");
+$wgServer           = $config->getValue("server");
 $wgScriptPath       = $config->getValue("path");
 
 ## Database settings
@@ -134,14 +134,6 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = true;
 
 ## Shared memory settings
-define('CACHE_APC', 'apc_shared');
-if(!TESTING){
-    if(extension_loaded('apc') && ini_get('apc.enabled')){
-        $wgMainCacheType = CACHE_APC;
-        $wgMessageCacheType = CACHE_APC;
-        $wgParserCacheType = CACHE_APC;
-    }
-}
 $wgDisableCounters = true;
 $wgJobRunRate = 0.01;
 $wgSessionsInObjectCache = true;
@@ -474,10 +466,8 @@ function currentTimeStamp(){
  * @return string
  */
 function wfReportTimeOld() {
-	global $wgRequestTime, $wgShowHostnames;
-
-	$now = wfTime();
-	$elapsed = $now - $wgRequestTime;
+	global $wgRequest, $wgShowHostnames;
+	$elapsed = $wgRequest->getElapsedTime();
     $mem = memory_get_peak_usage(true);
     $bytes = array(1 => 'B', 2 => 'KiB', 3 => 'MiB', 4 => 'GiB');
     $ind = 1;
@@ -485,8 +475,7 @@ function wfReportTimeOld() {
 	    $mem = $mem / 1024;
 	    $ind++;
     }
-	
-
+    
 	return $wgShowHostnames
 		? sprintf( "<!-- Served by %s in %01.3f secs (%01.1f %s used). -->", wfHostname(), $elapsed, $mem, $bytes[$ind] )
 		: sprintf( "<!-- Served in %01.3f secs (%01.1f %s used). -->", $elapsed, $mem, $bytes[$ind] );

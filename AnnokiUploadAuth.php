@@ -48,7 +48,7 @@ if( preg_match( '!\d+px-(.*)!i', $name, $m ) )
 	$name = $m[1];
 wfDebugLog( 'AnnokiUploadAuth', "\$name is {$name}" );
 
-$title = Title::makeTitleSafe( NS_IMAGE, $name );
+$title = Title::makeTitleSafe( NS_FILE, $name );
 if( !$title instanceof Title ) {
 	wfDebugLog( 'AnnokiUploadAuth', "Unable to construct a valid Title from `{$name}`" );
 	wfForbidden();
@@ -61,7 +61,7 @@ if ($egAnProtectUploads){
   //Check to see if the file is not current (from the archive).
   if (strpos($filename, "$realUpload/archive/") === 0) {
     $match = substr(strstr($filename, '!'),1);
-    $unarchivedTitle =  Title::makeTitleSafe( NS_IMAGE, $match);
+    $unarchivedTitle =  Title::makeTitleSafe( NS_FILE, $match);
   }
   str_replace("File:", "", $unarchivedTitle);
   if (!$unarchivedTitle->userCanRead() || !$wgUser->isLoggedIn()){
@@ -84,7 +84,7 @@ if( !$wgUser->getId() && ( !is_array( $wgWhitelistRead ) || !in_array( $title, $
 	$sql = "SELECT * 
 		FROM $upTable
 		WHERE upload_name = '$title_tmp'";
-	$dbr = wfGetDB(DB_SLAVE);
+	$dbr = wfGetDB(DB_REPLICA);
 	$result = $dbr->query($sql);
 	$rows = array();
 	while($row = $dbr->fetchRow($result)){

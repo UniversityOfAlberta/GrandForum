@@ -24,7 +24,7 @@ class ApplicationsTable extends SpecialPage{
     var $platform;
     var $projects;
 
-    function ApplicationsTable() {
+    function __construct() {
         SpecialPage::__construct("ApplicationsTable", null, false, 'runApplicationsTable');
     }
     
@@ -428,7 +428,7 @@ class ApplicationsTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ApplicationsTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Reports", "$wgServer$wgScriptPath/index.php/Special:ApplicationsTable", $selected);
         }

@@ -3,7 +3,7 @@ $wgHooks['ArticleViewHeader'][] = 'MaterialPage::processPage';
 
 class MaterialPage {
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgTitle, $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgFileExtensions, $wgMessage;
         $me = Person::newFromId($wgUser->getId());
         if($wgTitle->getNSText() == "Multimedia"){

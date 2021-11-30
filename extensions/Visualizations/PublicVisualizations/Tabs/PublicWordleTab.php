@@ -4,7 +4,7 @@ $wgHooks['UnknownAction'][] = 'PublicWordleTab::getPublicWordleData';
 
 class PublicWordleTab extends AbstractTab {
 	
-	function PublicWordleTab(){
+	function __construct(){
         parent::AbstractTab("Project Tag Cloud");
     }
 

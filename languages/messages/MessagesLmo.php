@@ -1,8 +1,7 @@
 <?php
 /** lumbaart (lumbaart)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -24,9 +23,9 @@
  * @author Sprüngli
  */
 
-$fallback = 'it';
+$fallback = 'pms, eml, lij, vec, it';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_SPECIAL          => 'Special',
 	NS_TALK             => 'Ciciarada',
 	NS_USER             => 'Druvadur',
@@ -42,9 +41,9 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Ciciarada_Jüt',
 	NS_CATEGORY         => 'Categuria',
 	NS_CATEGORY_TALK    => 'Ciciarada_Categuria',
-);
+];
 
-$namespaceAliases = array(
+$namespaceAliases = [
 	'Speciale'              => NS_SPECIAL,
 	'Discussione'           => NS_TALK,
 	'Utente'                => NS_USER,
@@ -68,37 +67,36 @@ $namespaceAliases = array(
 	'Categoria'             => NS_CATEGORY,
 	'Discussioni_categoria' => NS_CATEGORY_TALK,
 	'Ciciarada_Categoria'   => NS_CATEGORY_TALK,
-);
+];
 
-$specialPageAliases = array(
-	'Allmessages'               => array( 'Messagg' ),
-	'BrokenRedirects'           => array( 'RedirezionS-cepada' ),
-	'Categories'                => array( 'Categurij' ),
-	'CreateAccount'             => array( 'CreaCünt' ),
-	'DoubleRedirects'           => array( 'RedirezionDubia' ),
-	'Listadmins'                => array( 'ListaAministradur' ),
-	'Listfiles'                 => array( 'Imagin' ),
-	'Listgrouprights'           => array( 'Lista_di_dirit_di_grüp' ),
-	'Listusers'                 => array( 'Dupradur' ),
-	'Lonelypages'               => array( 'PaginnDaPerLur' ),
-	'Newimages'                 => array( 'ImaginNöv' ),
-	'Preferences'               => array( 'Preferenz' ),
-	'Randompage'                => array( 'PaginaAzardada' ),
-	'Recentchanges'             => array( 'CambiamentRecent' ),
-	'Recentchangeslinked'       => array( 'MudifeghCulegaa' ),
-	'Specialpages'              => array( 'PaginnSpecial' ),
-	'Statistics'                => array( 'Statìstegh' ),
-	'Uncategorizedpages'        => array( 'PaginnMingaCategurizaa' ),
-	'Upload'                    => array( 'CaregaSü' ),
-	'Userlogin'                 => array( 'VenaDenter' ),
-	'Userlogout'                => array( 'VaFö' ),
-	'Watchlist'                 => array( 'SutOeugg' ),
-);
+$specialPageAliases = [
+	'Allmessages'               => [ 'Messagg' ],
+	'BrokenRedirects'           => [ 'RedirezionS-cepada' ],
+	'Categories'                => [ 'Categurij' ],
+	'CreateAccount'             => [ 'CreaCünt' ],
+	'DoubleRedirects'           => [ 'RedirezionDubia' ],
+	'Listadmins'                => [ 'ListaAministradur' ],
+	'Listfiles'                 => [ 'Imagin' ],
+	'Listgrouprights'           => [ 'Lista_di_dirit_di_grüp' ],
+	'Listusers'                 => [ 'Dupradur' ],
+	'Lonelypages'               => [ 'PaginnDaPerLur' ],
+	'Newimages'                 => [ 'ImaginNöv' ],
+	'Preferences'               => [ 'Preferenz' ],
+	'Randompage'                => [ 'PaginaAzardada' ],
+	'Recentchanges'             => [ 'CambiamentRecent' ],
+	'Recentchangeslinked'       => [ 'MudifeghCulegaa' ],
+	'Specialpages'              => [ 'PaginnSpecial' ],
+	'Statistics'                => [ 'Statìstegh' ],
+	'Uncategorizedpages'        => [ 'PaginnMingaCategurizaa' ],
+	'Upload'                    => [ 'CaregaSü' ],
+	'Userlogin'                 => [ 'VenaDenter' ],
+	'Userlogout'                => [ 'VaFö' ],
+	'Watchlist'                 => [ 'SutOeugg' ],
+];
 
-$magicWords = array(
-	'img_right'                 => array( '1', 'drita', 'destra', 'right' ),
-	'img_left'                  => array( '1', 'manzína', 'sinistra', 'left' ),
-	'img_none'                  => array( '1', 'nissön', 'nessuno', 'none' ),
-	'sitename'                  => array( '1', 'NUMSIT', 'NOMESITO', 'SITENAME' ),
-);
-
+$magicWords = [
+	'img_right'                 => [ '1', 'drita', 'destra', 'right' ],
+	'img_left'                  => [ '1', 'manzína', 'sinistra', 'left' ],
+	'img_none'                  => [ '1', 'nissön', 'nessuno', 'none' ],
+	'sitename'                  => [ '1', 'NUMSIT', 'NOMESITO', 'SITENAME' ],
+];

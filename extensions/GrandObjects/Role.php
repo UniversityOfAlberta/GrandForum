@@ -43,7 +43,7 @@ class Role extends BackboneModel {
 	}
 	
 	// Constructor
-	function Role($data){
+	function __construct($data){
 		if(count($data) > 0){
 			$this->id = $data[0]['id'];
 			$this->user = $data[0]['user_id'];

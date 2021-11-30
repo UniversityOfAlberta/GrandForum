@@ -4,7 +4,7 @@ class DuplicatesTab extends AbstractTab {
 
     var $handler;
 
-    function DuplicatesTab($name, $handler){
+    function __construct($name, $handler){
         $this->handler = $handler;
         $this->AbstractTab($name);
     }

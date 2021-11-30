@@ -2,6 +2,7 @@
 
 autoload_register('AccessControls');
 
+require "SpecialSideUserLogin.php";
 require "Management.php";
 require "AnnokiNamespaces.php";
 require "AccessControls.body.php";

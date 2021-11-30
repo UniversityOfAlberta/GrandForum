@@ -674,7 +674,7 @@ class Paper extends BackboneModel{
     }
     
     // Constructor
-    function Paper($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->category = $data[0]['category'];

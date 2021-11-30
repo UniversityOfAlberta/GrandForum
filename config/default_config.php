@@ -10,6 +10,9 @@
     // The name of the Site
     $config->setValue("siteName", "{$config->getValue("networkName")} Forum");
     
+    // Value for wgServer
+    $config->setValue("server", "");
+    
     // The path for the Forum
     $config->setValue("path", "");
     

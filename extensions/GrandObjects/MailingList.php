@@ -61,7 +61,7 @@ class MailingList extends BackboneModel {
         return self::$allMailingLists;
     }
     
-    function MailingList($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['projectid'];
             $this->name = $data[0]['mailListName'];

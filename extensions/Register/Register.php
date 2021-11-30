@@ -51,7 +51,7 @@ class Register extends SpecialPage{
         return true;
     }
 
-    function Register() {
+    function __construct() {
         SpecialPage::__construct("Register", null, false);
     }
     
@@ -238,7 +238,7 @@ class Register extends SpecialPage{
 
 $wgSpecialPages['HQPRegister'] = 'HQPRegister'; # Let MediaWiki know about the special page.
 class HQPRegister extends SpecialPage{
-    function HQPRegister() {
+    function __construct() {
         SpecialPage::__construct("HQPRegister", null, false);
     }
     

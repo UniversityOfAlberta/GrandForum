@@ -33,7 +33,7 @@ class Diversity extends BackboneModel {
     var $immigration = "";
     var $comments = "";
 
-    function Diversity($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->language = $data[0]['language'];

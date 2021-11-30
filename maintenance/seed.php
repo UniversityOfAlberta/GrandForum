@@ -114,8 +114,8 @@ DBFunctions::execSQL("INSERT INTO `{$config->getValue('dbTestName')}`.`mw_text` 
 
 // Start populating custom data
 $wgDBname = $wgTestDBname;
-$dbw = wfGetDB(DB_MASTER);
-$dbr = wfGetDB(DB_SLAVE);
+$dbw = wfGetDB(DB_PRIMARY);
+$dbr = wfGetDB(DB_REPLICA);
 $dbw->open($wgDBserver, $wgDBuser, $wgDBpassword, $wgDBname);
 $dbr->open($wgDBserver, $wgDBuser, $wgDBpassword, $wgDBname);
 

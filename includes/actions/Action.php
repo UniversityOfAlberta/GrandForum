@@ -19,8 +19,12 @@
  * @file
  */
 
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\HookContainer\HookRunner;
+use MediaWiki\MediaWikiServices;
+
 /**
- * @defgroup Actions Action done on pages
+ * @defgroup Actions Actions
  */
 
 /**
@@ -28,29 +32,43 @@
  * are distinct from Special Pages because an action must apply to exactly one page.
  *
  * To add an action in an extension, create a subclass of Action, and add the key to
- * $wgActions.  There is also the deprecated UnknownAction hook
+ * $wgActions.
  *
  * Actions generally fall into two groups: the show-a-form-then-do-something-with-the-input
  * format (protect, delete, move, etc), and the just-do-something format (watch, rollback,
  * patrol, etc). The FormAction and FormlessAction classes represent these two groups.
+ *
+ * @stable to extend
  */
-abstract class Action {
+abstract class Action implements MessageLocalizer {
 
 	/**
 	 * Page on which we're performing the action
-	 * @var WikiPage|Article|ImagePage|CategoryPage|Page $page
+	 * @since 1.17
+	 * @deprecated since 1.35, use {@link getArticle()} ?? {@link getWikiPage()}. Must be removed.
+	 * @internal
+	 *
+	 * @var WikiPage|Article|ImagePage|CategoryPage|Page
 	 */
 	protected $page;
 
 	/**
+	 * @var Article
+	 * @since 1.35
+	 */
+	private $article;
+
+	/**
 	 * IContextSource if specified; otherwise we'll use the Context from the Page
-	 * @var IContextSource $context
+	 * @since 1.17
+	 * @var IContextSource
 	 */
 	protected $context;
 
 	/**
 	 * The fields used to create the HTMLForm
-	 * @var array $fields
+	 * @since 1.17
+	 * @var array
 	 */
 	protected $fields;
 
@@ -59,9 +77,12 @@ abstract class Action {
 	 * the action is disabled, or null if it's not recognised
 	 * @param string $action
 	 * @param array $overrides
-	 * @return bool|null|string|callable
+	 * @return bool|null|string|callable|Action
 	 */
-	final private static function getClass( $action, array $overrides ) {
+	private static function getClass(
+		string $action,
+		array $overrides
+	) {
 		global $wgActions;
 		$action = strtolower( $action );
 
@@ -82,22 +103,40 @@ abstract class Action {
 
 	/**
 	 * Get an appropriate Action subclass for the given action
-	 * @param string $action
-	 * @param Page $page
-	 * @param IContextSource $context
+	 * @since 1.17
+	 *
+	 * @param string|null $action Null is hard-deprecated since 1.35
+	 * @param Article|WikiPage|Page $article Calling with anything
+	 *  other than Article is hard-deprecated since 1.35
+	 * @param IContextSource|null $context
 	 * @return Action|bool|null False if the action is disabled, null
 	 *     if it is not recognised
 	 */
-	final public static function factory( $action, Page $page, IContextSource $context = null ) {
-		$classOrCallable = self::getClass( $action, $page->getActionOverrides() );
-
+	final public static function factory(
+		?string $action,
+		Page $article,
+		IContextSource $context = null
+	) {
+		if ( !is_string( $action ) ) {
+			wfDeprecated( __METHOD__ . ' with null $action', '1.35' );
+			return null;
+		}
+		if ( !$article instanceof Article ) {
+			wfDeprecated(
+				__METHOD__ . ' with ' . get_class( $article ),
+				'1.35'
+			);
+		}
+		$classOrCallable = self::getClass( $action, $article->getActionOverrides() );
 		if ( is_string( $classOrCallable ) ) {
-			$obj = new $classOrCallable( $page, $context );
-			return $obj;
+			if ( !class_exists( $classOrCallable ) ) {
+				return false;
+			}
+			return new $classOrCallable( $article, $context );
 		}
 
 		if ( is_callable( $classOrCallable ) ) {
-			return call_user_func_array( $classOrCallable, array( $page, $context ) );
+			return $classOrCallable( $article, $context );
 		}
 
 		return $classOrCallable;
@@ -123,15 +162,17 @@ abstract class Action {
 			$actionName = 'nosuchaction';
 		}
 
-		// Workaround for bug #20966: inability of IE to provide an action dependent
+		// Workaround for T22966: inability of IE to provide an action dependent
 		// on which submit button is clicked.
 		if ( $actionName === 'historysubmit' ) {
 			if ( $request->getBool( 'revisiondelete' ) ) {
 				$actionName = 'revisiondelete';
+			} elseif ( $request->getBool( 'editchangetags' ) ) {
+				$actionName = 'editchangetags';
 			} else {
 				$actionName = 'view';
 			}
-		} elseif ( $actionName == 'editredlink' ) {
+		} elseif ( $actionName === 'editredlink' ) {
 			$actionName = 'edit';
 		}
 
@@ -142,7 +183,12 @@ abstract class Action {
 			return 'view';
 		}
 
-		$action = Action::factory( $actionName, $context->getWikiPage(), $context );
+		$action = self::factory(
+			$actionName,
+			Article::newFromWikiPage( $context->getWikiPage(), $context ),
+			$context
+		);
+
 		if ( $action instanceof Action ) {
 			return $action->getName();
 		}
@@ -152,33 +198,31 @@ abstract class Action {
 
 	/**
 	 * Check if a given action is recognised, even if it's disabled
+	 * @since 1.17
 	 *
 	 * @param string $name Name of an action
 	 * @return bool
 	 */
-	final public static function exists( $name ) {
-		return self::getClass( $name, array() ) !== null;
+	final public static function exists( string $name ) : bool {
+		return self::getClass( $name, [] ) !== null;
 	}
 
 	/**
 	 * Get the IContextSource in use here
+	 * @since 1.17
 	 * @return IContextSource
 	 */
 	final public function getContext() {
 		if ( $this->context instanceof IContextSource ) {
 			return $this->context;
-		} elseif ( $this->page instanceof Article ) {
-			// NOTE: $this->page can be a WikiPage, which does not have a context.
-			wfDebug( __METHOD__ . ": no context known, falling back to Article's context.\n" );
-			return $this->page->getContext();
 		}
-
-		wfWarn( __METHOD__ . ': no context known, falling back to RequestContext::getMain().' );
-		return RequestContext::getMain();
+		wfDebug( __METHOD__ . ": no context known, falling back to Article's context." );
+		return $this->getArticle()->getContext();
 	}
 
 	/**
 	 * Get the WebRequest being used for this instance
+	 * @since 1.17
 	 *
 	 * @return WebRequest
 	 */
@@ -188,6 +232,7 @@ abstract class Action {
 
 	/**
 	 * Get the OutputPage being used for this instance
+	 * @since 1.17
 	 *
 	 * @return OutputPage
 	 */
@@ -197,6 +242,7 @@ abstract class Action {
 
 	/**
 	 * Shortcut to get the User being used for this instance
+	 * @since 1.17
 	 *
 	 * @return User
 	 */
@@ -206,6 +252,7 @@ abstract class Action {
 
 	/**
 	 * Shortcut to get the Skin being used for this instance
+	 * @since 1.17
 	 *
 	 * @return Skin
 	 */
@@ -223,56 +270,118 @@ abstract class Action {
 	}
 
 	/**
-	 * Shortcut to get the user Language being used for this instance
+	 * Get a WikiPage object
+	 * @since 1.35
 	 *
-	 * @deprecated since 1.19 Use getLanguage instead
-	 * @return Language
+	 * @return WikiPage
 	 */
-	final public function getLang() {
-		wfDeprecated( __METHOD__, '1.19' );
-		return $this->getLanguage();
+	final public function getWikiPage() : WikiPage {
+		return $this->getArticle()->getPage();
+	}
+
+	/**
+	 * Get a Article object
+	 * @since 1.35
+	 * Overriding this method is deprecated since 1.35
+	 *
+	 * @return Article|ImagePage|CategoryPage
+	 */
+	public function getArticle() {
+		return $this->article;
 	}
 
 	/**
 	 * Shortcut to get the Title object from the page
+	 * @since 1.17
+	 *
 	 * @return Title
 	 */
 	final public function getTitle() {
-		return $this->page->getTitle();
+		return $this->getWikiPage()->getTitle();
 	}
 
 	/**
 	 * Get a Message object with context set
 	 * Parameters are the same as wfMessage()
 	 *
+	 * @param string|string[]|MessageSpecifier $key
+	 * @param mixed ...$params
 	 * @return Message
 	 */
-	final public function msg() {
-		$params = func_get_args();
-		return call_user_func_array( array( $this->getContext(), 'msg' ), $params );
+	final public function msg( $key, ...$params ) {
+		return $this->getContext()->msg( $key, ...$params );
 	}
 
 	/**
-	 * Constructor.
-	 *
+	 * @since 1.35
+	 * @return HookContainer
+	 */
+	protected function getHookContainer() {
+		return MediaWikiServices::getInstance()->getHookContainer();
+	}
+
+	/**
+	 * @since 1.35
+	 * @internal This is for use by core only. Hook interfaces may be removed
+	 *   without notice.
+	 * @return HookRunner
+	 */
+	protected function getHookRunner() {
+		return new HookRunner( $this->getHookContainer() );
+	}
+
+	/**
 	 * Only public since 1.21
 	 *
-	 * @param Page $page
-	 * @param IContextSource $context
+	 * @stable to call
+	 *
+	 * @param Article|WikiPage|Page $page
+	 * 	Calling with anything other then Article is deprecated since 1.35
+	 * @param IContextSource|null $context
 	 */
-	public function __construct( Page $page, IContextSource $context = null ) {
+	public function __construct(
+		Page $page,
+		IContextSource $context = null
+	) {
 		if ( $context === null ) {
 			wfWarn( __METHOD__ . ' called without providing a Context object.' );
-			// NOTE: We could try to initialize $context using $page->getContext(),
-			//      if $page is an Article. That however seems to not work seamlessly.
 		}
 
-		$this->page = $page;
+		$this->page = $page;// @todo remove b/c
+		$this->article = self::convertPageToArticle( $page, $context, __METHOD__ );
 		$this->context = $context;
+	}
+
+	private static function convertPageToArticle(
+		Page $page,
+		?IContextSource $context,
+		string $method
+	) : Article {
+		if ( $page instanceof Article ) {
+			return $page;
+		}
+
+		if ( !$page instanceof WikiPage ) {
+			throw new LogicException(
+				$method . ' called with unknown Page: ' . get_class( $page )
+			);
+		}
+
+		wfDeprecated(
+			$method . ' with: ' . get_class( $page ),
+			'1.35'
+		);
+
+		return Article::newFromWikiPage(
+			$page,
+			$context ?? RequestContext::getMain()
+		);
 	}
 
 	/**
 	 * Return the name of the action this object responds to
+	 * @since 1.17
+	 *
 	 * @return string Lowercase name
 	 */
 	abstract public function getName();
@@ -280,6 +389,9 @@ abstract class Action {
 	/**
 	 * Get the permission required to perform this action.  Often, but not always,
 	 * the same as the action name
+	 * @since 1.17
+	 * @stable to override
+	 *
 	 * @return string|null
 	 */
 	public function getRestriction() {
@@ -290,23 +402,35 @@ abstract class Action {
 	 * Checks if the given user (identified by an object) can perform this action.  Can be
 	 * overridden by sub-classes with more complicated permissions schemes.  Failures here
 	 * must throw subclasses of ErrorPageError
+	 * @since 1.17
+	 * @stable to override
 	 *
-	 * @param User $user The user to check, or null to use the context user
+	 * @param User $user
 	 * @throws UserBlockedError|ReadOnlyError|PermissionsError
-	 * @return bool True on success
 	 */
 	protected function checkCanExecute( User $user ) {
 		$right = $this->getRestriction();
 		if ( $right !== null ) {
-			$errors = $this->getTitle()->getUserPermissionsErrors( $right, $user );
+			$errors = MediaWikiServices::getInstance()->getPermissionManager()
+				->getPermissionErrors( $right, $user, $this->getTitle() );
 			if ( count( $errors ) ) {
 				throw new PermissionsError( $right, $errors );
 			}
 		}
 
-		if ( $this->requiresUnblock() && $user->isBlocked() ) {
+		// If the action requires an unblock, explicitly check the user's block.
+		if ( $this->requiresUnblock() && $user->isBlockedFrom( $this->getTitle() ) ) {
 			$block = $user->getBlock();
-			throw new UserBlockedError( $block );
+			if ( $block ) {
+				throw new UserBlockedError(
+					$block,
+					$user,
+					$this->getLanguage(),
+					$this->getRequest()->getIP()
+				);
+			}
+
+			throw new PermissionsError( $this->getName(), [ 'badaccess-group0' ] );
 		}
 
 		// This should be checked at the end so that the user won't think the
@@ -315,11 +439,13 @@ abstract class Action {
 		if ( $this->requiresWrite() && wfReadOnly() ) {
 			throw new ReadOnlyError();
 		}
-		return true;
 	}
 
 	/**
 	 * Whether this action requires the wiki not to be locked
+	 * @since 1.17
+	 * @stable to override
+	 *
 	 * @return bool
 	 */
 	public function requiresWrite() {
@@ -328,6 +454,9 @@ abstract class Action {
 
 	/**
 	 * Whether this action can still be executed by a blocked user
+	 * @since 1.17
+	 * @stable to override
+	 *
 	 * @return bool
 	 */
 	public function requiresUnblock() {
@@ -337,18 +466,21 @@ abstract class Action {
 	/**
 	 * Set output headers for noindexing etc.  This function will not be called through
 	 * the execute() entry point, so only put UI-related stuff in here.
+	 * @stable to override
+	 * @since 1.17
 	 */
 	protected function setHeaders() {
 		$out = $this->getOutput();
-		$out->setRobotPolicy( "noindex,nofollow" );
+		$out->setRobotPolicy( 'noindex,nofollow' );
 		$out->setPageTitle( $this->getPageTitle() );
-		$this->getOutput()->setSubtitle( $this->getDescription() );
+		$out->setSubtitle( $this->getDescription() );
 		$out->setArticleRelated( true );
 	}
 
 	/**
 	 * Returns the name that goes in the \<h1\> page title
 	 *
+	 * @stable to override
 	 * @return string
 	 */
 	protected function getPageTitle() {
@@ -357,24 +489,63 @@ abstract class Action {
 
 	/**
 	 * Returns the description that goes below the \<h1\> tag
+	 * @since 1.17
+	 * @stable to override
 	 *
-	 * @return string
+	 * @return string HTML
 	 */
 	protected function getDescription() {
 		return $this->msg( strtolower( $this->getName() ) )->escaped();
 	}
 
 	/**
+	 * Adds help link with an icon via page indicators.
+	 * Link target can be overridden by a local message containing a wikilink:
+	 * the message key is: lowercase action name + '-helppage'.
+	 * @param string $to Target MediaWiki.org page title or encoded URL.
+	 * @param bool $overrideBaseUrl Whether $url is a full URL, to avoid MW.o.
+	 * @since 1.25
+	 */
+	public function addHelpLink( $to, $overrideBaseUrl = false ) {
+		$msg = wfMessage( MediaWikiServices::getInstance()->getContentLanguage()->lc(
+			self::getActionName( $this->getContext() )
+			) . '-helppage' );
+
+		if ( !$msg->isDisabled() ) {
+			$helpUrl = Skin::makeUrl( $msg->plain() );
+			$this->getOutput()->addHelpLink( $helpUrl, true );
+		} else {
+			$this->getOutput()->addHelpLink( $to, $overrideBaseUrl );
+		}
+	}
+
+	/**
 	 * The main action entry point.  Do all output for display and send it to the context
 	 * output.  Do not use globals $wgOut, $wgRequest, etc, in implementations; use
 	 * $this->getOutput(), etc.
+	 * @since 1.17
+	 *
 	 * @throws ErrorPageError
 	 */
 	abstract public function show();
 
 	/**
-	 * Execute the action in a silent fashion: do not display anything or release any errors.
-	 * @return bool whether execution was successful
+	 * Call wfTransactionalTimeLimit() if this request was POSTed
+	 * @since 1.26
 	 */
-	abstract public function execute();
+	protected function useTransactionalTimeLimit() {
+		if ( $this->getRequest()->wasPosted() ) {
+			wfTransactionalTimeLimit();
+		}
+	}
+
+	/**
+	 * Indicates whether this action may perform database writes
+	 * @return bool
+	 * @since 1.27
+	 * @stable to override
+	 */
+	public function doesWrites() {
+		return false;
+	}
 }

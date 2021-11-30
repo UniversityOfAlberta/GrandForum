@@ -4,7 +4,7 @@ $wgHooks['UnknownAction'][] = 'PublicUniTreeTab::getPublicUniTreeData';
 
 class PublicUniTreeTab extends AbstractTab {
 	
-	function PublicUniTreeTab(){
+	function __construct(){
         parent::AbstractTab("Institutions");
     }
 

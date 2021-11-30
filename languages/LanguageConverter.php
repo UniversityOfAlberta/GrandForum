@@ -16,24 +16,33 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @file
- * @ingroup Language
+ * @author Zhengzhu Feng <zhengzhu@gmail.com>
+ * @author fdcn <fdcn64@gmail.com>
+ * @author shinjiman <shinjiman@gmail.com>
+ * @author PhiLiP <philip.npc@gmail.com>
  */
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
 
 /**
- * Base class for language conversion.
- * @ingroup Language
+ * Base class for multi-variant language conversion.
  *
- * @author Zhengzhu Feng <zhengzhu@gmail.com>
- * @maintainers fdcn <fdcn64@gmail.com>, shinjiman <shinjiman@gmail.com>, PhiLiP <philip.npc@gmail.com>
+ * @ingroup Language
  */
-class LanguageConverter {
+abstract class LanguageConverter implements ILanguageConverter {
+	use DeprecationHelper;
 
 	/**
 	 * languages supporting variants
 	 * @since 1.20
 	 * @var array
 	 */
-	static public $languagesWithVariants = array(
+	public static $languagesWithVariants = [
+		'en',
+		'crh',
 		'gan',
 		'iu',
 		'kk',
@@ -43,66 +52,93 @@ class LanguageConverter {
 		'tg',
 		'uz',
 		'zh',
-	);
+	];
 
 	public $mMainLanguageCode;
-	public $mVariants, $mVariantFallbacks, $mVariantNames;
-	public $mTablesLoaded = false;
-	public $mTables;
+
+	/**
+	 * @var string[]
+	 */
+	public $mVariants;
+	private $mVariantFallbacks;
+	public $mVariantNames;
+	private $mTablesLoaded = false;
+
+	/**
+	 * @var ReplacementArray[]|bool[]
+	 */
+	protected $mTables;
+
 	// 'bidirectional' 'unidirectional' 'disable' for each variant
 	public $mManualLevel;
 
 	/**
-	 * @var string memcached key name
+	 * @var Language
 	 */
-	public $mCacheKey;
-
-	public $mLangObj;
+	private $mLangObj;
 	public $mFlags;
-	public $mDescCodeSep = ':', $mDescVarSep = ';';
-	public $mUcfirst = false;
-	public $mConvRuleTitle = false;
-	public $mURLVariant;
-	public $mUserVariant;
-	public $mHeaderVariant;
-	public $mMaxDepth = 10;
-	public $mVarSeparatorPattern;
+	public $mDescCodeSep = ':';
+	public $mDescVarSep = ';';
+	private $mUcfirst = false;
+	private $mConvRuleTitle = false;
+	private $mURLVariant;
+	private $mUserVariant;
+	private $mHeaderVariant;
+	private $mMaxDepth = 10;
+	private $mVarSeparatorPattern;
 
-	const CACHE_VERSION_KEY = 'VERSION 7';
+	private const CACHE_VERSION_KEY = 'VERSION 7';
 
 	/**
-	 * Constructor
-	 *
 	 * @param Language $langobj
 	 * @param string $maincode The main language code of this language
-	 * @param array $variants The supported variants of this language
+	 * @param string[] $variants The supported variants of this language
 	 * @param array $variantfallbacks The fallback language of each variant
 	 * @param array $flags Defining the custom strings that maps to the flags
 	 * @param array $manualLevel Limit for supported variants
 	 */
-	public function __construct( $langobj, $maincode, $variants = array(),
-								$variantfallbacks = array(), $flags = array(),
-								$manualLevel = array() ) {
+	public function __construct(
+		$langobj,
+		$maincode,
+		$variants = [],
+		$variantfallbacks = [],
+		$flags = [],
+		$manualLevel = []
+	) {
 		global $wgDisabledVariants;
+
+		$this->deprecatePublicProperty( 'mURLVariant', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mUcfirst', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mConvRuleTitle', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mUserVariant', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mHeaderVariant', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mMaxDepth = 10', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mVarSeparatorPattern', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mLangObj', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mVariantFallbacks', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mTablesLoaded', '1.35', __CLASS__ );
+		$this->deprecatePublicProperty( 'mTables', '1.35', __CLASS__ );
+
 		$this->mLangObj = $langobj;
 		$this->mMainLanguageCode = $maincode;
 		$this->mVariants = array_diff( $variants, $wgDisabledVariants );
 		$this->mVariantFallbacks = $variantfallbacks;
-		$this->mVariantNames = Language::fetchLanguageNames();
-		$this->mCacheKey = wfMemcKey( 'conversiontables', $maincode );
-		$defaultflags = array(
+		$this->mVariantNames = MediaWikiServices::getInstance()
+			->getLanguageNameUtils()
+			->getLanguageNames();
+		$defaultflags = [
 			// 'S' show converted text
 			// '+' add rules for alltext
 			// 'E' the gave flags is error
 			// these flags above are reserved for program
-			'A' => 'A',	  // add rule for convert code (all text convert)
-			'T' => 'T',	  // title convert
-			'R' => 'R',	  // raw content
-			'D' => 'D',	  // convert description (subclass implement)
-			'-' => '-',	  // remove convert (not implement)
-			'H' => 'H',	  // add rule for convert code (but no display in placed code)
-			'N' => 'N'	  // current variant name
-		);
+			'A' => 'A',   // add rule for convert code (all text convert)
+			'T' => 'T',   // title convert
+			'R' => 'R',   // raw content
+			'D' => 'D',   // convert description (subclass implement)
+			'-' => '-',   // remove convert (not implement)
+			'H' => 'H',   // add rule for convert code (but no display in placed code)
+			'N' => 'N',   // current variant name
+		];
 		$this->mFlags = array_merge( $defaultflags, $flags );
 		foreach ( $this->mVariants as $v ) {
 			if ( array_key_exists( $v, $manualLevel ) ) {
@@ -118,7 +154,7 @@ class LanguageConverter {
 	 * Get all valid variants.
 	 * Call this instead of using $this->mVariants directly.
 	 *
-	 * @return array Contains all valid variants
+	 * @return string[] Contains all valid variants
 	 */
 	public function getVariants() {
 		return $this->mVariants;
@@ -136,10 +172,7 @@ class LanguageConverter {
 	 *   main code if there is no fallback
 	 */
 	public function getVariantFallbacks( $variant ) {
-		if ( isset( $this->mVariantFallbacks[$variant] ) ) {
-			return $this->mVariantFallbacks[$variant];
-		}
-		return $this->mMainLanguageCode;
+		return $this->mVariantFallbacks[$variant] ?? $this->mMainLanguageCode;
 	}
 
 	/**
@@ -159,8 +192,13 @@ class LanguageConverter {
 
 		$req = $this->getURLVariant();
 
-		if ( $wgUser->isLoggedIn() && !$req ) {
-			$req = $this->getUserVariant();
+		Hooks::runner()->onGetLangPreferredVariant( $req );
+
+		// NOTE: For calls from Setup.php, wgUser or the session might not be set yet (T235360)
+		// Use case: During autocreation, User::isUsableName is called which uses interface
+		// messages for reserved usernames.
+		if ( $wgUser && $wgUser->isSafeToLoad() && $wgUser->isLoggedIn() && !$req ) {
+			$req = $this->getUserVariant( $wgUser );
 		} elseif ( !$req ) {
 			$req = $this->getHeaderVariant();
 		}
@@ -169,11 +207,13 @@ class LanguageConverter {
 			$req = $this->validateVariant( $wgDefaultLanguageVariant );
 		}
 
+		$req = $this->validateVariant( $req );
+
 		// This function, unlike the other get*Variant functions, is
 		// not memoized (i.e. there return value is not cached) since
 		// new information might appear during processing after this
 		// is first called.
-		if ( $this->validateVariant( $req ) ) {
+		if ( $req ) {
 			return $req;
 		}
 		return $this->mMainLanguageCode;
@@ -204,13 +244,33 @@ class LanguageConverter {
 	}
 
 	/**
-	 * Validate the variant
-	 * @param string $variant The variant to validate
-	 * @return mixed Returns the variant if it is valid, null otherwise
+	 * Validate the variant and return an appropriate strict internal
+	 * variant code if one exists.  Compare to Language::hasVariant()
+	 * which does a strict test.
+	 *
+	 * @param string|null $variant The variant to validate
+	 * @return mixed Returns an equivalent valid variant code if possible,
+	 *   null otherwise
 	 */
 	public function validateVariant( $variant = null ) {
-		if ( $variant !== null && in_array( $variant, $this->mVariants ) ) {
+		if ( $variant === null ) {
+			return null;
+		}
+		// Our internal variants are always lower-case; the variant we
+		// are validating may have mixed case.
+		$variant = LanguageCode::replaceDeprecatedCodes( strtolower( $variant ) );
+		if ( in_array( $variant, $this->mVariants ) ) {
 			return $variant;
+		}
+		// Browsers are supposed to use BCP 47 standard in the
+		// Accept-Language header, but not all of our internal
+		// mediawiki variant codes are BCP 47.  Map BCP 47 code
+		// to our internal code.
+		foreach ( $this->mVariants as $v ) {
+			// Case-insensitive match (BCP 47 is mixed case)
+			if ( strtolower( LanguageCode::bcp47( $v ) ) === $variant ) {
+				return $v;
+			}
 		}
 		return null;
 	}
@@ -218,7 +278,7 @@ class LanguageConverter {
 	/**
 	 * Get the variant specified in the URL
 	 *
-	 * @return mixed Variant if one found, false otherwise.
+	 * @return mixed Variant if one found, null otherwise
 	 */
 	public function getURLVariant() {
 		global $wgRequest;
@@ -241,31 +301,30 @@ class LanguageConverter {
 	/**
 	 * Determine if the user has a variant set.
 	 *
-	 * @return mixed Variant if one found, false otherwise.
+	 * @param User $user
+	 * @return mixed Variant if one found, null otherwise
 	 */
-	protected function getUserVariant() {
-		global $wgUser, $wgContLang;
-
-		// memoizing this function wreaks havoc on parserTest.php
-		/*
-		if ( $this->mUserVariant ) {
-			return $this->mUserVariant;
+	protected function getUserVariant( User $user ) {
+		// This should only be called within the class after the user is known to be
+		// safe to load and and logged in, but check just in case.
+		if ( !$user->isSafeToLoad() ) {
+			return false;
 		}
-		*/
 
-		// Get language variant preference from logged in users
-		// Don't call this on stub objects because that causes infinite
-		// recursion during initialisation
-		if ( $wgUser->isLoggedIn() ) {
-			if ( $this->mMainLanguageCode == $wgContLang->getCode() ) {
-				$ret = $wgUser->getOption( 'variant' );
+		if ( $user->isLoggedIn() ) {
+			// Get language variant preference from logged in users
+			if (
+				$this->mMainLanguageCode ==
+				MediaWikiServices::getInstance()->getContentLanguage()->getCode()
+			) {
+				$ret = $user->getOption( 'variant' );
 			} else {
-				$ret = $wgUser->getOption( 'variant-' . $this->mMainLanguageCode );
+				$ret = $user->getOption( 'variant-' . $this->mMainLanguageCode );
 			}
 		} else {
 			// figure out user lang without constructing wgLang to avoid
 			// infinite recursion
-			$ret = $wgUser->getOption( 'language' );
+			$ret = $user->getOption( 'language' );
 		}
 
 		$this->mUserVariant = $this->validateVariant( $ret );
@@ -275,7 +334,7 @@ class LanguageConverter {
 	/**
 	 * Determine the language variant from the Accept-Language header.
 	 *
-	 * @return mixed Variant if one found, false otherwise.
+	 * @return mixed Variant if one found, null otherwise
 	 */
 	protected function getHeaderVariant() {
 		global $wgRequest;
@@ -284,14 +343,14 @@ class LanguageConverter {
 			return $this->mHeaderVariant;
 		}
 
-		// see if some supported language variant is set in the
+		// See if some supported language variant is set in the
 		// HTTP header.
 		$languages = array_keys( $wgRequest->getAcceptLang() );
 		if ( empty( $languages ) ) {
 			return null;
 		}
 
-		$fallbackLanguages = array();
+		$fallbackLanguages = [];
 		foreach ( $languages as $language ) {
 			$this->mHeaderVariant = $this->validateVariant( $language );
 			if ( $this->mHeaderVariant ) {
@@ -330,70 +389,101 @@ class LanguageConverter {
 	 * If you want to parse rules, try to use convert() or
 	 * convertTo().
 	 *
-	 * @param $text String the text to be converted
-	 * @param $toVariant bool|string the target language code
-	 * @return String the converted text
+	 * @param string $text The text to be converted
+	 * @param bool|string $toVariant The target language code
+	 * @return string The converted text
 	 */
 	public function autoConvert( $text, $toVariant = false ) {
-		wfProfileIn( __METHOD__ );
-
 		$this->loadTables();
 
 		if ( !$toVariant ) {
 			$toVariant = $this->getPreferredVariant();
 			if ( !$toVariant ) {
-				wfProfileOut( __METHOD__ );
 				return $text;
 			}
 		}
 
 		if ( $this->guessVariant( $text, $toVariant ) ) {
-			wfProfileOut( __METHOD__ );
 			return $text;
 		}
-
 		/* we convert everything except:
 		   1. HTML markups (anything between < and >)
 		   2. HTML entities
 		   3. placeholders created by the parser
+		   IMPORTANT: Beware of failure from pcre.backtrack_limit (T124404).
+		   Minimize use of backtracking where possible.
 		*/
-		global $wgParser;
-		if ( isset( $wgParser ) && $wgParser->UniqPrefix() != '' ) {
-			$marker = '|' . $wgParser->UniqPrefix() . '[\-a-zA-Z0-9]+';
-		} else {
-			$marker = '';
+		static $reg;
+		if ( $reg === null ) {
+			$marker = '|' . Parser::MARKER_PREFIX . '[^\x7f]++\x7f';
+
+			// this one is needed when the text is inside an HTML markup
+			$htmlfix = '|<[^>\004]++(?=\004$)|^[^<>]*+>';
+
+			// Optimize for the common case where these tags have
+			// few or no children. Thus try and possesively get as much as
+			// possible, and only engage in backtracking when we hit a '<'.
+
+			// disable convert to variants between <code> tags
+			$codefix = '<code>[^<]*+(?:(?:(?!<\/code>).)[^<]*+)*+<\/code>|';
+			// disable conversion of <script> tags
+			$scriptfix = '<script[^>]*+>[^<]*+(?:(?:(?!<\/script>).)[^<]*+)*+<\/script>|';
+			// disable conversion of <pre> tags
+			$prefix = '<pre[^>]*+>[^<]*+(?:(?:(?!<\/pre>).)[^<]*+)*+<\/pre>|';
+			// The "|.*+)" at the end, is in case we missed some part of html syntax,
+			// we will fail securely (hopefully) by matching the rest of the string.
+			$htmlFullTag = '<(?:[^>=]*+(?>[^>=]*+=\s*+(?:"[^"]*"|\'[^\']*\'|[^\'">\s]*+))*+[^>=]*+>|.*+)|';
+
+			$reg = '/' . $codefix . $scriptfix . $prefix . $htmlFullTag .
+				 '&[a-zA-Z#][a-z0-9]++;' . $marker . $htmlfix . '|\004$/s';
 		}
-
-		// this one is needed when the text is inside an HTML markup
-		$htmlfix = '|<[^>]+$|^[^<>]*>';
-
-		// disable convert to variants between <code> tags
-		$codefix = '<code>.+?<\/code>|';
-		// disable conversion of <script> tags
-		$scriptfix = '<script.*?>.*?<\/script>|';
-		// disable conversion of <pre> tags
-		$prefix = '<pre.*?>.*?<\/pre>|';
-
-		$reg = '/' . $codefix . $scriptfix . $prefix .
-			'<[^>]+>|&[a-zA-Z#][a-z0-9]+;' . $marker . $htmlfix . '/s';
 		$startPos = 0;
 		$sourceBlob = '';
 		$literalBlob = '';
 
 		// Guard against delimiter nulls in the input
+		// (should never happen: see T159174)
 		$text = str_replace( "\000", '', $text );
+		$text = str_replace( "\004", '', $text );
 
 		$markupMatches = null;
 		$elementMatches = null;
+
+		// We add a marker (\004) at the end of text, to ensure we always match the
+		// entire text (Otherwise, pcre.backtrack_limit might cause silent failure)
+		$textWithMarker = $text . "\004";
 		while ( $startPos < strlen( $text ) ) {
-			if ( preg_match( $reg, $text, $markupMatches, PREG_OFFSET_CAPTURE, $startPos ) ) {
+			if ( preg_match( $reg, $textWithMarker, $markupMatches, PREG_OFFSET_CAPTURE, $startPos ) ) {
 				$elementPos = $markupMatches[0][1];
 				$element = $markupMatches[0][0];
+				if ( $element === "\004" ) {
+					// We hit the end.
+					$elementPos = strlen( $text );
+					$element = '';
+				} elseif ( substr( $element, -1 ) === "\004" ) {
+					// This can sometimes happen if we have
+					// unclosed html tags (For example
+					// when converting a title attribute
+					// during a recursive call that contains
+					// a &lt; e.g. <div title="&lt;">.
+					$element = substr( $element, 0, -1 );
+				}
 			} else {
-				$elementPos = strlen( $text );
-				$element = '';
+				// If we hit here, then Language Converter could be tricked
+				// into doing an XSS, so we refuse to translate.
+				// If non-crazy input manages to reach this code path,
+				// we should consider it a bug.
+				$log = LoggerFactory::getInstance( 'languageconverter' );
+				$log->error( "Hit pcre.backtrack_limit in " . __METHOD__
+					. ". Disabling language conversion for this page.",
+					[
+						"method" => __METHOD__,
+						"variant" => $toVariant,
+						"startOfText" => substr( $text, 0, 500 )
+					]
+				);
+				return $text;
 			}
-
 			// Queue the part before the markup for translation in a batch
 			$sourceBlob .= substr( $text, $startPos, $elementPos - $startPos ) . "\000";
 
@@ -402,11 +492,18 @@ class LanguageConverter {
 
 			// Translate any alt or title attributes inside the matched element
 			if ( $element !== ''
-				&& preg_match( '/^(<[^>\s]*)\s([^>]*)(.*)$/', $element, $elementMatches )
+				&& preg_match( '/^(<[^>\s]*+)\s([^>]*+)(.*+)$/', $element, $elementMatches )
 			) {
+				// FIXME, this decodes entities, so if you have something
+				// like <div title="foo&lt;bar"> the bar won't get
+				// translated since after entity decoding it looks like
+				// unclosed html and we call this method recursively
+				// on attributes.
 				$attrs = Sanitizer::decodeTagAttributes( $elementMatches[2] );
+				// Ensure self-closing tags stay self-closing.
+				$close = substr( $elementMatches[2], -1 ) === '/' ? ' /' : '';
 				$changed = false;
-				foreach ( array( 'title', 'alt' ) as $attrName ) {
+				foreach ( [ 'title', 'alt' ] as $attrName ) {
 					if ( !isset( $attrs[$attrName] ) ) {
 						continue;
 					}
@@ -416,8 +513,6 @@ class LanguageConverter {
 						$attr = $this->recursiveConvertTopLevel( $attr, $toVariant );
 					}
 
-					// Remove HTML tags to avoid disrupting the layout
-					$attr = preg_replace( '/<[^>]+>/', '', $attr );
 					if ( $attr !== $attrs[$attrName] ) {
 						$attrs[$attrName] = $attr;
 						$changed = true;
@@ -425,7 +520,7 @@ class LanguageConverter {
 				}
 				if ( $changed ) {
 					$element = $elementMatches[1] . Html::expandAttributes( $attrs ) .
-						$elementMatches[3];
+						$close . $elementMatches[3];
 				}
 			}
 			$literalBlob .= $element . "\000";
@@ -445,7 +540,6 @@ class LanguageConverter {
 			$literalIter->next();
 		}
 
-		wfProfileOut( __METHOD__ );
 		return $output;
 	}
 
@@ -459,14 +553,12 @@ class LanguageConverter {
 	 * @return string Translated text
 	 */
 	public function translate( $text, $variant ) {
-		wfProfileIn( __METHOD__ );
 		// If $text is empty or only includes spaces, do nothing
 		// Otherwise translate it
 		if ( trim( $text ) ) {
 			$this->loadTables();
 			$text = $this->mTables[$variant]->replace( $text );
 		}
-		wfProfileOut( __METHOD__ );
 		return $text;
 	}
 
@@ -477,27 +569,25 @@ class LanguageConverter {
 	 * @return array Variant => converted text
 	 */
 	public function autoConvertToAllVariants( $text ) {
-		wfProfileIn( __METHOD__ );
 		$this->loadTables();
 
-		$ret = array();
+		$ret = [];
 		foreach ( $this->mVariants as $variant ) {
 			$ret[$variant] = $this->translate( $text, $variant );
 		}
 
-		wfProfileOut( __METHOD__ );
 		return $ret;
 	}
 
 	/**
 	 * Apply manual conversion rules.
 	 *
-	 * @param $convRule ConverterRule Object of ConverterRule
+	 * @param ConverterRule $convRule
 	 */
-	protected function applyManualConv( $convRule ) {
+	protected function applyManualConv( ConverterRule $convRule ) {
 		// Use syntax -{T|zh-cn:TitleCN; zh-tw:TitleTw}- to custom
 		// title conversion.
-		// Bug 24072: $mConvRuleTitle was overwritten by other manual
+		// T26072: $mConvRuleTitle was overwritten by other manual
 		// rule(s) not for title, this breaks the title conversion.
 		$newConvRuleTitle = $convRule->getTitle();
 		if ( $newConvRuleTitle ) {
@@ -509,41 +599,39 @@ class LanguageConverter {
 		$convTable = $convRule->getConvTable();
 		$action = $convRule->getRulesAction();
 		foreach ( $convTable as $variant => $pair ) {
-			if ( !$this->validateVariant( $variant ) ) {
+			$v = $this->validateVariant( $variant );
+			if ( !$v ) {
 				continue;
 			}
 
 			if ( $action == 'add' ) {
+				// More efficient than array_merge(), about 2.5 times.
 				foreach ( $pair as $from => $to ) {
-					// to ensure that $from and $to not be left blank
-					// so $this->translate() could always return a string
-					if ( $from || $to ) {
-						// more efficient than array_merge(), about 2.5 times.
-						$this->mTables[$variant]->setPair( $from, $to );
-					}
+					$this->mTables[$v]->setPair( $from, $to );
 				}
 			} elseif ( $action == 'remove' ) {
-				$this->mTables[$variant]->removeArray( $pair );
+				$this->mTables[$v]->removeArray( $pair );
 			}
 		}
 	}
 
 	/**
-	 * Auto convert a Title object to a readable string in the
+	 * Auto convert a LinkTarget object to a readable string in the
 	 * preferred variant.
 	 *
-	 * @param Title $title A object of Title
+	 * @param LinkTarget $linkTarget
 	 * @return string Converted title text
 	 */
-	public function convertTitle( $title ) {
+	public function convertTitle( LinkTarget $linkTarget ) {
 		$variant = $this->getPreferredVariant();
-		$index = $title->getNamespace();
+		$index = $linkTarget->getNamespace();
 		if ( $index !== NS_MAIN ) {
 			$text = $this->convertNamespace( $index, $variant ) . ':';
 		} else {
 			$text = '';
 		}
-		$text .= $this->translate( $title->getText(), $variant );
+		$text .= $this->translate( $linkTarget->getText(), $variant );
+
 		return $text;
 	}
 
@@ -555,27 +643,47 @@ class LanguageConverter {
 	 * @return string Namespace name for display
 	 */
 	public function convertNamespace( $index, $variant = null ) {
+		if ( $index === NS_MAIN ) {
+			return '';
+		}
+
 		if ( $variant === null ) {
 			$variant = $this->getPreferredVariant();
 		}
-		if ( $index === NS_MAIN ) {
-			return '';
-		} else {
-			// First check if a message gives a converted name in the target variant.
-			$nsConvMsg = wfMessage( 'conversion-ns' . $index )->inLanguage( $variant );
-			if ( $nsConvMsg->exists() ) {
-				return $nsConvMsg->plain();
-			}
-			// Then check if a message gives a converted name in content language
-			// which needs extra translation to the target variant.
+
+		$cache = MediaWikiServices::getInstance()->getLocalServerObjectCache();
+		$key = $cache->makeKey( 'languageconverter', 'namespace-text', $index, $variant );
+		$nsVariantText = $cache->get( $key );
+		if ( $nsVariantText !== false ) {
+			return $nsVariantText;
+		}
+
+		// First check if a message gives a converted name in the target variant.
+		$nsConvMsg = wfMessage( 'conversion-ns' . $index )->inLanguage( $variant );
+		if ( $nsConvMsg->exists() ) {
+			$nsVariantText = $nsConvMsg->plain();
+		}
+
+		// Then check if a message gives a converted name in content language
+		// which needs extra translation to the target variant.
+		if ( $nsVariantText === false ) {
 			$nsConvMsg = wfMessage( 'conversion-ns' . $index )->inContentLanguage();
 			if ( $nsConvMsg->exists() ) {
-				return $this->translate( $nsConvMsg->plain(), $variant );
+				$nsVariantText = $this->translate( $nsConvMsg->plain(), $variant );
 			}
-			// No message exists, retrieve it from the target variant's namespace names.
-			$langObj = $this->mLangObj->factory( $variant );
-			return $langObj->getFormattedNsText( $index );
 		}
+
+		if ( $nsVariantText === false ) {
+			// No message exists, retrieve it from the target variant's namespace names.
+			$mLangObj = MediaWikiServices::getInstance()
+				->getLanguageFactory()
+				->getLanguage( $variant );
+			$nsVariantText = $mLangObj->getFormattedNsText( $index );
+		}
+
+		$cache->set( $key, $nsVariantText, 60 );
+
+		return $nsVariantText;
 	}
 
 	/**
@@ -589,8 +697,12 @@ class LanguageConverter {
 	 * -{flags|code1:text1;code2:text2;...}-  or
 	 * -{text}- in which case no conversion should take place for text
 	 *
-	 * @param string $text Text to be converted
-	 * @return string Converted text
+	 * @warning Glossary state is maintained between calls. Never feed this
+	 *   method input that hasn't properly been escaped as it may result in
+	 *   an XSS in subsequent calls, even if those subsequent calls properly
+	 *   escape things.
+	 * @param string $text Text to be converted, already html escaped.
+	 * @return string Converted text (html)
 	 */
 	public function convert( $text ) {
 		$variant = $this->getPreferredVariant();
@@ -600,9 +712,11 @@ class LanguageConverter {
 	/**
 	 * Same as convert() except a extra parameter to custom variant.
 	 *
-	 * @param string $text Text to be converted
+	 * @param string $text Text to be converted, already html escaped
+	 * @param-taint $text exec_html
 	 * @param string $variant The target variant code
 	 * @return string Converted text
+	 * @return-taint escaped
 	 */
 	public function convertTo( $text, $variant ) {
 		global $wgDisableLangConversion;
@@ -628,29 +742,42 @@ class LanguageConverter {
 		$out = '';
 		$length = strlen( $text );
 		$shouldConvert = !$this->guessVariant( $text, $variant );
+		$continue = true;
 
-		while ( $startPos < $length ) {
-			$pos = strpos( $text, '-{', $startPos );
+		$noScript = '<script.*?>.*?<\/script>(*SKIP)(*FAIL)';
+		$noStyle = '<style.*?>.*?<\/style>(*SKIP)(*FAIL)';
+		// phpcs:ignore Generic.Files.LineLength
+		$noHtml = '<(?:[^>=]*+(?>[^>=]*+=\s*+(?:"[^"]*"|\'[^\']*\'|[^\'">\s]*+))*+[^>=]*+>|.*+)(*SKIP)(*FAIL)';
+		while ( $startPos < $length && $continue ) {
+			$continue = preg_match(
+				// Only match -{ outside of html.
+				"/$noScript|$noStyle|$noHtml|-\{/",
+				$text,
+				$m,
+				PREG_OFFSET_CAPTURE,
+				$startPos
+			);
 
-			if ( $pos === false ) {
+			if ( !$continue ) {
 				// No more markup, append final segment
 				$fragment = substr( $text, $startPos );
 				$out .= $shouldConvert ? $this->autoConvert( $fragment, $variant ) : $fragment;
 				return $out;
 			}
 
-			// Markup found
+			// Offset of the match of the regex pattern.
+			$pos = $m[0][1];
+
 			// Append initial segment
 			$fragment = substr( $text, $startPos, $pos - $startPos );
 			$out .= $shouldConvert ? $this->autoConvert( $fragment, $variant ) : $fragment;
-
-			// Advance position
+			// -{ marker found, not in attribute
+			// Advance position up to -{ marker.
 			$startPos = $pos;
-
 			// Do recursive conversion
+			// Note: This passes $startPos by reference, and advances it.
 			$out .= $this->recursiveConvertRule( $text, $variant, $startPos, $depth + 1 );
 		}
-
 		return $out;
 	}
 
@@ -659,7 +786,7 @@ class LanguageConverter {
 	 *
 	 * @param string $text Text to be converted
 	 * @param string $variant The target variant code
-	 * @param int $startPos
+	 * @param int &$startPos
 	 * @param int $depth Depth of recursion
 	 *
 	 * @throws MWException
@@ -707,7 +834,7 @@ class LanguageConverter {
 							$warningDone = true;
 						}
 						$startPos += 2;
-						continue;
+						break;
 					}
 					// Recursively parse another rule
 					$inner .= $this->recursiveConvertRule( $text, $variant, $startPos, $depth + 1 );
@@ -736,12 +863,12 @@ class LanguageConverter {
 	 * If a language supports multiple variants, it is possible that
 	 * non-existing link in one variant actually exists in another variant.
 	 * This function tries to find it. See e.g. LanguageZh.php
+	 * The input parameters may be modified upon return
 	 *
-	 * @param string $link The name of the link
-	 * @param mixed $nt The title object of the link
+	 * @param string &$link The name of the link
+	 * @param Title &$nt The title object of the link
 	 * @param bool $ignoreOtherCond To disable other conditions when
 	 *   we need to transclude a template or update a category's link
-	 * @return void Null, the input parameters may be modified upon return
 	 */
 	public function findVariantLink( &$link, &$nt, $ignoreOtherCond = false ) {
 		# If the article has already existed, there is no need to
@@ -753,6 +880,9 @@ class LanguageConverter {
 		global $wgDisableLangConversion, $wgDisableTitleConversion, $wgRequest;
 		$isredir = $wgRequest->getText( 'redirect', 'yes' );
 		$action = $wgRequest->getText( 'action' );
+		if ( $action == 'edit' && $wgRequest->getBool( 'redlink' ) ) {
+			$action = 'view';
+		}
 		$linkconvert = $wgRequest->getText( 'linkconvert', 'yes' );
 		$disableLinkConversion = $wgDisableLangConversion
 			|| $wgDisableTitleConversion;
@@ -778,12 +908,12 @@ class LanguageConverter {
 			return;
 		}
 
-		$titles = array();
+		$titles = [];
 
 		foreach ( $variants as $v ) {
 			if ( $v != $link ) {
 				$varnt = Title::newFromText( $v, $ns );
-				if ( !is_null( $varnt ) ) {
+				if ( $varnt !== null ) {
 					$linkBatch->addObj( $varnt );
 					$titles[] = $varnt;
 				}
@@ -809,15 +939,16 @@ class LanguageConverter {
 	 */
 	public function getExtraHashOptions() {
 		$variant = $this->getPreferredVariant();
+
 		return '!' . $variant;
 	}
 
 	/**
 	 * Guess if a text is written in a variant. This should be implemented in subclasses.
 	 *
-	 * @param string $text the text to be checked
-	 * @param string $variant language code of the variant to be checked for
-	 * @return bool true if $text appears to be written in $variant, false if not
+	 * @param string $text The text to be checked
+	 * @param string $variant Language code of the variant to be checked for
+	 * @return bool True if $text appears to be written in $variant, false if not
 	 *
 	 * @author Nikola Smolenski <smolensk@eunet.rs>
 	 * @since 1.19
@@ -830,12 +961,11 @@ class LanguageConverter {
 	 * Load default conversion tables.
 	 * This method must be implemented in derived class.
 	 *
-	 * @private
 	 * @throws MWException
 	 */
-	function loadDefaultTables() {
-		$name = get_class( $this );
-		throw new MWException( "Must implement loadDefaultTables() method in class $name" );
+	protected function loadDefaultTables() {
+		$class = static::class;
+		throw new MWException( "Must implement loadDefaultTables() method in class $class" );
 	}
 
 	/**
@@ -843,55 +973,59 @@ class LanguageConverter {
 	 * @private
 	 * @param bool $fromCache Load from memcached? Defaults to true.
 	 */
-	function loadTables( $fromCache = true ) {
-		global $wgLangConvMemc;
+	protected function loadTables( $fromCache = true ) {
+		global $wgLanguageConverterCacheType;
 
 		if ( $this->mTablesLoaded ) {
 			return;
 		}
 
-		wfProfileIn( __METHOD__ );
 		$this->mTablesLoaded = true;
-		$this->mTables = false;
+		// Do not use null as starting value, as that would confuse phan a lot.
+		$this->mTables = [];
+		$cache = ObjectCache::getInstance( $wgLanguageConverterCacheType );
+		$cacheKey = $cache->makeKey( 'conversiontables', $this->mMainLanguageCode );
 		if ( $fromCache ) {
-			wfProfileIn( __METHOD__ . '-cache' );
-			$this->mTables = $wgLangConvMemc->get( $this->mCacheKey );
-			wfProfileOut( __METHOD__ . '-cache' );
+			$this->mTables = $cache->get( $cacheKey );
 		}
 		if ( !$this->mTables || !array_key_exists( self::CACHE_VERSION_KEY, $this->mTables ) ) {
-			wfProfileIn( __METHOD__ . '-recache' );
 			// not in cache, or we need a fresh reload.
 			// We will first load the default tables
 			// then update them using things in MediaWiki:Conversiontable/*
 			$this->loadDefaultTables();
 			foreach ( $this->mVariants as $var ) {
 				$cached = $this->parseCachedTable( $var );
+				// @phan-suppress-next-next-line PhanTypeArraySuspiciousNullable
+				// FIXME: $this->mTables could theoretically be null here
 				$this->mTables[$var]->mergeArray( $cached );
 			}
 
 			$this->postLoadTables();
 			$this->mTables[self::CACHE_VERSION_KEY] = true;
 
-			$wgLangConvMemc->set( $this->mCacheKey, $this->mTables, 43200 );
-			wfProfileOut( __METHOD__ . '-recache' );
+			$cache->set( $cacheKey, $this->mTables, 43200 );
 		}
-		wfProfileOut( __METHOD__ );
 	}
 
 	/**
 	 * Hook for post processing after conversion tables are loaded.
 	 */
-	function postLoadTables() { }
+	protected function postLoadTables() {
+	}
 
 	/**
 	 * Reload the conversion tables.
 	 *
+	 * Also used by test suites which need to reset the converter state.
+	 *
 	 * @private
 	 */
-	function reloadTables() {
+	private function reloadTables() {
 		if ( $this->mTables ) {
+			// @phan-suppress-next-line PhanTypeObjectUnsetDeclaredProperty
 			unset( $this->mTables );
 		}
+
 		$this->mTablesLoaded = false;
 		$this->loadTables( false );
 	}
@@ -900,11 +1034,11 @@ class LanguageConverter {
 	 * Parse the conversion table stored in the cache.
 	 *
 	 * The tables should be in blocks of the following form:
-	 *		-{
-	 *			word => word ;
-	 *			word => word ;
-	 *			...
-	 *		}-
+	 * 		-{
+	 * 			word => word ;
+	 * 			word => word ;
+	 * 			...
+	 * 		}-
 	 *
 	 * To make the tables more manageable, subpages are allowed
 	 * and will be parsed recursively if $recursive == true.
@@ -915,29 +1049,40 @@ class LanguageConverter {
 	 *
 	 * @return array
 	 */
-	function parseCachedTable( $code, $subpage = '', $recursive = true ) {
-		static $parsed = array();
+	private function parseCachedTable( $code, $subpage = '', $recursive = true ) {
+		static $parsed = [];
 
 		$key = 'Conversiontable/' . $code;
 		if ( $subpage ) {
 			$key .= '/' . $subpage;
 		}
 		if ( array_key_exists( $key, $parsed ) ) {
-			return array();
+			return [];
 		}
 
 		$parsed[$key] = true;
 
 		if ( $subpage === '' ) {
-			$txt = MessageCache::singleton()->getMsgFromNamespace( $key, $code );
+			$messageCache = MediaWikiServices::getInstance()->getMessageCache();
+			$txt = $messageCache->getMsgFromNamespace( $key, $code );
 		} else {
 			$txt = false;
 			$title = Title::makeTitleSafe( NS_MEDIAWIKI, $key );
 			if ( $title && $title->exists() ) {
-				$revision = Revision::newFromTitle( $title );
+				$revision = MediaWikiServices::getInstance()
+					->getRevisionLookup()
+					->getRevisionByTitle( $title );
 				if ( $revision ) {
-					if ( $revision->getContentModel() == CONTENT_MODEL_WIKITEXT ) {
-						$txt = $revision->getContent( Revision::RAW )->getNativeData();
+					$model = $revision->getSlot(
+						SlotRecord::MAIN,
+						RevisionRecord::RAW
+					)->getModel();
+					if ( $model == CONTENT_MODEL_WIKITEXT ) {
+						// @phan-suppress-next-line PhanUndeclaredMethod
+						$txt = $revision->getContent(
+							SlotRecord::MAIN,
+							RevisionRecord::RAW
+						)->getText();
 					}
 
 					// @todo in the future, use a specialized content model, perhaps based on json!
@@ -947,7 +1092,7 @@ class LanguageConverter {
 
 		# Nothing to parse if there's no text
 		if ( $txt === false || $txt === null || $txt === '' ) {
-			return array();
+			return [];
 		}
 
 		// get all subpage links of the form
@@ -955,7 +1100,7 @@ class LanguageConverter {
 		$linkhead = $this->mLangObj->getNsText( NS_MEDIAWIKI ) .
 			':Conversiontable';
 		$subs = StringUtils::explode( '[[', $txt );
-		$sublinks = array();
+		$sublinks = [];
 		foreach ( $subs as $sub ) {
 			$link = explode( ']]', $sub, 2 );
 			if ( count( $link ) != 2 ) {
@@ -976,7 +1121,7 @@ class LanguageConverter {
 
 		// parse the mappings in this page
 		$blocks = StringUtils::explode( '-{', $txt );
-		$ret = array();
+		$ret = [];
 		$first = true;
 		foreach ( $blocks as $block ) {
 			if ( $first ) {
@@ -984,8 +1129,8 @@ class LanguageConverter {
 				$first = false;
 				continue;
 			}
-			$mappings = explode( '}-', $block, 2 );
-			$stripped = str_replace( array( "'", '"', '*', '#' ), '', $mappings[0] );
+			$mappings = explode( '}-', $block, 2 )[0];
+			$stripped = str_replace( [ "'", '"', '*', '#' ], '', $mappings );
 			$table = StringUtils::explode( ';', $stripped );
 			foreach ( $table as $t ) {
 				$m = explode( '=>', $t, 3 );
@@ -1002,7 +1147,7 @@ class LanguageConverter {
 		if ( $recursive ) {
 			foreach ( $sublinks as $link ) {
 				$s = $this->parseCachedTable( $code, $link, $recursive );
-				$ret = array_merge( $ret, $s );
+				$ret = $s + $ret;
 			}
 		}
 
@@ -1036,36 +1181,23 @@ class LanguageConverter {
 	 * Convert the sorting key for category links. This should make different
 	 * keys that are variants of each other map to the same key.
 	 *
-	 * @param $key string
+	 * @param string $key
 	 *
 	 * @return string
 	 */
-	function convertCategoryKey( $key ) {
+	public function convertCategoryKey( $key ) {
 		return $key;
 	}
 
 	/**
-	 * Hook to refresh the cache of conversion tables when
+	 * Refresh the cache of conversion tables when
 	 * MediaWiki:Conversiontable* is updated.
-	 * @private
 	 *
-	 * @param WikiPage $page
-	 * @param User $user User object for the current user
-	 * @param Content $content new page content
-	 * @param string $summary edit summary of the edit
-	 * @param bool $isMinor was the edit marked as minor?
-	 * @param bool $isWatch did the user watch this page or not?
-	 * @param string|int $section
-	 * @param int $flags Bitfield
-	 * @param Revision $revision new Revision object or null
-	 * @return bool true
+	 * @param LinkTarget $linkTarget The LinkTarget of the page being updated
 	 */
-	function OnPageContentSaveComplete( $page, $user, $content, $summary, $isMinor,
-			$isWatch, $section, $flags, $revision ) {
-		$titleobj = $page->getTitle();
-		if ( $titleobj->getNamespace() == NS_MEDIAWIKI ) {
-			$title = $titleobj->getDBkey();
-			$t = explode( '/', $title, 3 );
+	public function updateConversionTable( LinkTarget $linkTarget ) {
+		if ( $linkTarget->getNamespace() == NS_MEDIAWIKI ) {
+			$t = explode( '/', $linkTarget->getDBkey(), 3 );
 			$c = count( $t );
 			if ( $c > 1 && $t[0] == 'Conversiontable' ) {
 				if ( $this->validateVariant( $t[1] ) ) {
@@ -1073,43 +1205,40 @@ class LanguageConverter {
 				}
 			}
 		}
-		return true;
-	}
-
-	/**
-	 * Armour rendered math against conversion.
-	 * Escape special chars in parsed math text. (in most cases are img elements)
-	 *
-	 * @param string $text Text to armour against conversion
-	 * @return string Armoured text where { and } have been converted to
-	 *   &#123; and &#125;
-	 * @deprecated since 1.22 is no longer used
-	 */
-	public function armourMath( $text ) {
-		// convert '-{' and '}-' to '-&#123;' and '&#125;-' to prevent
-		// any unwanted markup appearing in the math image tag.
-		$text = strtr( $text, array( '-{' => '-&#123;', '}-' => '&#125;-' ) );
-		return $text;
 	}
 
 	/**
 	 * Get the cached separator pattern for ConverterRule::parseRules()
+	 * @return string
 	 */
-	function getVarSeparatorPattern() {
-		if ( is_null( $this->mVarSeparatorPattern ) ) {
+	public function getVarSeparatorPattern() {
+		if ( $this->mVarSeparatorPattern === null ) {
 			// varsep_pattern for preg_split:
 			// text should be splited by ";" only if a valid variant
 			// name exist after the markup, for example:
 			//  -{zh-hans:<span style="font-size:120%;">xxx</span>;zh-hant:\
-			//	<span style="font-size:120%;">yyy</span>;}-
+			//  <span style="font-size:120%;">yyy</span>;}-
 			// we should split it as:
-			//  array(
-			//	  [0] => 'zh-hans:<span style="font-size:120%;">xxx</span>'
-			//	  [1] => 'zh-hant:<span style="font-size:120%;">yyy</span>'
-			//	  [2] => ''
-			//	 )
-			$pat = '/;\s*(?=';
+			//  [
+			//    [0] => 'zh-hans:<span style="font-size:120%;">xxx</span>'
+			//    [1] => 'zh-hant:<span style="font-size:120%;">yyy</span>'
+			//    [2] => ''
+			//  ]
+			$expandedVariants = [];
 			foreach ( $this->mVariants as $variant ) {
+				$expandedVariants[ $variant ] = 1;
+				// Accept standard BCP 47 names for variants as well.
+				$expandedVariants[ LanguageCode::bcp47( $variant ) ] = 1;
+			}
+			// Accept old deprecated names for variants
+			foreach ( LanguageCode::getDeprecatedCodeMapping() as $old => $new ) {
+				if ( isset( $expandedVariants[ $new ] ) ) {
+					$expandedVariants[ $old ] = 1;
+				}
+			}
+
+			$pat = '/;\s*(?=';
+			foreach ( $expandedVariants as $variant => $ignore ) {
 				// zh-hans:xxx;zh-hant:yyy
 				$pat .= $variant . '\s*:|';
 				// xxx=>zh-hans:yyy; xxx=>zh-hant:zzz
@@ -1119,5 +1248,42 @@ class LanguageConverter {
 			$this->mVarSeparatorPattern = $pat;
 		}
 		return $this->mVarSeparatorPattern;
+	}
+
+	/**
+	 * Check if this is a language with variants
+	 *
+	 * @since 1.35
+	 *
+	 * @return bool
+	 */
+	public function hasVariants() {
+		return count( $this->getVariants() ) > 1;
+	}
+
+	/**
+	 * Strict check if the language has the specific variant.
+	 *
+	 * Compare to LanguageConverter::validateVariant() which does a more
+	 * lenient check and attempts to coerce the given code to a valid one.
+	 *
+	 * @since 1.35
+	 * @param string $variant
+	 * @return bool
+	 */
+	public function hasVariant( $variant ) {
+		return $variant && ( $variant === $this->validateVariant( $variant ) );
+	}
+
+	/**
+	 * Perform output conversion on a string, and encode for safe HTML output.
+	 *
+	 * @since 1.35
+	 *
+	 * @param string $text Text to be converted
+	 * @return string
+	 */
+	public function convertHtml( $text ) {
+		return htmlspecialchars( $this->convert( $text ) );
 	}
 }

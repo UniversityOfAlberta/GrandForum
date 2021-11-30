@@ -33,6 +33,8 @@
  * @version first release
  */
 
+use MediaWiki\Shell\Shell;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -40,13 +42,33 @@ require_once __DIR__ . '/Maintenance.php';
  * @ingroup Maintenance
  */
 class MWDocGen extends Maintenance {
+	/** @var string */
+	private $doxygen;
+	/** @var string */
+	private $mwVersion;
+	/** @var string */
+	private $output;
+	/** @var string */
+	private $input;
+	/** @var string */
+	private $inputFilter;
+	/** @var string */
+	private $template;
+	/** @var string[] */
+	private $excludes;
+	/** @var string[] */
+	private $excludePatterns;
+	/** @var bool */
+	private $doDot;
+	/** @var bool */
+	private $doMan;
 
 	/**
 	 * Prepare Maintenance class
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = 'Build doxygen documentation';
+		$this->addDescription( 'Build doxygen documentation' );
 
 		$this->addOption( 'doxygen',
 			'Path to doxygen',
@@ -54,8 +76,6 @@ class MWDocGen extends Maintenance {
 		$this->addOption( 'version',
 			'Pass a MediaWiki version',
 			false, true );
-		$this->addOption( 'generate-man',
-			'Whether to generate man files' );
 		$this->addOption( 'file',
 			"Only process given file or directory. Multiple values " .
 			"accepted with comma separation. Path relative to \$IP.",
@@ -63,8 +83,10 @@ class MWDocGen extends Maintenance {
 		$this->addOption( 'output',
 			'Path to write doc to',
 			false, true );
-		$this->addOption( 'no-extensions',
-			'Ignore extensions' );
+		$this->addOption( 'extensions',
+			'Process the extensions/ directory as well (ignored if --file is used)' );
+		$this->addOption( 'skins',
+			'Process the skins/ directory as well (ignored if --file is used)' );
 	}
 
 	public function getDbType() {
@@ -72,7 +94,7 @@ class MWDocGen extends Maintenance {
 	}
 
 	protected function init() {
-		global $IP;
+		global $wgPhpCli, $IP;
 
 		$this->doxygen = $this->getOption( 'doxygen', 'doxygen' );
 		$this->mwVersion = $this->getOption( 'version', 'master' );
@@ -86,21 +108,35 @@ class MWDocGen extends Maintenance {
 
 		$this->output = $this->getOption( 'output', "$IP/docs" );
 
-		$this->inputFilter = wfShellWikiCmd(
-			$IP . '/maintenance/mwdoc-filter.php' );
+		// Do not use wfShellWikiCmd, because mwdoc-filter.php is not
+		// a Maintenance script.
+		$this->inputFilter = Shell::escape( [
+			$wgPhpCli,
+			$IP . '/maintenance/mwdoc-filter.php'
+		] );
+
 		$this->template = $IP . '/maintenance/Doxyfile';
-		$this->excludes = array(
-			'vendor',
+		$this->excludes = [
 			'images',
+			'node_modules',
+			'resources',
 			'static',
-		);
-		$this->excludePatterns = array();
-		if ( $this->hasOption( 'no-extensions' ) ) {
-			$this->excludePatterns[] = 'extensions';
+			'tests',
+			'vendor',
+		];
+		$this->excludePatterns = [];
+		if ( $this->input === '' ) {
+			// If no explicit --file filter is set, we're indexing all of $IP,
+			// but any extension or skin submodules should be excluded by default.
+			if ( !$this->hasOption( 'extensions' ) ) {
+				$this->excludePatterns[] = 'extensions';
+			}
+			if ( !$this->hasOption( 'skins' ) ) {
+				$this->excludePatterns[] = 'skins';
+			}
 		}
 
-		$this->doDot = `which dot`;
-		$this->doMan = $this->hasOption( 'generate-man' );
+		$this->doDot = shell_exec( 'which dot' );
 	}
 
 	public function execute() {
@@ -117,7 +153,7 @@ class MWDocGen extends Maintenance {
 		$excludePatterns = implode( ' ', $this->excludePatterns );
 
 		$conf = strtr( file_get_contents( $this->template ),
-			array(
+			[
 				'{{OUTPUT_DIRECTORY}}' => $this->output,
 				'{{STRIP_FROM_PATH}}' => $IP,
 				'{{CURRENT_VERSION}}' => $this->mwVersion,
@@ -125,15 +161,13 @@ class MWDocGen extends Maintenance {
 				'{{EXCLUDE}}' => $exclude,
 				'{{EXCLUDE_PATTERNS}}' => $excludePatterns,
 				'{{HAVE_DOT}}' => $this->doDot ? 'YES' : 'NO',
-				'{{GENERATE_MAN}}' => $this->doMan ? 'YES' : 'NO',
 				'{{INPUT_FILTER}}' => $this->inputFilter,
-			)
+			]
 		);
 
 		$tmpFile = tempnam( wfTempDir(), 'MWDocGen-' );
 		if ( file_put_contents( $tmpFile, $conf ) === false ) {
-			$this->error( "Could not write doxygen configuration to file $tmpFile\n",
-				/** exit code: */ 1 );
+			$this->fatalError( "Could not write doxygen configuration to file $tmpFile\n" );
 		}
 
 		$command = $this->doxygen . ' ' . $tmpFile;
@@ -152,16 +186,13 @@ You might want to delete the temporary file:
 ---------------------------------------------------
 
 TEXT
-	);
+		);
 
 		if ( $exitcode !== 0 ) {
-			$this->error( "Something went wrong (exit: $exitcode)\n",
-				$exitcode );
+			$this->fatalError( "Something went wrong (exit: $exitcode)\n", $exitcode );
 		}
-
 	}
-
 }
 
-$maintClass = 'MWDocGen';
+$maintClass = MWDocGen::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

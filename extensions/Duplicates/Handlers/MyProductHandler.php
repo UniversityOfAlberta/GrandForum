@@ -4,7 +4,7 @@ class MyProductHandler extends AbstractDuplicatesHandler {
         
     var $type;
         
-    function MyProductHandler($id, $type){
+    function __construct($id, $type){
         $this->AbstractDuplicatesHandler($id);
         $this->type = $type;
     }

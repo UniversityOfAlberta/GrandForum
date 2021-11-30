@@ -2,7 +2,7 @@
 
 class PersonHandler extends AbstractDuplicatesHandler {
         
-    function PersonHandler($id){
+    function __construct($id){
         $this->AbstractDuplicatesHandler($id);
     }
     

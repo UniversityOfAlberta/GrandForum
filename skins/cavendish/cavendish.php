@@ -24,7 +24,7 @@ if( !defined( 'MEDIAWIKI' ) )
  */
 class SkinCavendish extends SkinTemplate {
 	/** Using cavendish. */
-	function initPage( &$out ) {
+	function initPage( $out ) {
 		SkinTemplate::initPage($out);
 		$this->skinname  = 'cavendish';
 		$this->stylename = 'cavendish';
@@ -45,9 +45,6 @@ class CavendishTemplate extends QuickTemplate {
 		global $wgRequest, $wgServer, $wgScriptPath, $wgOut, $wgLogo, $wgTitle, $wgUser, $wgMessage, $wgImpersonating, $wgDelegating, $wgTitle, $config, $wgLang;
 		$this->skin = $skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
-
-		// Suppress warnings to prevent notices about missing indexes in $this->data
-		wfSuppressWarnings();
 		
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
@@ -70,7 +67,6 @@ class CavendishTemplate extends QuickTemplate {
 		
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/jquery.qtip.min.css" rel="Stylesheet" />
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/chosen/chosen.css.php" rel="Stylesheet" />
-		<?php $this->html('csslinks') ?>
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/shared.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/common/commonPrint.css" type="text/css" media="print" />
@@ -261,30 +257,12 @@ class CavendishTemplate extends QuickTemplate {
 		<script type="text/javascript">
 		    var wgServer = "<?php echo $wgServer; ?>";
 		    var wgScriptPath = "<?php echo $wgScriptPath; ?>";
-		    var wgBreakFrames = "<?php echo $wgBreakFrames; ?>";
 		    var wgUserName = "<?php echo $wgUser->getName(); ?>";
 		    var wgLang = "<?php echo $wgLang->getCode(); ?>";
 		</script>
+		
+		<?php echo $wgOut->getBottomScripts(); ?>
 		<?php createModels(); ?>
-		<?php echo $wgOut->getScript(); ?>
-		<!-- site js -->
-		<?php	if($this->data['jsvarurl']) { ?>
-		<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('jsvarurl') ?>"><!-- site js --></script>
-		<?php	} ?>
-		<!-- should appear here -->
-		<?php	if($this->data['pagecss']) { ?>
-				<style type="text/css"><?php $this->html('pagecss') ?></style>
-		<?php	}
-				if($this->data['usercss']) { ?>
-				<style type="text/css"><?php $this->html('usercss') ?></style>
-		<?php	}
-				if($this->data['userjs']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>" src="<?php $this->text('userjs' ) ?>"></script>
-		<?php	}
-				if($this->data['userjsprev']) { ?>
-				<script type="<?php $this->text('jsmimetype') ?>"><?php $this->html('userjsprev') ?></script>
-		<?php	}
-				if($this->data['trackbackhtml']) print $this->data['trackbackhtml']; ?>
 
 		<script type='text/javascript'>
 		
@@ -745,9 +723,7 @@ class CavendishTemplate extends QuickTemplate {
             header_remove("X-Frame-Options");
 		 } ?>
 	</head>
-<body <?php if($this->data['body_ondblclick']) { ?> ondblclick="<?php $this->text('body_ondblclick') ?>"<?php } ?>
-<?php if($this->data['body_onload']) { ?> onload="<?php $this->text('body_onload') ?>"<?php } ?>
- class="mediawiki <?php $this->text('dir') ?> <?php $this->text('pageclass') ?> <?php $this->text('skinnameclass') ?>">
+<body class="mediawiki ltr ns-0 ns-subject skin-cavendish">
 
 <div id="internal"></div>
 <div id="container">
@@ -894,8 +870,8 @@ class CavendishTemplate extends QuickTemplate {
             $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile");
             $GLOBALS['tabs']['Manager'] = TabUtils::createTab("Manager");
             
-            wfRunHooks('TopLevelTabs', array(&$GLOBALS['tabs']));
-            wfRunHooks('SubLevelTabs', array(&$GLOBALS['tabs']));
+            Hooks::run('TopLevelTabs', array(&$GLOBALS['tabs']));
+            Hooks::run('SubLevelTabs', array(&$GLOBALS['tabs']));
         ?>
 	    <?php 
 		    global $wgUser, $wgScriptPath, $tabs;
@@ -1094,8 +1070,8 @@ class CavendishTemplate extends QuickTemplate {
 		        redirect("$wgServer$wgScriptPath/index.php/{$_GET['returnto']}");
 		    }
 		    $me = Person::newFromWgUser();
-		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
-	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
+            Hooks::run('ToolboxHeaders', array(&$GLOBALS['toolbox']));
+            Hooks::run('ToolboxLinks', array(&$GLOBALS['toolbox']));
 	        if($config->getValue("showUploadFile")){
 	            $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        }
@@ -1132,6 +1108,9 @@ class CavendishTemplate extends QuickTemplate {
 		else {
 		    global $wgSiteName, $wgOut;
 		    setcookie('sideToggled', 'out', time()-3600);
+		    $userLogin = new SpecialSideUserLogin();
+		    $userLogin->render();
+		    /*
 		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
 		    if($loginFailed){
 		        if(isset($_POST['wpName'])){
@@ -1339,9 +1318,11 @@ EOF;
                     </script>";
                 }
             }
+            
+        */
         }
-		wfRunHooks( 'MonoBookTemplateToolboxEnd', array( &$this ) );
-		wfRunHooks( 'SkinTemplateToolboxEnd', array( &$this ) );
+        Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
+        Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );
 ?>
 	</li>
 <?php

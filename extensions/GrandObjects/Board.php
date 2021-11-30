@@ -8,7 +8,7 @@ class Board extends BackboneModel {
     var $title;
     var $description;
 
-    function Board($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->title = $data[0]['title'];

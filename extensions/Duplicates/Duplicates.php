@@ -49,7 +49,7 @@ function handleDuplicates($action, $request){
 
 class Duplicates extends SpecialPage{
 
-	function Duplicates() {
+	function __construct() {
 		SpecialPage::__construct("Duplicates", MANAGER.'+', true, 'Duplicates::execute');
 	}
 	

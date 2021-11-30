@@ -146,7 +146,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
   if(!$user->isLoggedIn() && $title->getNamespace() >= 0 && $action == 'read'){
       $article = WikiPage::factory($title);
       if($article != null){
-          $text = $article->getText();
+          $text = $article->getContent()->getText();
           if(strstr($text, "[public]") !== false && strstr($text, "[/public]") !== false){
             $result = true;
             return true;
@@ -206,7 +206,7 @@ function onUserCan2(&$title, &$user, $action, &$result) {
 	}
 	
 	//Check to see if the title is for an uploaded file, and if the user has permission to view that file.
-	if ($egAnProtectUploads && $title->getNamespace() == NS_IMAGE){
+	if ($egAnProtectUploads && $title->getNamespace() == NS_FILE){
 	  require_once('UploadProtection.php');
 	  
 	  $uploadNS = UploadProtection::getNsForImageTitle($title);

@@ -19,8 +19,9 @@
  *
  * @file
  * @ingroup SpecialPage
- * @author Aaron Schulz
  */
+
+use MediaWiki\MediaWikiServices;
 
 /**
  * Special page designed for running background tasks (internal use only)
@@ -32,131 +33,96 @@ class SpecialRunJobs extends UnlistedSpecialPage {
 		parent::__construct( 'RunJobs' );
 	}
 
+	public function doesWrites() {
+		return true;
+	}
+
 	public function execute( $par = '' ) {
 		$this->getOutput()->disable();
 
 		if ( wfReadOnly() ) {
-			header( "HTTP/1.0 423 Locked" );
-			print 'Wiki is in read-only mode';
-
-			return;
-		} elseif ( !$this->getRequest()->wasPosted() ) {
-			header( "HTTP/1.0 400 Bad Request" );
-			print 'Request must be POSTed';
-
+			wfHttpError( 423, 'Locked', 'Wiki is in read-only mode.' );
 			return;
 		}
 
-		$optional = array( 'maxjobs' => 0 );
-		$required = array_flip( array( 'title', 'tasks', 'signature', 'sigexpiry' ) );
+		// Validate request method
+		if ( !$this->getRequest()->wasPosted() ) {
+			wfHttpError( 400, 'Bad Request', 'Request must be POSTed.' );
+			return;
+		}
 
+		// Validate request parameters
+		$optional = [ 'maxjobs' => 0, 'maxtime' => 30, 'type' => false,
+			'async' => true, 'stats' => false ];
+		$required = array_flip( [ 'title', 'tasks', 'signature', 'sigexpiry' ] );
 		$params = array_intersect_key( $this->getRequest()->getValues(), $required + $optional );
 		$missing = array_diff_key( $required, $params );
 		if ( count( $missing ) ) {
-			header( "HTTP/1.0 400 Bad Request" );
-			print 'Missing parameters: ' . implode( ', ', array_keys( $missing ) );
-
+			wfHttpError( 400, 'Bad Request',
+				'Missing parameters: ' . implode( ', ', array_keys( $missing ) )
+			);
 			return;
 		}
 
+		// Validate request signature
 		$squery = $params;
 		unset( $squery['signature'] );
-		$cSig = self::getQuerySignature( $squery ); // correct signature
-		$rSig = $params['signature']; // provided signature
-
-		// Constant-time signature verification
-		// http://www.emerose.com/timing-attacks-explained
-		// @todo: make a common method for this
-		if ( !is_string( $rSig ) || strlen( $rSig ) !== strlen( $cSig ) ) {
-			$verified = false;
-		} else {
-			$result = 0;
-			for ( $i = 0; $i < strlen( $cSig ); $i++ ) {
-				$result |= ord( $cSig[$i] ) ^ ord( $rSig[$i] );
-			}
-			$verified = ( $result == 0 );
-		}
+		$correctSignature = self::getQuerySignature( $squery, $this->getConfig()->get( 'SecretKey' ) );
+		$providedSignature = $params['signature'];
+		$verified = is_string( $providedSignature )
+			&& hash_equals( $correctSignature, $providedSignature );
 		if ( !$verified || $params['sigexpiry'] < time() ) {
-			header( "HTTP/1.0 400 Bad Request" );
-			print 'Invalid or stale signature provided';
-
+			wfHttpError( 400, 'Bad Request', 'Invalid or stale signature provided.' );
 			return;
 		}
 
 		// Apply any default parameter values
 		$params += $optional;
 
-		// Client will usually disconnect before checking the response,
-		// but it needs to know when it is safe to disconnect. Until this
-		// reaches ignore_user_abort(), it is not safe as the jobs won't run.
-		ignore_user_abort( true ); // jobs may take a bit of time
-		header( "HTTP/1.0 202 Accepted" );
-		ob_flush();
-		flush();
-		// Once the client receives this response, it can disconnect
+		if ( $params['async'] ) {
+			// HTTP 202 Accepted
+			HttpStatus::header( 202 );
+			// Clients are meant to disconnect without waiting for the full response.
+			// Let the page output happen before the jobs start, so that clients know it's
+			// safe to disconnect. MediaWiki::preOutputCommit() calls ignore_user_abort()
+			// or similar to make sure we stay alive to run the deferred update.
+			DeferredUpdates::addUpdate(
+				new TransactionRoundDefiningUpdate(
+					function () use ( $params ) {
+						$this->doRun( $params );
+					},
+					__METHOD__
+				),
+				DeferredUpdates::POSTSEND
+			);
+		} else {
+			$stats = $this->doRun( $params );
 
-		// Do all of the specified tasks...
-		if ( in_array( 'jobs', explode( '|', $params['tasks'] ) ) ) {
-			self::executeJobs( (int)$params['maxjobs'] );
+			if ( $params['stats'] ) {
+				$this->getRequest()->response()->header( 'Content-Type: application/json' );
+				print FormatJson::encode( $stats );
+			} else {
+				print "Done\n";
+			}
 		}
+	}
+
+	protected function doRun( array $params ) {
+		$runner = MediaWikiServices::getInstance()->getJobRunner();
+		return $runner->run( [
+			'type'     => $params['type'],
+			'maxJobs'  => $params['maxjobs'] ?: 1,
+			'maxTime'  => $params['maxtime'] ?: 30
+		] );
 	}
 
 	/**
 	 * @param array $query
+	 * @param string $secretKey
 	 * @return string
 	 */
-	public static function getQuerySignature( array $query ) {
-		global $wgSecretKey;
-
+	public static function getQuerySignature( array $query, $secretKey ) {
 		ksort( $query ); // stable order
-		return hash_hmac( 'sha1', wfArrayToCgi( $query ), $wgSecretKey );
-	}
-
-	/**
-	 * Run jobs from the job queue
-	 *
-	 * @note: also called from Wiki.php
-	 *
-	 * @param integer $maxJobs Maximum number of jobs to run
-	 * @return void
-	 */
-	public static function executeJobs( $maxJobs ) {
-		$n = $maxJobs; // number of jobs to run
-		if ( $n < 1 ) {
-			return;
-		}
-		try {
-			$group = JobQueueGroup::singleton();
-			$count = $group->executeReadyPeriodicTasks();
-			if ( $count > 0 ) {
-				wfDebugLog( 'jobqueue', "Executed $count periodic queue task(s)." );
-			}
-
-			do {
-				$job = $group->pop( JobQueueGroup::TYPE_DEFAULT, JobQueueGroup::USE_CACHE );
-				if ( $job ) {
-					$output = $job->toString() . "\n";
-					$t = -microtime( true );
-					wfProfileIn( __METHOD__ . '-' . get_class( $job ) );
-					$success = $job->run();
-					wfProfileOut( __METHOD__ . '-' . get_class( $job ) );
-					$group->ack( $job ); // done
-					$t += microtime( true );
-					$t = round( $t * 1000 );
-					if ( $success === false ) {
-						$output .= "Error: " . $job->getLastError() . ", Time: $t ms\n";
-					} else {
-						$output .= "Success, Time: $t ms\n";
-					}
-					wfDebugLog( 'jobqueue', $output );
-				}
-			} while ( --$n && $job );
-		} catch ( MWException $e ) {
-			MWExceptionHandler::rollbackMasterChangesAndLog( $e );
-			// We don't want exceptions thrown during job execution to
-			// be reported to the user since the output is already sent.
-			// Instead we just log them.
-			MWExceptionHandler::logException( $e );
-		}
+		return hash_hmac( 'sha1', wfArrayToCgi( $query ), $secretKey );
 	}
 }

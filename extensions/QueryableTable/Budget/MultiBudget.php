@@ -5,7 +5,7 @@ class MultiBudget {
     var $budgets = array();
     var $sheetNames = array();
     
-    function MultiBudget($structures, $data){
+    function __construct($structures, $data){
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if($data == null || $data == ""){

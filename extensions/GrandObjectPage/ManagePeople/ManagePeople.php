@@ -71,7 +71,7 @@ class ManagePeople extends BackbonePage {
     
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $toolbox['People']['links'][] = TabUtils::createToolboxLink("Manage People", "$wgServer$wgScriptPath/index.php/Special:ManagePeople");
         }
         return true;

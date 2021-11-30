@@ -13,7 +13,7 @@ $wgHooks['SubLevelTabs'][] = 'PersonPage::createSubTabs';
 
 class PersonPage {
 
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $config;
         $name = $title->getNSText();
         $referrer = @$_SERVER['HTTP_REFERER'];
@@ -29,7 +29,7 @@ class PersonPage {
         return true;
     }
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         
         $me = Person::newFromId($wgUser->getId());

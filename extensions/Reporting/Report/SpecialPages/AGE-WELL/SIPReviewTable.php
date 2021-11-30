@@ -325,7 +325,7 @@ class SIPReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "SIPReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("SIP Review Table", "$wgServer$wgScriptPath/index.php/Special:SIPReviewTable", $selected);
         }

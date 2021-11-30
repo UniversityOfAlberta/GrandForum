@@ -15,11 +15,11 @@ function runProjectEvolution($par){
 
 class ProjectEvolution extends SpecialPage {
     
-    function ProjectEvolution(){
+    function __construct(){
 		SpecialPage::__construct("ProjectEvolution", STAFF.'+', true, 'runProjectEvolution');
     }    
     
-    function execute(){
+    function execute($par){
         global $wgOut;
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());

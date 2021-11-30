@@ -11,7 +11,7 @@ autoload_register('AddMember/Validations');
 
 class AddMember extends SpecialPage{
 
-    function AddMember() {
+    function __construct() {
         parent::__construct("AddMember", NI.'+', true);
     }
 

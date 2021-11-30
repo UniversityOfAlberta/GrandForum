@@ -22,7 +22,7 @@ function runPublicVisualizations($par) {
 
 class PublicVisualizations extends SpecialPage{
 
-	function PublicVisualizations() {
+	function __construct() {
 		SpecialPage::__construct("PublicVisualizations", '', false, 'runPublicVisualizations');
 	}
 	
@@ -34,7 +34,7 @@ class PublicVisualizations extends SpecialPage{
         return true;
     }
 
-    function execute(){
+    function execute($par){
         global $wgOut, $config;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("publicVis");
@@ -60,7 +60,7 @@ class PublicVisualizations extends SpecialPage{
     
     static function createSubTabs(&$tabs){
 	    global $wgServer, $wgScriptPath, $wgTitle, $wgUser;
-	    if(self::userCanExecute($wgUser)){
+	    if((new self)->userCanExecute($wgUser)){
 	        $selected = @($wgTitle->getText() == "PublicVisualizations") ? "selected" : false;
             $tabs["Main"]['subtabs'][] = TabUtils::createSubTab("Visualizations", "$wgServer$wgScriptPath/index.php/Special:PublicVisualizations", $selected);
 	    }

@@ -16,7 +16,7 @@ class Thread extends BackboneModel {
 
 //-----Static Functions/Constructor---//
         // Constructor
-        function Thread($data){
+        function __construct($data){
             if(count($data) > 0){
                 $this->id = $data[0]['id'];
                 $this->board_id = $data[0]['board_id'];

@@ -150,7 +150,7 @@ class EEAReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EEAReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("EEA Review Table", "$wgServer$wgScriptPath/index.php/Special:EEAReviewTable", $selected);
         }

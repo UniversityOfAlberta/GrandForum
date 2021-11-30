@@ -63,7 +63,7 @@ class Partner {
     }
     
     // Creates a new Parter based on the given DB resultset
-    function Partner($data){
+    function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->organization = $data[0]['organization'];

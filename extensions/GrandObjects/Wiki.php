@@ -62,7 +62,7 @@ class Wiki extends BackboneModel {
             return $articles;
 	}
 	
-	function Wiki($article){
+	function __construct($article){
 		$this->id = $article->getId();
 		$this->ns = $article->getTitle()->getNsText();
 		$this->title = $article->getTitle()->getText();

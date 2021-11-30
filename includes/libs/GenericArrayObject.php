@@ -29,11 +29,10 @@
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class GenericArrayObject extends ArrayObject {
-
 	/**
 	 * Returns the name of an interface/class that the element should implement/extend.
 	 *
@@ -46,7 +45,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	/**
 	 * @see SiteList::getNewOffset()
 	 * @since 1.20
-	 * @var integer
+	 * @var int
 	 */
 	protected $indexOffset = 0;
 
@@ -57,7 +56,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	 *
 	 * @since 1.20
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	protected function getNewOffset() {
 		while ( $this->offsetExists( $this->indexOffset ) ) {
@@ -68,7 +67,6 @@ abstract class GenericArrayObject extends ArrayObject {
 	}
 
 	/**
-	 * Constructor.
 	 * @see ArrayObject::__construct
 	 *
 	 * @since 1.20
@@ -78,9 +76,9 @@ abstract class GenericArrayObject extends ArrayObject {
 	 * @param string $iterator_class
 	 */
 	public function __construct( $input = null, $flags = 0, $iterator_class = 'ArrayIterator' ) {
-		parent::__construct( array(), $flags, $iterator_class );
+		parent::__construct( [], $flags, $iterator_class );
 
-		if ( !is_null( $input ) ) {
+		if ( $input !== null ) {
 			foreach ( $input as $offset => $value ) {
 				$this->offsetSet( $offset, $value );
 			}
@@ -118,7 +116,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	 *
 	 * @param mixed $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasValidType( $value ) {
 		$class = $this->getObjectType();
@@ -144,11 +142,12 @@ abstract class GenericArrayObject extends ArrayObject {
 	protected function setElement( $index, $value ) {
 		if ( !$this->hasValidType( $value ) ) {
 			throw new InvalidArgumentException(
-				'Can only add ' . $this->getObjectType() . ' implementing objects to ' . get_called_class() . '.'
+				'Can only add '	. $this->getObjectType() . ' implementing objects to '
+				. static::class . '.'
 			);
 		}
 
-		if ( is_null( $index ) ) {
+		if ( $index === null ) {
 			$index = $this->getNewOffset();
 		}
 
@@ -168,10 +167,10 @@ abstract class GenericArrayObject extends ArrayObject {
 	 *
 	 * @since 1.20
 	 *
-	 * @param integer|string $index
+	 * @param int|string $index
 	 * @param mixed $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function preSetElement( $index, $value ) {
 		return true;
@@ -198,10 +197,10 @@ abstract class GenericArrayObject extends ArrayObject {
 	 * @return array
 	 */
 	protected function getSerializationData() {
-		return array(
+		return [
 			'data' => $this->getArrayCopy(),
 			'index' => $this->indexOffset,
-		);
+		];
 	}
 
 	/**
@@ -212,6 +211,7 @@ abstract class GenericArrayObject extends ArrayObject {
 	 * @param string $serialization
 	 *
 	 * @return array
+	 * @suppress PhanParamSignatureMismatchInternal The stub appears to be wrong
 	 */
 	public function unserialize( $serialization ) {
 		$serializationData = unserialize( $serialization );
@@ -232,10 +232,9 @@ abstract class GenericArrayObject extends ArrayObject {
 	 *
 	 * @since 1.20
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEmpty() {
 		return $this->count() === 0;
 	}
-
 }

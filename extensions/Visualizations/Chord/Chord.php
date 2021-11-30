@@ -9,7 +9,7 @@ class Chord extends Visualization {
     var $options = true;
     var $fn = "";
     
-    function Chord($url){
+    function __construct($url){
         $this->url = $url;
         self::Visualization();
     }

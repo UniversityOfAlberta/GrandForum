@@ -20,7 +20,7 @@ class Journal extends BackboneModel {
     var $cited_half_life;
     var $eigenfactor;
 
-    function Journal($data){
+    function __construct($data){
         if (count($data) > 0){
             $row = $data[0]; // since we're passing the entire result set
             $this->id = $row['id'];

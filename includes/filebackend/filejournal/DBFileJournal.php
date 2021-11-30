@@ -19,39 +19,43 @@
  *
  * @file
  * @ingroup FileJournal
- * @author Aaron Schulz
  */
+
+use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * Version of FileJournal that logs to a DB table
  * @since 1.20
  */
 class DBFileJournal extends FileJournal {
-	/** @var DatabaseBase */
+	/** @var IDatabase */
 	protected $dbw;
-
-	protected $wiki = false; // string; wiki DB name
+	/** @var string */
+	protected $domain;
 
 	/**
 	 * Construct a new instance from configuration.
 	 *
 	 * @param array $config Includes:
-	 *     'wiki' : wiki name to use for LoadBalancer
+	 *   - domain: database domain ID of the wiki
 	 */
-	protected function __construct( array $config ) {
+	public function __construct( array $config ) {
 		parent::__construct( $config );
 
-		$this->wiki = $config['wiki'];
+		$this->domain = $config['domain'] ?? $config['wiki']; // b/c
 	}
 
 	/**
 	 * @see FileJournal::logChangeBatch()
-	 * @param array $entries
+	 * @param array[] $entries
 	 * @param string $batchId
-	 * @return Status
+	 * @return StatusValue
 	 */
 	protected function doLogChangeBatch( array $entries, $batchId ) {
-		$status = Status::newGood();
+		$status = StatusValue::newGood();
 
 		try {
 			$dbw = $this->getMasterDB();
@@ -61,24 +65,27 @@ class DBFileJournal extends FileJournal {
 			return $status;
 		}
 
-		$now = wfTimestamp( TS_UNIX );
+		$now = ConvertibleTimestamp::time();
 
-		$data = array();
+		$data = [];
 		foreach ( $entries as $entry ) {
-			$data[] = array(
+			$data[] = [
 				'fj_batch_uuid' => $batchId,
 				'fj_backend' => $this->backend,
 				'fj_op' => $entry['op'],
 				'fj_path' => $entry['path'],
 				'fj_new_sha1' => $entry['newSha1'],
 				'fj_timestamp' => $dbw->timestamp( $now )
-			);
+			];
 		}
 
 		try {
 			$dbw->insert( 'filejournal', $data, __METHOD__ );
+			// XXX Should we do this deterministically so it's testable? Maybe look at the last two
+			// digits of a hash of a bunch of the data?
 			if ( mt_rand( 0, 99 ) == 0 ) {
-				$this->purgeOldLogs(); // occasionally delete old logs
+				// occasionally delete old logs
+				$this->purgeOldLogs(); // @codeCoverageIgnore
 			}
 		} catch ( DBError $e ) {
 			$status->fatal( 'filejournal-fail-dbquery', $this->backend );
@@ -97,7 +104,7 @@ class DBFileJournal extends FileJournal {
 		$dbw = $this->getMasterDB();
 
 		return $dbw->selectField( 'filejournal', 'MAX(fj_id)',
-			array( 'fj_backend' => $this->backend ),
+			[ 'fj_backend' => $this->backend ],
 			__METHOD__
 		);
 	}
@@ -113,33 +120,33 @@ class DBFileJournal extends FileJournal {
 		$encTimestamp = $dbw->addQuotes( $dbw->timestamp( $time ) );
 
 		return $dbw->selectField( 'filejournal', 'fj_id',
-			array( 'fj_backend' => $this->backend, "fj_timestamp <= $encTimestamp" ),
+			[ 'fj_backend' => $this->backend, "fj_timestamp <= $encTimestamp" ],
 			__METHOD__,
-			array( 'ORDER BY' => 'fj_timestamp DESC' )
+			[ 'ORDER BY' => 'fj_timestamp DESC' ]
 		);
 	}
 
 	/**
 	 * @see FileJournal::doGetChangeEntries()
-	 * @param int $start
+	 * @param int|null $start
 	 * @param int $limit
-	 * @return array
+	 * @return array[]
 	 */
 	protected function doGetChangeEntries( $start, $limit ) {
 		$dbw = $this->getMasterDB();
 
 		$res = $dbw->select( 'filejournal', '*',
-			array(
+			[
 				'fj_backend' => $this->backend,
-				'fj_id >= ' . $dbw->addQuotes( (int)$start ) ), // $start may be 0
+				'fj_id >= ' . $dbw->addQuotes( (int)$start ) ], // $start may be 0
 			__METHOD__,
-			array_merge( array( 'ORDER BY' => 'fj_id ASC' ),
-				$limit ? array( 'LIMIT' => $limit ) : array() )
+			array_merge( [ 'ORDER BY' => 'fj_id ASC' ],
+				$limit ? [ 'LIMIT' => $limit ] : [] )
 		);
 
-		$entries = array();
+		$entries = [];
 		foreach ( $res as $row ) {
-			$item = array();
+			$item = [];
 			foreach ( (array)$row as $key => $value ) {
 				$item[substr( $key, 3 )] = $value; // "fj_op" => "op"
 			}
@@ -151,20 +158,20 @@ class DBFileJournal extends FileJournal {
 
 	/**
 	 * @see FileJournal::purgeOldLogs()
-	 * @return Status
+	 * @return StatusValue
 	 * @throws DBError
 	 */
 	protected function doPurgeOldLogs() {
-		$status = Status::newGood();
+		$status = StatusValue::newGood();
 		if ( $this->ttlDays <= 0 ) {
 			return $status; // nothing to do
 		}
 
 		$dbw = $this->getMasterDB();
-		$dbCutoff = $dbw->timestamp( time() - 86400 * $this->ttlDays );
+		$dbCutoff = $dbw->timestamp( ConvertibleTimestamp::time() - 86400 * $this->ttlDays );
 
 		$dbw->delete( 'filejournal',
-			array( 'fj_timestamp < ' . $dbw->addQuotes( $dbCutoff ) ),
+			[ 'fj_timestamp < ' . $dbw->addQuotes( $dbCutoff ) ],
 			__METHOD__
 		);
 
@@ -174,14 +181,14 @@ class DBFileJournal extends FileJournal {
 	/**
 	 * Get a master connection to the logging DB
 	 *
-	 * @return DatabaseBase
+	 * @return IDatabase
 	 * @throws DBError
 	 */
 	protected function getMasterDB() {
 		if ( !$this->dbw ) {
 			// Get a separate connection in autocommit mode
-			$lb = wfGetLBFactory()->newMainLB();
-			$this->dbw = $lb->getConnection( DB_MASTER, array(), $this->wiki );
+			$lb = MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->newMainLB();
+			$this->dbw = $lb->getConnection( DB_MASTER, [], $this->domain );
 			$this->dbw->clearFlag( DBO_TRX );
 		}
 

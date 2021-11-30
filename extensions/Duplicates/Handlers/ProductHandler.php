@@ -17,7 +17,7 @@ class ProductHandler extends AbstractDuplicatesHandler {
         }
     }
         
-    function ProductHandler($id, $type){
+    function __construct($id, $type){
         $this->AbstractDuplicatesHandler($id);
         $this->type = $type;
     }

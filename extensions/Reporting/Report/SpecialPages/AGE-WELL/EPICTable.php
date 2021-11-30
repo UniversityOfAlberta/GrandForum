@@ -121,7 +121,7 @@ class EPICTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EPICTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("EPIC Surveys", "$wgServer$wgScriptPath/index.php/Special:EPICTable", $selected);
         }

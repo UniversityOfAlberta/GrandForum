@@ -1,8 +1,7 @@
 <?php
 /** Piedmontese (Piemontèis)
  *
- * See MessagesQqq.php for message documentation incl. usage of parameters
- * To improve a translation please visit http://translatewiki.net
+ * To improve a translation please visit https://translatewiki.net
  *
  * @ingroup Language
  * @file
@@ -22,7 +21,7 @@
 
 $fallback = 'it';
 
-$namespaceNames = array(
+$namespaceNames = [
 	NS_MEDIA            => 'Media',
 	NS_SPECIAL          => 'Special',
 	NS_TALK             => 'Discussion',
@@ -39,5 +38,4 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Discussion_ant_sl\'agiut',
 	NS_CATEGORY         => 'Categorìa',
 	NS_CATEGORY_TALK    => 'Discussion_ant_sla_categorìa',
-);
-
+];

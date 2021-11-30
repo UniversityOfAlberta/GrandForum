@@ -14,7 +14,7 @@ class Notification{
 	var $history;
 	var $creator;
 	
-	function Notification($name, $description, $url, $time=null, $history=false){
+	function __construct($name, $description, $url, $time=null, $history=false){
 		$this->name = $name;
 		$this->description = $description;
 		$this->url = $url;

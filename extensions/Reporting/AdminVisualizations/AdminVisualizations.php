@@ -21,11 +21,11 @@ function runAdminVisualizations($par) {
 
 class AdminVisualizations extends SpecialPage{
 
-	function AdminVisualizations() {
+	function __construct() {
 		SpecialPage::__construct("AdminVisualizations", MANAGER.'+', true, 'runAdminVisualizations');
 	}
 
-    function execute(){
+    function execute($par){
         global $wgOut;
         $tabbedPage = new TabbedPage("adminVis");
         $tabbedPage->addTab(new AdminChordTab());

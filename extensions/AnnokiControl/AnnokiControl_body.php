@@ -7,11 +7,11 @@ $wgSpecialPageGroups['AnnokiControl'] = 'other';
  
 class AnnokiControl extends SpecialPage {
 
-  function AnnokiControl() {
+  function __construct() {
     SpecialPage::__construct("AnnokiControl", STAFF.'+', true);
   }
 
-  function onMessagesPreLoad($title, &$message) {
+  static function onMessagesPreLoad($title, &$message) {
     switch(strtolower($title)){
         case "mediawarning": 
             $message = "";

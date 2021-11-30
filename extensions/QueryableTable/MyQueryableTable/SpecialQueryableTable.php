@@ -15,7 +15,7 @@ class SpecialQueryableTable extends SpecialPage {
 		SpecialPage::__construct("SpecialQueryableTable", HQP.'+', true, 'runSpecialQueryableTable');
 	}
 	
-	function execute(){
+	function execute($par){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $data = array(array("Channel1", "Channel2", "Channel3", "Channel4"),
 	                  array("Red", "Green", "Blue", "Alpha"),

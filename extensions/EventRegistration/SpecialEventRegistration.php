@@ -11,7 +11,7 @@ $wgSpecialPageGroups['SpecialEventRegistration'] = 'network-tools';
 
 class SpecialEventRegistration extends SpecialPage{
 
-    function SpecialEventRegistration() {
+    function __construct() {
         parent::__construct("SpecialEventRegistration", '', true);
     }
     

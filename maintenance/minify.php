@@ -20,6 +20,7 @@
  * @file
  * @ingroup Maintenance
  */
+use Wikimedia\AtEase\AtEase;
 
 require_once __DIR__ . '/Maintenance.php';
 
@@ -34,114 +35,81 @@ class MinifyScript extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 		$this->addOption( 'outfile',
-			'File for output. Only a single file may be specified for input.',
-			false, true );
-		$this->addOption( 'outdir',
-			"Directory for output. If this is not specified, and neither is --outfile, then the\n" .
-			"output files will be sent to the same directories as the input files.",
-			false, true );
-		$this->addOption( 'js-statements-on-own-line',
-			"Boolean value for putting statements on their own line when minifying JavaScript.",
-			false, true );
-		$this->addOption( 'js-max-line-length',
-			"Maximum line length for JavaScript minification.",
-			false, true );
-		$this->mDescription = "Minify a file or set of files.\n\n" .
-			"If --outfile is not specified, then the output file names will have a .min extension\n" .
-			"added, e.g. jquery.js -> jquery.min.js.";
-
+			'Write minified output to this file (instead of standard out).',
+			false, true, 'o'
+		);
+		$this->addOption( 'type',
+			'Override the input type (one of "js" or "css"). Defaults to file extension. ' .
+				'Required if reading from standard input.',
+			false, true, 'o'
+		);
+		$this->addArg( 'file', 'Input file. Use - to read from standard input.' );
+		$this->addDescription(
+			"Minify one or more JavaScript or CSS files.\n" .
+				"If multiple input files are given, they will be concatenated."
+		);
 	}
 
 	public function execute() {
-		if ( !count( $this->mArgs ) ) {
-			$this->error( "minify.php: At least one input file must be specified." );
-			exit( 1 );
-		}
-
-		if ( $this->hasOption( 'outfile' ) ) {
-			if ( count( $this->mArgs ) > 1 ) {
-				$this->error( '--outfile may only be used with a single input file.' );
-				exit( 1 );
+		$outputFile = $this->getOption( 'outfile', false );
+		if ( $outputFile === false ) {
+			// Only output the minified result (or errors)
+			// Avoid output() because this should not honour --quiet
+			foreach ( $this->mArgs as $arg ) {
+				print $this->minify( $arg ) . "\n";
 			}
-
-			// Minify one file
-			$this->minify( $this->getArg( 0 ), $this->getOption( 'outfile' ) );
-			return;
-		}
-
-		$outDir = $this->getOption( 'outdir', false );
-
-		foreach ( $this->mArgs as $arg ) {
-			$inPath = realpath( $arg );
-			$inName = basename( $inPath );
-			$inDir = dirname( $inPath );
-
-			if ( strpos( $inName, '.min.' ) !== false ) {
-				$this->error( "Skipping $inName\n" );
-				continue;
+		} else {
+			$result = '';
+			foreach ( $this->mArgs as $arg ) {
+				$this->output( "Minifying {$arg} ...\n" );
+				$result .= $this->minify( $arg );
 			}
-
-			if ( !file_exists( $inPath ) ) {
-				$this->error( "File does not exist: $arg", true );
-			}
-
-			$extension = $this->getExtension( $inName );
-			$outName = substr( $inName, 0, -strlen( $extension ) ) . 'min.' . $extension;
-			if ( $outDir === false ) {
-				$outPath = $inDir . '/' . $outName;
-			} else {
-				$outPath = $outDir . '/' . $outName;
-			}
-
-			$this->minify( $inPath, $outPath );
+			$this->output( "Writing to {$outputFile} ...\n" );
+			file_put_contents( $outputFile, $result );
+			$this->output( "Done!\n" );
 		}
 	}
 
 	public function getExtension( $fileName ) {
 		$dotPos = strrpos( $fileName, '.' );
 		if ( $dotPos === false ) {
-			$this->error( "No file extension, cannot determine type: $fileName" );
-			exit( 1 );
+			$this->fatalError( "Unknown file type ($fileName). Use --type." );
 		}
 		return substr( $fileName, $dotPos + 1 );
 	}
 
-	public function minify( $inPath, $outPath ) {
-		global $wgResourceLoaderMinifierStatementsOnOwnLine, $wgResourceLoaderMinifierMaxLineLength;
-
-		$extension = $this->getExtension( $inPath );
-		$this->output( basename( $inPath ) . ' -> ' . basename( $outPath ) . '...' );
-
-		$inText = file_get_contents( $inPath );
-		if ( $inText === false ) {
-			$this->error( "Unable to open file $inPath for reading." );
-			exit( 1 );
+	private function readFile( $fileName ) {
+		if ( $fileName === '-' ) {
+			$inText = $this->getStdin( self::STDIN_ALL );
+		} else {
+			AtEase::suppressWarnings();
+			$inText = file_get_contents( $fileName );
+			AtEase::restoreWarnings();
+			if ( $inText === false ) {
+				$this->fatalError( "Unable to open file $fileName for reading." );
+			}
 		}
-		$outFile = fopen( $outPath, 'w' );
-		if ( !$outFile ) {
-			$this->error( "Unable to open file $outPath for writing." );
-			exit( 1 );
-		}
+		return $inText;
+	}
+
+	public function minify( $inPath ) {
+		$extension = $this->getOption( 'type', null ) ?? $this->getExtension( $inPath );
+		$inText = $this->readFile( $inPath );
 
 		switch ( $extension ) {
 			case 'js':
-				$outText = JavaScriptMinifier::minify( $inText,
-					$this->getOption( 'js-statements-on-own-line', $wgResourceLoaderMinifierStatementsOnOwnLine ),
-					$this->getOption( 'js-max-line-length', $wgResourceLoaderMinifierMaxLineLength )
-				);
+				$outText = JavaScriptMinifier::minify( $inText );
 				break;
 			case 'css':
 				$outText = CSSMin::minify( $inText );
 				break;
 			default:
-				$this->error( "No minifier defined for extension \"$extension\"" );
+				$this->fatalError( "Unsupported file type \"$extension\"." );
 		}
 
-		fwrite( $outFile, $outText );
-		fclose( $outFile );
-		$this->output( " ok\n" );
+		return $outText;
 	}
 }
 
-$maintClass = 'MinifyScript';
+$maintClass = MinifyScript::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

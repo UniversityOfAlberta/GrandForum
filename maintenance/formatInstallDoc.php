@@ -21,6 +21,8 @@
  * @ingroup Maintenance
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once __DIR__ . '/Maintenance.php';
 
 /**
@@ -28,21 +30,20 @@ require_once __DIR__ . '/Maintenance.php';
  *
  * @ingroup Maintenance
  */
-class MaintenanceFormatInstallDoc extends Maintenance {
-	function __construct() {
+class FormatInstallDoc extends Maintenance {
+	public function __construct() {
 		parent::__construct();
 		$this->addArg( 'path', 'The file name to format', false );
 		$this->addOption( 'outfile', 'The output file name', false, true );
 		$this->addOption( 'html', 'Use HTML output format. By default, wikitext is used.' );
 	}
 
-	function execute() {
+	public function execute() {
 		if ( $this->hasArg( 0 ) ) {
 			$fileName = $this->getArg( 0 );
 			$inFile = fopen( $fileName, 'r' );
 			if ( !$inFile ) {
-				$this->error( "Unable to open input file \"$fileName\"" );
-				exit( 1 );
+				$this->fatalError( "Unable to open input file \"$fileName\"" );
 			}
 		} else {
 			$inFile = STDIN;
@@ -52,8 +53,7 @@ class MaintenanceFormatInstallDoc extends Maintenance {
 			$fileName = $this->getOption( 'outfile' );
 			$outFile = fopen( $fileName, 'w' );
 			if ( !$outFile ) {
-				$this->error( "Unable to open output file \"$fileName\"" );
-				exit( 1 );
+				$this->fatalError( "Unable to open output file \"$fileName\"" );
 			}
 		} else {
 			$outFile = STDOUT;
@@ -63,10 +63,10 @@ class MaintenanceFormatInstallDoc extends Maintenance {
 		$outText = InstallDocFormatter::format( $inText );
 
 		if ( $this->hasOption( 'html' ) ) {
-			global $wgParser;
+			$parser = MediaWikiServices::getInstance()->getParser();
 			$opt = new ParserOptions;
 			$title = Title::newFromText( 'Text file' );
-			$out = $wgParser->parse( $outText, $title, $opt );
+			$out = $parser->parse( $outText, $title, $opt );
 			$outText = "<html><body>\n" . $out->getText() . "\n</body></html>\n";
 		}
 
@@ -74,5 +74,5 @@ class MaintenanceFormatInstallDoc extends Maintenance {
 	}
 }
 
-$maintClass = 'MaintenanceFormatInstallDoc';
+$maintClass = FormatInstallDoc::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

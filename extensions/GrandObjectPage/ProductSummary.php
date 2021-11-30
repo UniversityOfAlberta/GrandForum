@@ -14,7 +14,7 @@ function runProductSummary($par){
 
 class ProductSummary extends SpecialPage{
 
-	function ProductSummary() {
+	function __construct() {
 		SpecialPage::__construct("ProductSummary", null, false, 'runProductSummary');
 	}
 	
@@ -108,7 +108,7 @@ class ProductSummary extends SpecialPage{
 	static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $config;
 
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "ProductSummary") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("{$config->getValue('productsTerm')} Summary", "$wgServer$wgScriptPath/index.php/Special:ProductSummary", $selected);
         }

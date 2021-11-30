@@ -6,7 +6,7 @@ $wgHooks['ArticleViewHeader'][] = 'ThemePage::processPage';
 
 class ThemePage {
 
-    function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $outputDone, $pcache){
         global $wgOut, $wgTitle, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $config;
         
         $me = Person::newFromId($wgUser->getId());

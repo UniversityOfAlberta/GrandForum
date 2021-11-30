@@ -39,7 +39,7 @@ class CRM extends BackbonePage {
     
     static function createSideBarLink(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $link = TabUtils::createToolboxLink("CRM", "$wgServer$wgScriptPath/index.php/Special:CRM");
             $toolbox['Other']['links'][] = $link;
         }

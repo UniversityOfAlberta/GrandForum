@@ -4,11 +4,9 @@ class GrandAccess {
 
     static $alreadyDone = array();
 
-    static function setupGrandAccess($user, &$aRights){
+    static function setupGrandAccess($user, $aRights){
         global $wgRoleValues;
         if(isset(self::$alreadyDone[$user->getId()])){
-            $user->mGroups = self::$alreadyDone[$user->getId()];
-            $aRights = $user->mGroups;
             return true;
         }
         
@@ -18,7 +16,7 @@ class GrandAccess {
 	    foreach($oldRights as $right){
 	        $aRights[$i++] = $right;
 	    }
-	    if(count($me->getProjects()) > 0){
+	    if(!empty($me->getProjects())){
 	        foreach($me->getProjects() as $project){
 	            $aRights[$i++] = $project->getName();
 	        }
@@ -58,18 +56,15 @@ class GrandAccess {
 	            }
 	        }
 	    }
-	    if(count($me->getRoles()) > 0){
+	    if(!empty($me->getRoles())){
 	        foreach($me->getRoles() as $role){
 	            $aRights[$i++] = $role->getRole();
-	            $user->mGroups[] = $role->getRole().'_Wiki';
+	            $aRights[$i++] = $role->getRole().'_Wiki';
 	        }
 	    }
-	    foreach($aRights as $right){
-	        $user->mGroups[] = $right;
-	    }
 	    if($user->isLoggedIn()){
-	        $user->mGroups[] = "Poster";
-	        $user->mGroups[] = "Presentation";
+	        $aRights[$i++] = "Poster";
+	        $aRights[$i++] = "Presentation";
 	    }
 	    self::$alreadyDone[$user->getId()] = $aRights;
 	    return true;

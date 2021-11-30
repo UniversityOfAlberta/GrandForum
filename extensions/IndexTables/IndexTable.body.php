@@ -160,7 +160,7 @@ class IndexTable {
         return true;
     }
 
-    function userCanExecute(&$title, &$user, $action, &$result){
+    static function userCanExecute(&$title, &$user, $action, &$result){
         global $wgOut, $wgServer, $wgScriptPath, $config;
         if($config->getValue('guestLockdown') && !$user->isLoggedIn()){
             $result = false;
@@ -184,7 +184,7 @@ class IndexTable {
         return true;
     }
 
-    function generateTable($out, $parseroutput){
+    static function generateTable($out, $parseroutput){
         global $wgTitle, $wgOut, $wgUser, $config, $wgRoles, $wgAllRoles;
         $me = Person::newFromWgUser();
         if($wgTitle != null && str_replace("_", " ", $wgTitle->getNsText()) == "{$config->getValue('networkName')}" && !$wgOut->isDisabled()){

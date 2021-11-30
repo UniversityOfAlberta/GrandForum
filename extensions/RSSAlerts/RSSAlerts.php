@@ -12,7 +12,7 @@ $wgHooks['SubLevelTabs'][] = 'RSSAlerts::createSubTabs';
 
 class RSSAlerts extends SpecialPage{
 
-    function RSSAlerts() {
+    function __construct() {
         parent::__construct("RSSAlerts", STAFF.'+', true);
     }
     

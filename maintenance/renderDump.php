@@ -40,10 +40,13 @@ class DumpRenderer extends Maintenance {
 
 	private $count = 0;
 	private $outputDirectory, $startTime;
+	/** @var string */
+	private $prefix;
 
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Take page text out of an XML dump file and render basic HTML out to files";
+		$this->addDescription(
+			'Take page text out of an XML dump file and render basic HTML out to files' );
 		$this->addOption( 'output-dir', 'The directory to output the HTML files to', true, true );
 		$this->addOption( 'prefix', 'Prefix for the rendered files (defaults to wiki)', false, true );
 		$this->addOption( 'parser', 'Use an alternative parser class', false, true );
@@ -55,16 +58,20 @@ class DumpRenderer extends Maintenance {
 		$this->startTime = microtime( true );
 
 		if ( $this->hasOption( 'parser' ) ) {
-			global $wgParserConf;
-			$wgParserConf['class'] = $this->getOption( 'parser' );
-			$this->prefix .= "-{$wgParserConf['class']}";
+			$this->prefix .= "-{$this->getOption( 'parser' )}";
+			// T236809: We'll need to provide an alternate ParserFactory
+			// service to make this work.
+			$this->fatalError( 'Parser class configuration temporarily disabled.' );
 		}
 
 		$source = new ImportStreamSource( $this->getStdin() );
-		$importer = new WikiImporter( $source );
+		$importer = new WikiImporter( $source, $this->getConfig() );
 
 		$importer->setRevisionCallback(
-			array( &$this, 'handleRevision' ) );
+			[ $this, 'handleRevision' ] );
+		$importer->setNoticeCallback( function ( $msg, $params ) {
+			echo wfMessage( $msg, $params )->text() . "\n";
+		} );
 
 		$importer->doImport();
 
@@ -78,12 +85,13 @@ class DumpRenderer extends Maintenance {
 
 	/**
 	 * Callback function for each revision, turn into HTML and save
-	 * @param $rev Revision
+	 * @param WikiRevision $rev
 	 */
-	public function handleRevision( $rev ) {
+	public function handleRevision( WikiRevision $rev ) {
 		$title = $rev->getTitle();
 		if ( !$title ) {
 			$this->error( "Got bogus revision with null title!" );
+
 			return;
 		}
 		$display = $title->getPrefixedText();
@@ -118,5 +126,5 @@ class DumpRenderer extends Maintenance {
 	}
 }
 
-$maintClass = "DumpRenderer";
+$maintClass = DumpRenderer::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

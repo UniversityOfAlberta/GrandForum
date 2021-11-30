@@ -37,7 +37,7 @@ $FORM_TEXT = "<fieldset id='q1'>
 
 class CreatePoll extends SpecialPage{
 
-    function CreatePoll() {
+    function __construct() {
         SpecialPage::__construct("CreatePoll", HQP.'+', true, 'runCreatePoll');
     }
 

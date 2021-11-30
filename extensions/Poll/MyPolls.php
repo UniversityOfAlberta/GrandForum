@@ -13,7 +13,7 @@ function runMyPolls($par) {
 
 class MyPolls extends SpecialPage{
 
-    function MyPolls() {
+    function __construct() {
         SpecialPage::__construct("MyPolls", HQP.'+', true, 'runMyPolls');
     }
 

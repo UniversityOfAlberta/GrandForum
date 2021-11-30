@@ -22,7 +22,7 @@ class CrossForumExport extends SpecialPage {
         SpecialPage::__construct("CrossForumExport", null, false, 'runCrossForumExport');
     }
     
-    function execute(){
+    function execute($par){
         global $wgOut, $wgUser, $config;
         if($wgUser->isLoggedIn()){
             // Handle Exporting

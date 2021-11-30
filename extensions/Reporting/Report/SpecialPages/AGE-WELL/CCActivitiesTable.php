@@ -121,7 +121,7 @@ class CCActivitiesTable extends SpecialPage{
     
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "CCActivitiesTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("CC Activities Table", "$wgServer$wgScriptPath/index.php/Special:CCActivitiesTable", $selected);
         }

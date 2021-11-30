@@ -14,7 +14,7 @@ function runMyDuplicateProducts($par){
 
 class MyDuplicateProducts extends SpecialPage{
 
-	function MyDuplicateProducts() {
+	function __construct() {
 		SpecialPage::__construct("MyDuplicateProducts", HQP.'+', true, 'runMyDuplicateProducts');
 	}
 

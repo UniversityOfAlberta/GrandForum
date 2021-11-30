@@ -209,7 +209,7 @@ class CRPReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "CRPReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("CRP Review Table", "$wgServer$wgScriptPath/index.php/Special:CRPReviewTable", $selected);
         }

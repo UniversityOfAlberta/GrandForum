@@ -24,7 +24,7 @@ class CCVExport extends SpecialPage {
         SpecialPage::__construct("CCVExport", HQP.'+', true, 'runCCVExport');
     }
     
-    function execute(){
+    function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
         global $userID, $wgDBname;
       

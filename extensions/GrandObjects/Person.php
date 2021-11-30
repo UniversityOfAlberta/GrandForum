@@ -841,7 +841,7 @@ class Person extends BackboneModel {
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
-    function Person($data){
+    function __construct($data){
         global $wgUser;
         if(count($data) > 0){
             if(@$data[0]['candidate'] == 1 && !$wgUser->isLoggedIn()){
@@ -3034,7 +3034,11 @@ class Person extends BackboneModel {
                 $this->projectCache["{$history}"] = $projects;
             }
         }
+        
         if($history === false){
+            if($this->projects == null){
+                $this->projects = $projects;
+            }
             return $this->projects;
         }
         else {

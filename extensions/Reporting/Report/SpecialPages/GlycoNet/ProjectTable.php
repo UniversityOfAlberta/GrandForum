@@ -15,7 +15,7 @@ function runProjectTable($par) {
 
 class ProjectTable extends SpecialPage{
 
-    function ProjectTable() {
+    function __construct() {
         SpecialPage::__construct("ProjectTable", null, false, 'runProjectTable');
     }
     
@@ -135,7 +135,7 @@ class ProjectTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "BusinessDevelopment")) ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("BD", "$wgServer$wgScriptPath/index.php/Special:Report?report=BusinessDevelopment", $selected);
             

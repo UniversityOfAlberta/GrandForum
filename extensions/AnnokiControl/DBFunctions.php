@@ -118,8 +118,8 @@ class DBFunctions {
     
     static function initDB(){
         if(DBFunctions::$dbr == null && DBFunctions::isReady()){
-            DBFunctions::$dbr = wfGetDB(DB_SLAVE);
-            DBFunctions::$dbw = wfGetDB(DB_MASTER);
+            DBFunctions::$dbr = wfGetDB(DB_REPLICA);
+            DBFunctions::$dbw = wfGetDB(DB_PRIMARY);
             DBFunctions::$mysqlnd = function_exists('mysqli_fetch_all');
         }
     }
@@ -186,10 +186,10 @@ class DBFunctions {
 	        $rows = array();
 	        if($result != null){
 	            if(DBFunctions::$mysqlnd){
-	                $rows = mysqli_fetch_all($result->result, MYSQLI_ASSOC);
+	                $rows = mysqli_fetch_all($result->getResult(), MYSQLI_ASSOC);
 	            }
 	            else{
-	                while ($row = mysqli_fetch_array($result->result, MYSQLI_ASSOC)) {
+	                while ($row = mysqli_fetch_array($result->getResult(), MYSQLI_ASSOC)) {
 		                $rows[] = $row;
 	                }
 	            }
