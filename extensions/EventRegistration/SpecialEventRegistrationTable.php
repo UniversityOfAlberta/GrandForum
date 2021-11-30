@@ -65,7 +65,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
                         $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='{$registration->getPDFUrl()}'>PDF Download</a>");
                     }
                 }
-                if($field == "DOC"){
+                else if($field == "DOC"){
                     if($contents != ""){
                         $misc[] = nl2br("<b>{$field}</b>: <a target='_blank' href='{$registration->getDocUrl()}'>Doc Download</a>");
                     }
