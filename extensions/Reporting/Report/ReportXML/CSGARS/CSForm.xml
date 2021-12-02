@@ -320,7 +320,7 @@
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" idLabel="SoP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>(PhD Applicant Only)<br /><small>MSc Applicants may fill this out if they wish, but it is not required</small></h3>
+                <h3>All MSc, PhD and SML applicants must complete this</h3>
                 <p>This statement should outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application</p>
                 {$item}
             ]]>
