@@ -32,7 +32,7 @@ Thank you for your interest and continued support of the ELITE Program for Black
 
 With kind regards,
 
-André G. McDonald, Ph.D., B.S. Law, P.Eng., FASM, FIMMM
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
