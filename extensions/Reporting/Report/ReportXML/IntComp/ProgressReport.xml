@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" year="2021" disabled="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" pdfFiles="ProgressReportPDF" personId="0" ajax="true" year="2022" disabled="false">
     <Permissions>
         <Role role="PL">
             <SectionPermission id="details" permissions="rw" />
