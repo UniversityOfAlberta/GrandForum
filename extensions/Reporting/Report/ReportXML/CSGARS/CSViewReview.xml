@@ -52,15 +52,21 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="horizontal" options="1|2|3|4|5|6|7|8|9|10">
+        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="vertical" labels="Admit: I would supervise|Admit|Borderline|Do not admit" options="4|3|2|1">
             <![CDATA[
-                <h3>Rank <span style="font-size: 100%;font-weight: normal;">(10 is the best)</span></h3>
+                <h3>Rank</h3>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="q4" type="Textarea" height="120px" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
             <![CDATA[
                 <h3>Justification for Ranking</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q6" type="RadioReportItem" blobItem="CS_Review_SuperviseWant" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
+            <![CDATA[
+                <h3>Do you want to supervise this student?</h3>
                 {$item}
             ]]>
         </ReportItem>

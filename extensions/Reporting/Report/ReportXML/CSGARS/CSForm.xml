@@ -10,7 +10,7 @@
     </Permissions>
 
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
-        <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100" >
+        <ReportItem id="intro" type="Text" blobType="BLOB_TEXT" blobItem="intro" limit="100">
             <![CDATA[
                 <h3>The Department of Computing Science uses the Graduate Admission Review System (GARS) to collect information supplemental to that you submit through U of A's Graduate Studies Management System (GSMS), for review of your application.</h3>
                 </br>
@@ -66,7 +66,7 @@
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" limit="900" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning">
+        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
             <![CDATA[
             <style>
                     .flex-container {
@@ -100,14 +100,14 @@
                     margin-top: 8px;
                     margin-right: 8px;" >
                     <h1>Research Interests</h1>
-                    <h3>*Area of Study<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Area of Study (Choose between 1-3)<span title="Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     {$item}
             ]]>
         </ReportItem>
     
-        <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" limit="900" width="300px">
+        <ReportItem id="q14" idLabel="Potential Supervisors" type="MultipleSelectReportItem" options="{getString(prof_choices)}" blobType="BLOB_ARRAY" blobItem="Q14" max="5" width="300px">
             <![CDATA[
-                    <h3>*Potential Supervisors (Choose at least 3)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                    <h3>*Potential Supervisors (Choose between 1-5)<span title="The faculty members that you would like to work with.  Not required for course based MSc." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
                     <small>Please enter the supervisors in order of preference</small>
                     {$item}
             ]]>
@@ -219,6 +219,14 @@
             
             ]]>
         </ReportItem>
+        <ReportItem id="q21_manual" idLabel="Manual GPA" type="Integer" decimals="2" blobType="BLOB_TEXT" editable="false" blobItem="Q21_MANUAL" width="40px" optional="true" max="4">
+            <![CDATA[
+                    <div style="display: inline-block; vertical-align: top;">
+                        <h3>Manual GPA out of 4<span title="You can also enter your GPA out of 4 if your own calculation differs from the automatically calculated one." style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                        {$item}
+                    </div>
+            ]]>
+        </ReportItem>
         <ReportItem id="q23" idLabel="GRE" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="100px" optional="true">
             <![CDATA[
                     <h1 style="margin-top: 16px">GRE</h1>
@@ -275,8 +283,28 @@
         <ReportItem id="qCountry" idLabel="Country of Citizenship" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry">
             <![CDATA[
                     <h1>Citizenship</h1>
-                    <h3>Country of Citizenship</h3>
-                    {$item}
+                    <div style='display:flex;width:100%;'>
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Country of Citizenship</h3>
+                            {$item}
+                        </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry1" idLabel="Country of Degree" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry1">
+            <![CDATA[
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Country of Degree</h3>
+                            {$item}
+                        </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry2" idLabel="Current Country" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry2">
+            <![CDATA[
+                        <div style='width:33%; text-align: center;'>
+                            <h3>Current Country</h3>
+                            {$item}
+                        </div>
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="qImmigrationStatus" idLabel="Immigration Status" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">
@@ -290,9 +318,9 @@
     </ReportSection>
 
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="qSOP" idLabel="SoP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
+        <ReportItem id="qSOP" idLabel="Statement of Purpose" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
-                <h3>(PhD Applicant Only)<br /><small>MSc Applicants may fill this out if they wish, but it is not required</small></h3>
+                <h3>All MSc, PhD and SML applicants must complete this</h3>
                 <p>This statement should outline your research goals in relation to the research being done by the Computing Science faculty member(s) listed on your application</p>
                 {$item}
             ]]>
@@ -365,58 +393,28 @@
 
     </ReportSection>
 
-
-    <!--
-    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="false">
-
-        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" sizes="350|100|100">
+    <ReportSection id="edi" tooltip="Equity, Diversity &amp; Inclusion" name="EDI" title="Equity, Diversity &amp; Inclusion" blobSection="EDI" type="EditableReportSection">
+        <ReportItem id="edi" type="Radio" blobItem="EDI" blobType="BLOB_TEXT" options="Yes|No" optional="true">
             <![CDATA[
-                <h3>Course History</h3>
-                {$item}
-                <div id='warning_container'></div>
+                <h3>I identify as</h3>
+                <ul style="line-height:1em;">
+                    <li>a woman,</li>
+                    <li>non-binary,</li>
+                    <li>a person with disabilities,</li>
+                    <li>an indigenous person (First Nations, Inuit, or Métis), and/or</li>
+                    <li>a member of the LGBTQ2+ community</li>
+                </ul>
+                <div style="margin-left: 2em;">{$item}</div>
             ]]>
         </ReportItem>
-
-        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" width="100px" optional="true">
+        <ReportItem id="details" type="Textarea" blobItem="DETAILS" height="100px" width="600px" optional="true">
             <![CDATA[
-                <h3>GPA<span title="Auto-calculated value from above courses" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                <h3>Additional Details</h3>
+                Optional: You may provide additional information if you'd like<br />
                 {$item}
-                <script type="text/javascript">
-
-                    var calculateGPAfull = function() {
-                        _.defer(function() {
-                            // get all the gpas from report item above this one
-                            var elArray = $("*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                            
-                            // Calculate gpa
-                            var sumGPA = 0;
-                            for (var a = 0; a < elArray.length; a++) {
-                                if (!_.isNaN(parseFloat(elArray[a].value))) {
-                                    sumGPA += parseFloat(elArray[a].value);
-                                }
-                            }
-                            var avg = sumGPA / Math.max(elArray.length, 1);                            
-                            $('[name=BestFullYearGPA_qpaFullq2]').val(Number(Math.round(avg+'e2')+'e-2'));
-                            
-                        });
-                    };
-
-                    // set onChangeListeners
-                    $(document).off("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']");
-                    $(document).off("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
-                    $(document).on("change", "*[name^='BestFullYearGPA_qpaFullq1'][name*='grade']", calculateGPAfull);
-                    $(document).on("click", "#table_BestFullYearGPA_qpaFullq1 button", calculateGPAfull);
-                    calculateGPAfull();
-
-                </script>
             ]]>
         </ReportItem>
-
     </ReportSection>
--->
-
-
-
 
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">

@@ -105,8 +105,19 @@
                             	   {$item}
                        	        </td>
                             </tr>
-                        </table>
+                        
             
+            ]]>
+        </ReportItem>
+        <ReportItem id="q21_manual" idLabel="Manual GPA" type="Integer" decimals="2" blobType="BLOB_TEXT" editable="false" blobItem="Q21_MANUAL" width="40px" optional="true">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <h3>Manual GPA</h3>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="q23" type="Calendar" blobType="BLOB_TEXT" blobItem="Q23" limit="100" width="100px" optional="true">
@@ -164,15 +175,31 @@
                     <h1>Citizenship</h1>
                     <table width='100%'>
                         <tr width='100%'>
-                            <td style='width:50%;'>
+                            <td style='width:25%;'>
                                 <h3>Country of Citizenship</h3>
+                                {$item}
+                            </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry1" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry1">
+            <![CDATA[
+                            <td style='width:25%;'>
+                                <h3>Country of Degree</h3>
+                                {$item}
+                            </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="qCountry2" type="Select" options="{getString(countries)}" blobType="BLOB_TEXT" blobItem="qCountry2">
+            <![CDATA[
+                            <td style='width:25%;'>
+                                <h3>Current Country</h3>
                                 {$item}
                             </td>
             ]]>
         </ReportItem>
         <ReportItem id="qImmigrationStatus" type="Radio" blobType="BLOB_TEXT" options="INT|CDN|PR" blobItem="qImmigrationStatus">
             <![CDATA[
-                            <td style='width:50%;'>
+                            <td style='width:25%;'>
                                 <h3>Immigration Status</h3>
                                 {$item}
                             </td>
@@ -238,33 +265,27 @@
     </ReportSection>
     <!-- End page2 -->
 
-    <!--
-    <ReportSection id="gpaFullYear_page" tooltip="Best Full-Year GPA" name="Best Full-Year GPA" blobSection="CS_QUESTIONS3" type="EditableReportSection" pagebreak="true">
-
-        <ReportItem id="qpaFullq1" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="gpaFullEntries" labels="Course Name|Grade|Credits" types="Text|Integer(,,2)|Integer" multiple="true" start="1" class="wikitable">
+    <ReportSection id="edi" tooltip="Equity, Diversity &amp; Inclusion" name="EDI" title="Equity, Diversity &amp; Inclusion" blobSection="EDI" type="EditableReportSection">
+        <ReportItem id="edi" type="Radio" blobItem="EDI" blobType="BLOB_TEXT" options="Yes|No" optional="true">
             <![CDATA[
-                <table width='100%'>
-                    <tr width='100%'>
-                        <td style="width: 80%; vertical-align: top; padding: 0px 16px 16px 16px;" >
-                            <h3>Course History</h3>
-                            {$item}
-                        </td>
+                <h3>I identify as</h3>
+                <ul style="line-height:1em;">
+                    <li>a woman,</li>
+                    <li>non-binary,</li>
+                    <li>a person with disabilities,</li>
+                    <li>an indigenous person (First Nations, Inuit, or Métis), and/or</li>
+                    <li>a member of the LGBTQ2+ community</li>
+                </ul>
+                {$item}
             ]]>
         </ReportItem>
-
-        <ReportItem id="qpaFullq2" type="Text" blobType="BLOB_TEXT" editable="false" blobItem="gpaFullOutput" limit="100" optional="true">
+        <ReportItem id="details" type="Textarea" blobItem="DETAILS" optional="true" >
             <![CDATA[
-                        <td style="width: 20%; vertical-align: top; padding: 0px 16px 16px 16px;" >
-                            <h3>GPA</h3>
-                            {$item}
-                        </td>
-                    </tr>
-                </table>
+                <h3>Additional Details</h3>
+                {$item}
             ]]>
         </ReportItem>
-
     </ReportSection>
-    -->
 
     <!-- Page4: SoP -->
     <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">

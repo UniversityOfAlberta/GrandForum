@@ -397,6 +397,7 @@ class GsmsData extends BackboneModel{
                                  'name' => $person->getNameForForms(),
                                  'url' => $person->getUrl(),
                                  'decision' => $sop->getAdmitResult($reviewer->getId()),
+                                 'wantToSupervise' => $sop->getWantToSupervise($reviewer->getId()),
                                  'willingToSupervise' => $sop->getWillingToSupervise($reviewer->getId()),
                                  'comments' => $sop->getReviewComments($reviewer->getId()),
                                  'rank' => $sop->getReviewRanking($reviewer->getId()),
@@ -413,6 +414,7 @@ class GsmsData extends BackboneModel{
                                       'name' => $other->getNameForForms(),
                                       'url' => $other->getUrl(),
                                       'decision' => $sop->getAdmitResult($other->getId()),
+                                      'wantToSupervise' => $sop->getWantToSupervise($other->getId()),
                                       'willingToSupervise' => $sop->getWillingToSupervise($other->getId()),
                                       'comments' => $sop->getReviewComments($other->getId()),
                                       'rank' => $sop->getReviewRanking($other->getId()),
@@ -521,6 +523,7 @@ class GsmsData extends BackboneModel{
         $moreJson['scholarships_applied'] = @implode(", ", $blob['q15']);
 
         $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gpaManual'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21_MANUAL");
         $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
         $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
         $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q26");

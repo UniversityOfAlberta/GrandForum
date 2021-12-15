@@ -37,6 +37,7 @@ class SOP extends AbstractSop{
         $moreJson['scholarships_applied'] = @implode(", ", $blob['q15']);
 
         $moreJson['gpaNormalized'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21");
+        $moreJson['gpaManual'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q21_MANUAL");
         $moreJson['gre1'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q24");
         $moreJson['gre2'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q25");
         $moreJson['gre3'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "Q26");
@@ -68,6 +69,8 @@ class SOP extends AbstractSop{
         //$moreJson['courses'] = @implode(", ", $blob['qEducation2'][0]);
 
         $moreJson['country_of_citizenship_full'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "qCountry");
+        $moreJson['country_of_degree'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "qCountry1");
+        $moreJson['current_country'] = $this->getBlobValue(BLOB_TEXT, $year, "RP_CS", "CS_QUESTIONS_tab1", "qCountry2");
 
         $pdf = $this->getPdf(true);
         $moreJson['education'] = (isset($pdf['Education'])) ? $pdf['Education'] : array();
@@ -222,6 +225,14 @@ class SOP extends AbstractSop{
             return '--';
         }
         return $blob;
+    }
+    
+    function getWantToSupervise($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_SuperviseWant", $user, $gsms->id);
+        return ($blob == "Yes");
     }
     
     function getWillingToSupervise($user){

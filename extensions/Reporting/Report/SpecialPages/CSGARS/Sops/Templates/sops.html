@@ -15,7 +15,7 @@
     <b>Year:</b>
     <select id="year" style="vertical-align: middle;">
         <option value="" <% if(this.model.year == '') { %>selected<% } %>>2021</option>
-        <option value="2020" <% if(this.model.year == '2019') { %>selected<% } %>>2020</option>
+        <option value="2020" <% if(this.model.year == '2020') { %>selected<% } %>>2020</option>
         <option value="2019" <% if(this.model.year == '2019') { %>selected<% } %>>2019</option>
         <option value="2018" <% if(this.model.year == '2018') { %>selected<% } %>>2018</option>
         <option value="2017" <% if(this.model.year == '2017') { %>selected<% } %>>2017</option>
@@ -337,66 +337,9 @@
             <td>
               <input type='hidden' name='filterSupervisors' />
               <select class='filter_option' style='width: 225px;' id='filterSelectSupervisors'  multiple>
-                <option>Ali</option>
-                <option>Amaral</option>
-                <option>Ardakanian</option>
-                <option>Barbosa</option>
-                <option>Basu</option>
-                <option>Boulanger</option>
-                <option>Bowling</option>
-                <option>Bulitko</option>
-                <option>Buro</option>
-                <option>Cheng</option>
-                <option>Cobzas</option>
-                <option>Cutumisu</option>
-                <option>Demmans-Epp</option>
-                <option>Elio</option>
-                <option>Elmallah</option>
-                <option>Friggstad</option>
-                <option>Fyshe</option>
-                <option>Goebel</option>
-                <option>Greiner</option>
-                <option>Guzdial</option>
-                <option>Harms</option>
-                <option>Hayward</option>
-                <option>Hegde</option>
-                <option>Hindle</option>
-                <option>Jagersand</option>
-                <option>Kondrak</option>
-                <option>Lelis</option>
-                <option>Lin</option>
-                <option>Lu</option>
-                <option>Macgregor</option>
-                <option>Mahmood</option>
-                <option>Mou</option>
-                <option>Mueller</option>
-                <option>Nadi</option>
-                <option>Nascimento</option>
-                <option>Nikolaidis</option>
-                <option>Punithakumar</option>
-                <option>Pilarski</option>
-                <option>Rafiei</option>
-                <option>Ray</option>
-                <option>Salavatipour</option>
-                <option>Sander</option>
-                <option>Schaeffer</option>
-                <option>Schuurmans</option>
-                <option>Sheffet</option>
-                <option>Sturtevant</option>
-                <option>Stewart</option>
-                <option>Stroulia</option>
-                <option>Sutton</option>
-                <option>Szepesvari</option>
-                <option>Taylor</option>
-                <option value="Adam White">White A.</option>
-                <option value="Martha White">White M.</option>
-                <option>Wishart</option>
-                <option>Wong</option>
-                <option>Wright</option>
-                <option>Yang</option>
-                <option>You</option>
-                <option>Zaiane</option>
-                <option>Zhang</option>
+                <% _.each(profs, function(opt){ %>
+                    <option value="<%= opt.value %>"><%= opt.option %></option>
+                <% }) %>
               </select>
             </td>
           </tr>
@@ -405,68 +348,39 @@
             <td>
               <input type='hidden' name='filterReviewers' />
               <select class='filter_option' style='width: 225px;' id='filterSelectReviewers'  multiple>
-                <option>Ali</option>
-                <option>Amaral</option>
-                <option>Ardakanian</option>
-                <option>Barbosa</option>
-                <option>Basu</option>
-                <option>Boulanger</option>
-                <option>Bowling</option>
-                <option>Bulitko</option>
-                <option>Buro</option>
-                <option>Cheng</option>
-                <option>Cobzas</option>
-                <option>Cutumisu</option>
-                <option>Demmans-Epp</option>
-                <option>Elio</option>
-                <option>Elmallah</option>
-                <option>Friggstad</option>
-                <option>Fyshe</option>
-                <option>Goebel</option>
-                <option>Greiner</option>
-                <option>Guzdial</option>
-                <option>Harms</option>
-                <option>Hayward</option>
-                <option>Hegde</option>
-                <option>Hindle</option>
-                <option>Jagersand</option>
-                <option>Kondrak</option>
-                <option>Lelis</option>
-                <option>Lin</option>
-                <option>Lu</option>
-                <option>Macgregor</option>
-                <option>Mahmood</option>
-                <option>Mou</option>
-                <option>Mueller</option>
-                <option>Nadi</option>
-                <option>Nascimento</option>
-                <option>Nikolaidis</option>
-                <option>Punithakumar</option>
-                <option>Pilarski</option>
-                <option>Rafiei</option>
-                <option>Ray</option>
-                <option>Salavatipour</option>
-                <option>Sander</option>
-                <option>Schaeffer</option>
-                <option>Schuurmans</option>
-                <option>Sheffet</option>
-                <option>Sturtevant</option>
-                <option>Stewart</option>
-                <option>Stroulia</option>
-                <option>Sutton</option>
-                <option>Szepesvari</option>
-                <option>Taylor</option>
-                <option value="Adam White">White A.</option>
-                <option value="Martha White">White M.</option>
-                <option>Wishart</option>
-                <option>Wong</option>
-                <option>Wright</option>
-                <option>Yang</option>
-                <option>You</option>
-                <option>Zaiane</option>
-                <option>Zhang</option>
+                <% _.each(profs, function(opt){ %>
+                    <option value="<%= opt.value %>"><%= opt.option %></option>
+                <% }) %>
               </select>
             </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Want to Supervise:</b></td>
+            <td>
+              <input type='hidden' name='filterWant' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectWant'  multiple>
+                <% _.each(profs, function(opt){ %>
+                    <option value="<%= opt.value %>"><%= opt.option %></option>
+                <% }) %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>Willing to Supervise:</b></td>
+            <td>
+              <input type='hidden' name='filterWilling' />
+              <select class='filter_option' style='width: 225px;' id='filterSelectWilling'  multiple>
+                <% _.each(profs, function(opt){ %>
+                    <option value="<%= opt.value %>"><%= opt.option %></option>
+                <% }) %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><b>University:</b></td>
+            <td>
+              <input type="text" class="filter_option" id="filterUniversity" placeholder="Search here..." style="width: 205px">
+            <td>
           </tr>
           <tr>
             <td align="right"><b>Scholarships Held:</b></td>
@@ -601,6 +515,7 @@
       <th>Supervisors</th>
       <th>Scholarships Held/Applied</th>
       <th>GPA (normalized)</th>
+      <th>GPA (manual)</th>
       <th>GRE (4 scores)</th>
       <th>Pubs</th>
       <th>Awards</th>
@@ -612,6 +527,7 @@
       <th>Faculty (Rank Given)</th>
       <th>Average Faculty Rank</th>
       <th style="min-width: 150px">Notes</th>
+      <th>Want to Supervise</th>
       <th>Willing to Supervise</th>
       <th>Supervisor</th>
       <th>Comments</th>

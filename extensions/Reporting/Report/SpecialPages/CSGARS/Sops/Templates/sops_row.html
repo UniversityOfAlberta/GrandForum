@@ -47,7 +47,9 @@
 </td>
 
 <td id='citizenship'>
-    <%= additional.country_of_citizenship_full %>
+    <b>Citizenship:</b> <%= additional.country_of_citizenship_full %><br />
+    <b>Degree:</b> <%= additional.country_of_degree %><br />
+    <b>Current:</b> <%= additional.current_country %><br />
 </td>
 
 <td style="white-space: nowrap;" id='applicant_type'>
@@ -107,6 +109,10 @@
 
 <td align="right" id='gpaNormalized'>
     <%= additional.gpaNormalized %>
+</td>
+
+<td align="right" id='gpaManual'>
+    <%= additional.gpaManual %>
 </td>
 
 <td id='gres'>
@@ -205,6 +211,10 @@
     <% var additionalNotesDialogId = 'additionalNotes_' + id; %>
     <div title="Additional Notes" id="<%= additionalNotesDialogId %>" style="display:none; z-index:10;"></div>
   <% } %>
+</td>
+
+<td>
+    <%= _.pluck(_.where(reviewers.concat(other_reviewers), {wantToSupervise: true}), 'name').join(",<br />") %>
 </td>
 
 <td>

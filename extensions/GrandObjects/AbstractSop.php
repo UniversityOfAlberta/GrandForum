@@ -63,6 +63,7 @@ abstract class AbstractSop extends BackboneModel{
     abstract function checkSop(); 
     abstract function getReviewers();
     abstract function getAdmitResult($user);
+    abstract function getWantToSupervise($user);
     abstract function getWillingToSupervise($user);
     abstract function getColumns();
     
