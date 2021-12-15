@@ -161,6 +161,13 @@
                     <tr>
                         <td><b>Third Year:</b></td><td>${$item}</td>
                     </tr>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview4" type="Integer" blobItem="BUDGET_OVERVIEW4" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Remaining Funds:</b></td><td>${$item}</td>
+                    </tr>
                 </table>
             ]]> 
         </ReportItem>
