@@ -258,7 +258,7 @@
 		margin: 0;
 	}
 	
-	#nav li span { /* used for un-linked menu items */
+	#nav li > span { /* used for un-linked menu items */
 		display: block;
 		padding: 6px 10px;
 		font-weight: bold;

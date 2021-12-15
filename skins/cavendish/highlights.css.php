@@ -364,7 +364,7 @@ if($config->getValue("sideInverted")){
         color: {$hl};
     }
     
-    #nav li span {
+    #nav li > span {
         color: {$si} !important;
     }
     
