@@ -68,7 +68,6 @@ abstract class RESTAPI extends API {
         header('Content-Type: application/json');
         ob_start("ob_gzhandler");
         echo $json;
-        DBFunctions::close();
         exit;
     }
     

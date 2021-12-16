@@ -2,10 +2,10 @@
 
 autoload_register('GrandObjectPage/PersonPage');
 
-$wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
-$wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getChordData';
+UnknownAction::createAction('PersonProfileTab::getPersonCloudData');
+UnknownAction::createAction('PersonVisualizationsTab::getTimelineData');
+UnknownAction::createAction('PersonVisualizationsTab::getDoughnutData');
+UnknownAction::createAction('PersonVisualizationsTab::getChordData');
 
 $wgHooks['ArticleViewHeader'][] = 'PersonPage::processPage';
 $wgHooks['userCan'][] = 'PersonPage::userCanExecute';

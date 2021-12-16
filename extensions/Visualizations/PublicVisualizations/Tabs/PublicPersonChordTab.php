@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicPersonChordTab::getPublicPersonChordData';
+UnknownAction::createAction('PublicPersonChordTab::getPublicPersonChordData');
 
 class PublicPersonChordTab extends AbstractTab {
 	

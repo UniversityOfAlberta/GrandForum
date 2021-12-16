@@ -1,6 +1,6 @@
 <?php
 
-$wgHooks['UnknownAction'][] = 'PublicWordleTab::getPublicWordleData';
+UnknownAction::createAction('PublicWordleTab::getPublicWordleData');
 
 class PublicWordleTab extends AbstractTab {
 	

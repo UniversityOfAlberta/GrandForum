@@ -2,10 +2,10 @@
 
 autoload_register('GrandObjectPage/ProjectPage');
 
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';
-$wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectWordleData';
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectTimelineData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectDoughnutData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectChordData');
+UnknownAction::createAction('ProjectVisualizationsTab::getProjectWordleData');
 
 $wgHooks['ArticleViewHeader'][] = 'ProjectPage::processPage';
 $wgHooks['TopLevelTabs'][] = 'ProjectPage::createTab';

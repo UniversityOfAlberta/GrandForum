@@ -6,7 +6,7 @@ $wgSpecialPages['AddMultimediaPage'] = 'AddMultimediaPage'; # Let MediaWiki know
 $wgExtensionMessagesFiles['AddMultimediaPage'] = $dir . 'AddMultimediaPage.i18n.php';
 $wgSpecialPageGroups['AddMultimediaPage'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'MultimediaSearch';
+UnknownAction::createAction('MultimediaSearch');
 $wgHooks['ToolboxLinks'][] = 'AddMultimediaPage::createToolboxLinks';
 
 function runAddMultimediaPage($par){

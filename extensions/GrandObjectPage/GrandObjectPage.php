@@ -46,7 +46,7 @@
     //require_once("AddMultimediaPage.php");
     
     $wgHooks['AlternateEdit'][] = 'noEdit';
-    $wgHooks['UnknownAction'][] = 'noCreate';
+    UnknownAction::createAction('noCreate');
     
     function noEdit($editpage){
         global $wgArticle;

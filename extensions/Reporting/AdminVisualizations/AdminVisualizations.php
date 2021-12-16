@@ -2,11 +2,11 @@
 
 autoload_register('Reporting/AdminVisualizations/Tabs');
 
-$wgHooks['UnknownAction'][] = 'AdminChordTab::getAdminChordData';
-$wgHooks['UnknownAction'][] = 'AdminUniTreeTab::getAdminUniTreeData';
-$wgHooks['UnknownAction'][] = 'AdminProjTreeTab::getAdminProjTreeData';
-$wgHooks['UnknownAction'][] = 'AdminUniversityMapTab::getAdminUniversityMapData';
-$wgHooks['UnknownAction'][] = 'HQPPromotionsTab::getHQPPromotionsData';
+UnknownAction::createAction('AdminChordTab::getAdminChordData');
+UnknownAction::createAction('AdminUniTreeTab::getAdminUniTreeData');
+UnknownAction::createAction('AdminProjTreeTab::getAdminProjTreeData');
+UnknownAction::createAction('AdminUniversityMapTab::getAdminUniversityMapData');
+UnknownAction::createAction('HQPPromotionsTab::getHQPPromotionsData');
 
 $dir = dirname(__FILE__) . '/';
 $wgSpecialPages['AdminVisualizations'] = 'AdminVisualizations'; # Let MediaWiki know about the special page.

@@ -6,7 +6,7 @@ $wgSpecialPages['MilestonesLog'] = 'MilestonesLog'; # Let MediaWiki know about t
 $wgExtensionMessagesFiles['MilestonesLog'] = $dir . 'MilestonesLog.i18n.php';
 $wgSpecialPageGroups['MilestonesLog'] = 'network-tools';
 
-$wgHooks['UnknownAction'][] = 'MilestonesLog::milestoneData';
+UnknownAction::createAction('MilestonesLog::milestoneData');
 $wgHooks['SubLevelTabs'][] = 'MilestonesLog::createSubTabs';
 
 function runMilestonesLog($par){

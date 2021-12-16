@@ -6,7 +6,7 @@ if(!isExtensionEnabled('Shibboleth')){
     $wgHooks['AuthPluginSetup'][] = 'impersonate';
 }
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
-$wgHooks['UnknownAction'][] = 'getUserMode';
+UnknownAction::createAction('getUserMode');
 
 function getUserMode($action, $page){
     global $wgUser, $wgImpersonating, $wgDelegating;

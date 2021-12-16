@@ -4,7 +4,7 @@ autoload_register('API');
 global $apiRequest;
 $apiRequest = new APIRequest();
 
-$wgHooks['UnknownAction'][1000] = array($apiRequest, 'processRequest');
+UnknownAction::createAction(array($apiRequest, 'processRequest'));
 
 /**
  * @package API

@@ -1,7 +1,7 @@
 <?php
 
     $wgHooks['BeforePageDisplay'][] = 'reportIssue';
-    $wgHooks['UnknownAction'][] = 'reportIssueAction';
+    UnknownAction::createAction('reportIssueAction');
 
     function reportIssue($wgOut, $skin){
         global $wgServer, $wgScriptPath, $config;

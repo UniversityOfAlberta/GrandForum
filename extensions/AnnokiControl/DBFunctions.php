@@ -478,11 +478,6 @@ class DBFunctions {
 	    DBFunctions::$dbw->rollback();
 	}
 	
-	static function close(){
-	    DBFunctions::initDB();
-	    DBFunctions::$dbw->close();
-	}
-	
 	/**
 	 * Returns the last insert id
 	 * @return int The last insert id
