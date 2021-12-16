@@ -48,7 +48,7 @@ class PublicVisualizations extends SpecialPage{
             $tabbedPage->addTab(new PublicProjTreeTab());
         }
         $tabbedPage->addTab(new PublicUniTreeTab());
-        //$tabbedPage->addTab(new PublicUniversityMapTab());
+        $tabbedPage->addTab(new PublicUniversityMapTab());
         if($config->getValue('projectsEnabled')){
             $tabbedPage->addTab(new PublicWordleTab());
         }

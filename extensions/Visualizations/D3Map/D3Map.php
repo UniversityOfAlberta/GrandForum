@@ -16,7 +16,7 @@ class D3Map extends Visualization {
     }
     
     static function init(){
-        global $wgOut, $wgServer, $wgScriptPath, $visualizations;
+        global $wgOut, $wgServer, $wgScriptPath, $visualizations, $config;
         $wgOut->addScript('<style rel="stylesheet" type="text/css">
 .container, .container svg {
   position: absolute;
@@ -50,7 +50,7 @@ class D3Map extends Visualization {
 }
 </style>');
         $wgOut->addScript('<meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>');
-        $wgOut->addScript('<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>');
+        $wgOut->addScript("<script type='text/javascript' src='https://maps.google.com/maps/api/js?&libraries=places&key={$config->getValue('googleAPI')}'></script>");
     }
 
     function show(){

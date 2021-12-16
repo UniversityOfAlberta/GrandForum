@@ -430,4 +430,6 @@
                                          $config->getConst('ADMIN')));
     /* Other */
     $config->setValue("analyticsCode", "");
+    
+    $config->setValue("googleAPI", "");
 ?>

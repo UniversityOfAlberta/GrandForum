@@ -70,7 +70,8 @@ class PublicUniversityMapTab extends AbstractTab {
             $currentYear = date('Y');
             $startYear = max($currentYear - 8, substr($phaseDates[1], 0, 4));
             
-            $people = Person::getAllPeopleDuring(NI, $start, $end);
+            $people = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
+                                  Person::getAllPeopleDuring(PARTNER, $start, $end));
             
             if($config->getValue('projectsEnabled')){
                 $projectUnis = array();
