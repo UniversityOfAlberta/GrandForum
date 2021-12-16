@@ -5,8 +5,8 @@ class PersonMetricsTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonMetricsTab($person, $visibility){
-        parent::AbstractTab("Bibliometrics");
+    function __construct($person, $visibility){
+        parent::__construct("Bibliometrics");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->tooltip = "Contains Google Scholar citation information for the faculty member.  A 'Google Scholar URL' on the Bio tab must be provided in order to import citation information.";

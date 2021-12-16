@@ -24,7 +24,7 @@ class Wordle extends Visualization {
         $this->url = $url;
         $this->clickable = ($clickable) ? "true" : "false";
         $this->fn = $fn;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

@@ -6,7 +6,7 @@ class DuplicatesTab extends AbstractTab {
 
     function __construct($name, $handler){
         $this->handler = $handler;
-        $this->AbstractTab($name);
+        parent::__construct($name);
     }
 
     function generateBody(){

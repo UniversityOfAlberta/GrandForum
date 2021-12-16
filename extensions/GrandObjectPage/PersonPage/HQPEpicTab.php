@@ -5,8 +5,8 @@ class HQPEpicTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function HQPEpicTab($person, $visibility){
-        parent::AbstractEditableTab("EPIC");
+    function __construct($person, $visibility){
+        parent::__construct("EPIC");
         $this->person = $person;
         $this->visibility = $visibility;
     }

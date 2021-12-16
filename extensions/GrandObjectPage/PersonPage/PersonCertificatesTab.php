@@ -8,8 +8,8 @@ class PersonCertificatesTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonCertificatesTab($person, $visibility){
-        parent::AbstractEditableTab("Training Certificates");
+    function __construct($person, $visibility){
+        parent::__construct("Training Certificates");
         $this->person = $person;
         $this->visibility = $visibility;
     }

@@ -215,7 +215,7 @@ class PersonPage {
     /**
      * Displays the title for this person
      */
-    function showTitle($person, $visibility){
+    static function showTitle($person, $visibility){
         global $wgOut;
         $wgOut->setPageTitle($person->getReversedName());
         $wgOut->addHTML("<script type='text/javascript'>

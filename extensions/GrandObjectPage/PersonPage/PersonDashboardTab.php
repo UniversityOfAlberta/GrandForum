@@ -5,8 +5,8 @@ class PersonDashboardTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonDashboardTab($person, $visibility){
-        parent::AbstractTab("Dashboard");
+    function __construct($person, $visibility){
+        parent::__construct("Dashboard");
         $this->person = $person;
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){

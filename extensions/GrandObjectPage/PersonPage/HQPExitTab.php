@@ -5,8 +5,8 @@ class HQPExitTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function HQPExitTab($person, $visibility){
-        parent::AbstractEditableTab("HQP Alumni");
+    function __construct($person, $visibility){
+        parent::__construct("HQP Alumni");
         $this->person = $person;
         $this->visibility = $visibility;
     }

@@ -5,8 +5,8 @@ class PersonDemographicsTab extends AbstractEditableTab {
     var $person;
     var $visibility;
 
-    function PersonDemographicsTab($person, $visibility){
-        parent::AbstractEditableTab("EDI");
+    function __construct($person, $visibility){
+        parent::__construct("EDI");
         $this->person = $person;
         $this->visibility = $visibility;
     }

@@ -5,8 +5,8 @@ class HQPEpicTab2 extends HQPEpicTab {
     var $person;
     var $visibility;
 
-    function HQPEpicTab2($person, $visibility){
-        parent::HQPEpicTab($person, $visibility);
+    function __construct($person, $visibility){
+        parent::__construct($person, $visibility);
     }
     
     function userCanView(){

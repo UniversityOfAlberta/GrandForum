@@ -5,8 +5,8 @@ class PersonUofANewsTab extends AbstractTab {
     var $person;
     var $visibility;
 
-    function PersonUofANewsTab($person, $visibility){
-        parent::AbstractTab("News");
+    function __construct($person, $visibility){
+        parent::__construct("News");
         $this->person = $person;
         $this->visibility = $visibility;
     }

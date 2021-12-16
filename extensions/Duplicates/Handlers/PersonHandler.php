@@ -3,7 +3,7 @@
 class PersonHandler extends AbstractDuplicatesHandler {
         
     function __construct($id){
-        $this->AbstractDuplicatesHandler($id);
+        parent::__construct($id);
     }
     
     static function init(){
