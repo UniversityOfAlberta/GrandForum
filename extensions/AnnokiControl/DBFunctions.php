@@ -458,16 +458,16 @@ class DBFunctions {
 	 * Begins a Transaction
 	 */
 	static function begin(){
-	    DBFunctions::initDB();
-	    DBFunctions::$dbw->begin();
+        DBFunctions::initDB();
+        DBFunctions::execSQL("BEGIN", true);
 	}
 	
 	/**
 	 * Commits the transaction to the DB
 	 */
 	static function commit(){
-	    DBFunctions::initDB();
-		DBFunctions::$dbw->commit();
+        DBFunctions::initDB();
+        DBFunctions::execSQL("COMMIT", true);
 	}
 	
 	/**
@@ -475,7 +475,7 @@ class DBFunctions {
 	 */
 	static function rollback(){
 	    DBFunctions::initDB();
-	    DBFunctions::$dbw->rollback();
+        DBFunctions::execSQL("ROLLBACK", true);
 	}
 	
 	/**

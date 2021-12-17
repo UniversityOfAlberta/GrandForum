@@ -24,7 +24,7 @@ class UnknownAction extends Action {
             else{
                 eval("\$ret = $action('$name', \$this->getArticle());");
             }
-            if(!$ret){
+            if($ret === false){
                 return;
             }
         }

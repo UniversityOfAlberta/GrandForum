@@ -33,7 +33,7 @@ class DummyReport extends AbstractReport{
         /*if($projectName != null){
             $topProjectOnly = true;
         }*/
-        $this->AbstractReport($fileName, $person->getId(), $projectName, $topProjectOnly, $year, $quick);
+        parent::__construct($fileName, $person->getId(), $projectName, $topProjectOnly, $year, $quick);
     }
     
 }

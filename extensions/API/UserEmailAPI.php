@@ -2,7 +2,7 @@
 
 class UserEmailAPI extends API{
 
-    function UserEmailAPI(){
+    function __construct(){
         $this->addPOST("email", true, "The email address for this account.", "email@mail.com");
     }
 
@@ -16,7 +16,7 @@ class UserEmailAPI extends API{
 	    global $wgMessage;
 	    
         $person = Person::newFromName($_POST['user_name']);
-        $valid = @User::isValidEmailAddr($_POST['email']);
+        $valid = @Sanitizer::validateEmail($_POST['email']);
         if(!$valid){
             @$wgMessage->addError("<b>{$_POST['email']}</b> is not a valid email address");
             return false;

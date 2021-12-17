@@ -7,7 +7,6 @@ class MultiBudget {
     
     function __construct($structures, $data){
         $dir = dirname(__FILE__);
-        require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
         if($data == null || $data == ""){
             return false;
         }
@@ -32,9 +31,11 @@ class MultiBudget {
         }
         fclose($tmpf);
 
-        $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
+        $objReader = PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($tmpn);
         $class = get_class($objReader);
-        if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
+        
+        if($class != "PhpOffice\PhpSpreadsheet\Reader\Xlsx" && 
+           $class != "PhpOffice\PhpSpreadsheet\Reader\Xls"){
             return;
         }
         $objReader->setReadDataOnly(true);
@@ -47,7 +48,7 @@ class MultiBudget {
             $this->budgets[] = new Budget("XLS", $structure, $obj);
         }
         $obj->disconnectWorksheets();
-        PHPExcel_Calculation::getInstance()->clearCalculationCache();
+        PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance()->clearCalculationCache();
         unset($objReader);
         unset($obj);
         unlink($tmpn);

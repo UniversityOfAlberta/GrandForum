@@ -5,8 +5,8 @@ class ProjectDashboardTab extends AbstractEditableTab {
     var $project;
     var $visibility;
 
-    function ProjectDashboardTab($project, $visibility){
-        parent::AbstractTab("Dashboard");
+    function __construct($project, $visibility){
+        parent::__construct("Dashboard");
         $this->project = $project;
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){

@@ -2,7 +2,7 @@
 
 class ProjectDescriptionAPI extends API{
 
-    function ProjectDescriptionAPI(){
+    function __construct(){
         $this->addPOST("project",true,"The name of the project","MEOW");
 	    $this->addPOST("description",true,"The short overview for this project","MEOW is great");
 	    $this->addPOST("long_description",true,"The long description for this project","MEOW is great");

@@ -88,7 +88,7 @@ class DashboardTable extends QueryableTable{
     
     // Used for derived tables
     private function DerivedDashboardTable($structure, $matrix, $obj){
-        $this->QueryableTable();
+        parent::__construct();
         $this->obj = $obj;
         $this->structure = $this->preprocessStructure($structure);
         $this->errors = array();

@@ -3,7 +3,7 @@
 class ProjectFESProjectionsTab extends ProjectFESReportTab {
 
     function ProjectFESProjectionsTab($person, $visibility){
-        parent::AbstractEditableTab("Projections");
+        parent::__construct("Projections");
         $this->project = $person;
         $this->visibility = $visibility;
     }

@@ -7,8 +7,8 @@ class EditableReportSection extends AbstractReportSection {
     var $saveText = "<span class='en'>Save</span><span class='fr'>Sauvegarder</span>";
     
     // Creates a new EditableReportSection()
-    function EditableReportSection(){
-        $this->AbstractReportSection();
+    function __construct(){
+        parent::__construct();
         $this->autosave = true;
     }
     

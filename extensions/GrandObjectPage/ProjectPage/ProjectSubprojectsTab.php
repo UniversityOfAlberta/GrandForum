@@ -5,8 +5,8 @@ class ProjectSubprojectsTab extends AbstractTab {
     var $project;
     var $visibility;
 
-    function ProjectSubprojectsTab($project, $visibility){
-        parent::AbstractTab("Sub-Projects");
+    function __construct($project, $visibility){
+        parent::__construct("Sub-Projects");
         $this->project = $project;
         $this->visibility = $visibility;
         if(isset($_POST['edit']) && isset($_POST['create_subproject'])){

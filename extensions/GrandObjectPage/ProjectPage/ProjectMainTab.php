@@ -7,8 +7,8 @@ class ProjectMainTab extends AbstractEditableTab {
     var $rolesShown = array();
     var $nRolesCells = 0;
 
-    function ProjectMainTab($project, $visibility){
-        parent::AbstractTab("Main");
+    function __construct($project, $visibility){
+        parent::__construct("Main");
         $this->project = $project;
         $this->visibility = $visibility;
     }

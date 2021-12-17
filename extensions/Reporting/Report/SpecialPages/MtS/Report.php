@@ -17,7 +17,7 @@ class Report extends AbstractReport{
         global $config;
         $report = @$_GET['report'];
         $topProjectOnly = false;
-        $this->AbstractReport(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
+        parent::__construct(dirname(__FILE__)."/../../ReportXML/{$config->getValue('networkName')}/$report.xml", -1, false, $topProjectOnly);
     }
 
     static function createTab(&$tabs){

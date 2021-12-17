@@ -5,8 +5,8 @@ class ProjectDescriptionTab extends AbstractEditableTab {
     var $project;
     var $visibility;
 
-    function ProjectDescriptionTab($project, $visibility){
-        parent::AbstractTab("Description");
+    function __construct($project, $visibility){
+        parent::__construct("Description");
         $this->project = $project;
         $this->visibility = $visibility;
     }

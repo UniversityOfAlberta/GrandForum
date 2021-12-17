@@ -8,8 +8,8 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     var $nYears = 3;
     var $maxNYears = 3;
 
-    function ProjectMilestonesTab($project, $visibility){
-        parent::AbstractTab("Milestones");
+    function __construct($project, $visibility){
+        parent::__construct("Milestones");
         $this->project = $project;
         $this->visibility = $visibility;
         

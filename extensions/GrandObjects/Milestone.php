@@ -62,7 +62,7 @@ class Milestone {
      * @param integer $id The id of the revision (optional)
      * @return Milestone The milestone
      */
-    function newFromId($milestone_id, $id=2147483647){
+    static function newFromId($milestone_id, $id=2147483647){
         if(isset(self::$cache[$milestone_id."id".$id])){
             return self::$cache[$milestone_id."id".$id];
         }
@@ -95,7 +95,7 @@ class Milestone {
      * @param integer $id The id of the revision
      * @return Milestone The milestone
      */
-    function newFromIndex($id=2147483647){
+    static function newFromIndex($id=2147483647){
         $data = DBFunctions::select(array('grand_milestones'),
                                     array('*'),
                                     array('id' => EQ($id)));
@@ -109,7 +109,7 @@ class Milestone {
      * @param integer $id The revision id of the Milestone
      * @return Milestone The Milestone
      */
-    function newFromTitle($milestone_title, $id=2147483647){
+    static function newFromTitle($milestone_title, $id=2147483647){
         $milestone_title = str_replace("'", "#39;", $milestone_title);
         if(isset(self::$cache[$milestone_title."id".$id])){
             return self::$cache[$milestone_title."id".$id];

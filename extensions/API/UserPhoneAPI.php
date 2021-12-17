@@ -2,7 +2,7 @@
 
 class UserPhoneAPI extends API{
 
-    function UserPhoneAPI(){
+    function __construct(){
         $this->addPOST("phone", true, "The phone number of the user", "555-5555");
     }
 

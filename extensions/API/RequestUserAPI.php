@@ -2,7 +2,7 @@
 
 class RequestUserAPI extends API{
 
-    function RequestUserAPI(){
+    function __construct(){
         $this->addPOST("wpName", true, "The User Name of the user to add", "UserName");
         $this->addPOST("wpEmail", true, "The User's email address", "me@email.com");
         $this->addPOST("wpSendEmail", true, "Whether or not to send a registration email", "true");
@@ -78,7 +78,7 @@ class RequestUserAPI extends API{
 		    }
 		}
 		$email = $_POST['wpEmail'];
-		if(!User::isValidEmailAddr($email)){
+		if(!@Sanitizer::validateEmail($email)){
 		    if($doEcho){
 		        echo "A valid email address must be provided.\n";
 		        exit;

@@ -43,7 +43,7 @@ class Budget extends QueryableTable{
     // Creates a new Budget with no Structure (Structure is created on the fly)
     private function FreeBudget($data){
         global $budgetStructures;
-        $this->QueryableTable();
+        parent::__construct();
         if(!$this->readCells($data)){
             // Some error happened when reading the data, try to recover
             $data = array();
@@ -61,7 +61,7 @@ class Budget extends QueryableTable{
     // Creates a new Budget instance with the given person ID, structure type, and data set
     private function Budget($structure, $data, $sheet=0){
         global $budgetStructures;
-        $this->QueryableTable();
+        parent::__construct();
         if(is_array($structure)){
             $this->structure = $this->preprocessStructure($structure);
         }
@@ -84,7 +84,7 @@ class Budget extends QueryableTable{
     
     private function CSVBudget($structure, $data){
         global $budgetStructures;
-        $this->QueryableTable();
+        parent::__construct();
         $data = str_replace("\r", '', $data);
         $data = str_replace('$', '', $data);
         $data = str_replace('%', '', $data);
@@ -105,7 +105,7 @@ class Budget extends QueryableTable{
     
     // Creates a single cell'd budget, with an empty cell
     private function EmptyBudget(){
-        $this->QueryableTable();
+        parent::__construct();
         $this->errors = array();
         $this->xls = array(array(new ReadCell("", "", "", 0, 0, $this)));
         $this->structure = array(array(READ));
@@ -113,7 +113,7 @@ class Budget extends QueryableTable{
     
     // Used for derived tables
     private function DerivedBudget($structure, $matrix){
-        $this->QueryableTable();
+        parent::__construct();
         $this->structure = $this->preprocessStructure($structure);
         $this->errors = array();
         $this->xls = array();
@@ -142,10 +142,9 @@ class Budget extends QueryableTable{
     // Reads the cells in the budget based on the specified structure
     private function readCells($data, $sheet=0){
         $dir = dirname(__FILE__);
-        require_once($dir . '/../../../Classes/PHPExcel/IOFactory.php');
-        if(!($data instanceof PHPExcel)){
+        if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
             // 1. Create a temporary file and write the spreadsheet data into the file,
-            // so that PHPExcel can use it.
+            // so that PhpSpreadsheet can use it.
             $tmpn = tempnam(sys_get_temp_dir(), 'XLS');
             if ($tmpn === false) {
                 // Failed to reserve a temporary file.
@@ -171,14 +170,15 @@ class Budget extends QueryableTable{
             fclose($tmpf);
         }
         
-        // 2. Instantiate the file as a PHPExcel IO object.
+        // 2. Instantiate the file as a Spreadsheet IO object.
         try {
-            if(!($data instanceof PHPExcel)){
-                $objReader = PHPExcel_IOFactory::createReaderForFile($tmpn);
+            if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
+                $objReader = PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($tmpn);
                 $class = get_class($objReader);
-
-                if($class != "PHPExcel_Reader_Excel5" && $class != "PHPExcel_Reader_Excel2007"){
-                    return false;
+                
+                if($class != "PhpOffice\PhpSpreadsheet\Reader\Xlsx" && 
+                   $class != "PhpOffice\PhpSpreadsheet\Reader\Xls"){
+                    return;
                 }
                 $objReader->setReadDataOnly(true);
                 $obj = $objReader->load($tmpn);
@@ -231,9 +231,9 @@ class Budget extends QueryableTable{
                 }
                 ++$rowN;
             }
-            if(!($data instanceof PHPExcel)){
+            if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
                 $obj->disconnectWorksheets();
-                PHPExcel_Calculation::getInstance()->clearCalculationCache();
+                PhpOffice\PhpSpreadsheet\Calculation\Calculation::getInstance()->clearCalculationCache();
                 unset($objReader);
                 unset($obj);
             }
@@ -244,7 +244,7 @@ class Budget extends QueryableTable{
             $this->structure = array();
             $this->xls = array();
         }
-        if(!($data instanceof PHPExcel)){
+        if(!($data instanceof PhpOffice\PhpSpreadsheet\Spreadsheet)){
             unlink($tmpn);
         }
         return true;

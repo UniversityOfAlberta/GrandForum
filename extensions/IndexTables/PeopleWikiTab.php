@@ -140,7 +140,7 @@ class PeopleWikiTab extends AbstractTab {
 			    $hour = substr($date, 8, 2);
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
-			    $editor = Person::newFromId($revision->getRawUser());
+			    $editor = Person::newFromId($revision->getUser());
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/{$this->table}_Wiki:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";
@@ -164,7 +164,7 @@ class PeopleWikiTab extends AbstractTab {
 			    $hour = substr($date, 8, 2);
 			    $minute = substr($date, 10, 2);
 			    $second = substr($date, 12, 2);
-			    $editor = Person::newFromId($revision->getRawUser());
+			    $editor = Person::newFromId($revision->getUser());
                 $this->html .= "<td><a href='$wgServer$wgScriptPath/index.php/File:".str_replace("'", "%27", "{$page->getTitle()->getText()}")."'>{$page->getTitle()->getText()}</a></td>\n";
                 $this->html .= "<td>{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}</td>\n";
                 $this->html .= "<td><a href='{$editor->getUrl()}'>{$editor->getReversedName()}</a></td>\n";

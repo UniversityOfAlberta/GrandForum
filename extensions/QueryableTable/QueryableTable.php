@@ -555,7 +555,7 @@ abstract class QueryableTable {
     }
     
     function isError(){
-        $isError = (count($this->errors) > 0);
+        $isError = (!empty($this->errors));
         if(is_array($this->xls)){
             foreach($this->xls as $rowN => $row){
 		        foreach($row as $colN => $cell){
@@ -582,7 +582,7 @@ abstract class QueryableTable {
 			        }
 			    }
 		    }
-		    if(count($this->errors) > 0){
+		    if(!empty($this->errors)){
 		        foreach($this->errors as $rowN => $rowErrors){
 		            foreach($rowErrors as $colN => $error){
 		                $ret .= "$error<br />\n";

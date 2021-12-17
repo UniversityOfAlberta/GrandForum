@@ -5,8 +5,8 @@ class ProjectFESReportTab extends AbstractEditableTab {
     var $project;
     var $visibility;
 
-    function ProjectFESReportTab($person, $visibility){
-        parent::AbstractEditableTab("Reporting");
+    function __construct($person, $visibility){
+        parent::__construct("Reporting");
         $this->project = $person;
         $this->visibility = $visibility;
     }

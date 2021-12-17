@@ -5,8 +5,8 @@ class ProjectSummaryTab extends AbstractTab {
     var $project;
     var $visibility;
 
-    function ProjectSummaryTab($project, $visibility){
-        parent::AbstractTab("Summary");
+    function __construct($project, $visibility){
+        parent::__construct("Summary");
         $this->project = $project;
         $this->visibility = $visibility;
     }

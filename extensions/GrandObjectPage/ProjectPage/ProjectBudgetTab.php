@@ -5,8 +5,8 @@ class ProjectBudgetTab extends AbstractEditableTab {
     var $project;
     var $visibility;
 
-    function ProjectBudgetTab($project, $visibility){
-        parent::AbstractTab("Budget");
+    function __construct($project, $visibility){
+        parent::__construct("Budget");
         $this->project = $project;
         $this->visibility = $visibility;
     }
