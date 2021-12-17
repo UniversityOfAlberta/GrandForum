@@ -2,7 +2,7 @@
 
 class StringCell extends Cell{
     
-    function StringCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $this->value = $cellValue;
     }
     

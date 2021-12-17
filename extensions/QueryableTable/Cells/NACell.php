@@ -2,7 +2,7 @@
 
 class NACell extends Cell{
     
-    function NACell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         
     }
     

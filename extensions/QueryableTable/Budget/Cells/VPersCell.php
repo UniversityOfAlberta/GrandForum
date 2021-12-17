@@ -2,7 +2,7 @@
 
 class VPersCell extends Cell {
     
-    function VPersCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if($cellValue != ''){
             $origCellValue = trim($cellValue);
             $names = explode(',', $origCellValue);

@@ -7,7 +7,7 @@ abstract class UIValidation {
     var $value;
     var $warning;
     
-    function UIValidation($neg=false, $warning=false){
+    function __construct($neg=false, $warning=false){
         $this->negation = $neg;
         $this->warning = $warning;
     }

@@ -2,8 +2,8 @@
 
 class Head1RowCell extends HeadCell{
     
-    function Head1RowCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        parent::HeadCell($cellType, $params, $cellValue, $rowN, $colN, $table);
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
+        parent::__construct($cellType, $params, $cellValue, $rowN, $colN, $table);
     }
     
     function rasterize(){

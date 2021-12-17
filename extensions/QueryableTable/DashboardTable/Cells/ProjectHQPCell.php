@@ -5,7 +5,7 @@ class ProjectHQPCell extends DashboardCell {
     var $start;
     var $end;
     
-    function ProjectHQPCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $this->label = "HQP";
         $start = "0000-00-00";
         $end = "2100-00-00";

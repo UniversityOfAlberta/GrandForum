@@ -242,9 +242,13 @@ EOF;
                 foreach(Person::getAllUniversities() as $uni){
                     $universities[] = $uni;
                 }
+                
+                $partners = json_encode($partners);
+                $universities = json_encode($universities);
+                
                 $wgOut->addScript("
-                    var partners = [\"".implode("\",\n\"", $partners)."\"];
-                    var universities = [\"".implode("\",\n\"", $universities)."\"];
+                    var partners = {$partners};
+                    var universities = {$universities};
                     
                     function showNewMovedOn(){
                         $('#movedOn_new').show();

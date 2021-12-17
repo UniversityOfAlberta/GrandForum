@@ -6,7 +6,7 @@ class SubMoneyCell extends MoneyCell{
     var $totalX = -1;
     var $totalY = -1;
     
-    function SubMoneyCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = '';
         if($cellValue != ''){
             if(isset($params[0]) && isset($params[1])){

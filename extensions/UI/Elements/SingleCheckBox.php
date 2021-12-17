@@ -2,8 +2,8 @@
 
 class SingleCheckBox extends CheckBox {
     
-    function SingleCheckBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
-        parent::CheckBox($id, $name, $value, $options, $validations);
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+        parent::__construct($id, $name, $value, $options, $validations);
     }
     
     function render(){

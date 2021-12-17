@@ -2,8 +2,8 @@
 
 class WrapCell extends ReadCell{
     
-    function WrapCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        self::ReadCell($cellType, $params, $cellValue, $rowN, $colN, $table);
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
+        parent::__construct($cellType, $params, $cellValue, $rowN, $colN, $table);
         $this->wrap = true;
     }
     

@@ -32,7 +32,7 @@ class DashboardTable extends QueryableTable{
     // Creates a new DashboardTable instance with the given person ID, structure type, and data set
     private function DashboardTable($structure, $obj, $start=null, $end=null){
         global $dashboardStructures;
-        $this->QueryableTable();
+        parent::__construct();
         $this->obj = $obj;
         if(is_callable($dashboardStructures[$structure])){
             if($start != null && $end != null){

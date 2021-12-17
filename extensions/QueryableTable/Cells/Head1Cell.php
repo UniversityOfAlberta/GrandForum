@@ -4,7 +4,7 @@ class Head1Cell extends Cell{
     
     var $footnotes = array();
     
-    function Head1Cell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $this->value = $params[0];
             foreach($params as $key => $param){

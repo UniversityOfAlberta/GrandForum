@@ -2,7 +2,7 @@
 
 class ProjectUniversityCell extends Cell{
     
-    function ProjectUniversityCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $start = "0000";
         $end = "2100";
         if(count($params) == 1){

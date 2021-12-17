@@ -2,7 +2,7 @@
 
 class ProjectRolesCell extends Cell{
     
-    function ProjectRolesCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         global $config;
         $start = "0000";
         $end = "2100";

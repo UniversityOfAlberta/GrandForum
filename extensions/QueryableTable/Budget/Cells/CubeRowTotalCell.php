@@ -2,8 +2,8 @@
 
 class CubeRowTotalCell extends MoneyCell{
     
-    function CubeRowTotalCell($cellType, $params, $cellValue, $rowN, $colN, $table){
-        $this->MoneyCell($cellType, $params, $cellValue, $rowN, $colN, $table);
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
+        parent::__construct($cellType, $params, $cellValue, $rowN, $colN, $table);
     }
     
     function rasterize(){

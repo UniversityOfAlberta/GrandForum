@@ -2,7 +2,7 @@
 
     class ProjectNINoLeadersArray extends GroupByArray {
         
-        function ProjectNINoLeadersArray($table, $params){
+        function __construct($table, $params){
             $project = $table->obj;
             if(isset($params[1]) && isset($params[2])){
                 $start = $params[1];

@@ -105,14 +105,15 @@ class DatabaseMysqli extends DatabaseMysqlBase {
 		if ( $this->getFlag( self::DBO_PERSISTENT ) ) {
 			$realServer = 'p:' . $realServer;
 		}
-
+        /*
+        TODO: Causes issue with utf8 characters, so commented out
 		if ( $this->utf8Mode ) {
 			// Tell the server we're communicating with it in UTF-8.
 			// This may engage various charset conversions.
 			$mysqli->options( MYSQLI_SET_CHARSET_NAME, 'utf8' );
 		} else {
 			$mysqli->options( MYSQLI_SET_CHARSET_NAME, 'binary' );
-		}
+		}*/
 		$mysqli->options( MYSQLI_OPT_CONNECT_TIMEOUT, 3 );
 
 		if ( $mysqli->real_connect(

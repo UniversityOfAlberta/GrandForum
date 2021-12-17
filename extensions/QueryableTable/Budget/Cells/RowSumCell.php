@@ -2,7 +2,7 @@
 
 class RowSumCell extends MoneyCell{
     
-    function RowSumCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = 0;
         foreach($table->xls[$rowN] as $colN1 => $col){
             if($col instanceof Cell){

@@ -2,7 +2,7 @@
 
     class PersonContributionsCell extends DashboardCell {
         
-        function PersonContributionsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+        function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
             $this->label = "Contributions";
         
             $start = "0000-00-00 00:00:00";

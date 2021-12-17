@@ -2,8 +2,8 @@
 
 class EmptyElement extends UIElement {
     
-    function EmptyElement(){
-        parent::UIElement('', '', '', VALIDATE_NOTHING);
+    function __construct(){
+        parent::__construct('', '', '', VALIDATE_NOTHING);
     }
     
     function render(){

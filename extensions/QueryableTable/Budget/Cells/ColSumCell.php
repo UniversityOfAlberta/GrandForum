@@ -2,7 +2,7 @@
 
 class ColSumCell extends MoneyCell{
     
-    function ColSumCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $value = 0;
         $projection = array_project($table->xls, $colN);
         foreach($projection as $rowN1 => $row){

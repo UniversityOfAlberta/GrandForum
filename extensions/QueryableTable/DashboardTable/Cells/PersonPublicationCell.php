@@ -2,7 +2,7 @@
 
 abstract class PersonPublicationCell extends PublicationCell {
     
-    function PersonPublicationCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         $start = "0000-00-00";
         $end = "2100-00-00";
         if(count($params) == 1){

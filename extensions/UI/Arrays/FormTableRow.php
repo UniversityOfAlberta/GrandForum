@@ -2,8 +2,8 @@
 
 class FormTableRow extends UIElementArray {
     
-    function FormTableRow($id){
-        parent::UIElementArray($id);
+    function __construct($id){
+        parent::__construct($id);
     }
     
     function render(){

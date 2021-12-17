@@ -5,7 +5,7 @@ class UIElementArray extends UIElement {
     var $elements;
     
     function __construct($id){
-        parent::UIElement($id, $id, "", VALIDATE_NOTHING);
+        parent::__construct($id, $id, "", VALIDATE_NOTHING);
         $this->id = $id;
         $this->elements = array();
     }

@@ -2,7 +2,7 @@
 
 class VProjCell extends Cell{
     
-    function VProjCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if($cellValue != ''){
             $project = Project::newFromName($cellValue);
             if($project == null || $project->getName() == null){

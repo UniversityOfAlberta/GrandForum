@@ -2,7 +2,7 @@
 
 class PersonProjectsCell extends Cell{
     
-    function PersonProjectsCell($cellType, $params, $cellValue, $rowN, $colN, $table){
+    function __construct($cellType, $params, $cellValue, $rowN, $colN, $table){
         if(isset($params[0])){
             $project = Project::newFromHistoricName(str_replace(" <span style='display:none;'>(Completed)</span>", "", $params[0]));
             $deleted = ($project->isDeleted()) ? " <span style='display:none;'>(Completed)</span>" : "";

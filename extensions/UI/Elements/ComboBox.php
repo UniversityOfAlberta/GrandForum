@@ -4,7 +4,7 @@ class ComboBox extends SelectBox {
 
     var $options = array();
     
-    function ComboBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
+    function __construct($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         if(isset($_POST[str_replace("[]", "", $id)])){
             $post = $_POST[str_replace("[]", "", $id)];
             if(is_array($post)){
@@ -16,7 +16,7 @@ class ComboBox extends SelectBox {
                 }
             }
         }
-        parent::SelectBox($id, $name, $value, $options, $validations);
+        parent::__construct($id, $name, $value, $options, $validations);
     }
     
     function render(){
