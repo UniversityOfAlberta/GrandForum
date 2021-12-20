@@ -6,7 +6,7 @@ class UniqueUserValidation extends UIValidation {
     var $personName;
 
     function UniqueUserValidation($neg=false, $warning=false) {
-        parent::UIValidation($neg, $warning);
+        parent::__construct($neg, $warning);
     }
     
     function validateFn($value){

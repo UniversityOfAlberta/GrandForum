@@ -124,7 +124,7 @@ function onUserCanExecute($special, $subpage){
  * action do not change during a single request.
  */
 function onUserCan(&$title, &$user, $action, &$result) {
-    GrandAccess::setupGrandAccess($user, $user->getRights());
+    //GrandAccess::setupGrandAccess($user, $user->getRights());
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
