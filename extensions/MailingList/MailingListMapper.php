@@ -17,6 +17,7 @@ class MailingListMapper extends SpecialPage{
 
     function execute($par){
         global $wgOut;
+        $this->getOutput()->setPageTitle("Mailing List Mapper");
         $lists = MailingList::listLists();
         $wgOut->addHTML("<form>");
         $wgOut->addHTML("<h2>Select a List<h2><div>");

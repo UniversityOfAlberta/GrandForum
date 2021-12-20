@@ -24,6 +24,7 @@ class SpecialUofANewsTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("University of Alberta News Table");
         $searchEngines = json_decode(file_get_contents("maintenance/searchEngines.json"), true);
         $allNews = UofANews::getAllNews();
         $wgOut->addHTML("<table id='table' class='wikitable'>

@@ -25,6 +25,7 @@ class ManagePeopleLog extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		$this->getOutput()->setPageTitle("Manage People Log");
 		$notifications = array();
 	    $data = DBFunctions::execSQL("SELECT id 
 	                                  FROM grand_notifications

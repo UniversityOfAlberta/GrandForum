@@ -68,6 +68,7 @@ class MilestonesLog extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+		$this->getOutput()->setPageTitle("Milestones Log");
 	    $wgOut->addHTML("<table id='milestonesHistory' frame='box' rules='all'>
 	                        <thead>
 	                            <tr>

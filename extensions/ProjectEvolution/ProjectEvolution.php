@@ -21,6 +21,7 @@ class ProjectEvolution extends SpecialPage {
     
     function execute($par){
         global $wgOut;
+        $this->getOutput()->setPageTitle("Project Evolution");
         $tabbedPage = new TabbedPage("project");
         $tabbedPage->addTab(new CreateProjectTab());
         $tabbedPage->addTab(new EvolveProjectTab());

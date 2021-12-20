@@ -43,6 +43,7 @@ class CreatePoll extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgScriptPath, $wgServer, $wgTitle, $wgArticle, $wgMessage;
+        $this->getOutput()->setPageTitle("Create Poll");
         if(isset($_POST['submit'])){
             $name = $_POST['name'];
             $noName = false;

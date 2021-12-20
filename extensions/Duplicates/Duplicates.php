@@ -65,6 +65,7 @@ class Duplicates extends SpecialPage{
 
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut;
+	    $this->getOutput()->setPageTitle("Duplicates");
 	    ProductHandler::init();
 	    MyProductHandler::init();
 	    PersonHandler::init();

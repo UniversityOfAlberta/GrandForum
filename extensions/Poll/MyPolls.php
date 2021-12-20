@@ -19,6 +19,7 @@ class MyPolls extends SpecialPage{
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
+        $this->getOutput()->setPageTitle("My Polls");
         $rows = DBFunctions::select(array('grand_poll_collection'),
                                     array('collection_id'));
         $collections = array();

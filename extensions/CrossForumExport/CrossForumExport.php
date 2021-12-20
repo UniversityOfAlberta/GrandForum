@@ -24,6 +24,7 @@ class CrossForumExport extends SpecialPage {
     
     function execute($par){
         global $wgOut, $wgUser, $config;
+        $this->getOutput()->setPageTitle("Cross Forum Export");
         if($wgUser->isLoggedIn()){
             // Handle Exporting
             $me = Person::newFromWgUser();

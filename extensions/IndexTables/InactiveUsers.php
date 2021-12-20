@@ -18,6 +18,7 @@ class InactiveUsers extends SpecialPage {
 
     function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		$this->getOutput()->setPageTitle("Inactive Users");
 		$text = "";
 		$data = Person::getAllPeople(INACTIVE);
 

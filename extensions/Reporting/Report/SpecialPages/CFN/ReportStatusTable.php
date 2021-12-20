@@ -24,6 +24,7 @@ class ReportStatusTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Report Status Table");
         ReportStatusTable::generateHTML($wgOut);
     }
     

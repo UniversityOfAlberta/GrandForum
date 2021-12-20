@@ -62,6 +62,7 @@ class Register extends SpecialPage{
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $me = Person::newFromWgUser();
+        $this->getOutput()->setPageTitle("Registration");
         if($me->isLoggedIn()){
             $wgOut->clearHTML();
             $wgOut->setPageTitle("Account already exists");

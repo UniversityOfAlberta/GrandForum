@@ -24,6 +24,7 @@ class EPICTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("EPIC Table");
         EPICTable::generateHTML($wgOut);
     }
     

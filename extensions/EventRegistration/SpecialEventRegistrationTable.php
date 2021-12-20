@@ -15,6 +15,7 @@ class SpecialEventRegistrationTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("Event Registration Table");
         $registrations = EventRegistration::getAllEventRegistrations();
         if(isset($_GET['pdf'])){
             foreach($registrations as $registration){

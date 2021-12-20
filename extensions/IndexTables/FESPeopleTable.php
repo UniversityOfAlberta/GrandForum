@@ -20,6 +20,7 @@ class FESPeopleTable extends SpecialPage {
 
     function execute($par){
 		global $wgServer, $wgScriptPath, $wgUser, $wgOut, $config;
+		$this->getOutput()->setPageTitle("Members Table");
 		$people = Person::getAllPeople();
     
         $wgOut->addHTML("<table id='peopleTable' class='wikitable'>

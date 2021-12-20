@@ -66,6 +66,7 @@ You should log in and change your password now.';
   
   function execute( $par ) {
     global $wgOut, $egAnnokiExtensions, $wgEmergencyContact;
+    $this->getOutput()->setPageTitle("Annoki Control");
     $newHTML = "<div><table class='wikitable sortable' border=1 cellpadding=5>
     <thead>
         <tr><th>Extension</th><th>Installation Status</th><th>Extension Status</th><th>Memory Usage (MB)</th><th>Execution Time (ms)</th></tr>

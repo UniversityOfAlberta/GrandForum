@@ -96,6 +96,7 @@ class AddMultimediaPage extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $config;
+		$this->getOutput()->setPageTitle("Add Multimedia");
 	    $wgOut->addScript(generateMultimediaScript("Multimedia"));
 		$wgOut->addHTML("<i>Multimedia</i> ".Inflect::pluralize($config->getValue('productsTerm'))." are any media form which has been produced as a result of {$config->getValue('networkName')} participation.<br /><br />Enter a short title for the  in the text field below. If there is an already existing with the same or similar title, it will be listed below the text field. If you see the in the list, then you can click on the title to edit its information, otherwise you can choose to create the with the name you have entered by clicking the 'Create' button.<br /><br />
 		                 <b>Name:</b> <input onKeyPress='submitOnEnter(event)' type='text' id='title' name='title' size='50' onKeyUp='search(this.value);' /> <input type='button' onClick='changeLocation();' name='submit' value='Create' /><br />

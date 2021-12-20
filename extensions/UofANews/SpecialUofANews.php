@@ -21,6 +21,7 @@ class SpecialUofANews extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("University of Alberta News");
         $news = UofANews::getAllNews();
         if(count($news) > 0){
             foreach($news as $article){

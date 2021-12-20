@@ -28,6 +28,7 @@ class ReportArchive extends SpecialPage {
     
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("Report Archive");
         if(date('m') >= 3){
             $year = (isset($_GET['year']) && is_numeric($_GET['year'])) ? $_GET['year'] : date('Y');
         }

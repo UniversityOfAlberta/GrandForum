@@ -24,6 +24,7 @@ class EEAReviewTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("EEA Review Table");
         if(isset($_GET['download']) && isset($_GET['year']) && isset($_GET['key'])){
             header('Content-Type: data:application/vnd.ms-excel');
             header('Content-Disposition: attachment; filename="'.$_GET['key'].' Review.xls"');

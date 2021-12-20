@@ -20,6 +20,7 @@ class MyDuplicateProducts extends SpecialPage{
 
 	function execute($par){
 	    global $wgServer, $wgScriptPath, $wgOut, $wgUser, $config;
+	    $this->getOutput()->setPageTitle('My Duplicate '.Inflect::pluralize($config->getValue('productsTerm')));
 	    $me = Person::newFromId($wgUser->getId());
 	    ProductHandler::init();
 	    MyProductHandler::init();

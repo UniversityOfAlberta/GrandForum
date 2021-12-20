@@ -24,6 +24,7 @@ class CCActivitiesTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("CC Activities Table");
         CCActivitiesTable::generateHTML($wgOut);
     }
     

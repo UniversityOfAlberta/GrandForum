@@ -24,6 +24,7 @@ class RFPApplicationTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("RFP Application Table");
         RFPApplicationTable::generateHTML($wgOut);
     }
     

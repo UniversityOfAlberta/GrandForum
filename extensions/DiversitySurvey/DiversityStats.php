@@ -23,7 +23,7 @@ class DiversityStats extends SpecialPage{
 
     function execute($par){
         global $wgOut;
-        
+        $this->getOutput()->setPageTitle("Diversity Stats");
         $tabbedPage = new TabbedPage("person");
         
         $tabbedPage->addTab(new CompletionTab());

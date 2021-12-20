@@ -25,7 +25,7 @@ class ProductSummary extends SpecialPage{
 
 	function execute($par){
 		global $wgOut, $wgUser, $wgServer, $wgScriptPath, $config;
-		$wgOut->setPageTitle("{$config->getValue('productsTerm')} Summary");
+		$this->getOutput()->setPageTitle("{$config->getValue('productsTerm')} Summary");
 		$phaseDates = $config->getValue('projectPhaseDates');
 		$structure = Product::structure();
 		$wgOut->addHTML("<div id='tabs'><ul>");

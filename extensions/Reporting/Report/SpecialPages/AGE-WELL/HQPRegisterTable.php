@@ -24,6 +24,7 @@ class HQPRegisterTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("HQP Registration Table");
         HQPRegisterTable::generateHTML($wgOut);
     }
     

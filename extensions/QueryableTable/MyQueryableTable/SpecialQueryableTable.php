@@ -17,6 +17,7 @@ class SpecialQueryableTable extends SpecialPage {
 	
 	function execute($par){
 	    global $wgOut, $wgServer, $wgScriptPath;
+	    $this->getOutput()->setPageTitle("Special QueryableTable");
 	    $data = array(array("Channel1", "Channel2", "Channel3", "Channel4"),
 	                  array("Red", "Green", "Blue", "Alpha"),
 	                  array("128", "64", "192", "255"));

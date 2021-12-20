@@ -27,7 +27,7 @@ class CCVExport extends SpecialPage {
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgMessage;
         global $userID, $wgDBname;
-      
+        $this->getOutput()->setPageTitle("CCV Export");
         $userID = $wgUser->getId();
 
         if(isset($_GET['getXML'])){

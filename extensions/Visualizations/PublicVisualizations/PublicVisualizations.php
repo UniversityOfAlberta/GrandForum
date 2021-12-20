@@ -36,6 +36,7 @@ class PublicVisualizations extends SpecialPage{
 
     function execute($par){
         global $wgOut, $config;
+        $this->getOutput()->setPageTitle("Public Visualizations");
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("publicVis");
         if($config->getValue('projectsEnabled')){

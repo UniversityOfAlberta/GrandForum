@@ -56,6 +56,7 @@ class SpecialMaterialSubmission extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("Material Submission");
         $me = Person::newFromWgUser();
         if(isset($_POST['submit'])){
             $this->handleEdit();

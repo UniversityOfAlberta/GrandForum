@@ -24,6 +24,7 @@ class ApplicationsTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Report Table");
         ApplicationsTable::generateHTML($wgOut);
     }
     

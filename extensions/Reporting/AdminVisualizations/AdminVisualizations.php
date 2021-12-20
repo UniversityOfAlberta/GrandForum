@@ -27,6 +27,7 @@ class AdminVisualizations extends SpecialPage{
 
     function execute($par){
         global $wgOut;
+        $this->getOutput()->setPageTitle("Admin Visualizations");
         $tabbedPage = new TabbedPage("adminVis");
         $tabbedPage->addTab(new AdminChordTab());
         $tabbedPage->addTab(new AdminUniTreeTab());

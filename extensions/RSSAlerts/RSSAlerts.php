@@ -248,6 +248,7 @@ class RSSAlerts extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
+        $this->getOutput()->setPageTitle("RSS Alerts");
         if(isset($_POST['save'])){
             $this->handleEdit();
         }

@@ -24,6 +24,7 @@ class MyMailingLists extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage, $config;
+        $this->getOutput()->setPageTitle("My Mailing Lists");
         $person = Person::newFromWgUser();
         if(isset($_POST['unsub'])){
             foreach($_POST['unsub'] as $unsub){

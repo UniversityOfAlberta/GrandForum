@@ -26,6 +26,7 @@ class ProjectTable extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        $this->getOutput()->setPageTitle("Projects Table");
         if(isset($_GET['project'])){
             $this->project();
         }
