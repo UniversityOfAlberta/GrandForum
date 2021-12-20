@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="International Partnerships Application" reportType="RP_INTERNATIONAL" pdfType="RPTP_INTERNATIONAL" pdfFiles="InternationalPartnershipsPDF" ajax="true" allowIdProjects="true" disabled="false" year="2022">
+<Report name="Collaborative Team Grant Application" reportType="RP_COLLAB" pdfType="RPTP_COLLAB" pdfFiles="CollaborativeReport2022PDF" ajax="true" allowIdProjects="true" disabled="false" year="2022">
      <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
@@ -11,7 +11,7 @@
         <!-- Theme -->
         <ReportItem id="theme" type="RadioReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_THEME" orientation="vertical" options="Infectious Diseases|Chronic Diseases|Cancer|Neurodegenerative Diseases">
             <![CDATA[
-                <h4 style='font-size:1.40em;'>International Partnerships Application</h4>
+                <h4 style='font-size:1.40em;'>Collaborative Team Grant Application</h4>
                 <br />
                 <p><b><u>Theme:</u>&nbsp;{$item}</b></p>
                 <br />
@@ -56,6 +56,14 @@
             ]]>
         </ReportItem>
         
+        <!-- EDI -->
+        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
+            <![CDATA[
+                <p><b><u>Equity and Diversity</u></b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
         <!-- Key Words -->
         <ReportItem id="keywords" type="MultiTextReportItem" 
                                   blobType="BLOB_ARRAY" 
@@ -72,7 +80,7 @@
             ]]>
         </ReportItem>
         
-        <!-- Partners involved (Academia Sinica, companies, agencies etc) -->
+        <!-- Partners involved (Companies, agencies etc) -->
         <ReportItem id="part" type="MultiTextReportItem" 
                               blobType="BLOB_ARRAY" 
                               blobItem="CAT_DESC_PART" 
@@ -81,7 +89,7 @@
                               sizes="20%|20%|20%|20%|20%"
                               showHeader="false">
             <![CDATA[
-                <p><b><u>Partners involved</u> (Academia Sinica, companies, agencies etc)</b></p>
+                <p><b><u>Partners involved</u> (Partner Name, Contact Name, Dollars requested, Cash, In-Kind)</b></p>
                 <div style='font-size: smaller;'>{$item}</div><br />
             ]]>
         </ReportItem>
@@ -108,30 +116,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        
-        <!-- Relevance and Impact -->
-        <ReportItem id="impact" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_IMPACT" rich="true" limit="500">
-            <![CDATA[
-                <h2>Relevance and Impact</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        
-        <!-- EDI -->
-        <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="200">
-            <![CDATA[
-                <h2>Equity and Diversity</h2>
-                {$item}
-            ]]>
-        </ReportItem>
 
         <!-- Response -->
-        <!--ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
+        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true">
             <![CDATA[
                 <h2>Response to Reviewer's Comments</h2>
                 {$item}
             ]]>
-        </ReportItem-->        
+        </ReportItem>        
         
         <!-- Proposal -->
         <ReportItem id="proposal" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_PROPOSAL" rich="true" limit="7000">
@@ -174,12 +166,12 @@
         </ReportItem>
         
         <!-- Conflict -->
-        <!--ReportItem id="coi" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_COI" rich="true">
+        <ReportItem id="coi" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_COI" rich="true">
             <![CDATA[
                 <h2>Conflict of Interest</h2>
                 {$item}
             ]]>
-        </ReportItem-->
+        </ReportItem>
     </ReportSection>
     <ReportSection id="budget" name="Budget" blobSection="CAT_BUDGET" tooltip="Project Budget" type="EditableReportSection" pagebreak="false">
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
@@ -210,8 +202,17 @@
     </ReportSection>
     <ReportSection id="letters" name="Partner Letters" blobSection="CAT_SUPPORT" tooltip="Partner Support Letters" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="appendix_bookmark" type="BookmarkReportItem" offset="1" text="Appendix"></ReportItem>
-        <For from="1" to="10">
-            <ReportItem id="upload{$index}" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD{$index}" mimeType="application/pdf" />
-        </For>
+        <ReportItem id="upload1" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload2" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD2" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload3" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD3" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload4" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD4" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload5" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD5" mimeType="application/pdf">
+        </ReportItem>
+        <ReportItem id="upload6" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD6" mimeType="application/pdf">
+        </ReportItem>
     </ReportSection>
 </Report>

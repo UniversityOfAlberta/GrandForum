@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="International Partnerships Application" reportType="RP_INTERNATIONAL" pdfType="RPTP_INTERNATIONAL" pdfFiles="InternationalPartnershipsPDF" ajax="true" allowIdProjects="true" disabled="false" year="2021">
+<Report name="International Partnerships Application" reportType="RP_INTERNATIONAL" pdfType="RPTP_INTERNATIONAL" pdfFiles="InternationalPartnershipsPDF" ajax="true" allowIdProjects="true" disabled="false" year="2022">
     <Permissions>
-        <Role role="" subRole="International2021">
+        <Role role="" subRole="International2022">
 
         </Role>
         <Role role="Staff">
