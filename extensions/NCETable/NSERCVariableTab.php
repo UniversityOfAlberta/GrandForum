@@ -7,7 +7,7 @@ class NSERCVariableTab extends AbstractTab {
     var $label = "";
     var $year = "";
 
-    function NSERCVariableTab($label, $from, $to, $year){
+    function __construct($label, $from, $to, $year){
         global $wgOut;
         
         $this->label = $label;
@@ -15,7 +15,7 @@ class NSERCVariableTab extends AbstractTab {
         $this->to = $to;
         $this->year = $year;
 
-        parent::AbstractTab($label);
+        parent::__construct($label);
         $wgOut->setPageTitle("Evaluation Tables: NCE");
     }
     

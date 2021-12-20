@@ -4,10 +4,10 @@ class NSERCTab extends AbstractTab {
 
     var $year = "";
     
-    function NSERCTab($year){
+    function __construct($year){
         global $wgOut;
         $lastYear = $year - 1;
-        parent::AbstractTab("{$lastYear}/{$year}");
+        parent::__construct("{$lastYear}/{$year}");
         $this->year = $year;
     }
     

@@ -6,7 +6,7 @@ class PeopleTableTab extends AbstractTab {
     var $visibility;
     var $past;
 
-    function PeopleTableTab($table, $visibility, $past=false){
+    function __construct($table, $visibility, $past=false){
         global $config, $wgOut;
         if($table != "Candidate"){
             $tabTitle = Inflect::pluralize($config->getValue('roleDefs', $table));
@@ -17,13 +17,13 @@ class PeopleTableTab extends AbstractTab {
         $tabTitle = ucwords($tabTitle);
         $wgOut->setPageTitle($tabTitle);
         if(!$past){
-            parent::AbstractTab($tabTitle);
+            parent::__construct($tabTitle);
         } 
         else if(is_numeric($past)){
-            parent::AbstractTab("$past-".($past+1));
+            parent::__construct("$past-".($past+1));
         }
         else {
-            parent::AbstractTab("Former");
+            parent::__construct("Former");
         }
         $this->table = $table;
         $this->visibility = $visibility;

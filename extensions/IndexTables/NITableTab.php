@@ -2,8 +2,8 @@
 
 class NITableTab extends PeopleTableTab {
 
-    function NITableTab($visibility, $past=false){
-        parent::PeopleTableTab(NI, $visibility, $past);
+    function __construct($visibility, $past=false){
+        parent::__construct(NI, $visibility, $past);
     }
 
     function generateBody(){
@@ -144,9 +144,9 @@ class NITableTab extends PeopleTableTab {
                 $this->html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
             }
             $university = $person->getUniversity();
-            $this->html .= "<td align='left'>{$university['university']}</td>";
-            $this->html .= "<td align='left'>{$university['department']}</td>";
-            $this->html .= "<td align='left'>{$university['position']}</td>";
+            $this->html .= @"<td align='left'>{$university['university']}</td>";
+            $this->html .= @"<td align='left'>{$university['department']}</td>";
+            $this->html .= @"<td align='left'>{$university['position']}</td>";
             if($statusHeader != ''){
                 if($person->isRole($this->table)){
                     $status = "Active";

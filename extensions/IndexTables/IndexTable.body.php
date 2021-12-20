@@ -291,7 +291,7 @@ class IndexTable {
      * Consists of the following columns
      * Identifier | Name 
      */
-    private function generateProjectsTable($status, $type="Research"){
+    private static function generateProjectsTable($status, $type="Research"){
         global $wgScriptPath, $wgServer, $wgOut, $wgUser, $config;
         $me = Person::newFromId($wgUser->getId());
         $themesHeader = "";
@@ -376,7 +376,7 @@ class IndexTable {
      * Consists of the following columns
      * Theme | Name 
      */
-    private function generateThemesTable($phase=1){
+    private static function generateThemesTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $wgOut->addHTML(
 "<table class='indexTable' style='display:none;' frame='box' rules='all'>
@@ -420,7 +420,7 @@ class IndexTable {
     /**
      * Generates the Table of Admin Projects
      */
-    private function generateAdminTable($phase=1){
+    private static function generateAdminTable($phase=1){
         global $wgScriptPath, $wgServer, $config, $wgOut;
         $me = Person::newFromWgUser();
         $activityPlans = "";
@@ -497,7 +497,7 @@ class IndexTable {
      * Researchers, or Highly-Qualified People, depending on parameter
      * table.
      */
-    private function generatePersonTable($table){
+    private static function generatePersonTable($table){
         global $config, $wgOut;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
@@ -534,7 +534,7 @@ class IndexTable {
     /**
      * Generates the Table for the Network Investigators
      */
-    private function generateNITable(){
+    private static function generateNITable(){
         global $config;
         $me = Person::newFromWgUser();
         $tabbedPage = new TabbedPage("people");
@@ -544,7 +544,7 @@ class IndexTable {
         return true;
     }
 
-    function generateMaterialsTable(){
+    static function generateMaterialsTable(){
         global $wgServer, $wgScriptPath, $wgOut;
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Type</th><th>People</th><th>Projects</th></tr></thead><tbody>");
@@ -580,7 +580,7 @@ class IndexTable {
         return true;
     }
 
-    function generateFormsTable(){
+    static function generateFormsTable(){
         global $wgServer, $wgScriptPath, $wgOut;
         $wgOut->addHTML("<table class='indexTable' style='display:none;' frame='box' rules='all'>
 <thead><tr><th>Date</th><th style='min-width:300px;'>Title</th><th>Person</th><th>Institution</th><th>Project</th></tr></thead><tbody>");
