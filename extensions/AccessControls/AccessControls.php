@@ -60,6 +60,8 @@ if ($egAnProtectUploads){
   $wgHooks['ArticleViewHeader'][] = 'UploadProtection::addNsInfoToImagePage';
   $wgHooks['UploadVerification'][] = 'UploadProtection::preventUnauthorizedOverwrite';
  }
+ 
+UnknownAction::createAction('logout');
 
 define("EX_ACCESS_CONTROLS", true);
 

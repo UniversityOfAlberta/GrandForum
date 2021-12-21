@@ -522,4 +522,19 @@ function performActionOnTransclusion(&$text, &$error, $isSave){
   return true;
 }
 
+function logout($action, $article){
+    global $wgUser, $wgServer, $wgScriptPath;
+    if($action == "logout" && $wgUser->isLoggedIn()){
+        $wgUser->logout();
+        if(isset($_GET['returnto'])){
+            redirect($_GET['returnto']);
+        }
+        else{
+            redirect("$wgServer$wgScriptPath");
+        }
+        return false;
+    }
+    return true;
+}
+
 ?>

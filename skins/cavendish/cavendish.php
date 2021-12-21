@@ -816,21 +816,8 @@ class CavendishTemplate extends QuickTemplate {
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
-		            $logout = $this->data['personal_urls']['logout'];
-	                $getStr = "";
-                    foreach($_GET as $key => $get){
-                        if($key == "title" || $key == "returnto"){
-                            continue;
-                        }
-                        if(strlen($getStr) == 0){
-                            $getStr .= "?$key=$get";
-                        }
-                        else{
-                            $getStr .= "&$key=$get";
-                        }
-                    }
-	                $logout['href'] .= urlencode($getStr);
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$logout['href']}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_16x16.png' /></a>";
+		            $logoutUrl = urlencode("{$wgServer}{$_SERVER['REQUEST_URI']}");
+	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout&returnto={$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_16x16.png' /></a>";
 	            }
 	        }
 	        echo "</div>";
