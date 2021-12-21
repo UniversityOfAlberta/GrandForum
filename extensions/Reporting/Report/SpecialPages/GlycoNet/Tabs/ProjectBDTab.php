@@ -6,8 +6,8 @@ class ProjectBDTab extends AbstractTab {
     var $rp;
     var $title;
 
-    function ProjectBDTab($project){
-        parent::AbstractTab("Business Development");
+    function __construct($project){
+        parent::__construct("Business Development");
         $this->project = $project;
     }
     

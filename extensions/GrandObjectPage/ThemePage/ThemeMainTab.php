@@ -5,8 +5,8 @@ class ThemeMainTab extends AbstractEditableTab {
     var $theme;
     var $visibility;
 
-    function ThemeMainTab($theme, $visibility){
-        parent::AbstractTab("Main");
+    function __construct($theme, $visibility){
+        parent::__construct("Main");
         $this->theme = $theme;
         $this->visibility = $visibility;
     }

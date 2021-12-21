@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicPersonChordTab::getPublicPersonChordData');
 class PublicPersonChordTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Person Relations");
+        parent::__construct("Person Relations");
     }
 
     function generateBody(){

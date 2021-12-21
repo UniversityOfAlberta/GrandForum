@@ -5,8 +5,8 @@ class ThemeBudgetTab extends AbstractEditableTab {
     var $theme;
     var $visibility;
 
-    function ThemeBudgetTab($theme, $visibility){
-        parent::AbstractTab("Budget");
+    function __construct($theme, $visibility){
+        parent::__construct("Budget");
         $this->theme = $theme;
         $this->visibility = $visibility;
     }

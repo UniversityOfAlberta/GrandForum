@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicWordleTab::getPublicWordleData');
 class PublicWordleTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Project Tag Cloud");
+        parent::__construct("Project Tag Cloud");
     }
 
     function generateBody(){

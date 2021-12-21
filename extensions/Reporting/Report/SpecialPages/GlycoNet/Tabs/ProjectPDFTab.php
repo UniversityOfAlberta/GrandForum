@@ -6,8 +6,8 @@ class ProjectPDFTab extends AbstractTab {
     var $rp;
     var $year;
 
-    function ProjectPDFTab($project, $title, $rp, $year){
-        parent::AbstractTab($title);
+    function __construct($project, $title, $rp, $year){
+        parent::__construct($title);
         $this->project = $project;
         $this->rp = (is_array($rp)) ? $rp : array($rp);
         $this->year = $year;

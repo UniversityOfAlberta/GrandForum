@@ -8,8 +8,8 @@ class ProjectUploadPDFTab extends AbstractTab {
     var $blob;
     var $text;
 
-    function ProjectUploadPDFTab($project, $title, $blob, $text=false){
-        parent::AbstractTab($title);
+    function __construct($project, $title, $blob, $text=false){
+        parent::__construct($title);
         $this->project = $project;
         $this->blob = $blob;
         $this->text = $text;

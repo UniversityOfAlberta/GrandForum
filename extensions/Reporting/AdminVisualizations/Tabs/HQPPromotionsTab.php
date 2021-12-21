@@ -2,8 +2,8 @@
 
 class HQPPromotionsTab extends AbstractTab {
 	
-	function HQPPromotionsTab(){
-        parent::AbstractTab("HQP Promotions");
+	function __construct(){
+        parent::__construct("HQP Promotions");
     }
 
     function generateBody(){

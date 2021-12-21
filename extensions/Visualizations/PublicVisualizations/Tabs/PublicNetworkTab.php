@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicNetworkTab::getPublicNetworkData');
 class PublicNetworkTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Network");
+        parent::__construct("Network");
     }
 
     function generateBody(){

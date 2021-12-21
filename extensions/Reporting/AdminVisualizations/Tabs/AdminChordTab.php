@@ -2,8 +2,8 @@
 
 class AdminChordTab extends AbstractTab {
 	
-	function AdminChordTab(){
-        parent::AbstractTab("Chord");
+	function __construct(){
+        parent::__construct("Chord");
     }
 
     function generateBody(){

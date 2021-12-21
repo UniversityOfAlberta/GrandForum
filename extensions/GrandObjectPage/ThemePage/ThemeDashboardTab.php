@@ -5,8 +5,8 @@ class ThemeDashboardTab extends AbstractTab {
     var $theme;
     var $visibility;
 
-    function ThemeDashboardTab($theme, $visibility){
-        parent::AbstractTab("Dashboard");
+    function __construct($theme, $visibility){
+        parent::__construct("Dashboard");
         $this->theme = $theme;
         $this->visibility = $visibility;
         if(isset($_GET['showDashboard'])){

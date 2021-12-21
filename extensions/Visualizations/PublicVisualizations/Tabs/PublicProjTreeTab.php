@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicProjTreeTab::getPublicProjTreeData');
 class PublicProjTreeTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Projects");
+        parent::__construct("Projects");
     }
 
     function generateBody(){

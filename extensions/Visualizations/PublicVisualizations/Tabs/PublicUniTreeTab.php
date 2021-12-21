@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicUniTreeTab::getPublicUniTreeData');
 class PublicUniTreeTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Institutions");
+        parent::__construct("Institutions");
     }
 
     function generateBody(){

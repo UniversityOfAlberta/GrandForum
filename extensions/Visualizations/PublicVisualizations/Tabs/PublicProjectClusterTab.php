@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicProjectClusterTab::getProjectClusterData');
 class PublicProjectClusterTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("Project Cluster");
+        parent::__construct("Project Cluster");
     }
 
     function generateBody(){

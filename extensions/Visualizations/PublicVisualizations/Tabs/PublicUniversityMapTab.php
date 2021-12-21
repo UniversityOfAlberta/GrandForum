@@ -5,7 +5,7 @@ UnknownAction::createAction('PublicUniversityMapTab::getPublicUniversityMapData'
 class PublicUniversityMapTab extends AbstractTab {
 	
 	function __construct(){
-        parent::AbstractTab("University Map");
+        parent::__construct("University Map");
     }
 
     function generateBody(){

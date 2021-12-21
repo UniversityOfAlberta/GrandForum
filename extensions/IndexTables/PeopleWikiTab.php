@@ -5,8 +5,8 @@ class PeopleWikiTab extends AbstractTab {
     var $table;
     var $visibility;
 
-    function PeopleWikiTab($table, $visibility){
-        parent::AbstractTab("Wiki");
+    function __construct($table, $visibility){
+        parent::__construct("Wiki");
         $this->table = $table;
         $this->visibility = $visibility;
     }

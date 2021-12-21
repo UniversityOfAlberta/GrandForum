@@ -10,7 +10,7 @@ class ApplicationTab extends AbstractTab {
     var $showAllWithPDFs;
     var $idProjectRange = array(0, 1);
 
-    function ApplicationTab($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
+    function __construct($rp, $people=null, $year=REPORTING_YEAR, $title=null, $extraCols=array(), $showAllWithPDFs=false, $idProjectRange=null){
         $me = Person::newFromWgUser();
         $this->rp = $rp;
         $this->year = $year;
@@ -55,10 +55,10 @@ class ApplicationTab extends AbstractTab {
             }
         }
         if($title == null){
-            parent::AbstractTab($report->name);
+            parent::__construct($report->name);
         }
         else{
-            parent::AbstractTab($title);
+            parent::__construct($title);
         }
         if($idProjectRange != null){
             $this->idProjectRange = $idProjectRange;

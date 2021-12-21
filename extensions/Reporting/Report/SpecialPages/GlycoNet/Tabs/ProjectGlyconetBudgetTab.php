@@ -4,8 +4,8 @@ class ProjectGlyconetBudgetTab extends AbstractTab {
 
     var $project;
 
-    function ProjectGlyconetBudgetTab($project){
-        parent::AbstractTab("Budget");
+    function __construct($project){
+        parent::__construct("Budget");
         $this->project = $project;
     }
     
