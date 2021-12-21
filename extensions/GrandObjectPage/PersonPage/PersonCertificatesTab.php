@@ -87,7 +87,7 @@ class PersonCertificatesTab extends AbstractEditableTab {
         if(isset($_FILES["file_{$blob}"]) && $_FILES["file_{$blob}"]['name'] != ""){
             $name = $_FILES["file_{$blob}"]['name'];
             $size = $_FILES["file_{$blob}"]['size'];
-            $magic = MimeMagic::singleton();
+            $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
             $mime = $magic->guessMimeType($_FILES["file_{$blob}"]['tmp_name'], false);
             
             $contents = base64_encode(file_get_contents($_FILES["file_{$blob}"]['tmp_name']));

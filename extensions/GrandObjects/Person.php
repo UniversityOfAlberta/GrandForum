@@ -2193,6 +2193,12 @@ class Person extends BackboneModel {
         else{
             $this->university = Cache::fetch("user_university_{$this->id}");
         }
+        if($this->university === null){
+            $this->university = array("university" => "",
+                                      "department" => "",
+                                      "position"   => "",
+                                      "date"       => "");
+        }
         return $this->university;
     }
 
@@ -2277,7 +2283,10 @@ class Person extends BackboneModel {
         if(isset($data[0])){
             return $data[0];
         }
-        return null;
+        return array("university" => "",
+                     "department" => "",
+                     "position"   => "",
+                     "date"       => "");
     }
     
     /*
@@ -2798,6 +2807,8 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
+        $startRange = ($startRange <= 0) ? "0000-00-00" : $startRange;
+        $endRange = ($endRange <= 0) ? EOT : $endRange; 
         $cacheId = "personRolesDuring".$this->id."_".$startRange.$endRange;
         if(Cache::exists($cacheId)){
             $data = Cache::fetch($cacheId);

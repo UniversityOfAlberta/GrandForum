@@ -65,7 +65,7 @@ class ProjectUploadPDFTab extends AbstractTab {
         if(isset($_FILES["file_{$this->id}"]) && $_FILES["file_{$this->id}"]['name'] != ""){
             $name = $_FILES["file_{$this->id}"]['name'];
             $size = $_FILES["file_{$this->id}"]['size'];
-            $magic = MimeMagic::singleton();
+            $magic = MediaWiki\MediaWikiServices::getInstance()->getMimeAnalyzer();
             $mime = $magic->guessMimeType($_FILES["file_{$this->id}"]['tmp_name'], false);
             
             $contents = base64_encode(file_get_contents($_FILES["file_{$this->id}"]['tmp_name']));

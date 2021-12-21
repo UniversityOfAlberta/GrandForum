@@ -201,7 +201,7 @@ class ReportItemCallback {
     var $reportItem;
     
     // Constructor
-    function ReportItemCallback($reportItem){
+    function __construct($reportItem){
         $this->reportItem = $reportItem;
     }
     

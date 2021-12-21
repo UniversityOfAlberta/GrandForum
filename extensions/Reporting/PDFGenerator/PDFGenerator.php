@@ -22,6 +22,10 @@ else{
 }
 define('DPI_CONSTANT', DPI/72);
 
+if(isset($_GET['generatePDF'])){
+    require_once($dir . '/../../../config/dompdf_config.inc.php');
+}
+
 PDFGenerator::$preview = isset($_GET['preview']);
 
 /**
@@ -338,7 +342,6 @@ abstract class PDFGenerator {
 		    </script>";
         }
         else{
-            require_once(dirname(__FILE__) . '/../../../Classes/dompdf/dompdf_config.inc.php');
             global $dompdfOptions;
             $dompdf = new Dompdf\Dompdf($dompdfOptions);
             $dompdf->setPaper('A4', $orientation);
@@ -841,7 +844,7 @@ if ( isset($pdf) ) {
      * @param string $name The name of the PDF document
      * @returns string Returns the pdf string
      */
-    function processChapters($dompdf, $name){
+    static function processChapters($dompdf, $name){
         global $IP;
         $str = "";
         $attached = array();
@@ -926,7 +929,7 @@ if ( isset($pdf) ) {
      * Adds a pdf to the end of the PDF
      * @param string $pdf The id of the pdf
      */
-    function attachPDF($pdf){
+    static function attachPDF($pdf){
         global $wgOut;
         $pdf = strip_tags($pdf);
         $wgOut->addHTML("<script type='text/php'>

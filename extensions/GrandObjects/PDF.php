@@ -196,7 +196,7 @@ class PDF extends BackboneModel {
             return true;
         }
         $result = false;
-        wfRunHooks('CanUserReadPDF', array($me, $this, &$result));
+        Hooks::run('CanUserReadPDF', array($me, $this, &$result));
         return $result;
     }
     

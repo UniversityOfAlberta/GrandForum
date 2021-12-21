@@ -966,7 +966,7 @@ abstract class AbstractReport extends SpecialPage {
                         if($submit){
                             $report->submitReport($person);
                         }
-                        wfRunHooks('AfterGeneratePDF', array($sto));
+                        Hooks::run('AfterGeneratePDF', array($sto));
                     }
                 }
             }
@@ -999,7 +999,7 @@ abstract class AbstractReport extends SpecialPage {
                     mail($email, $subject, $message, $headers);
                 }
             }
-            wfRunHooks('AfterGeneratePDF', array($sto));
+            Hooks::run('AfterGeneratePDF', array($sto));
         }
         if($submit){
             $this->submitReport($person);
@@ -1048,7 +1048,7 @@ abstract class AbstractReport extends SpecialPage {
         if(!DBFunctions::DBWritable()){
             $writable = "false";
         }
-        $wgOut->addStyle("../extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css"));
+        $wgOut->addScript("<link rel='stylesheet' type='text/css' href='$wgServer$wgScriptPath/extensions/Reporting/Report/style/report.css?".filemtime(dirname(__FILE__)."/style/report.css")."'></style>");
         $wgOut->addScript("<script type='text/javascript'>
             var dbWritable = {$writable};
         </script>");

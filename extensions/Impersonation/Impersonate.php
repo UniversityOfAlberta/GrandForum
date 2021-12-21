@@ -211,7 +211,7 @@ function startImpersonate(){
             $pageAllowed = true;
         }
         else{
-            wfRunHooks('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
+            Hooks::run('CheckImpersonationPermissions', array($person, $realPerson, $ns, $title, &$pageAllowed));
         }
         
         if(!$pageAllowed && !((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions']) || (isset($_GET['action']) && $_GET['action'] == 'getUserMode'))){
@@ -275,7 +275,7 @@ function getImpersonatingMessage(){
         $readOnly = ($wgDelegating) ? "" : " in read-only mode";
         $message .= "<a href='{$realPerson->getUrl()}'>{$realPerson->getNameForForms()}</a> is currently viewing the forum as <a href='{$person->getUrl()}'>{$person->getNameForForms()}</a>{$readOnly}.  This session will expire once you navigate away from this page";
     }
-    wfRunHooks('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
+    Hooks::run('ImpersonationMessage', array($person, $realPerson, $ns, $title, &$message));
     return $message;
 }
 

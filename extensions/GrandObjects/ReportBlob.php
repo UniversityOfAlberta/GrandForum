@@ -140,7 +140,7 @@ class ReportBlob {
 	///	  components have a blank key and/or associated value).
 	///	- DomainException (blob type is null).
 	///	- UnexpectedValueException (unknown blob type).
-	public function store(&$data, $address=null, $encrypt=false) {
+	public function store($data, $address=null, $encrypt=false) {
 		// Some checks before trying to actually store data.
 		global $wgImpersonating, $wgRealUser;
 		Cache::delete($this->getCacheId($address));
