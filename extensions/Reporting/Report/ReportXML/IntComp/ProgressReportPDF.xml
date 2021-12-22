@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" personId="0" ajax="true" year="2021" disabled="false">
+<Report name="Project Progress Report" reportType="RP_PROGRESS_REPORT" pdfType="RPTP_PROGRESS_REPORT" personId="0" ajax="true" year="2022" disabled="false">
     <ReportSection id="details" tooltip="Project Details" name="Project Details" title="Project Details" blobSection="DETAILS" type="HeaderReportSection">
         <Static>
             <![CDATA[
@@ -160,6 +160,13 @@
             <![CDATA[
                     <tr>
                         <td><b>Third Year:</b></td><td>${$item}</td>
+                    </tr>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview4" type="Integer" blobItem="BUDGET_OVERVIEW4" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
+                    <tr>
+                        <td><b>Remaining Funds:</b></td><td>${$item}</td>
                     </tr>
                 </table>
             ]]> 

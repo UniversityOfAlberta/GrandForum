@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" year="2021">
+<Report name="GlycoNet Summer Awards Final Report" reportType="RP_HQP_SUMMER_REPORT" pdfType="HQP_SUMMER_REPORT" year="2022">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[

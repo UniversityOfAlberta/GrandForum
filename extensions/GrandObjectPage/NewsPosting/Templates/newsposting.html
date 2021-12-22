@@ -33,3 +33,7 @@
     <br />
     <button id='editPosting'>Edit News Posting</button>&nbsp;<button id='deletePosting'>Delete News Posting</button>
 <% } %>
+<% if(isExtensionEnabled('EventRegistration') && visibility == "Publish" && enableMaterials){ %>
+    <br />
+    <a class="button" href="<%= wgServer + wgScriptPath + '/index.php/Special:SpecialNewsMaterialSubmission?event=' + id %>" style="margin-top:2px;">Submit Materials</a>
+<% } %>

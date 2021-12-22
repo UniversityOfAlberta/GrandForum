@@ -13,11 +13,6 @@ class PublicUniversityMapTab extends AbstractTab {
 	    $map = new D3Map("{$wgServer}{$wgScriptPath}/index.php?action=getPublicUniversityMapData");
 	    $map->width = "100%";
 	    $map->height = "600px";
-	    if($config->getValue('networkName') == 'Quantum Alberta'){
-	        $map->zoom = 5;
-	        $map->lat = 53.524444;
-	        $map->long = -113.524444;
-	    }
 	    if($config->getValue('projectsEnabled')){
 	        $this->html = "<div><a class='button' onClick='$(\"#help{$map->index}\").show();$(this).hide();'>Show Help</a>
 	            <div id='help{$map->index}' style='display:none;'>
@@ -70,7 +65,8 @@ class PublicUniversityMapTab extends AbstractTab {
             $currentYear = date('Y');
             $startYear = max($currentYear - 8, substr($phaseDates[1], 0, 4));
             
-            $people = Person::getAllPeopleDuring(NI, $start, $end);
+            $people = array_merge(Person::getAllPeopleDuring(NI, $start, $end),
+                                  Person::getAllPeopleDuring(PARTNER, $start, $end));
             
             if($config->getValue('projectsEnabled')){
                 $projectUnis = array();
@@ -158,10 +154,10 @@ class PublicUniversityMapTab extends AbstractTab {
             $dates = array();
             for($i=$startYear; $i <= date('Y'); $i++){
                 if($i == date('Y')){
-                    $dates[] = array('date' => $i, 'checked' => 'checked');
+                    $dates[] = array('date' => (int) $i, 'checked' => 'checked');
                 }
                 else{
-                    $dates[] = array('date' => $i, 'checked' => '');
+                    $dates[] = array('date' => (int) $i, 'checked' => '');
                 }
             }
             

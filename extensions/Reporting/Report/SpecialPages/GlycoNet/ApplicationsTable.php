@@ -200,6 +200,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(RP_TRANS, null, 2016, "2017", array($reviewers)));
@@ -228,6 +229,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB', null, 2018, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_COLLAB_LOI_2018', null, 2018, "LOI 2018", array($reviewers)));
@@ -251,6 +253,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_INTERNATIONAL', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_INTERNATIONAL', null, 2021, "2021", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
@@ -269,6 +272,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab(array('RP_CLINICAL'), null, 2020, "2020", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -325,6 +329,7 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("class", "wikitable");
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2022, "2022", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2021, "2021", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2020, "2020", array($reviewers)));
         $tabbedPage->addTab(new ApplicationTab('RP_STRAT', null, 2019, "2019", array($reviewers)));
@@ -345,6 +350,7 @@ class ApplicationsTable extends SpecialPage{
     function generateHQPResearch(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_RESEARCH', 'RP_HQP_TRAVEL_REPORT'), null, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -363,6 +369,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2022, "2022", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2021, "2021", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2020, "2020", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_HQP_SUMMER', 'RP_HQP_SUMMER_REPORT'), null, 2018, "2018", array(), true));
@@ -375,6 +382,7 @@ class ApplicationsTable extends SpecialPage{
     function generateATOP(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2022, "2022", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2021, "2021", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2020, "2020", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_ATOP', 'RP_ATOP_REPORT'), null, 2018, "2018", array(), true));

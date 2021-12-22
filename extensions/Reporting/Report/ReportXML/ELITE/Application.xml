@@ -287,7 +287,7 @@
         <Static>
             <![CDATA[
                 <tr>
-                    <td colspan="4"><h2><span class='en'>Social Media Accounts</span><span class='fr'>Comptes des réseaux sociaux</span></h2></td>
+                    <td colspan="4"><h2><span class='en'>Social Media Accounts (Optional)</span><span class='fr'>Comptes des réseaux sociaux</span></h2></td>
                 </tr>
             ]]>
         </Static>

@@ -11,6 +11,8 @@ class NewsPosting extends Posting {
     var $author;
     var $sourceName;
     var $sourceLink;
+    var $enableRegistration;
+    var $enableMaterials;
     
     function __construct($data){
         if(count($data) > 0){
@@ -19,6 +21,8 @@ class NewsPosting extends Posting {
             $this->author = $row['author'];
             $this->sourceName = $row['source_name'];
             $this->sourceLink = $row['source_link'];
+            $this->enableRegistration = $row['enable_registration'];
+            $this->enableMaterials = $row['enable_materials'];
         }
     }
     
@@ -34,11 +38,21 @@ class NewsPosting extends Posting {
         return $this->sourceLink;
     }
     
+    function isRegistrationEnabled(){
+        return ($this->enableRegistration == 1);
+    }
+    
+    function isMaterialSubmissionEnabled(){
+        return ($this->enableMaterials == 1);
+    }
+    
     function toArray(){
         $json = parent::toArray();
         $json['author'] = $this->getAuthor();
         $json['sourceName'] = $this->getSourceName();
         $json['sourceLink'] = $this->getSourceLink();
+        $json['enableRegistration'] = $this->isRegistrationEnabled();
+        $json['enableMaterials'] = $this->isMaterialSubmissionEnabled();
         return $json;
     }
     
@@ -48,7 +62,9 @@ class NewsPosting extends Posting {
             $status = DBFunctions::update(self::$dbTable,
                                           array('author' => $this->author,
                                                 'source_name' => $this->sourceName,
-                                                'source_link' => $this->sourceLink),
+                                                'source_link' => $this->sourceLink,
+                                                'enable_registration' => $this->enableRegistration,
+                                                'enable_materials' => $this->enableMaterials),
                                           array('id' => $this->id));
         }
         return $status;
@@ -60,7 +76,9 @@ class NewsPosting extends Posting {
             $status = DBFunctions::update(self::$dbTable,
                                           array('author' => $this->author,
                                                 'source_name' => $this->sourceName,
-                                                'source_link' => $this->sourceLink),
+                                                'source_link' => $this->sourceLink,
+                                                'enable_registration' => $this->enableRegistration,
+                                                'enable_materials' => $this->enableMaterials),
                                           array('id' => $this->id));
         }
         return $status;

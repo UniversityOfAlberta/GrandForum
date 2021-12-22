@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Research Travel Program Report" reportType="RP_HQP_TRAVEL_REPORT" pdfType="HQP_TRAVEL_REPORT" ajax="true" disabled="false" year="2021">
+<Report name="Research Travel Program Report" reportType="RP_HQP_TRAVEL_REPORT" pdfType="HQP_TRAVEL_REPORT" ajax="true" disabled="false" year="2022">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <h4 style='font-size:1.40em;'>Research Travel Program<br />
-                2020-2021 Report</h4>
+                2021-2022 Report</h4>
                 <br />
                 <br />
                 <br />

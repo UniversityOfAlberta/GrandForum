@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2021" allowIdProjects="true" disabled="false">
+<Report name="Translational Funding Application" reportType="RP_TRANS" pdfType="RPTP_TRANS" pdfFiles="TranslationalReportPDF" ajax="true" year="2022" allowIdProjects="true" disabled="false">
     <Permissions>
-        <Role role="" subRole="Trans2021">
+        <Role role="" subRole="Trans2022">
 
         </Role>
         <Role role="Staff">

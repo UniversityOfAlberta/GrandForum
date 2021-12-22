@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="SAB Translational Report" reportType="RP_SAB_TRANS_REPORT" pdfType="RPTP_SAB_TRANS_REPORT" pdfFiles="SABTranslationalReportPDF" personId="0" ajax="true" disabled="false" year="2021">
+<Report name="SAB Translational Report" reportType="RP_SAB_TRANS_REPORT" pdfType="RPTP_SAB_TRANS_REPORT" pdfFiles="SABTranslationalReportPDF" personId="0" ajax="true" disabled="false" year="2022">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />

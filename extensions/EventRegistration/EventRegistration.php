@@ -57,7 +57,12 @@ class EventRegistration extends BackboneModel {
     }
     
     function getEvent(){
-        return EventPosting::newFromId($this->eventId);
+        if($this->type == "News Material Submission"){
+            return NewsPosting::newFromId($this->eventId);
+        }
+        else{
+            return EventPosting::newFromId($this->eventId);
+        }
     }
     
     function getMD5(){

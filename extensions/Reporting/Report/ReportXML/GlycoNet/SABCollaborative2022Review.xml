@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Review" reportType="RP_STRAT_REVIEW" ajax="true" disabled="false" year="2022">
+<Report name="SAB Collaborative Review" reportType="RP_SAB_COLLAB_2022_REVIEW" ajax="true" disabled="false" year="2022">
     <Permissions>
         <Role role="SAB">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role  role="RMC">
+        <Role role="RMC">
             <SectionPermission id="materials" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -29,9 +29,9 @@
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItem id="project_pdf" type="PDFReportItem" reportType="StrategicReport" project="true">
-                <![CDATA[<tr><td>{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td></tr>]]>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2022">
+            <ReportItem id="project_pdf" type="PDFReportItem" reportType="CollaborativeReport2022" project="false">
+                <![CDATA[<tr><td>{getText(RP_SAB_COLLAB_2022_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -47,8 +47,8 @@
                 <p>For details of what EDI considerations could be included see the following link: <a href='https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf' target='_blank'>https://www.nserc-crsng.gc.ca/_doc/EDI/Guide_for_Applicants_EN.pdf</a></p>
             ]]>
         </Static>
-        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Strat">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_STRAT_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_STRAT,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="SAB-Collaborative2022">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_SAB_COLLAB_2022_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_COLLAB,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},0)}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
@@ -76,7 +76,7 @@
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_STRAT_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},{$project_id})},Submitted)}">
+        <If if="{==({getText(RP_SAB_COLLAB_2022_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
             <![CDATA[
                 <div class="success">Your review(s) have been submitted.</div>
             ]]>

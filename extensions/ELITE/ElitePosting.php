@@ -11,6 +11,7 @@ class ElitePosting extends Posting {
     var $type;
     var $extra = array();
     var $comments;
+    var $previousVisibility = "";
     
     function ElitePosting($data){
         if(count($data) > 0){
@@ -19,6 +20,7 @@ class ElitePosting extends Posting {
             $this->type = $row['type'];
             $this->comments = $row['comments'];
             $this->extra = json_decode($row['extra'], true);
+            $this->previousVisibility = $this->visibility;
             if(!is_array($this->extra)){
                 $this->extra = array();
             }
@@ -75,7 +77,7 @@ class ElitePosting extends Posting {
         return ($this->isAllowedToEdit()) ? $this->comments : "";
     }
     
-    function sendMail(){
+    function sendCreateMail(){
         global $config;
         $subject = "";
         $message = "";
@@ -93,7 +95,7 @@ Thank you for your interest and continued support of the ELITE Program for Black
 
 With kind regards,
 
-André G. McDonald, Ph.D., B.S. Law, P.Eng., FASM, FIMMM
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -125,6 +127,126 @@ With kind regards,
 The Advisory and Nominating Committee
 Faculty of Engineering, University of Alberta
 <a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>";
+        }
+        if($message != ""){
+            $message = nl2br($message);
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+        }
+    }
+    
+    function sendMoreInfoMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        if($this->type == "Intern"){
+            $subject = "ELITE Program for Black Youth - Request for Information on Submission";
+            $message = "Dear Internship Host,
+Thank you for your project submission to the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. We are writing to request more information.
+
+{$this->comments}
+
+In the interim, please do not hesitate to contact us should you have any questions.
+
+Thank you for your interest and continued support of the ELITE Program for Black Youth.
+
+With kind regards,
+
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+Professor
+Lead Editor, <i>Journal of Thermal Spray Technology</i>
+Director, ELITE Program for Black Youth (www.eliteprogram.ca)
+<i>for</i> 
+ELITE Program for Black Youth
+<a href='http://www.eliteprogram.ca'>www.eliteprogram.ca</a>
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>
+<i>Work-integrated Training for Upward Mobility</i>
+**************************************
+Programme ELITE pour la Jeunesse Noire
+<a href='http://www.eliteprogram.ca/fr/'>www.eliteprogram.ca/fr/</a>
+<a href='http://www.eliteprogram.ca/fr/contactez-nous/'>www.eliteprogram.ca/fr/contactez-nous/</a>
+<i>Formation intégrée au travail pour la mobilité ascendante</i>";
+        }
+        if($message != ""){
+            $message = nl2br($message);
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+        }
+    }
+    
+    function sendAcceptedMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        if($this->type == "Intern"){
+            $subject = "ELITE Program for Black Youth - Confirmation of Acceptance of Submission";
+            $message = "Dear Internship Host,
+
+Thank you for your project submission to the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. This message confirms that we approved your project application.
+
+We will include your project in a list for selection by intern applicants. Should your project be selected by any candidates who are shortlisted, we will advise you. We highly encourage you to arrange and conduct interviews with those short-listed candidates who have been matched to your project.
+
+In the interim, please do not hesitate to contact us should you have any questions.
+
+Thank you for your interest and continued support of the ELITE Program for Black Youth.
+
+With kind regards,
+
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+Professor
+Lead Editor, <i>Journal of Thermal Spray Technology</i>
+Director, ELITE Program for Black Youth (www.eliteprogram.ca)
+<i>for</i> 
+ELITE Program for Black Youth
+<a href='http://www.eliteprogram.ca'>www.eliteprogram.ca</a>
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>
+<i>Work-integrated Training for Upward Mobility</i>
+**************************************
+Programme ELITE pour la Jeunesse Noire
+<a href='http://www.eliteprogram.ca/fr/'>www.eliteprogram.ca/fr/</a>
+<a href='http://www.eliteprogram.ca/fr/contactez-nous/'>www.eliteprogram.ca/fr/contactez-nous/</a>
+<i>Formation intégrée au travail pour la mobilité ascendante</i>";
+        }
+        if($message != ""){
+            $message = nl2br($message);
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+        }
+    }
+    
+    function sendRejectedMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        if($this->type == "Intern"){
+            $subject = "ELITE Program for Black Youth - Decision on Submission";
+            $message = "Dear Internship Host,
+
+Thank you for your project submission to the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth. Unfortunately, we were not able to approve your project application.
+
+Please do not hesitate to contact us should you have any questions or wish to discuss the application further.
+
+Thank you for your interest and continued support of the ELITE Program for Black Youth.
+
+With kind regards,
+
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+Professor
+Lead Editor, <i>Journal of Thermal Spray Technology</i>
+Director, ELITE Program for Black Youth (www.eliteprogram.ca)
+<i>for</i> 
+ELITE Program for Black Youth
+<a href='http://www.eliteprogram.ca'>www.eliteprogram.ca</a>
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>
+<i>Work-integrated Training for Upward Mobility</i>
+**************************************
+Programme ELITE pour la Jeunesse Noire
+<a href='http://www.eliteprogram.ca/fr/'>www.eliteprogram.ca/fr/</a>
+<a href='http://www.eliteprogram.ca/fr/contactez-nous/'>www.eliteprogram.ca/fr/contactez-nous/</a>
+<i>Formation intégrée au travail pour la mobilité ascendante</i>";
         }
         if($message != ""){
             $message = nl2br($message);
@@ -198,7 +320,7 @@ Faculty of Engineering, University of Alberta
                                                 'extra' => json_encode($this->extra),
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
-            $this->sendMail();
+            $this->sendCreateMail();
             $this->checkMatches();
         }
         return $status;
@@ -212,6 +334,15 @@ Faculty of Engineering, University of Alberta
                                                 'extra' => json_encode($this->extra),
                                                 'comments' => $this->comments),
                                           array('id' => $this->id));
+        }
+        if($this->visibility == "Requested More Info"){
+            $this->sendMoreInfoMail();
+        }
+        else if($this->visibility == "Accepted" && $this->previousVisibility != $this->visibility){
+            $this->sendAcceptedMail();
+        }
+        else if($this->visibility == "Rejected" && $this->previousVisibility != $this->visibility){
+            $this->sendRejectedMail();
         }
         return $status;
     }

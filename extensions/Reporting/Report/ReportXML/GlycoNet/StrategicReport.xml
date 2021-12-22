@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2021" allowIdProjects="true" disabled="false">
+<Report name="Strategic Initiatives Application" reportType="RP_STRAT" pdfType="RPTP_STRAT" pdfFiles="StrategicReportPDF" ajax="true" year="2022" allowIdProjects="true" disabled="false">
     <Permissions>
-        <Role role="" subRole="Strat2021">
+        <Role role="" subRole="Strat2022">
 
         </Role>
         <Role role="STAFF+">

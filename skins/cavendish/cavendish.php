@@ -160,7 +160,6 @@ class CavendishTemplate extends QuickTemplate {
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/tagIt/js/tag-it.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/sortable.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/switcheroo.js"></script>
-        <script language="javascript" type="text/javascript" src="https://maps.google.com/maps/api/js?&libraries=places"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/raphael.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/spinner.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/filter.js"></script>
@@ -1093,7 +1092,7 @@ class CavendishTemplate extends QuickTemplate {
 	        }
 		}
 		else {
-		    global $wgSiteName, $wgOut;
+		    global $wgSiteName, $wgOut, $wgLang;
 		    setcookie('sideToggled', 'out', time()-3600);
 		    echo "<span class='highlights-text pBodyLogin en'>Login</span>";
 		    $userLogin = new SpecialSideUserLogin();
@@ -1113,7 +1112,9 @@ class CavendishTemplate extends QuickTemplate {
 		        $person = Person::newFromName($_POST['wpName']);
 		        $user = User::newFromName($_POST['wpName']);
 		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.<br />";
+		            $failMessage = "<p class='inlineError'>
+		                                <span class='en'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.</span>
+		                                <span class='fr'>Il n’y a pas d’utilisateurs avec le nom <b>{$_POST['wpName']}</b>. Si vous êtes un-e PHQ et que vous n’avez pas de compte, veuillez demander à votre superviseur de vous en créer.</span><br />";
 		            if(isset($_POST['wpMailmypassword'])){
 		                $failMessage .= "<b>Password request failed</b>";
 		            }
@@ -1139,34 +1140,68 @@ class CavendishTemplate extends QuickTemplate {
 		            exit;
 		        }
 		        $wgOut->clearHTML();
+		        if($wgLang->getCode() == "en"){
+		            $wgOut->setPageTitle("Login");
+		        }
+		        else if($wgLang->getCode() == "fr"){
+		            $wgOut->setPageTitle("Connexion");
+		        }
 		        $wgOut->addHTML("
-                <p>Typical problems with login:</p>
-                <ol>
-                    <li>You have no account setup for you yet
-                        <ul>
-                            <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
-                        </ul>
-                    </li>
-                    <li>There is an account but you do not remember your ID
-                        <ul>
-                            <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
-                            <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
-                            <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
-                        </ul>
-                    </li>
-                    <li>You know your ID but not your password
-                        <ul>
-                            <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
-                        </ul>
-                    </li>
-                </ol>");
+		        <div class='en'>
+                    <p>Typical problems with login:</p>
+                    <ol>
+                        <li>You have no account setup for you yet
+                            <ul>
+                                <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
+                            </ul>
+                        </li>
+                        <li>There is an account but you do not remember your ID
+                            <ul>
+                                <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
+                                <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
+                                <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
+                            </ul>
+                        </li>
+                        <li>You know your ID but not your password
+                            <ul>
+                                <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                <div class='fr'>
+                    <p>Problèmes typiques de connexion:</p>
+                    <ol>
+                        <li>Votre compte n’a pas encore été configuré
+                            <ul>
+                                <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant</li>
+                            </ul>
+                        </li>
+                        <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant
+                            <ul>
+                                <li>Cherchez le nom dans la zone de texte « chercher » ci-dessus (notez que Candidat-e n'apparaîtra généralement pas dans la recherche)</li>
+                                <li>Quand vous voyez votre nom dans la liste déroulante, cliquez dessus et allez à votre page de profil</li>
+                                <li>L'URL indique l'identifiant de connexion (est sensible à la casse, il faut un point entre prénom et nom, les accents sont nécessaires)</li>
+                            </ul>
+                        </li>
+                        <li>Vous connaissez votre identifiant, mais pas votre mot de passe
+                            <ul>
+                                <li>Cliquez sur le lien « Envoyer nouveau mot de passe » pour recevoir un mot de passe temporaire dans votre messagerie (regardez dans votre dossier spam ; si vous ne le recevez pas dans les 30 minutes qui suivent, contactez le coordinateur thématique pour vérifier si votre adresse courriel a été bien configuré)</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>");
 		        $message = "
 <p>
-You must have cookies enabled to log in to {$config->getValue('siteName')}.<br />
+<span class='en'>You must have cookies enabled to log in to {$config->getValue('siteName')}.</span>
+<span class='fr'>Vous devez activer les cookies pour vous connecter au Forum {$config->getValue('networkName')}.</span>
+<br />
 </p>
 <p>
-Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</p>";
+<span class='en'>Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
+If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</span>
+<span class='fr'>Votre identifiant de connexion est une combinaison de votre prénom et nom : <b>Premier.Dernier</b> (sensible à la casse). Si vous avez oublié votre mot de passe veuillez entrer votre information de connexion et identifiant, puis demandez qu’un nouveau mot de passe aléatoire soit envoyé au courriel associé à votre compte Forum.</span>
+</p>";
 		    }
 		    if($_SESSION == null || 
 		       $wgRequest->getSessionData('wsLoginToken') == "" ||
@@ -1282,7 +1317,7 @@ $emailPassword
         $('#wpName1').attr('placeholder', 'Mot d’utilisateur');
         $('#wpPassword1').attr('placeholder', 'Mot de passe');
         $('#wpLoginattempt').attr('value', 'Connexion');
-        $('#wpMailmypassword').attr('value', 'E-mail nouveau mot de passe').css('font-size', '0.75em');
+        $('#wpMailmypassword').attr('value', 'Envoyer nouveau mot de passe').css('font-size', '0.75em');
     }
 </script>
 </li></ul>
