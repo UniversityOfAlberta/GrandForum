@@ -22,7 +22,7 @@
                     <span style="display:none;"><%= posting.get('created') %></span><%= dateTimeHelpers.formatDate(posting.get('created')) %>
                 </td>
                 <td>
-                    <%= posting.get('companyName') %>
+                    <%= posting.get('extra').companyName %>
                 </td>
                 <td>
                     <a href="<%= posting.get('url') %>" ><%= posting.get('title') %></a>
