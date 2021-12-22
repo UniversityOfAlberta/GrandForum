@@ -347,7 +347,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
  //Returns false if not a valid namespace name
  static function getNamespaceID($nsName){
    global $wgExtraNamespaces;
-
+   $nsName = str_replace(" ", "_", $nsName);
    $nsIdLookupArray = array_flip($wgExtraNamespaces);
    if (array_key_exists($nsName, $nsIdLookupArray))
      return $nsIdLookupArray[$nsName];
