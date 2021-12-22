@@ -460,6 +460,12 @@ function currentTimeStamp(){
     return date('Y-m-d H:i:s', time());
 }
 
+function cleanDate($date){
+    $date = ($date <= 0) ? "0000-00-00" : $date;
+    $date = (strlen($date) <= 4) ? "$date-01-01" : $date;
+    return $date;
+}
+
 /**
  * Returns a HTML comment with the elapsed time since request.
  * This method has no side effects.

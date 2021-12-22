@@ -13,7 +13,7 @@ function runReportStatusTable($par) {
 
 class ReportStatusTable extends SpecialPage{
 
-    function ReportStatusTable() {
+    function __construct() {
         SpecialPage::__construct("ReportStatusTable", null, false, 'runReportStatusTable');
     }
     

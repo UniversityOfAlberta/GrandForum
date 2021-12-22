@@ -13,7 +13,7 @@ class Cluster extends Visualization {
         $this->url = $url;
         $this->sizeLabel = $sizeLabel;
         $this->countLabel = $countLabel;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

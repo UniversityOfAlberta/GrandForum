@@ -12,7 +12,7 @@ class D3Map extends Visualization {
     
     function __construct($url){
         $this->url = $url;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

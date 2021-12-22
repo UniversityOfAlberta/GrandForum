@@ -17,7 +17,7 @@ class TreeMap extends Visualization {
         $this->countLabel = $countLabel;
         $this->sizeUnit = $sizeUnit;
         $this->countUnit = $countUnit;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){

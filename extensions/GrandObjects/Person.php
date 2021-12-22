@@ -739,6 +739,8 @@ class Person extends BackboneModel {
      */
     static function getAllPeopleDuring($filter=null, $startRange, $endRange){
         self::generateAllPeopleCache();
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $people = array();
         foreach(self::$allPeopleCache as $row){
             $person = Person::newFromId($row);
@@ -1368,6 +1370,8 @@ class Person extends BackboneModel {
     }
     
     function isThemeLeaderDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_theme_leaders l
                 WHERE l.user_id = '{$this->id}'
@@ -1389,6 +1393,8 @@ class Person extends BackboneModel {
     }
     
     function isThemeCoordinatorDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_theme_leaders l
                 WHERE l.user_id = '{$this->id}'
@@ -2099,6 +2105,8 @@ class Person extends BackboneModel {
      * @return array An array of People
      */
     static function getAllMovedOnDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT `user_id`
                 FROM `grand_movedOn`
                 WHERE effective_date BETWEEN '$startRange' AND '$endRange'";
@@ -2279,6 +2287,8 @@ class Person extends BackboneModel {
      * @return array The last University that this Person was at between the given range
      */ 
     function getUniversityDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $data = $this->getUniversitiesDuring($startRange, $endRange);
         if(isset($data[0])){
             return $data[0];
@@ -2308,6 +2318,8 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(!isset($this->universityDuring[$startRange.$endRange])){
             $sql = "SELECT * 
                     FROM grand_user_university uu, grand_universities u, grand_positions p
@@ -2807,8 +2819,10 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
-        $startRange = ($startRange <= 0) ? "0000-00-00" : $startRange;
-        $endRange = ($endRange <= 0) ? EOT : $endRange; 
+        
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
+        
         $cacheId = "personRolesDuring".$this->id."_".$startRange.$endRange;
         if(Cache::exists($cacheId)){
             $data = Cache::fetch($cacheId);
@@ -2843,6 +2857,7 @@ class Person extends BackboneModel {
         if($this->id == 0){
             return array();
         }
+        $date = cleanDate($date);
         $cacheId = "personRolesDuring".$this->id."_".$date;
         if(Cache::exists($cacheId)){
             $data = Cache::fetch($cacheId);
@@ -3100,8 +3115,8 @@ class Person extends BackboneModel {
      */
     function getRelationsDuring($type='all', $startRange, $endRange){
         $type = DBFunctions::escape($type);
-        $startRange = DBFunctions::escape($startRange);
-        $endRange = DBFunctions::escape($endRange);
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user1 = '{$this->id}'
@@ -3880,6 +3895,8 @@ class Person extends BackboneModel {
      * @return array This Person's HQP
      */
     function getHQPDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(isset($this->hqpCache[$startRange.$endRange])){
             return $this->hqpCache[$startRange.$endRange];
         }
@@ -3967,6 +3984,8 @@ class Person extends BackboneModel {
      * @return array This Person's Supervisors
      */
     function getSupervisorsDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
@@ -4364,6 +4383,8 @@ class Person extends BackboneModel {
      * @return The Projects that this Person is a leader of
      */
     function leadershipDuring($startRange, $endRange){
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         if(isset($this->leadershipCache[$startRange.$endRange])){
             return $this->leadershipCache[$startRange.$endRange];
         }

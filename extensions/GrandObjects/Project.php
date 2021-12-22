@@ -792,6 +792,8 @@ class Project extends BackboneModel {
             $startRange = date("Y-01-01 00:00:00");
             $endRange = date("Y-12-31 23:59:59");
         }
+        $startRange = cleanDate($startRange);
+        $endRange = cleanDate($endRange);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -846,6 +848,7 @@ class Project extends BackboneModel {
     }
     
     function getAllPeopleOn($filter, $date, $includeManager=false){
+        $date = cleanDate($date);
         $people = array();
         if(!$this->clear){
             $preds = $this->getPreds();
@@ -967,6 +970,8 @@ class Project extends BackboneModel {
     }
     
     function getMultimediaDuring($start, $end){
+        $start = cleanDate($start);
+        $end = cleanDate($end);
         $multimedia = array();
         $sql = "SELECT m.id
                 FROM `grand_materials` m, `grand_materials_projects` p
