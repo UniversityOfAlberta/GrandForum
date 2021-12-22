@@ -13,7 +13,7 @@ function runEEAReviewTable($par) {
 
 class EEAReviewTable extends SpecialPage{
 
-    function EEAReviewTable() {
+    function __construct() {
         SpecialPage::__construct("EEAReviewTable", null, false, 'runEEAReviewTable');
     }
     

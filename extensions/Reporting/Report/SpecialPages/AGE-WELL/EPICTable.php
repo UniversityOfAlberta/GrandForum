@@ -13,7 +13,7 @@ function runEPICTable($par) {
 
 class EPICTable extends SpecialPage{
 
-    function EPICTable() {
+    function __construct() {
         SpecialPage::__construct("EPICTable", null, false, 'runEPICTable');
     }
     

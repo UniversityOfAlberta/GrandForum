@@ -13,7 +13,7 @@ function runSIPReviewTable($par) {
 
 class SIPReviewTable extends SpecialPage{
 
-    function SIPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("SIPReviewTable", null, false, 'runSIPReviewTable');
     }
     

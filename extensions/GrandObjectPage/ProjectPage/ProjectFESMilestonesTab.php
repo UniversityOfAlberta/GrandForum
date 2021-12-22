@@ -10,7 +10,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     }
     
     function handleEdit(){
-        global $config;
+        global $config, $wgMessage;
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
@@ -124,7 +124,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             // Still show the edit interface 
             redirect("{$this->project->getUrl()}?tab=schedule&edit");
         }
-        Messages::addSuccess("'Schedule' updated successfully.");
+        $wgMessage->addSuccess("'Schedule' updated successfully.");
         redirect("{$this->project->getUrl()}?tab=schedule");
     }
     

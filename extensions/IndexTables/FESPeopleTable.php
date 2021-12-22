@@ -14,7 +14,7 @@ function runFESPeopleTable($par){
 
 class FESPeopleTable extends SpecialPage {
 
-    function FESPeopleTable() {
+    function __construct() {
 		SpecialPage::__construct("FESPeopleTable", STAFF.'+', true, 'runFESPeopleTable');
 	}
 

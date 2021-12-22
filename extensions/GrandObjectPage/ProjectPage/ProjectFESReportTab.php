@@ -51,15 +51,15 @@ class ProjectFESReportTab extends AbstractEditableTab {
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         for($y=$today; $y >= $year; $y--){
-            $q1 = $this->getBlobData("Q1", $y);
-            $q2 = $this->getBlobData("Q2", $y);
-            $q3 = $this->getBlobData("Q3", $y);
-            $q4 = $this->getBlobData("Q4", $y);
-            $q5 = $this->getBlobData("Q5", $y);
-            $q6 = $this->getBlobData("Q6", $y);
-            $q7 = $this->getBlobData("Q7", $y);
-            $q8 = $this->getBlobData("Q8", $y);
-            $q9 = $this->getBlobData("Q9", $y);
+            $q1 = nl2br($this->getBlobData("Q1", $y));
+            $q2 = nl2br($this->getBlobData("Q2", $y));
+            $q3 = nl2br($this->getBlobData("Q3", $y));
+            $q4 = nl2br($this->getBlobData("Q4", $y));
+            $q5 = nl2br($this->getBlobData("Q5", $y));
+            $q6 = nl2br($this->getBlobData("Q6", $y));
+            $q7 = nl2br($this->getBlobData("Q7", $y));
+            $q8 = nl2br($this->getBlobData("Q8", $y));
+            $q9 = nl2br($this->getBlobData("Q9", $y));
             
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
             $this->html .= "<div style='overflow: auto;'>";
@@ -177,7 +177,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
             return "Not all Reporting questions have been answered.  Make sure there are responses for each question.";
         }
         else{
-            Messages::addSuccess("'Reporting' updated successfully.");
+            $wgMessage->addSuccess("'Reporting' updated successfully.");
             redirect("{$this->project->getUrl()}?tab=reporting");
         }
     }

@@ -2,8 +2,8 @@
 
 class ProjectFESProjectionsTab extends ProjectFESReportTab {
 
-    function ProjectFESProjectionsTab($person, $visibility){
-        parent::__construct("Projections");
+    function __construct($person, $visibility){
+        AbstractEditableTab::__construct("Projections");
         $this->project = $person;
         $this->visibility = $visibility;
     }
@@ -136,7 +136,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
     }
     
     function handleEdit(){
-        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgMessage;
         $structure = Product::structure();
         if(isset($_POST['report_undergrad'])){
             foreach($_POST['report_undergrad'] as $year => $q){
@@ -225,7 +225,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
                     }
                 }
             }
-        Messages::addSuccess("'Projections' updated successfully.");
+        $wgMessage->addSuccess("'Projections' updated successfully.");
         redirect("{$this->project->getUrl()}?tab=projections");
     }
     

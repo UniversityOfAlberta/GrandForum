@@ -13,7 +13,7 @@ function runHQPReviewTable($par) {
 
 class HQPReviewTable extends SpecialPage{
 
-    function HQPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("HQPReviewTable", null, false, 'runHQPReviewTable');
     }
     

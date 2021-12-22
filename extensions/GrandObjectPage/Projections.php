@@ -13,7 +13,7 @@ function runProjections($par) {
 
 class Projections extends SpecialPage{
 
-	function Projections() {
+	function __construct() {
 		SpecialPage::__construct("Projections", MANAGER.'+', true, 'runProjections');
 	}
 

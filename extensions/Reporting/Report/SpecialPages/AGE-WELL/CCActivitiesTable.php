@@ -13,7 +13,7 @@ function runCCActivitiesTable($par) {
 
 class CCActivitiesTable extends SpecialPage{
 
-    function CCActivitiesTable() {
+    function __construct() {
         SpecialPage::__construct("CCActivitiesTable", null, false, 'runCCActivitiesTable');
     }
     

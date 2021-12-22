@@ -13,7 +13,7 @@ function runNewsletter($par) {
 
 class Newsletter extends SpecialPage{
 
-    function Newsletter() {
+    function __construct() {
         SpecialPage::__construct("Newsletter", null, false, 'runNewsletter');
     }
     

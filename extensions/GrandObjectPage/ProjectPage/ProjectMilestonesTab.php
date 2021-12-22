@@ -27,7 +27,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
     }
     
     function handleEdit(){
-        global $config;
+        global $config, $wgMessage;
         $startDate = $this->project->getCreated();
         $startYear = substr($startDate, 0, 4);
         $startMonth = substr($startDate, 5, 2);
@@ -124,7 +124,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             // Still show the edit interface 
             redirect("{$this->project->getUrl()}?tab=milestones&edit");
         }
-        Messages::addSuccess("'Milestones' updated successfully.");
+        $wgMessage->addSuccess("'Milestones' updated successfully.");
         redirect("{$this->project->getUrl()}?tab=milestones");
     }
     

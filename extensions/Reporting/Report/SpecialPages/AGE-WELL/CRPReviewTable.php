@@ -13,7 +13,7 @@ function runCRPReviewTable($par) {
 
 class CRPReviewTable extends SpecialPage{
 
-    function CRPReviewTable() {
+    function __construct() {
         SpecialPage::__construct("CRPReviewTable", null, false, 'runCRPReviewTable');
     }
     
