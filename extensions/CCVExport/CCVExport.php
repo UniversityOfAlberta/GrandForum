@@ -784,7 +784,7 @@ class CCVExport extends SpecialPage {
                 $val = self::setChild($field, 'value', 'type', 'YearMonth');
                 self::setAttribute($val, 'format', 'yyyy/MM');
                 $product_date = preg_split('/\-/', $product->getDate());
-                $field->value = $product_date[0].'/'.$product_date[1];
+                @$field->value = $product_date[0].'/'.$product_date[1];
                 
                 //Authors
                 $field = self::setChild($ccv_item, 'field', 'id', $item->authors['ccv_id']);
