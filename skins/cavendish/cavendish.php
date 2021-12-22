@@ -260,8 +260,9 @@ class CavendishTemplate extends QuickTemplate {
 		    var wgLang = "<?php echo $wgLang->getCode(); ?>";
 		</script>
 		
-		<?php echo $wgOut->getBottomScripts(); ?>
 		<?php createModels(); ?>
+		<?php echo $wgOut->getBottomScripts(); ?>
+		
 
 		<script type='text/javascript'>
 		

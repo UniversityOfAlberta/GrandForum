@@ -68,7 +68,7 @@ abstract class EliteProfile extends BackboneModel {
         return $matchedProfiles;
     }
     
-    function EliteProfile($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
             $this->person = Person::newFromId($row['user_id']);

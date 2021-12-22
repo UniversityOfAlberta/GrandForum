@@ -17,7 +17,7 @@ class NewsPosting extends Posting {
     function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
-            parent::posting($data);
+            parent::__construct($data);
             $this->author = $row['author'];
             $this->sourceName = $row['source_name'];
             $this->sourceLink = $row['source_link'];

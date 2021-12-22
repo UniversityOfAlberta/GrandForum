@@ -13,10 +13,10 @@ class ElitePosting extends Posting {
     var $comments;
     var $previousVisibility = "";
     
-    function ElitePosting($data){
+    function __construct($data){
         if(count($data) > 0){
             $row = $data[0];
-            parent::posting($data);
+            parent::__construct($data);
             $this->type = $row['type'];
             $this->comments = $row['comments'];
             $this->extra = json_decode($row['extra'], true);

@@ -7,7 +7,7 @@ $wgSpecialPageGroups['SpecialNewsMaterialSubmission'] = 'network-tools';
 
 class SpecialNewsMaterialSubmission extends SpecialPage{
 
-    function SpecialNewsMaterialSubmission() {
+    function __construct() {
         parent::__construct("SpecialNewsMaterialSubmission", '', true);
     }
     
