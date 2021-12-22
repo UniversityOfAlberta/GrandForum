@@ -122,6 +122,26 @@ body {
     background:#F0F0F0;
 }
 
+#side #userloginForm form {
+    position: relative;
+    left: 10px;
+}
+
+#side #userloginForm form > div {
+    width: 180px;
+}
+
+#side #userloginForm form a:hover {
+    color: inherit;
+}
+
+#side #userloginForm form #wpName1, 
+#side #userloginForm form #wpPassword1 {
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 #spacer {
     min-width:29px;
     max-width:29px;

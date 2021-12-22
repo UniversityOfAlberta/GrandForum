@@ -1095,6 +1095,7 @@ class CavendishTemplate extends QuickTemplate {
 		else {
 		    global $wgSiteName, $wgOut;
 		    setcookie('sideToggled', 'out', time()-3600);
+		    echo "<span class='highlights-text pBodyLogin en'>Login</span>";
 		    $userLogin = new SpecialSideUserLogin();
 		    $userLogin->render();
 		    /*
