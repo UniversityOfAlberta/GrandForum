@@ -330,7 +330,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
    
    $publicNS = array();
 
-   $dbr = wfGetDB( DB_READ );
+   $dbr = wfGetDB( DB_REPLICA );
    $result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('public' => 1) );
 
    while ($row = $dbr->fetchRow($result)){
@@ -365,7 +365,7 @@ static function getExtraNamespaces($type, $includeTalk = false) {
  static function getUserNSforUser($user){
    global $egAnnokiTablePrefix;
 
-   $dbr = wfGetDB( DB_READ );
+   $dbr = wfGetDB( DB_REPLICA );
    $result = $dbr->selectField("${egAnnokiTablePrefix}extranamespaces", 'nsName', array('nsUser' => $user->getId()));
 
    if (!$result)

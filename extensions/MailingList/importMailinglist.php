@@ -5,7 +5,7 @@ require_once("WikiDevConfig.php");
 require_once("WikiDevFunctions.php");
 
 $sql = "select projectid, mailListName from wikidev_projects";
-$dbr = wfGetDB(DB_READ);
+$dbr = wfGetDB(DB_REPLICA);
 $result = $dbr->query($sql);
 
 $mailmanArchivesPaths = array();
@@ -41,7 +41,7 @@ foreach ($mailmanArchivesPaths as $proj_id => $mailmanArchivesPath) {
 }
 
 function getExistingMIDs() {
-	$dbr = wfGetDB(DB_READ);
+	$dbr = wfGetDB(DB_REPLICA);
 	$result = $dbr->select(' wikidev_messages', 'mid_header');
 	
 	$existing = array();
@@ -85,7 +85,7 @@ function parseMailArchive($filename, $proj_id) {
 				FROM $userTable u 
 				WHERE LOWER(CONVERT(u.user_email USING latin1)) LIKE '{$addr}'";
 				
-		$dbr = wfGetDB(DB_READ);
+		$dbr = wfGetDB(DB_REPLICA);
 		$result = $dbr->query($sql);
 		$data = array();
 		$username = "";

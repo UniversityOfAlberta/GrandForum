@@ -369,7 +369,7 @@ function isPublicNS($nsId) {
   if ($nsId == -1) //-1 is a placeholder for a public page that is not in a public namespace
     return true;
   
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}extranamespaces", "public", array("nsId" => $nsId) );
 
 	if (!($row = $dbr->fetchRow($result)) || ($row[0] == 0)) {
@@ -456,7 +456,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
   if ($pageID == 0) { //TODO error?
     return;
   }
-  $dbw =& wfGetDB( DB_MASTER );
+  $dbw = wfGetDB( DB_MASTER );
   $dbw->delete("${egAnnokiTablePrefix}pagepermissions", array("page_id" => $pageID));
   
   $newPermissions = array();
@@ -476,7 +476,7 @@ function updatePermissionsByPageID($pageID, $permissions) {
 function getExtraPermissions($title) {
   global $egAnnokiTablePrefix;
 
-	$dbr =& wfGetDB( DB_READ );
+	$dbr = wfGetDB( DB_REPLICA );
 	$result = $dbr->select("${egAnnokiTablePrefix}pagepermissions", "group_id", array("page_id" => $title->getArticleID()) );
 	$extraPerm = array();
 	while ($row = $dbr->fetchRow($result)) {

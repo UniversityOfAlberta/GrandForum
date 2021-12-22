@@ -174,7 +174,7 @@ $wgExtensionCredits['specialpage'][] = array(
                          );
                          
 function getTableName($baseName) {
-    $dbr = wfGetDB(DB_READ);
+    $dbr = wfGetDB(DB_REPLICA);
     $tblName = $dbr->tableName("$baseName");
     $tblName = str_replace("`", "", "$tblName");
     return $tblName;
