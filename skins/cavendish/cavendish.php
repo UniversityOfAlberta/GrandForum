@@ -808,6 +808,7 @@ class CavendishTemplate extends QuickTemplate {
 		        $p = Person::newFromId($wgUser->getId());
 		        
 		        $notificationAnimation = "";
+		        $notificationText = "";
 		        if(count($notifications) > 0){
 		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
@@ -927,13 +928,13 @@ class CavendishTemplate extends QuickTemplate {
 		       	        foreach($tab['subtabs'] as $subtab){
 		       	            $j++;
 		       	            $class = "subtab_{$i}_{$j}";
-		           	        if(count($subtab['dropdown']) > 0){
+		           	        if(!empty($subtab['dropdown'])){
 		           	            foreach($subtab['dropdown'] as $dropdown){
 		           	                echo "<li class='$class hidden {$dropdown['selected']}'><a class='highlights-tab' href='".htmlspecialchars($dropdown['href'])."'>".htmlspecialchars($dropdown['text'])."</a></li>";
 		           	            }
 		           	            $dropdownScript .= "createDropDown('$class', '{$subtab['text']}', 125);";
 		           	        }
-		           	        else if($subtab['href'] != ""){
+		           	        else if(isset($subtab['href']) && $subtab['href'] != ""){
 		           	            echo "<li class='$class {$subtab['selected']}'><a class='highlights-tab' href='".htmlspecialchars($subtab['href'])."'>".$subtab['text']."</a></li>";
 		           	        }
 		           	    }
@@ -1098,252 +1099,6 @@ class CavendishTemplate extends QuickTemplate {
 		    echo "<span class='highlights-text pBodyLogin en'>Login</span>";
 		    $userLogin = new SpecialSideUserLogin();
 		    $userLogin->render();
-		    /*
-		    $loginFailed = (isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword']));
-		    if($loginFailed){
-		        if(isset($_POST['wpName'])){
-		            $_POST['wpUsername'] = $_POST['wpName'];
-		        }
-		        else{
-		            $_POST['wpName'] = $_POST['wpUsername'];
-		        }
-		        $_POST['wpName'] = sanitizeInput($_POST['wpName']);
-		        $_POST['wpUsername'] = $_POST['wpName'];
-		        $_POST['wpPassword'] = sanitizeInput($_POST['wpPassword']);
-		        $person = Person::newFromName($_POST['wpName']);
-		        $user = User::newFromName($_POST['wpName']);
-		        if($user == null || $user->getId() == 0 || $user->getName() != $_POST['wpName']){
-		            $failMessage = "<p class='inlineError'>
-		                                <span class='en'>There is no user by the name of <b>{$_POST['wpName']}</b>.  If you are an HQP and do not have an account, please ask your supervisor to create one for you.</span>
-		                                <span class='fr'>Il n’y a pas d’utilisateurs avec le nom <b>{$_POST['wpName']}</b>. Si vous êtes un-e PHQ et que vous n’avez pas de compte, veuillez demander à votre superviseur de vous en créer.</span><br />";
-		            if(isset($_POST['wpMailmypassword'])){
-		                $failMessage .= "<b>Password request failed</b>";
-		            }
-		            $failMessage .= "</p>";
-		        }
-		        else if(isset($_POST['wpMailmypassword'])){
-		            $user = User::newFromName($_POST['wpUsername']);
-		            $user->load();
-		            $failMessage = "<p class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
-		        }
-		        else{
-		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
-		        }
-		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
-		            LoginForm::clearLoginThrottle($_POST['wpName']);
-		            $failMessage = "";
-		            return;
-		        }
-		        if(isset($_POST['wpMailmypassword'])){
-		            echo "<script type='text/javascript'>
-		                parent.showResetMessage(\"$failMessage\");
-		            </script>";
-		            exit;
-		        }
-		        $wgOut->clearHTML();
-		        if($wgLang->getCode() == "en"){
-		            $wgOut->setPageTitle("Login");
-		        }
-		        else if($wgLang->getCode() == "fr"){
-		            $wgOut->setPageTitle("Connexion");
-		        }
-		        $wgOut->addHTML("
-		        <div class='en'>
-                    <p>Typical problems with login:</p>
-                    <ol>
-                        <li>You have no account setup for you yet
-                            <ul>
-                                <li>Ask your supervisor or {$config->getValue('projectThemes')} coordinator to setup one for you</li>
-                            </ul>
-                        </li>
-                        <li>There is an account but you do not remember your ID
-                            <ul>
-                                <li>Look for the name through “search” textbox above (note that ".HQP." will typically not show up in the search)</li>
-                                <li>When you see your name in the drop-down list, click on it and go to your profile page</li>
-                                <li>The URL indicates the actual login ID (case sensitive, period between first and last name required, accents required)</li>
-                            </ul>
-                        </li>
-                        <li>You know your ID but not your password
-                            <ul>
-                                <li>Click on the “E-mail new password” link to receive a temporary one in your mailbox (look in your spam folder; if you do not receive one within 30 minutes contact your {$config->getValue('projectThemes')} coordinator to check whether your email address is setup correctly)</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
-                <div class='fr'>
-                    <p>Problèmes typiques de connexion:</p>
-                    <ol>
-                        <li>Votre compte n’a pas encore été configuré
-                            <ul>
-                                <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant</li>
-                            </ul>
-                        </li>
-                        <li>Vous avez un compte, mais vous ne vous souvenez pas de votre identifiant
-                            <ul>
-                                <li>Cherchez le nom dans la zone de texte « chercher » ci-dessus (notez que Candidat-e n'apparaîtra généralement pas dans la recherche)</li>
-                                <li>Quand vous voyez votre nom dans la liste déroulante, cliquez dessus et allez à votre page de profil</li>
-                                <li>L'URL indique l'identifiant de connexion (est sensible à la casse, il faut un point entre prénom et nom, les accents sont nécessaires)</li>
-                            </ul>
-                        </li>
-                        <li>Vous connaissez votre identifiant, mais pas votre mot de passe
-                            <ul>
-                                <li>Cliquez sur le lien « Envoyer nouveau mot de passe » pour recevoir un mot de passe temporaire dans votre messagerie (regardez dans votre dossier spam ; si vous ne le recevez pas dans les 30 minutes qui suivent, contactez le coordinateur thématique pour vérifier si votre adresse courriel a été bien configuré)</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>");
-		        $message = "
-<p>
-<span class='en'>You must have cookies enabled to log in to {$config->getValue('siteName')}.</span>
-<span class='fr'>Vous devez activer les cookies pour vous connecter au Forum {$config->getValue('networkName')}.</span>
-<br />
-</p>
-<p>
-<span class='en'>Your login ID is a concatenation of your first and last names: <b>First.Last</b> (case sensitive)
-If you have forgotten your password please enter your login and ID and request a new random password to be sent to the email address associated with your Forum account.</span>
-<span class='fr'>Votre identifiant de connexion est une combinaison de votre prénom et nom : <b>Premier.Dernier</b> (sensible à la casse). Si vous avez oublié votre mot de passe veuillez entrer votre information de connexion et identifiant, puis demandez qu’un nouveau mot de passe aléatoire soit envoyé au courriel associé à votre compte Forum.</span>
-</p>";
-		    }
-		    if($_SESSION == null || 
-		       $wgRequest->getSessionData('wsLoginToken') == "" ||
-		       $wgRequest->getSessionData('wsLoginToken') == null){
-		        wfSetupSession();
-		        LoginForm::setLoginToken();
-		    }
-		    $getStr = "";
-	        foreach($_GET as $key => $get){
-	            if($key == "title" || 
-	               $key == "returnto" || 
-	               $key == "returntoquery" ||
-	               ($key == "action" && $get == "submitlogin") ||
-	               ($key == "type" && $get == "login")){
-	                continue;
-	            }
-	            if(strlen($getStr) == 0){
-	                $getStr .= "?$key=$get";
-	            }
-	            else{
-	                $getStr .= "&$key=$get";
-	            }
-	        }
-	        $returnTo = "";
-	        if(isset($_GET['returnto'])){
-	            $returnTo = $_GET['returnto'];
-	            if(isset($_GET['returntoquery'])){
-	                $returnTo .= "?".$_GET['returntoquery'];
-	            }
-	        }
-	        else if (isset($_GET['title'])){
-	            $returnTo .= str_replace(" ", "_", $_GET['title']);
-	        }
-	        else {
-	            $url = str_replace("$wgScriptPath/", "", 
-	                   str_replace("index.php/", "", $wgRequest->getRequestURL()));
-	            $returnTo .= str_replace(" ", "_", $url);
-	        }
-	        $returnTo .= $getStr;
-	        $returnTo = urlencode($returnTo);
-	        if(isset($_POST['returnto'])){
-	            $returnTo = $_POST['returnto'];
-	        }
-	        
-		    $wgUser->setCookies();
-		    
-		    if(isset($_POST['wpPassword']) &&
-		       isset($_POST['wpNewPassword']) &&
-		       isset($_POST['wpRetype']) &&
-		       isset($_POST['wpName']) &&
-		       $_POST['wpNewPassword'] == $_POST['wpRetype']){
-		        $user = User::newFromName($_POST['wpName']);
-		        $user->load();
-		        if($user->checkPassword($_POST['wpNewPassword'])){
-		            redirect("$wgServer$wgScriptPath/index.php/$returnTo");
-		        }
-		    }
-		    $emailPassword = "
-		        <form target='resetFrame' method='post' action='$wgServer$wgScriptPath/index.php/Special:PasswordReset' style='position:relative;left:10px;'>
-		            <div style='width:180px;'>
-                        <input id='wpUsername1' type='hidden' name='wpUsername' value='' />
-                        <input type='hidden' name='wpEmail' value='' />
-                        <input class='dark' type='submit' name='wpMailmypassword' id='wpMailmypassword' tabindex='6' value='E-mail new password' />
-                    </div>
-		        </form>
-		        <iframe name='resetFrame' id='resetFrame' src='' style='width:0;height:0;border:0;' frameborder='0' width='0' height='0'></iframe>
-		        <script type='text/javascript'>
-		            function showResetMessage(message){
-		                $('#failMessage').parent().show();
-		                $('#failMessage').hide();
-		                $('#failMessage').html(message);
-		                $('#failMessage').slideDown();
-		            }
-		            $('#wpUsername1').attr('value', $('#wpName1').val());
-		            $('#wpName1').change(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            }).keyup(function(){
-		                $('#wpUsername1').attr('value', $('#wpName1').val());
-		            });
-		        </script>";
-		    if($failMessage != ""){
-		        $message .= "<script type='text/javascript'>
-		            $('#failMessage').parent().show();
-	                $('#failMessage').hide();
-	                $('#failMessage').slideDown();
-		        </script>";
-		    }
-		    $token = LoginForm::getLoginToken();
-		    $name = $wgRequest->getText('wpName');
-		    $name = sanitizeInput($name);
-		    echo "<span class='highlights-text pBodyLogin en'>Login</span><span class='highlights-text pBodyLogin fr'>Connexion</span>
-			<ul class='pBody pBodyLogin'>";
-		    echo <<< EOF
-<form style='position:relative;left:10px;' name="userlogin" method="post" action="$wgServer$wgScriptPath/index.php?title=Special:UserLogin&amp;action=submitlogin&amp;type=login&amp;returnto={$returnTo}">
-    <div style="width:180px;">
-        <div style="display:none;">
-            <div style='display:inline-block;width:100%;font-size:12px;margin-bottom:10px;' id='failMessage'>$failMessage</div>
-        </div>
-        $message
-        <input type='text' class='loginText dark' class='tooltip' title="Your username is in the form of 'First.Last' (case-sensitive)"
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpName" value="$name" id="wpName1" placeholder='Username (First.Last)' tabindex="1" size='20' /><br />
-        <input type='password' class='loginPassword dark' 
-               style='width:100%; box-sizing: border-box; margin:0; margin-bottom:10px;' name="wpPassword" id="wpPassword1" placeholder='Password' tabindex="2" size='20' /><br />
-        <input type='checkbox' name="wpRemember"
-               tabindex="4" value="1" id="wpRemember" /> <label class='en' for="wpRemember">Remember my login on this computer</label><label class='fr' for="wpRemember">Se souvenir de mes informations de connexion sur cet ordinateur</label><br />
-        <input type='submit' class='dark' name="wpLoginattempt" id="wpLoginattempt" tabindex="5" style="margin-bottom:10px;" value="Log in" />
-        <input type="hidden" name="wpLoginToken" value="$token" />
-    </div>
-</form>
-$emailPassword
-<script type='text/javascript'>
-    if(wgLang == 'fr'){
-        $('#wpName1').attr('placeholder', 'Mot d’utilisateur');
-        $('#wpPassword1').attr('placeholder', 'Mot de passe');
-        $('#wpLoginattempt').attr('value', 'Connexion');
-        $('#wpMailmypassword').attr('value', 'Envoyer nouveau mot de passe').css('font-size', '0.75em');
-    }
-</script>
-</li></ul>
-EOF;
-            if(isExtensionEnabled("Shibboleth")){
-                echo "
-                <script type='text/javascript'>
-                    $('.pBodyLogin').parent().hide();
-                    $('.pBodyLogin').parent().css('width', '100%');
-                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='ssoLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;' href='{$config->getValue('shibLoginUrl')}'>Login w CCID</a></div>\");
-                    $('#side').append(\"<div style='text-align: center; margin-bottom:15px;'><a id='forumLogin' class='button' style='width: 130px;padding-left:0;padding-right:0;'>Login w/out CCID</a></div>\");
-                    $('#forumLogin').click(function(){
-                        $(this).remove();
-                        $('.pBodyLogin').parent().slideDown();
-                    });
-                </script>
-                ";
-                if(isset($_POST['wpLoginattempt']) || isset($_POST['wpMailmypassword'])){
-                    echo "<script type='text/javascript'>
-                        $('#forumLogin').click();
-                    </script>";
-                }
-            }
-            
-        */
         }
         Hooks::run( 'MonoBookTemplateToolboxEnd', array( &$this ) );
         Hooks::run( 'SkinTemplateToolboxEnd', array( &$this ) );

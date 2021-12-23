@@ -22,7 +22,7 @@ class DropHqpMonth extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_hqp_months');
+        $this->table('grand_hqp_months')->drop()->save();
     }
 
     /**

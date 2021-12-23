@@ -22,8 +22,8 @@ class DropSurvey extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('survey_events');
-        $this->dropTable('survey_results');
+        $this->table('survey_events')->drop()->save();
+        $this->table('survey_results')->drop()->save();
     }
 
     /**

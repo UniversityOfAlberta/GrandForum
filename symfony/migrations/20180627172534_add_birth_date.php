@@ -29,6 +29,7 @@ class AddBirthDate extends AbstractMigration
     public function change()
     {
 	$table = $this->table("mw_user");
-	$table->renameColumn('user_age', 'user_birth_date');
+	$table->renameColumn('user_age', 'user_birth_date')
+	      ->update();
     }
 }

@@ -55,8 +55,8 @@ class IndexTable {
                     $hubsSubTab['dropdown'][] = TabUtils::createSubTab($project->getName(), "{$project->getUrl()}", "$selected");
                 }
             }
+            $tabs['Main']['subtabs'][] = $hubsSubTab;
         }
-        $tabs['Main']['subtabs'][] = $hubsSubTab;
         if(count($themes) > 0){
             $selected = (($wgTitle->getNSText() == $config->getValue('networkName') && 
                          (strstr($wgTitle->getText(), Inflect::pluralize($config->getValue('projectThemes'))) !== false)) ||
@@ -88,6 +88,7 @@ class IndexTable {
             if(Project::areThereProposedProjects() && $me->isRoleAtLeast(STAFF)){
                 $projectTab['dropdown'][] = TabUtils::createSubTab("Proposed", "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ProposedProjects", $selected);
             }
+            $tabs['Main']['subtabs'][] = $projectTab;
         }
         
         $lastRole = "";
@@ -132,9 +133,6 @@ class IndexTable {
             }
         }
         
-        if($config->getValue('projectsEnabled')){
-            $tabs['Main']['subtabs'][] = $projectTab;
-        }
         $tabs['Main']['subtabs'][] = $peopleSubTab;
         
         $selected = ($wgTitle->getText() == "Products" || 

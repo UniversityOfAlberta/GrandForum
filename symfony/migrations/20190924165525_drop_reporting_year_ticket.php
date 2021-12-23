@@ -22,7 +22,7 @@ class DropReportingYearTicket extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_reporting_year_ticket');
+        $this->table('grand_reporting_year_ticket')->drop()->save();
     }
 
     /**

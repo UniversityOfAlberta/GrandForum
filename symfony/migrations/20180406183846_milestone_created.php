@@ -23,7 +23,7 @@ class MilestoneCreated extends AbstractMigration
     public function up()
     {
         $table = $this->table("grand_milestones");
-        $table->addColumn('created', 'timestamp', array('limit' => 16, 'after' => 'edited_by', 'default' => 'CURRENT_TIMESTAMP'))
+        $table->addColumn('created', 'timestamp', array('after' => 'edited_by', 'default' => 'CURRENT_TIMESTAMP'))
               ->save();
     }
 

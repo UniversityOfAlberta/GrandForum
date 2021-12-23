@@ -22,7 +22,7 @@ class DropPostings extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_postings');
+        $this->table('grand_postings')->drop()->save();
     }
 
     /**

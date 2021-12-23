@@ -22,7 +22,7 @@ class DropGrandProjectChampions extends AbstractMigration
      */
     public function up()
     {
-        $this->dropTable('grand_project_champions');
+        $this->table('grand_project_champions')->drop()->save();
     }
 
     /**
