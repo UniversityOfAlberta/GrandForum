@@ -1156,10 +1156,13 @@ class CavendishTemplate extends QuickTemplate {
 		        else if(isset($_POST['wpMailmypassword'])){
 		            $user = User::newFromName($_POST['wpUsername']);
 		            $user->load();
-		            $failMessage = "<p class='inlineSuccess'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</p>";
+		            $failMessage = "<p class='inlineSuccess'><span class='en'>A new password has been sent to the e-mail address registered for &quot;{$_POST['wpName']}&quot;.  Please wait a few minutes for the email to appear.  If you do not recieve an email, then contact <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Forum Support</a>.<br /><br /><b>NOTE:</b> Only one password reset can be requested every 10 minutes.</span><span class='fr'>Un nouveau mot de passe a été envoyé au courriel enregistré sous « {$_POST['wpName']} ». Veuillez attendre quelques minutes pour que le courriel apparaisse. Si vous ne recevez pas de courriel, veuillez contacter le <a class='highlights-text-hover' style='padding: 0;background:none;display:inline;border-width: 0;' href='mailto:{$config->getValue('supportEmail')}'>Service d’assistance du forum</a>.<br /><br /><b>N.B. :</b> Une seule demande de réinitialisation du mot de passe peut être faite toutes les 10 minutes.</span></p>";
 		        }
 		        else{
-		            $failMessage = "<p class='inlineError'>Incorrect password entered. Please try again.</p>";
+		            $failMessage = "<p class='inlineError'>
+		                                <span class='en'>Incorrect password entered. Please try again.</span>
+		                                <span class='fr'>Vous avez mis le mauvais mot de passe.</span>
+		                            </p>";
 		        }
 		        if($user != null && $user->checkTemporaryPassword($_POST['wpPassword'])){
 		            LoginForm::clearLoginThrottle($_POST['wpName']);
