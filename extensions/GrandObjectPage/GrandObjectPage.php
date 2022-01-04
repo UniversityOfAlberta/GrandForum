@@ -9,6 +9,10 @@
         require_once("ThemePage.php");
         require_once("MilestonesLog.php");
     }
+    else{
+        // Profiles are disabled
+        $wgHooks['ArticleViewHeader'][] = 'redirectProfile';
+    }
     require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");
     if($config->getValue("productsEnabled")){
@@ -59,6 +63,16 @@
             wfRunHooks('ArticleViewHeader', array($article, "", "")); 
         }
         return true;
+    }
+    
+    function redirectProfile($article, $outputDone, $pcache){
+        global $wgServer, $wgScriptPath, $wgRoleValues;
+        $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
+        if(!isset($wgRoleValues[$nsText])){
+            // Namespace is not a role namespace
+            return true;
+        }
+        redirect("$wgServer$wgScriptPath");
     }
 
 ?>
