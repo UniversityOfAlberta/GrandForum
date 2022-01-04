@@ -1,7 +1,5 @@
 <?php
 
-autoload_register('GrandObjectPage/ProjectPage');
-
 $wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectTimelineData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectDoughnutData';
 $wgHooks['UnknownAction'][] = 'ProjectVisualizationsTab::getProjectChordData';

@@ -1,6 +1,8 @@
 <?php
     autoload_register('GrandObjectPage');
     autoload_register('GrandObjectPage/TabbedPage');
+    autoload_register('GrandObjectPage/PersonPage');
+    autoload_register('GrandObjectPage/ProjectPage');
     
     require_once("Backbone/BackbonePage.php");
     if($config->getValue("profilesEnabled")){

@@ -1,7 +1,5 @@
 <?php
 
-autoload_register('GrandObjectPage/PersonPage');
-
 $wgHooks['UnknownAction'][] = 'PersonProfileTab::getPersonCloudData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getTimelineData';
 $wgHooks['UnknownAction'][] = 'PersonVisualizationsTab::getDoughnutData';
