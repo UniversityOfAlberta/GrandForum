@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Intake Form" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
+        <ReportItem id="introAvoid" type="Text" blobType="BLOB_TEXT" blobItem="introAvoid" limit="100" >
+            <![CDATA[
+                <h3>Please Note:</h3>
+                <p>Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn’t) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="getting_to_know" tooltip="A. Getting to know you" name="A. Getting to know you" title="A. Getting to know you" blobSection="AVOID_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="age_avoid" type="SelectReportItem" options="65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" blobItem="ave_avoid">
+            <![CDATA[
+                    <h3>Age</h3>
+                    {$item}
+
+            ]]>
+        </ReportItem>
+        <ReportItem id="gender_avoid" type="SelectReportItem" options="Man|Woman|Prefer to self describe as|Prefer not to say" blobItem="gender_avoid">
+            <![CDATA[
+                    <h3>What is your gender?</h3>
+                    <p><i>Gender refers to social roles and expectations, behaviors, expressions, and identities of girls, women, boys, men, and gender-diverse people.</i></p>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="region_avoid" type="SelectReportItem" options="Kingston|Frontenac|Lenox and Addington" blobItem="region_avoid">
+            <![CDATA[
+                    <h3>Please select which region you reside in code</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="immigrant_avoid" type="SelectReportItem" options="I was born in Canada|I obtained permanent resident status (landed immigrant) in Canada less than 5 years ago|I obtained permanent resident status (landed immigrant) in Canada 5 years ago or more|I am a refugee claimant|I am a non-permanent resident (e.g., holder of a work or study permit)|I am a Convention refugee or protected person (this means you have been formally approved as a refugee)|I became a Canadian citizen|None of the above applies to me|Don’t know|Prefer not to answer" blobItem="immigrant_avoid">
+            <![CDATA[
+                    <h3>Which category best describes your status?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" options="Black|East/Southeast Asian|Indigenous (First Nations, Metis, Inuk/Inuit)|Latino|Middle Eastern|South Asian|White|Another race category|Do not know|Prefer not to answer" optional="true">
+            <![CDATA[
+                <h3>Which ethnicity category best describes you? Check all that apply:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="transportation_avoid" type="SelectReportItem" options="Passenger in a motor vehicle|Drive a motor vehicle|Taxi or similar paid services|Public transportation such as bus, rapid transit, subway or train|Accessible transit|Cycling|Walking|Wheelchair or motorized cart" blobItem="transportation_avoid">
+            <![CDATA[
+                    <h3>In general, which is your most common form of transportation?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="income_avoid" type="SelectReportItem" options="Under $10,000|$10,000 to $24,999|$25,000 to $49,999|$50,000 to $74,999|$75,000 to $99,999|$100,000 or more|Prefer not to say|Wheelchair or motorized cart" blobItem="income_avoid">
+            <![CDATA[
+                    <h3>Total household annual income (include all sources of income before taxes and deductions):</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="assistive_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="assistive_avoid" orientation="vertical" options="a cane, a walking stick or crutches|a walker|a scooter|a manual wheelchair|a motorized wheelchair|orthopaedic footwear|an orthotic or a brace|a prosthetic device or an artificial limb|a grasping tool or a reach extender|adapted tools, utensils or special grips|a device for dressing (e.g., button hook, zipper pull, long-handled shoe horn)|a device with oversized buttons (e.g., remote control or telephone)|None" optional="true">
+            <![CDATA[
+                <h3>An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.  Do you use any aids and/or assistive devices for moving around, to help with bending or reaching or to help with fine motor skills?
+                Select all that apply.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="living_avoid" type="SelectReportItem" options="Living alone|Living with partner (includes with or without children)|Living with relatives and non-relatives|Prefer not to say" blobItem="living_avoid">
+            <![CDATA[
+                    <h3>Living arrangement:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="education_avoid" type="SelectReportItem" options="No certificate, diploma, or degree|Secondary (highschool) diploma or equivalency certificate|Apprenticeship or trades certificate or diploma|College, CEGEP, or non-university certificate or diploma|University certificate of diploma below bachelor level|University certificate, diploma, or degree at bachelor level or above|Prefer not to say" blobItem="education_avoid">
+            <![CDATA[
+                    <h3>Please specify your highest level of education:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment_avoid" type="SelectReportItem" options="I had no job last week and I did not look for work in the past 4 weeks|I had no job last week and I did look for work in the past 4 weeks|I had a job last week|I am permanently unable to work|I am a volunteer|I look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid">
+            <![CDATA[
+                    <h3>Employment status:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="marital_avoid" type="SelectReportItem" options="Married or common-law|Widowed|Divorced or separated|Single|Prefer not to say" blobItem="employment_avoid">
+            <![CDATA[
+                    <h3>Marital group:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="device_avoid" type="RadioReportItem" options="Yes|No" blobItem="device_avoid">
+            <![CDATA[
+                    <h3>In the past 12 months, have you used any technology or digital device to help you monitor or manage certain aspects of your health and well-being?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="internetissues_avoid" type="SelectReportItem" options="Never|On occasion|Often – My internet connection is not reliable" blobItem="internetissues_avoid">
+            <![CDATA[
+                    <h3>How often do you experience internet connectivity issues?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="program_avoid" type="SelectReportItem" options="Canadian Frailty Network website|Poster, flyer, or pamphlet at community venue|If you remember the location, please specify [____enter text____]|Newspaper|Post card received in the mail|Social media|Please specify platform: Facebook, Twitter, LinkedIn, or other|Health care provider|Word of mouth|Other" blobItem="program_avoid">
+            <![CDATA[
+                    <h3>How did you hear about the AVOID Frailty program?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="healthquestions" tooltip="VR-12 – Health Related QoL" name="VR-12 – Health Related QoL" blobSection="HEALTH_QUESTIONS" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="healthstatus_avoid" type="SelectReportItem" options="Excellent|Very good|Good|Fair|Poor" blobItem="healthstatus_avoid">
+            <![CDATA[
+                    <h3>In general, would you say your health is:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="activities1_avoid" type="RadioReportItem" orientation="horizontal" options="Yes, Limited a lot|Yes, Limited a little|No, Not Limited" blobItem="healthstatus1_avoid">
+            <![CDATA[
+                    <h3> The following questions are about activities you might do during a typical day. <br />Does your health now limit you in these activities? If so, how much?</h3>
+                    <ul>
+                       <li>Moderate activities, such as moving a table, pushing a vacuum cleaner, bowling, or playing golf? <//li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="activities2_avoid" type="SelectReportItem" options="Yes, Limited a lot|Yes, Limited a little|No, Not Limited" blobItem="healthstatus2_avoid">
+            <![CDATA[
+                    <li>Climbing several flights of stairs?<//li>
+                    {$item}
+                    </ul>
+            ]]>
+        </ReportItem>
+        <ReportItem id="accomplished1_avoid" type="SelectReportItem" options="No, None of the time|Yes, a little of the time|Yes, some of the time|Yes, most of the time|Yes, all of the time" blobItem="accomplished1_avoid">
+            <![CDATA[
+                    <h3> During the past 4 weeks, have you had any of the following problems with your work or other regular daily activities as a result of your physical health?</h3>
+                    <ul>
+                    <li>Accomplished less than you would like.</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="accomplished2_avoid" type="SelectReportItem" options="No, None of the time|Yes, a little of the time|Yes, some of the time|Yes, most of the time|Yes, all of the time" blobItem="accomplished2_avoid">
+            <![CDATA[
+                    <li>Were limited in the kind of work or other activities.</li>
+                    {$item}
+                    </ul>
+            ]]>
+        </ReportItem>
+
+        <ReportItem id="problems1_avoid" type="SelectReportItem" options="No, None of the time|Yes, a little of the time|Yes, some of the time|Yes, most of the time|Yes, all of the time" blobItem="problems1_avoid">
+            <![CDATA[
+                    <h3>During the past 4 weeks, have you had any of the following problems with your work or other regular daily activities as a result of any emotional problems (such as feeling depressed or anxious)?</h3>
+                    <ul><li>Accomplished less than you would like.</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="problems2_avoid" type="SelectReportItem" options="No, None of the time|Yes, Limited a lot|Yes, Limited a little|Yes, all of the time" blobItem="problems2_avoid">
+            <![CDATA[
+                    <li>Didn't do work or other activities as carefully as usual.</li>
+                    {$item}</ul>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pain_avoid" blobItem="pain_avoid" type="SelectReportItem" options="Not at all|A little bit|Moderately|Quite a bit|Extremely">
+            <![CDATA[
+                    <h3>During the past 4 weeks, how much did pain interfere with your normal work (including both work outside the home and house work)?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch_avoid" blobItem="howmuch_avoid" type="SelectReportItem" options="All of the time|Most of the time|A good bit of the time|Some of the time|A little of the time|None of the time">
+            <![CDATA[
+                    <h3>These questions are about how you feel and how things have been with you during the past 4 weeks. For each question, please give the one answer that comes closest to the way you have been feeling.</h3>
+                    <h3>How much of the time during the past 4 weeks:</h3>
+                    <ul>
+                    <li>Have you felt calm and peaceful?</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch2_avoid" blobItem="howmuch2_avoid" type="SelectReportItem" options="All of the time|Most of the time|A good bit of the time|Some of the time|A little of the time|None of the time">
+            <![CDATA[
+                    <li>Did you have a lot of energy?</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch3_avoid" blobItem="howmuch3_avoid" type="SelectReportItem" options="All of the time|Most of the time|A good bit of the time|Some of the time|A little of the time|None of the time">
+            <![CDATA[
+                    <li>Have you felt downhearted and blue?</li>
+                    {$item}
+                    </ul>
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch4_avoid" blobItem="howmuch4_avoid" type="SelectReportItem" options="All of the time|Most of the time|A good bit of the time|Some of the time|A little of the time|None of the time">
+            <![CDATA[
+                    <h3>During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social
+activities (like visiting with friends, relatives, etc.)?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch5_avoid" blobItem="howmuch5_avoid" type="SelectReportItem" options="Much better|Slightly better|About the same|Slightly worse|Much worse">
+            <![CDATA[
+                    <h3>Now, we'd like to ask you some questions about how your health may have changed.</h3>
+
+                    <h3>Compared to one year ago, how would you rate your physical health in general now?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="howmuch6_avoid" blobItem="howmuch6_avoid" type="SelectReportItem" options="Much better|Slightly better|About the same|Slightly worse|Much worse">
+            <![CDATA[
+                    <h3>Compared to one year ago, how would you rate your emotional problems (such as feeling anxious, depressed or irritable) now?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="FriedsPhenotype" tooltip="Fried’s Phenotype" name="Fried’s Phenotype" blobSection="FriedsPhenotype" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" options="Unintentional weight loss (10 or more pounds within the past year)|Muscle loss and weakness|A feeling of fatigue|Slow walking speed|Low levels of physical activity" optional="true">
+            <![CDATA[
+                <h3>Which, if any, of these symptoms do you relate to?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms2_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms2_avoid" orientation="vertical" options="Thyroid problems|Diabetes|Mood problems|Skin problems|Cardiac (heart) problems|Lung problems|Abdominal problems" optional="true">
+            <![CDATA[
+                <h3>Do you have any of the following health issues?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="symptoms3_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms3_avoid" orientation="vertical" options="Headaches|Memory changes|Seizures|Falls|Malignancy|Sleep changes|Urinary incontinence" optional="true">
+            <![CDATA[
+                <h3>Do you have any of the following health issues?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="clinicalfrailty" tooltip="Clinical Frailty Scale" name="Clinical Frailty Scale" blobSection="clinicalfrailty" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="help_avoid" blobItem="help_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you need help from others with any of the following?</h3>
+                    <ul>
+                    <li>Eating</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help2_avoid" blobItem="help2_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Dressing</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help3_avoid" blobItem="help3_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Transferring (e.g., from bed to chair)</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help4_avoid" blobItem="help4_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Toileting</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help5_avoid" blobItem="help5_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Bathing</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help6_avoid" blobItem="help6_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Shopping</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help7_avoid" blobItem="help7_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Taking Medications</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help8_avoid" blobItem="help8_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Using the Telephone</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help9_avoid" blobItem="help9_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Financing</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help10_avoid" blobItem="help10_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Transportation</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help11_avoid" blobItem="help11_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Preparing Meals</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help12_avoid" blobItem="help12_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Doing Light Housework</li>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help13_avoid" blobItem="help13_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <li>Doing Laundry</li>
+                    {$item}</ul>
+            ]]>
+        </ReportItem>
+        <ReportItem id="help14_avoid" blobItem="help14_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you feel slowed down recently?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help15_avoid" blobItem="help15_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you have any chronic medical conditions under treatment? (e.g., diabetes, cancer, heart disease)</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="help16_avoid" blobItem="help16_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you think you are more fit than someone your age?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-assessment " name="Behavioural Self-assessment " blobSection="behaviouralassess" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="behave1_avoid" blobItem="behave1_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you perform moderate to vigorous aerobic physical activities such that there is an accumulation of at least 150 minutes per week?</h3>
+                    <i>Examples: Moderate intensity - brisk walking, bicycling | Vigorous intensity - cross-country skiing, swimming</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave1_avoid" blobItem="behave1_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you perform muscle strengthening activities using major muscle groups at least twice a week?</h3>
+                    <i>Examples: lifting weights, working with resistance bands, heavy gardening (e.g. digging or shoveling)</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave2_avoid" blobItem="behave2_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you perform physical activities that challenge balance daily?</h3>
+                    <i>Examples: walking on uneven ground (e.g. unpaved areas or forest trails), Tai Chi, yoga</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave3_avoid" blobItem="behave3_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you do several hours of light physical activities, including standing?</h3>
+                    <i>Examples: slow walking, light household tasks (e.g. groceries, washing dishes, cooking), light gardening or watering plants</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave4_avoid" blobItem="behave4_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you limit sedentary behaviour to 8 hours or less daily which includes no more than 3 hours of recreational screen time, and breaking up long periods of sitting as often as possible?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="behave5_avoid" blobItem="behave5_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you get 7 to 8 hours of good-quality sleep on a regular basis, with consistent bed and wake-up times?</h3>
+                    <i>Good-quality sleep includes factors such as falling asleep within 30 minutes, not waking more than once through the night, ability to fall back asleep within 20 minutes after waking</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="vaccinate" tooltip="Vaccination" name="Vaccination" blobSection="vaccinate" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="vaccinate1_avoid" blobItem="vaccinate1_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you ever been told by a health care provider that you are not to be vaccinated?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had your annual flu vaccine this year?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had a shingles vaccine? (once after age 50)</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had a pneumonia vaccine? (once at age 65)</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Are your booster vaccines up to date? (Tetanus & Diphtheria – every 10 years)</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate6_avoid" blobItem="vaccinate6_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had a COVID-19 vaccine? (one or both doses) </h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="vaccinate7_avoid" blobItem="vaccinate7_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had both doses of the COVID-19 vaccine?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="medication" tooltip="Optimize Medications" name="Optimize Medications" blobSection="medication" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="meds1_avoid" blobItem="meds1_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you take any medication (including prescriptions and over the counter)?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="meds2_avoid" blobItem="meds2_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you feel comfortable talking to a healthcare provider about your medications?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="meds3_avoid" blobItem="meds3_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="interact" tooltip="Interaction" name="Interaction" blobSection="interact" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="interact1_avoid" blobItem="interact1_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <i>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</i>
+                    <h3>How many relatives do you see or hear from at least once a month?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact2_avoid" blobItem="interact2_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <h3>How many relatives do you feel at ease with that you can talk about private matters?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact3_avoid" blobItem="interact3_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <h3>How many relatives do you feel close to such that you could call on them for help?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact4_avoid" blobItem="interact4_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <p><i>Friendships: Considering all of your friends including those who live in your neighborhood</i></p>
+                    <h3>How many of your friends do you see or hear from at least once a month?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact5_avoid" blobItem="interact5_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <h3>How many friends do you feel at ease with that you can talk about private matters?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="interact6_avoid" blobItem="interact6_avoid" type="IntegerReportItem">
+            <![CDATA[
+                    <h3>How many friends do you feel close to such that you could call on them for help?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="diet" tooltip="Diet and Nutrition" name="Diet and Nutrition" blobSection="diet" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="diet1_avoid" blobItem="diet1_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you eat foods high in protein (e.g., meat, poultry, fish, eggs, and dairy foods) with every meal?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet2_avoid" blobItem="diet2_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>At meal times, is half your plate usually filled with fruits and vegetables?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet3_avoid" blobItem="diet3_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you eat foods high in calcium every day?</h3>
+                    <i>Recommended Dietary Allowance: 1000-1200mg daily *1 cup cow’s milk = 200mg, 3/4 cup yogurt = 250mg, 1 oz. cheese = 200mg</i>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="diet4_avoid" blobItem="diet4_avoid" type="SelectReportItem" options="Yes|No">
+            <![CDATA[
+                    <h3>Do you take a vitamin D supplement?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="readiness" tooltip="Readiness" name="Readiness" blobSection="readiness" type="EditableReportSection" pagebreak="false" >
+        <ReportItem id="lifestyle"  blobItem="lifestyle" type="SelectReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+            <![CDATA[
+                    <h3>Activity:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="SelectReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+            <![CDATA[
+                    <h3>Vaccination:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="SelectReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+            <![CDATA[
+                    <h3>Optimized Medication Use:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="SelectReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+            <![CDATA[
+                    <h3>Social Interaction:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="SelectReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+            <![CDATA[
+                    <h3>Diet and Nutrition:</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
