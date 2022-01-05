@@ -32,13 +32,13 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" default="{$project_start}" width="70px">
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Project Start Date:</h4>
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" default="{$project_end}" width="70px">
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT">
             <![CDATA[
                 <h4>Prospective Project Completion Date:</h4>
                 {$item}
