@@ -1,6 +1,8 @@
 <?php
     autoload_register('GrandObjectPage');
     autoload_register('GrandObjectPage/TabbedPage');
+    autoload_register('GrandObjectPage/PersonPage');
+    autoload_register('GrandObjectPage/ProjectPage');
     
     require_once("Backbone/BackbonePage.php");
     if($config->getValue("profilesEnabled")){
@@ -8,6 +10,10 @@
         require_once("ProjectPage.php");
         require_once("ThemePage.php");
         require_once("MilestonesLog.php");
+    }
+    else{
+        // Profiles are disabled
+        $wgHooks['ArticleViewHeader'][] = 'redirectProfile';
     }
     require_once("MaterialPage.php");
     require_once("ManagePeople/ManagePeople.php");
@@ -59,6 +65,16 @@
             Hooks::run('ArticleViewHeader', array($article, "", "")); 
         }
         return true;
+    }
+    
+    function redirectProfile($article, $outputDone, $pcache){
+        global $wgServer, $wgScriptPath, $wgRoleValues;
+        $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
+        if(!isset($wgRoleValues[$nsText])){
+            // Namespace is not a role namespace
+            return true;
+        }
+        redirect("$wgServer$wgScriptPath");
     }
 
 ?>

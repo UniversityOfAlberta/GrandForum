@@ -61,6 +61,7 @@ class ReportItemCallback {
             "project_n_epic" => "getNEpic",
             "project_n_movedon" => "getNMovedOn",
             "project_n_progressed" => "getNProgressed",
+            "project_intcomp_application" => "getIntCompApplication", // hard-coded strings
             // Milestones
             "milestone_id" => "getMilestoneId",
             "milestone_title" => "getMilestoneTitle",
@@ -1478,6 +1479,38 @@ class ReportItemCallback {
         
         if(isset($fileNumbers[$id])){
             return $fileNumbers[$id];
+        }
+        return "";
+    }
+    
+    function getIntCompApplication(){
+        $project = Project::newFromId($this->reportItem->projectId);
+        $map = array(
+            "CSI-01"    => "27ac8f18f42477f21592c9fb2aaae253",
+            "CSI-02"    => "6681227b7a285262e79fa17a1d06a3db",
+            "CSI-04"    => "f3fb3a67184c13792571d4957740931b",
+            "CSI-05"    => "0a399fb580b9309fbb4cd94c672b55bb",
+            "CSI-06"    => "438b6d5cc0a1ac93326c27d19d61760d",
+            "CSI-07"    => "67843e3200ca8c9d84c853e3714dab68",
+            "CSI-08"    => "279538afe3c21746f46b17d6b56561b7",
+            "CSI-09"    => "4941d83e8791520d22e7a02e25207a82",
+            "IC LAB-01" => "63edac0f5e0344bf53537c57c7ed6bbc",
+            "IC LAB-02" => "732a5b4c9d16fb7b0735d5658e02a170",
+            "IC LAB-03" => "7e019c8c74023c8523f6b0596a4bda60",
+            "IC LAB-04" => "721465d02208385d4719043442110eda",
+            "IC LAB-05" => "7288edb4c5d46c3eef24b6a5241e0e4c",
+            "IC LAB-06" => "4b4b4fdcc7afcc645552b31ce021e15c",
+            "IC LAB-08" => "3364618939af7dc22562b9daa94b318a",
+            "IC LAB-09" => "b84ce552ae9eb89f840f7296a60681ed",
+            "IC LAB-10" => "7e30d9b81eee8c44fe699687cd324be4",
+            "Ad-hoc-03" => "1293780dc83075a66896453cd71e345e",
+            "Ad-hoc-04" => "13e14c67b9c07ff10385ff7a4b754e23",
+            "Ad-hoc-05" => "e4b0428f09dd8ff7e2eaee26b8655f71",
+            "Ad-hoc-06" => "",
+            "Ad-hoc-07" => ""
+        );
+        if(isset($map[$project->getName()])){
+            return $map[$project->getName()];
         }
         return "";
     }

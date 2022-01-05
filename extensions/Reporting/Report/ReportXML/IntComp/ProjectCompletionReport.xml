@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Project Completion Report" reportType="RP_PROJECT_COMPLETION_REPORT" pdfType="RPTP_PROJECT_COMPLETION_REPORT" pdfFiles="ProjectCompletionReportPDF" personId="0" ajax="true" year="2022" disabled="false">
+    <Permissions>
+        <Role role="PL">
+            <SectionPermission id="details" permissions="rw" />
+            <SectionPermission id="report" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="details" tooltip="Project Details" name="Project Details" title="Project Completion Report" blobSection="DETAILS" type="EditableReportSection" showProgress="true">
+        <Static>
+            <![CDATA[
+                <h3 class="required">Title of Project:</h3>
+                {$project_full_name}
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h3 class="required">PI Name</h3>
+                {$project_leader_names}
+            ]]>
+        </Static>
+        <ReportItem id="ci" type="MultiText" blobItem="CI" blobType="BLOB_ARRAY" labels="Name" optional="true" multiple="true">
+            <![CDATA[
+                <h3>Co-PI Name(s) (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="huawei" type="MultiText" blobItem="HUAWEI" blobType="BLOB_ARRAY" labels="Name|Department/Unit|Email" multiple="true">
+            <![CDATA[
+                <h3 class="required">Huawei Technical Lead(s) Name(s) & Department(s):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="projectStart" type="Calendar" blobItem="PROJECT_START" blobType="BLOB_TEXT" default="{$project_start}" width="70px">
+            <![CDATA[
+                <h3 class="required">Project Start Date:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="projectEnd" type="Calendar" blobItem="PROJECT_END" blobType="BLOB_TEXT" default="{$project_end}" width="70px">
+            <![CDATA[
+                <h3 class="required">Prospective Project Completion Date:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" tooltip="Summary of Project Achievements" name="Summary" title="Summary of Project Achievements" blobSection="SUMMARY" type="EditableReportSection" showProgress="true">
+        <ReportItem id="hqp" type="Textarea" blobItem="HQP" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">HQPs Trained/Funded (including graduation status):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="publications" type="Textarea" blobItem="PUBLICATIONS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Publications (and Acks thereof):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="patents" type="Textarea" blobItem="PATENTS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Patents:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="artifacts" type="Textarea" blobItem="ARTIFACTS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Code Artifacts:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="other" type="Textarea" blobItem="OTHER" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Other evidence of positive outcomes:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="deliverables" tooltip="Completion of Deliverables" name="Deliverables" title="Completion of Deliverables" blobSection="DELIVERABLES" type="EditableReportSection" showProgress="true">
+        <If if="{!=({$project_intcomp_application},)}">
+            <![CDATA[
+                <a class="button" href="{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$project_intcomp_application}">Download Proposal</a>
+            ]]>
+        </If>
+        <ReportItem id="same" type="Radio" blobItem="SAME" options="Yes|No(if different, please explain why and in what way below)" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Are the deliverables same as promised in the proposal?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="same_comments" type="Textarea" blobItem="SAME_COMMENTS" blobType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <h3>Comments (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="completion" type="Radio" blobItem="COMPLETION" options="All deliverables were completed|Not all deliverables were completed, but still may be (explain in the comment box below)|Some deliverables will not be completed (explain in the comment box below)|No deliverables were completed (explain in the comment box below)" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Overall Success of Project Completion:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="completion_comments" type="Textarea" blobItem="COMPLETION_COMMENTS" blobType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <h3>Comments (if applicable):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="challenges" tooltip="Challenges Encountered" name="Challenges" title="Challenges Encountered" blobSection="CHALLENGES" type="EditableReportSection" showProgress="true">
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" blobType="BLOB_TEXT">
+            <![CDATA[
+                <p>Challenges include but not limited to technical challenges, financial challenges, project management challenges, etc.</p>
+                <h3 class="required">Please describe the challenges that were encountered throughout the project, and whether or not the challenges have been overcome</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="funds" tooltip="Remaining Funds" name="Remaining Funds" title="Remaining Funds" blobSection="FUNDS" type="EditableReportSection" showProgress="true">
+        <ReportItem id="funds" type="Textarea" blobItem="FUNDS" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Please indicate the remaining funds left in your UAHJIC account after the completion of your project.  Make sure the number is aligned with your account report.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="communication" tooltip="Communication between PI and Huawei Technical Lead(s)" name="Communication" title="Communication between PI and Huawei Technical Lead(s)" blobSection="FUNDS" type="EditableReportSection" showProgress="true">
+        <ReportItem id="communication" type="Radio" blobItem="COMMUNICATION" orientation="horizontal" options="1|2|3|4|5" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Throughout the project, how effective was the communication between you and your corresponding Huawei Technical Lead(s)?</h3>
+                <div style="display:flex;">
+                    <div style="margin-right:25px;">Not Effective</div>
+                    {$item}
+                    <div style="margin-left:25px;">Very Effective</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="agreement" type="Textarea" blobItem="AGREEMENT" blobType="BLOB_TEXT">
+            <![CDATA[
+                <h3 class="required">Is your corresponding Huawei Technical Lead(s) in agreement with the project termination and project outcome?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="feedback" tooltip="Feedback (optional)" name="Feedback" title="Feedback (optional)" blobSection="FEEDBACK" type="EditableReportSection">
+        <ReportItem id="rating" type="Radio" blobItem="RATING" orientation="horizontal" options="1|2|3|4|5" blobType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <h3>Overall rating on your UAHJIC project experience</h3>
+                <div style="display:flex;">
+                    <div style="margin-right:25px;">Very Dissatisfied</div>
+                    {$item}
+                    <div style="margin-left:25px;">Very Satisfied</div>
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="feedback" type="Textarea" blobItem="FEEDBACK" blobType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <h3>Feedback/comments you would like to provide to the UAHJIC Steering Committee</h3>
+                Let us know your experience working on the project, and your suggestions for future improvement.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" blobType="BLOB_TEXT" optional="true">
+            <![CDATA[
+                <h3>Other Comments</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" showWarning="true" />
+    </ReportSection>
+</Report>

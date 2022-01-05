@@ -53,6 +53,7 @@ class ApplicationsTable extends SpecialPage{
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=loi'>JIC LOIs</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=huawei'>JIC</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=progress'>Progress</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=completion'>Completion</a>";
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
         if(!isset($_GET['program'])){
@@ -70,6 +71,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "progress"){
             $this->generateProgress();
+        }
+        else if($program == "completion"){
+            $this->generateCompletion();
         }
         return;
     }
@@ -209,6 +213,15 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", null, 2022, "January 2022"));
         $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", null, 2021, "May 2021"));
         $tabbedPage->addTab(new ApplicationTab("RP_PROGRESS_REPORT", null, 2018, "2020"));
+        
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateCompletion(){
+        global $wgOut;
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab("RP_PROJECT_COMPLETION_REPORT", null, 2022, ""));
         
         $wgOut->addHTML($tabbedPage->showPage());
     }

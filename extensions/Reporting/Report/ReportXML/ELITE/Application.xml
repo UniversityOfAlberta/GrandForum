@@ -452,7 +452,7 @@
         <ReportItem id="aspirations" type="Upload" blobItem="ASPIRATIONS" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true">
             <![CDATA[
                 <h3 class="required"><span class='en'>Professional Aspirations and Academic Interests</span><span class='fr'>Motivations professionnelles et des Intérêts académiques</span></h3>
-                <p><b><span class='en'>Please see the Brochure for Interns for a template with requirements and tips.</span><span class='fr'>Veuillez consulter la brochure pour les stagiaires pour le guide avec les exigences et des astuces.</span></b></p>
+                <p><b><span class='en'>Please see the Brochure for Interns for requirements and tips.</span><span class='fr'>Veuillez consulter la brochure pour les stagiaires pour le guide avec les exigences et des astuces.</span></b></p>
                 {$item}
             ]]>
         </ReportItem>
