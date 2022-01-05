@@ -19,7 +19,8 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        //$tabs["Reports"] = TabUtils::createTab("My Reports");
+        $tabs["Surveys"] = TabUtils::createTab("Intake Survey");
+        $tabs["Modules"] = TabUtils::createTab("Education Modules");
         return true;
     }
     
@@ -27,10 +28,14 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        /*if(){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FocusResults")) ? "selected" : false;
-            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("FOCUS Results", "{$url}FocusResults", $selected);
-        }*/
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Intake Survey", "{$url}IntakeSurvey", $selected);
+        }
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TrainingModule")) ? "selected" : false;
+            $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Module 1", "{$url}TrainingModule", $selected);
+        }
         return true;
     }
     
