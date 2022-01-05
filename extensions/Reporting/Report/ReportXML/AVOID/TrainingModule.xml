@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Intake Form" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
+        <Static>
+            <![CDATA[
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor velit quis accumsan sagittis. Maecenas ac erat elit. Quisque luctus, quam eu aliquam bibendum, nisl ante volutpat mi, rutrum bibendum orci quam vel turpis. Duis hendrerit condimentum mauris, vitae dignissim ex ullamcorper sit amet. Cras in congue enim. Donec volutpat volutpat sem. Suspendisse in fringilla neque. Proin porta porta posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+
+                <p>Aenean lacinia quam vel libero dapibus, quis volutpat mi suscipit. Duis dignissim ante hendrerit lacus aliquam, vitae molestie magna vehicula. Integer porta sem libero, a ultricies tellus posuere nec. Suspendisse eget dolor vitae elit pellentesque faucibus non et arcu. Nulla sed ex eget ipsum dictum eleifend. Vestibulum condimentum ultricies sem, a ultricies lectus efficitur vitae. Phasellus ac elementum ante. Donec justo elit, ultrices eu erat in, rutrum iaculis nunc. Etiam et posuere neque.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+
+    <ReportSection id="video1" tooltip="Video 1" name="Video 1" title="Video 1" blobSection="VIDEO1" type="EULAReportSection" saveText="Next">
+        <Static>
+            <![CDATA[
+                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
+                <script type="text/javascript">
+                    $("video").on("ended", function(){
+                        $('a.reportTab.selectedReportTab').next().click();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+    <ReportSection id="quiz1" tooltip="Quiz 1" name="Quiz 1" blobSection="QUIZ1" type="EditableReportSection">
+        <ReportItem id="q1" type="Radio" blobItem="Q1" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="Radio" blobItem="Q2" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="Radio" blobItem="Q3" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 3</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Video 2" name="Video 2" title="Video 2" blobSection="VIDEO2" type="EULAReportSection" saveText="Next">
+        <Static>
+            <![CDATA[
+                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
+                <script type="text/javascript">
+                    $("video").on("ended", function(){
+                        $('a.reportTab.selectedReportTab').next().click();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+    <ReportSection id="quiz2" tooltip="Quiz 2" name="Quiz 2" blobSection="QUIZ2" type="EditableReportSection">
+        <ReportItem id="q1" type="Radio" blobItem="Q1" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 1</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q2" type="Radio" blobItem="Q2" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 2</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="q3" type="Radio" blobItem="Q3" options="1|2|3|4">
+            <![CDATA[
+                <h3>Question 3</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
