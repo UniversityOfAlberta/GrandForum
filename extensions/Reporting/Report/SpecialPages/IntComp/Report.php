@@ -86,7 +86,10 @@ class Report extends AbstractReport{
             if(count($leadership) > 0){
                 foreach($leadership as $project){
                     $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProgressReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()}", "{$url}ProgressReport&project={$project->getName()}", $selected);
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Progress)", "{$url}ProgressReport&project={$project->getName()}", $selected);
+                    
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectCompletionReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Completion)", "{$url}ProjectCompletionReport&project={$project->getName()}", $selected);
                 }
             }
         }
