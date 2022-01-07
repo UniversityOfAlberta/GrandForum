@@ -1,7 +1,7 @@
 DiversitySurveyView = Backbone.View.extend({
 
     initialize: function(){
-        this.model.bind('sync', this.render, this);
+        this.model.once('sync', this.render, this);
         this.model.bind('change', this.change, this);
         this.model.bind('change:language', this.render, this);
         this.template_en = _.template($('#diversity_en_template').html());
@@ -38,6 +38,9 @@ DiversitySurveyView = Backbone.View.extend({
             success: function(){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
+                    this.$("#diversityMessages").stop();
+                    this.$("#diversityMessages").show();
+                    this.$("#diversityMessages").css('opacity', 0.95);
                     addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
                     this.$("#diversityMessages").fadeOut(10000);
                 }.bind(this));
@@ -46,12 +49,16 @@ DiversitySurveyView = Backbone.View.extend({
             error: function(o, e){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
+                    this.$("#diversityMessages").stop();
+                    this.$("#diversityMessages").show();
+                    this.$("#diversityMessages").css('opacity', 0.95);
                     if(e.responseText != undefined && e.responseText != ""){
                         addError(e.responseText, false, "#diversityMessages");
                     }
                     else{
                         addError("There was a problem saving your Diversity Survey", false, "#diversityMessages");
                     }
+                    this.$("#diversityMessages").fadeOut(10000);
                 });
                 this.$("#save").prop("disabled", false);
             }.bind(this)
