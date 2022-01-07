@@ -39,7 +39,8 @@ DiversitySurveyView = Backbone.View.extend({
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
-                });
+                    this.$("#diversityMessages").fadeOut(10000);
+                }.bind(this));
                 this.$("#save").prop("disabled", false);
             }.bind(this),
             error: function(o, e){
@@ -211,6 +212,11 @@ DiversitySurveyView = Backbone.View.extend({
             this.$el.html(this.template_fr(this.model.toJSON()));
         }
         this.change(true);
+        this.$el.on('change', 'input, select, textarea, button', function() {
+            _.defer(function(){
+                this.save();
+            }.bind(this));
+        }.bind(this));
         return this.$el;
     }
 
