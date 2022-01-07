@@ -29,9 +29,9 @@ class UserGsmsBulkUploadAPI extends API{
             }
             $application_year_array = explode("/",$row[8]);
             $application_year = $application_year_array[0]; 
-            if($application_year != YEAR+1){
+            /*if($application_year != YEAR+1){
                 continue;
-            }
+            }*/
             if($row[13] == "Master of Science (Crse)"){
                 // Ignore Course Based rows
                 continue;
