@@ -112,7 +112,7 @@ class SpecialEventRegistration extends SpecialPage{
         $webpage = ($me->isLoggedIn()) ? $me->getWebsite() : "";
         $webpageField = new TextField("webpage", "webpage", $webpage);
 
-        $roles = array("Audience", "Presenter", "Host");
+        $roles = array("Audience", "Keynote Speaker", "Host", "Presenter");
         $defaultRole = "Audience";
         $misc = "";
         if($default->title == "Energy Hackathon 2021 - APIC"){
