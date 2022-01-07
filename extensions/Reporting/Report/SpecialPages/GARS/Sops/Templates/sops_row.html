@@ -15,7 +15,10 @@
 </td>
 <td align="center" style="width:30px">
   <% if(sop_pdf != "") { %>
-      <a href="<%= sop_pdf %>" target="_blank"><span class="pdf_gif"></span></a>
+    <b>GARS PDF : </b><a href="<%= sop_pdf %>" target="_blank"><span class="pdf_gif"></span></a><br />
+  <% } %>
+  <% if(gsms_url != "") { %>
+    <b>GSMS PDF : </b><a href="<%= gsms_url %>" target="_blank"><span class="pdf_gif"></span></a><br />
   <% } %>
   <%= student_data.email %>
 </td>
