@@ -21,7 +21,7 @@ class SimilarUserValidation extends UIValidation {
                 $this->duplicatePeople[] = $person;
             }
         }
-        return (count($this->duplicatePeople) == 0);
+        return (empty($this->duplicatePeople));
     }
     
     function failMessage($name){

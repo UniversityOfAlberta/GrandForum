@@ -214,6 +214,34 @@ class CreateUserAPI extends API{
         }
     }
     
+    /**
+     * Note: From TemporaryPasswordPrimaryAuthenticationProvider.php
+	 * Send an email about the new account creation and the temporary password.
+	 * @param User $user The new user account
+	 * @param User $creatingUser The user who created the account (can be anonymous)
+	 * @param string $password The temporary password
+	 * @return \Status
+	 */
+	protected function sendNewAccountEmail( User $user, User $creatingUser, $password ) {
+		$ip = $creatingUser->getRequest()->getIP();
+		// @codeCoverageIgnoreStart
+		if ( !$ip ) {
+			return \Status::newFatal( 'badipaddress' );
+		}
+		// @codeCoverageIgnoreEnd
+
+		$mainPageUrl = \Title::newMainPage()->getCanonicalURL();
+		$userLanguage = $user->getOption( 'language' );
+		$subjectMessage = wfMessage( 'createaccount-title' )->inLanguage( $userLanguage );
+		$bodyMessage = wfMessage( 'createaccount-text', $ip, $user->getName(), $password,
+			'<' . $mainPageUrl . '>', round( 7*24*3600 / 86400 ) )
+			->inLanguage( $userLanguage );
+
+		$status = $user->sendMail( $subjectMessage->text(), $bodyMessage->text() );
+
+		return $status;
+	}
+    
     // Returns the creator of the role request.  
     // If the creator cannot be determined, then 'me' is returned
     function getCreator($me){
