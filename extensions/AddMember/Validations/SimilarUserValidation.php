@@ -4,7 +4,7 @@ class SimilarUserValidation extends UIValidation {
 
     var $duplicatePeople;
 
-    function SimilarUserValidation($neg=false, $warning=false) {
+    function __construct($neg=false, $warning=false) {
         parent::__construct($neg, $warning);
     }
     

@@ -2,7 +2,7 @@
 
 class UniqueEmailValidation extends UIValidation {
 
-    function UniqueEmailValidation($neg=false, $warning=false) {
+    function __construct($neg=false, $warning=false) {
         parent::__construct($neg, $warning);
     }
     
