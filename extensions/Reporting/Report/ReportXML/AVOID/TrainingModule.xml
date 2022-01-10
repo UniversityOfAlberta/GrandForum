@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Intake Form" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
     <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
         <Static>
             <![CDATA[
