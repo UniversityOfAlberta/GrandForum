@@ -26,22 +26,10 @@
         </Static>
     </ReportSection>
 
-    <ReportSection id="quiz1" tooltip="Quiz 1" name="Quiz 1" blobSection="QUIZ1" type="EditableReportSection">
-        <ReportItem id="q1" type="Radio" blobItem="Q1" options="1|2|3|4">
+    <ReportSection id="q1" tooltip="Question 1" name="Question 1" blobSection="Q1" type="EditableReportSection">
+        <ReportItem id="q1" type="Checkbox" blobItem="Q1" blobType="BLOB_ARRAY" options="running 4 miles every day|moving your body every day|reducing the time spent sitting|going to the gym">
             <![CDATA[
-                <h3>Question 1</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q2" type="Radio" blobItem="Q2" options="1|2|3|4">
-            <![CDATA[
-                <h3>Question 2</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q3" type="Radio" blobItem="Q3" options="1|2|3|4">
-            <![CDATA[
-                <h3>Question 3</h3>
+                <h3>What does it mean to be active?</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -60,22 +48,10 @@
         </Static>
     </ReportSection>
 
-    <ReportSection id="quiz2" tooltip="Quiz 2" name="Quiz 2" blobSection="QUIZ2" type="EditableReportSection">
-        <ReportItem id="q1" type="Radio" blobItem="Q1" options="1|2|3|4">
+    <ReportSection id="q2" tooltip="Question 2" name="Question 2" blobSection="Q2" type="EditableReportSection">
+        <ReportItem id="q2" type="Checkbox" blobItem="Q2" blobType="BLOB_ARRAY" options="avoid doing physical activity|wear safe footwear indoor and outdoor|use handrails every time they are available|adapt your space to your needs">
             <![CDATA[
-                <h3>Question 1</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q2" type="Radio" blobItem="Q2" options="1|2|3|4">
-            <![CDATA[
-                <h3>Question 2</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q3" type="Radio" blobItem="Q3" options="1|2|3|4">
-            <![CDATA[
-                <h3>Question 3</h3>
+                <h3>What does it mean to be active?</h3>
                 {$item}
             ]]>
         </ReportItem>
