@@ -32,6 +32,17 @@ class JobPostingPage extends BackbonePage {
         return array('Backbone/*');
     }
     
+    function execute($par){
+        global $wgOut;
+        $wgOut->addHTML("<p>As of December 15, 2021, CS-Can|Info-Can will no longer use the Forum for uploading departmental job postings.</p>
+
+                         <p>Postings can now be posted directly on the CS-Can|Info-Can website by clicking on <a href='https://cscan-infocan.ca/login/?redirect_to=/post-a-job/'>https://cscan-infocan.ca/login/?redirect_to=/post-a-job/</a></p>
+
+                         <p>This will take you to a login page to enter your email address and the password you set up when you activated your account on the CS-Can|Info-Can membership page.</p>
+
+                         <p>If you haven’t yet activated your account, please contact <a href='mailto:adele_newton@cscan-infocan.ca'>adele_newton@cscan-infocan.ca</a></p>");
+    }
+    
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();

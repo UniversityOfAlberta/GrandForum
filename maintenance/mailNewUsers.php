@@ -11,7 +11,7 @@ foreach($lines as $line){
     if(count($cells) > 1){
         $first = trim($cells[0]);
         $last = trim($cells[1]);
-        $email = trim($cells[2]);
+        $email = strtolower(trim($cells[2]));
         $department = trim($cells[3]);
         $university = trim($cells[4]);
         $role1 = trim($cells[5]);
