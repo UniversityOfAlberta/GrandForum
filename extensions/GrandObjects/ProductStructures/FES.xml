@@ -607,7 +607,7 @@
     </IPManagements>
     
     <!-- Awards -->
-    <Awards category="Award">
+    <Awards category="Award" citationFormat="{%Authors} {(%YYYY).} {%Title.} {%Institution} ({%Value, }{%Frequency})">
         <Award type="Award">
             <authors label="Recipient"></authors>
             <data>

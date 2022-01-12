@@ -601,6 +601,7 @@ class Paper extends BackboneModel{
                 $cname = "{$cattrs->category}";
                 foreach($category->children() as $type){
                     $tattrs = $type->attributes();
+                    $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
                     $ccvType = "{$tattrs->ccv_name}";
@@ -614,6 +615,7 @@ class Paper extends BackboneModel{
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
+                                                                               'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author");
                     foreach($type->children() as $child){
@@ -1530,6 +1532,24 @@ class Paper extends BackboneModel{
             $issue = $this->getData(array('number'));
             $match1 = str_ireplace("%issue",     $issue,     $match1);
             $match2 = str_ireplace("%issue",     "",         $match2);
+        }
+        
+        if(strstr($match, "institution") !== false){
+            $institution = $this->getData(array('institution'));
+            $match1 = str_ireplace("%institution", $institution,     $match1);
+            $match2 = str_ireplace("%institution", "",               $match2);
+        }
+        
+        if(strstr($match, "frequency") !== false){
+            $frequency = $this->getData(array('frequency'));
+            $match1 = str_ireplace("%frequency", $frequency,     $match1);
+            $match2 = str_ireplace("%frequency", "",             $match2);
+        }
+        
+        if(strstr($match, "value") !== false){
+            $value = $this->getData(array('value'));
+            $match1 = str_ireplace("%value",    $value,        $match1);
+            $match2 = str_ireplace("%value",    "",            $match2);
         }
 
         if($match1 == $match2){

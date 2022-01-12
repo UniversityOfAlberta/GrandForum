@@ -116,6 +116,32 @@ ProductListView = Backbone.View.extend({
                 else{
                     row.push("");
                 }
+                if(model.category == "Award"){
+                    if(typeof model.data.frequency != 'undefined'){
+                        row.push(model.data.frequency);
+                    }
+                    else{
+                        row.push("");
+                    }
+                    if(typeof model.data.value != 'undefined'){
+                        row.push(model.data.value);
+                    }
+                    else{
+                        row.push("");
+                    }
+                    if(typeof model.data.institution != 'undefined'){
+                        row.push(model.data.institution);
+                    }
+                    else{
+                        row.push("");
+                    }
+                    if(typeof model.data.url != 'undefined'){
+                        row.push(model.data.url);
+                    }
+                    else{
+                        row.push("");
+                    }
+                }
             }
             row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
             if(projectsEnabled){
@@ -169,6 +195,9 @@ ProductListView = Backbone.View.extend({
         if(networkName == "FES"){
             if(this.model.category == "Publication"){
                 targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
+            }
+            else if (this.model.category == "Award"){
+                targets = targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
             }
             else {
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12 ];

@@ -22,6 +22,12 @@
                 <th style='display:none;'>HQP Led</th>
                 <th style='display:none;'>Published In</th>
                 <th style='display:none;'>Impact Factor</th>
+                <% if(this.model.category == "Award"){ %>
+                    <th style='display:none;'>Frequency</th>
+                    <th style='display:none;'>Value</th>
+                    <th style='display:none;'>Institution</th>
+                    <th style='display:none;'>Url</th>
+                <% } %>
             <% } %>
             <th style='display:none;'>Extra</th>
             <% if(projectsEnabled){ %>
