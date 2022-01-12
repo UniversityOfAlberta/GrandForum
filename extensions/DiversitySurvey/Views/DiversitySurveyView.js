@@ -96,12 +96,41 @@ DiversitySurveyView = Backbone.View.extend({
             this.$("select[name=birth]").prop("disabled", false);
         }
         
-        // Indegenous
+        // Indigenous
         if(this.model.get('indigenous') == "I prefer not to answer"){
             this.$("input[name=indigenous][type=radio]").prop("checked", false).prop("disabled", true);
         }
         else{
             this.$("input[name=indigenous][type=radio]").prop("disabled", false);
+        }
+        
+        // Indigenous Visibility
+        if(this.model.get('indigenous') == "Yes"){
+            if(initial === true){
+                this.$("#indigenousApply").show();
+            }
+            else{
+                this.$("#indigenousApply").slideDown();
+            }
+        }
+        else{
+            if(initial === true){
+                this.$("#indigenousApply").hide();
+            }
+            else{
+                this.$("#indigenousApply").slideUp();
+            }
+        }
+        if(this.model.get('indigenousApply').decline == "I prefer not to answer"){
+            
+            this.$("input[name=indigenousApply_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=indigenousApply_other][type=text]").val("").prop("disabled", true);
+            this.model.get('indigenousApply').values = new Array();
+            this.model.get('indigenousApply').other = "";
+        }
+        else{
+            this.$("input[name=indigenousApply_values][type=checkbox]").prop("disabled", false);
+            this.$("input[name=indigenousApply_other][type=text]").prop("disabled", false);
         }
         
         // Disability
@@ -128,14 +157,17 @@ DiversitySurveyView = Backbone.View.extend({
             else{
                 this.$("#disabilityVisibility").slideUp();
             }
-            this.$("input[name=disabilityVisibility]").prop("checked", false);
-            this.model.set('disabilityVisibility', "");
         }
-        if(this.model.get('disabilityVisibility') == "I prefer not to answer"){
-            this.$("input[name=disabilityVisibility][type=radio]").prop("checked", false).prop("disabled", true);
+        if(this.model.get('disabilityVisibility').decline == "I prefer not to answer"){
+            
+            this.$("input[name=disabilityVisibility_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.$("input[name=disabilityVisibility_other][type=text]").val("").prop("disabled", true);
+            this.model.get('disabilityVisibility').values = new Array();
+            this.model.get('disabilityVisibility').other = "";
         }
         else{
-            this.$("input[name=disabilityVisibility][type=radio]").prop("disabled", false);
+            this.$("input[name=disabilityVisibility_values][type=checkbox]").prop("disabled", false);
+            this.$("input[name=disabilityVisibility_other][type=text]").prop("disabled", false);
         }
         
         // Minority
@@ -157,6 +189,27 @@ DiversitySurveyView = Backbone.View.extend({
             this.$("input[name=race_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=race_other][type=text]").prop("disabled", false);
         }
+        if(this.model.get('race').values.indexOf("Visible Minority") != -1){
+            if(initial === true){
+                this.$("#minorities").show();
+            }
+            else{
+                this.$("#minorities").slideDown();
+            }
+        }
+        else{
+            this.$("#minorities input[name=race_values][type=checkbox]").prop("checked", false);
+            this.$("#minorities input[name=race_other][type=text]").val("");
+            this.model.get('race').values = _.difference(this.model.get('race').values, 
+                                                         _.map($('#minorities input'), function(el){ return $(el).val(); }));
+            this.model.get('race').other = "";
+            if(initial === true){
+                this.$("#minorities").hide();
+            }
+            else{
+                this.$("#minorities").slideUp();
+            }
+        }
         
         // Racialized
         if(this.model.get('racialized') == "I prefer not to answer"){
@@ -165,6 +218,19 @@ DiversitySurveyView = Backbone.View.extend({
         else{
             this.$("input[name=racialized][type=radio]").prop("disabled", false);
         }
+        
+        // Affiliation
+        if(this.model.get('affiliation') != "Network Investigator" && 
+           this.model.get('affiliation') != "Highly Qualified Personnel" && 
+           this.model.get('affiliation') != "Board and/or Committee Member" &&
+           this.model.get('affiliation') != "Employee"){
+            this.$("input[name=affiliation][type=radio]").prop("checked", false);
+        }
+        else{
+            this.$("input[name=affiliation][type=text]").val("");
+        }
+        this.$("input[name=affiliation][type=radio]").prop("disabled", false);
+        this.$("input[name=affiliation][type=text]").prop("disabled", false);
         
         // Immigration
         if(this.model.get('immigration') == "I prefer not to answer"){
@@ -206,6 +272,43 @@ DiversitySurveyView = Backbone.View.extend({
         else{
             this.$("input[name=orientation_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=orientation_other][type=text]").prop("disabled", false);
+        }
+        
+        // Respected
+        if(this.model.get('respected').decline == "I prefer not to answer"){
+            this.$("input[name=respected_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.model.get('respected').values = new Array();
+            this.model.get('respected').other = "";
+        }
+        else{
+            this.$("input[name=respected_values][type=checkbox]").prop("disabled", false);
+        }
+        
+        // Least Respected
+        if(this.model.get('leastRespected').decline == "I prefer not to answer"){
+            this.$("input[name=leastRespected_values][type=checkbox]").prop("checked", false).prop("disabled", true);
+            this.model.get('leastRespected').values = new Array();
+        }
+        else{
+            this.$("input[name=leastRespected_values][type=checkbox]").prop("disabled", false);
+        }
+        
+        // Prevents Training
+        if(this.model.get('training') == "I’ve never taken any EDI training"){
+            if(initial === true){
+                this.$("#preventsTraining").show();
+            }
+            else{
+                this.$("#preventsTraining").slideDown();
+            }
+        }
+        else{
+            if(initial === true){
+                this.$("#preventsTraining").hide();
+            }
+            else{
+                this.$("#preventsTraining").slideUp();
+            }
         }
     },
     
