@@ -37,8 +37,8 @@
                                         $("#HealthRelatedQoL").show();
                                         $("#FrailtyStatus").show();
                                 }
-                                function checkConsent(){
-                                        var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}' == "Yes";
+                                function checkConsent(value){
+                                        var consent = (value == "Yes");
                                         if(consent){
                                                 $("#SociodemographicInformation").show();
                                                 $("#BehaviouralSelf-Assessment").show();
@@ -52,8 +52,7 @@
                                                 $("#FrailtyStatus").hide();
                                         }
                                 }
-                                _.defer(checkConsent);
-                                $("input:radio[name='Consent_eula']").change(checkConsent);
+                                $("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
                         </script>
                 ]]>
         </Static>
