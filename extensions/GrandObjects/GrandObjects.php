@@ -33,6 +33,7 @@ autoload_register('GrandObjects/API/Search');
 autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
+autoload_register('GrandObjects/API/DataCollection');
 
 global $apiRequest;
 // Person
@@ -204,6 +205,11 @@ $apiRequest->addAction('Hidden','crmopportunity/:opportunity_id/tasks', 'CRMTask
 $apiRequest->addAction('Hidden','crmtask', 'CRMTaskAPI');
 $apiRequest->addAction('Hidden','crmtask/:id', 'CRMTaskAPI');
 
+// DataCollection
+$apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
+$apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
+$apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectionAPI');
+
 function addScript($file){
     global $wgServer, $wgScriptPath;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
@@ -240,6 +246,7 @@ function createModels(){
     addScript("CRMContact");
     addScript("CRMOpportunity");
     addScript("CRMTask");
+    addScript("DataCollection");
     
     return true;
 }

@@ -13,7 +13,7 @@
         </Static>
     </ReportSection>
 
-    <ReportSection id="video1" tooltip="Video 1" name="Video 1" title="Video 1" blobSection="VIDEO1" type="EULAReportSection" saveText="Next">
+    <ReportSection id="video1" tooltip="Video 1" name="Video 1" title="Video 1" blobSection="VIDEO1" type="EULAReportSection">
         <Static>
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
@@ -26,7 +26,7 @@
         </Static>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Video 2" name="Video 2" title="Video 2" blobSection="VIDEO2" type="EULAReportSection" saveText="Next">
+    <ReportSection id="video2" tooltip="Video 2" name="Video 2" title="Video 2" blobSection="VIDEO2" type="EULAReportSection">
         <Static>
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
@@ -39,7 +39,7 @@
         </Static>
     </ReportSection>
 
-    <ReportSection id="q1" tooltip="Question 1" name="Question 1" blobSection="Q1" type="EditableReportSection">
+    <ReportSection id="q1" tooltip="Question 1" name="Question 1" blobSection="Q1" type="EULAReportSection">
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. running 4 miles every day|b. moving your body every day|c. reducing the time spent sitting|d. going to the gym" options="running 4 miles every day|moving your body every day|reducing the time spent sitting|going to the gym">
             <![CDATA[
                 <h3>What does it mean to be active?</h3>
@@ -48,7 +48,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="a1" tooltip="Answer 1" name="Answer 1" blobSection="Q1" type="EditableReportSection">
+    <ReportSection id="a1" tooltip="Answer 1" name="Answer 1" blobSection="Q1" type="EULAReportSection">
         <If if="{==({getArray(RP_AVOID, Q1, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -68,7 +68,7 @@
         </Else>
     </ReportSection>
 
-    <ReportSection id="q2" tooltip="Question 2" name="Question 2" blobSection="Q2" type="EditableReportSection">
+    <ReportSection id="q2" tooltip="Question 2" name="Question 2" blobSection="Q2" type="EULAReportSection">
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. avoid doing physical activity|b. wear safe footwear indoor and outdoor|c. use handrails every time they are available|d. adapt your space to your needs" options="avoid doing physical activity|wear safe footwear indoor and outdoor|use handrails every time they are available|adapt your space to your needs">
             <![CDATA[
                 <h3>What does it mean to be active?</h3>
@@ -77,7 +77,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="a2" tooltip="Answer 2" name="Answer 2" blobSection="Q2" type="EditableReportSection">
+    <ReportSection id="a2" tooltip="Answer 2" name="Answer 2" blobSection="Q2" type="EULAReportSection">
         <If if="{==({getArray(RP_AVOID, Q2, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -95,7 +95,7 @@
         </Else>
     </ReportSection>
     
-    <ReportSection id="q3" tooltip="Question 3" name="Question 3" blobSection="Q3" type="EditableReportSection">
+    <ReportSection id="q3" tooltip="Question 3" name="Question 3" blobSection="Q3" type="EULAReportSection">
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. At least 30 minutes before bedtime|b. 4-6 hours before bedtime|c. 2-4 hours before bedtime|d. At least 6 hours before bedtime" options="At least 30 minutes before bedtime|4-6 hours before bedtime|2-4 hours before bedtime|At least 6 hours before bedtime">
             <![CDATA[
                 <h3>When should we have our last cup of coffee?</h3>
@@ -104,7 +104,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="a3" tooltip="Answer 3" name="Answer 3" blobSection="Q3" type="EditableReportSection">
+    <ReportSection id="a3" tooltip="Answer 3" name="Answer 3" blobSection="Q3" type="EULAReportSection">
         <If if="{==({getArray(RP_AVOID, Q3, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -122,7 +122,7 @@
         </Else>
     </ReportSection>
     
-    <ReportSection id="q4" tooltip="Question 4" name="Question 4" blobSection="Q4" type="EditableReportSection">
+    <ReportSection id="q4" tooltip="Question 4" name="Question 4" blobSection="Q4" type="EULAReportSection">
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. 700 – 1000 steps per day|b. Minimum 1000 steps per day|c. 7000 – 10000 steps per day|d. Over 5000 steps per day" options="700 – 1000 steps per day|Minimum 1000 steps per day|7000 – 10000 steps per day|Over 5000 steps per day">
             <![CDATA[
                 <h3>What is the recommendation in terms of the number of steps per day adults can take?</h3>
@@ -131,7 +131,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="a4" tooltip="Answer 4" name="Answer 4" blobSection="Q4" type="EditableReportSection">
+    <ReportSection id="a4" tooltip="Answer 4" name="Answer 4" blobSection="Q4" type="EULAReportSection">
         <If if="{==({getArray(RP_AVOID, Q4, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -149,7 +149,7 @@
         </Else>
     </ReportSection>
     
-    <ReportSection id="q5" tooltip="Question 5" name="Question 5" blobSection="Q5" type="EditableReportSection">
+    <ReportSection id="q5" tooltip="Question 5" name="Question 5" blobSection="Q5" type="EULAReportSection">
         <ReportItem id="q" type="Radio" blobItem="Q" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
                 <h3>It is unsafe for older adults to do muscle strenghtening exercises. </h3>
@@ -158,7 +158,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="a5" tooltip="Answer 5" name="Answer 5" blobSection="Q5" type="EditableReportSection">
+    <ReportSection id="a5" tooltip="Answer 5" name="Answer 5" blobSection="Q5" type="EULAReportSection">
         <If if="{==({getText(RP_AVOID, Q5, Q, 0, {$user_id}, 0)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
