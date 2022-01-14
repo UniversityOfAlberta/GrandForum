@@ -241,7 +241,6 @@ if (($key = array_search('application/zip', $wgMimeTypeBlacklist)) !== false) {
 define("DEBUG", true);
 
 $wgRoleValues = array(INACTIVE => 0,
-                      EDI => 0,
                       HQP => 1,
                       EXTERNAL => 2,
                       AG => 2,
@@ -257,6 +256,7 @@ $wgRoleValues = array(INACTIVE => 0,
                       TC => 11,
                       APL => 11,
                       TC => 11,
+                      EDI => 12,
                       COMMITTEE => 12,
                       EVALUATOR => 12,
                       ASD => 13,
