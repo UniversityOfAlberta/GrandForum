@@ -1,8 +1,14 @@
 DataCollection = Backbone.Model.extend({
 
+    xhr: false,
+    
+    ready: function(){
+        return $.when(this.xhr);
+    },
+
     initialize: function(){
-        var xhr = this.fetch();
-        $.when(xhr).always(function(){
+        this.xhr = this.fetch();
+        this.ready().always(function(){
             this.on('change:data', _.throttle(function(){
                 this.save();
             }.bind(this), 3000));
@@ -28,17 +34,21 @@ DataCollection = Backbone.Model.extend({
     },
     
     setField: function(field, value){
-        var data = this.get('data');
-        data[field] = value;
-        this.set('data', data);
-        this.trigger("change:data");
+        this.ready().always(function(){
+            var data = this.get('data');
+            data[field] = value;
+            this.set('data', data);
+            this.trigger("change:data");
+        }.bind(this));
     },
     
     // Increments a value, useful for keeping track of counters
     increment: function(field){
-        var fieldValue = this.getField(field, 0);
-        fieldValue++;
-        this.setField(field, fieldValue);
+        this.ready().always(function(){
+            var fieldValue = this.getField(field, 0);
+            fieldValue++;
+            this.setField(field, fieldValue);
+        }.bind(this));
     },
     
     // Initializes an array which can be used for tracking how much of a video has been watched

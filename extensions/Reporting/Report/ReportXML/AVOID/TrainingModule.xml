@@ -6,6 +6,10 @@
     <ReportSection id="introduction" tooltip="Introduction" name="Training Module 1" blobSection="introduction" type="ReportSection" pagebreak="false" >
         <Static>
             <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('introductionPageCount');
+                </script>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor velit quis accumsan sagittis. Maecenas ac erat elit. Quisque luctus, quam eu aliquam bibendum, nisl ante volutpat mi, rutrum bibendum orci quam vel turpis. Duis hendrerit condimentum mauris, vitae dignissim ex ullamcorper sit amet. Cras in congue enim. Donec volutpat volutpat sem. Suspendisse in fringilla neque. Proin porta porta posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
                 <p>Aenean lacinia quam vel libero dapibus, quis volutpat mi suscipit. Duis dignissim ante hendrerit lacus aliquam, vitae molestie magna vehicula. Integer porta sem libero, a ultricies tellus posuere nec. Suspendisse eget dolor vitae elit pellentesque faucibus non et arcu. Nulla sed ex eget ipsum dictum eleifend. Vestibulum condimentum ultricies sem, a ultricies lectus efficitur vitae. Phasellus ac elementum ante. Donec justo elit, ultrices eu erat in, rutrum iaculis nunc. Etiam et posuere neque.</p>
@@ -19,6 +23,7 @@
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
                     var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('video1PageCount');
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
@@ -38,6 +43,7 @@
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
                     var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('video2PageCount');
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
@@ -52,6 +58,14 @@
     </ReportSection>
 
     <ReportSection id="q1" tooltip="Question 1" name="Question 1" blobSection="Q1" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('q1PageCount');
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. running 4 miles every day|b. moving your body every day|c. reducing the time spent sitting|d. going to the gym" options="running 4 miles every day|moving your body every day|reducing the time spent sitting|going to the gym">
             <![CDATA[
                 <h3>What does it mean to be active?</h3>
@@ -61,6 +75,14 @@
     </ReportSection>
     
     <ReportSection id="a1" tooltip="Answer 1" name="Answer 1" blobSection="Q1" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('a1PageCount');
+                </script>
+            ]]>
+        </Static>
         <If if="{==({getArray(RP_AVOID, Q1, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -81,6 +103,14 @@
     </ReportSection>
 
     <ReportSection id="q2" tooltip="Question 2" name="Question 2" blobSection="Q2" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('q2PageCount');
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. avoid doing physical activity|b. wear safe footwear indoor and outdoor|c. use handrails every time they are available|d. adapt your space to your needs" options="avoid doing physical activity|wear safe footwear indoor and outdoor|use handrails every time they are available|adapt your space to your needs">
             <![CDATA[
                 <h3>What does it mean to be active?</h3>
@@ -90,6 +120,14 @@
     </ReportSection>
     
     <ReportSection id="a2" tooltip="Answer 2" name="Answer 2" blobSection="Q2" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('a2PageCount');
+                </script>
+            ]]>
+        </Static>
         <If if="{==({getArray(RP_AVOID, Q2, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -108,6 +146,14 @@
     </ReportSection>
     
     <ReportSection id="q3" tooltip="Question 3" name="Question 3" blobSection="Q3" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('q3PageCount');
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. At least 30 minutes before bedtime|b. 4-6 hours before bedtime|c. 2-4 hours before bedtime|d. At least 6 hours before bedtime" options="At least 30 minutes before bedtime|4-6 hours before bedtime|2-4 hours before bedtime|At least 6 hours before bedtime">
             <![CDATA[
                 <h3>When should we have our last cup of coffee?</h3>
@@ -117,6 +163,14 @@
     </ReportSection>
     
     <ReportSection id="a3" tooltip="Answer 3" name="Answer 3" blobSection="Q3" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('a3PageCount');
+                </script>
+            ]]>
+        </Static>
         <If if="{==({getArray(RP_AVOID, Q3, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -135,6 +189,14 @@
     </ReportSection>
     
     <ReportSection id="q4" tooltip="Question 4" name="Question 4" blobSection="Q4" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('q4PageCount');
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="q" type="Checkbox" blobItem="Q" blobType="BLOB_ARRAY" labels="a. 700 – 1000 steps per day|b. Minimum 1000 steps per day|c. 7000 – 10000 steps per day|d. Over 5000 steps per day" options="700 – 1000 steps per day|Minimum 1000 steps per day|7000 – 10000 steps per day|Over 5000 steps per day">
             <![CDATA[
                 <h3>What is the recommendation in terms of the number of steps per day adults can take?</h3>
@@ -144,6 +206,14 @@
     </ReportSection>
     
     <ReportSection id="a4" tooltip="Answer 4" name="Answer 4" blobSection="Q4" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('a4PageCount');
+                </script>
+            ]]>
+        </Static>
         <If if="{==({getArray(RP_AVOID, Q4, Q, 0, {$user_id}, 0, q, |)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -162,6 +232,14 @@
     </ReportSection>
     
     <ReportSection id="q5" tooltip="Question 5" name="Question 5" blobSection="Q5" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('q5PageCount');
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="q" type="Radio" blobItem="Q" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
                 <h3>It is unsafe for older adults to do muscle strenghtening exercises. </h3>
@@ -171,6 +249,14 @@
     </ReportSection>
     
     <ReportSection id="a5" tooltip="Answer 5" name="Answer 5" blobSection="Q5" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.increment('a5PageCount');
+                </script>
+            ]]>
+        </Static>
         <If if="{==({getText(RP_AVOID, Q5, Q, 0, {$user_id}, 0)},)}">
             <![CDATA[
                 Please enter an answer before viewing the correct answer
@@ -194,6 +280,64 @@
                 <div id="data">
                     <table class="wikitable">
                         <tr>
+                            <th colspan='2'>Page Counts</th>
+                        </tr>
+                        <tr>
+                            <td class="label">Introduction:</td>
+                            <td class="value" id="introductionPageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 1:</td>
+                            <td class="value" id="video1PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 2:</td>
+                            <td class="value" id="video2PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 1:</td>
+                            <td class="value" id="q1PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 1:</td>
+                            <td class="value" id="a1PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 2:</td>
+                            <td class="value" id="q2PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 2:</td>
+                            <td class="value" id="a2PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 3:</td>
+                            <td class="value" id="q3PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 3:</td>
+                            <td class="value" id="a3PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 4:</td>
+                            <td class="value" id="q4PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 4:</td>
+                            <td class="value" id="a4PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 5:</td>
+                            <td class="value" id="q5PageCount"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 5:</td>
+                            <td class="value" id="a5PageCount"></td>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Video Stats</th>
+                        </tr>
+                        <tr>
                             <td class="label">Video 1:</td>
                             <td class="value" id="video1"></td>
                         </tr>
@@ -205,11 +349,24 @@
                 </div>
                 <script type="text/javascript">
                     var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.on('sync', function(){
+                    data.ready().always(function(){
                         var video1Watched = Math.round(data.sum('video1Watched')/_.size(data.video('video1Watched', 1))*100);
                         var video2Watched = Math.round(data.sum('video2Watched')/_.size(data.video('video2Watched', 1))*100);
                         $("#video1").text(video1Watched + "% watched");
                         $("#video2").text(video2Watched + "% watched");
+                        $("#introductionPageCount").text(data.getField('introductionPageCount', 0));
+                        $("#video1PageCount").text(data.getField('video1PageCount', 0));
+                        $("#video2PageCount").text(data.getField('video2PageCount', 0));
+                        $("#q1PageCount").text(data.getField('q1PageCount', 0));
+                        $("#a1PageCount").text(data.getField('a1PageCount', 0));
+                        $("#q2PageCount").text(data.getField('q2PageCount', 0));
+                        $("#a2PageCount").text(data.getField('a2PageCount', 0));
+                        $("#q3PageCount").text(data.getField('q3PageCount', 0));
+                        $("#a3PageCount").text(data.getField('a3PageCount', 0));
+                        $("#q4PageCount").text(data.getField('q4PageCount', 0));
+                        $("#a4PageCount").text(data.getField('a4PageCount', 0));
+                        $("#q5PageCount").text(data.getField('q5PageCount', 0));
+                        $("#a5PageCount").text(data.getField('a5PageCount', 0));
                     });
                 </script>
             ]]>
