@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Intake Form" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+<Report name="Training Module 1" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="introduction" tooltip="Introduction" name="Introduction" blobSection="introduction" type="ReportSection" pagebreak="false" >
+    <ReportSection id="introduction" tooltip="Introduction" name="Training Module 1" blobSection="introduction" type="ReportSection" pagebreak="false" >
         <Static>
             <![CDATA[
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor velit quis accumsan sagittis. Maecenas ac erat elit. Quisque luctus, quam eu aliquam bibendum, nisl ante volutpat mi, rutrum bibendum orci quam vel turpis. Duis hendrerit condimentum mauris, vitae dignissim ex ullamcorper sit amet. Cras in congue enim. Donec volutpat volutpat sem. Suspendisse in fringilla neque. Proin porta porta posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -18,8 +18,14 @@
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
+                    });
+                    $("video").on("timeupdate", function(){
+                        var video1Watched = data.video('video1Watched', this.duration);
+                        video1Watched[Math.floor(this.currentTime)] = 1;
+                        data.setField('video1Watched', video1Watched);
                     });
                 </script>
             ]]>
@@ -31,8 +37,14 @@
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
+                    });
+                    $("video").on("timeupdate", function(){
+                        var video2Watched = data.video('video2Watched', this.duration);
+                        video2Watched[Math.floor(this.currentTime)] = 1;
+                        data.setField('video2Watched', video2Watched);
                     });
                 </script>
             ]]>
@@ -174,5 +186,33 @@
                 ]]>
             </ReportItem>
         </Else>
+    </ReportSection>
+    
+    <ReportSection id="data_collection" name="Data Collection" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <div id="data">
+                    <table class="wikitable">
+                        <tr>
+                            <td class="label">Video 1:</td>
+                            <td class="value" id="video1"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 2:</td>
+                            <td class="value" id="video2"></td>
+                        </tr>
+                    </table>
+                </div>
+                <script type="text/javascript">
+                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
+                    data.on('sync', function(){
+                        var video1Watched = Math.round(data.sum('video1Watched')/_.size(data.video('video1Watched', 1))*100);
+                        var video2Watched = Math.round(data.sum('video2Watched')/_.size(data.video('video2Watched', 1))*100);
+                        $("#video1").text(video1Watched + "% watched");
+                        $("#video2").text(video2Watched + "% watched");
+                    });
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>
