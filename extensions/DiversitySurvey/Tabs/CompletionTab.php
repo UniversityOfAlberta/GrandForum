@@ -8,6 +8,8 @@ class CompletionTab extends AbstractTab {
 
     function generateBody(){
         $people = Person::getAllPeople();
+        $this->html = "Coming Soon...";
+        return;
         $this->html  = "<table id='peopleTable' class='wikitable' frame='box' rules='all' style='width:100%'>";
         $this->html .= "<thead>
                             <tr>
@@ -70,7 +72,7 @@ class CompletionTab extends AbstractTab {
                                                 {$diversity->reason}
                                             </div>
                                         </td>
-                                        <td>{$diversity->birth}</td>
+                                        <td>{$diversity->age}</td>
                                         <td>{$diversity->indigenous}</td>
                                         <td>
                                             {$diversity->disability}<br />
@@ -78,7 +80,6 @@ class CompletionTab extends AbstractTab {
                                         </td>
                                         <td>{$diversity->minority}</td>
                                         <td>{$race}</td>
-                                        <td>{$diversity->racialized}</td>
                                         <td>{$diversity->immigration}</td>
                                         <td>{$gender}</td>
                                         <td>{$orientation}</td>

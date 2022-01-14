@@ -1,4 +1,4 @@
-<b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %>
+<div style='display:none;'><b style="vertical-align:middle;">Language:</b> <%= HTML.Select(this, 'language', {style: "vertical-align:middle;", options: [{option: "English", value: "en"}, {option: "Français", value: "fr"}]}) %></div>
 <p>GlycoNet is committed to the principles of Equity, Diversity, and Inclusion (EDI). This survey will help to facilitate strategies and priorities for a diverse and inclusive working and learning environment to continuously drive towards excellence in research and training. GlycoNet has partnered with an external consultant to conduct this survey. Your participation is completely voluntary but highly recommended. A good response rate provides a more accurate picture of our research environment to identify where we are at in terms of representation, inclusion, and to inform next steps.</p>
 
 <p>The survey is divided into three sections: demographic information, experiences of inclusion, and methods to enhance EDI growth and development in GlycoNet and should take approximately 5 to 10 minutes to complete. All questions include a “I prefer not to answer” option except for one anchor question about your primary role in GlycoNet.</p>
@@ -17,6 +17,7 @@
 
 <!-- Start Survey? -->
 <div id="survey">
+    <h2>Demographics</h2>
     <h3><span class="number">1.</span> What is your primary affiliation with GlycoNet?</h3>
     <div class="answer">
         <%= HTML.Radio(this, 'affiliation', {options: ["Network Investigator", "Highly Qualified Personnel", "Board and/or Committee Member", "Employee"]}) %>
@@ -88,9 +89,10 @@ Do you identify as (select all that apply):<br />
         </div>
         <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
+    <h2>Experiences of Inclusion</h2>
     <h3><span class="number">8.</span> Do you feel that you can be your true self at work, without fear of negative consequences such as exclusion, differential treatment, or harassment?</h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'trueSelf', {options: ["Always", "Mostly", "Rarely", "Never", "I prefer not to answer"]}) %>
+        <%= HTML.Radio(this, 'trueSelf', {options: ["Always", "Mostly", "Rarely", "Never","I do not understand this question", "I prefer not to answer"]}) %>
     </div>
     <h3><span class="number">9.</span> Do you feel like a valued member of your team?</h3>
     <div class="answer">
@@ -110,12 +112,23 @@ Do you identify as (select all that apply):<br />
         <%= HTML.MultiCheckBox(this, 'leastRespected.values', {options: ["Your institution", "Your bosses", "Your colleagues", "Those who work for you"]}) %>
         <%= HTML.CheckBox(this, 'leastRespected.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
-    <h3><span class="number">13.</span> How often do you incorporate EDI principles into your professional activities?</h3>
+    <h2>EDI Principles, Practices, and Training</h2>
+    <h3><span class="number">13.</span> How often do you incorporate EDI principles and practices into your professional activities?</h3>
     <div class="answer">
         <%= HTML.Radio(this, 'principles', {options: ["Most days", "Once or twice per week", "Once or twice per month", "Once or twice per year", "Never"]}) %>
         <br />
-        <b>Please describe what principles you incorporate:</b>
-        (for example, I make sure my speaker selections represent a range of diversity, I make sure that one person in the lab is not doing more than their share of lab duties or are compensated accordingly, I make sure people who haven’t had an opportunity to speak in a meeting have their voices heard, I let people know I’m available to listen non-judgmentally if they are experiencing difficulties, etc.)
+        <b>Please describe what principles you incorporate:</b><br />
+        For example:
+        <ul>
+            <li>I treat people with dignity and respect.</li>
+            <li>I value diverse perspectives and encourage people to share them with me.</li>
+            <li>I make sure my speaker selections represent a range of diversity.</li>
+            <li>I speak up when someone is doing more than their fair share of lab duties.</li>
+            <li>I make sure people who have not had an opportunity to contribute to a discussion are given the opportunity to.</li>
+            <li>I provide a variety of ways for people to share their ideas.</li>
+            <li>I reflect on my participation in discussions to ensure I am not dominating conversations and the voices and contributions of others are heard.</li>
+            <li>I let people know I’m available to listen non-judgmentally if they are experiencing difficulties.</li>
+        </ul>
         <%= HTML.TextArea(this, 'principlesDescribe', {style: 'height:100px'}) %>
     </div>
     <h3><span class="number">14.</span> Are you comfortable with writing an EDI Statement?</h3>
@@ -152,10 +165,9 @@ Do you identify as (select all that apply):<br />
     </div>
     <h3><span class="number">20.</span> Additional comments</h3>
     <div class="answer">
-        <p>We welcome any confidential comments you may have. You will not be contacted about your comments unless indicated.</p>
+        <p>GlycoNet truly wants to work towards changing the culture of STEM to make it more equitable, diverse, and inclusive. We welcome any confidential comments you may have about this survey or about GlycoNet’s commitment to EDI. If you would like more information or have ideas or would just like to talk, please feel welcome to reach out to the EDI Committee by emailing <a href="mailto:edi@glyconet.ca">edi@glyconet.ca</a>.</p>
         <%= HTML.TextArea(this, 'comments', {style: 'height:100px'}) %>
     </div>
 </div><br />
-<p>GlycoNet truly wants to work towards changing the culture of STEM to make it more equitable, diverse, and inclusive. If you would like more information or have ideas or would just like to talk, please feel welcome to reach out to the EDI Committee by emailing <a href="mailto:edi@glyconet.ca">edi@glyconet.ca</a>.</p>
 <div id="diversityMessages"></div>
 <button id="save" type="button">Save</button>

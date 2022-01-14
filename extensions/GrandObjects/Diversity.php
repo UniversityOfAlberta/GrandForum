@@ -19,18 +19,61 @@ class Diversity extends BackboneModel {
         'other' => "",
         'decline' => ""
     );
-    var $birth = "";
     var $indigenous = "";
     var $disability = "";
-    var $disabilityVisibility = "";
+    var $disabilityVisibility = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
     var $minority = "";
     var $race = array(
         'values' => array(),
         'other' => "",
         'decline' => ""
     );
-    var $racialized = "";
     var $immigration = "";
+    var $affiliation = "";
+    var $age = "";
+    var $indigenousApply = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $trueSelf = "";
+    var $valued = "";
+    var $space = "";
+    var $respected = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $leastRespected = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $principles = "";
+    var $principlesDescribe = "";
+    var $statement = "";
+    var $improve = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $training = "";
+    var $preventsTraining = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $trainingTaken = array(
+        'values' => array(),
+        'other' => "",
+        'decline' => ""
+    );
+    var $implemented = "";
+    var $stem = "";
     var $comments = "";
 
     function Diversity($data){
@@ -42,14 +85,29 @@ class Diversity extends BackboneModel {
             $this->reason = $data[0]['reason'];
             $this->gender = unserialize($data[0]['gender']);
             $this->orientation = unserialize($data[0]['orientation']);
-            $this->birth = $data[0]['birth'];
             $this->indigenous = $data[0]['indigenous'];
             $this->disability = $data[0]['disability'];
-            $this->disabilityVisibility = $data[0]['disability_visibility'];
+            $this->disabilityVisibility = unserialize($data[0]['disability_visibility']);
             $this->minority = $data[0]['minority'];
             $this->race = unserialize($data[0]['race']);
-            $this->racialized = $data[0]['racialized'];
             $this->immigration = $data[0]['immigration'];
+            $this->affiliation = $data[0]['affiliation'];
+            $this->age = $data[0]['age'];
+            $this->indigenousApply = unserialize($data[0]['indigenous_apply']);
+            $this->trueSelf = $data[0]['true_self'];
+            $this->valued = $data[0]['valued'];
+            $this->space = $data[0]['space'];
+            $this->respected = unserialize($data[0]['respected']);
+            $this->leastRespected = unserialize($data[0]['least_respected']);
+            $this->principles = $data[0]['principles'];
+            $this->principlesDescribe = $data[0]['principles_describe'];
+            $this->statement = $data[0]['statement'];
+            $this->improve = unserialize($data[0]['improve']);
+            $this->training = $data[0]['training'];
+            $this->preventsTraining = unserialize($data[0]['prevents_training']);
+            $this->trainingTaken = unserialize($data[0]['training_taken']);
+            $this->implemented = $data[0]['implemented'];
+            $this->stem = $data[0]['stem'];
             $this->comments = $data[0]['comments'];
         }
     }
@@ -153,13 +211,11 @@ class Diversity extends BackboneModel {
         if($this->decline === 1){
             return true;
         }
-        if(trim($this->birth) == "" ||
-           trim($this->indigenous) == "" ||
+        if(trim($this->indigenous) == "" ||
            trim($this->disability) == "" ||
            (trim($this->disability) == "Yes" && trim($this->disabilityVisibility) == "") ||
            trim($this->minority) == "" ||
            trim($this->immigration) == "" ||
-           trim($this->racialized) == "" ||
            count($this->getRaces()) == 0 ||
            count($this->getGenders()) == 0 ||
            count($this->getOrientations()) == 0){
@@ -176,14 +232,29 @@ class Diversity extends BackboneModel {
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
                                   'orientation' => serialize($this->orientation),
-                                  'birth' => $this->birth,
                                   'indigenous' => $this->indigenous,
                                   'disability' => $this->disability,
-                                  'disability_visibility' => $this->disabilityVisibility,
+                                  'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'racialized' => $this->racialized,
                                   'immigration' => $this->immigration,
+                                  'affiliation' => $this->affiliation,
+                                  'age' => $this->age,
+                                  'indigenous_apply' => serialize($this->indigenousApply),
+                                  'true_self' => $this->trueSelf,
+                                  'valued' => $this->valued,
+                                  'space' => $this->space,
+                                  'respected' => serialize($this->respected),
+                                  'least_respected' => serialize($this->leastRespected),
+                                  'principles' => $this->principles,
+                                  'principles_describe' => $this->principlesDescribe,
+                                  'statement' => $this->statement,
+                                  'improve' => serialize($this->improve),
+                                  'training' => $this->training,
+                                  'prevents_training' => serialize($this->preventsTraining),
+                                  'training_taken' => serialize($this->trainingTaken),
+                                  'implemented' => $this->implemented,
+                                  'stem' => $this->stem,
                                   'comments' => $this->comments));
         $this->id = DBFunctions::insertId();
         return $this;
@@ -197,14 +268,29 @@ class Diversity extends BackboneModel {
                                   'reason' => $this->reason,
                                   'gender' => serialize($this->gender),
                                   'orientation' => serialize($this->orientation),
-                                  'birth' => $this->birth,
                                   'indigenous' => $this->indigenous,
                                   'disability' => $this->disability,
-                                  'disability_visibility' => $this->disabilityVisibility,
+                                  'disability_visibility' => serialize($this->disabilityVisibility),
                                   'minority' => $this->minority,
                                   'race' => serialize($this->race),
-                                  'racialized' => $this->racialized,
                                   'immigration' => $this->immigration,
+                                  'affiliation' => $this->affiliation,
+                                  'age' => $this->age,
+                                  'indigenous_apply' => serialize($this->indigenousApply),
+                                  'true_self' => $this->trueSelf,
+                                  'valued' => $this->valued,
+                                  'space' => $this->space,
+                                  'respected' => serialize($this->respected),
+                                  'least_respected' => serialize($this->leastRespected),
+                                  'principles' => $this->principles,
+                                  'principles_describe' => $this->principlesDescribe,
+                                  'statement' => $this->statement,
+                                  'improve' => serialize($this->improve),
+                                  'training' => $this->training,
+                                  'prevents_training' => serialize($this->preventsTraining),
+                                  'training_taken' => serialize($this->trainingTaken),
+                                  'implemented' => $this->implemented,
+                                  'stem' => $this->stem,
                                   'comments' => $this->comments),
                             array('id' => $this->id));
         return $this;
@@ -226,20 +312,35 @@ class Diversity extends BackboneModel {
             return array();
         }
         $json = array('id' => $this->id,
-                      'user_id' => $this->userId,
+                      'userId' => $this->userId,
                       'language' => $this->language,
                       'decline' => $this->decline,
                       'reason' => $this->reason,
                       'gender' => $this->gender,
                       'orientation' => $this->orientation,
-                      'birth' => $this->birth,
                       'indigenous' => $this->indigenous,
                       'disability' => $this->disability,
                       'disabilityVisibility' => $this->disabilityVisibility,
                       'minority' => $this->minority,
                       'race' => $this->race,
-                      'racialized' => $this->racialized,
                       'immigration' => $this->immigration,
+                      'affiliation' => $this->affiliation,
+                      'age' => $this->age,
+                      'indigenousApply' => $this->indigenousApply,
+                      'true_self' => $this->trueSelf,
+                      'valued' => $this->valued,
+                      'space' => $this->space,
+                      'respected' => $this->respected,
+                      'leastRespected' => $this->leastRespected,
+                      'principles' => $this->principles,
+                      'principlesDescribe' => $this->principlesDescribe,
+                      'statement' => $this->statement,
+                      'improve' => $this->improve,
+                      'training' => $this->training,
+                      'preventsTraining' => $this->preventsTraining,
+                      'trainingTaken' => $this->trainingTaken,
+                      'implemented' => $this->implemented,
+                      'stem' => $this->stem,
                       'comments' => $this->comments);
         return $json;
     }
