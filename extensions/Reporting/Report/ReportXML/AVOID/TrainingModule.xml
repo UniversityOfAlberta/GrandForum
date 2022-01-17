@@ -293,125 +293,88 @@
                 <div id="data">
                     <table class="wikitable">
                         <tr>
-                            <th colspan='2'>Page Counts</th>
+                            <th>Page</th>
+                            <th colspan=''>Page Counts</th>
+                            <th colspan=''>Time Spent</th>
+                            <th colspan=''>% Video Watched</th>
                         </tr>
                         <tr>
                             <td class="label">Introduction:</td>
                             <td class="value" id="introductionPageCount"></td>
+                            <td class="value" id="introductionTime"></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="label">Video 1:</td>
                             <td class="value" id="video1PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Video 2:</td>
-                            <td class="value" id="video2PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 1:</td>
-                            <td class="value" id="q1PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 1:</td>
-                            <td class="value" id="a1PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 2:</td>
-                            <td class="value" id="q2PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 2:</td>
-                            <td class="value" id="a2PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 3:</td>
-                            <td class="value" id="q3PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 3:</td>
-                            <td class="value" id="a3PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 4:</td>
-                            <td class="value" id="q4PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 4:</td>
-                            <td class="value" id="a4PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 5:</td>
-                            <td class="value" id="q5PageCount"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 5:</td>
-                            <td class="value" id="a5PageCount"></td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Time Spent</th>
-                        </tr>
-                        <tr>
-                            <td class="label">Introduction:</td>
-                            <td class="value" id="introductionTime"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Video 1:</td>
                             <td class="value" id="video1Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Video 2:</td>
-                            <td class="value" id="video2Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 1:</td>
-                            <td class="value" id="q1Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 1:</td>
-                            <td class="value" id="a1Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 2:</td>
-                            <td class="value" id="q2Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 2:</td>
-                            <td class="value" id="a2Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 3:</td>
-                            <td class="value" id="q3Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 3:</td>
-                            <td class="value" id="a3Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 4:</td>
-                            <td class="value" id="q4Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 4:</td>
-                            <td class="value" id="a4Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Question 5:</td>
-                            <td class="value" id="q5Time"></td>
-                        </tr>
-                        <tr>
-                            <td class="label">Answer 5:</td>
-                            <td class="value" id="a5Time"></td>
-                        </tr>
-                        <tr>
-                            <th colspan='2'>Video Stats</th>
-                        </tr>
-                        <tr>
-                            <td class="label">Video 1:</td>
                             <td class="value" id="video1"></td>
                         </tr>
                         <tr>
                             <td class="label">Video 2:</td>
+                            <td class="value" id="video2PageCount"></td>
+                            <td class="value" id="video2Time"></td>
                             <td class="value" id="video2"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 1:</td>
+                            <td class="value" id="q1PageCount"></td>
+                            <td class="value" id="q1Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 1:</td>
+                            <td class="value" id="a1PageCount"></td>
+                            <td class="value" id="a1Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 2:</td>
+                            <td class="value" id="q2PageCount"></td>
+                            <td class="value" id="q2Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 2:</td>
+                            <td class="value" id="a2PageCount"></td>
+                            <td class="value" id="a2Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 3:</td>
+                            <td class="value" id="q3PageCount"></td>
+                            <td class="value" id="q3Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 3:</td>
+                            <td class="value" id="a3PageCount"></td>
+                            <td class="value" id="a3Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 4:</td>
+                            <td class="value" id="q4PageCount"></td>
+                            <td class="value" id="q4Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 4:</td>
+                            <td class="value" id="a4PageCount"></td>
+                            <td class="value" id="a4Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Question 5:</td>
+                            <td class="value" id="q5PageCount"></td>
+                            <td class="value" id="q5Time"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answer 5:</td>
+                            <td class="value" id="a5PageCount"></td>
+                            <td class="value" id="a5Time"></td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
