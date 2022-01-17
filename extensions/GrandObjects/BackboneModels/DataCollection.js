@@ -1,3 +1,5 @@
+dataCollectionInterval = null;
+
 DataCollection = Backbone.Model.extend({
 
     xhr: false,
@@ -7,6 +9,7 @@ DataCollection = Backbone.Model.extend({
     },
 
     initialize: function(){
+        clearInterval(dataCollectionInterval);
         this.xhr = this.fetch();
         this.ready().always(function(){
             this.on('change:data', _.throttle(function(){
@@ -49,6 +52,13 @@ DataCollection = Backbone.Model.extend({
             fieldValue++;
             this.setField(field, fieldValue);
         }.bind(this));
+    },
+    
+    // Starts a timer (can only run 1 at a time)
+    timer: function(field){
+        dataCollectionInterval = setInterval(function(){
+            this.increment(field);
+        }.bind(this), 1000);
     },
     
     // Initializes an array which can be used for tracking how much of a video has been watched
