@@ -32,16 +32,16 @@
         <p>The options listed below are based on the Alberta Human Rights Commission descriptions of gender identity and other terms frequently used to represent gender.
 Do you identify as (select all that apply):<br />
         <b>Do you identify as (choose all that apply):</b></p>
-        <%= HTML.MultiCheckBox(this, 'gender.values', {options: ["Female", "Gender-Fluid and/or Non-Binary", "Male", "Transgender", "Two-Spirit"]}) %>
-        <div>Another gender identity (Please specify): <%= HTML.TextBox(this, 'gender.other') %></div>
+        <%= HTML.MultiCheckBox(this, 'gender.values', {options: ["Female", "Gender-Fluid and/or Non-Binary", "Male", "Transgender", "Two-Spirit", {value: "Another gender", option: "Another gender identity (Please specify):"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
         <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
     <h3><span class="number">4.</span> Sexual Orientation</h3>
     <div class="answer">
         <p>The options listed below are based on the Alberta Human Rights Commission’s definition of sexual orientation.<br />
         <b>Do you identify as (choose all that apply):</b></p>
-        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: ["Gay", "Lesbian", "Heterosexual", "Bisexual", "Queer", "Two-Spirit", "Asexual"]}) %>
-        <div>Another orientation (please specify): <%= HTML.TextBox(this, 'orientation.other') %></div>
+        <%= HTML.MultiCheckBox(this, 'orientation.values', {options: ["Gay", "Lesbian", "Heterosexual", "Bisexual", "Queer", "Two-Spirit", "Asexual", {value: "Another orientation", option: "Another orientation (please specify):"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'orientation.other') %></div>
         <%= HTML.CheckBox(this, 'orientation.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
     <h3><span class="number">5.</span> Indigenous/Aboriginal Person:</h3>
@@ -53,8 +53,8 @@ Do you identify as (select all that apply):<br />
         <div id="indigenousApply">
             <br />
             <b>Please indicate which apply to you (select all that apply):</b><br />
-            <%= HTML.MultiCheckBox(this, 'indigenousApply.values', {options: ["First Nations", "Inuk (Inuit)", "Métis"]}) %>
-            <div>Another (please specify): <%= HTML.TextBox(this, 'indigenousApply.other') %></div>
+            <%= HTML.MultiCheckBox(this, 'indigenousApply.values', {options: ["First Nations", "Inuk (Inuit)", "Métis", {value: "Another", option: "Another (please specify):"}]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'indigenousApply.other') %></div>
             <%= HTML.CheckBox(this, 'indigenousApply.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         </div>
     </div>
@@ -72,20 +72,20 @@ Do you identify as (select all that apply):<br />
         <div id="disabilityVisibility">
             <br />
             <b>Please indicate which apply to you (select all that apply):</b><br />
-            <%= HTML.MultiCheckBox(this, 'disabilityVisibility.values', {options: [{value: "Invisible", option: "Invisible (such as learning disabilities, mental health, chronic health condition)"}, {value: "Visible/physical", option: "Visible/physical (such as mobility, coordination, or dexterity impairment)"}, {value: "Sensory", option: "Sensory (such as blindness/vision loss, deafness/hearing loss)"}]}) %>
-            <div>Another (please specify): <%= HTML.TextBox(this, 'disabilityVisibility.other') %></div>
+            <%= HTML.MultiCheckBox(this, 'disabilityVisibility.values', {options: [{value: "Invisible", option: "Invisible (such as learning disabilities, mental health, chronic health condition)"}, {value: "Visible/physical", option: "Visible/physical (such as mobility, coordination, or dexterity impairment)"}, {value: "Sensory", option: "Sensory (such as blindness/vision loss, deafness/hearing loss)"}, {value: "Another", option: "Another (please specify):"}]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'disabilityVisibility.other') %></div>
             <%= HTML.CheckBox(this, 'disabilityVisibility.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         </div>
     </div>
-    <h3><span class="number">7.</span> Member of a Visible Minority/Person of Colour/Racialized Person:</h3>
+    <h3><span class="number">7.</span> Member of a Visible/Racialized Minority:</h3>
     <div class="answer">
-        <p>In accordance with the Canada Employment Equity Act and Statistics Canada, the term “visible minority” is defined as individuals who are non-Caucasian in race or non-White in colour. We recognize that there may be a preference to instead identify as a “person of colour” or by an individual’s race or ethnicity. The options below are based on Statistics Canada categories and the Canada Employment Equity Act.</p>
+        <p>In accordance with the Canada Employment Equity Act and Statistics Canada, the term “visible minority” is defined as individuals who are non-Caucasian in race or non-White in colour, regardless of birthplace or citizenship. We recognize that there may be a preference to instead identify as a person of colour, racialized person, or by ethnicity. The options below are based on Statistics Canada categories and the Canada Employment Equity Act.</p>
         <b>Do you identify as:</b><br />
         
         <%= HTML.MultiCheckBox(this, 'race.values', {options: ["Indigenous/Aboriginal", "White", "Visible Minority"]}) %>
         <div id="minorities" class="answer">
-            <%= HTML.MultiCheckBox(this, 'race.values', {options: ["Arab", "Black", "Chinese", "Filipino", "Japanese", "Korean", "Latin American", {option: "South Asian (e.g., Indian, Pakistani, Sri Lankan, etc.)", value: "South Asian"}, {option: "Southeast Asian (e.g., Vietnamese, Cambodian, Malaysian, Laotian, Thai, etc.)", value: "Southeast Asian"}, {option: "West Asian (e.g., Iranian, Afghan, etc.)", value: "West Asian"}]}) %>
-            <div>Another, please specify: <%= HTML.TextBox(this, 'race.other') %></div>
+            <%= HTML.MultiCheckBox(this, 'race.values', {options: ["Arab", "Black", "Chinese", "Filipino", "Japanese", "Korean", "Latin American", {option: "South Asian (e.g., Indian, Pakistani, Sri Lankan, etc.)", value: "South Asian"}, {option: "Southeast Asian (e.g., Vietnamese, Cambodian, Malaysian, Laotian, Thai, etc.)", value: "Southeast Asian"}, {option: "West Asian (e.g., Iranian, Afghan, etc.)", value: "West Asian"}, {value: "Another", option: "Another (please specify):"}]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'race.other') %></div>
         </div>
         <%= HTML.CheckBox(this, 'race.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
@@ -117,7 +117,7 @@ Do you identify as (select all that apply):<br />
     <div class="answer">
         <%= HTML.Radio(this, 'principles', {options: ["Most days", "Once or twice per week", "Once or twice per month", "Once or twice per year", "Never"]}) %>
         <br />
-        <b>Please describe what principles you incorporate:</b><br />
+        <b>Please describe what principles and practices you incorporate:</b><br />
         For example:
         <ul>
             <li>I treat people with dignity and respect.</li>
@@ -131,16 +131,16 @@ Do you identify as (select all that apply):<br />
         </ul>
         <%= HTML.TextArea(this, 'principlesDescribe', {style: 'height:100px'}) %>
     </div>
-    <h3><span class="number">14.</span> Are you comfortable with writing an EDI Statement?</h3>
+    <h3><span class="number">14.</span> Are you confident with writing an EDI Statement?</h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'statement', {options: ["Very comfortable", "Somewhat comfortable", "Not sure", "Not very comfortable", "Not at all comfortable"]}) %>
+        <%= HTML.Radio(this, 'statement', {options: ["Very confident", "Somewhat confident", "Not sure", "Not very confident", "Not at all confident"]}) %>
     </div>
-    <h3><span class="number">15.</span> If you are not very comfortable with writing an EDI Statement, would you do the following to improve it? Select all that apply.</h3>
+    <h3><span class="number">15.</span> If you are not confident with writing an EDI Statement, would you do the following to improve it? Select all that apply.</h3>
     <div class="answer">
         <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI Statement", "Discuss with an EDI expert on how to improve your EDI statement", "None of the above"]}) %>
         <div>Other (please specify): <%= HTML.TextBox(this, 'improve.other') %></div>
     </div>
-    <h3><span class="number">16.</span> When is the last time you took any kind of EDI training?</h3>
+    <h3><span class="number">16.</span> When was the last time you took any kind of EDI training?</h3>
     <div class="answer">
         <%= HTML.Radio(this, 'training', {options: ["Within the past year", "1-3 years ago", "4-7 years ago", "8 years or more", "I’ve never taken any EDI training"]}) %>
         <div id="preventsTraining">
