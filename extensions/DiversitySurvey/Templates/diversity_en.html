@@ -18,7 +18,7 @@
 <!-- Start Survey? -->
 <div id="survey">
     <h2>Demographics</h2>
-    <h3><span class="number">1.</span> What is your primary affiliation with GlycoNet?</h3>
+    <h3><span class="number">1.</span> What is your primary affiliation with GlycoNet? <span style="color: red;">(required)</span></h3>
     <div class="answer">
         <%= HTML.Radio(this, 'affiliation', {options: ["Network Investigator", "Highly Qualified Personnel", "Board and/or Committee Member", "Employee"]}) %>
         <div>Other, please specify: <%= HTML.TextBox(this, 'affiliation') %></div>
