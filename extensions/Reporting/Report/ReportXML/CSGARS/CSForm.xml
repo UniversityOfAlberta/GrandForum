@@ -66,7 +66,7 @@
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
+        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Security|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
             <![CDATA[
             <style>
                     .flex-container {
