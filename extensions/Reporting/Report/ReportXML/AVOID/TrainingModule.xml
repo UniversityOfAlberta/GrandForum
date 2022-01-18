@@ -21,11 +21,23 @@
     <ReportSection id="video1" tooltip="Video 1" name="Video 1" title="Video 1" blobSection="VIDEO1" type="EULAReportSection">
         <Static>
             <![CDATA[
-                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
+                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video><br />
+                <span style='font-weight:bold;'>Playback Speed: </span><span><input style='vertical-align:middle;' type="range" name="speed" id="speed" min="0.25" max="2" step="0.25" value="1">&nbsp;<output class='speed-output' for="speed"></output></span>
                 <script type="text/javascript">
                     dc.init(me.get('id'), 'trainingModule1');
                     dc.increment('video1PageCount');
                     dc.timer('video1Time');
+                    
+                    var speed = document.querySelector('#speed');
+                    var output = document.querySelector('.speed-output');
+                    
+                    output.textContent = parseFloat(speed.value).toFixed(2) + 'X';
+
+                    speed.addEventListener('input', function() {
+                      output.textContent = parseFloat(speed.value).toFixed(2) + 'X';
+                      $("video")[0].playbackRate = speed.value; 
+                    });
+                    
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
@@ -42,11 +54,23 @@
     <ReportSection id="video2" tooltip="Video 2" name="Video 2" title="Video 2" blobSection="VIDEO2" type="EULAReportSection">
         <Static>
             <![CDATA[
-                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
+                <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video><br />
+                <span style='font-weight:bold;'>Playback Speed: </span><span><input style='vertical-align:middle;' type="range" name="speed" id="speed" min="0.25" max="2" step="0.25" value="1">&nbsp;<output class='speed-output' for="speed"></output></span>
                 <script type="text/javascript">
                     dc.init(me.get('id'), 'trainingModule1');
                     dc.increment('video2PageCount');
                     dc.timer('video2Time');
+                    
+                    var speed = document.querySelector('#speed');
+                    var output = document.querySelector('.speed-output');
+                    
+                    output.textContent = parseFloat(speed.value).toFixed(2) + 'X';
+
+                    speed.addEventListener('input', function() {
+                      output.textContent = parseFloat(speed.value).toFixed(2) + 'X';
+                      $("video")[0].playbackRate = speed.value; 
+                    });
+                    
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
