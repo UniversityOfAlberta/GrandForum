@@ -92,15 +92,17 @@ class ProjectEdiTab extends AbstractEditableTab {
         $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
         if(isset($_POST["edi"])){
             foreach($_POST["edi"] as $year => $q){
-                $this->saveBlobData("EDI", $year, $q);
-                if($q == "" && $year == $today){
+                if(strlen($q) >= 5 || strlen($q) == 0){ 
+                    $this->saveBlobData("EDI", $year, $q);
+                }
+                else{
                     $missing = true;
                 }
             }
         }
         if($missing){
             // Form is incomplete, so an error message, but still keep any changes that were submitted.  Show the form again
-            return "Not all EDI questions have been answered.  Make sure there are responses for each question.";
+            return "Responses must have atleast 5 characters.";
         }
         else{
             Messages::addSuccess("'EDI' updated successfully.");
