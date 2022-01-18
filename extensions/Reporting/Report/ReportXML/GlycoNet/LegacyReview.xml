@@ -22,6 +22,7 @@
             <![CDATA[
             <table align="left" class="wikitable">
                 <tr>
+                    <th style="min-width:110px;">Project Code</th>
                     <th style="min-width:110px;">PI Name</th>
                     <th style="min-width:110px;">Project Name</th>
                     <th style="min-width:125px;">Project Proposal PDF</th>
@@ -30,7 +31,7 @@
         </Static>
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="LegacyApplication">
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="LegacyApplication" project="true">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<tr><td>{getText(RP_LEGACY_APPLICATION_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})}</td><td>{$user_name}</td><td>{getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
@@ -41,7 +42,7 @@
     </ReportSection>
     <ReportSection id="review" name="Project Review" blobSection="SAB_REVIEW" tooltip="Review of Project Proposals" type="EditableReportSection">
         <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="LegacyApplication">
-            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name} - {getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_LEGACY_APPLICATION_REPORT, MATERIALS, CODE, {$user_id}_{$project_id}, 0, {$project_id})} - {$user_name} - {getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}">
                 <ReportItem id="strength" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="SAB_REVIEW_STRENGTH" blobSubItem="{$user_id}">
                     <![CDATA[
                         <h2>Proposal Strengths</h2>
