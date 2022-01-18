@@ -259,7 +259,7 @@ abstract class AbstractReportItem {
                        // Don't save, but also don't display an error
                        return array();
                     }
-                    else if(isset($_POST['oldData'][$this->getPostId()]) && 
+                    /*else if(isset($_POST['oldData'][$this->getPostId()]) && 
                        $this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($this->getBlobValue()) &&
                        $this->stripBlob($_POST[$this->getPostId()]) != $this->stripBlob($this->getBlobValue())){
                         if($this->stripBlob($_POST['oldData'][$this->getPostId()]) != $this->stripBlob($_POST[$this->getPostId()])){
@@ -270,7 +270,7 @@ abstract class AbstractReportItem {
                                                'oldValue' => $this->stripBlob($_POST['oldData'][$this->getPostId()]),
                                                'diff' => @htmlDiffNL(str_replace("\n", "\n ", $this->getBlobValue()), str_replace("\n", "\n ", $_POST[$this->getPostId()]))));
                         }
-                    }
+                    }*/
                 }
             }
             $this->setBlobValue($_POST[$this->getPostId()]);
