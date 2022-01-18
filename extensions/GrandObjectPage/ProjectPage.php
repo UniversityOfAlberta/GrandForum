@@ -128,6 +128,7 @@ class ProjectPage {
                 }
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESProjectionsTab($project, $visibility));
+                    $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
                 }
                 $tabbedPage->showPage();
