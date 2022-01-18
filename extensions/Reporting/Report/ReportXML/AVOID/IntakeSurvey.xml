@@ -1251,7 +1251,7 @@ activities (like visiting with friends, relatives, etc.)?</h3>
 			<script type='text/javascript'>
                                 $('span#healthcare_warning2').hide();
 					function showConditionsQuestion(){
-						if($("input:checkbox[name='FrailtyStatus_symptoms2_avoid[][]']:checked").size() > 0){
+						if($("input:checkbox[name='FrailtyStatus_symptoms2_avoid[]']:checked").size() > 0){
                                                         $('span#healthcare_warning2').show();
                                                 }
                                         	else{
@@ -1259,7 +1259,7 @@ activities (like visiting with friends, relatives, etc.)?</h3>
                                                 }
                        			}
                      		_.defer(showConditionsQuestion);
-                                $("input:checkbox[name='FrailtyStatus_symptoms2_avoid[][]']").change(showConditionsQuestion);
+                                $("input:checkbox[name='FrailtyStatus_symptoms2_avoid[]']").change(showConditionsQuestion);
 			</script>          
                 ]]>	
 	</Static>

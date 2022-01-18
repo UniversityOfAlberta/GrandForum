@@ -9,13 +9,21 @@ DataCollection = Backbone.Model.extend({
     },
 
     initialize: function(){
-        clearInterval(dataCollectionInterval);
-        this.xhr = this.fetch();
         this.ready().always(function(){
             this.on('change:data', _.throttle(function(){
                 this.save();
             }.bind(this), 3000));
         }.bind(this));
+    },
+    
+    init: function(userId, page){
+        clearInterval(dataCollectionInterval);
+        if(this.get('userId') != userId ||
+           this.get('page') != page){
+            this.set('userId', userId);
+            this.set('page', page);
+            this.xhr = this.fetch();
+        }
     },
 
     url: function(){
@@ -81,6 +89,8 @@ DataCollection = Backbone.Model.extend({
     }
 
 });
+
+var dc = new DataCollection();
 
 DataCollections = Backbone.Collection.extend({
 

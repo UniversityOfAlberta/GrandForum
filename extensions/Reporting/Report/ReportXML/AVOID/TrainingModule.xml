@@ -7,9 +7,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('introductionPageCount');
-                    data.timer('introductionTime');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('introductionPageCount');
+                    dc.timer('introductionTime');
                 </script>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor velit quis accumsan sagittis. Maecenas ac erat elit. Quisque luctus, quam eu aliquam bibendum, nisl ante volutpat mi, rutrum bibendum orci quam vel turpis. Duis hendrerit condimentum mauris, vitae dignissim ex ullamcorper sit amet. Cras in congue enim. Donec volutpat volutpat sem. Suspendisse in fringilla neque. Proin porta porta posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
@@ -23,16 +23,16 @@
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('video1PageCount');
-                    data.timer('video1Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('video1PageCount');
+                    dc.timer('video1Time');
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
                     $("video").on("timeupdate", function(){
-                        var video1Watched = data.video('video1Watched', this.duration);
+                        var video1Watched = dc.video('video1Watched', this.duration);
                         video1Watched[Math.floor(this.currentTime)] = 1;
-                        data.setField('video1Watched', video1Watched);
+                        dc.setField('video1Watched', video1Watched);
                     });
                 </script>
             ]]>
@@ -44,16 +44,16 @@
             <![CDATA[
                 <video controls width="100%" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"></video>
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('video2PageCount');
-                    data.timer('video2Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('video2PageCount');
+                    dc.timer('video2Time');
                     $("video").on("ended", function(){
                         $('a.reportTab.selectedReportTab').next().click();
                     });
                     $("video").on("timeupdate", function(){
-                        var video2Watched = data.video('video2Watched', this.duration);
+                        var video2Watched = dc.video('video2Watched', this.duration);
                         video2Watched[Math.floor(this.currentTime)] = 1;
-                        data.setField('video2Watched', video2Watched);
+                        dc.setField('video2Watched', video2Watched);
                     });
                 </script>
             ]]>
@@ -64,9 +64,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('q1PageCount');
-                    data.timer('q1Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('q1PageCount');
+                    dc.timer('q1Time');
                 </script>
             ]]>
         </Static>
@@ -82,9 +82,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('a1PageCount');
-                    data.timer('a1Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('a1PageCount');
+                    dc.timer('a1Time');
                 </script>
             ]]>
         </Static>
@@ -111,9 +111,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('q2PageCount');
-                    data.timer('q2Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('q2PageCount');
+                    dc.timer('q2Time');
                 </script>
             ]]>
         </Static>
@@ -129,9 +129,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('a2PageCount');
-                    data.timer('a2Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('a2PageCount');
+                    dc.timer('a2Time');
                 </script>
             ]]>
         </Static>
@@ -156,9 +156,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('q3PageCount');
-                    data.timer('q3Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('q3PageCount');
+                    dc.timer('q3Time');
                 </script>
             ]]>
         </Static>
@@ -174,9 +174,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('a3PageCount');
-                    data.timer('a3Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('a3PageCount');
+                    dc.timer('a3Time');
                 </script>
             ]]>
         </Static>
@@ -201,9 +201,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('q4PageCount');
-                    data.timer('q4Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('q4PageCount');
+                    dc.timer('q4Time');
                 </script>
             ]]>
         </Static>
@@ -219,9 +219,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('a4PageCount');
-                    data.timer('a4Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('a4PageCount');
+                    dc.timer('a4Time');
                 </script>
             ]]>
         </Static>
@@ -246,9 +246,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('q5PageCount');
-                    data.timer('q5Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('q5PageCount');
+                    dc.timer('q5Time');
                 </script>
             ]]>
         </Static>
@@ -264,9 +264,9 @@
         <Static>
             <![CDATA[
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.increment('a5PageCount');
-                    data.timer('a5Time');
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.increment('a5PageCount');
+                    dc.timer('a5Time');
                 </script>
             ]]>
         </Static>
@@ -379,38 +379,38 @@
                     </table>
                 </div>
                 <script type="text/javascript">
-                    var data = new DataCollection({userId: me.get('id'), page: 'trainingModule1'});
-                    data.ready().always(function(){
-                        var video1Watched = Math.round(data.sum('video1Watched')/_.size(data.video('video1Watched', 1))*100);
-                        var video2Watched = Math.round(data.sum('video2Watched')/_.size(data.video('video2Watched', 1))*100);
+                    dc.init(me.get('id'), 'trainingModule1');
+                    dc.ready().always(function(){
+                        var video1Watched = Math.round(dc.sum('video1Watched')/_.size(dc.video('video1Watched', 1))*100);
+                        var video2Watched = Math.round(dc.sum('video2Watched')/_.size(dc.video('video2Watched', 1))*100);
                         $("#video1").text(video1Watched + "% watched");
                         $("#video2").text(video2Watched + "% watched");
-                        $("#introductionPageCount").text(data.getField('introductionPageCount', 0));
-                        $("#video1PageCount").text(data.getField('video1PageCount', 0));
-                        $("#video2PageCount").text(data.getField('video2PageCount', 0));
-                        $("#q1PageCount").text(data.getField('q1PageCount', 0));
-                        $("#a1PageCount").text(data.getField('a1PageCount', 0));
-                        $("#q2PageCount").text(data.getField('q2PageCount', 0));
-                        $("#a2PageCount").text(data.getField('a2PageCount', 0));
-                        $("#q3PageCount").text(data.getField('q3PageCount', 0));
-                        $("#a3PageCount").text(data.getField('a3PageCount', 0));
-                        $("#q4PageCount").text(data.getField('q4PageCount', 0));
-                        $("#a4PageCount").text(data.getField('a4PageCount', 0));
-                        $("#q5PageCount").text(data.getField('q5PageCount', 0));
-                        $("#a5PageCount").text(data.getField('a5PageCount', 0));
-                        $("#introductionTime").text(data.getField('introductionTime', 0) + 's');
-                        $("#video1Time").text(data.getField('video1Time', 0) + 's');
-                        $("#video2Time").text(data.getField('video2Time', 0) + 's');
-                        $("#q1Time").text(data.getField('q1Time', 0) + 's');
-                        $("#a1Time").text(data.getField('a1Time', 0) + 's');
-                        $("#q2Time").text(data.getField('q2Time', 0) + 's');
-                        $("#a2Time").text(data.getField('a2Time', 0) + 's');
-                        $("#q3Time").text(data.getField('q3Time', 0) + 's');
-                        $("#a3Time").text(data.getField('a3Time', 0) + 's');
-                        $("#q4Time").text(data.getField('q4Time', 0) + 's');
-                        $("#a4Time").text(data.getField('a4Time', 0) + 's');
-                        $("#q5Time").text(data.getField('q5Time', 0) + 's');
-                        $("#a5Time").text(data.getField('a5Time', 0) + 's');
+                        $("#introductionPageCount").text(dc.getField('introductionPageCount', 0));
+                        $("#video1PageCount").text(dc.getField('video1PageCount', 0));
+                        $("#video2PageCount").text(dc.getField('video2PageCount', 0));
+                        $("#q1PageCount").text(dc.getField('q1PageCount', 0));
+                        $("#a1PageCount").text(dc.getField('a1PageCount', 0));
+                        $("#q2PageCount").text(dc.getField('q2PageCount', 0));
+                        $("#a2PageCount").text(dc.getField('a2PageCount', 0));
+                        $("#q3PageCount").text(dc.getField('q3PageCount', 0));
+                        $("#a3PageCount").text(dc.getField('a3PageCount', 0));
+                        $("#q4PageCount").text(dc.getField('q4PageCount', 0));
+                        $("#a4PageCount").text(dc.getField('a4PageCount', 0));
+                        $("#q5PageCount").text(dc.getField('q5PageCount', 0));
+                        $("#a5PageCount").text(dc.getField('a5PageCount', 0));
+                        $("#introductionTime").text(dc.getField('introductionTime', 0) + 's');
+                        $("#video1Time").text(dc.getField('video1Time', 0) + 's');
+                        $("#video2Time").text(dc.getField('video2Time', 0) + 's');
+                        $("#q1Time").text(dc.getField('q1Time', 0) + 's');
+                        $("#a1Time").text(dc.getField('a1Time', 0) + 's');
+                        $("#q2Time").text(dc.getField('q2Time', 0) + 's');
+                        $("#a2Time").text(dc.getField('a2Time', 0) + 's');
+                        $("#q3Time").text(dc.getField('q3Time', 0) + 's');
+                        $("#a3Time").text(dc.getField('a3Time', 0) + 's');
+                        $("#q4Time").text(dc.getField('q4Time', 0) + 's');
+                        $("#a4Time").text(dc.getField('a4Time', 0) + 's');
+                        $("#q5Time").text(dc.getField('q5Time', 0) + 's');
+                        $("#a5Time").text(dc.getField('a5Time', 0) + 's');
                     });
                 </script>
             ]]>
