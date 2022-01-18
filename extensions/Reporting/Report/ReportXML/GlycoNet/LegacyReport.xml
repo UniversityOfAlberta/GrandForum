@@ -51,7 +51,7 @@
                 ]]>
             </ReportItem>
             <ReportItem id="project_pdf" type="PDFReportItem" reportType="LegacyApplication" project="true">
-                <![CDATA[<tr><td>{$user_name}</td><td>{getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
+                <![CDATA[<td>{$user_name}</td><td>{getText(RP_LEGACY_APPLICATION,CAT_DESC,CAT_DESC_TITLE,0,{$user_id},{$project_id})}</td><td align='center'>{$item}</td>]]>
             </ReportItem>
         </ReportItemSet>
         <Static>
