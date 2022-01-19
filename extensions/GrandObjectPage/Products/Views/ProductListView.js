@@ -12,6 +12,14 @@ ProductListView = Backbone.View.extend({
     },
     
     processData: function(start){
+        var addCol = function(row, contents){
+            if(typeof contents != 'undefined'){
+                row.push(contents);
+            }
+            else{
+                row.push("");
+            }
+        }
         // This method is purposely not using Backbone views for performance reasons
         var data = Array();
         var i = -1;
@@ -80,67 +88,22 @@ ProductListView = Backbone.View.extend({
             row.push(model.status);
             row.push(model.citation);
             if(networkName == "FES"){
-                if(typeof model.data.collaboration != 'undefined'){
-                    row.push(model.data.collaboration);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.ucalgary != 'undefined'){
-                    row.push(model.data.ucalgary);
-                }
-                else{
-                    row.push("");
-                }   
-                if(typeof model.data.partner != 'undefined'){
-                    row.push(model.data.partner);
-                }
-                else{
-                    row.push("");
-                }   
-                if(typeof model.data.hqp != 'undefined'){
-                    row.push(model.data.hqp);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.published_in != 'undefined'){
-                    row.push(model.data.published_in);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.impact_factor != 'undefined'){
-                    row.push(model.data.impact_factor);
-                }
-                else{
-                    row.push("");
+                addCol(row, model.data.collaboration);
+                addCol(row, model.data.ucalgary);
+                addCol(row, model.data.partner);
+                addCol(row, model.data.hqp);
+                addCol(row, model.data.url);
+                addCol(row, model.data.location);
+                addCol(row, model.data.number);
+                addCol(row, model.data.published_in);
+                addCol(row, model.data.impact_factor);
+                if(model.category == "IP Management"){
+                    addCol(row, model.data.hqp_trained);
                 }
                 if(model.category == "Award"){
-                    if(typeof model.data.frequency != 'undefined'){
-                        row.push(model.data.frequency);
-                    }
-                    else{
-                        row.push("");
-                    }
-                    if(typeof model.data.value != 'undefined'){
-                        row.push(model.data.value);
-                    }
-                    else{
-                        row.push("");
-                    }
-                    if(typeof model.data.institution != 'undefined'){
-                        row.push(model.data.institution);
-                    }
-                    else{
-                        row.push("");
-                    }
-                    if(typeof model.data.url != 'undefined'){
-                        row.push(model.data.url);
-                    }
-                    else{
-                        row.push("");
-                    }
+                    addCol(row, model.data.frequency);
+                    addCol(row, model.data.value);
+                    addCol(row, model.data.institution);
                 }
             }
             row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
@@ -194,13 +157,16 @@ ProductListView = Backbone.View.extend({
         var targets = [ 4, 5, 6 ];
         if(networkName == "FES"){
             if(this.model.category == "Publication"){
-                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
+                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
             }
             else if (this.model.category == "Award"){
-                targets = targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+            }
+            else if (this.model.category == "IP Management"){
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
             }
             else {
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             }
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,

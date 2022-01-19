@@ -20,13 +20,18 @@
                 <th style='display:none;'>UCalgary</th>
                 <th style='display:none;'>International Partner</th>
                 <th style='display:none;'>HQP Led</th>
+                <th style='display:none;'>Url</th>
+                <th style='display:none;'>Location</th>
+                <th style='display:none;'>Article Number</th>
                 <th style='display:none;'>Published In</th>
                 <th style='display:none;'>Impact Factor</th>
                 <% if(this.model.category == "Award"){ %>
                     <th style='display:none;'>Frequency</th>
                     <th style='display:none;'>Value</th>
                     <th style='display:none;'>Institution</th>
-                    <th style='display:none;'>Url</th>
+                <% } %>
+                <% if(this.model.category == "IP Management"){ %>
+                    <th style='display:none;'>HQP Trained</th>
                 <% } %>
             <% } %>
             <th style='display:none;'>Extra</th>

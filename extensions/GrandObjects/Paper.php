@@ -1551,6 +1551,12 @@ class Paper extends BackboneModel{
             $match1 = str_ireplace("%value",    $value,        $match1);
             $match2 = str_ireplace("%value",    "",            $match2);
         }
+        
+        if(strstr($match, "url") !== false){
+            $url = $this->getData(array('url'));
+            $match1 = str_ireplace("%url",      $url,        $match1);
+            $match2 = str_ireplace("%url",    "",            $match2);
+        }
 
         if($match1 == $match2){
              $matches[0] = "";
