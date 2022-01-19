@@ -53,7 +53,10 @@ class ProjectEdiTab extends AbstractEditableTab {
         for($y=$today; $y >= $year; $y--){
             $edi = $this->getBlobData("EDI", $y);
             $this->html .= "<h3><a href='#'>".$y."/".substr($y+1,2,2)."</a></h3>";
-            $this->html .= "<div style='overflow: auto;'>{$edi}</div>";
+            $this->html .= "<div style='overflow: auto;'>
+                <h3>How do you incorporate aspects of EDI into your research plan and work, and which resources or opportunities are most valuable to you in achieving these goals?</h3>
+                {$edi}
+            </div>";
         }
         $this->html .= "</div>";
     }
