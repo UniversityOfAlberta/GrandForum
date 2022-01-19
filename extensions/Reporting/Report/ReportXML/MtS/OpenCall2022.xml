@@ -162,7 +162,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" options="Youth Focused Harm Reduction|Legal and Justice System|Cost-Benefit Analysis|Evictions Prevention|Data &amp; Technology: Understanding the Role of Linked Administrative Data in Preventing Youth Homelessness|Pathways into Homelessness|Open Prevention Topic">
+        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" options="A. Youth Focused Harm Reduction|B. Legal and Justice System|C. Cost-Benefit Analysis|D. Evictions Prevention|E. Data &amp; Technology: Understanding the Role of Linked Administrative Data in Preventing Youth Homelessness|F. Pathways into Homelessness|G. Open Prevention Topic">
             <![CDATA[
                 <p>
                     <b>Which funding stream(s) does your project align with:</b><br />
@@ -170,7 +170,7 @@
                 </p>
             ]]>
         </ReportItem>
-        <ReportItem id="pillar" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PILLAR" options="Shifting to Prevention through Early Intervention|Sustaining Successful Exits from Homelessness|Enabling Health, Well-being, and Inclusion|Enhancing Outcomes for Indigenous Youth|Leveraging Data and Technology to Drive Policy and Practice">
+        <ReportItem id="pillar" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PILLAR" options="Theme 1: Shifting to Prevention through Early Intervention|Theme 2: Sustaining Successful Exits from Homelessness|Theme 3: Enabling Health, Well-being, and Inclusion|Theme 4: Enhancing Outcomes for Indigenous Youth|Theme 5: Leveraging Data and Technology to Drive Policy and Practice">
             <![CDATA[
                 <p>
                     <b>Which pillar(s) of MtS Research Agenda does your project align with?</b><br />
@@ -255,7 +255,7 @@
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
             <![CDATA[
                 <h3>V. Budget</h3>
-                <p>Please download the <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2021-2024.xlsx" target="_blank">Budget Template</a> and upload using the following file naming [PILastName_First5WordsOfTitle]_Budget_MtSDataCall_[YYYYMMDD]</p> 
+                <p>Please download the <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2022-2025.xlsx" target="_blank">Budget Template</a> and upload using the following file naming [PILastName_First5WordsOfTitle]_Budget_MtSDataCall_[YYYYMMDD]</p> 
                 
                 {$item}
             ]]>
