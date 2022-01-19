@@ -546,26 +546,47 @@
         <IPManagement type="Patent" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="no. of HQP trained&lt;br />in new technology" type="Integer">hqp_trained</field>
+                <field label="Location" type="String">location</field>
+                <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
         
         <IPManagement type="Policy" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Location" type="String">location</field>
+                <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
         
         <IPManagement type="Copyright" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="Registration Number" type="String">number</field>
+                <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
         
         <IPManagement type="Trademark" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="Type" type="String">type</field>
                 <field label="File Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -575,6 +596,10 @@
         <IPManagement type="Utility design" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="Type" type="String">type</field>
                 <field label="File Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
@@ -584,6 +609,10 @@
         <IPManagement type="License" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="Type" type="String">type</field>
                 <field label="Term" type="String">term</field>
                 <field label="File Number" type="String">number</field>
@@ -593,6 +622,10 @@
         
         <IPManagement type="Start-up Company" status="">
             <data>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
                 <field label="Sector">sector</field>
                 <field label="URL" type="URL">url</field>
             </data>
@@ -601,6 +634,11 @@
         <IPManagement type="Misc" status="">
             <data>
                 <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
 
