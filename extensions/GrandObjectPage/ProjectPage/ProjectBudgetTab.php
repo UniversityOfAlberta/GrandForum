@@ -298,22 +298,26 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     $alloc = "\$".number_format($allocation);
                 }
                 
+                $allocationText = "Allocation Amount";
+                if($config->getValue('networkName') == "AGE-WELL" && $i == 2022){
+                    $allocationText = "Remaining Project Funding";
+                }
+                
                 if($edit && $editable){
-                    if($config->getValue('networkName') == "AGE-WELL" && $i == 2021){
-                    
-                    }
-                    else{
+                    if($config->getValue('networkName') != "AGE-WELL" || ($i != 2021)){
                         if($me->isRoleAtLeast(STAFF)){
-                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>{$allocationText}</h3>
                                             $<input id='allocation$i' type='text' name='allocation[$i]' value='{$allocation}' /><br />
                                             <script type='text/javascript'>
                                                 $('input#allocation$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
                                             </script>";
                         }
                         else{
-                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                            $this->html .= "<h3 style='margin-top:0;padding-top:0;'>{$allocationText}</h3>
                                             {$alloc}<br />";
                         }
+                    }
+                    if($config->getValue('networkName') != "AGE-WELL" || ($i != 2022 && $i != 2021)){
                         $this->html .= "<h3>Upload Budget</h3>
                                         <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                     }
@@ -321,10 +325,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 
                 if(!$edit || !$editable){
                     if($config->getValue('networkName') == "AGE-WELL" && $i == 2021){
-                    
+                        // Show nothing
                     }
                     else{
-                        $this->html .= "<h3 style='margin-top:0;padding-top:0;'>Allocation Amount</h3>
+                        $this->html .= "<h3 style='margin-top:0;padding-top:0;'>{$allocationText}</h3>
                                             $alloc<br /><br />";
                     }
                     if($config->getValue('networkName') == "FES"){
@@ -383,7 +387,30 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
-                        if($i == 2021){
+                        if($i == 2022){
+                            // Special year
+                            $this->html .= "<p>Project Leads are asked to submit two-year project budgets that reflect their planned expenses for 2022-23 and 2023-24.</p>
+<p>As long as a project is approved by RMC to continue in 2022-23, investigators can expect approval to carry forward unspent funds with justification.</p>";
+                            $this->html .= "<h3>Budget Update</h3>
+                                            <p>Please provide an overview of any <u>major</u> changes that have been made to your project budget since it was last approved by the Research Management Committee (Feb 2021).</p>
+                                            <textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
+                            $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, 2022</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                            $this->html .= "<p>Core Research Program (CRP) / Platform Projects (PPP): Project funds may carry forward funding to the next fiscal year provided a reasonable justification is provided and approved below.</p>
+                                            <p>In the section below, provide a justification for the projected amount of unspent funds at year end describe how funds will be spent moving forward. Please provide detail for each sub-project or investigator holding funds as part of your award.</p>
+                                            <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>";
+                            $this->html .= "<h3>Upload Budget and Budget Justification</h3>
+                                            <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2021-22.xlsx'>Budget Template</a><br />
+                                            <p>Please upload a two-year project budget and provide a budget breakdown for each Network Investigator that will be holding funds in the following excel tabs. The budget should be a best estimate of spending in fiscal years 2022-23 and 2023-24 and may include both funds carried forward from 2021 and new funding from AGE-WELL.</p>
+                                            <p>In a separate free-form document, please provide a standard budget justification for expenditures with details in each category where a budget request has been made. Confirmed and projected partner contributions (cash and in-kind) are critical to include.</p>";
+                            $this->html .= "<h4>Upload Budget</h4>
+                                            <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
+                            $this->html .= "<h4>Budget Justification</h4>
+                                            <input type='file' name='justification_upload[$i]' accept='.pdf' /><br />";
+                            $this->html .= "<script type='text/javascript'>
+                                            $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
+                                        </script>";
+                        }
+                        else if($i == 2021){
                             // Special year
                             $this->html .= "<p>Project Leads are asked to submit budgets that reflect their best estimate of planned expenses for 2021-22. We anticipate that budgets may include a mix of funds carried forward from 2020-21 and new funding from AGE-WELL in 2021-22.</p>
 <p>As long as a project will advance in 2021, investigators can expect approval to carry forward unspent funds. The amount of new funding issued for April 1 will take into account your carry forward request, applying a formula so that you will have the budget you need even if you over or underestimate the amount of unspent funds at the time of this update.
