@@ -552,6 +552,7 @@
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="no. of HQP trained&lt;br />in new technology" type="Integer">hqp_trained</field>
                 <field label="Location" type="String">location</field>
+                <field label="Article Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
@@ -564,6 +565,7 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="Location" type="String">location</field>
+                <field label="Article Number" type="String">number</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </IPManagement>
