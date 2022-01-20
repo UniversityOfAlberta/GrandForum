@@ -256,7 +256,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     // Account for change in structure
                     $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2');
                 }
-                if($config->getValue('networkName') == "AGE-WELL" && $i >= 2020){
+                if($config->getValue('networkName') == "AGE-WELL" && $i >= 2022){
+                    $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE2022');
+                    $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2022');
+                }
+                else if($config->getValue('networkName') == "AGE-WELL" && $i >= 2020){
                     $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE2020');
                     $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2020');
                 }
@@ -399,7 +403,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             <p>In the section below, provide a justification for the projected amount of unspent funds at year end describe how funds will be spent moving forward. Please provide detail for each sub-project or investigator holding funds as part of your award.</p>
                                             <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>";
                             $this->html .= "<h3>Upload Budget and Budget Justification</h3>
-                                            <a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL Budget2021-22.xlsx'>Budget Template</a><br />
+                                            <a href='{$wgServer}{$wgScriptPath}/data/AWCRP-PPP 2-year Budget.xlsx'>Budget Template</a><br />
                                             <p>Please upload a two-year project budget and provide a budget breakdown for each Network Investigator that will be holding funds in the following excel tabs. The budget should be a best estimate of spending in fiscal years 2022-23 and 2023-24 and may include both funds carried forward from 2021 and new funding from AGE-WELL.</p>
                                             <p>In a separate free-form document, please provide a standard budget justification for expenditures with details in each category where a budget request has been made. Confirmed and projected partner contributions (cash and in-kind) are critical to include.</p>";
                             $this->html .= "<h4>Upload Budget</h4>

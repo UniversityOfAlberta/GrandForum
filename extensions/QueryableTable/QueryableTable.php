@@ -16,6 +16,7 @@ define('HEAD1_ROW', -109);
 define('HEAD2_ROW', -110);
 define('STRING', -111);
 define('WRAP', -112);
+define('WRAP_HEAD_ROW', -113);
 // Complex Structure Types
 define('GROUP_BY', -200);
 
@@ -26,6 +27,7 @@ $cellTypes[WRAP] = "WrapCell";
 $cellTypes[STRING] = "StringCell";
 $cellTypes[HEAD] = "HeadCell";
 $cellTypes[HEAD_ROW] = "HeadRowCell";
+$cellTypes[WRAP_HEAD_ROW] = "WrapHeadRowCell";
 $cellTypes[HEAD1] = "Head1Cell";
 $cellTypes[HEAD2] = "Head2Cell";
 $cellTypes[HEAD3] = "Head3Cell";
