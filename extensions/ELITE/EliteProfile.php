@@ -158,20 +158,22 @@ abstract class EliteProfile extends BackboneModel {
         }
         // Check Other reference letters uploaded by the references themselves
         $other_letters = $this->getBlobValue('LETTER_OTHER', BLOB_ARRAY);
-        foreach($other_letters['letter_other'] as $letter){
-            $email = trim($letter['email']);
-            $id = trim($letter['id']);
-            $md5 = md5("{$email}:{$id}");
-            $reference = DBFunctions::select(array('grand_report_blobs'),
-                                             array('md5'),
-                                             array('year' => 0,
-                                                   'user_id' => $this->person->getId(),
-                                                   'rp_type' => "RP_".static::$rpType,
-                                                   'rp_section' => 'PROFILE',
-                                                   'rp_item' => 'LETTER',
-                                                   'rp_subitem' => $md5));
-            if(count($reference) > 0){
-                $md5s[] = $reference[0]['md5'];
+        if(is_array($other_letters)){
+            foreach($other_letters['letter_other'] as $letter){
+                $email = trim($letter['email']);
+                $id = trim($letter['id']);
+                $md5 = md5("{$email}:{$id}");
+                $reference = DBFunctions::select(array('grand_report_blobs'),
+                                                 array('md5'),
+                                                 array('year' => 0,
+                                                       'user_id' => $this->person->getId(),
+                                                       'rp_type' => "RP_".static::$rpType,
+                                                       'rp_section' => 'PROFILE',
+                                                       'rp_item' => 'LETTER',
+                                                       'rp_subitem' => $md5));
+                if(count($reference) > 0){
+                    $md5s[] = $reference[0]['md5'];
+                }
             }
         }
         $urls = array();
