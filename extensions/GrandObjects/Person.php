@@ -1964,9 +1964,9 @@ class Person extends BackboneModel {
 
     function getNameForProduct($format=null){
         global $config;
-        if(strstr($this->getNameForForms(), "<span class='noshow'>&quot;</span>") !== false){
+        /*if(strstr($this->getNameForForms(), "<span class='noshow'>&quot;</span>") !== false){
             return $this->getNameForForms();
-        }
+        }*/
         $regex = "/\{.*?\}/";
         if($format == null){
             $format = $config->getValue("nameFormat");
