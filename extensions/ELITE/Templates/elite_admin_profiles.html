@@ -1,9 +1,15 @@
 <div id="acceptDialog" title="Accept Profile" style="display:none;">
     Are you sure you want to accept this profile?
 </div>
+<div id="shortlistDialog" title="Shortlist Profile" style="display:none;">
+    Are you sure you want to shortlist this profile?
+</div>
 <div id="moreDialog" title="Request More Information" style="display:none;">
     <b>Message:</b><br />
     <textarea id="moreComments" style="width:400px;height:100px;"></textarea>
+</div>
+<div id="receivedDialog" title="Receive Profile" style="display:none;">
+    Are you sure you want to receive this profile?
 </div>
 <div id="rejectDialog" title="Reject Profile" style="display:none;">
     Are you sure you want to reject this profile?
@@ -58,8 +64,10 @@
                 <td style="white-space:nowrap;" align="center">
                     <% if(profile.get('status') != "Accepted"){ %>
                         <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
+                        <button class="shortlist" data-id="<%= profile.get('id') %>">Shortlist</button>
                         <button class="more" data-id="<%= profile.get('id') %>">More Info</button>
                         <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                        <button class="received" data-id="<%= profile.get('id') %>">Receive</button>
                     <% } else { %>
                         <button class="match" data-id="<%= profile.get('id') %>">Match</button>
                         <div id="match_<%= profile.get('id') %>" style="display:none;">

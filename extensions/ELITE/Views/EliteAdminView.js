@@ -166,7 +166,9 @@ EliteAdminProfilesView = Backbone.View.extend({
     template: _.template($('#elite_admin_profiles_template').html()),
     table: null,
     acceptDialog: null,
+    shortlistDialog: null,
     moreDialog: null,
+    receivedDialog: null,
     rejectDialog: null,
     matchDialog: null,
     
@@ -181,10 +183,22 @@ EliteAdminProfilesView = Backbone.View.extend({
         this.acceptDialog.model = this.model.get(id);
     },
     
+    openShortlistDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.shortlistDialog.dialog('open');
+        this.shortlistDialog.model = this.model.get(id);
+    },
+    
     openMoreDialog: function(el){
         var id = $(el.target).attr('data-id');
         this.moreDialog.dialog('open');
         this.moreDialog.model = this.model.get(id);
+    },
+    
+    openReceivedDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.receivedDialog.dialog('open');
+        this.receivedDialog.model = this.model.get(id);
     },
     
     openRejectDialog: function(el){
@@ -202,8 +216,10 @@ EliteAdminProfilesView = Backbone.View.extend({
     
     events: {
         "click .accept": "openAcceptDialog",
+        "click .shortlist": "openShortlistDialog",
         "click .more": "openMoreDialog",
         "click .reject": "openRejectDialog",
+        "click .received": "openReceivedDialog",
         "click .match": "openMatchDialog",
     },
     
@@ -244,6 +260,23 @@ EliteAdminProfilesView = Backbone.View.extend({
                 }.bind(this)
             }
         });
+        this.shortlistDialog = this.$("#shortlistDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Shortlist": function(){
+                    this.shortlistDialog.model.set('status', 'Shortlist');
+                    this.shortlistDialog.model.save();
+                    this.shortlistDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.shortlistDialog.dialog('close');
+                }.bind(this)
+            }
+        });
         this.moreDialog = this.$("#moreDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -278,6 +311,23 @@ EliteAdminProfilesView = Backbone.View.extend({
                 }.bind(this),
                 "Cancel": function(){
                     this.rejectDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        this.receivedDialog = this.$("#receivedDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Receive": function(){
+                    this.receivedDialog.model.set('status', 'Received');
+                    this.receivedDialog.model.save();
+                    this.receivedDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.receivedDialog.dialog('close');
                 }.bind(this)
             }
         });
