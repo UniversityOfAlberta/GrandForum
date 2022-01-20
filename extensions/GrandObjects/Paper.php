@@ -908,7 +908,7 @@ class Paper extends BackboneModel{
                    isset(self::$illegalAuthorsCache[$person->getId()])){
                     // Ok this person is not in the db, make a fake Person object
                     $author = preg_replace('/\s+/', ' ', $author);
-                    $names = explode(" ", $author);
+                    $names = explode(" ", str_replace("<span class='noshow'>&quot;</span>", "", $author));
                     $first = @str_replace(".", "", str_replace('"', "", $names[0]));
                     $last = "";
                     $mNames = "";
