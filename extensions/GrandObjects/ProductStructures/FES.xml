@@ -542,7 +542,7 @@
     </Activities>
     
     <!-- IP Management -->
-    <IPManagements category="IP Management" citationFormat="{%Authors} {(%YYYY %Mon).} &lt;i>{%Title.}&lt;/i> {%Venue}{, %Volume}{(%Issue)}{:%Pages.} {%Publisher} {%Url}">
+    <IPManagements category="IP Management" citationFormat="{%Authors} {(%YYYY).} &lt;i>{%Title.}&lt;/i> {%Issue} {%Url}">
         <IPManagement type="Patent" status="">
             <data>
                 <field label="Lead Author">lead_author</field>

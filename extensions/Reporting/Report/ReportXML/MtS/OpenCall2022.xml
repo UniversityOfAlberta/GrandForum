@@ -12,13 +12,13 @@
 
                 Applicants are required to develop and submit their proposals, and address the following:
                 <ul>
-                    <li>Demonstrate that the project addresses a gap, as it relates to the MtS research agenda and the priority areas listed in the application guide.</li>
+                    <li>Demonstrate that the project addresses a gap, as it relates to the MtS research agenda and the priority areas listed in the <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022.pdf' target="_blank">application guide</a>.</li>
                     <li>Demonstrate a clear link to youth homelessness prevention, as outlined in the Roadmap for the <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">Prevention of Youth Homelessness</a>.</li>
                     <li>Articulate a clear research-to-impact plan (i.e. how will research findings be translated and disseminated to support program, practice, policy, and systems transformation).</li>
                     <li>Propose a clear, realistic project budget, including a detailed accounting of cash and in-kind support.</li>
                 </ul>
                 
-                <p>Proposals will be subjected to a rigours external peer review process and evaluated by the MtS Research Management Committee; both of which will include expert researchers, service providers, scholars with lived experience, and government officials. Successful applications will then be recommended for the Board of Directors to make the final funding decision. Please review the  application guide for submission instructions and access the budget template here.</p>
+                <p>Proposals will be subjected to a rigours external peer review process and evaluated by the MtS Research Management Committee; both of which will include expert researchers, service providers, scholars with lived experience, and government officials. Successful applications will then be recommended for the Board of Directors to make the final funding decision. Please review the <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022.pdf' target="_blank">application guide</a> for submission instructions and access the budget template here.</p>
             ]]>
         </Static>
     </ReportSection>
