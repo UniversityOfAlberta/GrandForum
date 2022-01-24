@@ -228,17 +228,17 @@
         <ReportItem id="letter2" type="UploadPDF" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
         
-        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
+        <ReportItem id="acknowledgment1" type="Radio" blobItem="ACKNOWLEDGMENT1" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2>Acknowledgment and Agreement</h2>
-                <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
-                {$item}
+                <h2 class="required">Acknowledgment and Agreement</h2>
+                <h3>If accepted to the Fellowship Program, I will apply for admission to the PhD program with a Faculty of Engineering department at the University of Alberta by the departmental deadline.</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
+        <ReportItem id="acknowledgment2" type="Radio" blobItem="ACKNOWLEDGMENT2" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2>Comments</h2>
-                {$item}
+                <h3>If accepted to the Fellowship Program, I will participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="elite" type="EliteSubmit" />
