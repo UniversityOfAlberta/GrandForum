@@ -320,6 +320,13 @@
                     </ul>
                     {$item}
                 </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <li><b>Please submit a brief bio (2 pages maximum) for each named investigator highlighting experience and activities relevant to the application.</b>
+                    {$item}
+                </li>
                 </ol>
             ]]>
         </ReportItem>
@@ -337,15 +344,16 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                <h2>4) PARTNERSHIPS</h2>
+                <h2>4) PRINCIPAL KNOWLEDGE USER(S) / PARTNERSHIPS</h2>
             ]]>
         </Static>
         <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED" limit="300">
             <![CDATA[
+                <i>Detail included in this section should be supported by partner letters of support.</i>
                 <ol id='list' type="i">
-                <li><b>Is your partner committed to the dissemination, uptake and/or commercialization the solution/findings?</b>
+                <li><b>How is your partner organization committed to the implementation (installation, testing, uptake and/or commercialization) of the solution?</b>
                     <ul class='small'>
-                        <li>Describe the commitment of the partner(s) regarding uptake, dissemination, or commercialization of the solutions/results.</li>
+                        <li>Describe the commitment of the partner organization(s) regarding the support of implementation efforts and interest in sustaining the solution in the long-term.</li>
                     </ul>
                     {$item}
                 </li>
@@ -353,10 +361,10 @@
         </ReportItem>
         <ReportItem id="responsibilities" type="TextareaReportItem" rich="true" blobItem="RESPONSIBILITIES" limit="300">
             <![CDATA[
-                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. dissemination, product development, testing and evaluation etc.).</b>
+                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. installation, testing, process and/or outcome evaluation etc.).</b>
                     <ul class='small'>
-                        <li>Identify all partners/partnership arrangements (contributions will be itemized and justified in the budget)</li>
-                        <li>Is the partner participating as a contractor, manufacturer, stakeholder, testing facility?</li>
+                        <li>Identify all partners/partnership arrangements (contributions will be itemized and justified in the budget).</li>
+                        <li>Is the partner participating as a contractor, manufacturer, stakeholder, and/or implementation site?</li>
                     </ul>
                     {$item}
                 </li>
@@ -373,8 +381,9 @@
                 <ol id='list' type="i">
                 <li><b>Describe the anticipated impacts and associated benefits and beneficiaries of this project.</b>
                     <ul class='small'>
-                        <li>Describe how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</li>
-                        <li>Identify the anticipated impacts of this project–what will change, how many people will benefit and how?</li>
+                        <li>Describe how your project contributes to and/or facilitates the implementation, commercialization, mobilization and/or policy use of a solution or product to accelerate Canadian innovation, boost the economy, and to improve the lives of older adults and/or caregivers.</li>
+                        <li>Identify the anticipated impacts of this project – what will change, how many people will benefit and how?</li>
+                        <li>Describe the project’s potential to lead to economic and social impact for older Canadians including consideration of equity-deserving groups.</li>
                     </ul>
                     {$item}
                 </li>
@@ -389,127 +398,24 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" sizes="150||150||150" multiple="true">
-            <![CDATA[
-                <h2>Team Summary</h2>
-                <p class='small'>Use the following code for Role:<br />
-                <b>&nbsp;&nbsp;PL:</b> Project Lead<br />
-                <b>&nbsp;&nbsp;NI:</b> Network Investigator<br />
-                <b>&nbsp;&nbsp;AR:</b> Affiliated Researcher<br />
-                <b>&nbsp;&nbsp;Collaborator</b><br />
-                <b>&nbsp;&nbsp;Partner</b></p>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP" labels="Team Member|Institution/Organization|Email|Level of Study/Position" types="Text|Text|Text|Text" sizes="150|150|150|" multiple="true">
-            <![CDATA[
-                <h2>Highly Qualified Personnel (HQP)</h2>
-                {$item}
-            ]]>
-        </ReportItem>
+    <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="Part 3 - Budget" name="Budget">
         <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL SIP-A Budget Template.xlsx">
             <![CDATA[
+                <h2>Budget</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
+        <ReportItem id="just" type="Upload" blobType="BLOB_RAW" blobItem="JUST" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p style="margin-top: -30px;">
-                    <b>Budget Limitations:</b><br />
-                    3) Professional & Tech. Services/contracts - a maximum of $5000 can be used towards payment of consulting fees<br />
-                    6) Materials, supplies & other expenditures - a maximum of $5000 can be used towards patent fees
-                </p>
-                <h3>Budget Justification</h3>
-                <p>Please use the following categories in your budget justification as appropriate. Note that SIP funding includes specific budget caps in some categories.</p>
-                <ol>
-                <li><b>Salaries to students</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST2" height="100px">
-            <![CDATA[
-                <li><b>Salaries to non-students</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
-            <![CDATA[
-                <li><b>Professional & Tech. Services/contracts</b>
-                    <ol type="a">
-                        <li>Consultants and business development services (maximum $5,000)</li>
-                    </ol>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST4" height="100px">
-            <![CDATA[
-                <li><b>Equipment</b>
-                    <ol type="a">
-                        <li>Purchase of rental</li>
-                        <li>Maintenance costs</li>
-                        <li>Operating costs</li>
-                        <li>Other equipment costs</li>
-                    </ol>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST5" height="100px">
-            <![CDATA[
-                <li><b>Computing and Software</b>
-                    <ol type="a">
-                        <li>Specialized software licenses and e-communications costs</li>
-                        <li>E-business enablement costs, website</li>
-                    </ol>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just6" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST6" height="100px">
-            <![CDATA[
-                <li><b>Materials, Supplies & Other expenditures</b>
-                    <ol type="a">
-                        <li>Materials and Supplies</li>
-                        <li>Patent costs (maximum $5,000)</li>
-                        <li>Proof of Principle, product validation for market readiness</li>
-                        <li>Prototype development (specify)</li>
-                        <li>Communications/Marketing/Printing/Production (maximum $5,000)</li>
-                        <li>Evaluation costs</li>
-                        <li>Management and Networking (maximum $3,000)</li>
-                    </ol>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="just7" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST7" height="100px">
-            <![CDATA[
-                <li><b>Travel</b>
-                    <ol type="a">
-                        <li>Field trips</li>
-                        <li>Conference, technical shows</li>
-                    </ol>
-                    {$item}
-                </li>
-                </ol>
+                <h2>Budget Justification</h2>
+                {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO">
-        <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
-            <![CDATA[
-                <h3>Investigator(s) Bio</h3>
-                <p>Please submit a brief bio for each named investigator from Part 2, highlighting experience and activities relevant to the application.</p>
-                {$item}
-            ]]>
-        </ReportItem>
+    <ReportSection id="letters" tooltip="PART 4 - Letters of Support" title="PART 4 - Letters of Support" name="Letters of Support" type="EditableReportSection" blobSection="LETTERS">
         <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
             <![CDATA[
-                <h3>Partner Letter of Support</h3>
-                <p>Investigators will be expected to include partner organizations in their projects, including those participating in any knowledge dissemination or commercialization planning. Such organizations should be described in the application and their support letter(s) should be included in appendix. Partners should describe their commitment toward the project, knowledge dissemination and/or commercialization.</p>
+                <p>Investigators are expected to include partner organizations in their projects, including those participating in any implementation activities. Such organizations should be described in PART 2 of this application. Letters should describe the partner’s commitment to the project, involvement in implementation activities and, if appropriate, interest in sustaining the solution long-term. They can also include details on their readiness to implement. Your implementation team is welcome to use a readiness tool to guide this conversation.</p>
                 <p>For reporting purposes, all partnership activities and contributions (cash and in-kind) should be quantified in the application.</p>
                 <b>The uploaded file must be a Zip Archive</b>.
                 {$item}
