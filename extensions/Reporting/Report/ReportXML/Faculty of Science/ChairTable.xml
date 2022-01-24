@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Evaluations" title=" " headerName=" " reportType="RP_CHAIR" pdfFiles="ChairTable" pdfType="CHAIR_EVAL" personId="0" ajax="true" disabled="false">
     <Permissions>
-        <Role role="CHAIR">
+        <!--Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="rw" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -40,8 +40,8 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role>
-        <!--Role role="CHAIR">
+        </Role-->
+        <Role role="CHAIR">
             <SectionPermission id="evaluations" permissions="" />
             <SectionPermission id="dean_evaluations" permissions="" />
             <SectionPermission id="recommendations" permissions="rw" />
@@ -90,7 +90,7 @@
             <SectionPermission id="chairs_advice" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
             <SectionPermission id="dept_hqp" permissions="" />
-        </Role-->
+        </Role>
     </Permissions>
     <ReportSection id="evaluations" tooltip="Evaluations" name="Evaluations" title="{$my_dept} Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false">
         <Static>
