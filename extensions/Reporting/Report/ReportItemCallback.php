@@ -621,6 +621,18 @@ class ReportItemCallback {
         $category = "";
         switch($case){
             default:
+            case "Journal":
+                $case = "Publication";
+                $category = "Publication";
+                $type = "Journal Paper";
+                $histories = $person->getProductHistories($year, "Refereed");
+                break;
+            case "Conference":
+                $case = "Publication";
+                $category = "Publication";
+                $type = "Conference Paper|Proceedings Paper";
+                $histories = $person->getProductHistories($year, "Refereed");
+                break;
             case "Publication":
                 $category = "Publication";
                 $type = "Journal Paper|Conference Paper|Proceedings Paper|Workshop Paper|Book Chapter";
@@ -1278,6 +1290,26 @@ class ReportItemCallback {
     
     function getReportSection(){
         return $this->reportItem->getSection()->name;
+    }
+    
+    function getUserHQPCount(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
+        $endDate = ($this->reportItem->getReport()->year)."-06-30";
+        
+        $data = array_merge($person->getStudentInfo(Person::$studentPositions['grad'], $startDate, $endDate),
+                            $person->getStudentInfo(Person::$studentPositions['msc'], $startDate, $endDate),
+                            $person->getStudentInfo(Person::$studentPositions['phd'], $startDate, $endDate),
+                            $person->getStudentInfo(Person::$studentPositions['pdf'], $startDate, $endDate),
+                            $person->getStudentInfo(Person::$studentPositions['tech'], $startDate, $endDate),
+                            $person->getStudentInfo(Person::$studentPositions['ugrad'], $startDate, $endDate),
+                            $person->getStudentInfo('other', $startDate, $endDate));
+        $hqps = array();
+        foreach($data as $row){
+            $hqps[$row['hqp']] = $row;
+        }
+        
+        return count($hqps);
     }
 
     function getUserGradCount(){
