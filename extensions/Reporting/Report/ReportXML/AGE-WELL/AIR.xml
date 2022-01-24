@@ -58,7 +58,9 @@
                     <li>TEMI: The TEMI personal robot is a device that provides autonomous navigation and AI technologies in hospitality, senior living and other settings. There is an opportunity for software solutions to be integrated into the TEMI platform.</li>
                 </ul>
                 <p>If you are interested in collaborating on an implementation project with this industry partner, please email <a href='mailto:partnerships@agewell-nce.ca'>partnerships@agewell-nce.ca</a> for initial discussion and subsequent introductions.</p>
-                <p>Questions about this funding program can be directed to Sydney Taylor, <a href='mailto:sydney@agewell-nce.ca'>sydney@agewell-nce.ca</a>, AGE-WELL Implementation Support Coach.</p>
+                <p>Applications must be submitted through AGE-WELL’s Forum Research Portal.</p> 
+
+                <p>If you have questions about this funding program or to request a Forum account, please e-mail <a href='mailto:applications@agewell-nce.ca'>applications@agewell-nce.ca</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -164,8 +166,8 @@
                 </div>
                 <script type="text/javascript">
                     $(document).ready(function(){
-                        $("input[name=CoverSheet_viii]").change(function(){
-                            var val = $("input[name=CoverSheet_viii]:checked").val();
+                        $("input[name=ProjectInformation_viii]").change(function(){
+                            var val = $("input[name=ProjectInformation_viii]:checked").val();
                             if(val == "Yes"){
                                 $("div#extra").slideDown();
                             }
@@ -173,7 +175,7 @@
                                 $("div#extra").slideUp();
                             }
                         });
-                        $("input[name=CoverSheet_viii]").change();
+                        $("input[name=ProjectInformation_viii]").change();
                     });
                 </script>
             ]]>
@@ -399,7 +401,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="Part 3 - Budget" name="Budget">
-        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL SIP-A Budget Template.xlsx">
+        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL AIR Budget Template.xlsx">
             <![CDATA[
                 <h2>Budget</h2>
                 {$item}
@@ -415,7 +417,7 @@
     <ReportSection id="letters" tooltip="PART 4 - Letters of Support" title="PART 4 - Letters of Support" name="Letters of Support" type="EditableReportSection" blobSection="LETTERS">
         <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
             <![CDATA[
-                <p>Investigators are expected to include partner organizations in their projects, including those participating in any implementation activities. Such organizations should be described in PART 2 of this application. Letters should describe the partner’s commitment to the project, involvement in implementation activities and, if appropriate, interest in sustaining the solution long-term. They can also include details on their readiness to implement. Your implementation team is welcome to use a readiness tool to guide this conversation.</p>
+                <p>Investigators are expected to include partner organizations in their projects, including those participating in any implementation activities. Such organizations should be described in PART 2 of this application. Letters should describe the partner’s commitment to the project, involvement in implementation activities and, if appropriate, interest in sustaining the solution long-term. They can also include details on their readiness to implement. Your implementation team is welcome to use a readiness tool (<a href='https://www.dropbox.com/search/work?path=%2FAGE-WELL+Implementation+Programs&preview=id%3AyWrnIa5k-EAAAAAAAAA3rg&query=readiness&search_session_id=69927745908048045365794989182907&search_token=u12zVPrZffUalAP7GUX9xfu1J%2BbrlJvU74XVcoWZ8t8%3D' target="_blank">example</a>) to guide this conversation.</p>
                 <p>For reporting purposes, all partnership activities and contributions (cash and in-kind) should be quantified in the application.</p>
                 <b>The uploaded file must be a Zip Archive</b>.
                 {$item}
