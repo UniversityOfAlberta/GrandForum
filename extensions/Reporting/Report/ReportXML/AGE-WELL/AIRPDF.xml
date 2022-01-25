@@ -251,7 +251,6 @@
         </Static>
         <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED" limit="300">
             <![CDATA[
-                <i>Detail included in this section should be supported by partner letters of support.</i>
                 <ol id='list' type="i">
                 <li><b>How is your partner organization committed to the implementation (installation, testing, uptake and/or commercialization) of the solution?</b>
                     {$item}
