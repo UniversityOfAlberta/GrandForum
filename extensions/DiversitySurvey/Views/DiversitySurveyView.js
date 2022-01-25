@@ -318,7 +318,7 @@ DiversitySurveyView = Backbone.View.extend({
             this.$el.html(this.template_en(this.model.toJSON()));
         }
         else if (this.model.get('language') == 'fr'){
-            main.set('title', networkName + ' Questionnaire du Recensement sur la Diversité');
+            main.set('title', 'Questionnaire sur la Diversité et l’Inclusion ' + networkName);
             this.$el.html(this.template_fr(this.model.toJSON()));
         }
         this.change(true);
