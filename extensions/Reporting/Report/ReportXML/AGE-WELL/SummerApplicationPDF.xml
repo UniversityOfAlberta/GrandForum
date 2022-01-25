@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL EPIC Summer Institute, 2020 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2020" disabled="false">
+<Report name="AGE-WELL EPIC Summer Institute, 2022 Application" reportType="RP_SUMMER" pdfType="RPTP_SUMMER" pdfFiles="SummerApplicationPDF" ajax="true" year="2022" disabled="false">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
                 <div style="float:left;">
-                    <h4 style='font-size:1.5em;'>AGE-WELL EPIC Summer Institute, 2020</h4>
+                    <h4 style='font-size:1.5em;'>AGE-WELL EPIC Summer Institute, 2022</h4>
                     <h4>Co-Creating Possibilities: Health Care & Health Service</h4>
                 </div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
@@ -100,7 +100,7 @@
         </Static>
         <ReportItem id="workpackages" type="TextareaReportItem" blobItem="WORKPACKAGES">
             <![CDATA[
-                <p><b>Please identify the workpackage or challenge area to which you belong or the workpackage or challenge area in which your work best fits. How does your work support AGE-WELL’s goals and mission?</b></p>
+                <p><b>Please identify the challenge area(s) in which your work best fits. How does your work support AGE-WELL’s goals and mission?</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -118,7 +118,7 @@
         </ReportItem>
         <ReportItem id="transdisciplinary" type="TextareaReportItem" blobItem="TRANSDISCIPLINARY">
             <![CDATA[
-                <p><b>What would you bring to a transdisciplinary team trying to create a solution that supports leisure, recreation and wellness?  Please include any special skills or experience with participatory research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc.</b></p>
+                <p><b>What would you bring to a transdisciplinary team trying to create a solution that supports health care and health service delivery? Please include any special skills or experience with stakeholder-driven research, business plans, knowledge mobilization activities, engagement with policy, intellectual property, prototyping, programming languages etc.</b></p>
                 {$item}<br />
             ]]>
         </ReportItem>

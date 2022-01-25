@@ -452,6 +452,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2018, "2018"));
