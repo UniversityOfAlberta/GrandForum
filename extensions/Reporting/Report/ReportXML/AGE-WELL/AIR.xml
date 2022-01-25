@@ -124,7 +124,7 @@
         <ReportItem id="vii" type="SelectReportItem" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" blobItem="WP">
             <![CDATA[
                 <li>
-                    <b>The proposed project is best aligned with AGE-WELL’s Challenge Area</b>
+                    <b>The proposed project is best aligned with AGE-WELL’s Challenge Area:</b>
                     {$item}
                     (Challenge Area descriptions are available here: <a href="https://agewell-nce.ca" target="_blank">https://agewell-nce.ca</a>) 
                 </li>
@@ -400,9 +400,10 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="Part 3 - Budget" name="Budget">
-        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL AIR Budget Template.xlsx">
+    <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="PART 3 - Budget" name="Budget">
+        <ReportItem id="budget" type="UploadReportItem" blobType="BLOB_RAW" blobItem="BUDGET" mimeType=".xlsx,.xlx">
             <![CDATA[
+                <p>Complete the <a href="{$wgServer}{$wgScriptPath}/data/AGE-WELL AIR Budget Template.xlsx">Budget Template</a> and upload a free-form budget justification. Include contributions outlined in letters of support.</p>
                 <h2>Budget</h2>
                 {$item}
             ]]>

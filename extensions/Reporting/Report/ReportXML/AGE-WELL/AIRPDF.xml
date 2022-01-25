@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL SIP Accelerator" reportType="RP_AIR" pdfType="RPTP_AIR" allowIdProjects="true" year="2022">
+<Report name="AGE-WELL AGETECH Implementation Response Program" reportType="RP_AIR" pdfType="RPTP_AIR" allowIdProjects="true" pdfFiles="AIRPDF" ajax="true" year="2022">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Strategic Investment Program (SIP) Accelerator Funding</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL AGETECH Implementation Response Program</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
                 <br />
                 <br />
                 <br />
@@ -18,15 +20,14 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="cover" tooltip="Cover Sheet" name="Cover Sheet" blobSection="COVER_SHEET" type="HeaderReportSection">
-        <ReportItem id="cover" type="BookmarkReportItem" title="Cover Sheet">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
+    <ReportSection id="cover" tooltip="PART 1 - Project Information" title="PART 1 - Project Information" name="Project Information" blobSection="COVER_SHEET" type="EditableReportSection">
         <ReportItem id="i" type="TextReportItem" blobItem="PROJECT">
             <![CDATA[
-                <h4>COVER SHEET</h4>
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
                 <ol id='list' type="i">
                 <li>
                     <b>Investigator Name: </b>{$user_name}&nbsp;&nbsp;&nbsp;<b>Institution: </b>{$user_uni}<br />
@@ -34,17 +35,18 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="ii" type="RadioReportItem" options="Knowledge Mobilization|Commercialization" blobItem="TYPE">
+        <ReportItem id="ii" type="RadioReportItem" labels="Knowledge Mobilization (KM) or implementation of KM products, including evidence-based policies, practices, guidelines, or tools|Commercialization or implementation of validated technologies, products, and/or services" options="Knowledge Mobilization|Commercialization" blobItem="TYPE">
             <![CDATA[
                 <li>
-                    <b>Project Type:</b> {$item}
+                    <b>Project Type</b>
+                    {$item}
                 </li>
             ]]>
         </ReportItem>
         <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
             <![CDATA[
                 <li>
-                    <b>Provide a 300-word plain language summary that includes a problem statement, research purpose and anticipated impact(s) of the project.</b>
+                    <b>Plain language Summary:</b>
                     {$item}
                 </li>
             ]]>
@@ -52,7 +54,7 @@
         <ReportItem id="iv" type="TextReportItem" blobItem="PARTNERS">
             <![CDATA[
                 <li>
-                    <b>Project Partner(s) name(s):</b> {$item}
+                    <b>Principal Knowledge User Partner Organization(s) name(s):</b> {$item}
                 </li>
             ]]>
         </ReportItem>
@@ -78,75 +80,81 @@
         <ReportItem id="vii" type="SelectReportItem" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" blobItem="WP">
             <![CDATA[
                 <li>
-                    <b>The proposed project is best aligned with AGE-WELL:</b>
+                    <b>The proposed project is best aligned with AGE-WELL’s Challenge Area:</b>
                     {$item}
                 </li>
+                
             ]]>
         </ReportItem>
         <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
             <![CDATA[
-                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program?</b>
+                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program? </b><br />
                     {$item}
                 </li>
                 </ol>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SIP_ACC_2019, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
-            <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1">
+        <If if="{==({getText(RP_AIR, COVER_SHEET, PREVIOUS, 0, {$user_id}, 0},Yes)}">
+            <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1" limit="200">
                 <![CDATA[
                     <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
-                    <h3>Were the objectives of the previously funded project met? Please explain.</h3>
+                    <h3>How are the current proposed activities different from those in the original project funded by AGE-WELL? Please explain.</h3>
                     {$item}
                 ]]>
             </ReportItem>
-            <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2">
-                <![CDATA[
-                    <h3>What is/are the main output(s) from your previous award? Please describe the real or potential impact of this work. Consider the real or potential impact on older adults and caregivers, communities, industry and/or policies.</h3>
-                    {$item}
-                ]]>
-            </ReportItem>
-            <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3">
+            <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2" limit="200">
                 <![CDATA[
                     <h3>What new partnerships or collaborations were created during the previous award? Will these continue? How did these partnerships/collaborations shape your project?</h3>
                     {$item}
                 ]]>
             </ReportItem>
+            <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3" limit="100">
+                <![CDATA[
+                    <h3>Do you foresee any challenges or barriers to implementation based on previous experience with this project?</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <Static>
+                <![CDATA[
+                    <h3>In the narrative application, please describe how the new project will build on the activities, findings and partnerships from the previously funded work.</h3>
+                ]]>
+            </Static>
         </If>
     </ReportSection>
-    <ReportSection id="narrative" tooltip="PART 1 - Narrative Application" title="PART 1 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
+    <ReportSection id="narrative" tooltip="PART 2 - Narrative Application" title="PART 2 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
         <Static>
-            <![CDATA[
-                <h2>1) RATIONALE AND APPROACH</h2>
-            ]]>
-        </Static>
-        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL">
             <![CDATA[
                 <style>
                     ol#list > li {
                         margin-bottom:15px;
                     }
                 </style>
+                <h2>1) RATIONALE AND APPROACH</h2>
+            ]]>
+        </Static>
+        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL" limit="300">
+            <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Summarize the rationale for the project</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="unique" type="TextareaReportItem" rich="true" blobItem="UNIQUE">
+        <ReportItem id="unique" type="TextareaReportItem" rich="true" blobItem="UNIQUE" limit="200">
             <![CDATA[
                 <li><b>What is unique or innovative about this solution or innovation?</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="value" type="TextareaReportItem" rich="true" blobItem="VALUE">
+        <ReportItem id="value" type="TextareaReportItem" rich="true" blobItem="VALUE" limit="200">
             <![CDATA[
                 <li><b>What is the value of the project for older adults and/or caregivers?</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS">
+        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS" limit="200">
             <![CDATA[
                 <li><b>State the project goals and objectives</b>
                     {$item}
@@ -159,24 +167,45 @@
                 <h2>2) PROJECT OPPORTUNITY</h2>
             ]]>
         </Static>
-        <ReportItem id="market" type="TextareaReportItem" rich="true" blobItem="MARKET">
+        <ReportItem id="implementing" type="TextareaReportItem" rich="true" blobItem="IMPLEMENTING" limit="200">
             <![CDATA[
                 <ol id='list' type="i">
-                <li><b>What is the Market Size?</b>
+                <li><b>Who is implementing the solution? Who is benefiting from the solution?</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="advantages" type="TextareaReportItem" rich="true" blobItem="ADVANTAGES">
+        <ReportItem id="policy" type="TextareaReportItem" rich="true" blobItem="POLICY" limit="200">
             <![CDATA[
-                <li><b>What are the competitive advantages of your proposed solution?</b>
+                <li><b>How will the work inform and/or align with organizational, municipal, territorial and/or federal policy priorities?</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="competitors" type="TextareaReportItem" rich="true" blobItem="COMPETITORS">
+        <ReportItem id="change" type="TextareaReportItem" rich="true" blobItem="CHANGE" limit="200">
             <![CDATA[
-                <li><b>Who are your competitors?</b>
+                <li><b>What type of change are you trying to implement? (E.g., practice change - implementing a technology or KM tool into a new setting or scaling up to more sites; policy change – implementing new evidence to inform a change in government or organizational policy; service change - improving how to implement a technology or service.) Please provide concrete examples.</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES" limit="200">
+            <![CDATA[
+                <li><b>What implementation strategies will you use?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="evaluate" type="TextareaReportItem" rich="true" blobItem="EVALUATE" limit="200">
+            <![CDATA[
+                <li><b>How will you evaluate the process and outcomes of implementing your solution?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="TextareaReportItem" rich="true" blobItem="IP" limit="200">
+            <![CDATA[
+                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.? If your intellectual property is currently protected, please briefly describe how.</b>
                     {$item}
                 </li>
                 </ol>
@@ -184,97 +213,54 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                <h2>3) INTELLECTUAL PROPERTY</h2>
+                <h2>3) PROJECT TEAM</h2>
             ]]>
         </Static>
-        <ReportItem id="strategy" type="TextareaReportItem" rich="true" blobItem="STRATEGY">
-            <![CDATA[
-                <ol id='list' type="i">
-                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="protected" type="TextareaReportItem" rich="true" blobItem="PROTECTED">
-            <![CDATA[
-                <li><b>Is your intellectual property currently protected? If yes, please describe how.</b>
-                    {$item}
-                </li>
-                </ol>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <h2>4) PROJECT OPPORTUNITY</h2>
-            ]]>
-        </Static>
-        <ReportItem id="audience" type="TextareaReportItem" rich="true" blobItem="AUDIENCE">
-            <![CDATA[
-                <ol id='list' type="i">
-                <li><b>Who are your key audience(s)?</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="knowledge" type="TextareaReportItem" rich="true" blobItem="KNOWLEDGE">
-            <![CDATA[
-                <li><b>What are your knowledge mobilization goals?</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES">
-            <![CDATA[
-                <li><b>What knowledge mobilization strategies will you use?</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="effectiveness" type="TextareaReportItem" rich="true" blobItem="EFFECTIVENESS">
-            <![CDATA[
-                <li><b>How will you evaluate the effectiveness of the knowledge mobilization strategies you are using?</b>
-                    {$item}
-                </li>
-            ]]>
-        </ReportItem>
-        <ReportItem id="protect" type="TextareaReportItem" rich="true" blobItem="PROTECT">
-            <![CDATA[
-                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.?</b>
-                    {$item}
-                </li>
-                </ol>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <h2>5) PROJECT TEAM</h2>
-            ]]>
-        </Static>
-        <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE">
+        <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE" limit="300">
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Describe how the expertise of your team will contribute to the success of the proposed initiative.</b>
                     {$item}
                 </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <li><b>Please submit a brief bio (2 pages maximum) for each named investigator highlighting experience and activities relevant to the application.</b>
+                    {$item}
+                </li>
                 </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ni_table" type="MultiText" class="wikitable" blobItem="NI_TABLE" blobType="BLOB_ARRAY" types="Text|Text|Text|Textarea|Text" labels="Team Member|Role|Institution/Organization|Expertise|E-mail" multiple="true">
+            <![CDATA[
+                <p><b>Complete the Team Summary table:</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_table" type="MultiText" class="wikitable" blobItem="HQP_TABLE" blobType="BLOB_ARRAY" types="Text|Text|Text|Textarea" labels="Team Member|Institution/Organization|E-mail|Level of Study/Position" multiple="true">
+            <![CDATA[
+                <p><b>Complete the Highly Qualified Personnel (HQP) table:</b></p>
+                {$item}
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-                <h2>6) PARTNERSHIPS</h2>
+                <h2>4) PRINCIPAL KNOWLEDGE USER(S) / PARTNERSHIPS</h2>
             ]]>
         </Static>
-        <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED">
+        <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED" limit="300">
             <![CDATA[
+                <i>Detail included in this section should be supported by partner letters of support.</i>
                 <ol id='list' type="i">
-                <li><b>Is your partner committed to the dissemination, uptake and/or commercialization the solution/findings?</b>
+                <li><b>How is your partner organization committed to the implementation (installation, testing, uptake and/or commercialization) of the solution?</b>
                     {$item}
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="responsibilities" type="TextareaReportItem" rich="true" blobItem="RESPONSIBILITIES">
+        <ReportItem id="responsibilities" type="TextareaReportItem" rich="true" blobItem="RESPONSIBILITIES" limit="300">
             <![CDATA[
-                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. dissemination, product development, testing and evaluation etc.).</b>
+                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. installation, testing, process and/or outcome evaluation etc.).</b>
                     {$item}
                 </li>
                 </ol>
@@ -282,10 +268,10 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                <h2>7) POTENTIAL IMPACT</h2>
+                <h2>5) POTENTIAL IMPACT</h2>
             ]]>
         </Static>
-        <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS">
+        <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS" limit="300">
             <![CDATA[
                 <ol id='list' type="i">
                 <li><b>Describe the anticipated impacts and associated benefits and beneficiaries of this project.</b>
@@ -293,93 +279,32 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="deliverables" type="TextareaReportItem" rich="true" blobItem="DELIVERABLES">
+        <ReportItem id="deliverables" type="TextareaReportItem" rich="true" blobItem="DELIVERABLES" limit="300">
             <![CDATA[
-                <li><b>Provide a list of project deliverables (bullet points).</b>
+                <li><b>Provide a list of project deliverables (bullet points)</b>
                     {$item}
                 </li>
                 </ol>
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="appendix" tooltip="PART 2 - Appendix" title="PART 2 - Appendix" name="Appendix" type="EditableReportSection" blobSection="APPENDIX">
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" labels="Team Member|Role|Institution/Organization|Expertise|Email" types="Text|Select(PL,NI,AR,Collaborator,Partner)|Text|Textarea|Text" class="wikitable" multiple="true">
-            <![CDATA[
-                <h2>Team Summary</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="hqp" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP" labels="Team Member|Institution/Organization|Email|Level of Study/Position" types="Text|Text|Text|Text" class="wikitable" multiple="true">
-            <![CDATA[
-                <h2>Highly Qualified Personnel (HQP)</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="break" type="PageBreakReportItem">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="budget" type="BudgetReportItem" blobType="BLOB_RAW" blobItem="BUDGET" structure="AGEWELL_BUDGET_STRUCTURE" template="AGE-WELL SIP-A Budget Template.xlsx">
+    <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="PART 3 - Budget" name="Budget" pagebreak="false">
+        <ReportItem id="budget" type="UploadReportItem" blobType="BLOB_RAW" blobItem="BUDGET" mimeType=".xlsx,.xlx">
             <![CDATA[
                 <h2>Budget</h2>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="just1" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST1" height="100px">
+        <ReportItem id="just" type="Upload" blobType="BLOB_RAW" blobItem="JUST" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h3>Budget Justification</h3>
-                <h4>1) Salaries to students</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just2" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST2" height="100px">
-            <![CDATA[
-                <h4>2) Salaries to non-students</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just3" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST3" height="100px">
-            <![CDATA[
-                <h4>3) Professional & Tech. Services/contracts</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just4" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST4" height="100px">
-            <![CDATA[
-                <h4>4) Equipment</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just5" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST5" height="100px">
-            <![CDATA[
-                <h4>5) Computing and Software</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just6" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST6" height="100px">
-            <![CDATA[
-                <h4>6) Materials, Supplies & Other expenditures</h4>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="just7" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="JUST7" height="100px">
-            <![CDATA[
-                <h4>7) Travel</h4>
+                <h2>Budget Justification</h2>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="bio" tooltip="PART 3 - Investigator Bio and Partner Letter of Support" title="PART 3 - Investigator Bio and Partner Letter of Support" name="Bio &amp; Letter of Support" type="EditableReportSection" blobSection="BIO" pagebreak="false">
-        <ReportItem id="bio" type="TextareaReportItem" blobItem="BIO" rich="true">
+    <ReportSection id="letters" tooltip="PART 4 - Letters of Support" title="PART 4 - Letters of Support" name="Letters of Support" type="EditableReportSection" blobSection="LETTERS" pagebreak="false">
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
             <![CDATA[
-                <h2>Investigator(s) Bio</h2>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="letter" type="UploadReportItem" mimeType="application/zip" blobItem="LETTER">
-            <![CDATA[
-                <h2>Partner Letter of Support</h2>
                 {$item}
             ]]>
         </ReportItem>
