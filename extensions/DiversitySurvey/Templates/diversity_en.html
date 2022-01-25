@@ -29,8 +29,7 @@
     </div>
     <h3><span class="number">3.</span> Gender</h3>
     <div class="answer">
-        <p>The options listed below are based on the Alberta Human Rights Commission descriptions of gender identity and other terms frequently used to represent gender.
-Do you identify as (select all that apply):<br />
+        <p>The options listed below are based on the Alberta Human Rights Commission descriptions of gender identity and other terms frequently used to represent gender.<br />
         <b>Do you identify as (choose all that apply):</b></p>
         <%= HTML.MultiCheckBox(this, 'gender.values', {options: ["Female", "Gender-Fluid and/or Non-Binary", "Male", "Transgender", "Two-Spirit", {value: "Another gender", option: "Another gender identity (Please specify):"}]}) %>
         <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
