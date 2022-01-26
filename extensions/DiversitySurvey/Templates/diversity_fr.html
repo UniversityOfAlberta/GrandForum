@@ -24,8 +24,9 @@
             [{option: "Chercheur du Réseau", value: "Network Investigator"}, 
              {option: "Personnel hautement qualifié", value: "Highly Qualified Personnel"}, 
              {option: "Membre du conseil et/ou comité", value: "Board and/or Committee Member"}, 
-             {option: "Employé", value: "Employee"}]}) %>
-        <div>Autre (veuillez préciser) : <%= HTML.TextBox(this, 'affiliation') %></div>
+             {option: "Employé", value: "Employee"},
+             {option: "Autre (veuillez préciser) :", value: "Other"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'affiliation') %></div>
     </div>
     <h3><span class="number">2.</span> Indiquez votre tranche d'âge.</h3>
     <div class="answer">
@@ -222,8 +223,9 @@
         <%= HTML.MultiCheckBox(this, 'improve.values', {options: 
             [{option: "Participez à un atelier pour apprendre à rédiger un énoncé sur l’EDI", value: "Take a workshop to learn how to write an EDI Statement"}, 
              {option: "Discutez avec un expert sur l’EDI sur la façon d'améliorer votre énoncé sur l’EDI", value: "Discuss with an EDI expert on how to improve your EDI statement"}, 
-             {option: "Aucune des réponses ci-dessus", value: "None of the above"}]}) %>
-        <div>Autre (veuillez préciser) : <%= HTML.TextBox(this, 'improve.other') %></div>
+             {option: "Aucune des réponses ci-dessus", value: "None of the above"},
+             {option: "Autre (veuillez préciser) :", value: "Other"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'improve.other') %></div>
     </div>
     <h3><span class="number">16.</span> À quand remonte la dernière fois que vous avez suivi une formation sur l’EDI?</h3>
     <div class="answer">
@@ -239,8 +241,9 @@
             <%= HTML.MultiCheckBox(this, 'preventsTraining.values', {options: 
                 [{option: "Je n'ai pas le temps", value: "I have no time"}, 
                  {option: "Je ne suis pas intéressé(e)", value: "I am not interested"}, 
-                 {option: "Mes connaissances actuelles sont suffisantes", value: "My current knowledge is sufficient"}]}) %>
-            <div>Autre (veuillez préciser) : <%= HTML.TextBox(this, 'preventsTraining.other') %></div>
+                 {option: "Mes connaissances actuelles sont suffisantes", value: "My current knowledge is sufficient"}, 
+                 {option: "Autre (veuillez préciser) :", value: "Other"}]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'preventsTraining.other') %></div>
         </div>
     </div>
     <h3><span class="number">17.</span> Quelle formation sur l’EDI avez-vous suivie? Sélectionnez tout ce qui s'applique.</h3>
@@ -248,8 +251,9 @@
         <%= HTML.MultiCheckBox(this, 'trainingTaken.values', {options: 
             [{option: "Module du CRSNG sur les préjugés inconscients", value: "NSERC Module on Unconscious Bias"}, 
              {option: "Ateliers sur la diversité et l'inclusion du CCDI, présenté par GlycoNet", value: "CCDI Diversity and Inclusion Bootcamp, hosted by GlycoNet"}, 
-             {option: "Formation sur l’EDI spécifique à l'université", value: "University-specific EDI Training"}]}) %>
-        <div>Autre (veuillez préciser) : <%= HTML.TextBox(this, 'trainingTaken.other') %></div>
+             {option: "Formation sur l’EDI spécifique à l'université", value: "University-specific EDI Training"},
+             {option: "Autre (veuillez préciser) :", value: "Other"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'trainingTaken.other') %></div>
     </div>
     <h3><span class="number">18.</span> Quelles initiatives et/ou formations sur l’EDI souhaiteriez-vous voir appliquées par GlycoNet?</h3>
     <div class="answer">

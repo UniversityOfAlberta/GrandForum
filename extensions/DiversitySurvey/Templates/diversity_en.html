@@ -20,8 +20,8 @@
     <h2>Demographics</h2>
     <h3><span class="number">1.</span> What is your primary affiliation with GlycoNet? <span style="color: red;">(required)</span></h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'affiliation', {options: ["Network Investigator", "Highly Qualified Personnel", "Board and/or Committee Member", "Employee"]}) %>
-        <div>Other, please specify: <%= HTML.TextBox(this, 'affiliation') %></div>
+        <%= HTML.Radio(this, 'affiliation', {options: ["Network Investigator", "Highly Qualified Personnel", "Board and/or Committee Member", "Employee", {value: "Other", option: "Other, please specify:"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'affiliation') %></div>
     </div>
     <h3><span class="number">2.</span> Indicate which age range applies to you.</h3>
     <div class="answer">
@@ -136,8 +136,8 @@
     </div>
     <h3><span class="number">15.</span> If you are not confident with writing an EDI Statement, would you do the following to improve it? Select all that apply.</h3>
     <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI Statement", "Discuss with an EDI expert on how to improve your EDI statement", "None of the above"]}) %>
-        <div>Other (please specify): <%= HTML.TextBox(this, 'improve.other') %></div>
+        <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI Statement", "Discuss with an EDI expert on how to improve your EDI statement", "None of the above", {value: "Other", option: "Other (please specify):"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'improve.other') %></div>
     </div>
     <h3><span class="number">16.</span> When was the last time you took any kind of EDI training?</h3>
     <div class="answer">
@@ -145,14 +145,14 @@
         <div id="preventsTraining">
             <br />
             <b>What prevents you from taking training?</b><br />
-            <%= HTML.MultiCheckBox(this, 'preventsTraining.values', {options: ["I have no time", "I am not interested", "My current knowledge is sufficient"]}) %>
-            <div>Other (please specify): <%= HTML.TextBox(this, 'preventsTraining.other') %></div>
+            <%= HTML.MultiCheckBox(this, 'preventsTraining.values', {options: ["I have no time", "I am not interested", "My current knowledge is sufficient", {value: "Other", option: "Other (please specify):"}]}) %>
+            <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'preventsTraining.other') %></div>
         </div>
     </div>
     <h3><span class="number">17.</span> What EDI training have you taken? Select all that apply.</h3>
     <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'trainingTaken.values', {options: ["NSERC Module on Unconscious Bias", "CCDI Diversity and Inclusion Bootcamp, hosted by GlycoNet", "University-specific EDI Training"]}) %>
-        <div>Other (please specify): <%= HTML.TextBox(this, 'trainingTaken.other') %></div>
+        <%= HTML.MultiCheckBox(this, 'trainingTaken.values', {options: ["NSERC Module on Unconscious Bias", "CCDI Diversity and Inclusion Bootcamp, hosted by GlycoNet", "University-specific EDI Training", {value: "Other", option: "Other (please specify):"}]}) %>
+        <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'trainingTaken.other') %></div>
     </div>
     <h3><span class="number">18.</span> What EDI initiatives and/or training would you like to see implemented by GlycoNet?</h3>
     <div class="answer">
