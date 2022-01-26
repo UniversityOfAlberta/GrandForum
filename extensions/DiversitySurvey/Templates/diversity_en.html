@@ -27,7 +27,7 @@
     <div class="answer">
         <%= HTML.Radio(this, 'age', {options: ["Between 18-34", "Between 35-54", "Between 55-64", "65+", "I prefer not to answer"]}) %>
     </div>
-    <h3><span class="number">3.</span> Gender</h3>
+    <h3><span class="number">3.</span> Gender:</h3>
     <div class="answer">
         <p>The options listed below are based on the Alberta Human Rights Commission descriptions of gender identity and other terms frequently used to represent gender.<br />
         <b>Do you identify as (choose all that apply):</b></p>
@@ -35,7 +35,7 @@
         <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'gender.other') %></div>
         <%= HTML.CheckBox(this, 'gender.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
     </div>
-    <h3><span class="number">4.</span> Sexual Orientation</h3>
+    <h3><span class="number">4.</span> Sexual Orientation:</h3>
     <div class="answer">
         <p>The options listed below are based on the Alberta Human Rights Commission’s definition of sexual orientation.<br />
         <b>Do you identify as (choose all that apply):</b></p>
@@ -57,7 +57,7 @@
             <%= HTML.CheckBox(this, 'indigenousApply.decline', {value: "I prefer not to answer", style: "vertical-align:middle;"}) %><span style="vertical-align:middle;">I prefer not to answer</span>
         </div>
     </div>
-    <h3><span class="number">6.</span> Disability:</h3>
+    <h3><span class="number">6.</span> Person with a disability:</h3>
     <div class="answer">
         <p style="margin-bottom:0;">In accordance with the Canada Employment Equity Act, a person with a disability is an individual who has a long-term or recurring physical, mental, sensory, psychiatric or learning impairment and:</p>
         <ul>
@@ -158,7 +158,7 @@
     <div class="answer">
         <%= HTML.TextArea(this, 'implemented', {style: 'height:100px'}) %>
     </div>
-    <h3><span class="number">19.</span> Is there anything else you’d like GlycoNet to know about your experiences that could help us tailor our initiatives to make STEM a better place for everyone?</h3>
+    <h3><span class="number">19.</span> Is there anything else you’d like GlycoNet to know about your experiences that could help us tailor our initiatives to make STEM (science, technology, engineering, and medicine) a better place for everyone?</h3>
     <div class="answer">
         <%= HTML.TextArea(this, 'stem', {style: 'height:100px'}) %>
     </div>
