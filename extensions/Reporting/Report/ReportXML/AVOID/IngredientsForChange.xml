@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Ingredients For Change" reportType="RP_AVOID" pdfType="RPTP_AVOID" pdfFiles="IntakeFormPDF" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="EULAReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/1. Introduction.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Ingredients 1: Confidence" name="Ingredients 1: Confidence" title="Ingredients 1: Confidence" type="EULAReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/2. Confidence.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Ingredients 2: Support" name="Ingredients 2: Support" title="Ingredients 2: Support" type="EULAReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/3. Support.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Ingredients 3: Motivation" name="Ingredients 3: Motivation" title="Ingredients 3: Motivation" type="EULAReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/4. Motivation.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz" blobSection="QUIZ" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'IngredientsForChange');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve read about the three main ingredients (or factors) involved in making changes to your behaviour, let's review and see how much you remember.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Confidence, support, motivation|b. Control, hope, determination|c. Competency, choice, comfort">
+            <![CDATA[
+                <h3>Question 1: The three factors involved in making healthy lifestyle choices are:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Knowing what my plan is|b. Being fearless in every situation|c. Never failing at my plan">
+            <![CDATA[
+                <h3>Question 2: Confidence is:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Never being alone|b. Not falling down|c. Having access to help on my journey">
+            <![CDATA[
+                <h3>Question 3: Support is:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Always being in motion|b. Knowing why I'm doing something|c. Having a plan">
+            <![CDATA[
+                <h3>Question 4: Motivation is:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="answers" tooltip="Answers" name="Answers" blobSection="QUIZ" type="EULAReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'IngredientsForChange');
+                    dc.increment('answersPageCount');
+                    dc.timer('answersTime');
+                </script>
+            ]]>
+        </Static>
+        <If if="{or({==({getText(RP_AVOID, QUIZ, Q1, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_AVOID, QUIZ, Q2, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_AVOID, QUIZ, Q3, 0, {$user_id}, 0)},)},
+                    {==({getText(RP_AVOID, QUIZ, Q4, 0, {$user_id}, 0)},)})}">
+            <![CDATA[
+                Please answer all questions before viewing the answers.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="a. Confidence, support, motivation">
+                <![CDATA[
+                    {$item}
+                    <p>
+                        Change is difficult, but when you know the ingredients, it can be manageable.  Having confidence in your chosen actions, support from others and access to resources, and being motivated by internal goals will help you be successful in making healthy lifestyle choices. Keep these in mind if you hit a roadblock and come back to them to rethink how they apply to you.
+                    </p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="a. Knowing what my plan is">
+                <![CDATA[
+                    {$item}
+                    <p>
+                        Confidence can mean many things, but in the context of changing your lifestyle it simply means—something we feel ready for and <b>having a plan that we know we can follow through on</b> what is manageable.<br /> 
+                        When you are ready to reflect on your level of confidence, you can ask yourself: <b>WHAT am I willing to start with today?</b><br /> 
+                        This will give you an idea of how to engage in a behaviour that matches your current confidence level.
+                    </p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="c. Having access to help on my journey">
+                <![CDATA[
+                    {$item}
+                    <p>
+                        In the context of lifestyle change, support represents all the resources that can be crucial to beginning and maintaining the desired behaviour.
+                    </p>
+                    <p>
+                        <b>Support is HOW we do the things we do.</b><br />
+                        When you are confident about making a change, you can access a list of resources that include information varying from recipes to activity plans and other health recommendations.
+                    </p>
+                ]]>
+            </ReportItem>
+            <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="b. Knowing why I'm doing something">
+                <![CDATA[
+                    {$item}
+                    <p>
+                        Motivation, especially internal motivation, can be one of the most important ingredients involved in changing our habits, because it connects us to our goals and reminds us WHY we do the things we do.<br />
+                        Think about the things you do in your spare time. What do they have in common?<br />
+                        The answer is probably that these are activities you enjoy or that are related to an important personal value. Can you connect a new healthy habit to one of your personal values?
+                    </p>
+                ]]>
+            </ReportItem>
+        </Else>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="EULAReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/6. Conclusion.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="data_collection" name="Data Collection" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <div id="data">
+                    <table class="wikitable">
+                        <tr>
+                            <th>Page</th>
+                            <th colspan=''>Page Counts</th>
+                            <th colspan=''>Time Spent</th>
+                            <th colspan=''>% Video Watched</th>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 1:</td>
+                            <td class="value" id="video1PageCount"></td>
+                            <td class="value" id="video1Time"></td>
+                            <td class="value" id="video1"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 2:</td>
+                            <td class="value" id="video2PageCount"></td>
+                            <td class="value" id="video2Time"></td>
+                            <td class="value" id="video2"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 3:</td>
+                            <td class="value" id="video3PageCount"></td>
+                            <td class="value" id="video3Time"></td>
+                            <td class="value" id="video3"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 4:</td>
+                            <td class="value" id="video4PageCount"></td>
+                            <td class="value" id="video4Time"></td>
+                            <td class="value" id="video4"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Video 5:</td>
+                            <td class="value" id="video6PageCount"></td>
+                            <td class="value" id="video6Time"></td>
+                            <td class="value" id="video6"></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Quiz:</td>
+                            <td class="value" id="quizPageCount"></td>
+                            <td class="value" id="quizTime"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Answers:</td>
+                            <td class="value" id="answersPageCount"></td>
+                            <td class="value" id="answersTime"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'IngredientsForChange');
+                    dc.ready().always(function(){
+                        var video1Watched = Math.round(dc.sum('video1Watched')/_.size(dc.video('video1Watched', 1))*100);
+                        var video2Watched = Math.round(dc.sum('video2Watched')/_.size(dc.video('video2Watched', 1))*100);
+                        var video3Watched = Math.round(dc.sum('video3Watched')/_.size(dc.video('video3Watched', 1))*100);
+                        var video4Watched = Math.round(dc.sum('video4Watched')/_.size(dc.video('video4Watched', 1))*100);
+                        var video6Watched = Math.round(dc.sum('video6Watched')/_.size(dc.video('video6Watched', 1))*100);
+                        $("#video1").text(video1Watched + "% watched");
+                        $("#video2").text(video2Watched + "% watched");
+                        $("#video3").text(video3Watched + "% watched");
+                        $("#video4").text(video4Watched + "% watched");
+                        $("#video6").text(video6Watched + "% watched");
+                        $("#video1PageCount").text(dc.getField('video1PageCount', 0));
+                        $("#video2PageCount").text(dc.getField('video2PageCount', 0));
+                        $("#video3PageCount").text(dc.getField('video3PageCount', 0));
+                        $("#video4PageCount").text(dc.getField('video4PageCount', 0));
+                        $("#video6PageCount").text(dc.getField('video6PageCount', 0));
+                        $("#quizPageCount").text(dc.getField('quizPageCount', 0));
+                        $("#answersPageCount").text(dc.getField('answersPageCount', 0));
+                        $("#video1Time").text(dc.getField('video1Time', 0) + 's');
+                        $("#video2Time").text(dc.getField('video2Time', 0) + 's');
+                        $("#video3Time").text(dc.getField('video3Time', 0) + 's');
+                        $("#video4Time").text(dc.getField('video4Time', 0) + 's');
+                        $("#video6Time").text(dc.getField('video6Time', 0) + 's');
+                        $("#quizTime").text(dc.getField('quizTime', 0) + 's');
+                        $("#answersTime").text(dc.getField('answersTime', 0) + 's');
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>
