@@ -97,6 +97,12 @@ class Report extends AbstractReport {
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectEvaluationSummary")) ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("Evaluation Summary", "{$url}ProjectEvaluationSummary", $selected);
         }
+        
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && $_GET['report'] == "AIR") ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("AIR", "{$url}AIR", $selected);
+        }
+        
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){

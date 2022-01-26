@@ -90,6 +90,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>EEA</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=edge'>Edge</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=air'>AIR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
@@ -128,6 +129,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "edge" && $me->isRoleAtLeast(SD)){
             $this->generateEdge();
+        }
+        else if($program == "air" && $me->isRoleAtLeast(SD)){
+            $this->generateAir();
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
@@ -257,6 +261,13 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_CRP', null, 2018, "2018", array('Supporting Documents' => $merged, 'Team' => $team, 'Title' => $title, 'Primary' => $primary, 'Secondary' => $secondary, 'AGE-WELL Request ($)' => $total, 'MEDTEQ' => $medteq, 'MITACS' => $mitacs, 'Product' => $section2, 'Organizations' => $orgs)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateAir(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_AIR', null, 2022, "2022"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
