@@ -10,21 +10,7 @@ DiversitySurveyView = Backbone.View.extend({
             error: function(obj, e){
                 clearAllMessages();
                 addError(e.responseText);
-            },
-            success: function(){
-                $(window).bind('keydown', function(event) {
-                    if (event.ctrlKey || event.metaKey) {
-                        switch (String.fromCharCode(event.which).toLowerCase()) {
-                        case 's':
-                            var focused = document.activeElement;
-                            focused.blur();
-                            event.preventDefault();
-                            this.save();
-                            break;
-                        }
-                    }
-                }.bind(this));
-            }.bind(this)
+            }
         });
     },
     
