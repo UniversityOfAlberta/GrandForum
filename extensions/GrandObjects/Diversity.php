@@ -358,7 +358,7 @@ class Diversity extends BackboneModel {
                       'affiliation' => $this->affiliation,
                       'age' => $this->age,
                       'indigenousApply' => $this->indigenousApply,
-                      'true_self' => $this->trueSelf,
+                      'trueSelf' => $this->trueSelf,
                       'valued' => $this->valued,
                       'space' => $this->space,
                       'respected' => $this->respected,
