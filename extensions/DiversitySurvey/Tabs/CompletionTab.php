@@ -8,18 +8,10 @@ class CompletionTab extends AbstractTab {
 
     function generateBody(){
         $people = Person::getAllPeople();
-        $this->html = "Coming Soon...";
-        return;
         $this->html  = "<table id='peopleTable' class='wikitable' frame='box' rules='all' style='width:100%'>";
         $this->html .= "<thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Roles</th>
-                                <th>Institution</th>
-                                <th>Department</th>
-                                <th>Position</th>
-                                <th>Completed?</th>
                                 <th>Decline?</th>
                                 <th>Q1</th>
                                 <th>Q2</th>
@@ -31,6 +23,16 @@ class CompletionTab extends AbstractTab {
                                 <th>Q8</th>
                                 <th>Q9</th>
                                 <th>Q10</th>
+                                <th>Q11</th>
+                                <th>Q12</th>
+                                <th>Q13</th>
+                                <th>Q14</th>
+                                <th>Q15</th>
+                                <th>Q16</th>
+                                <th>Q17</th>
+                                <th>Q18</th>
+                                <th>Q19</th>
+                                <th>Q20</th>
                             </tr>
                          </thead>
                          <tbody>";
@@ -38,52 +40,79 @@ class CompletionTab extends AbstractTab {
             if(DiversitySurvey::isEligible($person)){
                 $diversity = Diversity::newFromUserId($person->getId());
                 if($diversity->canView()){
-                    $complete = ($diversity->isComplete()) ? "Yes" : "No";
-                
-                    // Roles
-                    $roles = array();;
-                    foreach($person->getRoles() as $role){
-                        $roles[] = $role->getRole();
-                    }
-                    $roles = array_unique($roles);
-                
-                    // Race
-                    $race = implode(", ", $diversity->getRaces());
-                    
-                    // Gender
-                    $gender = implode(", ", $diversity->getGenders());
-                    
-                    // Orientation
-                    $orientation = implode(", ", $diversity->getOrientations());
-                    
                     $decline = ($diversity->decline == 0) ? "No" : "Yes";
                     
+                    $race = implode(", ", $diversity->getRaces());
+                    $gender = implode(", ", $diversity->getGenders());
+                    $orientation = implode(", ", $diversity->getOrientations());
+                    $indigenousApply = implode(", ", $diversity->getIndigenousApply());
+                    $disabilityVisibility = implode(", ", $diversity->getDisabilityVisibility());
+                    $respected = implode(", ", $diversity->getRespected());
+                    $leastRespected = implode(", ", $diversity->getLeastRespected());
+                    $improve = implode(", ", $diversity->getImprove());
+                    $preventsTraining = implode(", ", $diversity->getPreventsTraining());
+                    $trainingTaken = implode(", ", $diversity->getTrainingTaken());
+
                     $this->html .= "<tr>
                                         <td>{$person->getNameForForms()}</td>
-                                        <td>{$person->getEmail()}</td>
-                                        <td>".implode(", ", $roles)."</td>
-                                        <td>{$person->getUni()}</td>
-                                        <td>{$person->getDepartment()}</td>
-                                        <td>{$person->getPosition()}</td>
-                                        <td>{$complete}</td>
                                         <td>
                                             <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
                                                 {$decline}<br />
                                                 {$diversity->reason}
                                             </div>
                                         </td>
+                                        <td>{$diversity->affiliation}</td>
                                         <td>{$diversity->age}</td>
-                                        <td>{$diversity->indigenous}</td>
-                                        <td>
-                                            {$diversity->disability}<br />
-                                            {$diversity->disabilityVisibility}
-                                        </td>
-                                        <td>{$diversity->minority}</td>
-                                        <td>{$race}</td>
-                                        <td>{$diversity->immigration}</td>
                                         <td>{$gender}</td>
                                         <td>{$orientation}</td>
-                                        <td><div style='min-width:200px;max-height: 200px; overflow-y: auto;'>{$diversity->comments}</div></td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->indigenous}<br />
+                                                {$indigenousApply}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->disability}<br />
+                                                {$disabilityVisibility}
+                                            </div>
+                                        </td>
+                                        <td>{$race}</td>
+                                        <td>{$diversity->trueSelf}</td>
+                                        <td>{$diversity->valued}</td>
+                                        <td>{$diversity->space}</td>
+                                        <td>{$respected}</td>
+                                        <td>{$leastRespected}</td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->principles}<br />
+                                                {$diversity->principlesDescribe}
+                                            </div>
+                                        </td>
+                                        <td>{$diversity->statement}</td>
+                                        <td>{$improve}</td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->training}<br />
+                                                {$preventsTraining}
+                                            </div>
+                                        </td>
+                                        <td>{$trainingTaken}</td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->implemented}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->stem}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style='min-width:200px;max-height: 200px; overflow-y: auto;'>
+                                                {$diversity->comments}
+                                            </div>
+                                        </td>
                                      </tr>";
                 }
             }

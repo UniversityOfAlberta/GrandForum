@@ -18,7 +18,7 @@ DiversitySurveyView = Backbone.View.extend({
         "click #save": "save"
     },
     
-    save: _.debounce(function(){
+    save: _.throttle(function(){
         this.$("#save").prop("disabled", true);
         this.model.save(null, {
             success: function(){
@@ -54,7 +54,7 @@ DiversitySurveyView = Backbone.View.extend({
                 this.$("#save").prop("disabled", false);
             }.bind(this)
         });
-    }, 1000, false),
+    }, 1000),
     
     change: function(initial){
         // Declining
