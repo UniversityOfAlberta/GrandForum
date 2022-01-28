@@ -149,6 +149,17 @@
     <ReportSection id="data_collection" name="Data Collection" type="ReportSection">
         <Static>
             <![CDATA[
+                <p><b>This page won't actually exist when it is launched, its only to see what sort of data is collected</b></p>
+                <table class="wikitable">
+                    <tr>
+                        <td class="label">Created:</td>
+                        <td class="value" id="created"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Modified:</td>
+                        <td class="value" id="modified"></td>
+                    </tr>
+                </table>
                 <div id="data">
                     <table class="wikitable">
                         <tr>
@@ -209,6 +220,8 @@
                         var video3Watched = Math.round(dc.sum('video3Watched')/_.size(dc.video('video3Watched', 1))*100);
                         var video4Watched = Math.round(dc.sum('video4Watched')/_.size(dc.video('video4Watched', 1))*100);
                         var video6Watched = Math.round(dc.sum('video6Watched')/_.size(dc.video('video6Watched', 1))*100);
+                        $("#created").text(dc.get('created'));
+                        $("#modified").text(dc.get('modified'));
                         $("#video1").text(video1Watched + "% watched");
                         $("#video2").text(video2Watched + "% watched");
                         $("#video3").text(video3Watched + "% watched");

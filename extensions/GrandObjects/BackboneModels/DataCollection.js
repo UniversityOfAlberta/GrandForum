@@ -84,7 +84,9 @@ DataCollection = Backbone.Model.extend({
             id: null,
             userId: "",
             page: "",
-            data: {}
+            data: {},
+            created: "",
+            modified: ""
         };
     }
 

@@ -10,6 +10,8 @@ class DataCollection extends BackboneModel {
     var $userId;
     var $page;
     var $data = array();
+    var $created;
+    var $modified;
     
     /**
      * Returns a new DataCollection using the given id
@@ -43,6 +45,8 @@ class DataCollection extends BackboneModel {
             $this->userId = $data[0]['user_id'];
             $this->page = $data[0]['page'];
             $this->data = json_decode($data[0]['data']);
+            $this->created = $data[0]['created'];
+            $this->modified = $data[0]['modified'];
         }
     }
     
@@ -106,17 +110,18 @@ class DataCollection extends BackboneModel {
             DBFunctions::insert('grand_data_collection',
                                 array('user_id' => $this->userId,
                                       'page' => $this->page,
-                                      'data' => json_encode($this->data)));
+                                      'data' => json_encode($this->data),
+                                      'modified' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
-            
         }
     }
     
     function update(){
         if($this->canUserRead()){
             DBFunctions::update('grand_data_collection',
-                                array('data' => json_encode($this->data)),
+                                array('data' => json_encode($this->data),
+                                      'modified' => EQ(COL('CURRENT_TIMESTAMP'))),
                                 array('id' => $this->id));
             DBFunctions::commit();
         }
@@ -135,7 +140,9 @@ class DataCollection extends BackboneModel {
             return array('id' => $this->id,
                          'user_id' => $this->getUserId(),
                          'page' => $this->getPage(),
-                         'data' => $this->getData());
+                         'data' => $this->getData(),
+                         'created' => $this->created,
+                         'modified' => $this->modified);
         }
         return array();
     }
