@@ -39,7 +39,7 @@ class CompletionTab extends AbstractTab {
         foreach($people as $person){
             if(DiversitySurvey::isEligible($person)){
                 $diversity = Diversity::newFromUserId($person->getId());
-                if($diversity->canView()){
+                if($diversity->canView() && $diversity->getId() != ""){
                     $decline = ($diversity->decline == 0) ? "No" : "Yes";
                     
                     $race = implode(", ", $diversity->getRaces());
