@@ -8,7 +8,7 @@ class Completion2018Tab extends AbstractTab {
 
     function generateBody(){
         $people = Person::getAllPeople();
-        $this->html  = "<table id='peopleTable' class='wikitable' frame='box' rules='all' style='width:100%'>";
+        $this->html  = "<table id='peopleTable2018' class='wikitable' frame='box' rules='all' style='width:100%'>";
         $this->html .= "<thead>
                             <tr>
                                 <th>Name</th>
@@ -88,7 +88,7 @@ class Completion2018Tab extends AbstractTab {
         $this->html .= "</tbody>
                         </table>";
         $this->html .= "<script type='text/javascript'>
-            $('#peopleTable').dataTable({
+            $('#peopleTable2018').dataTable({
                 'aLengthMenu': [[-1], ['All']],
                 'iDisplayLength': -1,
                 'dom': 'Blfrtip',
