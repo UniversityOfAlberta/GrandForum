@@ -3,7 +3,7 @@
 class CompletionTab extends AbstractTab {
 
     function CompletionTab(){
-        parent::AbstractTab("Completion");
+        parent::AbstractTab("2022");
     }
 
     function generateBody(){
