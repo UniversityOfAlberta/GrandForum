@@ -139,14 +139,14 @@ class Report extends AbstractReport {
                 }
             }
             knatsort($projects);
-            foreach($projects as $project){
-                // Check for CRP project
-                if(preg_match("/[0-9]*.[0-9]*[a-z]* .*/", $project->getName()) != 0){
-                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPCRP")) ? "selected" : false;
-                    $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP (CRP)", "{$url}SIPCRP", $selected);
-                    break;
-                }
-            }
+            // foreach($projects as $project){
+            //     // Check for CRP project
+            //     if(preg_match("/[0-9]*.[0-9]*[a-z]* .*/", $project->getName()) != 0){
+            //         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPCRP")) ? "selected" : false;
+            //         $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("SIP (CRP)", "{$url}SIPCRP", $selected);
+            //         break;
+            //     }
+            // }
             foreach($projects as $project){
                 if($project->getType() != 'Administrative'){
                     if(preg_match("/.*-S[0-9]+.*/", $project->getName()) != 0 ||
