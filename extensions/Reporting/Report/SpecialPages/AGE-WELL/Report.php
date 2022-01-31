@@ -86,7 +86,7 @@ class Report extends AbstractReport {
         
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SummerApplication")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Application", "{$url}SummerApplication", $selected);
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Summer Institute", "{$url}SummerApplication", $selected);
         }
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "FellowshipApplication")) ? "selected" : false;
