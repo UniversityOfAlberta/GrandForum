@@ -212,17 +212,16 @@
     <h3><span class="number">14.</span> Êtes-vous à l'aise avec la rédaction d’un énoncé sur l’EDI?</h3>
     <div class="answer">
         <%= HTML.Radio(this, 'statement', {options: 
-            [{option: "Très confortable", value: "Very confident"}, 
-             {option: "Assez confortable", value: "Somewhat confident"}, 
-             {option: "Pas sûr(e)", value: "Not sure"}, 
-             {option: "Pas très confortable", value: "Not very confident"}, 
-             {option: "Pas du tout confortable", value: "Not at all confident"}]}) %>
+            [{option: "Confiant", value: "Confident"}, 
+             {option: "Assez confiant", value: "Somewhat confident"}, 
+             {option: "Pas du tout confiant", value: "Not at all confident"},
+             {option: "Pas sûr(e)", value: "Not sure"}]}) %>
     </div>
-    <h3><span class="number">15.</span> Si vous n'êtes pas sûr(e) de pouvoir rédiger un énoncé sur l’EDI, feriez-vous l'une des actions suivantes? Sélectionnez tout ce qui s'applique.</h3>
+    <h3><span class="number">15.</span> Pour accroître votre confiance dans la rédaction d’un énoncé  sure l’EDI, feriez-vous l'une des actions suivantes? Sélectionnez tout ce qui s'applique.</h3>
     <div class="answer">
         <%= HTML.MultiCheckBox(this, 'improve.values', {options: 
-            [{option: "Participez à un atelier pour apprendre à rédiger un énoncé sur l’EDI", value: "Take a workshop to learn how to write an EDI Statement"}, 
-             {option: "Discutez avec un expert sur l’EDI sur la façon d'améliorer votre énoncé sur l’EDI", value: "Discuss with an EDI expert on how to improve your EDI statement"}, 
+            [{option: "Participez à un atelier pour apprendre à rédiger un énoncé sur l’EDI", value: "Take a workshop to learn how to write an EDI statement"}, 
+             {option: "Discutez avec un expert sur l’EDI sur la façon d'améliorer votre énoncé sur l’EDI", value: "Discuss with an expert on how to improve your EDI statement"}, 
              {option: "Aucune des réponses ci-dessus", value: "None of the above"},
              {option: "Autre (veuillez préciser) :", value: "Other"}]}) %>
         <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'improve.other') %></div>

@@ -132,11 +132,11 @@
     </div>
     <h3><span class="number">14.</span> Are you confident with writing an EDI Statement?</h3>
     <div class="answer">
-        <%= HTML.Radio(this, 'statement', {options: ["Very confident", "Somewhat confident", "Not sure", "Not very confident", "Not at all confident"]}) %>
+        <%= HTML.Radio(this, 'statement', {options: ["Confident", "Somewhat confident", "Not at all confident", "Not sure"]}) %>
     </div>
-    <h3><span class="number">15.</span> If you are not confident with writing an EDI Statement, would you do the following to improve it? Select all that apply.</h3>
+    <h3><span class="number">15.</span> To increase your confidence in writing an EDI statement, would you do any of the following? Select all that apply.</h3>
     <div class="answer">
-        <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI Statement", "Discuss with an EDI expert on how to improve your EDI statement", "None of the above", {value: "Other", option: "Other (please specify):"}]}) %>
+        <%= HTML.MultiCheckBox(this, 'improve.values', {options: ["Take a workshop to learn how to write an EDI statement", "Discuss with an expert on how to improve your EDI statement", "None of the above", {value: "Other", option: "Other (please specify):"}]}) %>
         <div style="margin-left: 17px;"><%= HTML.TextBox(this, 'improve.other') %></div>
     </div>
     <h3><span class="number">16.</span> When was the last time you took any kind of EDI training?</h3>

@@ -1,9 +1,11 @@
 DiversitySurveyView = Backbone.View.extend({
 
+    xhr: null,
+
     initialize: function(){
         this.model.once('sync', this.render, this);
-        this.model.bind('change', this.change, this);
         this.model.bind('change:language', this.render, this);
+        this.model.bind('change', this.change, this);
         this.template_en = _.template($('#diversity_en_template').html());
         this.template_fr = _.template($('#diversity_fr_template').html());
         this.model.fetch({
@@ -18,9 +20,9 @@ DiversitySurveyView = Backbone.View.extend({
         "click #save": "save"
     },
     
-    save: _.throttle(function(){
+    save: _.debounce(function(){
         this.$("#save").prop("disabled", true);
-        this.model.save(null, {
+        this.xhr = this.model.save(null, {
             success: function(){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
@@ -38,6 +40,10 @@ DiversitySurveyView = Backbone.View.extend({
                 this.$("#save").prop("disabled", false);
             }.bind(this),
             error: function(o, e){
+                if(e.statusText == "abort"){
+                    this.$("#save").prop("disabled", false);
+                    return;
+                }
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     this.$("#diversityMessages").stop();
@@ -340,8 +346,13 @@ DiversitySurveyView = Backbone.View.extend({
             this.$el.html(this.template_fr(this.model.toJSON()));
         }
         this.change(true);
-        this.$el.on('change', 'input, select, textarea, button', function() {
-            this.save();
+        this.$el.on('change', 'input, select, textarea, button', function(){
+            if(this.xhr != null){
+                this.xhr.abort();
+            }
+            _.defer(function(){
+                this.save();
+            }.bind(this));
         }.bind(this));
         return this.$el;
     }
