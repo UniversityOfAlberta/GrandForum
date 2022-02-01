@@ -81,7 +81,7 @@
                 </ReportItem>
             </ReportItemSet>
 
-        	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" blobSubItem="{$project_id}">
+        	<ReportItem id="q2" personId="0" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="Q2" rich="true" limit="150" height="150px" blobSubItem="{$project_id}">
                 <![CDATA[
                     <div style="margin-top:10px;">
     	                <b style="font-size: 14px;">Comments:</b>
