@@ -12,13 +12,13 @@
 
                 Lors de la rédaction et la soumission de leurs propositions, les candidats doivent :
                 <ul>
-                    <li>montrer que le projet comble une lacune dans le cadre du programme de recherche CdD et les domaines prioritaires énumérés dans le Guide du candidat;</li>
+                    <li>montrer que le projet comble une lacune dans le cadre du programme de recherche CdD et les domaines prioritaires énumérés dans le <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022.pdf' target="_blank">Guide du candidat</a>;</li>
                     <li>démontrer un lien solide à la prévention de l’itinérance chez les jeunes, tel qu’elle est définie dans la Feuille de route pour <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">la prévention de l’Itinérance chez les jeunes</a>;</li>
                     <li>exposer en détail une trajectoire de recherche à impact (p. ex. comment la traduction et la diffusion des résultats favoriseront la transformation de programmes, de pratiques, de politiques et de systèmes); et</li>
                     <li>proposer un budget de projet clair et réaliste qui fournit un compte rendu détaillé des contributions en espèce et en nature.</li>
                 </ul>
                 
-                <p>Les propositions seront d’abord soumises à un processus d’évaluation par les pairs rigoureux et ensuite évaluées de nouveau par le Comité de gestion de la recherche CdD. Les deux groupes consistent en des experts en recherche, des fournisseurs de service, des universitaires ayant une expérience vécue et des représentants du gouvernement. Par la suite, les projets retenus seront recommandés au conseil d’administration, pour qu’il prenne la décision finale en matière de financement. Les instructions de soumission et le gabarit budget sont disponibles dans le Guide du candidat.</p>
+                <p>Les propositions seront d’abord soumises à un processus d’évaluation par les pairs rigoureux et ensuite évaluées de nouveau par le Comité de gestion de la recherche CdD. Les deux groupes consistent en des experts en recherche, des fournisseurs de service, des universitaires ayant une expérience vécue et des représentants du gouvernement. Par la suite, les projets retenus seront recommandés au conseil d’administration, pour qu’il prenne la décision finale en matière de financement. Les instructions de soumission et le gabarit budget sont disponibles dans le <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022_FR.pdf' target="_blank">Guide du candidat</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -267,7 +267,7 @@
         <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
             <![CDATA[
                 <h3>V. Budget</h3>
-                <p>Téléchargez le <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2022-2025.xlsx" target="_blank">gabarit budget</a> et chargez-le en respectant la convention de nommage suivante : [NomDuChercheurPrincipal_CinqPremierMotsDuTitre]_Budget_MtSDataCall_[YYYYMMDD]</p>
+                <p>Téléchargez le <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2022-2025_FR.xlsx" target="_blank">gabarit budget</a> et chargez-le en respectant la convention de nommage suivante : [NomDuChercheurPrincipal_CinqPremierMotsDuTitre]_Budget_MtSDataCall_[YYYYMMDD]</p>
                 {$item}
             ]]>
         </ReportItem>
