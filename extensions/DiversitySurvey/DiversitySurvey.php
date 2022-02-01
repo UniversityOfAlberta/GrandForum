@@ -13,7 +13,8 @@ class DiversitySurvey extends BackbonePage {
     }
     
     static function isEligible($person){
-        return $person->isRoleAtLeast(HQP);
+        return ($person->isRole(HQP) ||
+                $person->isRoleAtLeast(NI));
     }
     
     function userCanExecute($user){
