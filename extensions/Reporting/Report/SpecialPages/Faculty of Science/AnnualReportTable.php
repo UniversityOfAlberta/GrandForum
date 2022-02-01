@@ -43,6 +43,7 @@ class AnnualReportTable extends SpecialPage{
                     <thead>
                         <th>Case#</th>
                         <th>Name</th>
+                        <th class='deptCol'>Department</th>
                         <th>Report</th>
                         <th>Recommendation</th>
                     </thead>
@@ -77,6 +78,7 @@ class AnnualReportTable extends SpecialPage{
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
+                        <td class='deptCol'>{$person->getDepartment()}</td>
                         <td align='middle'>{$pdfButton}</td>
                         <td align='middle'>{$recButton}</td>
                     </tr>");
@@ -94,6 +96,13 @@ class AnnualReportTable extends SpecialPage{
                     iDisplayLength: -1
                 });
             </script>");
+        }
+        if($me->isRole(CHAIR) || $me->isRole(ACHAIR) || $me->isRole(EA)){
+            $wgOut->addHTML("<style>
+                .deptCol {
+                    display: none;
+                }
+            </style>");
         }
         $wgOut->addHTML("</div>
             <script>
