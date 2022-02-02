@@ -299,18 +299,19 @@ class ConvertPdfAPI extends API{
         
         $success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
         $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
-        
-        DBFunctions::commit();
-                echo <<<EOF
-                <html>
-                    <head>
-                        <script type='text/javascript'>
-                            parent.ccvUploaded("$success", "$errors");
-                        </script>
-                    </head>
-                </html>
+        if(!$noEcho){
+            DBFunctions::commit();
+                    echo <<<EOF
+                    <html>
+                        <head>
+                            <script type='text/javascript'>
+                                parent.ccvUploaded("$success", "$errors");
+                            </script>
+                        </head>
+                    </html>
 EOF;
-        exit;
+            exit;
+        }
     }
 
    function isLoginRequired(){
