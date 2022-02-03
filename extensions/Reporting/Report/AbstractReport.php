@@ -46,6 +46,7 @@ abstract class AbstractReport extends SpecialPage {
     var $currentSection;
     var $permissions;
     var $sectionPermissions;
+    var $scripts = array();
     var $person;
     var $project;
     var $readOnly = false;
@@ -243,7 +244,7 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 permissionError();
             }
-            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next")){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next" || $_POST['submit'] == "Previous")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;
@@ -339,6 +340,10 @@ abstract class AbstractReport extends SpecialPage {
                                 $('h1').html(\"<span class='en'>Report not Found</span><span class='fr'>Rapport introuvable</span>\");
                             </script>");
         }
+    }
+    
+    function addScript($script){
+        $this->scripts[] = $script;
     }
     
     function notifySupervisors($tok){
@@ -1060,6 +1065,9 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/noAjax.js?".filemtime(dirname(__FILE__)."/scripts/noAjax.js")."'></script>");
+        }
+        foreach($this->scripts as $script){
+            $wgOut->addScript($script);
         }
         $wgOut->addHTML("<div id='outerReport'>
                             <div class='displayTableCell'><div id='aboveTabs'></div>

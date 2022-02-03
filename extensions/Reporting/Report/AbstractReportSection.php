@@ -364,7 +364,8 @@ abstract class AbstractReportSection {
         }
         $candidate = (isset($_GET['candidate'])) ? "&candidate=".urlencode($_GET['candidate']) : "";
         $id = (isset($_GET['id'])) ? "&id=".urlencode($_GET['id']) : "";
-        $wgOut->addHTML("<a title='{$this->tooltip}' class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($this->name))))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}{$candidate}{$id}&section=".urlencode(strip_tags($this->name))."{$year}'>{$this->name}</a>\n");
+        $hidden = (strtolower($this->getAttr("hidden", "false")) === "true") ? "style='display:none;'" : "";
+        $wgOut->addHTML("<a title='{$this->tooltip}' $hidden class='reportTab$selected tooltip {$disabled}' id='".str_replace("&", "", str_replace("'", "", str_replace(" ", "", strip_tags($this->name))))."' href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getParent()->xmlName}{$project}{$candidate}{$id}&section=".urlencode(strip_tags($this->name))."{$year}'>{$this->name}</a>\n");
     }
     
     function render(){

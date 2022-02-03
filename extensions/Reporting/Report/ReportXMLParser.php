@@ -301,11 +301,20 @@ class ReportXMLParser {
             if(isset($children->Permissions)){
                 $this->parsePermissions($children->Permissions);
             }
+            if(isset($children->Script)){
+                $this->parseScripts($children->Script);
+            }
             if(!$quick){
                 if(isset($children->ReportSection)){
                     $this->parseReportSection($children->ReportSection);
                 }
             }
+        }
+    }
+    
+    function parseScripts($node){
+        foreach($node as $key => $n){
+            $this->report->addScript("{$n}");
         }
     }
     

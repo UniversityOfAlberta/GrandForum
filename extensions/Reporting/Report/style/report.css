@@ -343,7 +343,7 @@ a.reportTab:hover {
     cursor: pointer;
 }
 
-a.selectedReportTab {
+a.selectedReportTab, a.fakeSelectedReportTab {
     padding-right:6px;
     background:#FFFFFF !important;
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff');
@@ -353,7 +353,7 @@ a.selectedReportTab {
     box-shadow:inset 0 0 3px 0 #ffffff, 0 0 0 rgba(0, 0, 0, 0);
 }
 
-a.selectedReportTab:hover {
+a.selectedReportTab:hover, a.fakeSelectedReportTab:hover {
     background:#FFFFFF !important;
     -moz-box-shadow:inset 0 0 3px 0 #ffffff, 0 0 0 rgba(0, 0, 0, 0);
     -webkit-box-shadow:inset 0 0 3px 0 #ffffff, 0 0 0 rgba(0, 0, 0, 0);

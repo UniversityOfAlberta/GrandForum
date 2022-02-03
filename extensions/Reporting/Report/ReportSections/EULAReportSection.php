@@ -2,18 +2,6 @@
 
 class EULAReportSection extends EditableReportSection {
     
-    // Saves all the blobs in this EditableReportSection
-    function saveBlobs(){
-        if(!$this->checkPermission('w')){
-            return array();
-        }
-        $errors = array();
-        foreach($this->items as $item){
-            $errors = array_merge($errors, $item->save());
-        }
-        return $errors;
-    }
-    
     function render(){
         global $wgOut, $wgServer, $wgScriptPath, $wgTitle, $config;
         if(!$this->checkPermission('r')){
@@ -78,11 +66,11 @@ class EULAReportSection extends EditableReportSection {
         $wgOut->addHTML("</div>
                              <hr />
                              <div id='reportFooter'>
-                                <input type='submit' value='Next' name='submit' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
+                                <input type='submit' value='Next' name='submit' style='width:100px;' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
-            $('input[name=submit]').click(function(){
+            $('input[name=submit][value=Next]').click(function(){
                 _.defer(function(){
                     $('a.reportTab.selectedReportTab').next().click();
                 });
