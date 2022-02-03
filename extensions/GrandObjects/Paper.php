@@ -1483,9 +1483,7 @@ class Paper extends BackboneModel{
                     $ccid = "";
                     if($showCCID){
                         $ccid = explode("@", $a->getEmail());
-                        if($ccid[0] != ""){
-                            $ccid = "({$ccid[0]})";
-                        }
+                        $ccid = ($ccid[0] != "") ? "({$ccid[0]})" : "";
                     }
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $date) || $a->isRole(NI) || $a->wasLastRole(NI)){
