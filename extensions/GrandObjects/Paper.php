@@ -1482,7 +1482,7 @@ class Paper extends BackboneModel{
                 if($a->getId()){
                     $ccid = "";
                     if($showCCID){
-                        $ccid = explode("@", $this->getEmail());
+                        $ccid = explode("@", $a->getEmail());
                         $ccid = "({$ccid[0]})";
                     }
                     $name = $a->getNameForProduct();
