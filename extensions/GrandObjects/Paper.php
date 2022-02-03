@@ -1521,7 +1521,7 @@ class Paper extends BackboneModel{
                         $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                     }
                     if($hyperlink){
-                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}{$ccid}</a>";
+                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
                     }
                     else{
                         $authors[] = "{$name}";
