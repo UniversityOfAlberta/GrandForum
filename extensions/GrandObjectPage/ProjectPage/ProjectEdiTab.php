@@ -129,7 +129,7 @@ class ProjectEdiTab extends AbstractEditableTab {
     }
     
     function canEdit(){
-        return ($this->userCanView());
+        return (!$this->project->isFeatureFrozen(FREEZE_EDI) && $this->userCanView());
     }
     
 }
