@@ -1371,15 +1371,15 @@ class Paper extends BackboneModel{
      * @param boolean $hyperlink Whether or not to use hyperlinks in the citation
      * @return string The citation text
      */
-    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false){
+    function getCitation($showStatus=true, $showPeerReviewed=true, $hyperlink=true, $showReported=false, $highlightOnlyMyHQP=false, $showCCID=false){
         global $config;
         $me = Person::newFromWgUser();
         $citationFormat = $this->getCitationFormat();
         $format = $citationFormat;
         $regex = "/\{.*?\}/";
         $that = $this;
-        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $that) {
-            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP);
+        $format = preg_replace_callback($regex, function($matches) use ($showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID, $that) {
+            return $that->formatCitation($matches, $showStatus, $showPeerReviewed, $hyperlink, $highlightOnlyMyHQP, $showCCID);
         }, $format);
         
         $peerDiv = "";
@@ -1463,7 +1463,7 @@ class Paper extends BackboneModel{
         return trim("{$format}{$peerDiv}");
     }
     
-    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false){
+    function formatCitation($matches, $showStatus=true, $showPeerReviewed=true, $hyperlink=true, $highlightOnlyMyHQP=false, $showCCID=false){
         $authors = array();
         $me = Person::newFromWgUser();
         if($highlightOnlyMyHQP !== false && is_numeric($highlightOnlyMyHQP)){
@@ -1480,9 +1480,14 @@ class Paper extends BackboneModel{
             $nextYear = date('Y-m-d', $nextYear);
             foreach($this->getAuthors() as $a){
                 if($a->getId()){
+                    $ccid = "";
+                    if($showCCID){
+                        $ccid = explode("@", $this->getEmail());
+                        $ccid = "({$ccid[0]})";
+                    }
                     $name = $a->getNameForProduct();
                     if($a->isRoleOn(NI, $date) || $a->isRole(NI) || $a->wasLastRole(NI)){
-                        $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
+                        $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                     }
                     else if(($a->isRoleOn(HQP, $date) || $a->isRole(HQP) || $a->wasLastRole(HQP)) &&
                             (($highlightOnlyMyHQP !== false && ($me->isRelatedToDuring($a, SUPERVISES, "0000-00-00", "2100-00-00") || 
@@ -1493,37 +1498,37 @@ class Paper extends BackboneModel{
                         $found = false;
                         foreach($unis as $uni){
                             if(in_array(strtolower($uni['position']), Person::$studentPositions['pdf']) !== false){
-                                $name = "<span style='font-style: italic !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $name = "<span style='font-style: italic !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                                 $found = true;
                                 break;
                             }
                             else if(in_array(strtolower($uni['position']), Person::$studentPositions['grad']) !== false){
-                                $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $name = "<span style='font-weight: bold !important;' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                                 $found = true;
                                 break;
                             }
                             else if(in_array(strtolower($uni['position']), Person::$studentPositions['ugrad']) !== false){
-                                $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}</span>";
+                                $name = "<span style='text-decoration: underline; !important' class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                                 $found = true;
                                 break;
                             }
                         }
                         if(!$found){
-                            $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
+                            $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                         }
                     }
                     else{
-                        $name = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
+                        $name = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                     }
                     if($hyperlink){
-                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}</a>";
+                        $authors[] = "<a target='_blank' href='{$a->getUrl()}'>{$name}{$ccid}</a>";
                     }
                     else{
                         $authors[] = "{$name}";
                     }
                 }
                 else{
-                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
+                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
                 }
             }
         }
