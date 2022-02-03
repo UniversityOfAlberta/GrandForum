@@ -1528,7 +1528,7 @@ class Paper extends BackboneModel{
                     }
                 }
                 else{
-                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}{$ccid}</span>";
+                    $authors[] = "<span class='citation_author'>{$a->getNameForProduct()}</span>";
                 }
             }
         }
