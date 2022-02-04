@@ -1,5 +1,7 @@
 <div id="acceptDialog" title="Accept Profile" style="display:none;">
-    Are you sure you want to accept this profile?
+    Are you sure you want to accept this profile?<br />
+    <div id='fileSizeError' class='error' style='display:none;'>This file is too large, please choose a file smaller than 5MB</div>
+    <b>Attachment:</b><br /><input type="file" name="document" /> (5MB max)
 </div>
 <div id="shortlistDialog" title="Shortlist Profile" style="display:none;">
     Are you sure you want to shortlist this profile?
@@ -55,21 +57,26 @@
                 </td>
                 <td>
                     <% _.each(profile.get('projects'), function(project){ %>
-                        <%= project.title %> - <%= project.extra.companyName %> (<%= project.extra.region %>) <% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> &#10003; <% } %><br />
+                        <span style="<% if(_.pluck(profile.get('matches'), 'id').indexOf(project.id) !== -1){ %> font-weight:bold; <% } %>
+                                     <% if(profile.get('hires')[project.id] == 'Accepted'){ %> color:green; <% } %>
+                                     <% if(profile.get('hires')[project.id] == 'Rejected'){ %> color:red; <% } %>">
+                            <%= project.title %> - <%= project.extra.companyName %> (<%= project.extra.region %>)<br />
+                        </span>
                     <% }) %>
                 </td>
                 <td align="center">
                     <%= profile.get('status') %>
                 </td>
                 <td style="white-space:nowrap;" align="center">
-                    <% if(profile.get('status') != "Accepted"){ %>
-                        <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
-                        <button class="shortlist" data-id="<%= profile.get('id') %>">Shortlist</button>
-                        <button class="more" data-id="<%= profile.get('id') %>">More Info</button>
-                        <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                    <% if(profile.get('status') == "Submitted"){ %>
                         <button class="received" data-id="<%= profile.get('id') %>">Receive</button>
-                    <% } else { %>
+                    <% } else if(profile.get('status') == "Received"){ %>
+                        <button class="shortlist" data-id="<%= profile.get('id') %>">Shortlist</button>
+                        <!--button class="more" data-id="<%= profile.get('id') %>">More Info</button-->
+                        <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
+                    <% } else if(profile.get('status') == "Shortlist"){ %>
                         <button class="match" data-id="<%= profile.get('id') %>">Match</button>
+                        <button class="accept" data-id="<%= profile.get('id') %>">Accept</button>
                         <div id="match_<%= profile.get('id') %>" style="display:none;">
                             <ol>
                                 <% _.each(profile.get('projects'), function(project){ %>
@@ -80,6 +87,7 @@
                                 <% }) %>
                             </ol>
                         </div>
+                        <button class="reject" data-id="<%= profile.get('id') %>">Reject</button>
                     <% } %>
                 </td>
             </tr>

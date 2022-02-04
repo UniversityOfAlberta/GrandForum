@@ -1,5 +1,8 @@
-<div id="reviewDialog" title="Review of Candidate Interview">
-    
+<div id="acceptDialog" title="Accept Candidate" style="display:none;">
+    Are you sure you want to accept this candidate?
+</div>
+<div id="rejectDialog" title="Reject Candidate" style="display:none;">
+    Are you sure you want to reject this candidate?
 </div>
 <table id="profiles" frame="box" rules="all">
     <thead>
@@ -8,40 +11,38 @@
             <th style="white-space: nowrap;"><span class='en'>Applicant</span><span class='fr'>Postulant-e</span></th>
             <th><span class='en'>Matched Projects</span><span class='fr'>Projets jumelés</span></th>
             <th width="1%"><span class='en'>Profile</span><span class='fr'>Profil</span></th>
-            <!--th>Interview/Review</th-->
+            <th width="1%">Actions</th>
         </tr>
     </thead>
     <tbody>
         <% this.model.each(function(profile){ %>
-            <tr>
-                <td style="white-space: nowrap;">
-                    <span style="display:none;"><%= profile.get('created') %></span><%= dateTimeHelpers.formatDate(profile.get('created')) %>
-                </td>
-                <td>
-                    <%= profile.get('user').fullName %>
-                </td>
-                <td>
-                    <% _.each(_.filter(profile.get('matches'), function(match){ return match.userId == me.get('id'); }), function(match){ %>
+            <% _.each(_.filter(profile.get('matches'), function(match){ return match.userId == me.get('id'); }), function(match){ %>
+                <tr>
+                    <td style="white-space: nowrap;">
+                        <span style="display:none;"><%= profile.get('created') %></span><%= dateTimeHelpers.formatDate(profile.get('created')) %>
+                    </td>
+                    <td>
+                        <%= profile.get('user').fullName %>
+                    </td>
+                    <td>
                         <%= match.title %> (<%= match.extra.companyName %>)<br />
-                    <% }) %>
-                </td>
-                <td align="center" style="white-space:nowrap;">
-                    <a href="<%= profile.get('pdf') %>">Download PDF</a>
-                    <% _.each(_.first(profile.get('letters'), 2), function(letter, i){ %>
-                        <div><a href="<%= letter %>">Reference <%= i+1 %></a></div>
-                    <% }) %>
-                </td>
-                <!--td>
-                    <button class="review" data-id="<%= profile.get('id') %>">Review</button>
-                    <div id="review_<%= profile.get('id') %>" style="display:none;">
-                        <h3>Review</h3>
-                        <textarea></textarea>
-                        <h3>Would you like to hire this candidate?</h3>
-                        <input type="radio" value="Yes" /> Yes<br />
-                        <input type="radio" value="No" /> No
-                    </div>
-                </td-->
-            </tr>
+                    </td>
+                    <td align="center" style="white-space:nowrap;">
+                        <a href="<%= profile.get('pdf') %>">Download PDF</a>
+                        <% _.each(_.first(profile.get('letters'), 2), function(letter, i){ %>
+                            <div><a href="<%= letter %>">Reference <%= i+1 %></a></div>
+                        <% }) %>
+                    </td>
+                    <td style="white-space:nowrap;" align="center">
+                        <% if(profile.get('hires')[match.id] != undefined){ %>
+                            <%= profile.get('hires')[match.id] %>
+                        <% } else { %>
+                            <button class="accept" data-id="<%= profile.get('id') %>" data-match="<%= match.id %>">Accept</button>
+                            <button class="reject" data-id="<%= profile.get('id') %>" data-match="<%= match.id %>">Reject</button>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }.bind(this)) %>
         <% }.bind(this)) %>
     </tbody>
 </table>

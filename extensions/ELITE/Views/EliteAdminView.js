@@ -68,6 +68,12 @@ EliteAdminPostingsView = PostingsView.extend({
         this.moreDialog.model = this.model.get(id);
     },
     
+    openNotMatchedDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        this.notMatchedDialog.dialog('open');
+        this.notMatchedDialog.model = this.model.get(id);
+    },
+    
     openRejectDialog: function(el){
         var id = $(el.target).attr('data-id');
         this.rejectDialog.dialog('open');
@@ -78,6 +84,7 @@ EliteAdminPostingsView = PostingsView.extend({
         "click .postingLink": "openDialog",
         "click .accept": "openAcceptDialog",
         "click .more": "openMoreDialog",
+        "click .notmatched": "openNotMatchedDialog",
         "click .reject": "openRejectDialog",
     },
     
@@ -136,6 +143,24 @@ EliteAdminPostingsView = PostingsView.extend({
                 }.bind(this)
             }
         });
+        this.notMatchedDialog = this.$("#notMatchedDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            width: 'auto',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Not Matched": function(){
+                    this.notMatchedDialog.model.set('visibility', 'Not Matched');
+                    this.notMatchedDialog.model.save();
+                    this.notMatchedDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.notMatchedDialog.dialog('close');
+                }.bind(this)
+            }
+        });
         this.rejectDialog = this.$("#rejectDialog").dialog({
             autoOpen: false,
             modal: true,
@@ -181,6 +206,7 @@ EliteAdminProfilesView = Backbone.View.extend({
         var id = $(el.target).attr('data-id');
         this.acceptDialog.dialog('open');
         this.acceptDialog.model = this.model.get(id);
+        $("input[name=document]", this.acceptDialog).val("").trigger("change");
     },
     
     openShortlistDialog: function(el){
@@ -247,6 +273,8 @@ EliteAdminProfilesView = Backbone.View.extend({
             autoOpen: false,
             modal: true,
             show: 'fade',
+            width: 'auto',
+            maxWidth: 800,
             resizable: false,
             draggable: false,
             buttons: {
@@ -379,6 +407,34 @@ EliteAdminProfilesView = Backbone.View.extend({
                 }.bind(this)
             }
         });
+        
+        $("input[name=document]", this.acceptDialog).change(function(e){
+            var button = $(".ui-dialog:visible :button:contains('Accept')");
+            button.prop("disabled", true);
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.addEventListener("load", function() {
+                if(file.size > 1024*1024*5){
+                    $('#fileSizeError', this.acceptDialog).show();
+                    this.acceptDialog.fileObj = null;
+                    button.prop("disabled", true);
+                }
+                else{
+                    $('#fileSizeError', this.acceptDialog).hide();
+                    var fileObj = {
+                        filename: file.name,
+                        type: file.type,
+                        data: reader.result
+                    };
+                    fileObj.filename = file.name;
+                    this.acceptDialog.model.set('file', fileObj);
+                    button.prop("disabled", false);
+                }
+            }.bind(this));
+            if(file != undefined){
+                reader.readAsDataURL(file);
+            }
+        }.bind(this));
         return this.$el;
     }
 
