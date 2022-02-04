@@ -19,6 +19,7 @@ PageRouter = Backbone.Router.extend({
     },
 
     routes: {
+        "faq": "faq",
         "*actions": "defaultRoute"
     }
 });
@@ -31,6 +32,13 @@ pageRouter.on('route:defaultRoute', function (actions) {
 
     this.closeCurrentView();
     this.currentView = new DiversitySurveyView({el: $("#currentView"), model: diversity});
+});
+
+pageRouter.on('route:faq', function (actions) {
+    var diversity = new Diversity();
+
+    this.closeCurrentView();
+    this.currentView = new DiversityFaqView({el: $("#currentView"), model: diversity});
 });
 
 // Start Backbone history a necessary step for bookmarkable URL's

@@ -353,7 +353,9 @@ class ProjectBudgetTab extends AbstractEditableTab {
                         $budget = $multiBudget->getBudget(0);
                         $total = str_replace('$', '', $budget->copy()->select(COL_TOTAL)->where(COL_TOTAL)->toString());
                         if($total > $allocation && $allocation != ""){
-                            $budget->errors[0][] = "Your total '$".number_format($total)."' is greater than the allocated amount of '$".number_format($allocation)."'.";
+                            if(!$config->getValue('networkName') == "AGE-WELL" || $i < 2021){
+                                $budget->errors[0][] = "Your total '$".number_format($total)."' is greater than the allocated amount of '$".number_format($allocation)."'.";
+                            }
                         }
                         if($renderForPDF){
                             $this->html .= "<div style='font-size:0.75em;'>{$multiBudget->renderForPDF()}</div>";

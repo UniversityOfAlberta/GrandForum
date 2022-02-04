@@ -12,6 +12,7 @@ define('FREEZE_DESCRIPTION', 'Description');
 define('FREEZE_MILESTONES', 'Schedule/Milestones');
 define('FREEZE_BUDGET', 'Budget');
 define('FREEZE_PROJECTIONS', 'Projections');
+define('FREEZE_EDI', 'EDI');
 
 // Autoloads
 autoload_register('GrandObjects');

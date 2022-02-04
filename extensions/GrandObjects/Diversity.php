@@ -166,62 +166,93 @@ class Diversity extends BackboneModel {
     }
     
     function getRaces(){
-        if(!is_array($this->race)){
-            $raceArray = get_object_vars($this->race);
-        }
-        else{
-            $raceArray = $this->race;
-        }
-        $race = $raceArray['values'];
-        $race[] = @$raceArray['other'];
-        $race[] = @$raceArray['decline'];
-        $race = array_filter($race);
-        return $race;
+        $array = (!is_array($this->race)) ? @get_object_vars($this->race) :  $this->race;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
     }
     
     function getGenders(){
-        if(!is_array($this->gender)){
-            $genderArray = get_object_vars($this->gender);
-        }
-        else{
-            $genderArray = $this->gender;
-        }
-        $gender = $genderArray['values'];
-        $gender[] = @$genderArray['other'];
-        $gender[] = @$genderArray['decline'];
-        $gender = array_filter($gender);
-        return $gender;
+        $array = (!is_array($this->gender)) ? @get_object_vars($this->gender) :  $this->gender;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
     }
     
     function getOrientations(){
-        if(!is_array($this->orientation)){
-            $orientationArray = get_object_vars($this->orientation);
-        }
-        else{
-            $orientationArray = $this->orientation;
-        }
-        $orientation = $orientationArray['values'];
-        $orientation[] = @$orientationArray['other'];
-        $orientation[] = @$orientationArray['decline'];
-        $orientation = array_filter($orientation);
-        return $orientation;
+        $array = (!is_array($this->orientation)) ? @get_object_vars($this->orientation) :  $this->orientation;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
     }
     
-    function isComplete(){
-        if($this->decline === 1){
-            return true;
-        }
-        if(trim($this->indigenous) == "" ||
-           trim($this->disability) == "" ||
-           (trim($this->disability) == "Yes" && trim($this->disabilityVisibility) == "") ||
-           trim($this->minority) == "" ||
-           trim($this->immigration) == "" ||
-           count($this->getRaces()) == 0 ||
-           count($this->getGenders()) == 0 ||
-           count($this->getOrientations()) == 0){
-            return false;  
-        }
-        return true;
+    function getIndigenousApply(){
+        $array = (!is_array($this->indigenousApply)) ? @get_object_vars($this->indigenousApply) : $this->indigenousApply;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getDisabilityVisibility(){
+        $array = (!is_array($this->disabilityVisibility)) ? @get_object_vars($this->disabilityVisibility) : $this->disabilityVisibility;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getRespected(){
+        $array = (!is_array($this->respected)) ? @get_object_vars($this->respected) : $this->respected;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getLeastRespected(){
+        $array = (!is_array($this->leastRespected)) ? @get_object_vars($this->leastRespected) : $this->leastRespected;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getImprove(){
+        $array = (!is_array($this->improve)) ? @get_object_vars($this->improve) : $this->improve;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getPreventsTraining(){
+        $array = (!is_array($this->preventsTraining)) ? @get_object_vars($this->preventsTraining) : $this->preventsTraining;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
+    }
+    
+    function getTrainingTaken(){
+        $array = (!is_array($this->trainingTaken)) ? @get_object_vars($this->trainingTaken) : $this->trainingTaken;
+        $values = $array['values'];
+        $values[] = @$array['other'];
+        $values[] = @$array['decline'];
+        $values = array_filter($values);
+        return $values;
     }
     
     function create(){
@@ -327,7 +358,7 @@ class Diversity extends BackboneModel {
                       'affiliation' => $this->affiliation,
                       'age' => $this->age,
                       'indigenousApply' => $this->indigenousApply,
-                      'true_self' => $this->trueSelf,
+                      'trueSelf' => $this->trueSelf,
                       'valued' => $this->valued,
                       'space' => $this->space,
                       'respected' => $this->respected,

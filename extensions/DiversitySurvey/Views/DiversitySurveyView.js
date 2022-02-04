@@ -1,30 +1,18 @@
 DiversitySurveyView = Backbone.View.extend({
 
+    xhr: null,
+
     initialize: function(){
         this.model.once('sync', this.render, this);
-        this.model.bind('change', this.change, this);
         this.model.bind('change:language', this.render, this);
+        this.model.bind('change', this.change, this);
         this.template_en = _.template($('#diversity_en_template').html());
         this.template_fr = _.template($('#diversity_fr_template').html());
         this.model.fetch({
             error: function(obj, e){
                 clearAllMessages();
                 addError(e.responseText);
-            },
-            success: function(){
-                $(window).bind('keydown', function(event) {
-                    if (event.ctrlKey || event.metaKey) {
-                        switch (String.fromCharCode(event.which).toLowerCase()) {
-                        case 's':
-                            var focused = document.activeElement;
-                            focused.blur();
-                            event.preventDefault();
-                            this.save();
-                            break;
-                        }
-                    }
-                }.bind(this));
-            }.bind(this)
+            }
         });
     },
     
@@ -34,19 +22,28 @@ DiversitySurveyView = Backbone.View.extend({
     
     save: _.debounce(function(){
         this.$("#save").prop("disabled", true);
-        this.model.save(null, {
+        this.xhr = this.model.save(null, {
             success: function(){
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     this.$("#diversityMessages").stop();
                     this.$("#diversityMessages").show();
                     this.$("#diversityMessages").css('opacity', 0.95);
-                    addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
+                    if(this.model.get('affiliation') == "" && this.model.get('decline') != 1){
+                        addWarning("Your Diversity Survey has been saved, but Question 1 has not been answered", false, "#diversityMessages");
+                    }
+                    else{
+                        addSuccess("Your Diversity Survey has been saved", false, "#diversityMessages");
+                    }
                     this.$("#diversityMessages").fadeOut(10000);
                 }.bind(this));
                 this.$("#save").prop("disabled", false);
             }.bind(this),
             error: function(o, e){
+                if(e.statusText == "abort"){
+                    this.$("#save").prop("disabled", false);
+                    return;
+                }
                 _.defer(function(){
                     clearAllMessages("#diversityMessages");
                     this.$("#diversityMessages").stop();
@@ -63,7 +60,7 @@ DiversitySurveyView = Backbone.View.extend({
                 this.$("#save").prop("disabled", false);
             }.bind(this)
         });
-    }, 200, true),
+    }, 1000),
     
     change: function(initial){
         // Declining
@@ -122,13 +119,15 @@ DiversitySurveyView = Backbone.View.extend({
             }
         }
         if(this.model.get('indigenousApply').decline == "I prefer not to answer"){
-            
             this.$("input[name=indigenousApply_values][type=checkbox]").prop("checked", false).prop("disabled", true);
             this.$("input[name=indigenousApply_other][type=text]").val("").prop("disabled", true);
             this.model.get('indigenousApply').values = new Array();
             this.model.get('indigenousApply').other = "";
         }
         else{
+            if(this.model.get('indigenousApply').other != ""){
+                this.$("input[name=indigenousApply_values][type=checkbox][value='Another']").prop("checked", true);
+            }
             this.$("input[name=indigenousApply_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=indigenousApply_other][type=text]").prop("disabled", false);
         }
@@ -159,13 +158,15 @@ DiversitySurveyView = Backbone.View.extend({
             }
         }
         if(this.model.get('disabilityVisibility').decline == "I prefer not to answer"){
-            
             this.$("input[name=disabilityVisibility_values][type=checkbox]").prop("checked", false).prop("disabled", true);
             this.$("input[name=disabilityVisibility_other][type=text]").val("").prop("disabled", true);
             this.model.get('disabilityVisibility').values = new Array();
             this.model.get('disabilityVisibility').other = "";
         }
         else{
+            if(this.model.get('disabilityVisibility').other != ""){
+                this.$("input[name=disabilityVisibility_values][type=checkbox][value='Another']").prop("checked", true);
+            }
             this.$("input[name=disabilityVisibility_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=disabilityVisibility_other][type=text]").prop("disabled", false);
         }
@@ -225,12 +226,16 @@ DiversitySurveyView = Backbone.View.extend({
            this.model.get('affiliation') != "Board and/or Committee Member" &&
            this.model.get('affiliation') != "Employee"){
             this.$("input[name=affiliation][type=radio]").prop("checked", false);
+            if(this.model.get('affiliation') != ''){
+                this.$("input[name=affiliation][type=radio][value=Other]").prop("checked", true);
+                if(this.model.get('affiliation') == 'Other'){
+                    this.$("input[name=affiliation][type=text]").val("");
+                }
+            }
         }
         else{
             this.$("input[name=affiliation][type=text]").val("");
         }
-        this.$("input[name=affiliation][type=radio]").prop("disabled", false);
-        this.$("input[name=affiliation][type=text]").prop("disabled", false);
         
         // Immigration
         if(this.model.get('immigration') == "I prefer not to answer"){
@@ -258,6 +263,9 @@ DiversitySurveyView = Backbone.View.extend({
             this.model.get('gender').other = "";
         }
         else{
+            if(this.model.get('gender').other != ""){
+                this.$("input[name=gender_values][type=checkbox][value='Another gender']").prop("checked", true);
+            }
             this.$("input[name=gender_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=gender_other][type=text]").prop("disabled", false);
         }
@@ -270,8 +278,16 @@ DiversitySurveyView = Backbone.View.extend({
             this.model.get('orientation').other = "";
         }
         else{
+            if(this.model.get('orientation').other != ""){
+                this.$("input[name=orientation_values][type=checkbox][value='Another orientation']").prop("checked", true);
+            }
             this.$("input[name=orientation_values][type=checkbox]").prop("disabled", false);
             this.$("input[name=orientation_other][type=text]").prop("disabled", false);
+        }
+        
+        // Improve
+        if(this.model.get('improve').other != ""){
+            this.$("input[name=improve_values][type=checkbox][value='Other']").prop("checked", true);
         }
         
         // Respected
@@ -310,6 +326,14 @@ DiversitySurveyView = Backbone.View.extend({
                 this.$("#preventsTraining").slideUp();
             }
         }
+        if(this.model.get('preventsTraining').other != ""){
+            this.$("input[name=preventsTraining_values][type=checkbox][value='Other']").prop("checked", true);
+        }
+        
+        // Training Taken
+        if(this.model.get('trainingTaken').other != ""){
+            this.$("input[name=trainingTaken_values][type=checkbox][value='Other']").prop("checked", true);
+        }
     },
     
     render: function(){
@@ -318,11 +342,14 @@ DiversitySurveyView = Backbone.View.extend({
             this.$el.html(this.template_en(this.model.toJSON()));
         }
         else if (this.model.get('language') == 'fr'){
-            main.set('title', networkName + ' Questionnaire du Recensement sur la Diversité');
+            main.set('title', 'Questionnaire sur la Diversité et l’Inclusion ' + networkName);
             this.$el.html(this.template_fr(this.model.toJSON()));
         }
         this.change(true);
-        this.$el.on('change', 'input, select, textarea, button', function() {
+        this.$el.on('change', 'input, select, textarea, button', function(){
+            if(this.xhr != null){
+                this.xhr.abort();
+            }
             _.defer(function(){
                 this.save();
             }.bind(this));

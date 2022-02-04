@@ -17,6 +17,9 @@ EliteProfile = Backbone.Model.extend({
             projects: [],
             otherProjects: [],
             matches: [],
+            hires: [],
+            hire: null,
+            file: null
         };
     }
     

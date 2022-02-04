@@ -6,6 +6,9 @@
     <b>Message:</b><br />
     <textarea id="moreComments" style="width:400px;height:100px;"></textarea>
 </div>
+<div id="notMatchedDialog" title="Not Matched Proposal" style="display:none;">
+    Are you sure you want to mark this proposal as not matched?
+</div>
 <div id="rejectDialog" title="Reject Project Proposal" style="display:none;">
     Are you sure you want to reject this proposal?
 </div>
@@ -46,6 +49,7 @@
                 <td style="white-space:nowrap;" align="center">
                     <button class="accept" data-id="<%= posting.get('id') %>">Accept</button>
                     <button class="more" data-id="<%= posting.get('id') %>">More Info</button>
+                    <button class="notmatched" data-id="<%= posting.get('id') %>">Not Matched</button>
                     <button class="reject" data-id="<%= posting.get('id') %>">Reject</button>
                 </td>
             </tr>

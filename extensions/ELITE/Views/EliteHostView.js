@@ -103,6 +103,8 @@ EliteHostPostingsView = PostingsView.extend({
 EliteHostProfilesView = PostingsView.extend({
 
     template: _.template($('#elite_host_profiles_template').html()),
+    acceptDialog: null,
+    rejectDialog: null,
     
     initialize: function(){
         this.model.fetch();
@@ -110,11 +112,65 @@ EliteHostProfilesView = PostingsView.extend({
         this.listenTo(this.model, "remove", this.render);
     },
     
+    openAcceptDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        var match = $(el.target).attr('data-match');
+        this.acceptDialog.dialog('open');
+        this.acceptDialog.model = this.model.get(id);
+        this.acceptDialog.model.set('hire', {'match': match, 'action': 'Accepted'});
+    },
+    
+    openRejectDialog: function(el){
+        var id = $(el.target).attr('data-id');
+        var match = $(el.target).attr('data-match');
+        this.rejectDialog.dialog('open');
+        this.rejectDialog.model = this.model.get(id);
+        this.rejectDialog.model.set('hire', {'match': match, 'action': 'Rejected'});
+    },
+    
+    events: {
+        "click .reject": "openRejectDialog",
+        "click .accept": "openAcceptDialog",
+    },
+    
     render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         this.$("table#profiles").DataTable({
             "autoWidth": true,
             "order": [[ 0, "desc" ]]
+        });
+        this.rejectDialog = this.$("#rejectDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Reject": function(){
+                    this.rejectDialog.model.save();
+                    this.rejectDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.rejectDialog.dialog('close');
+                }.bind(this)
+            }
+        });
+        
+        this.acceptDialog = this.$("#acceptDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            buttons: {
+                "Accept": function(){
+                    this.acceptDialog.model.save();
+                    this.acceptDialog.dialog('close'); 
+                }.bind(this),
+                "Cancel": function(){
+                    this.acceptDialog.dialog('close');
+                }.bind(this)
+            }
         });
         return this.$el;
     }

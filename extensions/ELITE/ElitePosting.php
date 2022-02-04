@@ -217,6 +217,44 @@ Programme ELITE pour la Jeunesse Noire
         }
     }
     
+    function sendNotMatchedMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        if($this->type == "Intern"){
+            $subject = "ELITE Program for Black Youth - Status of Your Submitted Project";
+            $message = "Dear Internship Host,
+Thank you for your project submission to the paid work-integrated internship program offered by the Experiential Learning in Innovation, Technology, and Entrepreneurship (ELITE) Program for Black Youth.
+
+We received many projects for only 50 to 60 positions in this year's cohort. Unfortunately, due to either financial constraints or lack of suitably qualified intern candidates, we were unable to match an intern candidate with your project. We hope that you will submit a project again next year.
+
+Thank you for your interest and continued support of the ELITE Program for Black Youth.
+
+With kind regards,
+
+André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+Professor
+Lead Editor, <i>Journal of Thermal Spray Technology</i>
+Director, ELITE Program for Black Youth (www.eliteprogram.ca)
+<i>for</i> 
+ELITE Program for Black Youth
+<a href='http://www.eliteprogram.ca'>www.eliteprogram.ca</a>
+<a href='http://www.eliteprogram.ca/contact-us/'>www.eliteprogram.ca/contact-us/</a>
+<i>Work-integrated Training for Upward Mobility</i>
+**************************************
+Programme ELITE pour la Jeunesse Noire
+<a href='http://www.eliteprogram.ca/fr/'>www.eliteprogram.ca/fr/</a>
+<a href='http://www.eliteprogram.ca/fr/contactez-nous/'>www.eliteprogram.ca/fr/contactez-nous/</a>
+<i>Formation intégrée au travail pour la mobilité ascendante</i>";
+        }
+        if($message != ""){
+            $message = nl2br($message);
+            $headers  = "Content-type: text/html\r\n"; 
+            $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
+            mail($this->getUser()->getEmail(), $subject, $message, $headers);
+        }
+    }
+    
     function sendRejectedMail(){
         global $config;
         $subject = "";
@@ -340,6 +378,9 @@ Programme ELITE pour la Jeunesse Noire
         }
         else if($this->visibility == "Accepted" && $this->previousVisibility != $this->visibility){
             $this->sendAcceptedMail();
+        }
+        else if($this->visibility == "Not Matched" && $this->previousVisibility != $this->visibility){
+            $this->sendNotMatchedMail();
         }
         else if($this->visibility == "Rejected" && $this->previousVisibility != $this->visibility){
             $this->sendRejectedMail();
