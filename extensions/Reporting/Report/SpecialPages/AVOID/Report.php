@@ -33,8 +33,8 @@ class Report extends AbstractReport{
             $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Intake Survey", "{$url}IntakeSurvey", $selected);
         }
         if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IngredientsForChange")) ? "selected" : false;
-            $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Ingredients for Change", "{$url}IngredientsForChange", $selected);
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/IngredientsForChange")) ? "selected" : false;
+            $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Ingredients for Change", "{$url}EducationModules/IngredientsForChange", $selected);
         }
         return true;
     }
