@@ -21,6 +21,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Surveys"] = TabUtils::createTab("Intake Survey");
         $tabs["Modules"] = TabUtils::createTab("Education Modules");
+        $tabs["Programs"] = TabUtils::createTab("Programs");
         return true;
     }
     
@@ -35,6 +36,10 @@ class Report extends AbstractReport{
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/IngredientsForChange")) ? "selected" : false;
             $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Ingredients for Change", "{$url}EducationModules/IngredientsForChange", $selected);
+        }
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/PeerCoaching")) ? "selected" : false;
+            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Peer Coaching", "{$url}Programs/PeerCoaching", $selected);
         }
         return true;
     }
