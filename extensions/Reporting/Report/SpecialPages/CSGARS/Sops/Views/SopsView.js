@@ -752,7 +752,7 @@ SopsView = Backbone.View.extend({
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if(this.filterMeOnly.is(':checked')){
-            var name = data[COL_SUPERVISORS];
+            var name = data[COL_REVIEWERS];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
