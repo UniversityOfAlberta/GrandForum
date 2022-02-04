@@ -39,7 +39,7 @@ DataCollection = Backbone.Model.extend({
     getField: function(field, def){
         var data = this.get('data');
         if(data[field] == undefined && def != undefined){
-            data[field] = def;
+            return def;
         }
         return data[field];
     },

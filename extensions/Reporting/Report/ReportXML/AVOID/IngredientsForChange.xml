@@ -244,11 +244,11 @@
                 <script type="text/javascript">
                     dc.init(me.get('id'), 'IngredientsForChange');
                     dc.ready().always(function(){
-                        var video1Watched = Math.round(dc.sum('video1Watched')/_.size(dc.video('video1Watched', 1))*100);
-                        var video2Watched = Math.round(dc.sum('video2Watched')/_.size(dc.video('video2Watched', 1))*100);
-                        var video3Watched = Math.round(dc.sum('video3Watched')/_.size(dc.video('video3Watched', 1))*100);
-                        var video4Watched = Math.round(dc.sum('video4Watched')/_.size(dc.video('video4Watched', 1))*100);
-                        var video6Watched = Math.round(dc.sum('video6Watched')/_.size(dc.video('video6Watched', 1))*100);
+                        var video1Watched = Math.round(dc.sum('video1Watched')/_.size(dc.getField('video1Watched', [0]))*100);
+                        var video2Watched = Math.round(dc.sum('video2Watched')/_.size(dc.getField('video2Watched', [0]))*100);
+                        var video3Watched = Math.round(dc.sum('video3Watched')/_.size(dc.getField('video3Watched', [0]))*100);
+                        var video4Watched = Math.round(dc.sum('video4Watched')/_.size(dc.getField('video4Watched', [0]))*100);
+                        var video6Watched = Math.round(dc.sum('video6Watched')/_.size(dc.getField('video6Watched', [0]))*100);
                         $("#created").text(dc.get('created'));
                         $("#modified").text(dc.get('modified'));
                         $("#video1").text(video1Watched + "% watched");
