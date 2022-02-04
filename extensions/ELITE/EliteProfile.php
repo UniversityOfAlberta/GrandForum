@@ -30,7 +30,7 @@ abstract class EliteProfile extends BackboneModel {
     }
     
     static function getAllProfiles(){
-        $data = DBFunctions::execSQL("SELECT t.user_id, t.report_id
+        $data = DBFunctions::execSQL("SELECT t.user_id, MAX(t.report_id) as report_id
                                       FROM (SELECT user_id, report_id
                                             FROM grand_pdf_report
                                             WHERE type = 'RPTP_".static::$rpType."'
