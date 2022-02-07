@@ -244,7 +244,10 @@ abstract class AbstractReport extends SpecialPage {
                 }
                 permissionError();
             }
-            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || $_POST['submit'] == "Next" || $_POST['submit'] == "Previous")){
+            if(isset($_POST['submit']) && ($_POST['submit'] == "Save" || 
+                                           $_POST['submit'] == "Next" || 
+                                           $_POST['submit'] == "Previous" ||
+                                           $_POST['submit'] == "Submit")){
                 $oldData = array();
                 parse_str(@$_POST['oldData'], $oldData);
                 $_POST['oldData'] = $oldData;

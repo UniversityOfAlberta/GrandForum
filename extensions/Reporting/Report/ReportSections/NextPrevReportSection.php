@@ -22,12 +22,12 @@ class NextPrevReportSection extends EULAReportSection {
             }
             if($('a.reportTab.selectedReportTab').next('a').length == 0){
                 $('input[name=submit][value=Next]').val('Submit');
-                $('input[name=submit][value=Submit]').click(function(){
+                $('input[name=submit][value=Submit]').mousedown(function(){
                     if(typeof submitInterval != 'undefined'){
                         clearInterval(submitInterval);
                     }
                     submitInterval = setInterval(function(){
-                        if(!$('#submit_throbber').is(':visible')){
+                        if(!$('.autosaveSpan img').is(':visible')){
                             clearSuccess('#reportMessages');
                             addSuccess('Thank-you for submitting', false, '#reportMessages');
                             clearInterval(submitInterval);
