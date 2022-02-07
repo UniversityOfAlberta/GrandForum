@@ -43,7 +43,13 @@ for($y=YEAR;$y<=YEAR;$y++){
 			    } else if ($array['term'] == "Winter Term") {
 				    $year = explode("/", $array['academic_year'])[1];
 				    $term = "W" . $year;
-			    }
+			    } else if ($array['term'] == "Spring Term") {
+				    $year = explode("/", $array['academic_year'])[1];
+				    $term = "SP" . $year;
+			    } else if ($array['term'] == "Summer Term") {
+				    $year = explode("/", $array['academic_year'])[1];
+				    $term = "SU" . $year;
+			    } 
 			
 			    if ($array['gender'] == "M") {
 				    $gender = "Male";

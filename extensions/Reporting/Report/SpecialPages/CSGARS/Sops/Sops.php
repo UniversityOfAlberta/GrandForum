@@ -82,6 +82,7 @@ class Sops extends BackbonePage {
     */
     static function createToolboxLinks(&$toolbox){
         global $wgServer, $wgScriptPath, $wgUser;
+        $me = Person::newFromWgUser();
         if(self::userCanExecute($wgUser)){
             $toolbox['Products']['links'][] = TabUtils::createToolboxLink("Students Overview", "$wgServer$wgScriptPath/index.php/Special:Sops");
         }
