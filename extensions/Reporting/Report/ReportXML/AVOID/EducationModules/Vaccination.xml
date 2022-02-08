@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Vaccination" reportType="RP_VACCINATION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="How they work" name="How they work" title="How do vaccines work?" type="NextPrevReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/3. How they work video.mp4">
+            <![CDATA[
+                <p>To begin, watch the next video from the Oxford Vaccine Group. It explains how vaccines and the immune system work. It will help you understand what’s happening in your body when you get a vaccine.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Benefits" name="Benefits" title="Benefits" type="NextPrevReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/4. Benefits.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Recommendations" name="Recommendations: 1" title="Recommendations" type="NextPrevReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/5. Recommendations.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Recommendations" name="Recommendations: 2" title="Recommendations" type="NextPrevReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/6. Recommendations Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Next Steps" name="Next Steps" title="Next Steps" type="NextPrevReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/7. Next Steps.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Vaccination');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve learned more about the benefits of vaccination and thought about why it’s important to include vaccines in your healthy lifestyle plan, let's review and reinforce your learning.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 1: Vaccination only protects the person receiving the shot.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="False">
+            <![CDATA[
+                {$item} 
+                <b>The truth is, vaccination helps not only yourself but those around you.</b>
+                <p>
+                    Getting vaccinated is an important step in your personal healthy lifestyle journey, but it can also provide protection to those around you. The more people who are vaccinated, the less likelihood there is of illness being passed from person to person. This is particularly important to providing protection for people who cannot get vaccines due to a compromised immune system.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 2: Since the COVID-19 vaccines are newly developed, we should be careful about trusting them.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, vaccines for COVID-19 followed the same development process and strict safety regulations as all vaccines.</b>
+                <p>
+                    The COVID-19 vaccine was developed at a faster pace than past vaccines, but that doesn’t mean it skipped steps or that there was less oversight for safety concerns. It followed the same process as all vaccine development, but because everyone in the world was working on it at the same time, putting all their resources into this single vaccine, it was developed and tested much faster than when everyone focuses on developing a different vaccine.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 3: You only need to get the flu shot once since it is the same vaccine every year.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, the annual flu vaccine changes based on the dominant strain that year, so for the most protection you should get the flu vaccine every year.</b>
+                <p>
+                    Each year, a new flu shot is developed based the dominant strain for that year. Because the flu has so many strains, sometimes this match isn’t quite perfect. However, getting the flu shot yearly still provides better protection and reduces risk of serious illness better than not getting it at all.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/9. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+</Report>

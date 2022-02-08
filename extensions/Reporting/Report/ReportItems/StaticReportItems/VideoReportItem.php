@@ -6,7 +6,8 @@ class VideoReportItem extends StaticReportItem {
 	    global $wgOut;
 	    $url = $this->getAttr("url");
 	    $id = $this->id;
-	    $module = str_replace(".xml", "", "{$this->getReport()->xmlName}");
+	    $module = explode("/", str_replace(".xml", "", "{$this->getReport()->xmlName}"));
+	    $module = $module[count($module)-1];
 	    $item = "<video controls width='100%' src='{$url}'></video><br />
                  <span style='font-weight:bold;'>Playback Speed: </span><span><input style='vertical-align:middle;' type='range' name='speed' id='speed' min='0.25' max='2' step='0.25' value='1'>&nbsp;<output class='speed-output' for='speed'></output></span>
                 <script type='text/javascript'>
