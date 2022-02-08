@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Activity" reportType="RP_ACTIVITY" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz5").hasClass("selectedReportTab") ||
+                        $("#Answer5").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q5)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Frailty Exercise" name="Frailty Exercise" title="Frailty Exercise" type="NextPrevReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/2. Frailty _ Exercise Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Movement Guidelines" name="Movement Guidelines" title="Movement Guidelines" type="NextPrevReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/3. Movement Guidelines.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Strength" name="Strength" title="Strength" type="NextPrevReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/4. Strength Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Falls Prevention" name="Falls Prevention" title="Falls Prevention" type="NextPrevReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/5. Falls Prevention.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Balance" name="Balance" title="Balance" type="NextPrevReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/6. Balance Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video7" tooltip="Sleep" name="Sleep" title="Sleep" type="NextPrevReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/7. Sleep.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video8" tooltip="Motivation" name="Motivation" title="Motivation" type="NextPrevReportSection">
+        <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/8. Motivation.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video9" tooltip="Confidence" name="Confidence" title="Confidence" type="NextPrevReportSection">
+        <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Confidence.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video10" tooltip="Support" name="Support" title="Support" type="NextPrevReportSection">
+        <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/10. Support.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Activity');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve read about the many benefits of physical activity and thought about some activities you can use to reach your personal goal, let's review to reinforce your understanding.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Running 4 km every day|b. Moving your body every day|c. Reducing your time spent sitting by 2 hours every day|d. Going to the gym">
+            <![CDATA[
+                <h3>Question 1: What does it mean to be active?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="b. Moving your body every day">
+            <![CDATA[
+                {$item}
+                <p>
+                    Activity can be so many things. What’s important is what it means to you. Any of the activities listed in Question 1 could be “activity” to you. Maybe you like going to the gym or maybe you like having dance parties. What matters is that you move your body every day.
+                </p>
+                <p>
+                    If you don’t like the activity, you won’t do it, so choose something that excites you!
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Avoid doing physical activity|b. Wear safe footwear indoors and outdoors|c. Adapt your space to your needs|d. Both answers b. and c.">
+            <![CDATA[
+                <h3>Question 1: What can you do to avoid the risk of falling?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="d. Both answers b. and c.">
+            <![CDATA[
+                {$item}
+                <b>(wear safe footwear indoors and outdoors; adapt your space to your needs)</b>
+                <p>
+                    Physical activity is one of the most important aspects of reducing your risk of falls, especially when it comes to improving your balance. However, it’s not the only thing you can do. Earlier in the module we looked at four main areas, including physical activity, wearing appropriate footwear, adapting your space, and using handrails whenever they’re available.
+                </p>
+                <p>
+                    Be sure to check out the resource bank for more detailed information on these steps.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. At least 30 minutes before bedtime|b. 4 to 6 hours before bedtime|c. 2 to 4 hours before bedtime|d. At least 6 hours before bedtime">
+            <![CDATA[
+                <h3>Question 3: When should we have our last cup of coffee or favourite caffeinated drink?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="b. 4 to 6 hours before bedtime">
+            <![CDATA[
+                {$item}
+                <p>
+                    Physical activity is directly associated with deeper sleep and better sleep quality. Ensuring we follow proper sleep hygiene practices, such as limiting eating and drinking before bed or going to bed and waking up at the same time every day, will help us maximize those benefits. 
+                </p>
+                <p>
+                    Check out the resource bank for more information on sleep hygiene, including the reasons why we suggest the tips we do.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
+            <![CDATA[
+                <h3>Question 4: How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="c. 150 minutes per week">
+            <![CDATA[
+                {$item}
+                <p>
+                    The movement guidelines for older adults recommend that people get in 150 minutes of moderate to vigorous aerobic activity per week. It’s not about tracking your step count, and more about getting moving.
+                </p>
+                <p>
+                    Like any activity, if you aren’t reaching that goal, you can make a plan and gradually work up to it. Try parking farther away or taking the stairs rather than the elevator. Small changes lead to victory!
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 5 -->
+    <ReportSection id="q5" tooltip="Quiz" name="Quiz5"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q5" type="Radio" blobItem="Q5" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 5: It is unsafe for older adults to do muscle strengthening exercises.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 5 -->
+    <ReportSection id="a5" tooltip="Answers" name="Answer5" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+        <ReportItem id="q5" type="Answer" blobItem="Q5" blobType="BLOB_TEXT" label="Answer 5" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, older adults can safely do muscle strengthening exercises.</b>
+                <p>
+                    Older adults can safely do muscle strengthening exercises as they age. There is no age limit on who can improve their muscle strength, even older adults over 80 can still build muscle! In fact, it’s important that you do incorporate strength building activities into your routine.
+                </p>
+                <p>
+                    Make sure you choose exercises that fit your needs and gradually increase difficulty.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video11" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+        <ReportItem id="video11" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/12. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+</Report>
