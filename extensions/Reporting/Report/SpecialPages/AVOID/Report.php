@@ -7,7 +7,6 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
-$wgHooks['ToolboxLinks'][] = 'Report::createToolboxLinks';
 
 class Report extends AbstractReport{
     
@@ -19,8 +18,8 @@ class Report extends AbstractReport{
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
-        $tabs["Surveys"] = TabUtils::createTab("Intake Survey");
-        $tabs["Modules"] = TabUtils::createTab("Education Modules");
+        $tabs["Surveys"] = TabUtils::createTab("Healthy Aging Assessment");
+        $tabs["Modules"] = TabUtils::createTab("AVOID Education");
         $tabs["Programs"] = TabUtils::createTab("Programs");
         return true;
     }
@@ -31,7 +30,7 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
-            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Intake Survey", "{$url}IntakeSurvey", $selected);
+            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey", $selected);
         }
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/Activity")) ? "selected" : false;
@@ -48,16 +47,11 @@ class Report extends AbstractReport{
         }
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/PeerCoaching")) ? "selected" : false;
-            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Peer Coaching", "{$url}Programs/PeerCoaching", $selected);
+            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Get Support from your peers", "{$url}Programs/PeerCoaching", $selected);
         }
         return true;
     }
     
-    static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $config;
-
-        return true;
-    }
 }
 
 ?>
