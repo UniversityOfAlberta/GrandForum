@@ -20,7 +20,7 @@
             ]]>
         </Static>
         <ReportItemSet id="consentToggle" type="ToggleHeader" title="Consent Form">
-            <ReportItem id="eula" type="Checkbox" blobItem="EULA" blobType="BLOB_ARRAY" labels="I have had an opportunity to discuss any questions or concerns I have about this consent form or my participation in the program with a member of the Peer Coach Program" options="Yes">
+            <ReportItem id="eula" type="Checkbox" blobItem="EULA" blobType="BLOB_ARRAY" labels="By clicking here, I am verifying that: I have read the information above and I consent to participate in this program" options="Yes">
                 <![CDATA[
                     <div class="eula">
                         <p>The Peer Coach Program is one of AVOID Frailty’s programs. The program is supported by The Canadian Frailty Network, and operates out of Kingston, ON. This telephone-based coaching program supports members of the AVOID Frailty program to become better health self-managers. As part of the program, participants are paired with trained volunteer Peer Coaches based on gender, age, shared interests or conditions and/or life circumstances.</p>
