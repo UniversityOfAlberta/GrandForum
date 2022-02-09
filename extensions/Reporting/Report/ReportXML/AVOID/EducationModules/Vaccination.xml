@@ -81,7 +81,7 @@
     </ReportSection>
     
     <!-- Question 1 -->
-    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection">
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
         <Static>
             <![CDATA[
                 <script type="text/javascript">
@@ -94,14 +94,14 @@
         </Static>
         <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 1: Vaccination only protects the person receiving the shot.</h3>
+                <h3>Vaccination only protects the person receiving the shot.</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 1 -->
-    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="False">
             <![CDATA[
                 {$item} 
@@ -114,17 +114,17 @@
     </ReportSection>
     
     <!-- Question 2 -->
-    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 2: Since the COVID-19 vaccines are newly developed, we should be careful about trusting them.</h3>
+                <h3>Since the COVID-19 vaccines are newly developed, we should be careful about trusting them.</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 2 -->
-    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="False">
             <![CDATA[
                 {$item}
@@ -137,17 +137,17 @@
     </ReportSection>
     
     <!-- Question 3 -->
-    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 3: You only need to get the flu shot once since it is the same vaccine every year.</h3>
+                <h3>You only need to get the flu shot once since it is the same vaccine every year.</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 3 -->
-    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="False">
             <![CDATA[
                 {$item}

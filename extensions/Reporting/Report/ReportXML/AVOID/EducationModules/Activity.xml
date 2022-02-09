@@ -120,7 +120,7 @@
     </ReportSection>
     
     <!-- Question 1 -->
-    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection">
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
         <Static>
             <![CDATA[
                 <script type="text/javascript">
@@ -133,14 +133,14 @@
         </Static>
         <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Running 4 km every day|b. Moving your body every day|c. Reducing your time spent sitting by 2 hours every day|d. Going to the gym">
             <![CDATA[
-                <h3>Question 1: What does it mean to be active?</h3>
+                <h3>What does it mean to be active?</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 1 -->
-    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="b. Moving your body every day">
             <![CDATA[
                 {$item}
@@ -155,17 +155,17 @@
     </ReportSection>
     
     <!-- Question 2 -->
-    <ReportSection id="q2" tooltip="Quiz" name="Quiz2"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2"  title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Avoid doing physical activity|b. Wear safe footwear indoors and outdoors|c. Adapt your space to your needs|d. Both answers b. and c.">
             <![CDATA[
-                <h3>Question 1: What can you do to avoid the risk of falling?</h3>
+                <h3>What can you do to avoid the risk of falling?</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 2 -->
-    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="d. Both answers b. and c.">
             <![CDATA[
                 {$item}
@@ -181,17 +181,17 @@
     </ReportSection>
     
     <!-- Question 3 -->
-    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. At least 30 minutes before bedtime|b. 4 to 6 hours before bedtime|c. 2 to 4 hours before bedtime|d. At least 6 hours before bedtime">
             <![CDATA[
-                <h3>Question 3: When should we have our last cup of coffee or favourite caffeinated drink?</h3>
+                <h3>When should we have our last cup of coffee or favourite caffeinated drink?</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 3 -->
-    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="b. 4 to 6 hours before bedtime">
             <![CDATA[
                 {$item}
@@ -206,17 +206,17 @@
     </ReportSection>
     
     <!-- Question 4 -->
-    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
             <![CDATA[
-                <h3>Question 4: How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
+                <h3>How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 4 -->
-    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="c. 150 minutes per week">
             <![CDATA[
                 {$item}
@@ -231,17 +231,17 @@
     </ReportSection>
     
     <!-- Question 5 -->
-    <ReportSection id="q5" tooltip="Quiz" name="Quiz5"  title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="q5" tooltip="Quiz" name="Quiz5"  title="QUESTION 5" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q5" type="Radio" blobItem="Q5" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 5: It is unsafe for older adults to do muscle strengthening exercises.</h3>
+                <h3>It is unsafe for older adults to do muscle strengthening exercises.</h3>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
     <!-- Answer 5 -->
-    <ReportSection id="a5" tooltip="Answers" name="Answer5" title="Quiz" blobSection="QUIZ" type="NextPrevReportSection" hidden="true">
+    <ReportSection id="a5" tooltip="Answers" name="Answer5" title="QUESTION 5" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q5" type="Answer" blobItem="Q5" blobType="BLOB_TEXT" label="Answer 5" answer="False">
             <![CDATA[
                 {$item}
