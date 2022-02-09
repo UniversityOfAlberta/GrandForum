@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="OptimizeMedication" reportType="RP_OPTIMIZE_MEDICATION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="What is Medication" name="What is Medication" title="What is Medication" type="NextPrevReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/2. What.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Why Optimize Medication" name="Why Optimize Medication" title="Why Optimize Medication" type="NextPrevReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/3. Why.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="How to Optimize" name="How to Optimize" title="How to Optimize" type="NextPrevReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/4. How.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Medications and Frailty" name="Medications and Frailty" title="Medications and Frailty" type="NextPrevReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/5. Medications and Frailty Video.mov">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'OptimizeMedication');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve learned about the benefits of optimizing your medication and why it’s important for your healthy lifestyle plan, let's review and see how much you remember.
+</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>During an annual medication review, I don’t need to bring up the over the counter medications or vitamins I take.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="False">
+            <![CDATA[
+                {$item} 
+                <b>The truth is, all forms of medications, prescribed or otherwise can have negative interaction effects.</b>
+                <p>
+                    Over the counter medications and other supplements can also cause side effects, interact with prescription medications and impact the health outcomes we hope to achieve with prescription medications.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 2: If I think my medication is giving me unwanted side effects, I should stop taking it.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, you should always talk to your healthcare provider before making any changes.</b>
+                <p>
+                    You should always inform your healthcare provider of any side effects you might experience. This is why tracking your medications is important, so you can track symptoms that might develop and when you started experiencing a symptom.
+                </p>
+                <p>
+                    Although your doctor might decide that stopping your medication is the correct approach, you should always talk to them first and follow their advice on how to safely stop the medication.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Question 3: It’s normal to feel unwell when we take many kinds of medication.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, you should talk to your healthcare provider about any side effects you might have.</b>
+                <p>
+                    Although medications might have some adverse effects, it is always worth discussing the challenges you are facing with your healthcare provider. They will know if it’s possible to address your side effects by optimizing your medication and what steps to take.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/7. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+</Report>
