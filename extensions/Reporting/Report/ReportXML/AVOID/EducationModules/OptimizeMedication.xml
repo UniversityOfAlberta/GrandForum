@@ -109,7 +109,7 @@
     <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 2: If I think my medication is giving me unwanted side effects, I should stop taking it.</h3>
+                <h3>If I think my medication is giving me unwanted side effects, I should stop taking it.</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -135,7 +135,7 @@
     <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
-                <h3>Question 3: It’s normal to feel unwell when we take many kinds of medication.</h3>
+                <h3>It’s normal to feel unwell when we take many kinds of medication.</h3>
                 {$item}
             ]]>
         </ReportItem>
