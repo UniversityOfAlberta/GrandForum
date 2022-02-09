@@ -35,15 +35,17 @@
 	}
 	
 	#topheader .search {
-	    position:absolute;
-	    left: 200px;
-	    top: 8px;
+	    position: relative;
+	    left: 22px;
+	    top: 4px;
 	    text-shadow: none;
 	    font-weight: normal;
 	}
 	
 	#topheader .login {
-	    float: right;
+	    position: absolute;
+	    top: 5px;
+	    right: 25px;
 	    height: 100%;
 	}
 	
