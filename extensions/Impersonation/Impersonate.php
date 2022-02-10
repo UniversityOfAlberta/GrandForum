@@ -8,7 +8,7 @@ $wgSpecialPageGroups['Impersonate'] = 'network-tools';
 $wgHooks['ToolboxLinks'][] = 'Impersonate::createDelegateLink';
 
 if(!isExtensionEnabled('Shibboleth')){
-    $wgHooks['AuthPluginSetup'][] = 'startImpersonate';
+    $wgHooks['UserLoadAfterLoadFromSession'][] = 'startImpersonate';
 }
 $wgHooks['UserLogoutComplete'][] = 'clearImpersonation';
 UnknownAction::createAction('getUserMode');
@@ -124,7 +124,7 @@ function getUserMode($action, $page){
     return true;
 }
 
-function startImpersonate(){
+function startImpersonate($wgUser){
     global $wgRequest, $wgServer, $wgScriptPath, $wgUser, $wgMessage, $wgRealUser, $wgImpersonating, $wgTitle;
     if(!$wgUser->isLoggedIn()){
         return true;
