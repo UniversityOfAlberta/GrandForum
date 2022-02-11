@@ -447,7 +447,7 @@ class Securimage
      * @see Securimage::$database_driver
      * @var bool
      */
-    public $use_database = false;
+    public $use_database = true;
 
     /**
      * Whether or not to skip checking if Securimage tables exist when using a
@@ -1917,7 +1917,7 @@ class Securimage
             $length = strlen($code['display']);
 
             for($i = 0; $i < $length; ++$i) {
-                $letter    = $code['display']{$i};
+                $letter    = $code['display'][$i];
                 $letters[] = $letter;
             }
         }
@@ -2144,7 +2144,6 @@ class Securimage
 
         if ($this->use_database) {
             $pdo_extension = 'PDO_' . strtoupper($this->database_driver);
-
             if (!extension_loaded($pdo_extension)) {
                 trigger_error("Database support is turned on in Securimage, but the chosen extension $pdo_extension is not loaded in PHP.", E_USER_WARNING);
                 return false;
