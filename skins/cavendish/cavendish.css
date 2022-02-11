@@ -1887,5 +1887,13 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 .program-text {
     color: #005f9d;
     font-weight: bold;
+}
+
+.program-button input, .program-box input {
+    vertical-align: baseline !important;
+    height: 1.5em;
+}
+
+div.program-text {
     padding: 1em;
 }
