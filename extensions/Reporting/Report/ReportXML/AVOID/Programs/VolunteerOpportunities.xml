@@ -119,12 +119,107 @@
                             </div><br />
                             <p><span class="program-text">What’s required?</span> Successfully complete the 2-day, (8 hours total) training. Training is interactive and fun and provided at <b>no cost</b>.</p>
                             <p>Once trained, volunteers are asked to <b>commit to coaching a participant within 6 months</b>.</p>
-                            <div class="program-box">
-                                Complete and submit the Application Form to be a Peer Coach. After submitting the Application Form, you may be invited to participate in a personal telephone interview to assess suitability.
-                            </div>
+                        
+            ]]>
+        </Static>
+        <ReportItem id="register" type="Checkbox" labels="Complete and submit the Application Form to be a Peer Coach. After submitting the Application Form, you may be invited to participate in a personal telephone interview to assess suitability." options="Register" blobType="BLOB_ARRAY" blobItem="REGISTER">
+            <![CDATA[
+                <div class="program-button">
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
                         </div>
                     </div>
                 </div>
+                <div id='register' style='display: none;'>
+            ]]>
+        </Static>
+        <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" default="{$user_name}">
+            <![CDATA[
+                <table style="width:100%;">
+                    <tr>
+                        <td class="label required" style="width:1%;">Name:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="address" type="Text" blobItem="ADDRESS" blobType="BLOB_TEXT">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Mailing address:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" blobType="BLOB_TEXT">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Phone Number:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" default="{$user_email}">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Email:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="age" type="Text" blobItem="AGE" blobType="BLOB_TEXT">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Age:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="employment" type="Textarea" blobItem="EMPLOYMENT" blobType="BLOB_TEXT" width="100%" height="100px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Employment Information:<br /><small>(if applicable)</small></td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="times" type="Checkbox" blobItem="TIMES" blobType="BLOB_ARRAY" options="Weekend|Weekdays|Evenings">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Preferred Training Times:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    <h3>Communication Consent </h3>
+                    <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
+                </div>
+                <script type='text/javascript'>
+                    $(".program-button").click(function(e){
+                        var checkbox = $('input[type=checkbox]', this);
+                        if($(e.target).not("input").length == 1){
+                            $(checkbox).click();
+                        }
+                    });
+                    
+                    $(".program-button input").change(function(){
+                        var checked = $(this).is(":checked");
+                        if(checked){
+                            $("#register").slideDown();
+                        }
+                        else {
+                            $("#register").slideUp();
+                        }
+                    }).change();
+                    
+                    
+                </script>
             ]]>
         </Static>
     </ReportSection>
