@@ -1842,3 +1842,50 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 .mce-notification-error {
     display: none;
 }
+
+/* Programs (Reporting) */
+.program-body {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin-bottom: 1em;
+}
+
+.program-header {
+    background: #005f9d;
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+    line-height: 1em;
+    height: 1em;
+    border-radius: 1em 0 1em 0;
+    padding: 1em;
+    white-space: nowrap;
+}
+
+.program-box, .program-button {
+    background: #005f9d;
+    color: white;
+    border-radius: 0.5em;
+    padding: 0.25em 0.5em;
+    display: inline-block;
+    font-weight: bold;
+    margin: 0.25em 0;
+}
+
+.program-button {
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+
+.program-button:hover {
+    background: #397cbd;
+    cursor: pointer;
+}
+
+.program-text {
+    color: #005f9d;
+    font-weight: bold;
+    padding: 1em;
+}
