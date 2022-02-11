@@ -69,6 +69,63 @@
         </Static>
     </ReportSection>
     <ReportSection id="peer" tooltip="Peer Coaching" name="Peer Coaching" title="Peer Coaching" blobSection="PEER" type="NextPrevReportSection">
-    
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                </script>
+                <div class='program-body' style='overflow: auto;'>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/man3.png" style='float: right; height: 175px; transform: scaleX(-1);' />
+                    <div style='display:flex; align-items: center;'>
+                        <div class='program-header'>
+                            PEER COACHING
+                        </div>
+                        <div class='program-text' style='min-width: 200px;'>
+                            Provide support by telephone for approximately 30 minutes, once a week, for three months.
+                        </div>
+                    </div>
+                    
+                    <div style='display:flex; clear: both;'>
+                        <div style='width:40%; padding-right:1em;'>
+                            <span class='program-text'>Who can volunteer to coach?</span><br />
+                            <p>Members of the AVOID Frailty for Healthy Aging Program are eligible to become Peer Coaches. Peer Coaches provide support in self-managing health through behaviour change and empowerment. This complements and enhances professional health care.</p>
+                            <img src="{$wgServer}{$wgScriptPath}/skins/people3.png" style='float: right; height: 200px;' />
+                            <p>Coaches do not provide medical/clinical advice or treatment.</p>
+                            
+                            <br />
+                            <span class='program-text'>Benefits of coaching:</span><br />
+                            <div class='program-box'>Learn facilitation skills</div><br />
+                            <div class='program-box'>Share in other people’s successes</div><br />
+                            <div class='program-box'>Learn techniques and strategies you can use in your own life</div>
+                        </div>
+                        <div style='width:60%; padding-left:1em;'>
+                            <span class='program-text'>Favourable attributes of a Peer Coach include:</span><br />
+                            <div class='program-box' style='display:flex;'>
+                                <div style='width:50%;'>
+                                    <ul>
+                                        <li>Willing to listen, learn new skills, and be a healthy role model</li>
+                                        <li>Non-judgmental and open to new ideas</li>
+                                        <li>Committed to the philosophy of the program</li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <ul>
+                                        <li>Responsible, respected, and trustworthy</li>
+                                        <li>Committed to helping others</li>
+                                        <li>Proficient in both speaking and reading English</li>
+                                    </ul>
+                                </div>
+                            </div><br />
+                            <p><span class="program-text">What’s required?</span> Successfully complete the 2-day, (8 hours total) training. Training is interactive and fun and provided at <b>no cost</b>.</p>
+                            <p>Once trained, volunteers are asked to <b>commit to coaching a participant within 6 months</b>.</p>
+                            <div class="program-box">
+                                Complete and submit the Application Form to be a Peer Coach. After submitting the Application Form, you may be invited to participate in a personal telephone interview to assess suitability.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>
