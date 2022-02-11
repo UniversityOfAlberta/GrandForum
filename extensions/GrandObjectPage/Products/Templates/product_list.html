@@ -29,9 +29,20 @@
                     <th style='display:none;'>Frequency</th>
                     <th style='display:none;'>Value</th>
                     <th style='display:none;'>Institution</th>
-                <% } %>
-                <% if(this.model.category == "IP Management"){ %>
+                <% } else if(this.model.category == "IP Management"){ %>
                     <th style='display:none;'>HQP Trained</th>
+                <% } else if(this.model.category == "Activity"){ %>
+                    <th style='display:none;'>Conference</th>
+                    <th style='display:none;'>Organizing Body</th>
+                <% } else if(this.model.category == "Publication"){ %>
+                    <th style='display:none;'>Volume</th>
+                    <th style='display:none;'>Pages</th>
+                    <th style='display:none;'>Publisher</th>
+                    <th style='display:none;'>Conference</th>
+                    <th style='display:none;'>Event Title</th>
+                    <th style='display:none;'>Organizing Body</th>
+                    <th style='display:none;'>University</th>
+                    <th style='display:none;'>Book Title</th>
                 <% } %>
             <% } %>
             <th style='display:none;'>Extra</th>

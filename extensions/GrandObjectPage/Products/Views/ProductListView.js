@@ -105,6 +105,20 @@ ProductListView = Backbone.View.extend({
                     addCol(row, model.data.value);
                     addCol(row, model.data.institution);
                 }
+                if(model.category == "Activity"){
+                    addCol(row, model.data.conference);
+                    addCol(row, model.data.organizing_body);
+                }
+                if(model.category == "Publication"){
+                    addCol(row, model.data.volume);
+                    addCol(row, model.data.pages);
+                    addCol(row, model.data.publisher);
+                    addCol(row, model.data.conference);
+                    addCol(row, model.data.event_title);
+                    addCol(row, model.data.organizing_body);
+                    addCol(row, model.data.university);
+                    addCol(row, model.data.book_title);
+                }
             }
             row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
             if(projectsEnabled){
@@ -157,13 +171,16 @@ ProductListView = Backbone.View.extend({
         var targets = [ 4, 5, 6 ];
         if(networkName == "FES"){
             if(this.model.category == "Publication"){
-                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
             }
             else if (this.model.category == "Award"){
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
             }
             else if (this.model.category == "IP Management"){
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
+            }
+            else if (this.model.category == "Activity"){
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ];
             }
             else {
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
