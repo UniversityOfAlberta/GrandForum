@@ -68,4 +68,7 @@
             ]]>
         </Static>
     </ReportSection>
+    <ReportSection id="peer" tooltip="Peer Coaching" name="Peer Coaching" title="Peer Coaching" blobSection="PEER" type="NextPrevReportSection">
+    
+    </ReportSection>
 </Report>
