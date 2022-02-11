@@ -3,20 +3,90 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-
-    <ReportSection id="consent" tooltip="Consent Form" name="Consent Form" title="Peer Coaching" blobSection="CONSENT" type="NextPrevReportSection">
+    <ReportSection id="consent" tooltip="Program Details" name="Program Details" title="Program Details" blobSection="CONSENT" type="NextPrevReportSection">
         <Static>
             <![CDATA[
-                <p>The Peer Coaching Program is a free, telephone-based program that supports AVOID Frailty program participants who are having trouble managing their health.</p>
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $(".toggleHeader").hide();
+                    });
+                </script>
+                <style>
+                    .program-body {
+                        font-size: 1.5em;
+                        line-height: 1.5em;
+                        margin-bottom: 1em;
+                    }
                 
-                Trained coaches will connect with you by telephone for 3 months, once a week for 30 minutes. They will support you in working towards better managing your health by helping you:
-                <ul>
-                    <li>Determine goals and actions you want to take</li>
-                    <li>Identify barriers and learn problem-solving skills</li>
-                    <li>Become more motivated to initiate and maintain health-behaviour changes</li>
-                    <li>Peer Coaches provide support in self-managing health through behaviour change. This complements and enhances professional health care. Coaches do not provide medical/clinical advice or treatment.</li>
-                </ul>
-                <p>To get started with a Peer Coach, complete the Participant Consent Form</p>
+                    .program-header {
+                        background: #005f9d;
+                        color: white;
+                        font-weight: bold;
+                        font-size: 2em;
+                        line-height: 1em;
+                        height: 1em;
+                        border-radius: 1em 0 1em 0;
+                        padding: 1em;
+                        white-space: nowrap;
+                    }
+                
+                    .program-box, .program-button {
+                        background: #005f9d;
+                        color: white;
+                        border-radius: 0.5em;
+                        padding: 0.25em 0.5em;
+                        display: inline-block;
+                        font-weight: bold;
+                        margin: 0.25em 0;
+                    }
+                    
+                    .program-button {
+                        -webkit-user-select: none;  
+                        -moz-user-select: none;    
+                        -ms-user-select: none;      
+                        user-select: none;
+                    }
+                    
+                    .program-button:hover {
+                        background: #397cbd;
+                        cursor: pointer;
+                    }
+                    
+                    .program-text {
+                        color: #005f9d;
+                        font-weight: bold;
+                        padding: 1em;
+                    }
+                </style>
+                <div class='program-body' style='overflow: auto;'>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/man2.png" style='float: right; height: 350px;' />
+                    <div style='display:flex; align-items: center;'>
+                        <div class='program-header'>
+                            PEER COACHING
+                        </div>
+                        <div class='program-text' style='min-width: 200px;'>
+                            The Peer Coaching Program is a free, telephone-based program that supports AVOID Frailty program participants who are having trouble managing their health.
+                        </div>
+                    </div>
+                    
+                    <p>Peer Coaches will support you in working towards better managing your health by helping you:</p>
+                    <div class='program-box'>Determine goals and actions you want to take</div>
+                    <div class='program-box'>Identify barriers and learn problem-solving skills</div>
+                    <div class='program-box'>Become more motivated to initiate and maintain health-behaviour changes</div>
+                    <br />
+                    <img src="{$wgServer}{$wgScriptPath}/skins/man1.png" style='float: left; height: 350px; transform: scaleX(-1);' />
+                    <p><b>Trained coaches will connect with you by telephone</b> for 30 minutes, once a week, for three months.</p>
+                    
+                    <p>Peer Coaches <b>provide support in self-managing health through behaviour change</b>. This complements and enhances professional health care.</p>
+                    
+                    <p>Coaches do not provide medical/clinical advice or treatment.</p>
+                    
+                    <div class='program-button' onClick='$(".toggleHeader").click();'>
+                        Click Here to view the Consent Form and get started with a Peer Coach
+                    </div>
+                </div>
             ]]>
         </Static>
         <ReportItemSet id="consentToggle" type="ToggleHeader" title="Consent Form">
