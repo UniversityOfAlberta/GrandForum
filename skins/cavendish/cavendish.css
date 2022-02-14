@@ -1872,6 +1872,11 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     margin: 0.25em 0;
 }
 
+.program-box a, .program-box a:hover, .program-box a:visited {
+    color: white;
+    text-decoration: underline;
+}
+
 .program-button {
     -webkit-user-select: none;  
     -moz-user-select: none;    

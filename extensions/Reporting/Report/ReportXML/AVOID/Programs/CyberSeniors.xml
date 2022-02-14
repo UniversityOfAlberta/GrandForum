@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Cyber Seniors" reportType="RP_CYBER_SENIORS" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="consent" tooltip="Cyber Seniors" name="Cyber Seniors" title="Cyber Seniors" blobSection="CONSENT" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    _.defer(function(){
+                        $(".toggleHeader").hide();
+                    });
+                </script>
+                <div class='program-body' style='overflow: auto;'>
+                    <div style='display:flex; align-items: center;'>
+                        <div>
+                            <img src="{$wgServer}{$wgScriptPath}/skins/cyber_seniors.jpg" style='height: 150px;' />
+                        </div>
+                        <div class='program-text'>
+                            Benefits:
+                        </div>
+                        <div style='margin-right:15px;'>
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Access to free technology</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Social engagement</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Safe opportunity to engage</div>
+                        </div>
+                        <div>
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Improve your well-being</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Increase computer literacy</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Increase self-sufficiency</div>
+                        </div>
+                    </div>
+                    
+                    <div style='display:flex; margin-top:1em;'>
+                        <div style="width:40%;">
+                            <span class="program-text">It’s never too late to learn basic computer and technology skills.</span>
+                            <p>Cyber-Seniors provides older adults with tech-training using an intergenerational, youth volunteer model. Young people are provided with lessons and learning activities to train them to act as digital mentors, while older adults gain access to effective technology training and intergenerational communities that keep them socially connected and engaged.</p>
+                        </div>
+                        <div>
+                            <b>Watch recorded webinars</b> with helpful information and tech solutions such as:
+                            <div style='display:flex;'>
+                                <div style='width:50%;'>
+                                    <ul>
+                                        <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/video-calling/how-to-use-zoom/" target="_blank">How to use Zoom</a></li>
+                                        <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/search-engines/use-search-engines-to-navigate-the-internet/" target="_blank">How to Use Search Engines to Navigate the Internet</a></li>
+                                        <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/telemedicine/assistive-tech-for-fall-prevention/" target="_blank">Using Assistive Technology for Falls Prevention</a></li>
+                                    </ul>
+                                </div>
+                                <div style='width:50%;'>
+                                    <ul>
+                                        <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/online-services/vaccine-certificate-with-qr-code/" target="_blank">How to Download your Enhanced Vaccine Certificate</a></li>
+                                        <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/social-media/review-of-fact-checking-online/" target="_blank">How to Verify Online Information</a></li>
+                                    </ul>
+                                    <div class="program-box" style="background: #ef7b3d;">You can find the <a href="https://cyberseniors.org/seniors-services/previous-webinars/" target="_blank">complete collection of webinars here</a>.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style='display:flex; align-items: center;'>
+                        <div>
+                            <img src="{$wgServer}{$wgScriptPath}/skins/people4.png" style='height: 350px;' />
+                        </div>
+                        <div style='width: 100%; text-align: center;'>
+                            <p class="program-text">Learn how to use your tablets, laptops, desktops, and smartphones with Cyber-Seniors!</p>
+                            <div class="program-box" style="width: 575px;"><a target="_blank" href="https://calendly.com/avoidfrailtywithcyberseniors">Sign up here</a> to work one-to-one with trained tech mentors</div><br />
+                            <div class="program-box" style="width: 575px;">Call 613-777-2835 (toll-free) if you are looking for quick tech help over the phone</div>
+                        </div>
+                    </div>
+                </div>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

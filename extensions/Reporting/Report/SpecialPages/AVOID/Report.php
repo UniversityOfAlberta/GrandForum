@@ -49,6 +49,9 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/PeerCoaching")) ? "selected" : false;
             $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Get Support from your peers", "{$url}Programs/PeerCoaching", $selected);
             
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/CyberSeniors")) ? "selected" : false;
+            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Tech Training", "{$url}Programs/CyberSeniors", $selected);
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/VolunteerOpportunities")) ? "selected" : false;
             $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Get involved", "{$url}Programs/VolunteerOpportunities", $selected);
         }
