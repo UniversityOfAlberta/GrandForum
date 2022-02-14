@@ -27,6 +27,7 @@ PageRouter = Backbone.Router.extend({
         "rejected(/)(:search)(/)(:year)": "rejected",
         "hidden(/)(:search)(/)(:year)": "hidden",
         "favorites(/)(:search)(/)(:year)": "favorites",
+        "all(/)(:search)(/)(:year)": "all",
         "course": "course",
         "other": "other",
         ":id/edit": "editSop",
@@ -125,6 +126,18 @@ pageRouter.on('route:favorites', function (search, year) {
     gsms.fetch();
     this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     this.currentView.favorites = true;
+    if (search == null) { search = ""; }
+    this.currentView.defaultSearch = search;
+});
+
+pageRouter.on('route:all', function (search, year) {
+    main.set('title', '');
+    this.closeCurrentView();
+    var gsms = new GsmsDataAll();
+    gsms.folder = "all";
+    gsms.year = (year != null) ? year : "";
+    gsms.fetch();
+    this.currentView = new SopsView({el: $("#currentView"), model: gsms});
     if (search == null) { search = ""; }
     this.currentView.defaultSearch = search;
 });

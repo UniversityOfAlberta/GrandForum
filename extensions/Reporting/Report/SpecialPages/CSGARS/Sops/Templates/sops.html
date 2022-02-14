@@ -5,6 +5,7 @@
     <a href="#/admitted<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Ready for Decision&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
     <a href="#/rejected<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Rejected Apps" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
     <div style="position: absolute; right: 30px; display: inline-block;">
+        <a href="#/all<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.model.folder == "all" && this.favorites == false){ %> style="text-decoration:underline;" <% } %>>All</a>&nbsp;
         <a href="#/favorites<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.favorites == true){ %> style="text-decoration:underline;" <% } %>>Favorites</a>&nbsp;
         <a href="#/hidden<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.hidden == true){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
