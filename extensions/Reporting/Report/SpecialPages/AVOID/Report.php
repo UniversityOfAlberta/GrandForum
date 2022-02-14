@@ -36,6 +36,9 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/Activity")) ? "selected" : false;
             $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Activity", "{$url}EducationModules/Activity", $selected);
             
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/DietAndNutrition")) ? "selected" : false;
+            $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Diet & Nutrition", "{$url}EducationModules/DietAndNutrition", $selected);
+            
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/IngredientsForChange")) ? "selected" : false;
             $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("Ingredients for Change", "{$url}EducationModules/IngredientsForChange", $selected);
             
