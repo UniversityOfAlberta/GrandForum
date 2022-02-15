@@ -1095,7 +1095,7 @@ class CavendishTemplate extends QuickTemplate {
 	                echo "<a class='administration highlights-background-hover' style='padding: 5px 8px 5px 10px;' href='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects'>Projects</a>";
 	            }
 	        }
-	        if(!$config->getValue('showToolbox')){
+	        if(!$config->getValue('showSideBar')){
 	            echo "<style>
 	                #side {
 	                    display: none;
