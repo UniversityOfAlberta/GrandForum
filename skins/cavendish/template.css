@@ -27,6 +27,8 @@
 	
 	#topheader .smallLogo {
 	    float: left;
+	    z-index: 1;
+        position: relative;
 	    height: 100%;
 	}
 	

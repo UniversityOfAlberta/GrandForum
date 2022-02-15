@@ -189,6 +189,9 @@
     // A whitelist of ip addresses so that certain ips can still get past the login wall
     $config->setValue("ipWhitelist", array());
     
+    // Whether or not to show the sidebar (it will still be visible when not logged in)
+    $config->setValue("showSideBar", true);
+    
     // Whether or not to show the Upload File in the sidebar
     $config->setValue("showUploadFile", true);
     
