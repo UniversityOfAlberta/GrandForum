@@ -1092,6 +1092,33 @@ class CavendishTemplate extends QuickTemplate {
 	                echo "<a class='administration highlights-background-hover' style='padding: 5px 8px 5px 10px;' href='$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:Projects'>Projects</a>";
 	            }
 	        }
+	        if(!$config->getValue('showToolbox')){
+	            echo "<style>
+	                #side {
+	                    display: none;
+	                }
+	                
+	                #bodyContent {
+	                    left: 0;
+	                }
+	                
+	                #outerHeader {
+	                    left: 0;
+	                }
+	                
+	                #sideToggle{
+	                    display: none;
+	                }
+	                
+	                #header ul {
+	                    left: 15px;
+	                }
+	                
+	                #submenu > ul {
+	                    margin-left: 15px;
+	                }
+	            </style>";
+	        }
 		}
 		else {
 		    global $wgSiteName, $wgOut, $wgLang;
