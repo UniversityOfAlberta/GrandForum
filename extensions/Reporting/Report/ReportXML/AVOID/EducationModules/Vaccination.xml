@@ -31,7 +31,7 @@
         ]]>
     </Script>
 
-    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
         <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/1. Introduction.mp4">
             <![CDATA[
                 {$item}
@@ -39,7 +39,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="How they work" name="How they work" title="How do vaccines work?" type="NextPrevReportSection">
+    <ReportSection id="video2" tooltip="How they work" name="How they work" title="How do vaccines work?" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/3. How they work video.mp4">
             <![CDATA[
                 <p>To begin, watch the next video from the Oxford Vaccine Group. It explains how vaccines and the immune system work. It will help you understand what’s happening in your body when you get a vaccine.</p>
@@ -48,7 +48,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Benefits" name="Benefits" title="Benefits" type="NextPrevReportSection">
+    <ReportSection id="video3" tooltip="Benefits" name="Benefits" title="Benefits" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/4. Benefits.mp4">
             <![CDATA[
                 {$item}
@@ -56,7 +56,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Recommendations" name="Recommendations: 1" title="Recommendations" type="NextPrevReportSection">
+    <ReportSection id="video4" tooltip="Recommendations" name="Recommendations: 1" title="Recommendations" type="VideoReportSection">
         <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/5. Recommendations.mp4">
             <![CDATA[
                 {$item}
@@ -64,7 +64,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="Recommendations" name="Recommendations: 2" title="Recommendations" type="NextPrevReportSection">
+    <ReportSection id="video5" tooltip="Recommendations" name="Recommendations: 2" title="Recommendations" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/6. Recommendations Video.mp4">
             <![CDATA[
                 {$item}
@@ -72,7 +72,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video6" tooltip="Next Steps" name="Next Steps" title="Next Steps" type="NextPrevReportSection">
+    <ReportSection id="video6" tooltip="Next Steps" name="Next Steps" title="Next Steps" type="VideoReportSection">
         <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/7. Next Steps.mp4">
             <![CDATA[
                 {$item}
@@ -159,7 +159,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
         <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Vaccination/9. Conclusion.mp4">
             <![CDATA[
                 {$item}

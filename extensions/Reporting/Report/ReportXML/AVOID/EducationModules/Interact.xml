@@ -31,7 +31,7 @@
         ]]>
     </Script>
 
-    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
         <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/1. Introduction.mp4">
             <![CDATA[
                 {$item}
@@ -39,7 +39,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="video2" tooltip="Interaction" name="Interaction" title="Interaction" type="NextPrevReportSection">
+    <ReportSection id="video2" tooltip="Interaction" name="Interaction" title="Interaction" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/2. Interaction.mp4">
             <![CDATA[
                 {$item}
@@ -47,7 +47,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Isolation" name="Isolation" title="Isolation" type="NextPrevReportSection">
+    <ReportSection id="video3" tooltip="Isolation" name="Isolation" title="Isolation" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/3. Isolation.mp4">
             <![CDATA[
                 {$item}
@@ -55,7 +55,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Benefits" name="Benefits" title="Benefits" type="NextPrevReportSection">
+    <ReportSection id="video4" tooltip="Benefits" name="Benefits" title="Benefits" type="VideoReportSection">
         <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/4. Benefits.mp4">
             <![CDATA[
                 {$item}
@@ -63,7 +63,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="Benefits Video" name="Benefits Video" title="Benefits Video" type="NextPrevReportSection">
+    <ReportSection id="video5" tooltip="Benefits Video" name="Benefits Video" title="Benefits Video" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/5. Benefits Video.mp4">
             <![CDATA[
                 {$item}
@@ -71,7 +71,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video6" tooltip="How" name="How" title="How" type="NextPrevReportSection">
+    <ReportSection id="video6" tooltip="How" name="How" title="How" type="VideoReportSection">
         <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/6. How.mp4">
             <![CDATA[
                 {$item}
@@ -163,7 +163,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+    <ReportSection id="video7" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
         <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Interact/8. Conclusion.mp4">
             <![CDATA[
                 {$item}

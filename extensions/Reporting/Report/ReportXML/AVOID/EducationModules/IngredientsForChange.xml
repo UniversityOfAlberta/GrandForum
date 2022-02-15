@@ -35,7 +35,7 @@
         ]]>
     </Script>
 
-    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
         <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/1. Introduction.mov">
             <![CDATA[
                 {$item}
@@ -43,7 +43,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Ingredients 1: Confidence" name="Ingredients 1: Confidence" title="Ingredients 1: Confidence" type="NextPrevReportSection">
+    <ReportSection id="video2" tooltip="Ingredients 1: Confidence" name="Ingredients 1: Confidence" title="Ingredients 1: Confidence" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/2. Confidence.mov">
             <![CDATA[
                 {$item}
@@ -51,7 +51,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Ingredients 2: Support" name="Ingredients 2: Support" title="Ingredients 2: Support" type="NextPrevReportSection">
+    <ReportSection id="video3" tooltip="Ingredients 2: Support" name="Ingredients 2: Support" title="Ingredients 2: Support" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/3. Support.mov">
             <![CDATA[
                 {$item}
@@ -59,7 +59,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Ingredients 3: Motivation" name="Ingredients 3: Motivation" title="Ingredients 3: Motivation" type="NextPrevReportSection">
+    <ReportSection id="video4" tooltip="Ingredients 3: Motivation" name="Ingredients 3: Motivation" title="Ingredients 3: Motivation" type="VideoReportSection">
         <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/4. Motivation.mov">
             <![CDATA[
                 {$item}
@@ -173,7 +173,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+    <ReportSection id="video5" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/IngredientsForChange/6. Conclusion.mov">
             <![CDATA[
                 {$item}

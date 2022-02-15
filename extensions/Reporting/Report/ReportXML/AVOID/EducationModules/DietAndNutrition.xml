@@ -35,7 +35,7 @@
         ]]>
     </Script>
 
-    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
         <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/1. Introduction.mp4">
             <![CDATA[
                 {$item}
@@ -43,7 +43,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Diet &amp; Aging" name="Diet &amp; Aging" title="Diet &amp; Aging" type="NextPrevReportSection">
+    <ReportSection id="video2" tooltip="Diet &amp; Aging" name="Diet &amp; Aging" title="Diet &amp; Aging" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/2. Diet_Aging.mp4">
             <![CDATA[
                 {$item}
@@ -51,7 +51,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Protein" name="Protein" title="Protein" type="NextPrevReportSection">
+    <ReportSection id="video3" tooltip="Protein" name="Protein" title="Protein" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/3. Protein.mp4">
             <![CDATA[
                 {$item}
@@ -59,7 +59,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Calcium &amp; Vit D" name="Calcium &amp; Vit D" title="Calcium &amp; Vit D" type="NextPrevReportSection">
+    <ReportSection id="video4" tooltip="Calcium &amp; Vit D" name="Calcium &amp; Vit D" title="Calcium &amp; Vit D" type="VideoReportSection">
         <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/4. Calcium_Vit D.mp4">
             <![CDATA[
                 {$item}
@@ -67,7 +67,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="Example Diet" name="Example Diet" title="Example Diet" type="NextPrevReportSection">
+    <ReportSection id="video5" tooltip="Example Diet" name="Example Diet" title="Example Diet" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/5. Example Diet.mp4">
             <![CDATA[
                 {$item}
@@ -75,7 +75,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video6" tooltip="Diet &amp; Frailty" name="Diet &amp; Frailty" title="Diet &amp; Frailty" type="NextPrevReportSection">
+    <ReportSection id="video6" tooltip="Diet &amp; Frailty" name="Diet &amp; Frailty" title="Diet &amp; Frailty" type="VideoReportSection">
         <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/6. Diet_Frailty.mp4">
             <![CDATA[
                 {$item}
@@ -83,7 +83,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video7" tooltip="Diet &amp; Frailty Video" name="Diet &amp; Frailty Video" title="Diet &amp; Frailty Video" type="NextPrevReportSection">
+    <ReportSection id="video7" tooltip="Diet &amp; Frailty Video" name="Diet &amp; Frailty Video" title="Diet &amp; Frailty Video" type="VideoReportSection">
         <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/7. Diet_Frailty Video.mov">
             <![CDATA[
                 {$item}
@@ -91,7 +91,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video8" tooltip="How" name="How" title="How" type="NextPrevReportSection">
+    <ReportSection id="video8" tooltip="How" name="How" title="How" type="VideoReportSection">
         <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/8. How.mp4">
             <![CDATA[
                 {$item}
@@ -99,7 +99,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video9" tooltip="Recipe Video" name="Recipe Video" title="Recipe Video" type="NextPrevReportSection">
+    <ReportSection id="video9" tooltip="Recipe Video" name="Recipe Video" title="Recipe Video" type="VideoReportSection">
         <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/9. Recipe Video.mp4">
             <![CDATA[
                 {$item}
@@ -107,7 +107,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video10" tooltip="Malnourishment" name="Malnourishment" title="Malnourishment" type="NextPrevReportSection">
+    <ReportSection id="video10" tooltip="Malnourishment" name="Malnourishment" title="Malnourishment" type="VideoReportSection">
         <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/10. Malnourishment.mp4">
             <![CDATA[
                 {$item}
@@ -115,7 +115,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video11" tooltip="Oral Hygiene" name="Oral Hygiene" title="Oral Hygiene" type="NextPrevReportSection">
+    <ReportSection id="video11" tooltip="Oral Hygiene" name="Oral Hygiene" title="Oral Hygiene" type="VideoReportSection">
         <ReportItem id="video11" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/11. Oral Hygiene.mp4">
             <![CDATA[
                 {$item}
@@ -224,7 +224,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video12" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+    <ReportSection id="video12" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
         <ReportItem id="video12" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/DietAndNutrition/12. Conclusion.mp4">
             <![CDATA[
                 {$item}

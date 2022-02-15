@@ -39,7 +39,7 @@
         ]]>
     </Script>
 
-    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="NextPrevReportSection">
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
         <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/1. Introduction.mp4">
             <![CDATA[
                 {$item}
@@ -47,7 +47,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="Frailty Exercise" name="Frailty Exercise" title="Frailty Exercise" type="NextPrevReportSection">
+    <ReportSection id="video2" tooltip="Frailty Exercise" name="Frailty Exercise" title="Frailty Exercise" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/2. Frailty _ Exercise Video.mp4">
             <![CDATA[
                 {$item}
@@ -55,7 +55,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Movement Guidelines" name="Movement Guidelines" title="Movement Guidelines" type="NextPrevReportSection">
+    <ReportSection id="video3" tooltip="Movement Guidelines" name="Movement Guidelines" title="Movement Guidelines" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/3. Movement Guidelines.mp4">
             <![CDATA[
                 {$item}
@@ -63,7 +63,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video4" tooltip="Strength" name="Strength" title="Strength" type="NextPrevReportSection">
+    <ReportSection id="video4" tooltip="Strength" name="Strength" title="Strength" type="VideoReportSection">
         <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/4. Strength Video.mp4">
             <![CDATA[
                 {$item}
@@ -71,7 +71,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video5" tooltip="Falls Prevention" name="Falls Prevention" title="Falls Prevention" type="NextPrevReportSection">
+    <ReportSection id="video5" tooltip="Falls Prevention" name="Falls Prevention" title="Falls Prevention" type="VideoReportSection">
         <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/5. Falls Prevention.mp4">
             <![CDATA[
                 {$item}
@@ -79,7 +79,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video6" tooltip="Balance" name="Balance" title="Balance" type="NextPrevReportSection">
+    <ReportSection id="video6" tooltip="Balance" name="Balance" title="Balance" type="VideoReportSection">
         <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/6. Balance Video.mp4">
             <![CDATA[
                 {$item}
@@ -87,7 +87,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video7" tooltip="Sleep" name="Sleep" title="Sleep" type="NextPrevReportSection">
+    <ReportSection id="video7" tooltip="Sleep" name="Sleep" title="Sleep" type="VideoReportSection">
         <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/7. Sleep.mp4">
             <![CDATA[
                 {$item}
@@ -95,7 +95,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video8" tooltip="Motivation" name="Motivation" title="Motivation" type="NextPrevReportSection">
+    <ReportSection id="video8" tooltip="Motivation" name="Motivation" title="Motivation" type="VideoReportSection">
         <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/8. Motivation.mp4">
             <![CDATA[
                 {$item}
@@ -103,7 +103,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video9" tooltip="Confidence" name="Confidence" title="Confidence" type="NextPrevReportSection">
+    <ReportSection id="video9" tooltip="Confidence" name="Confidence" title="Confidence" type="VideoReportSection">
         <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Confidence.mp4">
             <![CDATA[
                 {$item}
@@ -111,7 +111,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video10" tooltip="Support" name="Support" title="Support" type="NextPrevReportSection">
+    <ReportSection id="video10" tooltip="Support" name="Support" title="Support" type="VideoReportSection">
         <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/10. Support.mp4">
             <![CDATA[
                 {$item}
@@ -256,7 +256,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video11" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="NextPrevReportSection">
+    <ReportSection id="video11" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
         <ReportItem id="video11" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/12. Conclusion.mp4">
             <![CDATA[
                 {$item}
