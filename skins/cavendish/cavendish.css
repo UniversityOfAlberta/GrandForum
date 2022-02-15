@@ -1850,6 +1850,16 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     margin-bottom: 1em;
 }
 
+.program-body a, .program-body a:hover, .program-body a:visited {
+    color: black;
+    text-decoration: underline;
+    text-decoration-color: #e97936;
+}
+
+.program-body a:hover {
+    color: #e97936;
+}
+
 .program-header {
     background: #005f9d;
     color: white;
@@ -1884,8 +1894,16 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     user-select: none;
 }
 
+.program-button, .program-button:visited {
+    color: white !important;
+    text-decoration: none;
+    background: #e97936;
+}
+
 .program-button:hover {
-    background: #397cbd;
+    background: #f69443;
+    color: white;
+    text-decoration: none !important;
     cursor: pointer;
 }
 
