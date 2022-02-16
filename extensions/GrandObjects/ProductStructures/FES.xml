@@ -496,15 +496,6 @@
             </data>
         </Activity>
         
-        <Activity type="Invited/Keynote" status="Invited|Not Invited">
-            <data>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
         <Activity type="Government Briefings" status="Invited|Not Invited">
             <data>
                 <field label="Location" type="String">location</field>
@@ -529,7 +520,9 @@
             <data>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
+                <field lable="Interviewer Name" type="String">interviewer</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
