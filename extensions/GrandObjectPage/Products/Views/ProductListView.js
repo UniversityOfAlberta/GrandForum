@@ -110,6 +110,7 @@ ProductListView = Backbone.View.extend({
                     addCol(row, model.data.conference);
                     addCol(row, model.data.chair_name);
                     addCol(row, model.data.organizing_body);
+                    addCol(row, model.data.researcher_type);
                 }
                 if(model.category == "Publication"){
                     addCol(row, model.data.volume);
@@ -182,7 +183,7 @@ ProductListView = Backbone.View.extend({
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
             }
             else if (this.model.category == "Activity"){
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
             }
             else {
                 targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];

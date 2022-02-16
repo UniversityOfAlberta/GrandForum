@@ -504,15 +504,19 @@
             </data>
         </Activity>
         
-        <Activity type="Visiting Student (outgoing)" status="">
+        <Activity type="Visiting Researcher (outgoing)" status="">
             <data>
-                <field label="Student Name" type="String">student_name</field>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
             </data>
         </Activity>
         
-        <Activity type="Visiting Student (incoming)" status="">
+        <Activity type="Visiting Researcher (incoming)" status="">
             <data>
-                <field label="Student Name" type="String">student_name</field>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
             </data>
         </Activity>
         

@@ -972,6 +972,88 @@
             </ReportItemSet>
         </If>
     </ReportSection>
+    <ReportSection id="extension" type="EditableReportSection" blobSection="EXTENSION" name="Request for Extension" title="Request for Extension - 2017/2018 Collaborative Team Grants">
+        <ReportItem id="check" type="Radio" blobType="BLOB_TEXT" blobItem="CHECK" options="a) Collaborative Team Grant|b) Translational Grant|c) Either a Collaborative Team Grant or a Translational Grant|d) We do not wish to extend this project">
+            <![CDATA[
+                <p>Round 3 and 4 Collaborative Team Grants (e.g. projects ending June 2019 or December 2019) may apply for a project extension to March 31, 2020 by completing this section.</p>
+                <!--p>Please indicate which grant stream you would like this project extension request to be considered for:</p>
+                {$item}-->
+            ]]>
+        </ReportItem>
+        <ReportItem id="extension" type="TextareaReportItem" blobItem="OBJECTIVES" rich="true" limit="2000" recommended="true" optional="true">
+            <![CDATA[
+                <h2>Objectives during the renewal period and justification based on progress to date</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="figures" type="UploadReportItem" blobItem="FIGURES" fileSize="20" mimeType="application/pdf" optional="true">
+            <![CDATA[
+                <h3>Figures & Schemes PDF upload</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="MILESTONES" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" optional="true">
+            <![CDATA[
+                <h2>Milestones <small>(from time of renewal to March 31, 2020)</small></h2>
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet%20Milestones.xls">milestone template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="UploadReportItem" blobType="BLOB_EXCEL" blobItem="BUDGET" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" optional="true">
+            <![CDATA[
+                <h2>Budget <small>(from time of renewal to March 31, 2020)</small></h2>
+                <p>
+                    Please download the following <a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx">budget template</a> and upload it below.
+                </p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="TextareaReportItem" blobItem="JUSTIFICATION" rich="true">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="contributions" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CONTRIBUTIONS" labels="Contribution Amount ($CAD)|Cash/In-kind|Partner Organization|Contact Name|Contact Email/Phone" types="Integer|Select(Cash,In-kind,Both)|String|String|String" sizes="100||||" multiple="true" optional="true">
+            <![CDATA[
+                <h2>Expected matching</h2>
+                <p>Projects are expected to leverage at minimum a 2:1 matching funds (i.e., for every $2 in GlycoNet funding, $1 in matching is expected; at least 50% of the total matching contribution must be cash.).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" type="UploadReportItem" blobType="BLOB_RAW" blobItem="LETTERS" mimeType="application/zip,.zip" fileSize="20" optional="true">
+            <![CDATA[
+                <h3>Letter of Support (if available)*</h3>
+                <p>Upload a single <b><a target='_blank' href='http://www.wikihow.com/Make-a-Zip-File'>single ZIP file</a></b> containing all letters of support.</p>
+                {$item}
+                <small>*Letters of support are not required for the extension request, but should be in place before funding is released</small>
+            ]]>
+        </ReportItem>
+        <!--Static>
+            <![CDATA[
+                <h2>IP development strategy/commercialization plan</h2>
+                <p>If you wish to be considered for a Translational Grant (options b or c, above), please email a commercialization plan to Elizabeth Nanak (<a href='mailto:enanak@ualberta.ca'>enanak@ualberta.ca</a>) no later than June 1, 2019.</p>
+                <ul>
+                    <li>Provided by the Technology Transfer Office of the Project Leader’s Institution;</li>
+                    <li>Five pages maximum (2 cm (0.75 inch) margins, 12 point Times New Roman font (regular, not condensed) and a minimum of six lines per inch;</li>
+                    <li>The plan should address the following items:
+                        <ul>
+                            <li>Intellectual Property and Relevant Patents, or Patentability Strategy</li>
+                            <li>Market</li>
+                            <li>Barriers</li>
+                            <li>Commercialization Opportunity</li>
+                            <li>Competitive Advantage over other Technologies</li>
+                            <li>Business Expertise</li>
+                            <li>Commercialization Strategy</li>
+                            <li>Timelines</li>
+                        </ul>
+                    </li>
+                </ul>
+            ]]>
+        </Static-->
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
