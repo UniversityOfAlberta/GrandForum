@@ -146,6 +146,9 @@ class SpecialEventRegistration extends SpecialPage{
             $roles = array("Industry Partner", "Researcher");
             $defaultRole = "Industry Partner";
         }
+        else if($default->title == "AI4Society Reverse EXPO"){
+            $roles = array("Audience");
+        }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
