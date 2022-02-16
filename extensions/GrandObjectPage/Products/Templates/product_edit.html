@@ -34,11 +34,12 @@
     <% if(category != ""){ %>
         <tr>
             <td class="label">Type:</td>
-            <td class="field">
+            <td class="field" colspan="2">
                 <% var def = (type == "") ? [{option: "Choose a Type...", value: ""}] : []; %>
                 <%= HTML.Select(this, 'type', {options: def.concat(this.model.getPossibleTypes())}) %>
                 <% if(type.split('Misc').length > 1){ %>
-                    <%= HTML.MiscAutoComplete(this, 'type', {size: '30', misc: this.model.getPossibleMiscTypes()}) %>
+                    <small style="line-height: 28px;">Note that the use of other existing types is preferred</small><br />
+                    <%= HTML.MiscAutoComplete(this, 'type', {size: '30', placeholder: "Specify type...", misc: this.model.getPossibleMiscTypes(), style: 'margin-top: 4px;'}) %>
                 <% } %>
             </td>
         </tr>
