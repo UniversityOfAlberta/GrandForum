@@ -474,12 +474,13 @@
 
     <!-- Activities -->
     <Activities category="Activity">
-        <Activity type="Event" status="Invited|Not Invited">
+        <Activity type="Other Event" status="Invited|Not Invited">
             <data>
                 <field label="Event Type" type="String">event_type</field>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
