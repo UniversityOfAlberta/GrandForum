@@ -188,7 +188,7 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                         _.defer(initResizeEvent);
                     }
-                    timeout = setTimeout(function(){findAutosaves(updateProgress);}, 2500); // Make sure that there was enough time to complete the animation, then find the new autosaves
+                    _.defer(function(){ findAutosaves(updateProgress); });
                     setUpFormSubmit();
                     lastSaveString = $("form[name=report]").serialize();
                 });

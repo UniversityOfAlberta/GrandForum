@@ -8,11 +8,15 @@ var lastSaveString = "";
 
 function Autosave(value){
     if(autosaveDiv == null){
-        $(value).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none; right:25px;position:absolute;'><b>Saving</b></div>" + $(value).html());
+        if($("#" + $(this.value).attr("id") + "auto").length == 0){
+            $(value).html("<div id='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none; right:25px;position:absolute;'><b>Saving</b></div>" + $(value).html());
+        }
     }
     else{
         $.each($(autosaveDiv), function(index, val){
-            $(val).html("<div class='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none;'><b>Saving</b></div>");
+            if($("." + $(this.value).attr("id") + "auto").length == 0){
+                $(val).html("<div class='" + $(this.value).attr("id") + "auto' style='color:#222222;text-shadow:1px 1px 0px #FFFFFF;padding:5px;background:#EAEAEA;border:1px solid #AAAAAA;display:none;'><b>Saving</b></div>");
+            }
         });
     }
     this.value = value;
