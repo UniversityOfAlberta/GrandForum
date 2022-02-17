@@ -1,8 +1,7 @@
-dataCollectionInterval = null;
-
 DataCollection = Backbone.Model.extend({
 
     xhr: false,
+    dataCollectionInterval: null,
     
     ready: function(){
         return $.when(this.xhr);
@@ -10,14 +9,16 @@ DataCollection = Backbone.Model.extend({
 
     initialize: function(){
         this.ready().always(function(){
-            this.on('change:data', _.throttle(function(){
-                this.save();
-            }.bind(this), 3000));
+            this.once('change:data', function(){
+                this.on('change:data', _.throttle(function(){
+                    this.save();
+                }.bind(this), 3000));
+            }.bind(this));
         }.bind(this));
     },
     
     init: function(userId, page){
-        clearInterval(dataCollectionInterval);
+        clearInterval(this.dataCollectionInterval);
         if(this.get('userId') != userId ||
            this.get('page') != page){
             this.set('userId', userId);
@@ -62,9 +63,16 @@ DataCollection = Backbone.Model.extend({
         }.bind(this));
     },
     
+    // Adds an event listener to the radio buttons specified by the selector
+    radio: function(field, selector){
+        $(selector).change(function(e){
+            this.setField(field, $(e.target).val());
+        }.bind(this));
+    },
+    
     // Starts a timer (can only run 1 at a time)
     timer: function(field){
-        dataCollectionInterval = setInterval(function(){
+        this.dataCollectionInterval = setInterval(function(){
             this.increment(field);
         }.bind(this), 1000);
     },

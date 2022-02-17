@@ -83,6 +83,9 @@
             <![CDATA[
                 <h3>The three factors involved in making healthy lifestyle choices are:</h3>
                 {$item}
+                <script type='text/javascript'>
+                    dc.radio('q1', 'input[type=radio]');
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -105,6 +108,9 @@
             <![CDATA[
                 <h3>Confidence is:</h3>
                 {$item}
+                <script type='text/javascript'>
+                    dc.radio('q2', 'input[type=radio]');
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -129,6 +135,9 @@
             <![CDATA[
                 <h3>Support is:</h3>
                 {$item}
+                <script type='text/javascript'>
+                    dc.radio('q3', 'input[type=radio]');
+                </script>
             ]]>
         </ReportItem>
     </ReportSection>

@@ -100,6 +100,7 @@ class QuizReportSection extends EditableReportSection {
                 });
             }
             $('#reportBody input[type=radio], #reportBody input[type=checkbox]').css('vertical-align', 'baseline').css('height', '1.5em');
+            dc.radio('{$this->id}', 'input[type=radio]');
         </script>");
     }
     
