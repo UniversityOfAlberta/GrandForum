@@ -33,7 +33,7 @@ class Programs extends SpecialPage {
             $percent = rand(0,100);
             $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
-                <div style='font-size:1.5em; line-height: 1.5em; text-align:center; border-top: 2px solid #548ec9; font-weight: bold;'>{$program->title}</div>
+                <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
             </div>");
             $n++;
         }
