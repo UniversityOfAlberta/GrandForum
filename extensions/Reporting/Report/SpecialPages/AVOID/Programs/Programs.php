@@ -26,7 +26,7 @@ class Programs extends SpecialPage {
         $programs = json_decode($json);
         
         $cols = 4;
-        $wgOut->addHTML("<div id='modules'>");
+        $wgOut->addHTML("<p>Click on the program that you want to explore today.</p><div id='modules'>");
         $n = 0;
         foreach($programs as $program){
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
