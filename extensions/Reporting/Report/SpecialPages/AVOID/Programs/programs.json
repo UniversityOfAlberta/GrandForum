@@ -1,0 +1,22 @@
+[
+    {
+        "id": "PeerCoaching",
+        "title": "Get Support from your peers",
+        "tags": []
+    },
+    {
+        "id": "CyberSeniors",
+        "title": "Tech Training",
+        "tags": []
+    },
+    {
+        "id": "CommunityConnectors",
+        "title": "Become a Community Connector",
+        "tags": []
+    },
+    {
+        "id": "PeerCoachingVolunteer",
+        "title": "Become a Peer-Coach",
+        "tags": []
+    }
+]

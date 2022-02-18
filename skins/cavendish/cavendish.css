@@ -1920,3 +1920,82 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 div.program-text {
     padding: 1em;
 }
+
+/* Modules/Programs */
+
+#modules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.module-3cols {
+    width: calc(33.333% - 16px);
+}
+
+.module-4cols {
+    width: calc(25% - 16px);
+}
+
+.module-5cols {
+    width: calc(20% - 16px);
+}
+
+.module-6cols {
+    width: calc(16.667% - 16px);
+}
+
+.module-8cols {
+    width: calc(12.5% - 16px);
+}
+
+.module {
+    border-radius: 10px;
+    border: 2px solid #548ec9;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    transition: 0.25s;
+    flex: 1 1 auto;
+}
+
+.module-empty {
+    border: 2px solid transparent;
+    flex: 1 1 auto;
+}
+
+.module:hover {
+    -webkit-transform: scale(1.025);
+    -moz-transform: scale(1.025);
+    -ms-transform: scale(1.025);
+    -o-transform: scale(1.025);
+    z-index: 2;
+    transition: 0.25s;
+}
+
+.module img {
+    width: 100%;
+}
+
+.module-progress {
+    height: 21px;
+    text-align: center;
+    font-weight: bold;
+    border-top: 2px solid #548ec9;
+    position: relative;
+}
+
+.module-progress-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: #7ac043;
+    z-index: 0;
+}
+
+.module-progress-text {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+}

@@ -9,6 +9,7 @@ $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
 
 require_once("EducationModules/EducationModules.php");
+require_once("Programs/Programs.php");
 
 class Report extends AbstractReport{
     
@@ -21,7 +22,6 @@ class Report extends AbstractReport{
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Surveys"] = TabUtils::createTab("Healthy Aging Assessment");
-        $tabs["Programs"] = TabUtils::createTab("Programs");
         return true;
     }
     
@@ -32,16 +32,6 @@ class Report extends AbstractReport{
         if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
             $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey", $selected);
-        }
-        if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/PeerCoaching")) ? "selected" : false;
-            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Get Support from your peers", "{$url}Programs/PeerCoaching", $selected);
-            
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/CyberSeniors")) ? "selected" : false;
-            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Tech Training", "{$url}Programs/CyberSeniors", $selected);
-            
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/VolunteerOpportunities")) ? "selected" : false;
-            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("Get involved", "{$url}Programs/VolunteerOpportunities", $selected);
         }
         return true;
     }

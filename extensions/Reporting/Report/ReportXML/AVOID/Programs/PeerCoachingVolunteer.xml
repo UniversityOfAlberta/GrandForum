@@ -1,73 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Volunteer Opportunities" reportType="RP_VOLUNTEER_OPPORTUNITIES" ajax="true" disabled="false">
+<Report name="Peer Coaching Volunteer" reportType="RP_VOLUNTEER_OPPORTUNITIES" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="community" tooltip="Community Connectors" name="Community Connectors" title="Community Connectors" blobSection="COMMUNITY" type="NextPrevReportSection">
-        <Static>
-            <![CDATA[
-                <script type="text/javascript">
-                    $("#reportHeader").hide();
-                    $("#reportHeader").next().hide();
-                </script>
-                <div class='program-body' style='overflow: auto;'>
-                    
-                    <div style='display:flex; align-items: center;'>
-                        <div class='program-header'>
-                            COMMUNITY CONNECTORS
-                        </div>
-                        <div style='width: 100%; text-align: center;'>
-                            <img src="{$wgServer}{$wgScriptPath}/skins/people2.jpg" style='height: 150px; padding: 0 1em;' />
-                        </div>
-                    </div>
-                    
-                    <p><span class='program-text'>Who are Community Connectors?</span> Members of the AVOID Frailty for Healthy Aging Program who have the knowledge and skills to contribute to the KFL&A community by <b>informing others about services and resources available</b>.</p>
-                    
-                    <p>We call this ‘signposting’ or directing people to services that may be helpful.</p>
-                    
-                    <div style='display:flex; align-items: center;'>
-                        <div>
-                            <img src="{$wgServer}{$wgScriptPath}/skins/people1.png" style='height: 300px; padding: 0 1em;' />
-                        </div>
-                        <div style='width: 100%;'>
-                            <p class='program-text'>Why become a Community Connector?</p>
-                            <div class='program-box'>Help people without the commitment of becoming a volunteer</div><br />
-                            <div class='program-box'>Reduce your own stress and improve your mood</div><br />
-                            <div class='program-box'>Strengthen social connections, which are essential to the well being of everyone</div><br />
-                            <div class='program-box'>Increase feelings of optimism, confidence, and control by being part of a solution</div>
-                        </div>
-                    </div>
-                    <p><span class='program-text'>What’s required?</span> <b>Short training!</b> Attend a 1-hour training session. Training is interactive and fun and provided at <b>no cost</b>.</p>
-                    
-                    <span class='program-text'>Register for an upcoming training date:</span><br />
-            ]]>
-        </Static>
-        <ReportItem id="register1" type="Checkbox" options="Thursday March 24, 10:30am" blobType="BLOB_ARRAY" blobItem="REGISTER">
-            <![CDATA[
-                <div class='program-button'>{$item}</div>&nbsp;&nbsp;
-            ]]>
-        </ReportItem>
-        <ReportItem id="register2" type="Checkbox" options="Thursday April 28, 1:30pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
-            <![CDATA[
-                <div class='program-button'>{$item}</div> 
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[ 
-                    <br />
-                    <span class='program-text'>You will be contacted with further details</span>               
-                </div>
-                <script type='text/javascript'>
-                    $(".program-button").click(function(e){
-                        var checkbox = $('input[type=checkbox]', this);
-                        if($(e.target).not("input").length == 1){
-                            $(checkbox).click();
-                        }
-                    });
-                </script>
-            ]]>
-        </Static>
-    </ReportSection>
     <ReportSection id="peer" tooltip="Peer Coaching" name="Peer Coaching" title="Peer Coaching" blobSection="PEER" type="NextPrevReportSection">
         <Static>
             <![CDATA[
