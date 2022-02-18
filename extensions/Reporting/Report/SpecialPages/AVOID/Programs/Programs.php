@@ -26,7 +26,7 @@ class Programs extends SpecialPage {
         $programs = json_decode($json);
         
         $cols = 4;
-        $wgOut->addHTML("<p>Click on the program that you want to explore today.</p><div id='modules'>");
+        $wgOut->addHTML("<p>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</p><div id='modules'>");
         $n = 0;
         foreach($programs as $program){
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
@@ -51,7 +51,7 @@ class Programs extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $tabs["Programs"] = TabUtils::createTab("Programs");
+        $tabs["Programs"] = TabUtils::createTab("AVOID Programs");
         return true;
     }
     
