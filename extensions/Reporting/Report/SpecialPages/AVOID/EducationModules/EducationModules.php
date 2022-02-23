@@ -26,7 +26,7 @@ class EducationModules extends SpecialPage {
         $modules = json_decode($json);
         $cols = 3;
 
-        $wgOut->addHTML("<p>Click on the topic that you want to explore today. To begin any section of the module (labelled on the left), press the play button. You can control the playback speed with the toggle underneath. Supplement your learning by checking out the resource library, and apply your new knowledge by participating in the AVOID Frailty programs or finding opportunities in the Community Program Library.</p><div id='modules'>");
+        $wgOut->addHTML("<p>Click on the topic that you want to explore today. To begin any section of the module (labelled on the left), press the play button. You can control the playback speed with the toggle underneath. Supplement your learning by checking out the resource library, and apply your new knowledge by participating in the AVOID Frailty programs or finding opportunities in the Community Program Library.</p><div class='modules'>");
         $n = 0;
         foreach($modules as $module){
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
@@ -45,31 +45,38 @@ class EducationModules extends SpecialPage {
         }
         $wgOut->addHTML("</div>
         <script type='text/javascript'>
-            var modules = {$json};
             $('.module').click(function(){
                 document.location = $(this).attr('href');
             });
-            _.each(modules, function(module){
-                var dataCollection = new DataCollection();
-                dataCollection.init(me.get('id'), module.id);
-                dataCollection.ready().always(function(){
-                    var completed = 0;
-                    for(i = 1; i <= module.videos; i++){
-                        if(Math.round(dataCollection.sum('video' + i + 'Watched')/_.size(dataCollection.getField('video' + i + 'Watched', [0]))*100) > 90){
-                            completed++;
-                        }
-                    }
-                    for(i = 1; i <= module.questions; i++){
-                        if(!_.isEmpty(dataCollection.getField('q' + i))){
-                            completed += 1/module.questions;
-                        }
-                    }
-                    var percent = (completed / (module.videos + 1))*100;
-                    $('#module' + module.id + ' .module-progress-bar').css('width', percent + '%');
-                    $('#module' + module.id + ' .module-progress-text').text(percent.toFixed(0) + '% Complete');
-                });
-            });
+            ".self::completionScript()."
         </script>");
+    }
+    
+    static function completionScript(){
+        $dir = dirname(__FILE__) . '/';
+        $json = file_get_contents("{$dir}modules.json");
+        $script = "var modules = {$json};
+                   _.each(modules, function(module){
+                        var dataCollection = new DataCollection();
+                        dataCollection.init(me.get('id'), module.id);
+                        dataCollection.ready().always(function(){
+                            var completed = 0;
+                            for(i = 1; i <= module.videos; i++){
+                                if(Math.round(dataCollection.sum('video' + i + 'Watched')/_.size(dataCollection.getField('video' + i + 'Watched', [0]))*100) > 90){
+                                    completed++;
+                                }
+                            }
+                            for(i = 1; i <= module.questions; i++){
+                                if(!_.isEmpty(dataCollection.getField('q' + i))){
+                                    completed += 1/module.questions;
+                                }
+                            }
+                            var percent = (completed / (module.videos + 1))*100;
+                            $('#module' + module.id + ' .module-progress-bar').css('width', percent + '%');
+                            $('#module' + module.id + ' .module-progress-text').text(percent.toFixed(0) + '% Complete');
+                        });
+                    });";
+        return $script;
     }
 
     static function createTab(&$tabs){

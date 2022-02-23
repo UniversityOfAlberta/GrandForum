@@ -1,22 +1,22 @@
 [
     {
         "id": "PeerCoaching",
-        "title": "Get Support from your peers",
+        "title": "Get Support<br /><span style='font-weight: normal;'>Peer-Coaching</span>",
         "tags": []
     },
     {
         "id": "CyberSeniors",
-        "title": "Tech Training",
+        "title": "Get Support<br /><span style='font-weight: normal;'>Cyber Seniors</span>",
         "tags": []
     },
     {
         "id": "CommunityConnectors",
-        "title": "Become a Community Connector",
+        "title": "Give Support<br /><span style='font-weight: normal;'><small>Become a Community Connector</small></span>",
         "tags": []
     },
     {
         "id": "PeerCoachingVolunteer",
-        "title": "Become a Peer-Coach",
+        "title": "Give Support<br /><span style='font-weight: normal;'>Peer-Coaching</span>",
         "tags": []
     }
 ]

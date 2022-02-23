@@ -1923,10 +1923,15 @@ div.program-text {
 
 /* Modules/Programs */
 
-#modules {
+.modules {
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     gap: 12px;
+}
+
+.module-2cols {
+    width: calc(50% - 16px);
 }
 
 .module-3cols {

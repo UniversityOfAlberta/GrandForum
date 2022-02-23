@@ -8,7 +8,7 @@ class VideoReportItem extends StaticReportItem {
 	    $id = $this->id;
 	    $module = explode("/", str_replace(".xml", "", "{$this->getReport()->xmlName}"));
 	    $module = $module[count($module)-1];
-	    $item = "<video controls src='{$url}' style='width: 100%; height: calc(100vh - 245px);'></video><br />
+	    $item = "<video controls src='{$url}' style='width: 100%; height: calc(100vh - 219px);'></video><br />
                  <span style='font-weight:bold;'>Playback Speed: </span><span><input style='vertical-align:middle;' type='range' name='speed' id='speed' min='0.25' max='2' step='0.25' value='1'>&nbsp;<output class='speed-output' for='speed'></output></span>
                 <script type='text/javascript'>
                     dc.init(me.get('id'), '{$module}');

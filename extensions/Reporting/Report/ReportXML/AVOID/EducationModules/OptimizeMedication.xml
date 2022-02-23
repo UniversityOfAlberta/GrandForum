@@ -39,7 +39,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video2" tooltip="What is Medication" name="What is Medication" title="What is Medication" type="VideoReportSection">
+    <ReportSection id="video2" tooltip="What is optimization?" name="What is Optimization?" title="What is Optimization?" type="VideoReportSection">
         <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/2. What.mp4">
             <![CDATA[
                 {$item}
@@ -47,7 +47,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video3" tooltip="Why Optimize Medication" name="Why Optimize Medication" title="Why Optimize Medication" type="VideoReportSection">
+    <ReportSection id="video3" tooltip="Why Optimize Medication?" name="Why Optimize Medication?" title="Why Optimize Medication?" type="VideoReportSection">
         <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/3. Why.mp4">
             <![CDATA[
                 {$item}
