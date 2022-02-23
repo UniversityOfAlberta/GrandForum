@@ -5,8 +5,8 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
     function ProjectFESMilestonesTab($project, $visibility){
         parent::ProjectMilestonesTab($project, $visibility);
         parent::AbstractTab("Schedule");
-        $this->maxNYears = 7;
-        $this->nYears = (isset($_GET['generatePDF'])) ? 7 : $this->maxNYears;
+        $this->maxNYears = 8;
+        $this->nYears = (isset($_GET['generatePDF'])) ? 8 : $this->maxNYears;
     }
     
     function handleEdit(){
