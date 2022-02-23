@@ -1927,6 +1927,7 @@ div.program-text {
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+    flex: 1 1 auto;
     gap: 12px;
 }
 

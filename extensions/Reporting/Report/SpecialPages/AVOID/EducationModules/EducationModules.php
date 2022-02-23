@@ -40,8 +40,10 @@ class EducationModules extends SpecialPage {
             </div>");
             $n++;
         }
-        for($i = 0; $i < $cols - ($n % $cols); $i++){
-            $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+        if($n % $cols > 0){
+            for($i = 0; $i < $cols - ($n % $cols); $i++){
+                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+            }
         }
         $wgOut->addHTML("</div>
         <script type='text/javascript'>

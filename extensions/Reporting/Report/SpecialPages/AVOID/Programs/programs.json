@@ -1,22 +1,26 @@
 [
     {
         "id": "PeerCoaching",
-        "title": "Get Support<br /><span style='font-weight: normal;'>Peer-Coaching</span>",
-        "tags": []
+        "title": "Peer-Coaching",
+        "category": "Get Support",
+        "tags": ["peer coaching participant"]
     },
     {
         "id": "CyberSeniors",
-        "title": "Get Support<br /><span style='font-weight: normal;'>Cyber Seniors</span>",
-        "tags": []
+        "title": "Cyber Seniors",
+        "category": "Get Support",
+        "tags": ["cyber seniors"]
     },
     {
         "id": "CommunityConnectors",
-        "title": "Give Support<br /><span style='font-weight: normal;'><small>Become a Community Connector</small></span>",
-        "tags": []
+        "title": "Community Connector",
+        "category": "Give Support",
+        "tags": ["health connections"]
     },
     {
         "id": "PeerCoachingVolunteer",
-        "title": "Give Support<br /><span style='font-weight: normal;'>Peer-Coaching</span>",
-        "tags": []
+        "title": "Peer-Coaching",
+        "category": "Give Support",
+        "tags": ["peer coaching volunteer"]
     }
 ]

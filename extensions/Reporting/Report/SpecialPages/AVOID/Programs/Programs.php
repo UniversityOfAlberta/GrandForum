@@ -24,21 +24,34 @@ class Programs extends SpecialPage {
         $wgOut->setPageTitle("AVOID Programs");
         $json = file_get_contents("{$dir}programs.json");
         $programs = json_decode($json);
-        
-        $cols = 4;
-        $wgOut->addHTML("<p>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</p><div class='modules'>");
-        $n = 0;
+        $categories = array();
         foreach($programs as $program){
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-            $percent = rand(0,100);
-            $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
-                <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
-            </div>");
-            $n++;
+            $categories[$program->category] = $program->category;
         }
-        for($i = 0; $i < $cols - ($n % $cols); $i++){
-            $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+        
+        $cols = 2;
+        $wgOut->addHTML("<p>The AVOID Frailty programs are designed to keep you connected with your peers and community as well as support the development of healthy behaviour. You can choose to participate as a volunteer or find the help you need to be empowered to take control of your health. Click on the program that you are interested in and sign up using the orange link at the bottom of the page.</p><div class='modules'>");
+        foreach($categories as $category){
+            $wgOut->addHTML("<div class='modules module-2cols'>
+            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>{$category}</div>");
+            $n = 0;
+            foreach($programs as $program){
+                if($program->category == $category){
+                    $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
+                    $percent = rand(0,100);
+                    $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
+                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
+                        <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
+                    </div>");
+                    $n++;
+                }
+            }
+            if($n % $cols > 0){
+                for($i = 0; $i < $cols - ($n % $cols); $i++){
+                    $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+                }
+            }
+            $wgOut->addHTML("</div>");
         }
         $wgOut->addHTML("</div>
         <script type='text/javascript'>

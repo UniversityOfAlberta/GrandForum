@@ -33,7 +33,7 @@ class AVOIDDashboard extends SpecialPage {
 	    $wgOut->addHTML("<div class='modules'>");
 	    // Education
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
-	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Education</div>");
+	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Education <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
 	    $cols = 3;
         $n = 0;
         foreach($modules as $key => $module){
@@ -49,14 +49,16 @@ class AVOIDDashboard extends SpecialPage {
             </div>");
             $n++;
         }
-        for($i = 0; $i < $cols - ($n % $cols); $i++){
-            $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+        if($n % $cols > 0){
+            for($i = 0; $i < $cols - ($n % $cols); $i++){
+                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+            }
         }
 	    $wgOut->addHTML("</div>");
 	    
 	    // Programs
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
-        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Programs</div>");
+        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
         $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
         
         $cols = 3;
@@ -71,8 +73,10 @@ class AVOIDDashboard extends SpecialPage {
             </div>");
             $n++;
         }
-        for($i = 0; $i < $cols - ($n % $cols); $i++){
-            $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+        if($n % $cols > 0){
+            for($i = 0; $i < $cols - ($n % $cols); $i++){
+                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
+            }
         }
         $wgOut->addHTML("</div>");
 	    
