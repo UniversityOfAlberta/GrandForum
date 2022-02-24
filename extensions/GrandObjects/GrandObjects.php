@@ -34,6 +34,7 @@ autoload_register('GrandObjects/API/Journal');
 autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
 autoload_register('GrandObjects/API/DataCollection');
+autoload_register('GrandObjects/API/AvoidResource');
 
 global $apiRequest;
 // Person
@@ -210,6 +211,10 @@ $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectionAPI');
 
+//AVOID Resource
+$apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
+$apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
+
 function addScript($file){
     global $wgServer, $wgScriptPath;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
@@ -247,7 +252,7 @@ function createModels(){
     addScript("CRMOpportunity");
     addScript("CRMTask");
     addScript("DataCollection");
-    
+    addScript("AvoidResource"); 
     return true;
 }
 ?>

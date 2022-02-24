@@ -127,7 +127,8 @@ class APIRequest{
 		$this->addAction('User Accounts', 'updateUserPhone', 'UserPhoneAPI');
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
         $this->addAction('User Accounts', 'importMetrics', 'ImportMetricsAPI');
-		
+	$this->addAction("User Accounts", "checkUserTags", "UserTagsAPI");
+	$this->addAction("User Accounts", "checkFrailtyIndex", "UserFrailtyIndexAPI");
 		//POST
 		$this->addAction('Projects', 'createProject', 'CreateProjectAPI');
 		$this->addAction('Projects', 'addProjectMilestone', 'ProjectMilestoneAPI');

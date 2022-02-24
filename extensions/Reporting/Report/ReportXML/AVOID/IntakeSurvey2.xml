@@ -6,13 +6,12 @@
     <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="AVOID_CHECK_EULA" type="EULA">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
-	<![CDATA[
-	<div style="width:100%;text-align:right"><img src="/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+            <![CDATA[
 	        <p>
 			<b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
 		</p>
 		<p>
-			<b>Name of Principal investigator: </b>Dr John Muscedere<br/>
+			<b>Name of Principal investigator: </b> Canadian Frailty Network<br/>
 			<b>Name of Sponsor/Funder:</b> Canadian Frailty Network
 		</p>
 		<p>
@@ -86,7 +85,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 
     </ReportSection>
 
-	<ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+	<ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Sociodemographic Information" blobSection="AVOID_Questions_tab0" type="EditableReportSection" pagebreak="false" >
                 <Static>
                         <![CDATA[
                                 <script type='text/javascript'>
@@ -119,15 +118,15 @@ As a user of this program, you may or may not see direct benefits from this stud
                                                 }
                                         }
                                         _.defer(checkConsent);
-                                        $("select[name='GettingtoKnowYou_socio_info1']").change(checkConsent);
+                                        $("select[name='SociodemographicInformation_socio_info1']").change(checkConsent);
                                 </script>
                         ]]>
                 </Static>
                 
                 <Static>
 			<![CDATA[
-				<p>
-					<i><b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</i>
+				<p style="border:1px; border-style:solid; padding: 1em;">
+                        	<b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!
 				</p>
 			]]>
 		</Static>
@@ -142,13 +141,16 @@ As a user of this program, you may or may not see direct benefits from this stud
                         <![CDATA[
                                 <script type='text/javascript'>
 						function checkAge(){
+						console.log("HI");
 						if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
 						var age = 40;
+						console.log("?");
 						}
 						else{
                                                         age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
 						}
 						if(age >=65){
+						console.log("!");
                                                         $("#GettingtoKnowYou").show();
                                                         $("#BehaviouralSelf-Assessment").show();
                                                         $("#HealthRelatedQoL").show();
@@ -197,12 +199,12 @@ As a user of this program, you may or may not see direct benefits from this stud
 						else{ $('span#specifygender').hide();}
                                         }
                                         _.defer(specifyGender);
-                                        $("input:radio[name='GettingtoKnowYou_socio_info2']").change(specifyGender);
+                                        $("input:radio[name='SociodemographicInformation_socio_info2']").change(specifyGender);
                                 </script>
 				<br/>
-				<p><i>
+				<p style="border:1px; border-style:solid; padding: 1em;">
 					People of different ethnicities do not have significantly different genetics. But our ethnicity still has important consequences including how we are treated by different individuals and institutions.
-				</i></p>
+				</p>
 			]]>
 		</Static>
         <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" options="Black|East/Southeast Asian|Indigenous (First Nations, Metis, Inuk/Inuit)|Latino|Middle Eastern|South Asian|White|Other|Prefer not to answer" optional="true">
@@ -238,7 +240,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 					else{ $('span#indigenous_specify').hide();}
 				}
                                 _.defer(specifyIndigenous);
-				$("input:checkbox[name='GettingtoKnowYou_ethnicity_avoid[]']").change(specifyIndigenous);
+				$("input:checkbox[name='SociodemographicInformation_ethnicity_avoid[]']").change(specifyIndigenous);
 
                                 $('span#indigenous_other').hide();
                                 function specifyIndigenousOther(){
@@ -248,7 +250,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#indigenous_other').hide();}
                                 }
                                 _.defer(specifyIndigenousOther);
-                                $("input:checkbox[name='GettingtoKnowYou_ethnicity_indigenous[]']").change(specifyIndigenousOther);
+                                $("input:checkbox[name='SociodemographicInformation_ethnicity_indigenous[]']").change(specifyIndigenousOther);
                    	</script>
 		]]>
 	</Static>
@@ -266,10 +268,10 @@ As a user of this program, you may or may not see direct benefits from this stud
 	 </ReportItem>
 	 <Static>
 		 <![CDATA[
-		 <br/>
-		 <p><i>
+		 	<br/>
+		 	<p style="border:1px; border-style:solid; padding: 1em;">	 
 				An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.
-		 </i></p>
+			</p>
 		]]>
 	</Static>
         <ReportItem id="assistive_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="assistive_avoid" orientation="vertical" options="a cane, a walking stick or crutches|a walker|a scooter|a manual wheelchair|a motorized wheelchair|orthopaedic footwear|an orthotic or a brace|a prosthetic device or an artificial limb|a grasping tool or a reach extender|adapted tools, utensils or special grips|a device for dressing (e.g., button hook, zipper pull, long-handled shoe horn)|a device with oversized buttons (e.g., remote control or telephone)|None" optional="true">
@@ -309,13 +311,13 @@ As a user of this program, you may or may not see direct benefits from this stud
 			<script type='text/javascript'>
                         	$('span#employspecify').hide();
 				function specifyEmploy(){
-                                        if($("select[name='GettingtoKnowYou_employment_avoid']").val() == "Other (specify):"){
+                                        if($("select[name='SociodemographicInformation_employment_avoid']").val() == "Other (specify):"){
                                                 $('span#employspecify').show();
                                         }
                                         else{ $('span#employspecify').hide();}
                                 }
                                 _.defer(specifyEmploy);
-                                $("select[name='GettingtoKnowYou_employment_avoid']").change(specifyEmploy);
+                                $("select[name='SociodemographicInformation_employment_avoid']").change(specifyEmploy);
 			</script>
 		]]>
 	</Static>
@@ -343,7 +345,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#devicespecify').hide();}
                                 }
                                 _.defer(specifyDevice);
-					$("input:radio[name='GettingtoKnowYou_device_avoid']").change(specifyDevice);
+					$("input:radio[name='SociodemographicInformation_device_avoid']").change(specifyDevice);
 			</script>
                 ]]>
 		</Static>
@@ -402,17 +404,17 @@ As a user of this program, you may or may not see direct benefits from this stud
 				$('span#programspecify').hide();
 				$('span#programotherspecify').hide();
                                 function specifyFrail(){
-                                        if($("select[name='GettingtoKnowYou_program_avoid").val() == "Poster, flyer, or pamphlet at community venue"){
+                                        if($("select[name='SociodemographicInformation_program_avoid").val() == "Poster, flyer, or pamphlet at community venue"){
 						$('span#programlocationspecify').show();
 						$('span#programspecify').hide();
                                                 $('span#programotherspecify').hide();
 					}
-					else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Social media"){
+					else if($("select[name='SociodemographicInformation_program_avoid").val() == "Social media"){
 					        $('span#programlocationspecify').hide();
                                                 $('span#programspecify').show();
                                                 $('span#programotherspecify').hide();
 					}
-                                        else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Other"){
+                                        else if($("select[name='SociodemographicInformation_program_avoid").val() == "Other"){
 					        $('span#programlocationspecify').hide();
                                                 $('span#programspecify').hide();
                                                 $('span#programotherspecify').show();
@@ -424,17 +426,17 @@ As a user of this program, you may or may not see direct benefits from this stud
 					}
                                 }
                                 _.defer(specifyEmploy);
-                                $("select[name='GettingtoKnowYou_program_avoid']").change(specifyFrail);
+                                $("select[name='SociodemographicInformation_program_avoid']").change(specifyFrail);
 				
 				$('span#programplatformotherspecify').hide();
 				function specifyPlatform(){
-					if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
+					if($("input:radio[name='SociodemographicInformation_program_platform__specify']:checked").val() == "Other"){
                                                 $('span#programplatformotherspecify').show();
                                         }
                                         else{ $('span#programplatformotherspecify').hide();}
                                 }
                                 _.defer(specifyPlatform);
-                               $("input:radio[name='GettingtoKnowYou_program_platform__specify']").change(specifyPlatform);
+                               $("input:radio[name='SociodemographicInformation_program_platform__specify']").change(specifyPlatform);
                         </script>
                 ]]>
         </Static>
@@ -767,7 +769,9 @@ As a user of this program, you may or may not see direct benefits from this stud
 	</Static>
         <Static>
 		<![CDATA[
-		<p><i>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</i></p>
+                        <p style="border:1px; border-style:solid; padding: 1em;">
+                                <i>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</i>
+                        </p>
 
 		]]>	
 	</Static>
@@ -791,7 +795,9 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
 		<![CDATA[
-		<p><i>Friendships: Considering all of your friends including those who live in your neighborhood</i></p>
+                        <p style="border:1px; border-style:solid; padding: 1em;">
+                                <i>Friendships: Considering all of your friends including those who live in your neighborhood</i>
+                        </p>
 
 		]]>	
 	</Static>
@@ -919,7 +925,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
+        <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It’s difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can’t afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
 		<![CDATA[
 			<span id="diet_end">
 			<h3>What is the hardest part of maintaining a balanced diet for you? (choose all that apply):</h3>
@@ -978,31 +984,31 @@ As a user of this program, you may or may not see direct benefits from this stud
                         <i>To better understand what you aim to achieve with the AVOID Frailty Program, please select which of the following statements best describes you in relation to each of the components of AVOID</i>
 		]]>	
 	</Static>
-        <ReportItem id="lifestyle"  blobItem="lifestyle" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle"  blobItem="lifestyle" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Activity:</h3>
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Vaccination:</h3>
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Optimized Medication Use:</h3>
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Social Interaction:</h3>
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
+        <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this areabut want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Diet and Nutrition:</h3>
                     {$item}
@@ -1060,7 +1066,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			    <li>0 means the worst health you can imagine.</li>
 			    <li>Mark on the scale to indicate how your health is TODAY.</li>
 		    </lu>
-			<br />
+
                     {$item}
             ]]>
         </ReportItem>
@@ -1094,12 +1100,6 @@ As a user of this program, you may or may not see direct benefits from this stud
         <ReportItem id="symptoms_avoid5" blobItem="symptoms_avoid5" type="RadioReportItem" orientation="vertical" options="Good|Fair|Poor">
             <![CDATA[
                     <h3>How would you rate your memory overall?</h3>
-                    {$item}
-            ]]>
-	    </ReportItem>
-	 <ReportItem id="symptoms_avoid21" blobItem="symptoms_avoid21" type="RadioReportItem" orientation="vertical" options="No|Yes">
-            <![CDATA[
-                    <h3>Do you have any problems keeping your balance?</h3>
                     {$item}
             ]]>
         </ReportItem>
@@ -1194,34 +1194,34 @@ As a user of this program, you may or may not see direct benefits from this stud
                 <h3>Do you have any of the following health conditions? Select all that apply:</h3>
                 {$item}
             ]]>
-	</ReportItem>
-		        <ReportItem id="symptoms_avoid_specify" type="Text" blobItem="SYMPTOMSSPECIFY" width="400px">
-		<![CDATA[
-		<span id="symptoms_specify">
-			Specify: {$item}
-		</span>
-            	]]>
-	</ReportItem>
-			<Static>
-		<![CDATA[
+        </ReportItem>
+        <Static>
+                <![CDATA[
 			<script type='text/javascript'>
-                        	$('span#symptoms_specify').hide();
-				function specifySymptoms(){
-					var flag = false;
-					$('input[name="HealthStatus_symptoms_avoid[]"]:checked').each(function() {
-						if(this.value == "Other (please specify)"){
-							flag = true;
-						}
-					});
-                                        if(flag){
-                                                $('span#symptoms_specify').show();
-                                        }
-                                        else{ $('span#symptoms_specify').hide();}
-                                }
-                                _.defer(specifySymptoms);
-				$("input:checkbox[name='HealthStatus_symptoms_avoid[]']").change(specifySymptoms);
-			</script>
-		]]>
+                                //show symptoms1 avoid if any true in previous question
+                                $("input:checkbox[name='FrailtyStatus_symptoms_avoid[]']:checked").size() 
+                                $('span#symptoms1_avoid').hide();
+					function showConditionsQuestion(){
+						if($("input:checkbox[name='FrailtyStatus_symptoms_avoid[]']:checked").size() > 0){
+                                                        $('span#symptoms1_avoid').show();
+                                                }
+                                        	else{
+                                                        $('span#symptoms1_avoid').hide();
+                                                }
+                       			}
+                     		_.defer(showConditionsQuestion);
+                                $("input:checkbox[name='FrailtyStatus_symptoms_avoid[]']").change(showConditionsQuestion);
+
+				$('span#healthcare_warning').hide();
+					function healthCareWarning(){
+						if($("input:radio[name='FrailtyStatus_symptoms1_avoid']:checked").val() == "No"){$('span#healthcare_warning').show();}
+                                        	else{$('span#healthcare_warning').hide();}
+                       			}
+                     		_.defer(healthCareWarning);
+                                $("input:radio[name='FrailtyStatus_symptoms1_avoid']").change(healthCareWarning);
+
+			</script>          
+                ]]>	
 	</Static>
         <ReportItem id="symptoms_avoid19" blobItem="symptoms_avoid19" type="RadioReportItem" orientation="vertical" options="Not at all|A little|A fair amount">
             <![CDATA[

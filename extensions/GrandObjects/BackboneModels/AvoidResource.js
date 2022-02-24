@@ -1,0 +1,70 @@
+AvoidResource = Backbone.Model.extend({
+
+    initialize: function(){
+        
+    },
+
+    urlRoot: 'index.php?action=api.avoidresource',
+
+    defaults: {
+        id: null,
+        ResourceAgencyNum: null,
+        Split:"",
+        PublicName:"",
+        Category: "",
+        SubCategory: "",
+        SubSubCategory: "",
+        PhysicalAddress1: "",
+        PhysicalCity: "",
+        WebsiteAddress: "",
+        AgencyDescription: "",
+        Eligibility:"",
+        TaxonomyTerms:"",
+        //given from xls only
+        ParentAgency:"",
+        PublicName_Program:"",
+        HoursOfOperation:"",
+        LanguagesOffered:"",
+        LanguagesOfferedList:"",
+        ApplicationProcess:"",
+        Coverage:"",
+        CoverageAreaText:"",
+        PhysicalAddress2:"",
+        PhysicalStateProvince:"",
+        PhysicalPostalCode:"",
+        MailingAttentionName:"",
+        MailingAddress1:"",
+        MailingAddress2:"",
+        MailingCity:"",
+        MailingStateProvince:"",
+        MailingPostalCode:"",
+        DisabilitiesAccess:"",
+        Phone1Name:"",
+        Phone1Number:"",
+        Phone1Description:"",
+        PhoneNumberBusinessLine:"",
+        PhoneTollFree:"",
+        PhoneFax:"",
+        EmailAddressMain:"",
+        Custom_Facebook:"",
+        Custom_Instagram:"",
+        Custom_LinkedIn:"",
+        Custom_Twitter:"",
+        Custom_YouTube:"",
+        Categories:"",
+        LastVerifiedOn:"",
+    }
+});
+
+AvoidResources = Backbone.Collection.extend({
+       model: AvoidResource,
+
+    url: function(){
+         url = 'index.php?action=api.avoidResource/';
+        if(this.cat != null){
+            url = 'index.php?action=api.avoidResource/cat/'+this.cat;
+        }
+
+        return url;
+    }
+}); 

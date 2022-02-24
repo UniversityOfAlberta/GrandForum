@@ -1,5 +1,6 @@
 .htaccess
-Classes/dompdf/lib/fonts/log.htmasdf
+Classes/dompdf/lib/fonts/log.htm
+Classes/securimage/database/securimage.sq3
 behat/behat.yml
 behat/bin/behat
 behat/bin/selenium.jar
@@ -27,12 +28,14 @@ config/config_agewell.php
 config/config_glyconet.php
 data/review-feedback
 docs/_build/
+EducationModules/
 extensions/AnnokiControl/query_log.txt
 maintenance/expert/
 maintenance/templates/bin
 maintenance/templates/composer.*
 maintenance/templates/files/
 maintenance/templates/vendor/
+maintenance/avoid_stuff/
 maintenance/alloc.csv
 npm-debug.log
 symfony/bin

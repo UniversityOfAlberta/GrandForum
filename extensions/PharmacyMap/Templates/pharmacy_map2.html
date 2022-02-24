@@ -1,0 +1,581 @@
+
+<h3>Categories</h3>
+<p>
+<!--a class="category" data-cat="1">Activity</a><br />
+<a class="category" data-cat="4">Interact</a><br />
+<a class="category" data-cat="5">Vaccination/Optimize Medication</a><br />
+<a class="category" data-cat="6">Diet and Nutrition</a><br />
+<a class="category" data-cat="7">Education and Employment</a><br />
+<a class="category" data-cat="8">Financial/Legal Assistance</a><br />
+<a class="category" data-cat="9">Chronic Conditions</a><br />
+<a class="category" data-cat="10">Mental Health</a><br />
+<a class="category" data-cat="11">Housing</a><br />
+<a class="category" data-cat="12">Home and Care Partners</a><br />
+<a class="category" data-cat="13">Healthcare Services</a><br />
+<a class="category" data-cat="14">Disability Services</a><br />
+<a class="category" data-cat="15">Transportation</a><br /-->
+
+</p>
+</div>
+<div id="treemap"></div>
+<br />
+<span class='en' style=''>Address</span><span class='fr' style='display:none'>Adresse</span> <input type="text" id="lat" style="width:399px" />&nbsp<button id="findLocation"><span class='en' style=''>Find my Location</span><span class='fr' style='display:none'>Trouver mon Endroit</span></button>&nbsp&nbsp&nbsp<button id="printMap"><span class='en' style=''>Print Map</span><span class='fr' style='display:none'>Imprimer le Plan</span></button></div>
+<br /><br /><br />
+<div id="pharmacy-info"><table id="pharmacy-table"></table></div>
+<div id="map-container">
+    <div id="map"></div>
+</div>
+<div id="table">
+<table id="listTable" frame="box" rules="all" style="float: left;">
+    <thead>
+        <tr>
+            <!--General data-->
+            <th>ID</th>
+            <th>Name</th>
+            <th>Coordinates</th>
+            <th>Hours</th>
+            <th>Category</th>
+	    <th>Notes</th>
+	    <th>Address</th>
+        </tr>
+    </thead>
+    <tbody id="sopRows"></tbody>
+</table>
+</div>
+
+
+
+
+<script>
+
+        window.addEventListener('load', () => {
+            let chartConfig = {};
+            let treeConfig = {}
+            buildTreemap()
+            function buildTreemap(options = {destroy: false}) {
+                if (options.destroy) {
+                    zingchart.exec('treemap', 'destroy')
+                }
+
+                let series = [
+                    {
+                        text: 'Categories',
+                        'data-description': 'Description: All resource categories',
+                        children: [],
+                        style: {backgroundColor: 'black'},
+                    },
+                ];
+
+                for (let [key, value] of Object.entries(treeConfig)) {
+                    series[0].children.push(value)
+                }
+
+                chartConfig = {
+                type: 'treemap',
+                options: {
+                    splitType: 'balancedV2',
+                    box: {
+                        'border-color': 'black',
+                        'border-width': '2px'
+                    },
+                    'tooltip-box': {
+                    'background-color': "black",
+                    'text-align': "left",
+                    'text': ' \n Number of resources: %value \n\n Description: %data-description'
+                    },
+                    'tooltip-group': {
+                    'text-align': "left",
+                    'background-color': "black",
+                    'text': "%text \n\n Description: %value \n %data-description",
+                    },
+                },
+                plotarea: {
+                    margin: '0px'
+                },
+                series:
+                    [
+                        {
+                        "text": "Activity",
+                        "data-description":"Explore ways to get physically active in your community!",
+                        "children": [
+                            {"text": "Sports",
+                            "data-description":"Choose from a variety of individual and team sports",
+                            "children": [
+                            {"text": "Indoor",
+                            "value": 90,
+                            "data-description":"Pickleball, bowling, volleyball, and more",},
+                            {"text": "Winter",
+                            "value": 90,
+                            "data-description":"Skating, curling, and more",},
+                            {"text": "Water",
+                            "value": 90,
+                            "data-description":"Canoeing, rowing, and more",},
+                            {"text": "Field",
+                            "value": 90,
+                            "data-description":"Tennis, lawn-bowling, soccer, and more",}
+                        ]
+                        },
+
+                        {
+                            "text": "Exercise",
+                            "value": 113,
+                            "data-description":" Improve your strength, balance, and endurance with these programs",
+                            "children":
+                            [
+                                {"text": "Biking",
+                                "value": 90,
+                                "data-description":"Join a group in your community for your next road or trail ride",},
+                                {"text": "Dance",
+                                "value": 90,
+                                "data-description":"Try a new style of dance, whether you’re a beginner or expert",},
+                                {"text": "Movement and Mindfulness",
+                                "value": 90,
+                                "data-description":"Enjoy classes for all mobility levels such as Yoga and Tai-Chi",},
+                                {"text": "Fitness",
+                                "value": 90,
+                                "data-description":"Choose from a variety of programs such as Pilates and aerobics for a fun way to move",},
+                                {"text": "Horseback Riding",
+                                "value": 90,
+                                "data-description":"Find recreational and therapeutic options for all levels",},
+                                {"text": "Recreation Facilities",
+                                "value": 90,
+                                "data-description":"Visit a gym or community centre near you",},
+                                {"text": "Walking/Running",
+                                "value": 90,
+                                "data-description":"Join a group in your community for your next walk or run",},
+                                {"text": "Swimming",
+                                "value": 90,
+                                "data-description":"Attend aquatic classes or enjoy a community pool",},
+                            ]
+                        },
+                        {
+                        "text": "Gardening",
+                        "value": 78,
+                        "data-description":"Join a gardening club or find your nearest community garden",
+                        },
+                        {
+                        "text": "Trails",
+                        "value": 78,
+                        "data-description":"Take a walk or a hike at one of the many conservation areas or trails in KFL&A",
+                        },
+                        {
+                        "text": "Sleep",
+                        "value": 78,
+                        "data-description":"Find supports to improve your sleep",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Interact",
+                    "data-description":"Explore opportunities to meet new people in your community!",
+                    "children": [{
+                        "text": "Crafting",
+                        "value": 88,
+                        "data-description":"Join a group to learn or practice your knitting, quilting, crocheting, or other crafts",
+                        },
+                        {
+                        "text": "Library",
+                        "value": 88,
+                        "data-description":"Find your local library to attend a workshop, event, or borrow a resource ",
+                        },
+                        {
+                        "text": "Recreation",
+                        "value": 88,
+                        "data-description":"Join a club or group to meet people that share your interests ",
+                        "children":
+                        [
+                            {
+                            "text": "Games",
+                            "value": 88,
+                            "data-description":"Play board games or cards ",
+                            },
+                            {
+                            "text": "Education",
+                            "value": 88,
+                            "data-description":"Take a class to learn something new",
+                            },
+                            {
+                            "text": "Advocacy",
+                            "value": 88,
+                            "data-description":"Join to promote a good cause ",
+                            },
+                            {
+                            "text": "Culture",
+                            "value": 88,
+                            "data-description":"Connect with cultural clubs and centres in KFL&A",
+                            },
+                            {
+                            "text": "Historical",
+                            "value": 88,
+                            "data-description":"Learn more about historical events and KFL&A heritage",
+                            },
+                            {
+                            "text": "Hobby",
+                            "value": 88,
+                            "data-description":"Gather with your peers to celebrate a specific interest",
+                            },
+                            {
+                            "text": "Social",
+                            "value": 88,
+                            "data-description":"Join a club or association focused on meeting new friends",
+                            },
+                        ]
+                        },
+                        {
+                        "text": "Religious Centres",
+                        "value": 88,
+                        "data-description":"Join a local chapter of your religious affiliation",
+                        },
+                        {
+                        "text": "Support Groups/Services",
+                        "value": 88,
+                        "data-description":"Find support in your community to meet your specific needs",
+                        },
+                        {
+                        "text": "Arts",
+                        "value": 88,
+                        "data-description":"Opportunities to create through literature, music, and visual or performing arts",
+                        "children":
+                        [
+                            {
+                            "text": "Music",
+                            "value": 88,
+                            "data-description":"Join a singing group, play your favourite instrument or learn something new",
+                            },
+                            {
+                            "text": "Performing",
+                            "value": 88,
+                            "data-description":"Become a part of a local theatre production or participate in acting workshops",
+                            },
+                            {
+                            "text": "Visual",
+                            "value": 88,
+                            "data-description":"Create through drawing, painting, pottery and other mediums",
+                            },
+                            {
+                            "text": "Literature",
+                            "value": 88,
+                            "data-description":"Join a writing group to develop or advance your literary skills",
+                            },
+                        ]
+                        },
+                        {
+                        "text": "Volunteering",
+                        "value": 88,
+                        "data-description":"Meet new people while contributing to your community",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Vaccination/Optimize Medication",
+                    "value": 88,
+                    "data-description":"Find a location near you to get vaccinated or review   your medications",
+                    "children": [{
+                        "text": "Family Medicine",
+                        "value": 22,
+                        "data-description":"Find a primary care provider",
+                        },
+                        {
+                        "text": "Clinic",
+                        "value": 38,
+                        "data-description":"Healthcare clinics that accept walk-ins",
+                        },
+                        {
+                        "text": "Pharmacy",
+                        "value": 38,
+                        "data-description":"Local pharmacies that provide vaccinations and medication reviews",
+                        },
+                        {
+                        "text": "Education",
+                        "value": 38,
+                        "data-description":"Public health resources",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Diet and Nutrition",
+                    "data-description":"Local supports and services to help create or maintain a balanced diet",
+                    "children": [
+                        {
+                        "text": "Delivery",
+                        "value": 92,
+                        "data-description":"Community-based meal programs that offer home delivery"
+                        },
+                        {
+                        "text": "Dietitian Services",
+                        "value": 92,
+                        "data-description":"Find a Registered Dietitian in your area"
+                        },
+                        {
+                        "text": "Food Banks and Stands",
+                        "value": 92,
+                        "data-description":"Free or subsidized food"
+                        },
+                        {
+                        "text": "Fresh Food Boxes",
+                        "value": 92,
+                        "data-description":"Seasonal boxes of fruit and vegetables at reduced prices"
+                        },
+                        {
+                        "text": "Meal Programs",
+                        "value": 92,
+                        "data-description":"Hot meals provided in a congregate setting or to take-home"
+                        },
+                        {
+                        "text": "Dental",
+                        "value": 92,
+                        "data-description":"Oral health services and financial assistance programs"
+                        },
+                        {
+                        "text": "Classes",
+                        "value": 92,
+                        "data-description":"Cooking and nutrition classes"
+                        },
+                    ]
+                    },
+                    {
+                    "text": "Education and Employment",
+                    "data-description":"Opportunities for continued learning and assistance searching for employment",
+                    "children": [
+                        {
+                        "text": "Continued Education",
+                        "value": 42,
+                        "data-description":"Opportunities for further education",
+                        },
+                        {
+                        "text": "Literacy/ESL",
+                        "value": 28,
+                        "data-description":"Programs and classes to help improve literacy skills and learn the English language",
+                        },
+                        {
+                        "text": "Employment",
+                        "value": 42,
+                        "data-description":"Programs and services to assist with a job search",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Financial/Legal Assistance",
+                    "data-description":"Services that provide support for managing money, and assist with legal matters",
+                    "children": [{
+                        "text": "Credit Counselling",
+                        "value": 121,
+                        "data-description":"Services to help manage debts",
+                        },
+                        {
+                        "text": "Income Tax",
+                        "value": 100,
+                        "data-description":"Volunteer services that assist individuals with income tax returns",
+                        },
+                        {
+                        "text": "Legal Services",
+                        "value": 42,
+                        "data-description":"Subsidized legal advice and education on matters such as estates, wills, and advanced care planning",
+                        },
+                        {
+                        "text": "Social Services",
+                        "value": 42,
+                        "data-description":"Community programs providing financial support and help with financial assistance applications",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Chronic Conditions",
+                    "data-description":"Program and services that help you manage living with a specific ongoing health issue",
+                    "children": [{
+                        "text": "Cancer",
+                        "value": 121,
+                        "data-description":"Services for people living with cancer and their care partners",
+                        },
+                        {
+                        "text": "Chronic Pain",
+                        "value": 100,
+                        "data-description":"Services for people living with chronic pain and their care partners",
+                        },
+                        {
+                        "text": "Dementia",
+                        "value": 42,
+                        "data-description":"Services for people living with a type of dementia and their care partners",
+                        },
+                        {
+                        "text": "Diabetes",
+                        "value": 42,
+                        "data-description":"Services for people living with diabetes and their care partners",
+                        },
+                        {
+                        "text": "Other Chronic Conditions",
+                        "value": 42,
+                        "data-description":"Services for people living with other chronic conditions and their care partners",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Mental Health",
+                    "data-description":"Supportive services and programs for people who are living with a mental health disorder and their care partners",
+                    "children": [{
+                        "text": "Addiction",
+                        "value": 121,
+                        "data-description":"Support groups, counselling, treatment clinics and other services for individuals living with a substance use disorder",
+                        },
+                        {
+                        "text": "Clinics",
+                        "value": 100,
+                        "data-description":"Variety of services to support individuals living with a mental health disorder",
+                        },
+                        {
+                        "text": "Counselling",
+                        "value": 42,
+                        "data-description":"Individual and group counselling with options for specific populations",
+                        },
+                        {
+                        "text": "Support Groups",
+                        "value": 42,
+                        "data-description":"Regular meetings with peers who share a common healthcare need or lived experience",
+                        },
+                    ]
+                    },
+                    {
+                    "text": "Housing",
+                    "data-description":"Opportunities and services to assist with finding appropriate housing for your situation",
+                    "children": [{
+                        "text": "Disability Support",
+                        "value": 121,
+                        "data-description":"Residences and support for people living with a disability",
+                        },
+                        {
+                        "text": "Emergency Housing",
+                        "value": 100,
+                        "data-description":"Shelter services for those in need",
+                        },
+                        {
+                        "text": "Geared to Income",
+                        "value": 200,
+                        "data-description":"Rental units priced based on income",
+                        },
+                        {
+                        "text": "Housing for Older Adults",
+                        "value": 200,
+                        "data-description":"Services for people living with diabetes and their care partners",
+                        },
+                        {
+                        "text": "Housing Support",
+                        "value": 200,
+                        "data-description":"Housing related financial assistance programs and services ",
+                        },
+                        {
+                        "text": "Nursing Home",
+                        "value": 200,
+                        "data-description":"Residency for those who require some care",
+                        }
+                    ]
+                    },
+                    {
+                    "text": "Home and Care Partners",
+                    "data-description":"Program and services that help you manage living with a specific ongoing health issue",
+                    "children": [{
+                        "text": "Care Partners Support/Respite",
+                        "value": 121,
+                        "data-description":"Relief from caregiving responsibilities and other supports for care partners",
+                        },
+                        {
+                        "text": "Help at Home",
+                        "value": 100,
+                        "data-description":"Services provided in the home including housekeeping, meal preparation, basic personal care, companionship, and more",
+                        },
+                        {
+                        "text": "Homecare",
+                        "value": 42,
+                        "data-description":"Medical services delivered in the home",
+                        },
+                        {
+                        "text": "Palliative Care/Hospice",
+                        "value": 42,
+                        "data-description":"End of life care and support for care partners",
+                        },
+                    ]
+                    },
+                    {
+                    "text": "Healthcare Services",
+                    "data-description":"Program and services that help you manage living with a specific ongoing health issue",
+                    "children": [{
+                        "text": "Clinics",
+                        "value": 121,
+                        "data-description":"Visit specific healthcare clinics including seniors day rehabilitation, stroke rehabilitation, breast assessments, and more",
+                        },
+                        {
+                        "text": "Hospitals",
+                        "value": 100,
+                        "data-description":"Locate the nearest hospital to you",
+                        },
+                        {
+                        "text": "KFL&A Public Health",
+                        "value": 42,
+                        "data-description":"Connect with the resources and services offered through your local health unit",
+                        },
+                    ]
+                    },
+                    {
+                    "text": "Disability Services",
+                    "data-description":"Program and services that help you manage living with a specific ongoing health issue",
+                    "children": [{
+                        "text": "Developmental Disability Services",
+                        "value": 121,
+                        "data-description":"Supports and services for individuals living with a developmental disability",
+                        },
+                        {
+                        "text": "Physical Disability Services",
+                        "value": 100,
+                        "data-description":"Supports and services for individuals living with a physical disability",
+                        },
+                        {
+                        "text": "Homecare",
+                        "value": 42,
+                        "data-description":"Services including housekeeping, respite, and nursing delivered in the home for individuals living with a disability",
+                        },
+                        {
+                        "text": "Community Support",
+                        "value": 42,
+                        "data-description":"Assistance with financial assistance applications, family support, employment training, and more",
+                        },
+                    ]
+                    },
+                    {
+                    "text": "Transportation",
+                    "data-description":"Program and services that help you manage living with a specific ongoing health issue",
+                    "children": [{
+                        "text": "Driving Assessment",
+                        "value": 121,
+                        "data-description":"Centres that offer driving lessons and continued assessments",
+                        },
+                        {
+                        "text": "Driving Program",
+                        "value": 100,
+                        "data-description":"Volunteer drivers available for grocery shopping, medical appointments, and other daily needs",
+                        },
+                        {
+                        "text": "Medical Transport",
+                        "value": 42,
+                        "data-description":"Non-emergency patient transfer services",
+                        },
+                        {
+                        "text": "Public Transit",
+                        "value": 42,
+                        "data-description":"Local bus service and non-emergency medical transfers",
+                        },
+                    ]
+                    }
+                ]
+                };
+                zingchart.render({
+                id: 'treemap',
+                data: chartConfig,
+                height: '40%',
+                width: '100%',
+                });
+		  
+		zingchart.bind('treemap', 'node_click', function(e) {
+			<%= findCat('e.path[0].text') %>
+                });
+            }
+        });
+    </script>
