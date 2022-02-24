@@ -47,6 +47,10 @@ class Report extends AbstractReport{
             #bodyContent {
                 top: 90px;
             }
+            
+            #sideToggle {
+                display: none;
+            }
         </style>");
     }
     

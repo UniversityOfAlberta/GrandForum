@@ -93,8 +93,11 @@ class AVOIDDashboard extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-        $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Dashboard", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
+            $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Dashboard", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+        }
         return true;
     }
     
