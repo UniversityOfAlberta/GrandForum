@@ -33,7 +33,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
             </script>");
         $this->html .= "<div id='projectionsAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
-        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        $today = date('Y');//, time() - (6 * 30 * 24 * 60 * 60));
         if(isset($_GET['generatePDF'])){
             // Only show the last year in the PDF
             $today = date('Y') - 1;
@@ -92,7 +92,7 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
             </script>");
         $this->html .= "<div id='projectionsAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
-        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        $today = date('Y');//, time() - (6 * 30 * 24 * 60 * 60));
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         $structure = Product::structure();
