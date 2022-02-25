@@ -62,7 +62,7 @@ AvoidResources = Backbone.Collection.extend({
     url: function(){
          url = 'index.php?action=api.avoidResource/';
         if(this.cat != null){
-            url = 'index.php?action=api.avoidResource/cat/'+this.cat;
+            url = 'index.php?action=api.avoidResources/'+this.cat;
         }
 
         return url;

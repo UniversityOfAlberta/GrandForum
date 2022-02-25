@@ -1,18 +1,17 @@
 <td align="center" style="width:30px">
-    <%= ParentAgency %>
+    <%= PublicName_Program %>
 </td>
-<td align="center" style="width:30px">
+<td align="center" style="width:300px">
 	<%= AgencyDescription %>
 </td>
-<td align="center" style="width:30px">
+<td align="center" style="width:200px">
         <%= Eligibility %>
 </td>
-<td style="">
+<td style="width:100px">
 	<%= PhysicalAddress1 %>
 </td>
 <td style="">
-        <%= Phone1Number %>
-</td>
-<td style="">
-        <%= Coverage %>
+	Email: <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
+	Phone: <%= Phone1Number %><br />
+	Website: <a href='<%=WebsiteAddress %>'><%=WebsiteAddress%></a>
 </td>

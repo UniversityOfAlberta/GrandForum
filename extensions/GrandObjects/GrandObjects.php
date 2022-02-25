@@ -214,6 +214,7 @@ $apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectio
 //AVOID Resource
 $apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
+$apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAPI');
 
 function addScript($file){
     global $wgServer, $wgScriptPath;
