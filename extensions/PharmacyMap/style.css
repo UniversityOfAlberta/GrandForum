@@ -171,3 +171,16 @@ input[type=button] {
   visibility: visible;
   opacity: 1;
 }
+
+.category{
+  font-size:1.6em !important;
+  width: 30%;
+  height: 88%;
+  margin: 5px;
+  text-align:center;
+    font-weight: bold;
+    line-height: 1em;
+    height: 1em;
+    padding: 0.6em;
+    white-space: nowrap;
+}

@@ -327,7 +327,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Chronic Conditions",
-        "description": "Program and services that help you manage living with a specific ongoing health issue",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Cancer",
@@ -420,7 +420,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Home and Care Partners",
-        "description": "Program and services that help you manage living with a specific ongoing health issue",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Care Partners Support/Respite",
@@ -446,7 +446,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Healthcare Services",
-        "description": "Program and services that help you manage living with a specific ongoing health issue",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Clinics",
