@@ -7,7 +7,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"AVOID_Questions_tab0",
             "blobItem"=>"internetissues_avoid",
             "answer"=> "No",
-            "tags"=>array("Cyber Seniors")
+            "tags"=>array("cyber seniors")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -28,7 +28,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"behaviouralassess",
             "blobItem"=>"active_specify_end",
             "answer"=> "I have trouble maintaining a routine when it comes to activity",
-            "tags"=>array("activity module","Ingredients for change module")
+            "tags"=>array("activity module","ingredients for change module")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -63,7 +63,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"behaviouralassess",
             "blobItem"=>"meds_end",
             "answer"=> "I do not feel comfortable and/or prepared to have this conversation with a healthcare provider",
-            "tags"=>array("peer coaching participant", "MedTrack")
+            "tags"=>array("peer coaching participant", "medtrack")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -91,7 +91,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"behaviouralassess",
             "blobItem"=>"interact_end",
             "answer"=> "I have been restricted due to COVID-19 public health measures",
-            "tags"=>array("Cyber Seniors", "peer coaching participant")
+            "tags"=>array("cyber seniors", "peer coaching participant")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -161,14 +161,14 @@ class UserTagsAPI extends API{
             "ReportSection"=>"clinicalfrailty",
             "blobItem"=>"symptoms_avoid21",
             "answer"=> "Yes",
-            "tags"=>array("Movement and Mindfulness Programs")
+            "tags"=>array("movement and mindfulness programs")
         ),
         array(
             "reportType"=> "RP_AVOID",
             "ReportSection"=>"clinicalfrailty",
             "blobItem"=>"symptoms_avoid19",
             "answer"=> "Yes",
-            "tags"=>array("Movement and Mindfulness Programs")
+            "tags"=>array("movement and mindfulness programs")
         )
     );
 
@@ -216,7 +216,7 @@ class UserTagsAPI extends API{
                 else{
                     $answers_list[] = $ans;
                 }
-	    }
+        }
             if(!in_array("I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)", $answers_list)){
                 if(!in_array("I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)", $answers_list)
                 &&
@@ -237,43 +237,30 @@ class UserTagsAPI extends API{
         
         return null;
     }
-
-    function doAction($noEcho=false){
-        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang,$wgRequest,$wgOut, $wgMessage;
-         //get user
-	header("Content-type: text/json");
-	$user = Person::newFromId($wgUser->getId());
-	if(!isset($_GET['id'])){
-            $user_id = $wgUser->getId();
-	}
-	else{
-	    if(!$user->isRoleAtLeast(MANAGER)){
-		echo "Permission Required\n";
-	    }
-            $user_id = $_GET['id'];
-	}
-	$tags = array();
-	foreach(self::$checkanswers as $answer){
-	    //$answer = self::$checkanswers[1];
-	    $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $answer["reportType"], $answer["ReportSection"], $answer["blobItem"], $user_id);
-	    //$tags[] = $ans;
-	    //break;
-	    if($ans == null){
-		continue;
-	    }
-	    if(is_array($ans)){
-            if(array_key_exists($answer["blobItem"], $ans))
-            {
-                if(in_array($answer["answer"], $ans[$answer["blobItem"]])){
-                    $tags_check = $answer["tags"];
-                    foreach($tags_check as $tag){
-                        if(!in_array($tag, $tags)){
-                            $tags[] = $tag;
+    
+    function getTags($user_id){
+        $tags = array();
+        foreach(self::$checkanswers as $answer){
+            //$answer = self::$checkanswers[1];
+            $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $answer["reportType"], $answer["ReportSection"], $answer["blobItem"], $user_id);
+            //$tags[] = $ans;
+            //break;
+            if($ans == null){
+                continue;
+            }
+            if(is_array($ans)){
+                if(array_key_exists($answer["blobItem"], $ans))
+                {
+                    if(in_array($answer["answer"], $ans[$answer["blobItem"]])){
+                        $tags_check = $answer["tags"];
+                        foreach($tags_check as $tag){
+                            if(!in_array($tag, $tags)){
+                                $tags[] = $tag;
+                            }
                         }
                     }
                 }
-	    }
-	    }
+            }
             else{
                 if($ans == $answer["answer"]){
                     $tags_check = $answer["tags"];
@@ -283,14 +270,32 @@ class UserTagsAPI extends API{
                         }
                     }
                 }
-	    }
-	    //break;
-	}
-	$readiness = $this->checkReadinessForChange($user_id);
-	if($readiness != null){
-		$tags[] = $readiness;
-	}
-	//$myJSON = json_encode($ans[$answer["blobItem"]]);
+            }
+            //break;
+        }
+        $readiness = $this->checkReadinessForChange($user_id);
+        if($readiness != null){
+            $tags[] = $readiness;
+        }
+        return $tags;
+    }
+
+    function doAction($noEcho=false){
+        global $wgUser, $wgServer, $wgScriptPath, $wgRoles, $config, $wgLang,$wgRequest,$wgOut, $wgMessage;
+         //get user
+        header("Content-type: text/json");
+        $user = Person::newFromId($wgUser->getId());
+        if(!isset($_GET['id'])){
+                $user_id = $wgUser->getId();
+        }
+        else{
+            if(!$user->isRoleAtLeast(MANAGER)){
+                echo "Permission Required\n";
+            }
+            $user_id = $_GET['id'];
+        }
+        $tags = $this->getTags($user_id);
+        //$myJSON = json_encode($ans[$answer["blobItem"]]);
 
         $myJSON = json_encode($tags);
         echo $myJSON;
