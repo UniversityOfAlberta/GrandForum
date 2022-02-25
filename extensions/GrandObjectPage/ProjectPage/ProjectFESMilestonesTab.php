@@ -140,7 +140,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
             }
             else {
-                $html .= "<th colspan='4' class='left_border'>FY".($y+1)."<br />Apr{$year} – Mar".($year+1)."</th>";
+                $html .= "<th colspan='2' class='left_border'>FY".($y+1)."<br />Apr{$year} – Sep".($year)."</th>";
             }
         }
         return $html;
@@ -157,9 +157,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
             }
             else {
                 $html .= "<th class='left_border'>Q1</th>
-                          <th>Q2</th>
-                          <th>Q3</th>
-                          <th>Q4</th>";
+                          <th>Q2</th>";
             }
         }
         return $html;
@@ -190,7 +188,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
         for($y=$startYear; $y < $startYear+$this->nYears; $y++){
             $nQuarters = 4;
             if($y == $this->maxNYears+$startYear-1){
-                $nQuarters = 4;
+                $nQuarters = 2;
             }
             for($q=1;$q<=$nQuarters;$q++){
                 $class = ($q == 1) ? "class='left_border'" : "";
@@ -488,6 +486,7 @@ class ProjectFESMilestonesTab extends ProjectMilestonesTab {
                 $height = "height:".(DPI_CONSTANT*10)."px;";
             }
             $yearOffset = ($this->nYears < $this->maxNYears) ? 2 : 0;
+            $yearOffset -= 2;
             $leaders = $milestone->getLeaders();
             $leader = @$leaders[0];
             $peopleText = $milestone->getPeopleText();
