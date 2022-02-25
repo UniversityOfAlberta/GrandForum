@@ -47,10 +47,17 @@ class AVOIDDashboard extends SpecialPage {
 	    $me = Person::newFromWgUser();
 	    $_GET['id'] = $me->getId();
 	    $tags = (new UserTagsAPI())->getTags($me->getId());
-	    $modules = json_decode(file_get_contents("{$dir}EducationModules/modules.json"));
+	    
 	    $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
-	    $modules = $this->sort($modules, $tags);
 	    $programs = $this->sort($programs, $tags);
+	    
+	    $modules = EducationModules::modulesJSON();
+	    $modules = $this->sort($modules, $tags);
+	    usort($modules, function($a, $b){
+	        return (floor(EducationModules::completion($a->id)/100) > floor(EducationModules::completion($b->id)/100));
+	    });
+	    
+	    
 	    $wgOut->setPageTitle("AVOID Dashboard");
 	    $wgOut->addHTML("<div class='modules'>");
 	    // Education
@@ -61,11 +68,12 @@ class AVOIDDashboard extends SpecialPage {
         foreach($modules as $key => $module){
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
+            $percent = EducationModules::completion($module->id);
             $wgOut->addHTML("<div id='module{$module->id}' class='module module-{$cols}cols' href='{$url}'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' />
                 <div class='module-progress'>
-                    <div class='module-progress-bar'></div>
-                    <div class='module-progress-text'></div>
+                    <div class='module-progress-bar' style='width:{$percent}%;'></div>
+                    <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                 </div>
             </div>");
             $n++;
@@ -117,7 +125,6 @@ class AVOIDDashboard extends SpecialPage {
 	        $('.module').click(function(){
                 document.location = $(this).attr('href');
             });
-            ".EducationModules::completionScript()."
 	    </script>");
 	}
 
