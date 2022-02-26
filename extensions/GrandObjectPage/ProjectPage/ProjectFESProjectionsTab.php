@@ -16,6 +16,16 @@ class ProjectFESProjectionsTab extends ProjectFESReportTab {
         $this->generateBody();
     }
     
+    function userCanView(){
+        $me = Person::newFromWgUser();
+        // Check that they are leader
+        if($me->isRoleAtLeast(STAFF)
+           $me->isRole(PL, $this->project) || 
+           $me->isRole(PA, $this->project)){
+            return true;
+        }
+    }
+    
     function canEdit(){
         return (!$this->project->isFeatureFrozen(FREEZE_PROJECTIONS) && parent::canEdit());
     }
