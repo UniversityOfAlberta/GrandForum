@@ -157,7 +157,20 @@ class AVOIDDashboard extends SpecialPage {
         }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            $prog = array();
+            $report = new DummyReport("IntakeSurvey", $me);
+            $complete = true;
+            foreach($report->sections as $section){
+                if($section instanceof EditableReportSection){
+                    $complete = $complete && ($section->getPercentComplete() == 100);
+                }
+            }
+            if($complete){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            }
+            else{
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
+            }
         }
         return true;
     }
