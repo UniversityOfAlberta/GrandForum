@@ -41,6 +41,8 @@
         </div>");
         
         $wgOut->addHTML("<div title='Contact Us' id='contactUsDialog' style='display:none; width: 112px;'>
+            Do you have questions, comments or need some help?<br />
+            Send us an email.
             <table>
                 {$loggedIn}
                 <tr>

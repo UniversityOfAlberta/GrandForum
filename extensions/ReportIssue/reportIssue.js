@@ -16,8 +16,10 @@ $(document).ready(function(){
     }
     
     if(networkName != "AI4Society"){
-        $("#topic").val('Other');
+        $("#topic").append("<option></option>");
+        $("#topic").val('');
         $("#topic").closest("tr").hide();
+        $("#topic_other").show();
         $("#topic_other td").first().text("Subject:");
         $("#contactFile").hide();
     }
@@ -52,8 +54,10 @@ $(document).ready(function(){
         width: 400,
         buttons: {
             "Submit": function(){   
-                dataToSend.comments = $("div#reportIssueDialog textarea").val();             
-                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
+                dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
+                dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
+                dataToSend.email = $("div#contactUsDialog input[name=email]").val();
+                dataToSend.comments = $("div#contactUsDialog textarea").val();
                 $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
@@ -75,8 +79,13 @@ $(document).ready(function(){
                 if(dataToSend.topic == "Other" && $("div#contactUsDialog #topicOther").val().trim() != ""){
                     dataToSend.topic += ": " + $("div#contactUsDialog #topicOther").val().trim();
                 }
-                dataToSend.comments = $("div#contactUsDialog textarea").val();
+                if(dataToSend.topic == ""){
+                    dataToSend.topic = $("div#contactUsDialog #topicOther").val().trim();
+                }
+                dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
+                dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
                 dataToSend.email = $("div#contactUsDialog input[name=email]").val();
+                dataToSend.comments = $("div#contactUsDialog textarea").val();
                 $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
@@ -116,7 +125,7 @@ $(document).ready(function(){
     });
     
     $("div#contactUsDialog #topic").change(function(){
-        if($("#topic").val() == "Other"){
+        if($("#topic").val() == "Other" || $("#topic").val() == ""){
             $("#topic_other").show();
         }
         else{
