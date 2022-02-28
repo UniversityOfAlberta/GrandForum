@@ -209,7 +209,10 @@ PharmacyMapView = Backbone.View.extend({
         _.each(group, function (val) {
             if (val.PhysicalAddress1 != null) {
                 var pharmLoc = null;
-		var marker = null;
+                var marker = null;
+                var geocodeUrl = (val.PhysicalPostalCode != "") 
+                                 ? 'https://geocode.maps.co/search?q=' + val.PhysicalPostalCode
+                                 : 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1;
                 $.ajax({
                     type: 'GET',
                     url: 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1,
