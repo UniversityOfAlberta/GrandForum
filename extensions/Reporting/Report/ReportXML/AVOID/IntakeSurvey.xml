@@ -7,7 +7,7 @@
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
 	<![CDATA[
-	<div style="width:100%;text-align:right"><img src="/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+	<div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
 	        <p>
 			<b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
 		</p>
