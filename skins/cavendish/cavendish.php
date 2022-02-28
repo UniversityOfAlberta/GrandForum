@@ -311,6 +311,7 @@ class CavendishTemplate extends QuickTemplate {
 		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
+		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;
 		    
 		    var today = new Date().toLocaleDateString('en-CA');
 		
@@ -916,7 +917,7 @@ class CavendishTemplate extends QuickTemplate {
                 }
 		    }
         ?>
-	    <div id="header" style="<?php if(count($headerTabs) == 0){ echo 'display:none;'; } ?>">
+	    <div id="header" style="<?php if(count($headerTabs) == 0 && $config->getValue('showSideBar')){ echo 'display:none;'; } ?>">
 	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
 		    <a name="top" id="contentTop"></a>
 	        <ul class="top-nav">

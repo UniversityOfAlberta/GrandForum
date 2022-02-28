@@ -1,10 +1,25 @@
 $(document).ready(function(){
     
     var dataToSend = {};
-    
-    $("div#side").append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
+    var selector = (showSideBar) ? "div#side" : "#header ul";
+
+    $(selector).append("<div id='reportIssue'><button><span class='en'>Report Issue</span><span class='fr' style='font-size:0.85em;'>Signaler un problème</span></button><span class='throbber' style='display:none;'></span></div>");
     if(isExtensionEnabled("ContactUs")){
-        $("div#side").append("<div id='contactUs'><button>Contact Us</button></div>");
+        $(selector).append("<div id='contactUs'><button>Contact Us</button></div>");
+    }
+    
+    if(!showSideBar){
+        $("#reportIssue, #contactUs").css("display", "inline-block")
+                                     .css("margin-right", "10px")
+                                     .css("margin-top", "7px")
+                                     .css("float", "right");
+    }
+    
+    if(networkName != "AI4Society"){
+        $("#topic").val('Other');
+        $("#topic").closest("tr").hide();
+        $("#topic_other td").first().text("Subject:");
+        $("#contactFile").hide();
     }
     
     $("div#contactUsDialog input[type=file]").change(function(e){
