@@ -1,19 +1,7 @@
 <?php
 
 require_once('commandLine.inc');
-
-/*foreach($papers as $paper){
-    if(!$paper->hasBeenReported($year, $type) && ($type == "RMC" || ($type == "NCE" && $paper->isPublished()))){
-        $sql = "INSERT INTO `grand_products_reported` (`product_id`,`reported_type`,`year`,`data`)
-                VALUES ('{$paper->getId()}','{$type}','{$year}','".addslashes(serialize($paper))."')";
-        DBFunctions::execSQL($sql, true);
-        $nPapers++;
-    }
-    $i++;
-    show_status($i, count($papers));
-    flush();
-}*/
-    $csvFile = 'csv/education.csv';
+    $csvFile = 'new_upload.csv';
 	$file = fopen($csvFile,"r");
   while(! feof($file))
   {
@@ -70,45 +58,45 @@ require_once('commandLine.inc');
 )
 VALUES 
 (
-'$resource[0]',
-'$resource[1]',
-'$resource[2]',
-'".strip_tags($resource[3])."',
-'".strip_tags($resource[4])."',
-'".strip_tags($resource[5])."',
-'$resource[6]',
-'$resource[7]',
-'".strip_tags($resource[8])."',
-'$resource[9]',
-'$resource[10]',
-'$resource[11]',
-'$resource[12]',
-'$resource[13]',
-'$resource[14]',
-'$resource[15]',
-'$resource[16]',
-'$resource[17]',
-'$resource[18]',
-'$resource[19]',
-'$resource[20]',
-'$resource[21]',
-'$resource[22]',
-'$resource[23]',
-'$resource[24]',
-'$resource[25]',
-'$resource[26]',
-'$resource[27]',
-'$resource[28]',
-'$resource[29]',
-'$resource[30]',
-'$resource[31]',
-'$resource[32]',
-'$resource[33]',
-'$resource[34]',
-'$resource[35]',
-'$resource[36]',
-'$resource[37]',
-'$resource[38]',
+'".str_replace("'", "\'",$resource[0])."',
+'".str_replace("'", "\'",$resource[1])."',
+'".str_replace("'", "\'",$resource[2])."',
+'".str_replace("'", "\'",strip_tags($resource[3]))."',
+'".str_replace("'", "\'",strip_tags($resource[4]))."',
+'".str_replace("'", "\'",strip_tags($resource[5]))."',
+'".str_replace("'", "\'",$resource[6])."',
+'".str_replace("'", "\'",$resource[7])."',
+'".str_replace("'", "\'",strip_tags($resource[8]))."',
+'".str_replace("'", "\'",$resource[9])."',
+'".str_replace("'", "\'",$resource[10])."',
+'".str_replace("'", "\'",$resource[11])."',
+'".str_replace("'", "\'",$resource[12])."',
+'".str_replace("'", "\'",$resource[13])."',
+'".str_replace("'", "\'",$resource[14])."',
+'".str_replace("'", "\'",$resource[15])."',
+'".str_replace("'", "\'",$resource[16])."',
+'".str_replace("'", "\'",$resource[17])."',
+'".str_replace("'", "\'",$resource[18])."',
+'".str_replace("'", "\'",$resource[19])."',
+'".str_replace("'", "\'",$resource[20])."',
+'".str_replace("'", "\'",$resource[21])."',
+'".str_replace("'", "\'",$resource[22])."',
+'".str_replace("'", "\'",$resource[23])."',
+'".str_replace("'", "\'",$resource[24])."',
+'".str_replace("'", "\'",$resource[25])."',
+'".str_replace("'", "\'",$resource[26])."',
+'".str_replace("'", "\'",$resource[27])."',
+'".str_replace("'", "\'",$resource[28])."',
+'".str_replace("'", "\'",$resource[29])."',
+'".str_replace("'", "\'",$resource[30])."',
+'".str_replace("'", "\'",$resource[31])."',
+'".str_replace("'", "\'",$resource[32])."',
+'".str_replace("'", "\'",$resource[33])."',
+'".str_replace("'", "\'",$resource[34])."',
+'".str_replace("'", "\'",$resource[35])."',
+'".str_replace("'", "\'",$resource[36])."',
+'".str_replace("'", "\'",$resource[37])."',
+'".str_replace("'", "\'",$resource[38])."',
 '',
 '',
 '',

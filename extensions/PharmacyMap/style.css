@@ -184,3 +184,7 @@ input[type=button] {
     padding: 0.6em;
     white-space: nowrap;
 }
+
+#table{
+  padding-bottom:60px;
+}

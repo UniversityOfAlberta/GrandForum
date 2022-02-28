@@ -40,8 +40,9 @@ PharmacyMapView = Backbone.View.extend({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+		    console.log(pos);
                 this.map.setCenter(pos);
-                this.zoom = 10;
+                this.zoom = 30;
             }, this), function () {
             });
         }
@@ -103,21 +104,30 @@ PharmacyMapView = Backbone.View.extend({
         });
 
         var markers = [];
-        searchBox.addListener('places_changed', $.proxy(function () {
-            var places = searchBox.getPlaces();
-            if (places.length == 0) {
-                return;
-            }
+	searchBox.addListener('places_changed',$.proxy(function(){
+        var places = searchBox.getPlaces();
+        if(places.length == 0){
+        return;
+        }
 
-            var bounds = new google.maps.LatLngBounds();
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach($.proxy(function(place){
+            this.lat = place.geometry.location.lat();
+            this.long = place.geometry.location.lng();
 
-            if (places.length > 1) {
-                map.fitBounds(bounds);
-            }
-            else if (places.length == 1) {
-                map.setCenter(bounds.getCenter());
-                this.zoom = 10;
-            }
+        if (place.geometry.viewport){
+            bounds.union(place.geometry.viewport);
+        } else {
+            bounds.extend(place.geometry.location);
+        }
+         }, this));
+         if(places.length >1){
+         map.fitBounds(bounds);
+         }
+         else if(places.length==1){
+             map.setCenter(bounds.getCenter());
+             this.zoom = 50;
+         }
         }, this));
     },
 
@@ -206,7 +216,6 @@ PharmacyMapView = Backbone.View.extend({
                     data: { get_param: 'value' },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
 			if(data.length >0){
                         pharmLoc = new google.maps.LatLng(data[0].lat, data[0].lon);
                         if (pharmLoc != null) {
@@ -265,7 +274,7 @@ PharmacyMapView = Backbone.View.extend({
             var empty = [];
             this.AddMarkers(this.geocoder, empty);
             this.AddMarkers(this.geocoder, data);
-            $('#body_accordion').accordion({ autoHeight: false, active:false, collapsible: true, header: '> div.wrap >h3' });
+            $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '> div.wrap >h3' });
             $('#address_bar').show();
             $('#map-container').show();
 	    $('#table').show();

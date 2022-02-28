@@ -420,7 +420,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Home and Care Partners",
-        "description": "Programs and services that provide assistance in the home or to care partners",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Care Partners Support/Respite",
@@ -446,7 +446,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Healthcare Services",
-        "description": "Medical services from local clinics, hospitals, and public health",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Clinics",
@@ -467,7 +467,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Disability Services",
-        "description": "Community and home supports for individuals living with a disability and their care partners",
+        "description": "Program and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Developmental Disability Services",
@@ -493,7 +493,7 @@ CategoryButtonsView = Backbone.View.extend({
     },
     {
         "text": "Transportation",
-        "description": " Services to assist with transportation needs",
+        "description": "Program and services that help you manage living with a specific ongoing health issue",
         "children": [
             {
                 "text": "Driving Assessment",
