@@ -215,7 +215,7 @@ PharmacyMapView = Backbone.View.extend({
                                  : 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1;
                 $.ajax({
                     type: 'GET',
-                    url: 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1,
+                    url: geocodeUrl,
                     data: { get_param: 'value' },
                     dataType: 'json',
                     success: function (data) {
