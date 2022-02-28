@@ -110,8 +110,8 @@ class Register extends SpecialPage{
         $typeRow = new FormTableRow("type_row");
         $typeRow->append($typeLabel)->append($typeField);
         
-        $captchaLabel = new Label("captcha_label", "<span class='en'>Enter Code</span><span class='fr'>Entrez le code</span>", "Enter the code you see in the image", VALIDATE_NOT_NULL);
-        $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
+        $captchaLabel = new EmptyElement();
+        $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOTHING);
         $captchaRow = new FormTableRow("captcha_row");
         $captchaRow->append($captchaLabel)->append($captchaField);
         
@@ -163,6 +163,9 @@ class Register extends SpecialPage{
                                 Votre inscription au portail du formulaire de demande pour le Programme ELITE vous donnera accès au portail. Vous recevrez un courriel d'inscription quelques minutes après la soumission de vos informations. Si vous ne recevez pas le courriel d'inscription dans votre boîte de réception principale, veuillez vérifier votre dossier de courriels indésirables. Si vous n'avez pas reçu le courriel, veuillez contacter <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
                             </span><br /><br />");
         }
+        else if($config->getValUE("networkName") == "AVOID"){
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
@@ -188,6 +191,7 @@ class Register extends SpecialPage{
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
             $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
+            $_POST['candidate'] = "1";
             if($config->getValue('networkName') == "ADA" || 
                $config->getValue('networkName') == "CFN" ||
                $config->getValue('networkName') == "MtS"){
@@ -203,11 +207,14 @@ class Register extends SpecialPage{
                     $_POST['wpUserType'] = HQP;
                 }
             }
+            else if($config->getValue('networkName') == "AVOID"){
+                $_POST['wpUserType'] = CI;
+                $_POST['candidate'] = "1";
+            }
             else{
                 $_POST['wpUserType'] = HQP;
             }
             $_POST['wpSendMail'] = "true";
-            $_POST['candidate'] = "1";
             
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
