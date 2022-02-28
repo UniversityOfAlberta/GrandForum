@@ -7,7 +7,7 @@
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
 	<![CDATA[
-	<div style="width:100%;text-align:right"><img src="/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+	<div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
 	        <p>
 			<b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
 		</p>
@@ -86,7 +86,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 
     </ReportSection>
 
-	<ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="EditableReportSection" pagebreak="false" >
+	<ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false" >
                 <Static>
                         <![CDATA[
                                 <script type='text/javascript'>
@@ -439,7 +439,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                 ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Behavioural Self-Assessment" blobSection="behaviouralassess" type="EditableReportSection" pagebreak="false" >
+    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
         <Static>
                 <![CDATA[
                     <i>The following section will ask you about your health-related behaviours and lifestyle. The answers will be used to personalize your
@@ -1009,7 +1009,7 @@ As a user of this program, you may or may not see direct benefits from this stud
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="healthquestions" tooltip="Health Related QoL" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="EditableReportSection" pagebreak="false">
+    <ReportSection id="healthquestions" tooltip="Health Related QoL" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="NextPrevReportSection" pagebreak="false">
         <Static>
                 <![CDATA[
                         <i>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed. </i>
@@ -1065,7 +1065,7 @@ As a user of this program, you may or may not see direct benefits from this stud
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="clinicalfrailty" tooltip="Health Status" name="Health Status" blobSection="clinicalfrailty" type="EditableReportSection" pagebreak="false" >
+    <ReportSection id="clinicalfrailty" tooltip="Health Status" name="Health Status" blobSection="clinicalfrailty" type="NextPrevReportSection" pagebreak="false" >
         <ReportItem id="symptoms_avoid1" blobItem="symptoms_avoid1" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[
 		<i>This final section will ask questions about your specific health and frailty status before you start the program. We hope to stop or slow down the progression of frailty by providing you with the support that you need in your community. We will ask you these questions again in 6 months to see if anything has changed.</i>

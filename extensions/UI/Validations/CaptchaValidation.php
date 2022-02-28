@@ -7,25 +7,39 @@ class CaptchaValidation extends UIValidation {
     }
     
     function validateFn($value){
-        include_once 'Classes/securimage/securimage.php';
-	    $securimage = new Securimage();
-	    return ($securimage->check($value) !== false);
+        global $config;
+        
+        $post_data = array(
+            'secret' => $config->getValue('reCaptchaSecretKey'),
+            'response' => $_POST['g-recaptcha-response']
+        );
+        
+        // Prepare new cURL resource
+        $crl = curl_init('https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($crl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($crl, CURLOPT_POST, true);
+        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
+            
+        // Submit the POST request
+        $response = json_decode(curl_exec($crl));
+        return ($response->success == "true");
     }
     
     function failMessage($name){
-        return "The security code was incorrect";
+        return "The robot test failed";
     }
     
     function failNegMessage($name){
-        return "The security code was not incorrect";
+        return "The robot test did not fail";
     }
     
     function warningMessage($name){
-        return "The security code was incorrect";
+        return "The robot test failed";
     }
     
     function warningNegMessage($name){
-        return "The security code was not incorrect";
+        return "The robot test did not fail";
     }
     
 }

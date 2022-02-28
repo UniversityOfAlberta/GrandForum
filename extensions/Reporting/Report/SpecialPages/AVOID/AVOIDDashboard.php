@@ -24,11 +24,40 @@ class AVOIDDashboard extends SpecialPage {
 	    return $person->isLoggedIn();
 	}
 	
+	function compareTags($tags1, $tags2){
+	    $found = 0;
+	    foreach($tags1 as $tag1){
+	        if(in_array($tag1, $tags2)){
+	            $found++;
+	        }
+	    }
+	    return $found;
+	}
+	
+	function sort($objs, $tags){
+	    usort($objs, function($a, $b) use($tags) {
+            return ($this->compareTags($a->tags, $tags) < $this->compareTags($b->tags, $tags));
+        });
+        return $objs;
+	}
+	
 	function execute($par){
 	    global $wgOut, $wgServer, $wgScriptPath;
 	    $dir = dirname(__FILE__) . '/';
-	    $modules = json_decode(file_get_contents("{$dir}EducationModules/modules.json"));
+	    $me = Person::newFromWgUser();
+	    $_GET['id'] = $me->getId();
+	    $tags = (new UserTagsAPI())->getTags($me->getId());
+	    
 	    $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
+	    $programs = $this->sort($programs, $tags);
+	    
+	    $modules = EducationModules::modulesJSON();
+	    $modules = $this->sort($modules, $tags);
+	    usort($modules, function($a, $b){
+	        return (floor(EducationModules::completion($a->id)/100) > floor(EducationModules::completion($b->id)/100));
+	    });
+	    
+	    
 	    $wgOut->setPageTitle("AVOID Dashboard");
 	    $wgOut->addHTML("<div class='modules'>");
 	    // Education
@@ -39,12 +68,12 @@ class AVOIDDashboard extends SpecialPage {
         foreach($modules as $key => $module){
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
-            $percent = rand(0,100);
+            $percent = EducationModules::completion($module->id);
             $wgOut->addHTML("<div id='module{$module->id}' class='module module-{$cols}cols' href='{$url}'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' />
                 <div class='module-progress'>
-                    <div class='module-progress-bar'></div>
-                    <div class='module-progress-text'></div>
+                    <div class='module-progress-bar' style='width:{$percent}%;'></div>
+                    <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                 </div>
             </div>");
             $n++;
@@ -66,7 +95,6 @@ class AVOIDDashboard extends SpecialPage {
         foreach($programs as $key => $program){
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-            $percent = rand(0,100);
             $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
                 <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
@@ -97,7 +125,6 @@ class AVOIDDashboard extends SpecialPage {
 	        $('.module').click(function(){
                 document.location = $(this).attr('href');
             });
-            ".EducationModules::completionScript()."
 	    </script>");
 	}
 
@@ -125,9 +152,25 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
+        if($me->isRole(ADMIN)){
+            return true;
+        }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            $prog = array();
+            $report = new DummyReport("IntakeSurvey", $me);
+            $complete = true;
+            foreach($report->sections as $section){
+                if($section instanceof EditableReportSection){
+                    $complete = $complete && ($section->getPercentComplete() == 100);
+                }
+            }
+            if($complete){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            }
+            else{
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
+            }
         }
         return true;
     }

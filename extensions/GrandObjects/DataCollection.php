@@ -44,7 +44,7 @@ class DataCollection extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->userId = $data[0]['user_id'];
             $this->page = $data[0]['page'];
-            $this->data = json_decode($data[0]['data']);
+            $this->data = json_decode($data[0]['data'], true);
             $this->created = $data[0]['created'];
             $this->modified = $data[0]['modified'];
         }
@@ -70,12 +70,19 @@ class DataCollection extends BackboneModel {
         return $this->data;
     }
     
-    function getField($field){
-        return @$this->data[$field];
+    function getField($field, $default=""){
+        if(isset($this->data[$field])){
+            return $this->data[$field];
+        }
+        return $default;
     }
     
     function setField($field, $value){
         $this->data[$field] = $value;
+    }
+    
+    function sum($field){
+        return array_sum($this->getField($field, array()));
     }
     
     /**
