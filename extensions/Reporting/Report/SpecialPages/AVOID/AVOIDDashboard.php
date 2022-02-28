@@ -152,6 +152,9 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
+        if($me->isRole(ADMIN)){
+            return true;
+        }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
             redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
