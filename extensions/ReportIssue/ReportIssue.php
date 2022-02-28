@@ -95,13 +95,13 @@
             else{
                 $subj = "Contact Us - {$_POST['topic']}";
                 $msg = "<p>{$comments}</p><br />
-                        <b>User:</b> {$me->getName()} ({$email})";
+                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email})";
             }
             
             $eol = "\r\n";
             // Basic headers
             $header = "From: {$_POST['first_name']} {$_POST['last_name']} <{$_POST['email']}>".$eol;
-            $header .= "Reply-To: {$me->getEmail()}".$eol;
+            $header .= "Reply-To: {$_POST['email']}".$eol;
             $header .= "MIME-Version: 1.0".$eol;
             $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"".$eol;
 
