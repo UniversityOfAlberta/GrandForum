@@ -1142,6 +1142,13 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL7" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
+	 <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                                $('#mw-content-text').css("height", "100%");
+                </script>
+                ]]>
+        </Static>
         <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" orientation="vertical" blobItem="healthstatus_avoid6">
             <![CDATA[
 		    <h3>We would like to know how good or bad your health is TODAY.</h3>
