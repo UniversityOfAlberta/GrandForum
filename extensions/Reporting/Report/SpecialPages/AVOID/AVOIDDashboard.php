@@ -75,7 +75,7 @@ class AVOIDDashboard extends SpecialPage {
 	        $frailty = "Severely Frail";
 	    }
 	    $wgOut->addHTML("<div class='modules module-2cols'>
-	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Frailty Status</div>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Your Frailty Status</div>
 	                        <div style='font-size: 4em; line-height: 1em; margin-top: 0.5em; margin-bottom: 0.75em; text-align: center; width: 100%;'>{$frailty}</div>
 	                     </div>");
 	    
@@ -88,7 +88,7 @@ class AVOIDDashboard extends SpecialPage {
 	    
 	    // Education
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
-	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
+	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Your AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
 	    $cols = 3;
         $n = 0;
         foreach($modules as $key => $module){
@@ -113,7 +113,7 @@ class AVOIDDashboard extends SpecialPage {
 	    
 	    // Programs
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
-        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
+        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Your AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
         $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
         
         $cols = 3;
@@ -136,13 +136,13 @@ class AVOIDDashboard extends SpecialPage {
 	    
 	    // Resources
 	    $wgOut->addHTML("<div class='modules module-2cols'>
-	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Resources</div>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Your AVOID Education Resources</div>
 	                        Coming Soon...
 	                     </div>");
 	                     
 	    // Community Program Library
 	    $wgOut->addHTML("<div class='modules module-2cols'>
-	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Community Program Library <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></div>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Your Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></div>
 	                        Coming Soon...
 	                     </div>");
 	    
