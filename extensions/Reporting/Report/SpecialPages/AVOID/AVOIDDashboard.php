@@ -85,9 +85,7 @@ class AVOIDDashboard extends SpecialPage {
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
 	                        {$events->getText()}
 	                     </div>");
-	                     
-	    $wgOut->addHTML("</div>
-	                     <div class='modules'>");
+	    
 	    // Education
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
 	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
@@ -139,9 +137,17 @@ class AVOIDDashboard extends SpecialPage {
 	    // Resources
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Resources</div>
+	                        Coming Soon...
+	                     </div>");
+	                     
+	    // Community Program Library
+	    $wgOut->addHTML("<div class='modules module-2cols'>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Community Program Library <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></div>
+	                        Coming Soon...
 	                     </div>");
 	    
-	    $wgOut->addHTML("</div><script type='text/javascript'>
+	    $wgOut->addHTML("</div>
+	    <script type='text/javascript'>
 	        $('#bodyContent h1').hide();
 	        $('.module').click(function(){
                 document.location = $(this).attr('href');
