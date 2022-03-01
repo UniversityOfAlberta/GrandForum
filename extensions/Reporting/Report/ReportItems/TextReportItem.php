@@ -10,10 +10,11 @@ class TextReportItem extends AbstractReportItem {
 		if($value === null && $default != ''){
 		    $value = $default;
 		}
+	$max_length = $this->getAttr('max_length', 10000);
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
         $value = str_replace("'", "&#39;", $value);
         $placeholder = str_replace("'", "&#39;", $placeholder);
-        $item = "<input type='text' name='{$this->getPostId()}' style='width:{$width};' placeholder='{$placeholder}' value='{$value}' />";
+        $item = "<input type='text' name='{$this->getPostId()}' maxlength='{$max_length}' style='width:{$width};' placeholder='{$placeholder}' value='{$value}' />";
         $item = $this->processCData($item);
         $wgOut->addHTML("$item");
     }

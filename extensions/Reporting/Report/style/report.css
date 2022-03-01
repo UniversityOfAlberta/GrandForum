@@ -393,37 +393,89 @@ div.eula {
     border: 1px solid #cccccc;
 }
 
-.slidecontainer {
-  width: 100%;
+
+/* For radiobuttons -> checkmarks? */
+
+div.options{
+	padding-top:10px;
 }
 
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 1px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+div.options > label > input {
+	visibility: hidden;
 }
 
-.slider:hover {
-  opacity: 1;
+div.options > label {
+	display: block;
 }
 
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 10px;
-  height: 25px;
-  background: #04AA6D;
-  cursor: pointer;
+div.options > label > img {
+	display: inline-block;
+	padding: 0px;
+	height:30px;
+	width:30px;
+	background: none;
+	float:right;
+	border: 2px solid #00587e;
 }
 
-.slider::-moz-range-thumb {
-  width: 15px;
-  height: 1px;
-  background: #04AA6D;
-  cursor: pointer;
+div.options > label > input:checked +img {
+	background: url(/skins/checkavoid.png);
+	background-repeat: no-repeat;
+	background-position:center center;
+	background-size:30px 30px;
+	border: 2px solid #00587e;
+}
+.label-top-slider{
+display: inline-block;
+    position: absolute;
+    top: 30px;
+    width: 170px;
+    right: 10px;
+    padding-right: 20px !important;
+    font-size: 0.8em;
+    text-align:center;
+}
+
+.label-bottom-slider{
+display: inline-block;
+    position: absolute;
+    bottom: 70px;
+    width: 170px;
+    right: 10px;
+    padding-right: 20px !important;
+    font-size: 0.8em;
+    text-align:center;
+}
+
+
+.slider-wrapper {
+  display: inline-block;
+  width: 20px;
+  height: 150px;
+  float: right;
+  padding-right: 100px;
+}
+
+.slider-wrapper input {
+  width: 150px;
+  height: 20px;
+  margin-top: 30px;
+  transform-origin: 35px 35px;
+  transform: rotate(-90deg);
+}
+
+.label-health{
+    width: 150px;
+    border-style: solid;
+    text-align: center;
+    background: black;
+    color: white;
+    padding: 10px;
+    position: absolute;
+    right: 400px;
+}
+
+.headers-behaviour{
+    padding-top:30px;
+
 }

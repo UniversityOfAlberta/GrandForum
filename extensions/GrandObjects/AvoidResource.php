@@ -110,10 +110,10 @@ class AvoidResource extends BackboneModel {
     // }
 
     static function getCategoryResources($cat){
-        $sql = "SELECT `alias_database_name` FROM `grand_avoid_categories` WHERE `name` = '$cat'";
-	$data = DBFunctions::execSQL($sql);
-	$category = $data[0]['alias_database_name'];
-	$sql = "SELECT * FROM `grand_avoid_resources` WHERE `Categories` LIKE '%$category%'";
+        //$sql = "SELECT `alias_database_name` FROM `grand_avoid_categories` WHERE `name` = '$cat'";
+	//$data = DBFunctions::execSQL($sql);
+	//$category = $data[0]['alias_database_name'];
+	$sql = "SELECT * FROM `grand_avoid_resources` WHERE `Categories` LIKE '%$cat%'";
 	$data = DBFunctions::execSQL($sql);
         $unis = array();
         foreach($data as $row){

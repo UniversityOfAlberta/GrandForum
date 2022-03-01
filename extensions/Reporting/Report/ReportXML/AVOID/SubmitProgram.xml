@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Suggest Program Form" reportType="RP_AVOIDSUGG" pdfType="RPTP_AVOIDSUGG" pdfFiles="SuggestProgramPDF" ajax="true" disabled="false">
+	<Permissions>
+                <Role role="INACTIVE+"></Role>
+        </Permissions>
+	<ReportSection id="program_submit" tooltip="Program Submission Details" name="Program Submission Details" title="Program Submission Details" blobSection="AVOID_PROGRAM_SUBMIT" type="EditableReportSection" pagebreak="false" >
+                
+                <Static>
+			<![CDATA[
+				<p style="text-align:center">
+                                        Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?
+				</p>
+                                <p style="text-align:center">
+                                        Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library. 
+				</p>
+			]]>
+		</Static>
+        	<ReportItem id="publicname" type="Text" blobItem="PUBLICNAME" width="400px">
+            		<![CDATA[
+				<h3>Public Name:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="desc" type="Textarea" blobItem="DESCRIPTION" width="400px">
+            		<![CDATA[
+				<h3>Description of programs and services:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+        	<ReportItem id="hours" type="Text" blobItem="HOURS" width="200px">
+            		<![CDATA[
+				<h3>Hours of Operation:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="eligibility" type="Textarea" blobItem="ELIGIBLITY" width="400px">
+            		<![CDATA[
+				<h3>Eligibility:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="docs_required" type="Text" blobItem="DOCSREQUIRED" width="400px">
+            		<![CDATA[
+				<h3>Documents Required:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="appprocess" type="Text" blobItem="APPLICATIONPROCESS" width="400px">
+            		<![CDATA[
+				<h3>Application Process:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="fees" type="Text" blobItem="FEES" width="400px">
+            		<![CDATA[
+				<h3>Fees:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="accessibility" type="Text" blobItem="ACCESSIBILITY" width="400px">
+            		<![CDATA[
+				<h3>Accessibility:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="legalstatus" type="Text" blobItem="LEGALSTATUS" width="400px">
+            		<![CDATA[
+				<h3>Legal Status:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="officephone" type="Integer" blobItem="OFFICEPHONE" width="400px">
+            		<![CDATA[
+				<h3>Office Phone:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="crisisphone" type="Text" blobItem="CRISISPHONE" width="400px">
+            		<![CDATA[
+				<h3>Crisis Phone:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="businessline" type="Text" blobItem="BUSINESSLINE" width="400px">
+            		<![CDATA[
+				<h3>Eligibility:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="fax" type="Text" blobItem="FAX" width="400px">
+            		<![CDATA[
+				<h3>Fax:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="tty" type="Text" blobItem="TTY" width="400px">
+            		<![CDATA[
+				<h3>tty:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="tollfree" type="Text" blobItem="TOLLFREE" width="400px">
+            		<![CDATA[
+				<h3>Toll Free:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            		<![CDATA[
+				<h3>Email:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="website" type="Text" blobItem="WEBSITE" width="400px">
+            		<![CDATA[
+				<h3>Website:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <Static>
+                        <![CDATA[
+                                <br/><br/>
+                                <div id="reportHeader">Program Primary Contact</div><hr>
+                        ]]>	
+                </Static>
+                <ReportItem id="programprimarycontactname" type="Text" blobItem="PROGRAMPRIMARYCONTACTNAME" width="400px">
+            		<![CDATA[
+				<h3>Name:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="programprimarycontacttitle" type="Text" blobItem="PROGRAMPRIMARYCONTACTTITLE" width="400px">
+            		<![CDATA[
+				<h3>Title:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="programprimarycontactphone" type="Text" blobItem="PROGRAMPRIMARYCONTACTPHONE" width="400px">
+            		<![CDATA[
+				<h3>Phone:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="programprimarycontactemail" type="Text" blobItem="PROGRAMPRIMARYCONTACTEMAIL" width="400px">
+            		<![CDATA[
+				<h3>Email:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <Static>
+                        <![CDATA[
+                                <br/><br/>
+                                <div id="reportHeader">Director or Senior Contact</div><hr>
+                        ]]>	
+                </Static>
+                <ReportItem id="directorseniorcontactname" type="Text" blobItem="DIRECTORSENIORCONTACTNAME" width="400px">
+            		<![CDATA[
+				<h3>Name:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="directorseniorcontacttitle" type="Text" blobItem="DIRECTORSENIORCONTACTTITLE" width="400px">
+            		<![CDATA[
+				<h3>Title:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="directorseniorcontactphone" type="Text" blobItem="DIRECTORSENIORCONTACTPHONE" width="400px">
+            		<![CDATA[
+				<h3>Phone:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="directorseniorcontactemail" type="Text" blobItem="DIRECTORSENIORCONTACTEMAIL" width="400px">
+            		<![CDATA[
+				<h3>Email:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="areaserved" type="Text" blobItem="AREASSERVED" width="400px">
+            		<![CDATA[
+				<h3>Areas Served:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                 <ReportItem id="languages" type="Text" blobItem="LANGUAGES" width="400px">
+            		<![CDATA[
+				<h3>Languages:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="address" type="Text" blobItem="ADDRESS1" width="400px">
+            		<![CDATA[
+				<h3>Address1:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="address2" type="Text" blobItem="ADDRESS2" width="400px">
+            		<![CDATA[
+				<h3>Address2:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="city" type="Text" blobItem="CITY" width="400px">
+            		<![CDATA[
+				<h3>City:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="province" type="Text" blobItem="PROVINCE" width="400px">
+            		<![CDATA[
+				<h3>Province:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="country" type="Text" blobItem="COUNTRY" width="400px">
+            		<![CDATA[
+				<h3>Country:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="postalcode" type="Text" blobItem="POSTALCODE" width="400px">
+            		<![CDATA[
+				<h3>Postal Code:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="Intersection" type="Text" blobItem="INTERSECTION" width="400px">
+            		<![CDATA[
+				<h3>Intersection:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <Static>
+                        <![CDATA[
+                                <br/><br/>
+                                <div id="reportHeader">Mailing Address</div><hr>
+                        ]]>	
+                </Static>
+                <ReportItem id="mailingaddress" type="Text" blobItem="MAILINGADDRESS" width="400px">
+            		<![CDATA[
+                                <h3>Mail Care of</h3>
+                                <h3>Address1:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="mailingaddress2" type="Text" blobItem="MAILINGADDRESS2" width="400px">
+            		<![CDATA[
+				<h3>Address2:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="mailingcity" type="Text" blobItem="MAILINGCITY" width="400px">
+            		<![CDATA[
+				<h3>City:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="mailingprovince" type="Text" blobItem="MAILINGPROVINCE" width="400px">
+            		<![CDATA[
+				<h3>Province:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="mailingcountry" type="Text" blobItem="MAILINGCOUNTRY" width="400px">
+            		<![CDATA[
+				<h3>Country:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="mailingpostalcode" type="Text" blobItem="MAILINGPOSTALCODE" width="400px">
+            		<![CDATA[
+				<h3>Postal Code:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <Static>
+                        <![CDATA[
+                                <br/><br/>
+                                <div id="reportHeader">SOCIAL MEDIA</div><hr>
+                        ]]>	
+                </Static>
+                <ReportItem id="facebook" type="Text" blobItem="FACEBOOK" width="400px">
+            		<![CDATA[
+				<h3>Facebook:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="instagram" type="Text" blobItem="INSTAGRAM" width="400px">
+            		<![CDATA[
+				<h3>Instagram:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+
+                <ReportItem id="linkedin" type="Text" blobItem="LINKEDIN" width="400px">
+            		<![CDATA[
+				<h3>LinkedIn:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="twitter" type="Text" blobItem="TWITTER" width="400px">
+            		<![CDATA[
+				<h3>Twitter:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="youtube" type="Text" blobItem="YOUTUBE" width="400px">
+            		<![CDATA[
+				<h3>Youtube:</h3>
+				{$item}
+					]]>
+		</ReportItem>
+                <ReportItem id="languages" type="Textarea" blobItem="LANGUAGES" width="400px">
+            		<![CDATA[
+                                <p>Any other updates not shown above?<br />
+                                If there is some special information you wish to pass along to those reviewing the record, please enter it here:</p>
+				{$item}
+					]]>
+		</ReportItem>
+    </ReportSection>
+</Report>

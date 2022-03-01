@@ -2,9 +2,9 @@ PharmacyMapView = Backbone.View.extend({
     template: _.template($('#pharmacy_map_template').html()),
     map: null,
     geocoder: null,
-    lat: 53.7608608,
-    long: -98.8138763,
-    zoom: 4,
+    lat: 44.23846,
+    long: -76.4409887,
+    zoom: 6,
     refresh: true,
     buttons: [],
     cat_json: null,
@@ -62,7 +62,8 @@ PharmacyMapView = Backbone.View.extend({
         else {
             this.refresh = false;
             this.renderMap = true;
-            this.model.cat = this.buttons[cat]["text"];
+            //this.model.cat = this.buttons[cat]["text"];
+	    this.model.cat = this.buttons[cat]["code"];
             this.model.fetch();
         }
         this.drawButtons();
@@ -245,7 +246,7 @@ PharmacyMapView = Backbone.View.extend({
 			     + "<br>"
                              + "Website: <a href='"
                              + val.WebsiteAddress
-			     + "'>" 
+			     + "' target='_blank'>" 
 			     + val.WebsiteAddress
 			     + "</a>"
                 });
@@ -272,6 +273,8 @@ PharmacyMapView = Backbone.View.extend({
             output: data,
             findCat: this.findCat.bind(this)
         }));
+
+
         if(this.renderMap){
             this.initMap();
             var empty = [];
@@ -293,7 +296,9 @@ PharmacyMapView = Backbone.View.extend({
             var title = $("#pageTitle").clone();
             $(title).attr('id', 'copiedTitle');
             this.$el.prepend(title);
-        
+                   var r = $('<a style="float:right; font-size:0.7em;" href="/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a>');
+            $('#copiedTitle').append(r);
+ 
 	this.drawButtons();        
         return this.$el;
     }
