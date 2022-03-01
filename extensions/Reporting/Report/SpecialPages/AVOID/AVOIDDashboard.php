@@ -57,7 +57,6 @@ class AVOIDDashboard extends SpecialPage {
 	        return (floor(EducationModules::completion($a->id)/100) > floor(EducationModules::completion($b->id)/100));
 	    });
 	    
-	    
 	    $wgOut->setPageTitle("AVOID Dashboard");
 	    $wgOut->addHTML("<div class='modules'>");
 	    
@@ -114,7 +113,6 @@ class AVOIDDashboard extends SpecialPage {
 	    // Programs
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
         $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
-        $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
         
         $cols = 3;
         $n = 0;
