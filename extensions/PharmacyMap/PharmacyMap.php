@@ -46,8 +46,10 @@ class PharmacyMap extends BackbonePage {
     static function createSubTabs(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         if($wgUser->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "PharmacyMap") ? "selected" : false;
-            $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Program Library", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);
+            if(AVOIDDashboard::hasSubmittedSurvey()){
+                $selected = @($wgTitle->getText() == "PharmacyMap") ? "selected" : false;
+                $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Program Library", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);
+            }
         }
         return true;
     }
