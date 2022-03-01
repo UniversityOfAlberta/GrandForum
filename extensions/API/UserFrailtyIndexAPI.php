@@ -72,7 +72,180 @@ class UserFrailtyIndexAPI extends API{
                 "Most of the time"=>1,
             )
         ),
-
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid3",
+            "answer_scores"=> array(
+                "Not at all"=>0,
+                "Several days"=>0.5,
+                "More days than not"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid4",
+            "answer_scores"=> array(
+                "Not at all"=>0,
+                "Several days"=>0.5,
+                "More days than not"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid5",
+            "answer_scores"=> array(
+                "Good"=>0,
+                "Fair"=>0.5,
+                "Poor"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer_scores"=> array(
+                "No falls"=>0,
+                "1 fall"=>0.5,
+                "2 or more falls"=> 1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid21",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid7",
+            "answer_scores"=> array(
+                "Normal or brisk"=>0,
+                "Stroll at an easy pace"=>0.5,
+                "Very slow/unable to walk"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid9",
+            "answer_scores"=> array(
+                "Good"=>0,
+                "Bad"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid10",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid11",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+                "Don't know"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid12",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid13",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid14",
+            "answer_scores"=> array(
+                "None or mild"=>0,
+                "Moderate"=>0.5,
+                "Severe"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid15",
+            "answer_scores"=> array(
+                "Rarely"=>0,
+                "Occasional amount"=>0.5,
+                "Most of the time"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid16",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Sometimes"=>0.5,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid17",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Sometimes"=>0.5,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid18",
+            "answer_scores"=> array(
+                "No"=>0,
+                "Yes"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid19",
+            "answer_scores"=> array(
+                "Not at all"=>0,
+                "A little"=>0.5,
+                "A fair amount"=>1,
+            )
+        ),
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid20",
+            "answer_scores"=> array(
+                "Not at all"=>0,
+                "A little"=>0.5,
+                "A fair amount"=>1,
+            )
+        ),
     );
 
     function processParams($params){
