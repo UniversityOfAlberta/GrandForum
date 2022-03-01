@@ -219,7 +219,6 @@ abstract class AbstractReportItem {
             return 1;
         }
         else{
-            echo $this->id."\n";
             return 0;
         }
     }
