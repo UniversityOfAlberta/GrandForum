@@ -65,7 +65,7 @@ class AVOIDDashboard extends SpecialPage {
 	    $api = new UserFrailtyIndexAPI();
 	    $score = $api->getFrailtyScore($me->getId());
 	    $frailty = "";
-	    if($score > 0 && $score <= 3){
+	    if($score >= 0 && $score <= 3){
 	        $frailty = "Non-Frail";
 	    }
 	    else if($score > 3 && $score <= 8){
