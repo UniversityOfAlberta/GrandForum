@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="AVOID_CHECK_EULA" type="EULA">
+    <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="AVOID_CHECK_EULA" type="Eula">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
             <![CDATA[
@@ -57,39 +57,27 @@ As a user of this program, you may or may not see direct benefits from this stud
         <Static>
             <![CDATA[
                         <script type='text/javascript'>
-                                var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}' == "Yes";
+                                var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
 
-                                if(!consent){
-                                        $("#GettingtoKnowYou").hide();
-                                        $("#BehaviouralSelf-Assessment").hide();
-                                        $("#HealthRelatedQoL").hide();
-                                        $("#HealthStatus").hide();
-                                }
-                                else{
-                                        $("#GettingtoKnowYou").show();
-                                        $("#BehaviouralSelf-Assessment").show();
-                                        $("#HealthRelatedQoL").show();
-                                        $("#HealthStatus").show();
-                                }
                                 function checkConsent(value){
+                                    console.log(value);
                                         var consent = (value == "Yes");
                                         if(consent){
                                                 $("#GettingtoKnowYou").show();
                                                 $("#BehaviouralSelf-Assessment").show();
                                                 $("#HealthRelatedQoL").show();
-					$("#HealthStatus").show(); 
-					     $(':input[type="submit"]').prop('disabled', false);
-
+                                                $("#HealthStatus").show(); 
+                                                $(':input[type="submit"]').prop('disabled', false);
                                         }
                                         else{
                                                 $("#GettingtoKnowYou").hide();
                                                 $("#BehaviouralSelf-Assessment").hide();
                                                 $("#HealthRelatedQoL").hide();
-					$("#HealthStatus").hide();
-						     $(':input[type="submit"]').prop('disabled', true);
-
+                                                $("#HealthStatus").hide();
+                                                $(':input[type="submit"]').prop('disabled', true);
                                         }
                                 }
+                    
 					$("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
 					$("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
 			</script>
@@ -111,17 +99,10 @@ As a user of this program, you may or may not see direct benefits from this stud
                                                         $("#HealthStatus").hide();
                                                 }
                                         }
-										_.defer(checkAge);
-					checkAge();
-			$(document).ready(function() {
-     $(':input[type="submit"]').prop('disabled', true);
- });		
-			
-
+				_.defer(checkAge);
+                checkAge();
+                checkConsent(consent);
 			</script>
-
-
-
                 ]]>
         </Static>
     </ReportSection>
@@ -216,7 +197,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     		{$item}
             		]]>
         </ReportItem>
-        <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px">
+        <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px" optional="true">
             <![CDATA[
 				<span id='specifygender'>
                                 Please Specify:
@@ -264,7 +245,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="ethnicity_indigenous_specify" type="Text" blobItem="ETHNICITYINDIGENOUSSPECIFY" width="400px">
+        <ReportItem id="ethnicity_indigenous_specify" type="Text" blobItem="ETHNICITYINDIGENOUSSPECIFY" width="400px" optional="true">
             <![CDATA[
 		<span id="indigenous_other">
 			Specify: {$item}
@@ -341,7 +322,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="employment_specify" type="Text" blobItem="EMPLOYSPECIFY" width="400px">
+        <ReportItem id="employment_specify" type="Text" blobItem="EMPLOYSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="employspecify">
                         Specify: {$item}
@@ -409,28 +390,28 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="program_location__specify" type="Text" blobItem="PROGRAMLOCATIONSPECIFY" width="400px">
+        <ReportItem id="program_location__specify" type="Text" blobItem="PROGRAMLOCATIONSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="programlocationspecify">
 			<p>If you remember the location, please specify: {$item}</p>
                 </span>
                 ]]>
         </ReportItem>
-        <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="device_avoid">
+        <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="device_avoid" optional="true">
             <![CDATA[
                 <span id="programspecify">
 			<p>Please specify platform: {$item}</p>
                 </span>
                 ]]>
         </ReportItem>
-        <ReportItem id="program_platformother_specify" type="Text" blobItem="PROGRAMPLATFORMOTHERSPECIFY" width="400px">
+        <ReportItem id="program_platformother_specify" type="Text" blobItem="PROGRAMPLATFORMOTHERSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="programplatformotherspecify">
                         Specify: {$item}
                 </span>
                 ]]>
         </ReportItem>
-        <ReportItem id="program_other_specify" type="Text" blobItem="PROGRAMOTHERSPECIFY" width="400px">
+        <ReportItem id="program_other_specify" type="Text" blobItem="PROGRAMOTHERSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="programotherspecify">
 			<p>Please specify: {$item}</p>
@@ -522,7 +503,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="active_text_specify" type="Text" blobItem="ACTIVESPECIFY" width="400px">
+        <ReportItem id="active_text_specify" type="Text" blobItem="ACTIVESPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="activespecify">
                         Specify: {$item}
@@ -578,7 +559,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="vax_text_specify" blobItem="ACTIVESPECIFY" type="Textarea">
+        <ReportItem id="vax_text_specify" blobItem="ACTIVESPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="vaxspecify">
                         Please let us know the reason for this if you are comfortable doing so: {$item}
@@ -616,7 +597,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate3specify_avoid" blobItem="vaccinate3specify_avoid"  type="RadioReportItem" options="Shingrix|Zostavax II|Unsure">
+        <ReportItem id="vaccinate3specify_avoid" blobItem="vaccinate3specify_avoid"  type="RadioReportItem" options="Shingrix|Zostavax II|Unsure" optional="true">
             <![CDATA[
                 <span id="vaccinate3specify">
                     Please specify which type: {$item}
@@ -658,7 +639,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate7_avoid" blobItem="vaccinate7_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
+        <ReportItem id="vaccinate7_avoid" blobItem="vaccinate7_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
                         <span id="vaxcovidbooster">
                                 <h3>Have you had your COVID-19 booster vaccine?</h3>
@@ -692,7 +673,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="vax_end_text_specify" blobItem="VAXENDTEXTSPECIFY" type="Textarea">
+        <ReportItem id="vax_end_text_specify" blobItem="VAXENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="vax_end_specify">
                         Specify: {$item}
@@ -771,7 +752,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea">
+        <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="meds_end_specify">
                         Specify: {$item}
@@ -870,7 +851,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea">
+        <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="interact_end_specify">
                         Specify: {$item}
@@ -976,7 +957,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 			</span>
             ]]>
         </ReportItem>
-        <ReportItem id="diet_end_text_specify" blobItem="DIETENDTEXTSPECIFY" type="Textarea">
+        <ReportItem id="diet_end_text_specify" blobItem="DIETENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="diet_end_specify">
                         Specify: {$item}
@@ -1286,7 +1267,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="symptoms_avoid_specify" type="Text" blobItem="SYMPTOMSSPECIFY" width="400px">
+        <ReportItem id="symptoms_avoid_specify" type="Text" blobItem="SYMPTOMSSPECIFY" width="400px" optional="true">
             <![CDATA[
 		<span id="symptoms_specify">
 			Specify: {$item}
@@ -1420,11 +1401,6 @@ As a user of this program, you may or may not see direct benefits from this stud
                 <div style='display:none;'>{$item}</div>
             ]]>
         </ReportItem>
-        <If if="{==({getText(RP_SAB_COLLAB_2022_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
-            <![CDATA[
-                <div class="success">Your review(s) have been submitted.</div>
-            ]]>
-        </If>
         <Static>
             <![CDATA[
                 <div>
