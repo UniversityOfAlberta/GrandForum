@@ -1413,5 +1413,39 @@ As a user of this program, you may or may not see direct benefits from this stud
                     {$item}</ul>
             ]]>
         </ReportItem>
+</ReportSection>
+<ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
+        <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
+            <![CDATA[
+                <div style='display:none;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_SAB_COLLAB_2022_REVIEW,SUBMIT,SUBMITTED,0,{$user_id},0)},Submitted)}">
+            <![CDATA[
+                <div class="success">Your review(s) have been submitted.</div>
+            ]]>
+        </If>
+        <Static>
+            <![CDATA[
+                <div>
+                    Submitting your review will mark your reviews as 'submitted', you will not be able to continue to edit your reviews after submitting.
+                </div><br />
+                <a class='button' id='submit_review'>Submit Intake Assessment</a>
+                <script type='text/javascript'>
+                    $('#reportFooter').prev().hide();
+                    $('#reportFooter').hide();
+                    $('#submit_review').click(function(){
+                    $('input[name=Submit_submitted]').val('Submitted');
+				$('#Submit').click();
+				
+				});
+				$('#Submit').click(function() {
+				window.location.href = wgServer + wgScriptPath+"/index.php/Special:AVOIDDashboard";
+    return false;
+});
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
+
 </Report>

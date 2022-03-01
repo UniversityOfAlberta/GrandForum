@@ -296,7 +296,7 @@ PharmacyMapView = Backbone.View.extend({
             var title = $("#pageTitle").clone();
             $(title).attr('id', 'copiedTitle');
             this.$el.prepend(title);
-                   var r = $('<a style="float:right; font-size:0.7em;" href="/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a>');
+                   var r = $('<a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
             $('#copiedTitle').append(r);
  
 	this.drawButtons();        
