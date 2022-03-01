@@ -188,3 +188,9 @@ input[type=button] {
 #table{
   padding-bottom:60px;
 }
+
+.note_small{
+    font-size: 0.6em !important;
+    width:300px;
+
+}

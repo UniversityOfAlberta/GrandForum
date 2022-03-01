@@ -2,9 +2,9 @@ PharmacyMapView = Backbone.View.extend({
     template: _.template($('#pharmacy_map_template').html()),
     map: null,
     geocoder: null,
-    lat: 44.23846,
-    long: -76.4409887,
-    zoom: 6,
+    lat: 44.2404955,
+    long: -76.5843909,
+    zoom: 10,
     refresh: true,
     buttons: [],
     cat_json: null,
@@ -296,9 +296,16 @@ PharmacyMapView = Backbone.View.extend({
             var title = $("#pageTitle").clone();
             $(title).attr('id', 'copiedTitle');
             this.$el.prepend(title);
-                   var r = $('<a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
-            $('#copiedTitle').append(r);
+                   var r = $('<p class="note_small">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p><a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
+            //$('#copiedTitle').append(r);
  
+            $('#listTable_filter').css("font-weight","bold");
+            $('#listTable_filter').css("font-size","1.6em");
+            $('#listTable_filter').css("position","absolute");
+	    $('#listTable_filter').css("right","40em");
+$(".dataTables_filter input").css("width","230px");
+	    $('#listTable_filter').css("margin-left","5px");
+	    $(".dataTables_filter input").css("margin-left","15px");
 	this.drawButtons();        
         return this.$el;
     }
