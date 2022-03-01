@@ -60,6 +60,34 @@ class AVOIDDashboard extends SpecialPage {
 	    
 	    $wgOut->setPageTitle("AVOID Dashboard");
 	    $wgOut->addHTML("<div class='modules'>");
+	    
+	    // Frailty Status
+	    $api = new UserFrailtyIndexAPI();
+	    $score = $api->getFrailtyScore($me->getId());
+	    $frailty = "";
+	    if($score > 0 && $score <= 3){
+	        $frailty = "Non-Frail";
+	    }
+	    else if($score > 3 && $score <= 8){
+	        $frailty = "Vulnerable";
+	    }
+	    else if($score > 8 && $score <= 16){
+	        $frailty = "Severely Frail";
+	    }
+	    $wgOut->addHTML("<div class='modules module-2cols'>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Frailty Status</div>
+	                        <div style='font-size: 4em; line-height: 1em; margin-top: 0.5em; text-align: center; width: 100%;'>{$frailty}</div>
+	                     </div>");
+	    
+	    // Upcoming Events
+	    $events = Wiki::newFromTitle("UpcomingEvents");
+	    $wgOut->addHTML("<div class='modules module-2cols'>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
+	                        {$events->getText()}
+	                     </div>");
+	                     
+	    $wgOut->addHTML("</div>
+	                     <div class='modules'>");
 	    // Education
 	    $wgOut->addHTML("<div class='modules module-2cols'>");
 	    $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
@@ -112,13 +140,6 @@ class AVOIDDashboard extends SpecialPage {
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>AVOID Education Resources</div>
 	                     </div>");
-	                     
-	    // Upcoming Events
-	    $events = Wiki::newFromTitle("UpcomingEvents");
-	    $wgOut->addHTML("<div class='modules module-2cols'>
-	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
-	                        {$events->getText()}
-	                     </div>");
 	    
 	    $wgOut->addHTML("</div><script type='text/javascript'>
 	        $('#bodyContent h1').hide();
@@ -157,7 +178,6 @@ class AVOIDDashboard extends SpecialPage {
         }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            $prog = array();
             $report = new DummyReport("IntakeSurvey", $me);
             $complete = true;
             foreach($report->sections as $section){
