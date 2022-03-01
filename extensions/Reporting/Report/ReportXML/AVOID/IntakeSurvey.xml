@@ -60,13 +60,20 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
 
                                 function checkConsent(value){
-                                    console.log(value);
+                                        
                                         var consent = (value == "Yes");
                                         if(consent){
                                                 $("#GettingtoKnowYou").show();
                                                 $("#BehaviouralSelf-Assessment").show();
-                                                $("#HealthRelatedQoL").show();
-                                                $("#HealthStatus").show(); 
+                                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
+                                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
+                                                $("#HealthStatus").show().removeClass("disabled_lnk");
+                                                $("#Submit").show();
                                                 $(':input[type="submit"]').prop('disabled', false);
                                         }
                                         else{
@@ -74,75 +81,36 @@ As a user of this program, you may or may not see direct benefits from this stud
                                                 $("#BehaviouralSelf-Assessment").hide();
                                                 $("#HealthRelatedQoL").hide();
                                                 $("#HealthStatus").hide();
+                                                $("#Submit").hide();
                                                 $(':input[type="submit"]').prop('disabled', true);
                                         }
                                 }
                     
-					$("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
-					$("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
+					$("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
+					$("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
 			</script>
 
 			<script type='text/javascript'>
 				var age_check = '{getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}';
-                                                function checkAge(){
-                                                if(age_check == "less than 60"){
-                                                age_check = 40;
-                                                }
-                                                if(age_check >=65){
-                                                        $("#GettingtoKnowYou").show();
-                                                        $("#BehaviouralSelf-Assessment").show();
-                                                        $("#HealthRelatedQoL").show();
-                                                        $("#HealthStatus").show();
-                                                }
-                                                else{
-                                                        $("#HealthRelatedQoL").hide();
-                                                        $("#HealthStatus").hide();
-                                                }
-                                        }
-				_.defer(checkAge);
-                checkAge();
+                function checkAge(){
+                    if(age_check == "less than 60" || age_check < 65){
+                        $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
+                        $("#HealthRelatedQoL2").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL3").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL4").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL5").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL6").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL7").addClass("disabled_lnk");
+                        $("#HealthStatus").hide().addClass("disabled_lnk");
+                    }
+                }
                 checkConsent(consent);
+                checkAge();
 			</script>
                 ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false" >
-        <Static>
-            <![CDATA[
-                                <script type='text/javascript'>
-                                        var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}' == "Yes";
-                                        if(!consent){
-                                                $("#GettingtoKnowYou").hide();
-                                                $("#BehaviouralSelf-Assessment").hide();
-                                                $("#HealthRelatedQoL").hide();
-                                                $("#HealthStatus").hide();
-                                        }
-                                        else{
-                                                $("#GettingtoKnowYou").show();
-                                                $("#BehaviouralSelf-Assessment").show();
-                                                $("#HealthRelatedQoL").show();
-                                                $("#HealthStatus").show();
-                                        }
-                                        function checkConsent(){
-                                                var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}' == "Yes";
-                                                if(consent){
-                                                        $("#GettingtoKnowYou").show();
-                                                        $("#BehaviouralSelf-Assessment").show();
-                                                        $("#HealthRelatedQoL").show();
-                                                        $("#HealthStatus").show();                                        
-                                                }
-                                                else{
-                                                        $("#GettingtoKnowYou").hide();
-                                                        $("#BehaviouralSelf-Assessment").hide();
-                                                        $("#HealthRelatedQoL").hide();
-                                                        $("#HealthStatus").hide();
-                                                }
-                                        }
-                                        _.defer(checkConsent);
-                                        $("select[name='GettingtoKnowYou_socio_info1']").change(checkConsent);
-                                </script>
-                        ]]>
-        </Static>
+    <ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false">
         <Static>
             <![CDATA[
 				<p>
@@ -159,29 +127,41 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-                                <script type='text/javascript'>
+                <script type='text/javascript'>
 						function checkAge(){
-						if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
-						var age = 40;
-						}
-						else{
-                                                        age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
-						}
-						if(age >=65){
-                                                        $("#GettingtoKnowYou").show();
-                                                        $("#BehaviouralSelf-Assessment").show();
-                                                        $("#HealthRelatedQoL").show();
-                                                        $("#HealthStatus").show();                                        
-                                                }
-                                                else{
-                                                        $("#HealthRelatedQoL").hide();
-                                                        $("#HealthStatus").hide();
-                                                }
-                                        }
-                                        _.defer(checkAge);
-                                        $("select[name='GettingtoKnowYou_socio_info1']").change(checkAge);
-                                </script>
-                        ]]>
+                            if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
+                                var age = 40;
+						    }
+						    else{
+                                age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
+						    }
+						    if(age >=65){
+                                $("#GettingtoKnowYou").show();
+                                $("#BehaviouralSelf-Assessment").show();
+                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
+                                $("#HealthStatus").show().removeClass("disabled_lnk");                                        
+                            }
+                            else{
+                                $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
+                                $("#HealthRelatedQoL2").addClass("disabled_lnk");
+                                $("#HealthRelatedQoL3").addClass("disabled_lnk");
+                                $("#HealthRelatedQoL4").addClass("disabled_lnk");
+                                $("#HealthRelatedQoL5").addClass("disabled_lnk");
+                                $("#HealthRelatedQoL6").addClass("disabled_lnk");
+                                $("#HealthRelatedQoL7").addClass("disabled_lnk");
+                                $("#HealthStatus").hide().addClass("disabled_lnk");
+                            }
+                        }
+                        checkAge();
+                        $("select[name='GettingtoKnowYou_socio_info1']").change(checkAge);
+                    </script>
+                ]]>
 			</Static>
 				<Static>
             <![CDATA[
@@ -1403,17 +1383,23 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
+        <Static>
+            {set(age, {getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}}
+        </Static>
         <If if="{and({==({getProgress(eula)},100)},
                      {==({getProgress(socio_info)},100)},
                      {==({getProgress(behaviouralassess)},100)},
-                     {==({getProgress(healthquestions)},100)},
-                     {==({getProgress(healthquestions2)},100)},
-                     {==({getProgress(healthquestions3)},100)},
-                     {==({getProgress(healthquestions4)},100)},
-                     {==({getProgress(healthquestions5)},100)},
-                     {==({getProgress(healthquestions6)},100)},
-                     {==({getProgress(healthquestions7)},100)},
-                     {==({getProgress(clinicalfrailty)},100)}
+                     {or({&lt;({get(age)},65)}, {and(
+                             {==({getProgress(healthquestions)},100)},
+                             {==({getProgress(healthquestions2)},100)},
+                             {==({getProgress(healthquestions3)},100)},
+                             {==({getProgress(healthquestions4)},100)},
+                             {==({getProgress(healthquestions5)},100)},
+                             {==({getProgress(healthquestions6)},100)},
+                             {==({getProgress(healthquestions7)},100)},
+                             {==({getProgress(clinicalfrailty)},100)}
+                         )}
+                     )}
                 )}">
             <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
                 <![CDATA[
@@ -1432,11 +1418,10 @@ As a user of this program, you may or may not see direct benefits from this stud
                         $('#submit_review').click(function(){
                             $('#submitDiv input[type=text]').val('Submitted');
 				            $('#Submit').click();
+				            _.defer(function(){
+				                window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
+				            });
 				        });
-				        $('#Submit').click(function() {
-				            window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
-                            return false;
-                        });
                     </script>
                 ]]>
             </Static>

@@ -14,13 +14,13 @@ class NextPrevReportSection extends EULAReportSection {
             $('input[name=submit][value=Next]').before(\"<input type='submit' value='Previous' name='submit' style='width:100px;' $disabled />&nbsp;&nbsp;\");
             $('input[name=submit][value=Previous]').click(function(){
                 _.defer(function(){
-                    $('a.reportTab.selectedReportTab').prev().click();
+                    $('a.reportTab.selectedReportTab').prevAll('a:not(.disabled_lnk)').first().click();
                 });
             });
-            if($('a.reportTab.selectedReportTab').prev('a').length == 0){
+            if($('a.reportTab.selectedReportTab').prevAll('a:not(.disabled_lnk)').length == 0){
                 $('input[name=submit][value=Previous]').prop('disabled', true);
             }
-            if($('a.reportTab.selectedReportTab').next('a').length == 0){
+            if($('a.reportTab.selectedReportTab').nextAll('a:not(.disabled_lnk)').length == 0){
                 $('input[name=submit][value=Next]').val('Submit');
                 $('input[name=submit][value=Submit]').mousedown(function(){
                     if(typeof submitInterval != 'undefined'){

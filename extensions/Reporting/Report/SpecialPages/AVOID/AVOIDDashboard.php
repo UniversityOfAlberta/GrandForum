@@ -7,7 +7,7 @@ $wgSpecialPageGroups['AVOIDDashboard'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'AVOIDDashboard::createTab';
 $wgHooks['SubLevelTabs'][] = 'AVOIDDashboard::createSubTabs';
-array_unshift($wgHooks['ArticleViewHeader'], 'AVOIDDashboard::processPage');
+$wgHooks['BeforePageDisplay'][] = 'AVOIDDashboard::processPage';
 
 function runDashboard($par) {
     AVOIDDashboard::execute($par);
@@ -154,13 +154,25 @@ class AVOIDDashboard extends SpecialPage {
             });
 	    </script>");
 	}
+	
+	static function hasSubmittedSurvey(){
+	    $me = Person::newFromWgUser();
+	    $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $submitted = ($blob_data == "Submitted");
+        return $submitted;
+	}
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-            $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Dashboard", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+            if(AVOIDDashboard::hasSubmittedSurvey()){
+                $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Dashboard", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+            }
         }
         return true;
     }
@@ -169,32 +181,33 @@ class AVOIDDashboard extends SpecialPage {
         global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
             unset($tabs['Profile']['subtabs'][0]);
         }
         return true;
     }
     
-    static function processPage($article, $outputDone, $pcache){
+    static function processPage($article, $skin){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
+        $submitted = AVOIDDashboard::hasSubmittedSurvey();
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if($me->isRole(ADMIN)){
-            //return true;
+            return true;
         }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
-	        $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
-	        $blob->load($blob_address);
-	        $blob_data = $blob->getData();
-	        $submitted = ($blob_data == "Submitted");
             if($submitted){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
             }
             else{
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
             }
+        }
+        if($nsText == "Special" && $wgTitle->getText() == "AVOIDDashboard" && !$submitted){
+            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
+        }
+        if($nsText == "Special" && $wgTitle->getText() == "Report" && @$_GET['report'] == "IntakeSurvey" && $submitted){
+            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
         }
         return true;
     }
