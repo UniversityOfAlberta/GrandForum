@@ -1389,7 +1389,7 @@ As a user of this program, you may or may not see direct benefits from this stud
         <If if="{and({==({getProgress(eula)},100)},
                      {==({getProgress(socio_info)},100)},
                      {==({getProgress(behaviouralassess)},100)},
-                     {or({&lt;({get(age)},65)}, {and(
+                     {or({&lt;({get(age)},65)}, {==({get(age)},less than 60)}, {and(
                              {==({getProgress(healthquestions)},100)},
                              {==({getProgress(healthquestions2)},100)},
                              {==({getProgress(healthquestions3)},100)},
