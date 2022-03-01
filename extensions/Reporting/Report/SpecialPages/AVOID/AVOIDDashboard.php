@@ -180,18 +180,16 @@ class AVOIDDashboard extends SpecialPage {
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if($me->isRole(ADMIN)){
-            return true;
+            //return true;
         }
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            $report = new DummyReport("IntakeSurvey", $me);
-            $complete = true;
-            foreach($report->sections as $section){
-                if($section instanceof EditableReportSection){
-                    $complete = $complete && ($section->getPercentComplete() == 100);
-                }
-            }
-            if($complete){
+            $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
+	        $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
+	        $blob->load($blob_address);
+	        $blob_data = $blob->getData();
+	        $submitted = ($blob_data == "Submitted");
+            if($submitted){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
             }
             else{
