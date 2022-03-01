@@ -209,7 +209,7 @@ class Register extends SpecialPage{
             }
             else if($config->getValue('networkName') == "AVOID"){
                 $_POST['wpUserType'] = CI;
-                $_POST['candidate'] = "1";
+                $_POST['candidate'] = "0";
             }
             else{
                 $_POST['wpUserType'] = HQP;
