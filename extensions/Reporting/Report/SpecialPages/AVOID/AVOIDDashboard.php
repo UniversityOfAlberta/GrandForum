@@ -76,7 +76,7 @@ class AVOIDDashboard extends SpecialPage {
 	    }
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Frailty Status</div>
-	                        <div style='font-size: 4em; line-height: 1em; margin-top: 0.5em; text-align: center; width: 100%;'>{$frailty}</div>
+	                        <div style='font-size: 4em; line-height: 1em; margin-top: 0.5em; margin-bottom: 0.75em; text-align: center; width: 100%;'>{$frailty}</div>
 	                     </div>");
 	    
 	    // Upcoming Events
