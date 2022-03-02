@@ -11,6 +11,7 @@ $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
 
 require_once("AVOIDDashboard.php");
 require_once("EducationModules/EducationModules.php");
+require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 
 class Report extends AbstractReport{

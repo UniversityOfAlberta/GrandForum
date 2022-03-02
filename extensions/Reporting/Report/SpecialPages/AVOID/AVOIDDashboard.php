@@ -134,7 +134,7 @@ class AVOIDDashboard extends SpecialPage {
 	    
 	    // Resources
 	    $wgOut->addHTML("<div class='modules module-2cols'>
-	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources</div>
+	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></div>
 	                        Coming Soon...
 	                     </div>");
 	                     
