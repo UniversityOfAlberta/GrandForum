@@ -188,6 +188,7 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                         _.defer(initResizeEvent);
                     }
+                    $("#bodyContent").scrollTop(0);
                     _.defer(function(){ findAutosaves(updateProgress); });
                     setUpFormSubmit();
                     lastSaveString = $("form[name=report]").serialize();
