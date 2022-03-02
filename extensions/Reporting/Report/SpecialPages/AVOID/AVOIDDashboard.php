@@ -169,7 +169,7 @@ class AVOIDDashboard extends SpecialPage {
         if($me->isLoggedIn()){
             if(AVOIDDashboard::hasSubmittedSurvey()){
                 $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
-                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("Dashboard", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
+                $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
             }
         }
         return true;
