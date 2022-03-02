@@ -62,8 +62,10 @@ class EducationResources extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $selected = @($wgTitle->getText() == "EducationResources") ? "selected" : false;
-        $tabs["EducationResources"] = TabUtils::createTab("AVOID Education Resources", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
+        if(AVOIDDashboard::hasSubmittedSurvey()){
+            $selected = @($wgTitle->getText() == "EducationResources") ? "selected" : false;
+            $tabs["EducationResources"] = TabUtils::createTab("AVOID Education Resources", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
+        }
         return true;
     }
     

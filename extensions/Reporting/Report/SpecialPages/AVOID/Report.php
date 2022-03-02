@@ -34,8 +34,9 @@ class Report extends AbstractReport{
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
             if(!AVOIDDashboard::hasSubmittedSurvey()){
+                $section = AVOIDDashboard::getNextIncompleteSection();
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
-                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey", $selected);
+                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey&section={$section}", $selected);
             }
         }
         return true;

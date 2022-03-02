@@ -3,6 +3,55 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
+
+                function checkConsent(value){
+                        var consent = (value == "Yes");
+                        if(consent){
+                                $("#GettingtoKnowYou").show();
+                                $("#BehaviouralSelf-Assessment").show();
+                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
+                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
+                                $("#HealthStatus").show().removeClass("disabled_lnk");
+                                $("#Submit").show();
+                                $(':input[type="submit"]').prop('disabled', false);
+                        }
+                        else{
+                                $("#GettingtoKnowYou").hide();
+                                $("#BehaviouralSelf-Assessment").hide();
+                                $("#HealthRelatedQoL").hide();
+                                $("#HealthStatus").hide();
+                                $("#Submit").hide();
+                                $(':input[type="submit"]').prop('disabled', true);
+                        }
+                }
+        
+                var age_check = '{getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}';
+                function checkAge(){
+                    if(age_check == "less than 60" || age_check < 65){
+                        $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
+                        $("#HealthRelatedQoL2").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL3").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL4").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL5").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL6").addClass("disabled_lnk");
+                        $("#HealthRelatedQoL7").addClass("disabled_lnk");
+                        $("#HealthStatus").hide().addClass("disabled_lnk");
+                    }
+                }
+                checkConsent(consent);
+                checkAge();
+            </script>
+        ]]>
+    </Script>
     <ReportSection id="eula" name="Consent" title="Consent" tooltip="Consent" blobSection="AVOID_CHECK_EULA" type="Eula">
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
@@ -50,62 +99,15 @@ As a user of this program, you may or may not see direct benefits from this stud
 	<Static>
             <![CDATA[
                 <script type='text/javascript'>
-                                $('#mw-content-text').css("height", "");
+                    $('#mw-content-text').css("height", "");
                 </script>
                 ]]>
         </Static>
         <Static>
             <![CDATA[
-                        <script type='text/javascript'>
-                                var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
-
-                                function checkConsent(value){
-                                        
-                                        var consent = (value == "Yes");
-                                        if(consent){
-                                                $("#GettingtoKnowYou").show();
-                                                $("#BehaviouralSelf-Assessment").show();
-                                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
-                                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
-                                                $("#HealthStatus").show().removeClass("disabled_lnk");
-                                                $("#Submit").show();
-                                                $(':input[type="submit"]').prop('disabled', false);
-                                        }
-                                        else{
-                                                $("#GettingtoKnowYou").hide();
-                                                $("#BehaviouralSelf-Assessment").hide();
-                                                $("#HealthRelatedQoL").hide();
-                                                $("#HealthStatus").hide();
-                                                $("#Submit").hide();
-                                                $(':input[type="submit"]').prop('disabled', true);
-                                        }
-                                }
-                    
+            <script type='text/javascript'>
 					$("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
 					$("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
-			</script>
-
-			<script type='text/javascript'>
-				var age_check = '{getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}';
-                function checkAge(){
-                    if(age_check == "less than 60" || age_check < 65){
-                        $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
-                        $("#HealthRelatedQoL2").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL3").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL4").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL5").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL6").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL7").addClass("disabled_lnk");
-                        $("#HealthStatus").hide().addClass("disabled_lnk");
-                    }
-                }
-                checkConsent(consent);
-                checkAge();
 			</script>
                 ]]>
         </Static>

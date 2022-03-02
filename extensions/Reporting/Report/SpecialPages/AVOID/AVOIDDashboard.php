@@ -173,16 +173,40 @@ class AVOIDDashboard extends SpecialPage {
 	
 	static function getNextIncompleteSection(){
 	    $me = Person::newFromWgUser();
+	    
+	    $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_CHECK_EULA", "EULA", 0);
+        $blob->load($blob_address);
+        $consent = $blob->getData();
+        
+        $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "avoid_age", 0);
+        $blob->load($blob_address);
+        $age = $blob->getData();
+	    if($consent != "Yes"){
+	        // Consent not Yes
+	        return"";
+	    }
 	    $report = new DummyReport("IntakeSurvey", $me);
-	    $lastPercent = 100;
-	    foreach($reprot->sections as $section){
+	    foreach($report->sections as $section){
             if($section instanceof EditableReportSection){
+                if(($age == "less than 60" || $age < 65) && 
+                   ($section->name == "Health Related QoL" || 
+                    $section->name == "Health Related QoL2" ||
+                    $section->name == "Health Related QoL3" ||
+                    $section->name == "Health Related QoL4" ||
+                    $section->name == "Health Related QoL5" ||
+                    $section->name == "Health Related QoL6" ||
+                    $section->name == "Health Related QoL7")){
+                    continue;
+                }
                 $percent = $section->getPercentComplete();
-                if($percent < 100 && $lastPercent == 100){
-                    $lastPercent = $percent;
+                if($percent < 100){
+                    return $section->name;
                 }
             }
         }
+        return "";
 	}
 	
 	static function hasSubmittedSurvey(){
@@ -219,22 +243,23 @@ class AVOIDDashboard extends SpecialPage {
     static function processPage($article, $skin){
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
-        $submitted = AVOIDDashboard::hasSubmittedSurvey();
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if($me->isRole(ADMIN)){
             return true;
         }
+        $submitted = AVOIDDashboard::hasSubmittedSurvey();
+        $section = AVOIDDashboard::getNextIncompleteSection();
         if(isset($wgRoleValues[$nsText]) ||
            ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
             if($submitted){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
             }
             else{
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
             }
         }
         if($nsText == "Special" && $wgTitle->getText() == "AVOIDDashboard" && !$submitted){
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey");
+            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
         }
         if($nsText == "Special" && $wgTitle->getText() == "Report" && @$_GET['report'] == "IntakeSurvey" && $submitted){
             redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
