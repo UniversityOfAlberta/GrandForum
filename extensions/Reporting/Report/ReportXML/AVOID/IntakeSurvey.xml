@@ -1417,8 +1417,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                         $('#reportFooter').hide();
                         $('#submit_review').click(function(){
                             $('#submitDiv input[type=text]').val('Submitted');
-				            $('#Submit').click();
-				            _.defer(function(){
+				            saveAll(function(){
 				                window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
 				            });
 				        });
