@@ -146,7 +146,7 @@ class AVOIDDashboard extends SpecialPage {
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></div>
 	                        <div class='program-body'><ul>");
-	    $cols = 6;
+	    $cols = 4;
 	    foreach($resources as $key => $resource){
 	        if($key >= $cols){ break; }
 	        $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
