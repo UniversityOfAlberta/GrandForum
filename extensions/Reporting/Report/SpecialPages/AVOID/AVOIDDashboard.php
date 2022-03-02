@@ -59,7 +59,7 @@ class AVOIDDashboard extends SpecialPage {
 	            $resources[] = $resource;
 	        }
 	    }
-	    $this->sort($resources, $tags);
+	    $resources = $this->sort($resources, $tags);
 	    
 	    $modules = EducationModules::modulesJSON();
 	    $modules = $this->sort($modules, $tags);

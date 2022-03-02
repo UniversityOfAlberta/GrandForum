@@ -161,7 +161,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"clinicalfrailty",
             "blobItem"=>"symptoms_avoid21",
             "answer"=> "Yes",
-            "tags"=>array("movement and mindfulness programs")
+            "tags"=>array("movement and mindfulness programs", "balance")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -169,6 +169,27 @@ class UserTagsAPI extends API{
             "blobItem"=>"symptoms_avoid19",
             "answer"=> "Yes",
             "tags"=>array("movement and mindfulness programs")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "1 fall",
+            "tags"=>array("balance")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "2 or more falls",
+            "tags"=>array("balance")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "2 or more falls",
+            "tags"=>array("balance")
         )
     );
 
