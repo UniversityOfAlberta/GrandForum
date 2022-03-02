@@ -12,7 +12,7 @@
                         var consent = (value == "Yes");
                         if(consent){
                                 $("#GettingtoKnowYou").show();
-                                $("#BehaviouralSelf-Assessment").show();
+                                $("#Self-Assessment").show();
                                 $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
                                 $("#HealthRelatedQoL2").removeClass("disabled_lnk");
                                 $("#HealthRelatedQoL3").removeClass("disabled_lnk");
@@ -26,7 +26,7 @@
                         }
                         else{
                                 $("#GettingtoKnowYou").hide();
-                                $("#BehaviouralSelf-Assessment").hide();
+                                $("#Self-Assessment").hide();
                                 $("#HealthRelatedQoL").hide();
                                 $("#HealthStatus").hide();
                                 $("#Submit").hide();
@@ -139,7 +139,7 @@ As a user of this program, you may or may not see direct benefits from this stud
 						    }
 						    if(age >=65){
                                 $("#GettingtoKnowYou").show();
-                                $("#BehaviouralSelf-Assessment").show();
+                                $("#Self-Assessment").show();
                                 $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
                                 $("#HealthRelatedQoL2").removeClass("disabled_lnk");
                                 $("#HealthRelatedQoL3").removeClass("disabled_lnk");
@@ -444,7 +444,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                 ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
+    <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Self-Assessment" title="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
 	    <Static>
             <![CDATA[
                 <script type='text/javascript'>
@@ -497,23 +497,23 @@ As a user of this program, you may or may not see direct benefits from this stud
 			<script type='text/javascript'>
 				$('span#active_specify_end').hide();
 					function specifyActiveEnd(){
-						if($("input:radio[name='BehaviouralSelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+						if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
                                         	else{$('span#active_specify_end').hide();}
                        			}
                      		_.defer(specifyActiveEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_behave1_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_behave2_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_behave0_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_behave4_avoid']").change(specifyActiveEnd);
-				$("input:radio[name='BehaviouralSelfAssessment_behave5_avoid']").change(specifyActiveEnd);
+                                $("input:radio[name='SelfAssessment_behave1_avoid']").change(specifyActiveEnd);
+                                $("input:radio[name='SelfAssessment_behave2_avoid']").change(specifyActiveEnd);
+                                $("input:radio[name='SelfAssessment_behave0_avoid']").change(specifyActiveEnd);
+                                $("input:radio[name='SelfAssessment_behave4_avoid']").change(specifyActiveEnd);
+				$("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
 
                                 $('span#activespecify').hide();
 					function specifyActiveOther(){
 					var flag = false;
-					$('input[name="BehaviouralSelfAssessment_active_specify_end[]"]:checked').each(function() {
+					$('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
 						if(this.value == "Other"){
 							flag = true;
 						}
@@ -524,7 +524,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#activespecify').hide();}
                                 }
                                 _.defer(specifyActiveOther);
-                                $("input:checkbox[name='BehaviouralSelfAssessment_active_specify_end[]']").change(specifyActiveOther);
+                                $("input:checkbox[name='SelfAssessment_active_specify_end[]']").change(specifyActiveOther);
 
 			</script>
 		]]>
@@ -553,7 +553,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                         <script type='text/javascript'>
                                 $('span#vaxspecify').hide();
                                 function specifyVax(){
-                                        if($("input:radio[name='BehaviouralSelfAssessment_vaccinate1_avoid']:checked").val() == "Yes"){
+                                        if($("input:radio[name='SelfAssessment_vaccinate1_avoid']:checked").val() == "Yes"){
                                                 $('span#vaxspecify').show();
                                                 $('span#vaccinateyes').hide();
                                         }
@@ -562,7 +562,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         $('span#vaccinateyes').show();}
                                 }
                                 _.defer(specifyVax);
-					$("input:radio[name='BehaviouralSelfAssessment_vaccinate1_avoid']").change(specifyVax);
+					$("input:radio[name='SelfAssessment_vaccinate1_avoid']").change(specifyVax);
 			</script>		
 		]]>
         </Static>
@@ -591,7 +591,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                         <script type='text/javascript'>
                                 $('span#vaccinate3specify').hide();
                                 function specifyShingles(){
-                                        if($("input:radio[name='BehaviouralSelfAssessment_vaccinate3_avoid']:checked").val() == "Yes"){
+                                        if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "Yes"){
                                                 $('span#vaccinate3specify').show();
                                         }
                                         else{ 
@@ -599,7 +599,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         }
                                 }
                                 _.defer(specifyShingles);
-					$("input:radio[name='BehaviouralSelfAssessment_vaccinate3_avoid']").change(specifyShingles);
+					$("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyShingles);
 			</script>		
 		]]>
         </Static>
@@ -635,7 +635,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                         <script type='text/javascript'>
                                 $('span#vaxcovidbooster').hide();
                                 function specifyBooster(){
-                                        if($("input:radio[name='BehaviouralSelfAssessment_vaccinate6_avoid']:checked").val() == "Yes"){
+                                        if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "Yes"){
                                                 $('span#vaxcovidbooster').show();
                                         }
                                         else{ 
@@ -643,7 +643,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         }
                                 }
                                 _.defer(specifyBooster);
-					$("input:radio[name='BehaviouralSelfAssessment_vaccinate6_avoid']").change(specifyBooster);
+					$("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyBooster);
 			</script>	
 		]]>
         </Static>
@@ -667,26 +667,26 @@ As a user of this program, you may or may not see direct benefits from this stud
 			<script type='text/javascript'>
 				$('span#vax_end').hide();
 					function specifyVaxEnd(){
-						if($("input:radio[name='BehaviouralSelfAssessment_vaccinate2_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                                else if($("input:radio[name='BehaviouralSelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+						if($("input:radio[name='SelfAssessment_vaccinate2_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                                else if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
 
                                         	else{$('span#vax_end').hide();}
                        			}
                      		_.defer(specifyVaxEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_vaccinate2_avoid']").change(specifyVaxEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_vaccinate3_avoid']").change(specifyVaxEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_vaccinate4_avoid']").change(specifyVaxEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_vaccinate5_avoid']").change(specifyVaxEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_vaccinate6_avoid']").change(specifyVaxEnd);
+                                $("input:radio[name='SelfAssessment_vaccinate2_avoid']").change(specifyVaxEnd);
+                                $("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyVaxEnd);
+                                $("input:radio[name='SelfAssessment_vaccinate4_avoid']").change(specifyVaxEnd);
+                                $("input:radio[name='SelfAssessment_vaccinate5_avoid']").change(specifyVaxEnd);
+                                $("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyVaxEnd);
 
 
                                 $('span#vax_end_specify').hide();
                                 function specifyVaxOther(){
 					var flag = false;
-					$('input[name="BehaviouralSelfAssessment_vax_end[]"]:checked').each(function() {
+					$('input[name="SelfAssessment_vax_end[]"]:checked').each(function() {
 						if(this.value == "Other"){
 							flag = true;
 						}
@@ -697,7 +697,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#vax_end_specify').hide();}
                                 }
                                 _.defer(specifyVaxOther);
-                                $("input:checkbox[name='BehaviouralSelfAssessment_vax_end[]']").change(specifyVaxOther);
+                                $("input:checkbox[name='SelfAssessment_vax_end[]']").change(specifyVaxOther);
 
 			</script>          
                 ]]>
@@ -746,17 +746,17 @@ As a user of this program, you may or may not see direct benefits from this stud
 			<script type='text/javascript'>
 				$('span#meds_end').hide();
 					function specifyMedsEnd(){
-						if($("input:radio[name='BehaviouralSelfAssessment_meds3_avoid']:checked").val() == "No"){$('span#meds_end').show();}
+						if($("input:radio[name='SelfAssessment_meds3_avoid']:checked").val() == "No"){$('span#meds_end').show();}
                                         	else{$('span#meds_end').hide();}
                        			}
                      		_.defer(specifyMedsEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_meds3_avoid']").change(specifyMedsEnd);
+                                $("input:radio[name='SelfAssessment_meds3_avoid']").change(specifyMedsEnd);
 
 
                                 $('span#meds_end_specify').hide();
                                 function specifyMedsOther(){
 					var flag = false;
-					$('input[name="BehaviouralSelfAssessment_meds_end[]"]:checked').each(function() {
+					$('input[name="SelfAssessment_meds_end[]"]:checked').each(function() {
 						if(this.value == "Other"){
 							flag = true;
 						}
@@ -767,7 +767,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#meds_end_specify').hide();}
                                 }
                                 _.defer(specifyMedsOther);
-                                $("input:checkbox[name='BehaviouralSelfAssessment_meds_end[]']").change(specifyMedsOther);
+                                $("input:checkbox[name='SelfAssessment_meds_end[]']").change(specifyMedsOther);
 			</script>          
                 ]]>
         </Static>
@@ -873,18 +873,18 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         }
                                 }
                      		_.defer(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact1_avoid']").change(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact2_avoid']").change(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact3_avoid']").change(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact4_avoid']").change(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact5_avoid']").change(specifyInteractEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_interact6_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact1_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact2_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact3_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact4_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact5_avoid']").change(specifyInteractEnd);
+                                $("input:radio[name='SelfAssessment_interact6_avoid']").change(specifyInteractEnd);
 
 
                                 $('span#interact_end_specify').hide();
                                 function specifyInteractOther(){
 					var flag = false;
-					$('input[name="BehaviouralSelfAssessment_interact_end[]"]:checked').each(function() {
+					$('input[name="SelfAssessment_interact_end[]"]:checked').each(function() {
 						if(this.value == "Other"){
 							flag = true;
 						}
@@ -895,7 +895,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#interact_end_specify').hide();}
                                 }
                                 _.defer(specifyInteractOther);
-                                $("input:checkbox[name='BehaviouralSelfAssessment_interact_end[]']").change(specifyInteractOther);
+                                $("input:checkbox[name='SelfAssessment_interact_end[]']").change(specifyInteractOther);
 
 			</script> 
 		]]>
@@ -951,23 +951,23 @@ As a user of this program, you may or may not see direct benefits from this stud
 			<script type='text/javascript'>
 				$('span#diet_end').hide();
 					function specifyDietEnd(){
-						if($("input:radio[name='BehaviouralSelfAssessment_diet1_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_diet2_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_diet3_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='BehaviouralSelfAssessment_diet4_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+						if($("input:radio[name='SelfAssessment_diet1_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_diet2_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_diet3_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                        	else if($("input:radio[name='SelfAssessment_diet4_avoid']:checked").val() == "No"){$('span#diet_end').show();}
                                         	else{$('span#diet_end').hide();}
                        			}
                      		_.defer(specifyDietEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_diet1_avoid']").change(specifyDietEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_diet2_avoid']").change(specifyDietEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_diet3_avoid']").change(specifyDietEnd);
-                                $("input:radio[name='BehaviouralSelfAssessment_diet4_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet1_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet2_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet3_avoid']").change(specifyDietEnd);
+                                $("input:radio[name='SelfAssessment_diet4_avoid']").change(specifyDietEnd);
 
 
                                 $('span#diet_end_specify').hide();
                                 function specifyDietOther(){
 					var flag = false;
-					$('input[name="BehaviouralSelfAssessment_diet_end[]"]:checked').each(function() {
+					$('input[name="SelfAssessment_diet_end[]"]:checked').each(function() {
 						if(this.value == "Other"){
 							flag = true;
 						}
@@ -978,7 +978,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#diet_end_specify').hide();}
                                 }
                                 _.defer(specifyDietOther);
-                                $("input:checkbox[name='BehaviouralSelfAssessment_diet_end[]']").change(specifyDietOther);
+                                $("input:checkbox[name='SelfAssessment_diet_end[]']").change(specifyDietOther);
 
 			</script>          
                 ]]>
