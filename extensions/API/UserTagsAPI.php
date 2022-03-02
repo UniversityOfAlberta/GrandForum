@@ -222,13 +222,13 @@ class UserTagsAPI extends API{
                 &&
                 !in_array("I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)", $answers_list)
                 ){
-                    return "Peer coaching participant";
+                    return "peer coaching participant";
                 }
                 else if(!in_array("I am interested in changing my lifestyle in this area and need some help getting started (contemplation)", $answers_list)
                         &&
                         !in_array("I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)", $answers_list)
                         ){
-                            return "Peer coaching volunteer";
+                            return "peer coaching volunteer";
                         }
                 }
                 else{

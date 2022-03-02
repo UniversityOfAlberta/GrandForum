@@ -51,6 +51,16 @@ class AVOIDDashboard extends SpecialPage {
 	    $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
 	    $programs = $this->sort($programs, $tags);
 	    
+	    $resources = array();
+	    $categories = json_decode(file_get_contents("{$dir}EducationResources/resources.json"));
+	    foreach($categories as $category){
+	        foreach($category->resources as $resource){
+	            $resource->category = $category->id;
+	            $resources[] = $resource;
+	        }
+	    }
+	    $this->sort($resources, $tags);
+	    
 	    $modules = EducationModules::modulesJSON();
 	    $modules = $this->sort($modules, $tags);
 	    usort($modules, function($a, $b){
@@ -132,11 +142,16 @@ class AVOIDDashboard extends SpecialPage {
         }
         $wgOut->addHTML("</div>");
 	    
-	    // Resources
+	    // Education Resources
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></div>
-	                        Coming Soon...
-	                     </div>");
+	                        <div class='program-body'><ul>");
+	    $cols = 6;
+	    foreach($resources as $key => $resource){
+	        if($key >= $cols){ break; }
+	        $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
+	    }
+	    $wgOut->addHTML("</ul></div></div>");
 	                     
 	    // Community Program Library
 	    $wgOut->addHTML("<div class='modules module-2cols'>
