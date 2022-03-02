@@ -75,17 +75,20 @@ class AVOIDDashboard extends SpecialPage {
 	    $score = $api->getFrailtyScore($me->getId());
 	    $frailty = "";
 	    if($score >= 0 && $score <= 3){
-	        $frailty = "Non-Frail";
+	        $frailty = "Based on the answers in the assessment, you are classified as <u>Non-Frail</u> and not at risk of becoming frail. This program can provide you with behavioural supports to help you maintain a low level of risk, and mitigate the onset of frailty.";
 	    }
 	    else if($score > 3 && $score <= 8){
-	        $frailty = "Vulnerable";
+	        $frailty = "Based on the answers in the assessment, you are classified as  <u>Vulnerable</u> to becoming frail. Always consult your physician for clinical support and this program...";
 	    }
 	    else if($score > 8 && $score <= 16){
-	        $frailty = "Severely Frail";
+	        $frailty = "Based on the answers in the assessment, you are at risk of being <u>Frail</u>. Always consult your physician for clinical support";
+	    }
+	    else if($score > 16){
+	        $frailty = "Based on your answers in the assessment, you are at risk of being <u>Severely Frail</u>.";
 	    }
 	    $wgOut->addHTML("<div class='modules module-2cols'>
 	                        <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</div>
-	                        <div style='font-size: 4em; line-height: 1em; margin-top: 0.5em; margin-bottom: 0.75em; text-align: center; width: 100%;'>{$frailty}</div>
+	                        <div style='font-size: 1.5em; line-height: 1em; margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>{$frailty}</div>
 	                     </div>");
 	    
 	    // Upcoming Events
@@ -166,6 +169,20 @@ class AVOIDDashboard extends SpecialPage {
                 document.location = $(this).attr('href');
             });
 	    </script>");
+	}
+	
+	static function getNextIncompleteSection(){
+	    $me = Person::newFromWgUser();
+	    $report = new DummyReport("IntakeSurvey", $me);
+	    $lastPercent = 100;
+	    foreach($reprot->sections as $section){
+            if($section instanceof EditableReportSection){
+                $percent = $section->getPercentComplete();
+                if($percent < 100 && $lastPercent == 100){
+                    $lastPercent = $percent;
+                }
+            }
+        }
 	}
 	
 	static function hasSubmittedSurvey(){
