@@ -16,7 +16,18 @@ class PharmacyMap extends BackbonePage {
         return $me->isLoggedIn();
     }
     
+    static function getCategoryJSON(){
+        $dir = dirname(__FILE__) . '/';
+        $json = json_decode(file_get_contents("{$dir}categories.json"));
+        return $json;
+    }
+    
     function getTemplates(){
+        global $wgOut;
+        $json = self::getCategoryJSON();
+        $wgOut->addHTML("<script type='text/javascript'>
+            var cat_json = ".json_encode($json).";
+        </script>");
         return array('Backbone/*',
 		     'pharmacy_map',
 		     'pharmacy_add',
