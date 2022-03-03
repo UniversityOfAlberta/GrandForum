@@ -1851,13 +1851,13 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 }
 
 .program-body a, .program-body a:hover, .program-body a:visited {
-    color: black;
+    color: black !important;
     text-decoration: underline;
     text-decoration-color: #e97936;
 }
 
 .program-body a:hover {
-    color: #e97936;
+    color: #e97936 !important;
 }
 
 .program-header {
