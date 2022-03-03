@@ -47,8 +47,20 @@
                         $("#HealthStatus").hide().addClass("disabled_lnk");
                     }
                 }
+                
+                function hideConsent(){
+                    if($(".selectedReportTab").text() != "Consent"){
+                        $("#Consent").hide().addClass("disabled_lnk");
+                    }
+                }
+                
                 checkConsent(consent);
                 checkAge();
+                hideConsent();
+                
+                setInterval(function(){
+                    hideConsent();
+                }, 100);
             </script>
         ]]>
     </Script>
