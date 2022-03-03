@@ -28,9 +28,9 @@ class UserFrailtyIndexAPI extends API{
             "ReportSection"=>"behaviouralassess",
             "blobItem"=>"behave2_avoid",
             "answer_scores"=> array(
-                "Most"=>0,
-                "Some"=>0.5,
-                "Rarely"=>1,
+                "Most days (5-7 days)"=>0,
+                "Some days(2-4 days)"=>0.5,
+                "Rarely or not at all"=>1,
             )
         ),
         array(
@@ -47,9 +47,9 @@ class UserFrailtyIndexAPI extends API{
             "ReportSection"=>"behaviouralassess",
             "blobItem"=>"behave0_avoid",
             "answer_scores"=> array(
-                "Most"=>0,
-                "Some"=>0.5,
-                "Rarely"=>1,
+                "Most days (5-7 days)"=>0,
+                "Some days(2-4 days)"=>0.5,
+                "Rarely or not at all"=>1,
             )
         ),
         array(
@@ -245,8 +245,22 @@ class UserFrailtyIndexAPI extends API{
                 "A little"=>0.5,
                 "A fair amount"=>1,
             )
+	),
+
+        array(
+            "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"SYMPTOMS8SPECIFY",
+            "answer_scores"=> array(
+
+                "Less than 1 kilometer occasionally"=>0.25,
+                "Less than 1 kilometer most days"=>0.5,
+                "Less than 100 meters most occasionally"=>0.75,
+                "Less than 100 meters most days"=>1,
+            )
         ),
     );
+
 
     function processParams($params){
 
@@ -266,25 +280,40 @@ class UserFrailtyIndexAPI extends API{
 
     function getFrailtyScore($user_id){
 	    $score = 0;
-	    $testarray = array();
-	    $test = false;
 	    foreach(self::$checkanswers as $answer){
 
             $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $answer["reportType"], $answer["ReportSection"], $answer["blobItem"], $user_id);
 	    
             $check_answers_list = $answer["answer_scores"];
-	    foreach($check_answers_list as $key=>$value){
-		    if($key == $ans){
-			$testarray[] = $ans;
-			$score = $score + $value;
-		    }
+            foreach($check_answers_list as $key=>$value){
+                if($key == $ans){
+                    $score = $score + $value;
+                }
             }
-	    }
-	    if($test){
-		return $testarray;
 	    }
 	    return $score;
         
+    }
+
+
+    function getSymptomsScore($user_id){
+        $checkanswers = array(
+        	array(
+            		"reportType"=> "RP_AVOID", //Question: During the last 7 days, how much time did you spend sitting during the day?
+            		"ReportSection"=>"clinicalfrailty",
+            		"blobItem"=>"symptoms_avoid",
+		    )
+	    );
+	    $score = 0;
+        foreach($checkanswers as $answer){
+	    $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $answer["reportType"], $answer["ReportSection"], $answer["blobItem"], $user_id);
+	    if($ans != null){
+		    $score = $score + count($ans["symptoms_avoid"]);
+	    }
+        }
+        return $score;
+
+
     }
     
     
@@ -301,18 +330,19 @@ class UserFrailtyIndexAPI extends API{
                 echo "Permission Required\n";
             }
             $user_id = $_GET['id'];
-        }
+	    }
         $score = $this->getFrailtyScore($user_id);
-
+        $score = $score + $this->getSymptomsScore($user_id);
         $myJSON = json_encode($score);
         echo $myJSON;
         exit;
-    }
+        }
 
-   function isLoginRequired(){
-       return true;
-   }
-}
+
+        function isLoginRequired(){
+            return true;
+        }
+    }
 
 
 ?>

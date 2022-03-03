@@ -1189,7 +1189,29 @@
                     <h3>Is the distance that you are able to walk limited by your health?</h3>
                     {$item}
             ]]>
+	</ReportItem>
+        <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days">
+            <![CDATA[
+		<span id="symptoms8_specify">
+			Please indicate distance: {$item}
+		</span>
+            	]]>
         </ReportItem>
+        <Static>
+            <![CDATA[
+                        <script type='text/javascript'>
+                                $('span#symptoms8_specify').hide();
+                                function specifySymptoms8(){
+                                        if($("input:radio[name='HealthStatus_symptoms_avoid8'][value='Yes']").is(':checked')){
+                                                $('span#symptoms8_specify').show();
+                                        }
+                                        else{ $('span#symptoms8_specify').hide();}
+                                }
+                                _.defer(specifySymptoms8);
+					$("input:radio[name='HealthStatus_symptoms_avoid8']").change(specifySymptoms8);
+			</script>
+                ]]>
+        </Static>
         <ReportItem id="symptoms_avoid9" blobItem="symptoms_avoid9" type="RadioReportItem" orientation="vertical" options="Good|Bad">
             <![CDATA[
                     <h3>During the past month how would you rate your sleep quality overall?</h3>
