@@ -188,7 +188,7 @@ class AVOIDDashboard extends SpecialPage {
         $cols = 4;
         foreach($communityResources as $key => $category){
             if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
+            $wgOut->addHTML("<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
         }
         $wgOut->addHTML("</ul></div></div>");
         
