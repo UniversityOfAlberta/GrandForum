@@ -20,7 +20,8 @@ PageRouter = Backbone.Router.extend({
 
     routes: {
         "": "defaultRoute", 
-        "add": "addPharm",
+        ":category_code": "viewCategory"
+
     }
 });
 
@@ -39,17 +40,19 @@ pageRouter.on('route:defaultRoute', function (actions) {
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
 });
 
-pageRouter.on('route:addPharm', function (actions) {
-    main.set('title', 'Add a Community Resource');
+
+pageRouter.on('route:viewCategory', function(category_code) {
+    main.set('title', 'Locate a Community Resource');
     if(wgLang == 'fr'){
-        main.set('title', 'Ajouter une Pharmacie');
+        main.set('title', 'Localiser une Pharmacie');
     }
     this.closeCurrentView();
+    //var pharms = new Universities();
     var pharms = new AvoidResources();
+    pharms.cat = category_code;
     pharms.fetch();
-    this.currentView = new PharmacyAddView({el: $("#currentView"), model: pharms});
+    this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
 });
-
 
 
 // Start Backbone history a necessary step for bookmarkable URL's

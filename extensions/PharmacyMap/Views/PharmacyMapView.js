@@ -52,6 +52,7 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     findCategory: function (ev) {
+	    if(ev != null){
         var cat = $(ev.currentTarget).data('cat');;
         if (this.buttons[cat].hasOwnProperty('children')) {
             this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
@@ -66,6 +67,11 @@ PharmacyMapView = Backbone.View.extend({
 	    this.model.cat = this.buttons[cat]["code"];
             this.model.fetch();
         }
+	    }else{
+            this.refresh = false;
+            this.renderMap = true;
+            this.model.fetch();
+	    }
         this.drawButtons();
     },
 
@@ -136,6 +142,14 @@ PharmacyMapView = Backbone.View.extend({
         var cat_view = new CategoryButtonsView({ model: this.model, parent: this });
         this.cat_json = cat_view.getCategoryJSON();
         this.buttons = this.cat_json;
+	if(this.model.cat != null){
+	    //fix buttons
+	    console.log(this.model.cat.split('-'));
+            this.findCategory();
+        }
+
+
+
 
     },
 
@@ -157,15 +171,14 @@ PharmacyMapView = Backbone.View.extend({
             this.$('#treemap-container').append('<div id="treemap"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<a class="category program-button menuTooltip" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a>');
+                var r = $('<a class="category program-button menuTooltip" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a>');
 
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-		var r = $('<a class="category program-button menuTooltip" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '</a>');
+		var r = $('<a class="category program-button menuTooltip" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '</a>');
 
             }
             this.$('#treemap').append(r);
-
         }
     },
 

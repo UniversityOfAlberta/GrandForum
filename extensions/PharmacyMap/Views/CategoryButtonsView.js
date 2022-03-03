@@ -130,7 +130,7 @@ CategoryButtonsView = Backbone.View.extend({
                 },
                 {
                     "text": "Interact",
-                    "code": "CFN-INT-",
+                    "code": "CFN-INT",
                     "description": "Explore opportunities to meet new people in your community!",
                     "children": [
                         {
