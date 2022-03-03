@@ -444,7 +444,7 @@ class ReportXMLParser {
                     $section->setTooltip(str_replace("'", "&#39;", "{$attributes->tooltip}"));
                 }
                 if(isset($attributes->disabled)){
-                    $section->setDisabled($attributes->tooltip);
+                    $section->setDisabled($attributes->disabled);
                 }
                 if(isset($attributes->blobSection)){
                     $sec = AbstractReport::blobConstant($attributes->blobSection);

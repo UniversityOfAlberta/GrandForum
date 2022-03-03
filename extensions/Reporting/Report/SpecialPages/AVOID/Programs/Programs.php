@@ -73,16 +73,18 @@ class Programs extends SpecialPage {
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
-            $dir = dirname(__FILE__) . '/';
-            $json = file_get_contents("{$dir}programs.json");
-            $programs = json_decode($json);
-            
-            $selected = @($wgTitle->getText() == "Programs") ? "selected" : false;
-            $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("All Programs", "$wgServer$wgScriptPath/index.php/Special:Programs", $selected);
-            
-            foreach($programs as $program){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/{$program->id}")) ? "selected" : false;
-                $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("{$program->title}", "{$url}Programs/{$program->id}", $selected);
+            if(AVOIDDashboard::hasSubmittedSurvey()){
+                $dir = dirname(__FILE__) . '/';
+                $json = file_get_contents("{$dir}programs.json");
+                $programs = json_decode($json);
+                
+                $selected = @($wgTitle->getText() == "Programs") ? "selected" : false;
+                $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("All Programs", "$wgServer$wgScriptPath/index.php/Special:Programs", $selected);
+                
+                foreach($programs as $program){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Programs/{$program->id}")) ? "selected" : false;
+                    $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("{$program->title}", "{$url}Programs/{$program->id}", $selected);
+                }
             }
         }
         return true;

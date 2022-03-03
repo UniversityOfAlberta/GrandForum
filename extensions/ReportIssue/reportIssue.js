@@ -54,10 +54,10 @@ $(document).ready(function(){
         width: 400,
         buttons: {
             "Submit": function(){   
-                dataToSend.first_name = $("div#contactUsDialog input[name=first_name]").val();
-                dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
-                dataToSend.email = $("div#contactUsDialog input[name=email]").val();
-                dataToSend.comments = $("div#contactUsDialog textarea").val();
+                dataToSend.first_name = $("div#reportIssueDialog input[name=first_name]").val();
+                dataToSend.last_name = $("div#reportIssueDialog input[name=last_name]").val();
+                dataToSend.email = $("div#reportIssueDialog input[name=email]").val();
+                dataToSend.comments = $("div#reportIssueDialog textarea").val();
                 $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();

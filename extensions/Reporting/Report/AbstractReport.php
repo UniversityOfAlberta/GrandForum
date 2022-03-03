@@ -1069,9 +1069,6 @@ abstract class AbstractReport extends SpecialPage {
         else{
             $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/noAjax.js?".filemtime(dirname(__FILE__)."/scripts/noAjax.js")."'></script>");
         }
-        foreach($this->scripts as $script){
-            $wgOut->addScript($script);
-        }
         $wgOut->addHTML("<div id='outerReport'>
                             <div class='displayTableCell'><div id='aboveTabs'></div>
                                 <div id='reportTabs'>\n");
@@ -1079,7 +1076,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("<div id='autosaveDiv'><span style='float:left;width:100%;text-align:left'><span style='float:right;' class='autosaveSpan'></span></span></div>
                             </div>
                             </div>");
-        
+        foreach($this->scripts as $script){
+            $wgOut->addHTML($this->varSubstitute($script));
+        }
         $wgOut->addHTML("   <div id='reportMain' class='displayTableCell'><div>");
         if(!$this->topProjectOnly || ($this->topProjectOnly && !$this->currentSection->private)){
             $this->currentSection->render();
@@ -1430,6 +1429,7 @@ abstract class AbstractReport extends SpecialPage {
         $item = new StaticReportItem();
         $section = new ReportSection();
         $item->setParent($section);
+        $item->personId = $this->person->getId();
         $section->setParent($this);
         return $item->varSubstitute($value);
     }

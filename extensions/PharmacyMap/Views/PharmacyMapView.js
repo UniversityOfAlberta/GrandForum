@@ -140,7 +140,7 @@ PharmacyMapView = Backbone.View.extend({
 
     addCategoryButtons: function () {
         var cat_view = new CategoryButtonsView({ model: this.model, parent: this });
-        this.cat_json = cat_view.getCategoryJSON();
+        this.cat_json = cat_json;
         this.buttons = this.cat_json;
 	if(this.model.cat != null){
 	    //fix buttons

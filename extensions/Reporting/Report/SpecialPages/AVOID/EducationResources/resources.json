@@ -1,0 +1,157 @@
+[
+    {
+        "id": "Activity",
+        "title": "Activity",
+        "resources": [
+            {
+                "file": "9. Balance with Hal _ Joanne.mp4",
+                "title": "Balance with Hal & Joanne",
+                "tags": [ "balance" ]
+            },
+            {
+                "file": "9. Staying Active with Hal _ Joanne.mp4",
+                "title": "Staying Active with Hal & Joanne",
+                "tags": [ "activity", "aerobic" ]
+            },
+            {
+                "file": "9. Strength with Hal _ Joanne.mp4",
+                "title": "Strength with Hal & Joanne",
+                "tags": [ "strength" ]
+            },
+            {
+                "file": "Activity Vid.mp4",
+                "title": "Activity Video",
+                "tags": [ "activity vid" ]
+            },
+            {
+                "file": "Falls Prevention.pdf",
+                "title": "Falls Prevention",
+                "tags": [ "falls" ]
+            }
+        ]
+    },
+    {
+        "id": "Vaccinate",
+        "title": "Vaccinate",
+        "resources": [
+            {
+                "file": "11. Vaccinate with Hal _ Joanne.mp4",
+                "title": "Vaccinate with Hal & Joanne",
+                "tags": [ "vaccination" ]
+            },
+            {
+                "file": "13. COVID-19 Vaccine Tip Sheet.pdf",
+                "title": "COVID-19 Vaccine Tip Sheet",
+                "tags": [ "vaccination", "covid-19" ]
+            },
+            {
+                "file": "13. Vaccination FAQ.pdf",
+                "title": "Vaccination FAQ",
+                "tags": []
+            },
+            {
+                "file": "Immunizations Across the Lifespan.pdf",
+                "title": "Immunizations Accross the Lifespan",
+                "tags": []
+            },
+            {
+                "file": "Vaccinate Vid.mp4",
+                "title": "Vaccinate Vid",
+                "tags": [ "vaccinate vid" ]
+            },
+            {
+                "file": "Vaccines Work Poster PHAC.pdf",
+                "title": "Vaccines Work Poster PHAC",
+                "tags": [ ]
+            }
+        ]
+    },
+    {
+        "id": "OptimizeMedication",
+        "title": "Optimize Medication",
+        "resources": [
+            {
+                "file": "15. Optimize Medication with Hal _ Joanne.mp4",
+                "title": "Optimize Medication with Hal & Joanne",
+                "tags": [ "optimize medication" ]
+            },
+            {
+                "file": "17. 5 Minutes on Frailty - Optimize Medication.mov",
+                "title": "5 Minutes on Frailty (Optimize Medication)",
+                "tags": [ "optimize medication" ]
+            },
+            {
+                "file": "fact+sheet_Deprescribing_ENGLISH+FINAL_web (1).pdf",
+                "title": "Fact Sheet",
+                "tags": []
+            },
+            {
+                "file": "Medications _ Falls Risk.pdf",
+                "title": "Medications and the Risk of Falling",
+                "tags": []
+            },
+            {
+                "file": "Medication Tracker Sheet Planner.pdf",
+                "title": "Medication Tracker Sheet Planner",
+                "tags": [ "medtrack" ]
+            },
+            {
+                "file": "Optimize Med Vid.mp4",
+                "title": "Optimize Medication Video",
+                "tags": ["optimize med vid"]
+            }
+        ]
+    },
+    {
+        "id": "Interact",
+        "title": "Interact",
+        "resources": [
+            {
+                "file": "19. Isolation Tip Sheet (without Technology).pdf",
+                "title": "Isolation Tip Sheet (without Technology)",
+                "tags": ["interact"]
+            },
+            {
+                "file": "19. Isolation Tip Sheet (with Technology).pdf",
+                "title": "Isolation Tip Sheet (with Technology)",
+                "tags": ["interact"]
+            },
+            {
+                "file": "Interact Vid.mp4",
+                "title": "Interact Video",
+                "tags": ["interact vid"]
+            }
+        ]
+    },
+    {
+        "id": "DietAndNutrition",
+        "title": "Diet & Nutrition",
+        "resources": [
+            {
+                "file": "20. Chili Recipe with Hal _ Joanne.mp4",
+                "title": "Chili Recipe with Hal & Joanne",
+                "tags": [ "protein" ]
+            },
+            {
+                "file": "20. Protein with Hal _ Joanne.mp4",
+                "title": "Protein with Hal & Joanne",
+                "tags": [ "protein" ]
+            },
+            {
+                "file": "22. AVOID Frailty Grocery List.pdf",
+                "title": "AVOID Frailty Grocery List",
+                "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
+            },
+            {
+                "file": "23. 5 Minutes on Frailty - Diet _ Nutrition.mov",
+                "title": "5 Minutes on Frailty (Diet & Nutrition)",
+                "tags": [ "diet and nutrition" ]
+            },
+            {
+                "file": "Diet_Nutrition Vid.mp4",
+                "title": "Diet & Nutrition Video",
+                "tags": ["diet and nutrition vid"]
+            }
+        ]
+    }
+]

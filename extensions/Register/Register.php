@@ -179,7 +179,7 @@ class Register extends SpecialPage{
     }
     
     function handleSubmit($wgOut){
-        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config;
+        global $wgServer, $wgScriptPath, $wgMessage, $wgGroupPermissions, $config, $wgUser;
         $form = self::createForm();
         $status = $form->validate();
         if($status){
@@ -209,7 +209,7 @@ class Register extends SpecialPage{
             }
             else if($config->getValue('networkName') == "AVOID"){
                 $_POST['wpUserType'] = CI;
-                $_POST['candidate'] = "1";
+                $_POST['candidate'] = "0";
             }
             else{
                 $_POST['wpUserType'] = HQP;
@@ -233,7 +233,9 @@ class Register extends SpecialPage{
             else{
                 $wgGroupPermissions['*']['createaccount'] = true;
                 GrandAccess::$alreadyDone = array();
+                $wgUser = User::newFromId(1);
                 $result = APIRequest::doAction('CreateUser', false);
+                $wgUser = User::newFromId(0);
                 $wgGroupPermissions['*']['createaccount'] = false;
                 GrandAccess::$alreadyDone = array();
                 if($result){

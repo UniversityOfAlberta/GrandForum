@@ -99,16 +99,18 @@ class EducationModules extends SpecialPage {
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
-            $dir = dirname(__FILE__) . '/';
-            $json = file_get_contents("{$dir}modules.json");
-            $modules = json_decode($json);
-            
-            $selected = @($wgTitle->getText() == "EducationModules") ? "selected" : false;
-            $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("All Modules", "$wgServer$wgScriptPath/index.php/Special:EducationModules", $selected);
-            
-            foreach($modules as $module){
-                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/{$module->id}")) ? "selected" : false;
-                $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("{$module->title}", "{$url}EducationModules/{$module->id}", $selected);
+            if(AVOIDDashboard::hasSubmittedSurvey()){
+                $dir = dirname(__FILE__) . '/';
+                $json = file_get_contents("{$dir}modules.json");
+                $modules = json_decode($json);
+                
+                $selected = @($wgTitle->getText() == "EducationModules") ? "selected" : false;
+                $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("All Modules", "$wgServer$wgScriptPath/index.php/Special:EducationModules", $selected);
+                
+                foreach($modules as $module){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EducationModules/{$module->id}")) ? "selected" : false;
+                    $tabs["Modules"]['subtabs'][] = TabUtils::createSubTab("{$module->title}", "{$url}EducationModules/{$module->id}", $selected);
+                }
             }
         }
         return true;

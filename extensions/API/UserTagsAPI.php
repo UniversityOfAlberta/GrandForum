@@ -161,7 +161,7 @@ class UserTagsAPI extends API{
             "ReportSection"=>"clinicalfrailty",
             "blobItem"=>"symptoms_avoid21",
             "answer"=> "Yes",
-            "tags"=>array("movement and mindfulness programs")
+            "tags"=>array("movement and mindfulness programs", "balance")
         ),
         array(
             "reportType"=> "RP_AVOID",
@@ -169,6 +169,27 @@ class UserTagsAPI extends API{
             "blobItem"=>"symptoms_avoid19",
             "answer"=> "Yes",
             "tags"=>array("movement and mindfulness programs")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "1 fall",
+            "tags"=>array("balance")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "2 or more falls",
+            "tags"=>array("balance")
+        ),
+        array(
+            "reportType"=> "RP_AVOID",
+            "ReportSection"=>"clinicalfrailty",
+            "blobItem"=>"symptoms_avoid6",
+            "answer"=> "2 or more falls",
+            "tags"=>array("balance")
         )
     );
 
@@ -222,13 +243,13 @@ class UserTagsAPI extends API{
                 &&
                 !in_array("I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)", $answers_list)
                 ){
-                    return "Peer coaching participant";
+                    return "peer coaching participant";
                 }
                 else if(!in_array("I am interested in changing my lifestyle in this area and need some help getting started (contemplation)", $answers_list)
                         &&
                         !in_array("I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)", $answers_list)
                         ){
-                            return "Peer coaching volunteer";
+                            return "peer coaching volunteer";
                         }
                 }
                 else{

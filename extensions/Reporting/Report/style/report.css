@@ -419,7 +419,7 @@ div.options > label > img {
 }
 
 div.options > label > input:checked +img {
-	background: url(/skins/checkavoid.png);
+	background: url(../../../../skins/checkavoid.png);
 	background-repeat: no-repeat;
 	background-position:center center;
 	background-size:30px 30px;

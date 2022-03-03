@@ -11,6 +11,7 @@ $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
 
 require_once("AVOIDDashboard.php");
 require_once("EducationModules/EducationModules.php");
+require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 
 class Report extends AbstractReport{
@@ -32,8 +33,11 @@ class Report extends AbstractReport{
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
-            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
-            $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey", $selected);
+            if(!AVOIDDashboard::hasSubmittedSurvey()){
+                $section = AVOIDDashboard::getNextIncompleteSection();
+                $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "IntakeSurvey")) ? "selected" : false;
+                $tabs["Surveys"]['subtabs'][] = TabUtils::createSubTab("Healthy Aging Assessment", "{$url}IntakeSurvey&section={$section}", $selected);
+            }
         }
         return true;
     }
