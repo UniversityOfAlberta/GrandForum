@@ -237,6 +237,14 @@
                     </tr>
             ]]>
         </ReportItem>
+        <ReportItem id="report_writing" type="Textarea" blobItem="REPORT_WRITING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Report Writing and Finding Dissemination</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
             <![CDATA[
                     <tr>
@@ -367,10 +375,16 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 </table>
             ]]>
         </Static>
+        <ReportItem id="findings_date" type="Calendar" reportItem="FINDINGS_DATE">
+            <![CDATA[
+                <h3>4.3 Provide an estimation of when shareable project findings are next expected.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
         <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true" class="wikitable smaller"
-                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Other)|Textarea|Textarea|Textarea|Date" 
+                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date" 
                     indices="activity|endgroup|activities|impact|reach|date" 
                     labels="Knowledge Mobilization Activity|End Group(s)|Knowledge Mobilization Activities|Impact|Actual Reach/Projected reach per selected End Group|Date(s) of Activity/ Projected Date of Activity"
                     sizes="auto|auto|auto|auto|auto|1%">
