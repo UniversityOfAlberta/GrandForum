@@ -22,7 +22,7 @@
                         $("#HealthRelatedQoL7").removeClass("disabled_lnk");
                         $("#HealthStatus").show().removeClass("disabled_lnk");
                         $("#Submit").show();
-                        $(':input[type="submit"]').prop('disabled', false);
+                        $(':input[type="submit"]').prop('disabled', false).show();
                     }
                     else{
                         $("#GettingtoKnowYou").hide();
@@ -30,7 +30,7 @@
                         $("#HealthRelatedQoL").hide();
                         $("#HealthStatus").hide();
                         $("#Submit").hide();
-                        $(':input[type="submit"]').prop('disabled', true);
+                        $(':input[type="submit"]').prop('disabled', true).hide();
                     }
                 }
         
@@ -49,14 +49,24 @@
                 }
                 
                 function hideConsent(){
+                    if($(".selectedReportTab").text() == "Consent" && consent == "Yes"){
+                        $("#reportBody").hide();
+                        $("#Consent").hide().addClass("disabled_lnk");
+                        $("input[name=submit]").click();
+                    }
                     if($(".selectedReportTab").text() != "Consent"){
                         $("#Consent").hide().addClass("disabled_lnk");
                     }
                 }
                 
+                hideConsent();
                 checkConsent(consent);
                 checkAge();
-                hideConsent();
+                
+                $(document).ready(function(){
+                    checkConsent(consent);
+                    checkAge();
+                });
                 
                 setInterval(function(){
                     hideConsent();
