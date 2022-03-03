@@ -9,29 +9,29 @@
                 var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
 
                 function checkConsent(value){
-                        var consent = (value == "Yes");
-                        if(consent){
-                                $("#GettingtoKnowYou").show();
-                                $("#Self-Assessment").show();
-                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
-                                $("#HealthStatus").show().removeClass("disabled_lnk");
-                                $("#Submit").show();
-                                $(':input[type="submit"]').prop('disabled', false);
-                        }
-                        else{
-                                $("#GettingtoKnowYou").hide();
-                                $("#Self-Assessment").hide();
-                                $("#HealthRelatedQoL").hide();
-                                $("#HealthStatus").hide();
-                                $("#Submit").hide();
-                                $(':input[type="submit"]').prop('disabled', true);
-                        }
+                    var consent = (value == "Yes");
+                    if(consent){
+                        $("#GettingtoKnowYou").show();
+                        $("#Self-Assessment").show();
+                        $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL2").removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL3").removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL4").removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL5").removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL6").removeClass("disabled_lnk");
+                        $("#HealthRelatedQoL7").removeClass("disabled_lnk");
+                        $("#HealthStatus").show().removeClass("disabled_lnk");
+                        $("#Submit").show();
+                        $(':input[type="submit"]').prop('disabled', false);
+                    }
+                    else{
+                        $("#GettingtoKnowYou").hide();
+                        $("#Self-Assessment").hide();
+                        $("#HealthRelatedQoL").hide();
+                        $("#HealthStatus").hide();
+                        $("#Submit").hide();
+                        $(':input[type="submit"]').prop('disabled', true);
+                    }
                 }
         
                 var age_check = '{getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}';
@@ -56,47 +56,47 @@
         <ReportItem id="eula" type="EULA" blobItem="EULA" yes="&lt;b&gt;Yes&lt;/b&gt;, I agree to the above Declaration"
                                                           no="&lt;b&gt;No&lt;/b&gt;, I do not agree to the above Declaration">
             <![CDATA[
-	<div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
-	        <p>
-			<b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
-		</p>
-		<p>
-			<b>Name of Principal investigator: </b>Dr John Muscedere<br/>
-			<b>Name of Sponsor/Funder:</b> Canadian Frailty Network
-		</p>
-		<p>
-				As a participant of the AVOID Frailty Program for Healthy Aging, you are invited to take part in an associated research study. The purpose of this study is to evaluate how well the program is supporting you in your development of healthy behaviours. If you agree to take part, you will be asked to complete an online survey when you sign up for the program, and the same survey every three months after. The survey should take you about 20 minutes to complete. It will ask you about: some of your background information to help us adjust the program in its accessibility; your health status, quality of life and curiosity around healthy behaviours to help us track how effective the program has been. Much of this survey will provide information to personalize your program so that it is supportive in the way(s) that you prefer, but we also want to make sure that you are benefiting and if not, want to adjust the program to better suit your needs.
-		</p>
-		<p>
-				There is a minimal risk that you may experience discomfort if you feel that the questions are too personal or refer to sensitive issues. The questions are not meant to be personal but if you do not feel comfortable answering a question, you do not need to answer it. No identifiable information will be generated.
-As a user of this program, you may or may not see direct benefits from this study, but the study results will add to the body of literature about how to support people to undertake healthy behaviours and the community will benefit from the information you provide that will potentially enhance the quality of the program for future users. We also plan to publish the results of this study in academic journals and present them at conferences. You will not be paid for taking part in this study but the AVOID Frailty program for Healthy Aging is free for you to enjoy. You will be provided with any new information that may be relevant to your continuing from study participation.
-		</p>
-		<p>
-				Participation is voluntary. You don’t have to answer any questions you don’t want to. You can stop participating at any time without impact on your ability to use the AVOID Frailty Program or any other negative impacts. If you exit out of the survey before completion (close your laptop or phone) your progress will be saved for you to complete at a later time. You may withdraw from the study up until March 1, 2023 by contacting me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a>. Your data cannot be withdrawn after the submission of the anonymous survey.
-		</p>
-		<p>
-				Your confidentiality will be protected, to the extent permitted by applicable laws. We will do this by replacing your name with a study ID number in all study records. This data will be stored in an encrypted folder in a password protected computer that is kept in a locked file cabinet in the CFN office. The code file that links real names with pseudonyms and study ID numbers will be stored securely and separately from the data on an encrypted USB. We will keep your data securely for five years per Queen’s University Policy, after which the de-identified data will be destroyed. In the future, we may link data collected in this study with other sources of publicly or provincially collected data to better understanding aging in this region. Data which is not anonymous will not be shared with any other party and any linked data will be accessible by only the study investigators. The CFN research team consisting of Dr. Kyle Plumb -Project Manager, Dr. Jeanette Prorok Manager of Special Projects and Initiatives; and PI – Dr. John Muscedere – CFN’s Scientific Director will have sole access to the study data during its collection, use, analysis, dissemination, and disposal. The Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) may require access to your study-related records to monitor the ethical conduct of the research.
-		</p>
-		<p>
-				For ethics concerns please contact the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) at 1-844-535-2988 (Toll free in North America) or  <a href = "mailto: hsreb@queensu.ca">hsreb@queensu.ca</a>.
-		</p>
-		<p>
-				If you have any questions about the research, please contact me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a> or 613-449-2140.
+                <div style="width:100%;text-align:right"><img src="{$wgServer}{$wgScriptPath}/skins/QueensLogo_colour.png" width="200px" style="text-align:right;"></div>
+                    <p>
+                    <b>Study Title:</b> KFLA Centre for Healthy Aging: The AVOID Frailty program for Healthy Aging
+                </p>
+                <p>
+                    <b>Name of Principal investigator: </b>Dr John Muscedere<br/>
+                    <b>Name of Sponsor/Funder:</b> Canadian Frailty Network
+                </p>
+                <p>
+                        As a participant of the AVOID Frailty Program for Healthy Aging, you are invited to take part in an associated research study. The purpose of this study is to evaluate how well the program is supporting you in your development of healthy behaviours. If you agree to take part, you will be asked to complete an online survey when you sign up for the program, and the same survey every three months after. The survey should take you about 20 minutes to complete. It will ask you about: some of your background information to help us adjust the program in its accessibility; your health status, quality of life and curiosity around healthy behaviours to help us track how effective the program has been. Much of this survey will provide information to personalize your program so that it is supportive in the way(s) that you prefer, but we also want to make sure that you are benefiting and if not, want to adjust the program to better suit your needs.
+                </p>
+                <p>
+                        There is a minimal risk that you may experience discomfort if you feel that the questions are too personal or refer to sensitive issues. The questions are not meant to be personal but if you do not feel comfortable answering a question, you do not need to answer it. No identifiable information will be generated.
+        As a user of this program, you may or may not see direct benefits from this study, but the study results will add to the body of literature about how to support people to undertake healthy behaviours and the community will benefit from the information you provide that will potentially enhance the quality of the program for future users. We also plan to publish the results of this study in academic journals and present them at conferences. You will not be paid for taking part in this study but the AVOID Frailty program for Healthy Aging is free for you to enjoy. You will be provided with any new information that may be relevant to your continuing from study participation.
+                </p>
+                <p>
+                        Participation is voluntary. You don’t have to answer any questions you don’t want to. You can stop participating at any time without impact on your ability to use the AVOID Frailty Program or any other negative impacts. If you exit out of the survey before completion (close your laptop or phone) your progress will be saved for you to complete at a later time. You may withdraw from the study up until March 1, 2023 by contacting me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a>. Your data cannot be withdrawn after the submission of the anonymous survey.
+                </p>
+                <p>
+                        Your confidentiality will be protected, to the extent permitted by applicable laws. We will do this by replacing your name with a study ID number in all study records. This data will be stored in an encrypted folder in a password protected computer that is kept in a locked file cabinet in the CFN office. The code file that links real names with pseudonyms and study ID numbers will be stored securely and separately from the data on an encrypted USB. We will keep your data securely for five years per Queen’s University Policy, after which the de-identified data will be destroyed. In the future, we may link data collected in this study with other sources of publicly or provincially collected data to better understanding aging in this region. Data which is not anonymous will not be shared with any other party and any linked data will be accessible by only the study investigators. The CFN research team consisting of Dr. Kyle Plumb -Project Manager, Dr. Jeanette Prorok Manager of Special Projects and Initiatives; and PI – Dr. John Muscedere – CFN’s Scientific Director will have sole access to the study data during its collection, use, analysis, dissemination, and disposal. The Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) may require access to your study-related records to monitor the ethical conduct of the research.
+                </p>
+                <p>
+                        For ethics concerns please contact the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board (HSREB) at 1-844-535-2988 (Toll free in North America) or  <a href = "mailto: hsreb@queensu.ca">hsreb@queensu.ca</a>.
+                </p>
+                <p>
+                        If you have any questions about the research, please contact me at <a href = "mailto: kyle@cfn-nce.ca">kyle@cfn-nce.ca</a> or 613-449-2140.
 
-		</p>
-		<p>
-				This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board.
+                </p>
+                <p>
+                        This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board.
 
-		</p>
-		<p>
-				This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board. Please keep a copy of this form for your records.
-		</p>
-		<p>By clicking below, I am verifying that: I have read the Letter of Information and I consent to participate in this research study:
-	</p>
+                </p>
+                <p>
+                        This Letter of Information provides you with the details to help you make an informed choice. All your questions should be answered to your satisfaction before you decide whether or not to participate in this research study. You have not waived any legal rights by consenting to participate in this study. This study has been reviewed for ethical compliance by the Queen’s University Health Sciences and Affiliated Teaching Hospitals Research Ethics Board. Please keep a copy of this form for your records.
+                </p>
+                <p>By clicking below, I am verifying that: I have read the Letter of Information and I consent to participate in this research study:
+            </p>
                 {$item}
             ]]>
-</ReportItem>
-	<Static>
+    </ReportItem>
+    <Static>
             <![CDATA[
                 <script type='text/javascript'>
                     $('#mw-content-text').css("height", "");
@@ -106,66 +106,66 @@ As a user of this program, you may or may not see direct benefits from this stud
         <Static>
             <![CDATA[
             <script type='text/javascript'>
-					$("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
-					$("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
-			</script>
+                $("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
+                $("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
+            </script>
                 ]]>
         </Static>
     </ReportSection>
     <ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false">
         <Static>
             <![CDATA[
-				<p>
-					<i><b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</i>
-				</p>
-			]]>
+                <p>
+                    <i><b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</i>
+                </p>
+            ]]>
         </Static>
         <ReportItem id="socio_info1" type="SelectReportItem" options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" blobItem="avoid_age">
             <![CDATA[
-                		<h3>Age</h3>
-                		{$item}
+                <h3>Age</h3>
+                {$item}
 
-            		]]>
+            ]]>
         </ReportItem>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-						function checkAge(){
-                            if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
-                                var age = 40;
-						    }
-						    else{
-                                age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
-						    }
-						    if(age >=65){
-                                $("#GettingtoKnowYou").show();
-                                $("#Self-Assessment").show();
-                                $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL2").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL3").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL4").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL5").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL6").removeClass("disabled_lnk");
-                                $("#HealthRelatedQoL7").removeClass("disabled_lnk");
-                                $("#HealthStatus").show().removeClass("disabled_lnk");                                        
-                            }
-                            else{
-                                $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
-                                $("#HealthRelatedQoL2").addClass("disabled_lnk");
-                                $("#HealthRelatedQoL3").addClass("disabled_lnk");
-                                $("#HealthRelatedQoL4").addClass("disabled_lnk");
-                                $("#HealthRelatedQoL5").addClass("disabled_lnk");
-                                $("#HealthRelatedQoL6").addClass("disabled_lnk");
-                                $("#HealthRelatedQoL7").addClass("disabled_lnk");
-                                $("#HealthStatus").hide().addClass("disabled_lnk");
-                            }
+                    function checkAge(){
+                        if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
+                            var age = 40;
                         }
-                        checkAge();
-                        $("select[name='GettingtoKnowYou_socio_info1']").change(checkAge);
-                    </script>
-                ]]>
-			</Static>
-				<Static>
+                        else{
+                            age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
+                        }
+                        if(age >=65){
+                            $("#GettingtoKnowYou").show();
+                            $("#Self-Assessment").show();
+                            $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL2").removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL3").removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL4").removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL5").removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL6").removeClass("disabled_lnk");
+                            $("#HealthRelatedQoL7").removeClass("disabled_lnk");
+                            $("#HealthStatus").show().removeClass("disabled_lnk");                                        
+                        }
+                        else{
+                            $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
+                            $("#HealthRelatedQoL2").addClass("disabled_lnk");
+                            $("#HealthRelatedQoL3").addClass("disabled_lnk");
+                            $("#HealthRelatedQoL4").addClass("disabled_lnk");
+                            $("#HealthRelatedQoL5").addClass("disabled_lnk");
+                            $("#HealthRelatedQoL6").addClass("disabled_lnk");
+                            $("#HealthRelatedQoL7").addClass("disabled_lnk");
+                            $("#HealthStatus").hide().addClass("disabled_lnk");
+                        }
+                    }
+                    checkAge();
+                    $("select[name='GettingtoKnowYou_socio_info1']").change(checkAge);
+                </script>
+            ]]>
+        </Static>
+        <Static>
             <![CDATA[
                 <script type='text/javascript'>
                                 $('#mw-content-text').css("height", "");
@@ -174,44 +174,44 @@ As a user of this program, you may or may not see direct benefits from this stud
         </Static>
         <ReportItem id="socio_info2" type="RadioReportItem" options="Man|Woman|Prefer not to say|Prefer to self describe myself" blobItem="avoid_gender">
             <![CDATA[
-                    		<h3>What is your gender?</h3>
-                    		<p><i>Gender refers to social roles and expectations, behaviors, expressions, and identities of girls, women, boys, men, and gender-diverse people.</i></p>
-                    		{$item}
-            		]]>
+                            <h3>What is your gender?</h3>
+                            <p><i>Gender refers to social roles and expectations, behaviors, expressions, and identities of girls, women, boys, men, and gender-diverse people.</i></p>
+                            {$item}
+                    ]]>
         </ReportItem>
         <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px" optional="true">
             <![CDATA[
-				<span id='specifygender'>
+                <span id='specifygender'>
                                 Please Specify:
-				{$item}
-				</span>
+                {$item}
+                </span>
 
                                         ]]>
         </ReportItem>
         <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="30px" max_length="3">
             <![CDATA[
-				<h3>Please enter the first 3 digits of your postal code:</h3>
-				{$item}
-					]]>
+                <h3>Please enter the first 3 digits of your postal code:</h3>
+                {$item}
+                    ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-				<script type='text/javascript'>
-                    			$('span#specifygender').hide();
-					function specifyGender(){
-						if($("input:radio[value='Prefer to self describe myself']").is(':checked')){
-							$('span#specifygender').show();
-						}
-						else{ $('span#specifygender').hide();}
+                <script type='text/javascript'>
+                                $('span#specifygender').hide();
+                    function specifyGender(){
+                        if($("input:radio[value='Prefer to self describe myself']").is(':checked')){
+                            $('span#specifygender').show();
+                        }
+                        else{ $('span#specifygender').hide();}
                                         }
                                         _.defer(specifyGender);
                                         $("input:radio[name='GettingtoKnowYou_socio_info2']").change(specifyGender);
                                 </script>
-				<br/>
-				<p><i>
-					People of different ethnicities do not have significantly different genetics. But our ethnicity still has important consequences including how we are treated by different individuals and institutions.
-				</i></p>
-			]]>
+                <br/>
+                <p><i>
+                    People of different ethnicities do not have significantly different genetics. But our ethnicity still has important consequences including how we are treated by different individuals and institutions.
+                </i></p>
+            ]]>
         </Static>
         <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" options="Black|East/Southeast Asian|Indigenous (First Nations, Metis, Inuk/Inuit)|Latino|Middle Eastern|South Asian|White|Other|Prefer not to answer" optional="true">
             <![CDATA[
@@ -221,31 +221,31 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical" options="First Nations|Metis|Inuk/Inuit|No|Prefer not to answer" optional="true">
             <![CDATA[
-			<span id="indigenous_specify">
-			<h3>Do you identify as First Nations, Metis, or inuk/Inuit? (check all that apply):</h3>
-			{$item}
-			</span>
+            <span id="indigenous_specify">
+            <h3>Do you identify as First Nations, Metis, or inuk/Inuit? (check all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="ethnicity_indigenous_specify" type="Text" blobItem="ETHNICITYINDIGENOUSSPECIFY" width="400px" optional="true">
             <![CDATA[
-		<span id="indigenous_other">
-			Specify: {$item}
-		</span>
-            	]]>
+        <span id="indigenous_other">
+            Specify: {$item}
+        </span>
+                ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-				$('span#indigenous_specify').hide();
-				function specifyIndigenous(){
-                                	if($("input:checkbox[value='Indigenous (First Nations, Metis, Inuk/Inuit)']").is(':checked')){
-                                        	$('span#indigenous_specify').show();
-                                       	}
-					else{ $('span#indigenous_specify').hide();}
-				}
+            <script type='text/javascript'>
+                $('span#indigenous_specify').hide();
+                function specifyIndigenous(){
+                                    if($("input:checkbox[value='Indigenous (First Nations, Metis, Inuk/Inuit)']").is(':checked')){
+                                            $('span#indigenous_specify').show();
+                                           }
+                    else{ $('span#indigenous_specify').hide();}
+                }
                                 _.defer(specifyIndigenous);
-				$("input:checkbox[name='GettingtoKnowYou_ethnicity_avoid[]']").change(specifyIndigenous);
+                $("input:checkbox[name='GettingtoKnowYou_ethnicity_avoid[]']").change(specifyIndigenous);
 
                                 $('span#indigenous_other').hide();
                                 function specifyIndigenousOther(){
@@ -256,8 +256,8 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 }
                                 _.defer(specifyIndigenousOther);
                                 $("input:checkbox[name='GettingtoKnowYou_ethnicity_indigenous[]']").change(specifyIndigenousOther);
-                   	</script>
-		]]>
+                       </script>
+        ]]>
         </Static>
         <ReportItem id="transportation_avoid" type="SelectReportItem" options="Passenger in a motor vehicle|Drive a motor vehicle|Taxi or similar paid services|Public transportation such as bus, rapid transit, subway or train|Accessible transit|Cycling|Walking|Wheelchair or motorized cart" blobItem="transportation_avoid">
             <![CDATA[
@@ -273,11 +273,11 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-		 <br/>
-		 <p><i>
-				An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.
-		 </i></p>
-		]]>
+         <br/>
+         <p><i>
+                An assistive device is any device or tool designed or adapted to help a person perform a particular task or activity.
+         </i></p>
+        ]]>
         </Static>
         <ReportItem id="assistive_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="assistive_avoid" orientation="vertical" options="a cane, a walking stick or crutches|a walker|a scooter|a manual wheelchair|a motorized wheelchair|orthopaedic footwear|an orthotic or a brace|a prosthetic device or an artificial limb|a grasping tool or a reach extender|adapted tools, utensils or special grips|a device for dressing (e.g., button hook, zipper pull, long-handled shoe horn)|a device with oversized buttons (e.g., remote control or telephone)|None" optional="true">
             <![CDATA[
@@ -313,9 +313,9 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-                        	$('span#employspecify').hide();
-				function specifyEmploy(){
+            <script type='text/javascript'>
+                            $('span#employspecify').hide();
+                function specifyEmploy(){
                                         if($("select[name='GettingtoKnowYou_employment_avoid']").val() == "Other (specify):"){
                                                 $('span#employspecify').show();
                                         }
@@ -323,8 +323,8 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 }
                                 _.defer(specifyEmploy);
                                 $("select[name='GettingtoKnowYou_employment_avoid']").change(specifyEmploy);
-			</script>
-		]]>
+            </script>
+        ]]>
         </Static>
         <ReportItem id="device_avoid" type="RadioReportItem" options="Yes|No" blobItem="device_avoid">
             <![CDATA[
@@ -350,8 +350,8 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         else{ $('span#devicespecify').hide();}
                                 }
                                 _.defer(specifyDevice);
-					$("input:radio[name='GettingtoKnowYou_device_avoid']").change(specifyDevice);
-			</script>
+                    $("input:radio[name='GettingtoKnowYou_device_avoid']").change(specifyDevice);
+            </script>
                 ]]>
         </Static>
         <ReportItem id="tech1" type="SelectReportItem" options="Yes|No" blobItem="tech_avoid">
@@ -375,14 +375,14 @@ As a user of this program, you may or may not see direct benefits from this stud
         <ReportItem id="program_location__specify" type="Text" blobItem="PROGRAMLOCATIONSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="programlocationspecify">
-			<p>If you remember the location, please specify: {$item}</p>
+            <p>If you remember the location, please specify: {$item}</p>
                 </span>
                 ]]>
         </ReportItem>
         <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="device_avoid" optional="true">
             <![CDATA[
                 <span id="programspecify">
-			<p>Please specify platform: {$item}</p>
+            <p>Please specify platform: {$item}</p>
                 </span>
                 ]]>
         </ReportItem>
@@ -396,44 +396,44 @@ As a user of this program, you may or may not see direct benefits from this stud
         <ReportItem id="program_other_specify" type="Text" blobItem="PROGRAMOTHERSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="programotherspecify">
-			<p>Please specify: {$item}</p>
+            <p>Please specify: {$item}</p>
                 </span>
                 ]]>
         </ReportItem>
         <Static>
             <![CDATA[
                         <script type='text/javascript'>
-				$('span#programlocationspecify').hide();
-				$('span#programspecify').hide();
-				$('span#programotherspecify').hide();
+                $('span#programlocationspecify').hide();
+                $('span#programspecify').hide();
+                $('span#programotherspecify').hide();
                                 function specifyFrail(){
                                         if($("select[name='GettingtoKnowYou_program_avoid").val() == "Poster, flyer, or pamphlet at community venue"){
-						$('span#programlocationspecify').show();
-						$('span#programspecify').hide();
+                        $('span#programlocationspecify').show();
+                        $('span#programspecify').hide();
                                                 $('span#programotherspecify').hide();
-					}
-					else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Social media"){
-					        $('span#programlocationspecify').hide();
+                    }
+                    else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Social media"){
+                            $('span#programlocationspecify').hide();
                                                 $('span#programspecify').show();
                                                 $('span#programotherspecify').hide();
-					}
+                    }
                                         else if($("select[name='GettingtoKnowYou_program_avoid").val() == "Other"){
-					        $('span#programlocationspecify').hide();
+                            $('span#programlocationspecify').hide();
                                                 $('span#programspecify').hide();
                                                 $('span#programotherspecify').show();
                                         }
-					else{ 
-						$('span#programlocationspecify').hide();
-						$('span#programspecify').hide();
-						$('span#programotherspecify').hide();
-					}
+                    else{ 
+                        $('span#programlocationspecify').hide();
+                        $('span#programspecify').hide();
+                        $('span#programotherspecify').hide();
+                    }
                                 }
                                 _.defer(specifyEmploy);
                                 $("select[name='GettingtoKnowYou_program_avoid']").change(specifyFrail);
-				
-				$('span#programplatformotherspecify').hide();
-				function specifyPlatform(){
-					if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
+                
+                $('span#programplatformotherspecify').hide();
+                function specifyPlatform(){
+                    if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
                                                 $('span#programplatformotherspecify').show();
                                         }
                                         else{ $('span#programplatformotherspecify').hide();}
@@ -445,7 +445,7 @@ As a user of this program, you may or may not see direct benefits from this stud
         </Static>
     </ReportSection>
     <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Self-Assessment" title="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
-	    <Static>
+        <Static>
             <![CDATA[
                 <script type='text/javascript'>
                                 $('#mw-content-text').css("height", "");
@@ -460,7 +460,7 @@ As a user of this program, you may or may not see direct benefits from this stud
         </Static>
         <ReportItem id="behave1_avoid" blobItem="behave1_avoid" type="RadioReportItem" orientation="horizontal" options="Some of the day|Most of the day|All day">
             <![CDATA[
-		<br/><br/><div id="reportHeader" class="headers-behaviour"><b>Activity</b></div><hr>
+        <br/><br/><div id="reportHeader" class="headers-behaviour"><b>Activity</b></div><hr>
                     <h3>During the last 7 days, how much time did you spend sitting during the day?</h3>
                     {$item}
             ]]>
@@ -479,10 +479,10 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="active_specify_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="active_specify_end" orientation="vertical" options="I am physically and/or mentally unable to be active|I don't know where/how to get help in my community|I have trouble maintaining a routine when it comes to activity|Other" optional="true">
             <![CDATA[
-			<span id="active_specify_end">
-			<h3>What is the hardest part of staying active for you? (choose all that apply):</h3>
-			{$item}
-			</span>
+            <span id="active_specify_end">
+            <h3>What is the hardest part of staying active for you? (choose all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="active_text_specify" type="Text" blobItem="ACTIVESPECIFY" width="400px" optional="true">
@@ -494,30 +494,30 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-				$('span#active_specify_end').hide();
-					function specifyActiveEnd(){
-						if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
-                                        	else{$('span#active_specify_end').hide();}
-                       			}
-                     		_.defer(specifyActiveEnd);
+            <script type='text/javascript'>
+                $('span#active_specify_end').hide();
+                    function specifyActiveEnd(){
+                        if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                                            else{$('span#active_specify_end').hide();}
+                                   }
+                             _.defer(specifyActiveEnd);
                                 $("input:radio[name='SelfAssessment_behave1_avoid']").change(specifyActiveEnd);
                                 $("input:radio[name='SelfAssessment_behave2_avoid']").change(specifyActiveEnd);
                                 $("input:radio[name='SelfAssessment_behave0_avoid']").change(specifyActiveEnd);
                                 $("input:radio[name='SelfAssessment_behave4_avoid']").change(specifyActiveEnd);
-				$("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
+                $("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
 
                                 $('span#activespecify').hide();
-					function specifyActiveOther(){
-					var flag = false;
-					$('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
-						if(this.value == "Other"){
-							flag = true;
-						}
-					});
+                    function specifyActiveOther(){
+                    var flag = false;
+                    $('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#activespecify').show();
                                         }
@@ -526,14 +526,14 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 _.defer(specifyActiveOther);
                                 $("input:checkbox[name='SelfAssessment_active_specify_end[]']").change(specifyActiveOther);
 
-			</script>
-		]]>
+            </script>
+        ]]>
         </Static>
         <Static>
             <![CDATA[
-			<br/>
-			<div id="reportHeader" class="headers-behaviour"><b>VACCINATE</b></div><hr>
-		]]>
+            <br/>
+            <div id="reportHeader" class="headers-behaviour"><b>VACCINATE</b></div><hr>
+        ]]>
         </Static>
         <ReportItem id="vaccinate1_avoid" blobItem="vaccinate1_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
@@ -562,9 +562,9 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         $('span#vaccinateyes').show();}
                                 }
                                 _.defer(specifyVax);
-					$("input:radio[name='SelfAssessment_vaccinate1_avoid']").change(specifyVax);
-			</script>		
-		]]>
+                    $("input:radio[name='SelfAssessment_vaccinate1_avoid']").change(specifyVax);
+            </script>        
+        ]]>
         </Static>
         <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
@@ -599,9 +599,9 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         }
                                 }
                                 _.defer(specifyShingles);
-					$("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyShingles);
-			</script>		
-		]]>
+                    $("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyShingles);
+            </script>        
+        ]]>
         </Static>
         <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
@@ -643,16 +643,16 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         }
                                 }
                                 _.defer(specifyBooster);
-					$("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyBooster);
-			</script>	
-		]]>
+                    $("input:radio[name='SelfAssessment_vaccinate6_avoid']").change(specifyBooster);
+            </script>    
+        ]]>
         </Static>
         <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other" optional="true">
             <![CDATA[
-			<span id="vax_end">
-			<h3>What is the main reason that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
-			{$item}
-			</span>
+            <span id="vax_end">
+            <h3>What is the main reason that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="vax_end_text_specify" blobItem="VAXENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -664,18 +664,18 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-				$('span#vax_end').hide();
-					function specifyVaxEnd(){
-						if($("input:radio[name='SelfAssessment_vaccinate2_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+            <script type='text/javascript'>
+                $('span#vax_end').hide();
+                    function specifyVaxEnd(){
+                        if($("input:radio[name='SelfAssessment_vaccinate2_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
                                                 else if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
 
-                                        	else{$('span#vax_end').hide();}
-                       			}
-                     		_.defer(specifyVaxEnd);
+                                            else{$('span#vax_end').hide();}
+                                   }
+                             _.defer(specifyVaxEnd);
                                 $("input:radio[name='SelfAssessment_vaccinate2_avoid']").change(specifyVaxEnd);
                                 $("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyVaxEnd);
                                 $("input:radio[name='SelfAssessment_vaccinate4_avoid']").change(specifyVaxEnd);
@@ -685,12 +685,12 @@ As a user of this program, you may or may not see direct benefits from this stud
 
                                 $('span#vax_end_specify').hide();
                                 function specifyVaxOther(){
-					var flag = false;
-					$('input[name="SelfAssessment_vax_end[]"]:checked').each(function() {
-						if(this.value == "Other"){
-							flag = true;
-						}
-					});
+                    var flag = false;
+                    $('input[name="SelfAssessment_vax_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#vax_end_specify').show();
                                         }
@@ -699,13 +699,13 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 _.defer(specifyVaxOther);
                                 $("input:checkbox[name='SelfAssessment_vax_end[]']").change(specifyVaxOther);
 
-			</script>          
+            </script>          
                 ]]>
         </Static>
         <Static>
             <![CDATA[
                         <br/>
-			<div id="reportHeader" class="headers-behaviour"><b>OPTIMIZE MEDICATION</b></div><hr>
+            <div id="reportHeader" class="headers-behaviour"><b>OPTIMIZE MEDICATION</b></div><hr>
                 ]]>
         </Static>
         <ReportItem id="meds1_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
@@ -728,10 +728,10 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="meds_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="meds_end" orientation="vertical" options="I was not aware that this is recommended|I do not feel comfortable and/or prepared to have this conversation with a healthcare provider|I do not know who to talk to about this|I have had my medication reviewed in the past, but find it hard to remember each year|I do not understand why this is important|Other" optional="true">
             <![CDATA[
-			<span id="meds_end">
-			<h3>Why have you not had your medication reviewed in the last year? (choose all that apply):</h3>
-			{$item}
-			</span>
+            <span id="meds_end">
+            <h3>Why have you not had your medication reviewed in the last year? (choose all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -743,24 +743,24 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-				$('span#meds_end').hide();
-					function specifyMedsEnd(){
-						if($("input:radio[name='SelfAssessment_meds3_avoid']:checked").val() == "No"){$('span#meds_end').show();}
-                                        	else{$('span#meds_end').hide();}
-                       			}
-                     		_.defer(specifyMedsEnd);
+            <script type='text/javascript'>
+                $('span#meds_end').hide();
+                    function specifyMedsEnd(){
+                        if($("input:radio[name='SelfAssessment_meds3_avoid']:checked").val() == "No"){$('span#meds_end').show();}
+                                            else{$('span#meds_end').hide();}
+                                   }
+                             _.defer(specifyMedsEnd);
                                 $("input:radio[name='SelfAssessment_meds3_avoid']").change(specifyMedsEnd);
 
 
                                 $('span#meds_end_specify').hide();
                                 function specifyMedsOther(){
-					var flag = false;
-					$('input[name="SelfAssessment_meds_end[]"]:checked').each(function() {
-						if(this.value == "Other"){
-							flag = true;
-						}
-					});
+                    var flag = false;
+                    $('input[name="SelfAssessment_meds_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#meds_end_specify').show();
                                         }
@@ -768,20 +768,20 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 }
                                 _.defer(specifyMedsOther);
                                 $("input:checkbox[name='SelfAssessment_meds_end[]']").change(specifyMedsOther);
-			</script>          
+            </script>          
                 ]]>
         </Static>
         <Static>
             <![CDATA[
-			<br/>
-			<div id="reportHeader" class="headers-behaviour"><b>INTERACT (Adapted with permission from Lubben Scale)</b></div><hr>
-		]]>
+            <br/>
+            <div id="reportHeader" class="headers-behaviour"><b>INTERACT</b></div><hr>
+        ]]>
         </Static>
         <Static>
             <![CDATA[
-		<p><i>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</i></p>
+        <p><i>Family: Considering the people to whom you are related by birth, marriage, adoption, etc.</i></p>
 
-		]]>
+        ]]>
         </Static>
         <ReportItem id="interact1_avoid" blobItem="interact1_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
@@ -803,9 +803,9 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-		<p><i>Friendships: Considering all of your friends including those who live in your neighborhood</i></p>
+        <p><i>Friendships: Considering all of your friends including those who live in your neighborhood</i></p>
 
-		]]>
+        ]]>
         </Static>
         <ReportItem id="interact4_avoid" blobItem="interact4_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
@@ -827,10 +827,10 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
-			<span id="interact_end">
-			<h3>What have been your main challenge when it comes to social interaction? (choose all that apply):</h3>
-			{$item}
-			</span>
+            <span id="interact_end">
+            <h3>What have been your main challenge when it comes to social interaction? (choose all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -863,7 +863,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                         return getScore(score1) + getScore(score2) + getScore(score3) + getScore(score4) + getScore(score5) + getScore(score6)
                                 }
 
-				$('span#interact_end').hide();
+                $('span#interact_end').hide();
                                 function specifyInteractEnd(){
                                         if(calculateInteractionScore() < 12 ){
                                                 $('span#interact_end').show();
@@ -872,7 +872,7 @@ As a user of this program, you may or may not see direct benefits from this stud
                                                 $('span#interact_end').hide();
                                         }
                                 }
-                     		_.defer(specifyInteractEnd);
+                             _.defer(specifyInteractEnd);
                                 $("input:radio[name='SelfAssessment_interact1_avoid']").change(specifyInteractEnd);
                                 $("input:radio[name='SelfAssessment_interact2_avoid']").change(specifyInteractEnd);
                                 $("input:radio[name='SelfAssessment_interact3_avoid']").change(specifyInteractEnd);
@@ -883,12 +883,12 @@ As a user of this program, you may or may not see direct benefits from this stud
 
                                 $('span#interact_end_specify').hide();
                                 function specifyInteractOther(){
-					var flag = false;
-					$('input[name="SelfAssessment_interact_end[]"]:checked').each(function() {
-						if(this.value == "Other"){
-							flag = true;
-						}
-					});
+                    var flag = false;
+                    $('input[name="SelfAssessment_interact_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#interact_end_specify').show();
                                         }
@@ -897,14 +897,14 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 _.defer(specifyInteractOther);
                                 $("input:checkbox[name='SelfAssessment_interact_end[]']").change(specifyInteractOther);
 
-			</script> 
-		]]>
+            </script> 
+        ]]>
         </Static>
         <Static>
             <![CDATA[
-			<br/><br/>
-			<div id="reportHeader" class="headers-behaviour"><b>DIET AND NUTRITION</b></div><hr>
-		]]>
+            <br/><br/>
+            <div id="reportHeader" class="headers-behaviour"><b>DIET AND NUTRITION</b></div><hr>
+        ]]>
         </Static>
         <ReportItem id="diet1_avoid" blobItem="diet1_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
@@ -933,10 +933,10 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
             <![CDATA[
-			<span id="diet_end">
-			<h3>What is the hardest part of maintaining a balanced diet for you? (choose all that apply):</h3>
-			{$item}
-			</span>
+            <span id="diet_end">
+            <h3>What is the hardest part of maintaining a balanced diet for you? (choose all that apply):</h3>
+            {$item}
+            </span>
             ]]>
         </ReportItem>
         <ReportItem id="diet_end_text_specify" blobItem="DIETENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -948,16 +948,16 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-				$('span#diet_end').hide();
-					function specifyDietEnd(){
-						if($("input:radio[name='SelfAssessment_diet1_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_diet2_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_diet3_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else if($("input:radio[name='SelfAssessment_diet4_avoid']:checked").val() == "No"){$('span#diet_end').show();}
-                                        	else{$('span#diet_end').hide();}
-                       			}
-                     		_.defer(specifyDietEnd);
+            <script type='text/javascript'>
+                $('span#diet_end').hide();
+                    function specifyDietEnd(){
+                        if($("input:radio[name='SelfAssessment_diet1_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet2_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet3_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else if($("input:radio[name='SelfAssessment_diet4_avoid']:checked").val() == "No"){$('span#diet_end').show();}
+                                            else{$('span#diet_end').hide();}
+                                   }
+                             _.defer(specifyDietEnd);
                                 $("input:radio[name='SelfAssessment_diet1_avoid']").change(specifyDietEnd);
                                 $("input:radio[name='SelfAssessment_diet2_avoid']").change(specifyDietEnd);
                                 $("input:radio[name='SelfAssessment_diet3_avoid']").change(specifyDietEnd);
@@ -966,12 +966,12 @@ As a user of this program, you may or may not see direct benefits from this stud
 
                                 $('span#diet_end_specify').hide();
                                 function specifyDietOther(){
-					var flag = false;
-					$('input[name="SelfAssessment_diet_end[]"]:checked').each(function() {
-						if(this.value == "Other"){
-							flag = true;
-						}
-					});
+                    var flag = false;
+                    $('input[name="SelfAssessment_diet_end[]"]:checked').each(function() {
+                        if(this.value == "Other"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#diet_end_specify').show();
                                         }
@@ -980,15 +980,15 @@ As a user of this program, you may or may not see direct benefits from this stud
                                 _.defer(specifyDietOther);
                                 $("input:checkbox[name='SelfAssessment_diet_end[]']").change(specifyDietOther);
 
-			</script>          
+            </script>          
                 ]]>
         </Static>
         <Static>
             <![CDATA[
-			<br/>
-			<div id="reportHeader" class="headers-behaviour"><b>READINESS FOR CHANGE</b></div><hr>
+            <br/>
+            <div id="reportHeader" class="headers-behaviour"><b>READINESS FOR CHANGE</b></div><hr>
                         <i>To better understand what you aim to achieve with the AVOID Frailty Program, please select which of the following statements best describes you in relation to each of the components of AVOID</i>
-		]]>
+        ]]>
         </Static>
         <ReportItem id="lifestyle"  blobItem="lifestyle" type="RadioReportItem" options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
@@ -1024,38 +1024,38 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="healthquestions" tooltip="Health Related QoL" name="Health Related QoL" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<div style="width:100%;text-align:center"><img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center;"><br />
-				<b>Health Questionnaire</b>
-		</div>
+        <div style="width:100%;text-align:center"><img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center;"><br />
+                <b>Health Questionnaire</b>
+        </div>
                 ]]>
-	</Static>
-	<Static>
+    </Static>
+    <Static>
             <![CDATA[
-		<script type='text/javascript'>
-				$('#mw-content-text').css("height", "100%");
-		</script>
+        <script type='text/javascript'>
+                $('#mw-content-text').css("height", "100%");
+        </script>
                 ]]>
         </Static>
     </ReportSection>
     <ReportSection id="healthquestions2" tooltip="Health Related QoL2" name="Health Related QoL2" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please select the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus1_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems in walking about|I have slight problems in walking about|I have moderate problems in walking about|I have severe problems in walking about|I am unable to walk about" blobItem="healthstatus_avoid">
-		<![CDATA[
-			<div class="options">
+        <![CDATA[
+            <div class="options">
                     <h3>MOBILITY</h3>
-			    {$item}
-	    </div>
+                {$item}
+        </div>
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions3" tooltip="Health Related QoL3" name="Health Related QoL3" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please select the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus2_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems washing or dressing myself|I have slight problems washing or dressing myself|I have moderate problems washing or dressing myself|I have severe problems washing or dressing myself|I am unable to wash or dress myself " blobItem="healthstatus_avoid2">
@@ -1068,7 +1068,7 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="healthquestions4" tooltip="Health Related QoL4" name="Health Related QoL4" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please select the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus3_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems doing my usual activities|I have slight problems doing my usual activities|I have moderate problems doing my usual activities|I have severe problems doing my usual activities|I am unable to do my usual activities" blobItem="healthstatus_avoid3">
@@ -1081,7 +1081,7 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="healthquestions5" tooltip="Health Related QoL5" name="Health Related QoL5" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please select the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus4_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no pain or discomfort|I have slight pain or discomfort|I have moderate pain or discomfort|I have severe pain or discomfort|I have extreme pain or discomfort" blobItem="healthstatus_avoid4">
@@ -1094,7 +1094,7 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="healthquestions6" tooltip="Health Related QoL6" name="Health Related QoL6" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-		<p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please select the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus5_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I am not anxious or depressed|I am slightly anxious or depressed|I am moderately anxious or depressed|I am severely anxious or depressed|I am extremely anxious or depressed" blobItem="healthstatus_avoid5">
@@ -1105,7 +1105,7 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL7" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
-	 <Static>
+     <Static>
             <![CDATA[
                 <script type='text/javascript'>
                                 $('#mw-content-text').css("height", "100%");
@@ -1114,14 +1114,14 @@ As a user of this program, you may or may not see direct benefits from this stud
         </Static>
         <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" orientation="vertical" blobItem="healthstatus_avoid6">
             <![CDATA[
-		    <h3>We would like to know how good or bad your health is TODAY.</h3>
-		    <lu>
-			    <li>This scale is numbered from 0 to 100.</li>
-			    <li>100 means the best health you can imagine.</li>
-			    <li>0 means the worst health you can imagine.</li>
-			    <li>Mark on the scale to indicate how your health is TODAY.</li>
-		    </lu>
-			<br />
+            <h3>We would like to know how good or bad your health is TODAY.</h3>
+            <lu>
+                <li>This scale is numbered from 0 to 100.</li>
+                <li>100 means the best health you can imagine.</li>
+                <li>0 means the worst health you can imagine.</li>
+                <li>Mark on the scale to indicate how your health is TODAY.</li>
+            </lu>
+            <br />
                     {$item}
             ]]>
         </ReportItem>
@@ -1129,12 +1129,12 @@ As a user of this program, you may or may not see direct benefits from this stud
     <ReportSection id="clinicalfrailty" tooltip="Health Status" name="Health Status" blobSection="clinicalfrailty" type="NextPrevReportSection" pagebreak="false" >
         <ReportItem id="symptoms_avoid1" blobItem="symptoms_avoid1" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[
-		<i>This final section will ask questions about your specific health and frailty status before you start the program. We hope to stop or slow down the progression of frailty by providing you with the support that you need in your community. We will ask you these questions again in 6 months to see if anything has changed.</i>
-		    <h3>During the past week, how often have you felt that everything was an <b>effort</b> or you <b>could not get going</b>?</h3>
+        <i>This final section will ask questions about your specific health and frailty status before you start the program. We hope to stop or slow down the progression of frailty by providing you with the support that you need in your community. We will ask you these questions again in 6 months to see if anything has changed.</i>
+            <h3>During the past week, how often have you felt that everything was an <b>effort</b> or you <b>could not get going</b>?</h3>
                     {$item}
             ]]>
-	    </ReportItem>
-	    <Static>
+        </ReportItem>
+        <Static>
             <![CDATA[
                 <script type='text/javascript'>
                                 $('#mw-content-text').css("height", "");
@@ -1258,31 +1258,31 @@ As a user of this program, you may or may not see direct benefits from this stud
         </ReportItem>
         <ReportItem id="symptoms_avoid_specify" type="Text" blobItem="SYMPTOMSSPECIFY" width="400px" optional="true">
             <![CDATA[
-		<span id="symptoms_specify">
-			Specify: {$item}
-		</span>
-            	]]>
+        <span id="symptoms_specify">
+            Specify: {$item}
+        </span>
+                ]]>
         </ReportItem>
         <Static>
             <![CDATA[
-			<script type='text/javascript'>
-                        	$('span#symptoms_specify').hide();
-				function specifySymptoms(){
-					var flag = false;
-					$('input[name="HealthStatus_symptoms_avoid[]"]:checked').each(function() {
-						if(this.value == "Other (please specify)"){
-							flag = true;
-						}
-					});
+            <script type='text/javascript'>
+                            $('span#symptoms_specify').hide();
+                function specifySymptoms(){
+                    var flag = false;
+                    $('input[name="HealthStatus_symptoms_avoid[]"]:checked').each(function() {
+                        if(this.value == "Other (please specify)"){
+                            flag = true;
+                        }
+                    });
                                         if(flag){
                                                 $('span#symptoms_specify').show();
                                         }
                                         else{ $('span#symptoms_specify').hide();}
                                 }
                                 _.defer(specifySymptoms);
-				$("input:checkbox[name='HealthStatus_symptoms_avoid[]']").change(specifySymptoms);
-			</script>
-		]]>
+                $("input:checkbox[name='HealthStatus_symptoms_avoid[]']").change(specifySymptoms);
+            </script>
+        ]]>
         </Static>
         <ReportItem id="symptoms_avoid19" blobItem="symptoms_avoid19" type="RadioReportItem" orientation="vertical" options="Not at all|A little|A fair amount">
             <![CDATA[
@@ -1419,10 +1419,10 @@ As a user of this program, you may or may not see direct benefits from this stud
                         $('#reportFooter').hide();
                         $('#submit_review').click(function(){
                             $('#submitDiv input[type=text]').val('Submitted');
-				            saveAll(function(){
-				                window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
-				            });
-				        });
+                            saveAll(function(){
+                                window.location.href = wgServer + wgScriptPath + "/index.php/Special:AVOIDDashboard";
+                            });
+                        });
                     </script>
                 ]]>
             </Static>
