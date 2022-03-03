@@ -1850,13 +1850,15 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     margin-bottom: 1em;
 }
 
-.program-body a, .program-body a:hover, .program-body a:visited {
+.program-body a:not(.program-button), 
+.program-body a:not(.program-button):hover, 
+.program-body a:not(.program-button):visited {
     color: black !important;
     text-decoration: underline;
     text-decoration-color: #e97936;
 }
 
-.program-body a:hover {
+.program-body a:not(.program-button):hover {
     color: #e97936 !important;
 }
 
@@ -1902,7 +1904,7 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 
 .program-button:hover {
     background: #f69443;
-    color: white;
+    color: white !important;
     text-decoration: none !important;
     cursor: pointer;
 }
