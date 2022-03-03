@@ -5,6 +5,16 @@
     </Permissions>
     <Script>
         <![CDATA[
+            <style>
+                .requiredField {
+                    padding: 5px;
+                    margin-left: -5px;
+                }
+                
+                .requiredFieldIncomplete {
+                    background: #fdeeb2;
+                }
+            </style>
             <script type="text/javascript">
                 var consent = '{getText(RP_AVOID,AVOID_CHECK_EULA,EULA,0,{$user_id},0)}';
 
@@ -70,6 +80,39 @@
                 
                 setInterval(function(){
                     hideConsent();
+                }, 100);
+                
+                setInterval(function(){
+                    $("input, textarea, select", $("div.requiredField")).each(function(i, el){
+                        var requiredField = $(el).closest(".requiredField");
+                        var name = $(el).attr('name');
+                        var type = $(el).attr('type');
+                        var tag = $(el).prop("tagName").toLowerCase();
+                        if(type == "text" || type == "range" || tag == "textarea"){
+                            if($(el).val() == ""){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                        else if(type == "radio" || type == "checkbox"){
+                            if($("input[name='" + name + "']:checked").length == 0){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                        else if(tag == "select"){
+                            if($("option:selected", el).val() == ""){
+                                requiredField.addClass("requiredFieldIncomplete");
+                            }
+                            else{
+                                requiredField.removeClass("requiredFieldIncomplete");
+                            }
+                        }
+                    });
                 }, 100);
             </script>
         ]]>
@@ -145,8 +188,7 @@
         <ReportItem id="socio_info1" type="SelectReportItem" options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" blobItem="avoid_age">
             <![CDATA[
                 <h3>Age</h3>
-                {$item}
-
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <Static>
@@ -198,7 +240,7 @@
             <![CDATA[
                             <h3>What is your gender?</h3>
                             <p><i>Gender refers to social roles and expectations, behaviors, expressions, and identities of girls, women, boys, men, and gender-diverse people.</i></p>
-                            {$item}
+                            <div class="requiredField">{$item}</div>
                     ]]>
         </ReportItem>
         <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px" optional="true">
@@ -213,7 +255,7 @@
         <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="30px" max_length="3">
             <![CDATA[
                 <h3>Please enter the first 3 digits of your postal code:</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
                     ]]>
         </ReportItem>
         <Static>
@@ -238,7 +280,7 @@
         <ReportItem id="ethnicity_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid" orientation="vertical" options="Black|East/Southeast Asian|Indigenous (First Nations, Metis, Inuk/Inuit)|Latino|Middle Eastern|South Asian|White|Other|Prefer not to answer" optional="true">
             <![CDATA[
                 <h3>Which ethnicity category best describes you? Check all that apply:</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="ethnicity_indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ethnicity_avoid2" orientation="vertical" options="First Nations|Metis|Inuk/Inuit|No|Prefer not to answer" optional="true">
@@ -284,13 +326,13 @@
         <ReportItem id="transportation_avoid" type="SelectReportItem" options="Passenger in a motor vehicle|Drive a motor vehicle|Taxi or similar paid services|Public transportation such as bus, rapid transit, subway or train|Accessible transit|Cycling|Walking|Wheelchair or motorized cart" blobItem="transportation_avoid">
             <![CDATA[
                     <h3>In general, which is your most common form of transportation?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="income_avoid" type="SelectReportItem" options="Under $10,000|$10,000 to $24,999|$25,000 to $49,999|$50,000 to $74,999|$75,000 to $99,999|$100,000 or more|Prefer not to say" blobItem="income_avoid">
             <![CDATA[
                     <h3>What is your total household annual income? (include all sources of income before taxes and deductions):</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <Static>
@@ -305,25 +347,25 @@
             <![CDATA[
                 <h3>Do you use any aids and/or assistive devices for moving around, to help with bending or reaching or to help with fine motor skills?
                 Select all that apply.</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="living_avoid" type="SelectReportItem" options="Living alone|Living with partner (includes with or without children)|Living with relatives and non-relatives|Prefer not to say" blobItem="living_avoid">
             <![CDATA[
                     <h3>Living arrangement:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="education_avoid" type="SelectReportItem" options="No certificate, diploma, or degree|Secondary (highschool) diploma or equivalency certificate|Apprenticeship or trades certificate or diploma|College, CEGEP, or non-university certificate or diploma|University certificate of diploma below bachelor level|University certificate, diploma, or degree at bachelor level or above|Prefer not to say" blobItem="education_avoid">
             <![CDATA[
                     <h3>Please specify your highest level of education:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="employment_avoid" type="SelectReportItem" options="Employed|Unempoyed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid">
             <![CDATA[
                     <h3>Employment status:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="employment_specify" type="Text" blobItem="EMPLOYSPECIFY" width="400px" optional="true">
@@ -351,7 +393,7 @@
         <ReportItem id="device_avoid" type="RadioReportItem" options="Yes|No" blobItem="device_avoid">
             <![CDATA[
                     <h3>In the past 12 months, have you used any technology or digital device to help you monitor or manage certain aspects of your health and well-being?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="device_specify" type="Text" blobItem="DEVICESPECIFY" width="400px" optional="true">
@@ -379,19 +421,19 @@
         <ReportItem id="tech1" type="SelectReportItem" options="Yes|No" blobItem="tech_avoid">
             <![CDATA[
                     <h3>Do you feel comfortable using technology in your everyday life?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="internetissues_avoid" type="SelectReportItem" options="Never|On occasion|Often – My internet connection is not reliable" blobItem="internetissues_avoid">
             <![CDATA[
                     <h3>How often do you experience internet connectivity issues?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="program_avoid" type="SelectReportItem" options="Canadian Frailty Network website|Poster, flyer, or pamphlet at community venue|Newspaper|Post card received in the mail|Social media|Word of mouth|Other" blobItem="program_avoid">
             <![CDATA[
                     <h3>How did you hear about the AVOID Frailty program?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="program_location__specify" type="Text" blobItem="PROGRAMLOCATIONSPECIFY" width="400px" optional="true">
@@ -484,19 +526,19 @@
             <![CDATA[
         <br/><br/><div id="reportHeader" class="headers-behaviour"><b>Activity</b></div><hr>
                     <h3>During the last 7 days, how much time did you spend sitting during the day?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="behave0_avoid" blobItem="behave0_avoid" type="RadioReportItem" orientation="horizontal"  options="Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all">
             <![CDATA[
                     <h3>During the last 7 days, on how many days did you walk for at least 10 minutes at a time?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="behave2_avoid" blobItem="behave2_avoid" type="RadioReportItem" orientation="horizontal"  options="Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all">
             <![CDATA[
                     <h3>During the last 7 days on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming, or other fitness activities?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="active_specify_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="active_specify_end" orientation="vertical" options="I am physically and/or mentally unable to be active|I don't know where/how to get help in my community|I have trouble maintaining a routine when it comes to activity|Other" optional="true">
@@ -560,7 +602,7 @@
         <ReportItem id="vaccinate1_avoid" blobItem="vaccinate1_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <h3>Have you ever been told by a health care provider that you are not to be vaccinated?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="vax_text_specify" blobItem="ACTIVESPECIFY" type="Textarea" optional="true">
@@ -588,17 +630,17 @@
             </script>        
         ]]>
         </Static>
-        <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
+        <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
                 <span id="vaccinateyes">
                     <h3>Have you had your annual flu vaccine this year?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal"  options="Yes|No">
+        <ReportItem id="vaccinate3_avoid" blobItem="vaccinate3_avoid"  type="RadioReportItem" orientation="horizontal"  options="Yes|No"  optional="true">
             <![CDATA[
                     <h3>Have you had a shingles vaccine? (once after age 50)</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate3specify_avoid" blobItem="vaccinate3specify_avoid"  type="RadioReportItem" options="Shingrix|Zostavax II|Unsure" optional="true">
@@ -625,22 +667,22 @@
             </script>        
         ]]>
         </Static>
-        <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
+        <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No"  optional="true">
             <![CDATA[
                     <h3>Have you had a pneumonia vaccine? (once at age 65)</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
+        <ReportItem id="vaccinate5_avoid" blobItem="vaccinate5_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
                     <h3>Are your booster vaccines up to date? (Tetanus & Diphtheria – every 10 years)</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vaccinate6_avoid" blobItem="vaccinate6_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
+        <ReportItem id="vaccinate6_avoid" blobItem="vaccinate6_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
                     <h3>Have you had two doses of the COVID-19 vaccine?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="vaccinate7_avoid" blobItem="vaccinate7_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
@@ -733,19 +775,19 @@
         <ReportItem id="meds1_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
             <![CDATA[
                     <h3>How many prescription medications do you take?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="meds2_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
             <![CDATA[
                     <h3>How many over the counter medications, including supplements/vitamins do you take on a daily basis?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="meds3_avoid" blobItem="meds3_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No|N/A">
             <![CDATA[
                     <h3>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="meds_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="meds_end" orientation="vertical" options="I was not aware that this is recommended|I do not feel comfortable and/or prepared to have this conversation with a healthcare provider|I do not know who to talk to about this|I have had my medication reviewed in the past, but find it hard to remember each year|I do not understand why this is important|Other" optional="true">
@@ -808,19 +850,19 @@
         <ReportItem id="interact1_avoid" blobItem="interact1_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many relatives do you see or hear from at least once a month?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="interact2_avoid" blobItem="interact2_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many relatives do you feel at ease with that you can talk about private matters?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="interact3_avoid" blobItem="interact3_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many relatives do you feel close to such that you could call on them for help?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <Static>
@@ -832,19 +874,19 @@
         <ReportItem id="interact4_avoid" blobItem="interact4_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many of your friends do you see or hear from at least once a month?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="interact5_avoid" blobItem="interact5_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many friends do you feel at ease with that you can talk about private matters?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="interact6_avoid" blobItem="interact6_avoid" type="RadioReportItem" orientation="horizontal" options="None|1|2|3-4|5-8|9+">
             <![CDATA[
                     <h3>How many friends do you feel close to such that you could call on them for help?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
@@ -931,26 +973,26 @@
         <ReportItem id="diet1_avoid" blobItem="diet1_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <h3>Do you eat foods high in protein (e.g., meat, poultry, fish, eggs, and dairy foods) with every meal?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="diet2_avoid" blobItem="diet2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <h3>At meal times, is half your plate usually filled with fruits and vegetables?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="diet3_avoid" blobItem="diet3_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <h3>Do you eat foods high in calcium every day?</h3>
                     <i>Recommended Dietary Allowance: 1000-1200mg daily *1 cup cow’s milk = 200mg, 3/4 cup yogurt = 250mg, 1 oz. cheese = 200mg</i>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="diet4_avoid" blobItem="diet4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <h3>Do you take a vitamin D supplement?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
@@ -1016,35 +1058,35 @@
                                                                                 options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Activity:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="lifestyle2"  blobItem="lifestyle2" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
                                                                                   options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Vaccination:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="lifestyle3"  blobItem="lifestyle3" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
                                                                                   options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Optimized Medication Use:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="lifestyle4"  blobItem="lifestyle4" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
                                                                                   options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Social Interaction:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="lifestyle5"  blobItem="lifestyle5" type="RadioReportItem" labels="I don’t think I need to make a change in this area but am still interested in what this program has to offer|I am interested in changing my lifestyle in this area and need some help getting started|I am interested in changing my lifestyle in this area and would like to start planning my first steps|I am already engaged in some healthy behaviours in this area but want to create lasting habits|I am already engaged in health behaviours and am interested to continue to improve even more"                                                                             
                                                                                   options="I don’t think I need to make a change in this area but am still interested in what this program has to offer (pre-contemplation)|I am interested in changing my lifestyle in this area and need some help getting started (contemplation)|I am interested in changing my lifestyle in this area and would like to start planning my first steps (preparation)|I am already engaged in some healthy behaviours in this area but want to create lasting habits (action)|I am already engaged in health behaviours and am interested to continue to improve even more (maintenance)">
             <![CDATA[
                     <h3>Diet and Nutrition:</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1074,7 +1116,7 @@
         <![CDATA[
             <div class="options">
                     <h3>MOBILITY</h3>
-                {$item}
+                <div class="requiredField" style="margin:0;">{$item}</div>
         </div>
             ]]>
         </ReportItem>
@@ -1088,7 +1130,7 @@
         <ReportItem id="healthstatus2_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems washing or dressing myself|I have slight problems washing or dressing myself|I have moderate problems washing or dressing myself|I have severe problems washing or dressing myself|I am unable to wash or dress myself " blobItem="healthstatus_avoid2">
             <![CDATA[
                         <h3>SELF-CARE</h3>
-                        {$item}
+                        <div class="requiredField" style="margin:0;">{$item}</div>
                 ]]>
         </ReportItem>
     </ReportSection>
@@ -1101,7 +1143,7 @@
         <ReportItem id="healthstatus3_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems doing my usual activities|I have slight problems doing my usual activities|I have moderate problems doing my usual activities|I have severe problems doing my usual activities|I am unable to do my usual activities" blobItem="healthstatus_avoid3">
             <![CDATA[
                     <h3>USUAL ACTIVITIES (e.g. work, study, housework, family or leisure activities)</h3>
-                    {$item}
+                    <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1114,7 +1156,7 @@
         <ReportItem id="healthstatus4_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no pain or discomfort|I have slight pain or discomfort|I have moderate pain or discomfort|I have severe pain or discomfort|I have extreme pain or discomfort" blobItem="healthstatus_avoid4">
             <![CDATA[
                     <h3>PAIN/DISCOMFORT</h3>
-                    {$item}
+                    <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1127,7 +1169,7 @@
         <ReportItem id="healthstatus5_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I am not anxious or depressed|I am slightly anxious or depressed|I am moderately anxious or depressed|I am severely anxious or depressed|I am extremely anxious or depressed" blobItem="healthstatus_avoid5">
             <![CDATA[
                     <h3>ANXIETY/DEPRESSION</h3>
-                    {$item}
+                    <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1149,7 +1191,7 @@
                 <li>Mark on the scale to indicate how your health is TODAY.</li>
             </lu>
             <br />
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -1158,7 +1200,7 @@
             <![CDATA[
         <i>This final section will ask questions about your specific health and frailty status before you start the program. We hope to stop or slow down the progression of frailty by providing you with the support that you need in your community. We will ask you these questions again in 6 months to see if anything has changed.</i>
             <h3>During the past week, how often have you felt that everything was an <b>effort</b> or you <b>could not get going</b>?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <Static>
@@ -1172,49 +1214,49 @@
         <ReportItem id="symptoms_avoid2" blobItem="symptoms_avoid2" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[
                     <h3>During your waking time, how often do you feel <b>tired or fatigued?</b></h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid3" blobItem="symptoms_avoid3" type="RadioReportItem" orientation="vertical" options="Not at all|Several days|More days than not">
             <![CDATA[
                     <h3>Over the past two weeks have you been bothered by not being able to stop or control <b>worrying</b>?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid4" blobItem="symptoms_avoid4" type="RadioReportItem" orientation="vertical" options="Not at all|Several days|More days than not">
             <![CDATA[
                     <h3>Over the past two weeks have you been bothered by <b>little interest or pleasure in doing things</b>?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid5" blobItem="symptoms_avoid5" type="RadioReportItem" orientation="vertical" options="Good|Fair|Poor">
             <![CDATA[
                     <h3>How would you rate your memory overall?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid21" blobItem="symptoms_avoid21" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>Do you have any problems keeping your balance?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid6" blobItem="symptoms_avoid6" type="RadioReportItem" orientation="vertical" options="No falls|1 fall|2 or more falls">
             <![CDATA[
                     <h3>How many falls (including slips, trips, and falls to the ground) did you have in the last year?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid7" blobItem="symptoms_avoid7" type="RadioReportItem" orientation="vertical" options="Normal or brisk|Stroll at an easy pace|Very slow/unable to walk">
             <![CDATA[
                     <h3>Which of the following best describes your walking speed?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid8" blobItem="symptoms_avoid8" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>Is the distance that you are able to walk limited by your health?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
 	</ReportItem>
         <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days" optional="true">
@@ -1242,67 +1284,67 @@
         <ReportItem id="symptoms_avoid9" blobItem="symptoms_avoid9" type="RadioReportItem" orientation="vertical" options="Good|Bad">
             <![CDATA[
                     <h3>During the past month how would you rate your sleep quality overall?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid10" blobItem="symptoms_avoid10" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid11" blobItem="symptoms_avoid11" type="RadioReportItem" orientation="vertical" options="No|Yes|Don't know">
             <![CDATA[
                     <h3>Have you lost more than 3kg in weight over the last 3 months?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid12" blobItem="symptoms_avoid12" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>Have you had any pain in your mouth while chewing?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid13" blobItem="symptoms_avoid13" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid14" blobItem="symptoms_avoid14" type="RadioReportItem" orientation="vertical" options="None or mild|Moderate|Severe">
             <![CDATA[
                     <h3>How much bodily pain have you had during the past four weeks?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid15" blobItem="symptoms_avoid15" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[
                     <h3>Do you have pain in your feet?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid16" blobItem="symptoms_avoid16" type="RadioReportItem" orientation="vertical" options="No|Sometimes|Yes">
             <![CDATA[
                     <h3>Do you experience problems in your daily life due to weakness in your hands?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid17" blobItem="symptoms_avoid17" type="RadioReportItem" orientation="vertical" options="No|Sometimes|Yes">
             <![CDATA[
                     <h3>Do you experience problems in your daily life due to weakness in your legs or feet?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid18" blobItem="symptoms_avoid18" type="RadioReportItem" orientation="vertical" options="No|Yes">
             <![CDATA[
                     <h3>During the last 3 months, have you leaked urine (even a small amount)?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" options="Heart trouble|Stroke|Diabetes|Digestive problems (such as ulcer, colitis, or gallbladder disease)|Asthma, emphysema, or chronic bronchitis|Arthritis or rheumatism|Liver problems (such as cirrhosis)|Kidney disease|Cancer diagnosed in the past 3 years|Other (please specify)" optional="true">
+        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" options="Heart trouble|Stroke|Diabetes|Digestive problems (such as ulcer, colitis, or gallbladder disease)|Asthma, emphysema, or chronic bronchitis|Arthritis or rheumatism|Liver problems (such as cirrhosis)|Kidney disease|Cancer diagnosed in the past 3 years|Other (please specify)">
             <![CDATA[
                 <h3>Do you have any of the following health conditions? Select all that apply:</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid_specify" type="Text" blobItem="SYMPTOMSSPECIFY" width="400px" optional="true">
@@ -1336,13 +1378,13 @@
         <ReportItem id="symptoms_avoid19" blobItem="symptoms_avoid19" type="RadioReportItem" orientation="vertical" options="Not at all|A little|A fair amount">
             <![CDATA[
                     <h3>In the past month, how much has your eyesight interfered with your life in general?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="symptoms_avoid20" blobItem="symptoms_avoid20" type="RadioReportItem" orientation="vertical" options="Not at all|A little|A fair amount">
             <![CDATA[
                     <h3>In the past month, how much has your hearing interfered with your life in general?</h3>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help_avoid" blobItem="help_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
@@ -1350,31 +1392,31 @@
                     <h3>Please indicate if you need help from others with any of the following:</h3>
                     <ul>
                     <li>Eating</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help2_avoid" blobItem="help2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Dressing</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help3_avoid" blobItem="help3_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Transferring (e.g., from bed to chair)</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help4_avoid" blobItem="help4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Toileting</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help5_avoid" blobItem="help5_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Bathing</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
                     </ul>
             ]]>
         </ReportItem>
@@ -1387,49 +1429,49 @@
             <![CDATA[
                 <ul>
                     <li>Shopping</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help7_avoid" blobItem="help7_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Taking Medications</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help8_avoid" blobItem="help8_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Using the Telephone</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help9_avoid" blobItem="help9_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Financing</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help10_avoid" blobItem="help10_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Transportation</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help11_avoid" blobItem="help11_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Preparing Meals</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help12_avoid" blobItem="help12_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Doing Light Housework</li>
-                    {$item}
+                    <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
         <ReportItem id="help13_avoid" blobItem="help13_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No">
             <![CDATA[
                     <li>Doing Laundry</li>
-                    {$item}</ul>
+                    <div class="requiredField">{$item}</div></ul>
             ]]>
         </ReportItem>
     </ReportSection>
