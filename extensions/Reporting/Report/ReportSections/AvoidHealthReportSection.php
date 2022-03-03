@@ -92,7 +92,7 @@ class AvoidHealthReportSection extends EditableReportSection {
                     submitInterval = setInterval(function(){
                         if(!$('.autosaveSpan img').is(':visible')){
                             clearSuccess('#reportMessages');
-                            addSuccess('Thank-you for submitting', false, '#reportMessages');
+                            addSuccess('Thankyou for submitting', false, '#reportMessages');
                             clearInterval(submitInterval);
                         }
                     }, 100);

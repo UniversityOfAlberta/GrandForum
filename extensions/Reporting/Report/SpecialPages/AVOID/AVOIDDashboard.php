@@ -97,16 +97,19 @@ class AVOIDDashboard extends SpecialPage {
         $score = $api->getFrailtyScore($me->getId());
         $frailty = "";
         if($score >= 0 && $score <= 3){
-            $frailty = "Based on the answers in the assessment, you are classified as <u>Non-Frail</u> and not at risk of becoming frail. This program can provide you with behavioural supports to help you maintain a low level of risk, and mitigate the onset of frailty.";
+            $frailty = "Based on the answers in the assessment, you are classified as <u>Non-Frail</u> and not at risk of becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty moving as you age. We will ask again in 6 months so you can see how you have progressed.
+";
         }
         else if($score > 3 && $score <= 8){
-            $frailty = "Based on the answers in the assessment, you are classified as  <u>Vulnerable</u> to becoming frail. Always consult your physician for clinical support and this program...";
+            $frailty = "Based on the answers in the assessment, you are classified as <u>Vulnerable</u> to becoming frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+";
         }
         else if($score > 8 && $score <= 16){
-            $frailty = "Based on the answers in the assessment, you are at risk of being <u>Frail</u>. Always consult your physician for clinical support";
+            $frailty = "Based on the answers in the assessment, you are at risk of being <u>Frail</u>. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+";
         }
         else if($score > 16){
-            $frailty = "Based on your answers in the assessment, you are at risk of being <u>Severely Frail</u>.";
+            $frailty = "Based on your answers in the assessment, you are at risk of being <u>Severely Frail</u>.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
         }
         $wgOut->addHTML("<div class='modules module-2cols'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</div>
@@ -117,7 +120,7 @@ class AVOIDDashboard extends SpecialPage {
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
-                            <span style='font-size: 1.5em; line-height: 1em;'>{$events->getText()}</span>
+                            <span class='program-body' style='font-size: 1.5em; line-height: 1em;'>{$events->getText()}</span>
                          </div>");
         
         // Education
@@ -185,7 +188,7 @@ class AVOIDDashboard extends SpecialPage {
         $cols = 4;
         foreach($communityResources as $key => $category){
             if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
+            $wgOut->addHTML("<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
         }
         $wgOut->addHTML("</ul></div></div>");
         
