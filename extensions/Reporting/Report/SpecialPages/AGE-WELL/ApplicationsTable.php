@@ -527,10 +527,9 @@ class ApplicationsTable extends SpecialPage{
     function generateIH(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2020, "2020-21"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2019, "2019-20"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2018, "2018-19"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
+        for($year=YEAR; $year >= 2017; $year--){
+            $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, $year, "{$year}-".($year+1)));
+        }
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
