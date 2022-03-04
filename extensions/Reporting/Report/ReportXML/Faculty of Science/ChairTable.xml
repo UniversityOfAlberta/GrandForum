@@ -474,7 +474,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="true">
+    <ReportSection id="atsec" tooltip="ATSEC" name="ATSEC" title="ATSEC Evaluations" blobSection="FEC_REVIEW" type="EditableReportSection" pagebreak="false" disabled="false">
         <Static>
             <![CDATA[
                 <style>
