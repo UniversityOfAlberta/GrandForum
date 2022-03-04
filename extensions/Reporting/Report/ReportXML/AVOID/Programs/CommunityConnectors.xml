@@ -67,5 +67,31 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Community Connectors</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td valign='top'><b>Training Date:</b></td>
+                            <td>
+                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register1}</div>
+                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register2}</div>
+                            </td>
+                        </tr>
+
+                    </table>
+                ]]>
+            </ReportItem>
     </ReportSection>
 </Report>

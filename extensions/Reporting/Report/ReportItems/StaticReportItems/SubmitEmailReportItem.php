@@ -25,6 +25,12 @@ class SubmitEmailReportItem extends StaticReportItem {
                     
                     $('#reportFooter').prev().hide();
                     $('#reportFooter').hide();
+                    
+                    $(document).ready(function(){
+                        $('#reportFooter').prev().hide();
+                        $('#reportFooter').hide();
+                    });
+                    
                     $('#programSubmit').click(function(){
                         $('#programSubmit .throbber').show();
                         saveAll(function(){

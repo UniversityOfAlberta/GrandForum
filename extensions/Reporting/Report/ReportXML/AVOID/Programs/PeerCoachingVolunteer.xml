@@ -152,10 +152,54 @@
                             $("#register").slideUp();
                         }
                     }).change();
-                    
-                    
                 </script>
             ]]>
         </Static>
+        <ReportItem id="submit" type="SubmitEmail">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>Program:</b></td>
+                        <td>Peer Coaching (Give Support)</td>
+                    </tr>
+                    <tr>
+                        <td><b>User:</b></td>
+                        <td>{$user_name} &lt;{$user_email}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date Submitted:</b></td>
+                        <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,NAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Mailing address:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,ADDRESS,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone Number:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,PHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,EMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Age:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,AGE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Employment Info:</b></td>
+                        <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,EMPLOYMENT,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Times:</b></td>
+                        <td>{getArray(RP_VOLUNTEER_OPPORTUNITIES,PEER,TIMES,0,{$user_id},0,times}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
