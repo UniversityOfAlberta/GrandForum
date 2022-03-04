@@ -46,7 +46,7 @@ class SubmitEmailReportItem extends StaticReportItem {
                    "Content-type: text/html; charset=iso-8859-1\r\n" .
                    "X-Mailer: PHP/" . phpversion();
 	    foreach(explode(",", $emails) as $email){
-            mail($emails, $subject, $message, $headers);
+            mail($email, $subject, $message, $headers);
         }
 	    echo "{$message}
 	    <script type='text/javascript'>
