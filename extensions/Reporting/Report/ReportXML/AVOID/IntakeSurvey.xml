@@ -113,7 +113,18 @@
                             }
                         }
                     });
-                }, 100);
+                    if($("#reportWarning").length == 0){
+                        $("#reportFooter").prepend("<div id='reportWarning' style='display:none;margin:0;' class='warning'>You have not yet completed all of the questions.</div>");
+                    }
+                    if($(".requiredFieldIncomplete:visible").length > 0){
+                        $("input[type=submit]").hide();
+                        $("#reportWarning").show();
+                    }
+                    else{
+                        $("input[type=submit]").show();
+                        $("#reportWarning").hide();
+                    }
+                }, 250);
             </script>
         ]]>
     </Script>
@@ -1181,7 +1192,7 @@
                 </script>
                 ]]>
         </Static>
-        <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" orientation="vertical" blobItem="healthstatus_avoid6">
+        <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" default="50" orientation="vertical" blobItem="healthstatus_avoid6">
             <![CDATA[
             <h3>We would like to know how good or bad your health is TODAY.</h3>
             <lu>
