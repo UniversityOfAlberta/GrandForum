@@ -113,7 +113,10 @@ class AVOIDDashboard extends SpecialPage {
         }
         $wgOut->addHTML("<div class='modules module-2cols'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</div>
-                            <div style='font-size: 1.5em; line-height: 1.5em; margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>{$frailty}</div>
+                            <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
+                                {$frailty}<br />
+                                <a style='margin-top:0.5em; display:inline-block' href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty</a>
+                            </div>
                          </div>");
         
         // Upcoming Events
