@@ -8,22 +8,28 @@ DataCollection = Backbone.Model.extend({
     },
 
     initialize: function(){
-        this.ready().always(function(){
-            this.once('change:data', function(){
-                this.on('change:data', _.throttle(function(){
-                    this.save();
-                }.bind(this), 3000));
-            }.bind(this));
-        }.bind(this));
+        
     },
     
     init: function(userId, page){
         clearInterval(this.dataCollectionInterval);
         if(this.get('userId') != userId ||
            this.get('page') != page){
+            this.off('change:data');
+            this.set('id', null);
             this.set('userId', userId);
             this.set('page', page);
+            this.set('data', {});
             this.xhr = this.fetch();
+            
+            this.ready().always(function(){
+                this.once('change:data', function(){
+                    this.on('change:data', _.throttle(function(){
+                        this.save();
+                    }.bind(this), 3000));
+                    this.trigger("change:data");
+                }.bind(this));
+            }.bind(this));
         }
     },
 
@@ -32,7 +38,7 @@ DataCollection = Backbone.Model.extend({
             return "index.php?action=api.datacollection/" + this.get('id');
         }
         if(this.get('userId') != "" && this.get('page')){
-            return "index.php?action=api.datacollection/" + this.get('userId') + "/" + this.get('page');
+            return "index.php?action=api.datacollection/" + this.get('userId') + "/" + encodeURIComponent(this.get('page'));
         }
         return "index.php?action=api.datacollection";
     },

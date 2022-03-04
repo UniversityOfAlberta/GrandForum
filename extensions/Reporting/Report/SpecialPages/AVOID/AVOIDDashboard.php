@@ -180,7 +180,7 @@ class AVOIDDashboard extends SpecialPage {
         $cols = 4;
         foreach($resources as $key => $resource){
             if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
+            $wgOut->addHTML("<li><a class='resource' data-resource='{$resource->category}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
         }
         $wgOut->addHTML("</ul></div></div>");
                          
@@ -200,6 +200,11 @@ class AVOIDDashboard extends SpecialPage {
             $('#bodyContent h1').hide();
             $('.module').click(function(){
                 document.location = $(this).attr('href');
+            });
+            
+            $('a.resource').click(function(){
+                dc.init(me.get('id'), $(this).attr('data-resource'));
+                dc.increment('count');
             });
         </script>");
     }
