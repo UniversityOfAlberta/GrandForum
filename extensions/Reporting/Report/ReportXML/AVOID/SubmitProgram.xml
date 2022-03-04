@@ -69,7 +69,7 @@
 				{$item}
 					]]>
 		</ReportItem>
-                <ReportItem id="officephone" type="Integer" blobItem="OFFICEPHONE" width="400px">
+                <ReportItem id="officephone" type="Text" blobItem="OFFICEPHONE" width="400px">
             		<![CDATA[
 				<h3>Office Phone:</h3>
 				{$item}
@@ -83,7 +83,7 @@
 		</ReportItem>
                 <ReportItem id="businessline" type="Text" blobItem="BUSINESSLINE" width="400px">
             		<![CDATA[
-				<h3>Eligibility:</h3>
+				<h3>Business Line:</h3>
 				{$item}
 					]]>
 		</ReportItem>
@@ -95,7 +95,7 @@
 		</ReportItem>
                 <ReportItem id="tty" type="Text" blobItem="TTY" width="400px">
             		<![CDATA[
-				<h3>tty:</h3>
+				<h3>TTY:</h3>
 				{$item}
 					]]>
 		</ReportItem>
@@ -311,12 +311,227 @@
 				{$item}
 					]]>
 		</ReportItem>
-                <ReportItem id="languages" type="Textarea" blobItem="LANGUAGES" width="400px">
+                <ReportItem id="other_information" type="Textarea" blobItem="OTHER_INFORMATION" width="400px">
             		<![CDATA[
                                 <p>Any other updates not shown above?<br />
                                 If there is some special information you wish to pass along to those reviewing the record, please enter it here:</p>
 				{$item}
+				<br /><br />
 					]]>
 		</ReportItem>
+		<ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Peer Coaching (Get Support)</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Public Name:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PUBLICNAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td valign='top'><b>Description:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DESCRIPTION,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Hours:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,HOURS,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td valign='top'><b>Eligibility:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ELIGIBLITY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Documents Required:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DOCSREQUIRED,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Application Process:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,APPLICATIONPROCESS,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Fees:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FEES,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Accessibility:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ACCESSIBILITY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Legal Status:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LEGALSTATUS,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Office Phone:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OFFICEPHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Crisis Phone:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CRISISPHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Business Line:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,BUSINESSLINE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Fax:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FAX,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>TTY:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TTY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Toll Free:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TOLLFREE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,EMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Website:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,WEBSITE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Program Primary Contact</th>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTNAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTTITLE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTPHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROGRAMPRIMARYCONTACTEMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Director or Senior Contact</th>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTNAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTTITLE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTPHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,DIRECTORSENIORCONTACTEMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Areas Served:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,AREASSERVED,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Languages:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LANGUAGES,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Address1:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS1,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Address2:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,ADDRESS2,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>City:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,CITY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Province:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,PROVINCE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Country:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,COUNTRY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Postal Code:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,POSTALCODE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Intersection:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INTERSECTION,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Mailing Address</th>
+                        </tr>
+                        <tr>
+                            <td><b>Address1:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Address2:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGADDRESS2,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>City:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCITY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Province:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPROVINCE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Country:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGCOUNTRY,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Postal Code:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,MAILINGPOSTALCODE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <th colspan='2'>Social Media</th>
+                        </tr>
+                        <tr>
+                            <td><b>Facebook:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,FACEBOOK,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Instagram:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,INSTAGRAM,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>LinkedIn:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,LINKEDIN,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Twitter:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,TWITTER,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Youtube:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,YOUTUBE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td valign='top'><b>Other Information:</b></td>
+                            <td>{getText(RP_AVOIDSUGG,AVOID_PROGRAM_SUBMIT,OTHER_INFORMATION,0,{$user_id},0}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
     </ReportSection>
 </Report>
