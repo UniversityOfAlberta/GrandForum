@@ -156,6 +156,48 @@
                     <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
                 ]]>
             </Static>
+            <ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Peer Coaching (Get Support)</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,NAME,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Age:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,AGE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Gender:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,GENDER,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,EMAIL,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,PHONE,0,{$user_id},0}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mailing address:</b></td>
+                            <td>{getText(RP_PEER_COACHING,REGISTER,ADDRESS,0,{$user_id},0}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
         </If>
         <Else>
             <![CDATA[
