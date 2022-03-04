@@ -323,10 +323,6 @@
                 <![CDATA[
                     <table>
                         <tr>
-                            <td><b>Program:</b></td>
-                            <td>Peer Coaching (Get Support)</td>
-                        </tr>
-                        <tr>
                             <td><b>User:</b></td>
                             <td>{$user_name} &lt;{$user_email}&gt;</td>
                         </tr>
