@@ -36,12 +36,12 @@ class SubmitEmailReportItem extends StaticReportItem {
 	}
 	
 	function sendEmail(){
-	    global $config;
+	    global $config, $wgPasswordSender;
 	    $subject = "Program Submitted";
 	    $message = $this->processCData("");
 	    $emails = $this->getAttr('emails', "{$config->getValue('supportEmail')}");
-	    $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
-                   "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+	    $headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
+                   "Reply-To: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
                    "MIME-Version: 1.0\r\n" .
                    "Content-type: text/html; charset=iso-8859-1\r\n" .
                    "X-Mailer: PHP/" . phpversion();
