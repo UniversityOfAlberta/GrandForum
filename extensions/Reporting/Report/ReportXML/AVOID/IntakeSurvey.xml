@@ -1352,7 +1352,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" options="Heart trouble|Stroke|Diabetes|Digestive problems (such as ulcer, colitis, or gallbladder disease)|Asthma, emphysema, or chronic bronchitis|Arthritis or rheumatism|Liver problems (such as cirrhosis)|Kidney disease|Cancer diagnosed in the past 3 years|Other (please specify)">
+        <ReportItem id="symptoms_avoid" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="symptoms_avoid" orientation="vertical" options="Heart trouble|Stroke|Diabetes|Digestive problems (such as ulcer, colitis, or gallbladder disease)|Asthma, emphysema, or chronic bronchitis|Arthritis or rheumatism|Liver problems (such as cirrhosis)|Kidney disease|Cancer diagnosed in the past 3 years|Other (please specify)|None">
             <![CDATA[
                 <h3>Do you have any of the following health conditions? Select all that apply:</h3>
                 <div class="requiredField">{$item}</div>
