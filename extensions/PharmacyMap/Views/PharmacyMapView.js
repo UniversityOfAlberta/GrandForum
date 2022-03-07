@@ -287,7 +287,6 @@ PharmacyMapView = Backbone.View.extend({
             findCat: this.findCat.bind(this)
         }));
 
-
         if(this.renderMap){
             this.initMap();
             var empty = [];
@@ -296,30 +295,30 @@ PharmacyMapView = Backbone.View.extend({
             $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '> div.wrap >h3' });
             $('#address_bar').show();
             $('#map-container').show();
-	    $('#table').show();
-
+            $('#table').show();
         }
         this.addRows(this.model);
         if(this.refresh){
-	    $('#address_bar').hide();
+            $('#address_bar').hide();
             $('#map-container').hide();
-	    $('#table').hide();
+            $('#table').hide();
             this.addCategoryButtons();
-	}
-            var title = $("#pageTitle").clone();
-            $(title).attr('id', 'copiedTitle');
-            this.$el.prepend(title);
-                   var r = $('<p class="note_small">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p><a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
+        }
+        var title = $("#pageTitle").clone();
+        $(title).attr('id', 'copiedTitle');
+        this.$el.prepend(title);
+        var r = $('<p class="note_small">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p><a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
             //$('#copiedTitle').append(r);
  
-            $('#listTable_filter').css("font-weight","bold");
-            $('#listTable_filter').css("font-size","1.6em");
-            $('#listTable_filter').css("position","absolute");
-	    $('#listTable_filter').css("right","40em");
-$(".dataTables_filter input").css("width","230px");
-	    $('#listTable_filter').css("margin-left","5px");
-	    $(".dataTables_filter input").css("margin-left","15px");
-	this.drawButtons();        
+        $('#listTable_filter').css("font-weight","bold");
+        $('#listTable_filter').css("font-size","1.6em");
+        $('#listTable_filter').css("position","absolute");
+        $(".dataTables_filter input").css("width","230px");
+        $('#listTable_filter').css("margin-left","5px")
+                              .css("left", 0)
+                              .css("text-align", "left");
+        $(".dataTables_filter input").css("margin-left","15px");
+        this.drawButtons();        
         return this.$el;
     }
 
