@@ -21,7 +21,7 @@
                 <h1>SECTION 1: INTRO & CONSENT</h1>
                 <p>Network Members are required to submit an end-of-year progress report by April 30, each year. This report is designed to capture emerging research findings, knowledge mobilization activities, new partnerships, successes, and opportunities for future improvement.</p>
                 <p>In addition to this progress report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift.  Form 300 can be downloaded and attached under section 8.</p>
-                <p>This report and corresponding documents are <b>due no later than April 30, 2021, 4 p.m. EST</b>.</p> 
+                <p>This report and corresponding documents are <b>due no later than April 30 @ 4 p.m. EST</b>.</p> 
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
