@@ -848,8 +848,8 @@
         </ReportItem>
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
-            <span id="interact_end">
-            <h3>What have been your main challenge when it comes to social interaction? (choose all that apply):</h3>
+		<span id="interact_end">
+			<h3>What challenges have you faced when it comes to social interaction? (choose all that apply):</h3>
             {$item}
             </span>
             ]]>
@@ -875,12 +875,12 @@
                                 }
 
                                 function calculateInteractionScore(){
-                                        var score1 = $("input:radio[name='BehaviouralSe\lfAssessment_interact1_avoid']:checked").val()
-                                        var score2 = $("input:radio[name='BehaviouralSe\lfAssessment_interact2_avoid']:checked").val()
-                                        var score3 = $("input:radio[name='BehaviouralSe\lfAssessment_interact3_avoid']:checked").val()
-                                        var score4 = $("input:radio[name='BehaviouralSe\lfAssessment_interact4_avoid']:checked").val()
-                                        var score5 = $("input:radio[name='BehaviouralSe\lfAssessment_interact5_avoid']:checked").val()
-                                        var score6 = $("input:radio[name='BehaviouralSe\lfAssessment_interact6_avoid']:checked").val()
+                                        var score1 = $("input:radio[name='SelfAssessment_interact1_avoid']:checked").val()
+                                        var score2 = $("input:radio[name='SelfAssessment_interact2_avoid']:checked").val()
+                                        var score3 = $("input:radio[name='SelfAssessment_interact3_avoid']:checked").val()
+                                        var score4 = $("input:radio[name='SelfAssessment_interact4_avoid']:checked").val()
+                                        var score5 = $("input:radio[name='SelfAssessment_interact5_avoid']:checked").val()
+                                        var score6 = $("input:radio[name='SelfAssessment_interact6_avoid']:checked").val()
                                         return getScore(score1) + getScore(score2) + getScore(score3) + getScore(score4) + getScore(score5) + getScore(score6)
                                 }
 

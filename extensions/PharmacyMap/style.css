@@ -185,12 +185,52 @@ input[type=button] {
     white-space: nowrap;
 }
 
-#table{
-  padding-bottom:60px;
-}
-
 .note_small{
     font-size: 0.6em !important;
     width:300px;
+
+}
+
+
+#table{
+  width:65%;
+  float:left;
+}
+
+#listTable {
+  table-layout: fixed;
+  width: 100% !important;
+}
+#listTable td{
+  width: auto !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#listTable th{
+  width: auto !important;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#map-container {
+    height:700px;
+    width:32%;
+    /*display: table-row;*/
+    position: absolute;
+    right: 15px;
+}
+
+#map {
+    float:right;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    bottom: 30px;
+
+}
+
+#banner_dbpowered{
 
 }

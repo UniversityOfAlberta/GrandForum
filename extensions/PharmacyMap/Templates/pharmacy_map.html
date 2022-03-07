@@ -1,51 +1,58 @@
 <p>
-<b>Using the Community Program Library</b>
+    <b>Using the Community Program Library</b>
 </p>
-<p> 
-Hover your mouse over a community resource to see a description. The + symbol means the resource category expands further. Click on the resource to see sub-categories. 
-When you can no longer expand, the map will show you specific locations for that resource within KFL&A. Contact the program or service for more information, or to sign up. 
-If you want to go back to the main library page, click the blue link indicating the previous category. 
+<p>
+    Hover your mouse over a community resource to see a description. The + symbol means the resource category expands
+    further. Click on the resource to see sub-categories.
+    When you can no longer expand, the map will show you specific locations for that resource within KFL&A. Contact the
+    program or service for more information, or to sign up.
+    If you want to go back to the main library page, click the blue link indicating the previous category.
 </p>
-<p class="">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community? <a style="font-size:1.4em;margin-left:0.8em;" href='<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram' class="program-button" title="Submit a Program">Submit a Program</a></p>
+<p class="">Have you used a formal or informal program recently that you don’t see in the library and wish to share
+    with the community? <a style="font-size:1.4em;margin-left:0.8em;" href='<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram'
+        class="program-button" title="Submit a Program">Submit a Program</a></p>
 <div id="body_accordion">
-<div class="wrap">
-<h3><a href="#">Categories</a></h3>
-<div id="treemap-container">
-	<div id="prev_category"></div>
-</div>
-</div>
-<div id="testing">
-<div id="table">
-<table id="listTable" frame="box" rules="all" style="float: left;">
-    <thead>
-        <tr>
-            <!--General data-->
-            <th>Name</th>
-            <th>Program Description</th>
-            <th>Eligibility</th>
-	     <th>Organization</th>
-	    <th>Address</th>
-	    <th>Contact</th>
-        </tr>
-    </thead>
-    <tbody id="sopRows"></tbody>
-</table>
-<br /><span id="db_powered" style="float:right;">Database Powered by <img src="<%= wgServer + wgScriptPath %>/skins/cneo_logo.png" style="height: 150px;"/></span>
-</div>
-<br />
-<br />
-<div id="address_bar">
-<span class='en' style=''>Address</span><span class='fr' style='display:none'>Adresse</span> <input type="text" id="lat" style="width:399px" />&nbsp<button id="findLocation"><span class='en' style=''>Find my Location</span><span class='fr' style='display:none'>Trouver mon Endroit</span></button>&nbsp&nbsp&nbsp<button id="printMap"><span class='en' style=''>Print Map</span><span class='fr' style='display:none'>Imprimer le Plan</span></button></div>
-</div>
-<br /><br /><br />
+    <div class="wrap">
+        <h3><a href="#">Categories</a></h3>
+        <div id="treemap-container">
+            <div id="prev_category"></div>
+        </div>
+    </div>
+    <div id="testing">
+        <div id="table">
+            <table id="listTable" frame="box" rules="all" style="float: left;">
+                <thead>
+                    <tr>
+                        <!--General data-->
+                        <th>Name</th>
+                        <th>Program Description</th>
+                        <th>Eligibility</th>
+                        <th>Organization</th>
+                        <th>Address</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody id="sopRows"></tbody>
+            </table>
+            <br /><span id="db_powered">Database Powered by <img src="<%= wgServer + wgScriptPath %>/skins/cneo_logo.png"
+                    style="height: 150px;" /></span>
+        </div>
+        <br />
+        <br />
+        <div id="address_bar">
+            <span class='en' style=''>Address</span><span class='fr' style='display:none'>Adresse</span> <input type="text"
+                id="lat" style="width:399px" />&nbsp<button id="findLocation"><span class='en' style=''>Find my
+                    Location</span><span class='fr' style='display:none'>Trouver mon Endroit</span></button>&nbsp&nbsp&nbsp<button
+                id="printMap"><span class='en' style=''>Print Map</span><span class='fr' style='display:none'>Imprimer
+                    le Plan</span></button></div>
+    </div>
+    <br /><br /><br />
 
-<div id="pharmacy-info">
+    <div id="pharmacy-info">
         <table id="pharmacy-table"></table>
-</div>
-<div id="map-container">
-    <div id="map"></div>
-</div>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
 
-</div>
-</div>
 </div>

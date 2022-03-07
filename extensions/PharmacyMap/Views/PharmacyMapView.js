@@ -2,9 +2,9 @@ PharmacyMapView = Backbone.View.extend({
     template: _.template($('#pharmacy_map_template').html()),
     map: null,
     geocoder: null,
-    lat: 44.2404955,
-    long: -76.5843909,
-    zoom: 10,
+    lat: 44.8052529,
+    long: -76.6619867,
+    zoom: 8,
     refresh: true,
     buttons: [],
     cat_json: null,
@@ -324,4 +324,3 @@ $(".dataTables_filter input").css("width","230px");
     }
 
 });
-
