@@ -7,13 +7,17 @@ class RangeSliderReportItem extends TextReportItem {
 		$min = $this->getAttr('min', 0);
 		$max = $this->getAttr('max', 100);
 		$step = $this->getAttr('step', 1);
-		$value = $this->getBlobValue();
 		$width = $this->getAttr('width', '250px');
 		$align = $this->getAttr('align', 'right');
 		$size = $this->getAttr('size', '');
 		$decimals = $this->getAttr('decimals', 0);
 		$font = "";
-                $orientation = $this->getAttr('orientation', 'horizontal');
+        $orientation = $this->getAttr('orientation', 'horizontal');
+        $value = $this->getBlobValue();
+        $default = $this->getAttr('default', '');
+		if($value === null && $default != ''){
+		    $value = $default;
+		}
 
 		if($size != ''){
 		    $width = '';

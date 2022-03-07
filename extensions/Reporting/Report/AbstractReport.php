@@ -210,7 +210,7 @@ abstract class AbstractReport extends SpecialPage {
     }
     
     function execute($par){
-        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config;
+        global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgImpersonating, $wgRealUser, $config, $wgPasswordSender;
         $me = Person::newFromWgUser();
         if($this->name != ""){
             if((isset($_POST['submit']) && $_POST['submit'] == "Save") || isset($_GET['showInstructions'])){
@@ -308,8 +308,8 @@ abstract class AbstractReport extends SpecialPage {
                     	}
                     	
                     	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-                    	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
-                                   "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+                    	$headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
+                                   "Reply-To: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
                         $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
                         $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";
@@ -937,7 +937,7 @@ abstract class AbstractReport extends SpecialPage {
     
     // Generates the PDF for the report, and saves it to the Database
     function generatePDF($person=null, $submit=false){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $wgPasswordSender;
         session_write_close();
         if($this->disabled){
             echo "This Report is disabled until further notice";
@@ -998,8 +998,8 @@ abstract class AbstractReport extends SpecialPage {
             if(isset($_GET['emails']) && $_GET['emails'] != "" && $wgScriptPath == "" && $tok != ""){
                 $personSubmitting = Person::newFromWgUser();
             	$url = "{$wgServer}{$wgScriptPath}/index.php/Special:ReportArchive?getpdf={$tok}";
-            	$headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
-                           "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
+            	$headers = "From: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
+                           "Reply-To: {$config->getValue('networkName')} Support <{$wgPasswordSender}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
                 $message = "'{$this->name}' has been submitted by {$personSubmitting->getName()}.\n\nClick here to download: $url";
                 $subject = (isset($_GET['subject'])) ? $_GET['subject'] : "Report Submitted";

@@ -170,5 +170,18 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Back to Modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Redirecting back to Education Modules...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationModules';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
 
 </Report>

@@ -298,6 +298,7 @@ class UserTagsAPI extends API{
         if($readiness != null){
             $tags[] = $readiness;
         }
+        $tags[] = "everything";
         return $tags;
     }
 

@@ -47,7 +47,7 @@ class EducationResources extends SpecialPage {
             <div class='program-box' style='position: absolute; left:0; right:0;'>{$category->title} Resources</div>
             <ul style='margin-top: 3em;'>");
             foreach($category->resources as $resource){
-                $wgOut->addHTML("<li><a target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$category->id}/{$resource->file}'>{$resource->title}</a></li>");
+                $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$category->id}/{$resource->file}'>{$resource->title}</a></li>");
             }
             $wgOut->addHTML("</ul></div>");
         }
@@ -56,6 +56,11 @@ class EducationResources extends SpecialPage {
                 var id = $(this).attr('data-id');
                 $('.resources').hide();
                 $('#resources' + id).show();
+            });
+            
+            $('a.resource').click(function(){
+                dc.init(me.get('id'), $(this).attr('data-resource'));
+                dc.increment('count');
             });
         </script>");
     }

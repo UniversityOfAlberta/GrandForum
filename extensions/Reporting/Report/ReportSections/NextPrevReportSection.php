@@ -29,7 +29,7 @@ class NextPrevReportSection extends EULAReportSection {
                     submitInterval = setInterval(function(){
                         if(!$('.autosaveSpan img').is(':visible')){
                             clearSuccess('#reportMessages');
-                            addSuccess('Thankyou for submitting', false, '#reportMessages');
+                            addSuccess('Thank you for submitting', false, '#reportMessages');
                             clearInterval(submitInterval);
                         }
                     }, 100);
