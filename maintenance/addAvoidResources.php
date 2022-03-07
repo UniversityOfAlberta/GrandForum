@@ -1,7 +1,7 @@
 <?php
 
 require_once('commandLine.inc');
-    $csvFile = 'new_upload.csv';
+    $csvFile = 'COMBINE.csv';
 	$file = fopen($csvFile,"r");
   while(! feof($file))
   {
