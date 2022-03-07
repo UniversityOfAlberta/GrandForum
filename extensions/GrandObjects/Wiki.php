@@ -75,8 +75,12 @@ class Wiki extends BackboneModel {
 	function getText(){
 	    global $wgUser;
 	    $parser = MediaWikiServices::getInstance()->getParser();
-	    $text = $this->article->getPage()->getContent()->getText();
-	    $text = $parser->parse($text, $this->article->getTitle(), new ParserOptions($wgUser))->getText();
+	    $content = $this->article->getPage()->getContent();
+	    $text = "";
+	    if($content != null){
+	        $text = $content->getText();
+	        $text = $parser->parse($text, $this->article->getTitle(), new ParserOptions($wgUser))->getText();
+	    }
 	    return $text;
 	}
 	
