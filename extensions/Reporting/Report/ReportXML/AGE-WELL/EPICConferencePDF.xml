@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2021)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2021">
+<Report name="The EPIC Conference (2022)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2022">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2021)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2022)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -40,15 +40,9 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" delimiter="&lt;br />" options="Oral Presentation|Twitter Presentation|French-language Research Sessions">
-            <![CDATA[
-                <h3>Abstract:</h3>
-                Please select conference presentation stream (you may select all streams):
-                <div style='margin-left:5em;'>{$item}</div><br />
-            ]]>
-        </ReportItem>
         <ReportItem id="title" type="Text" blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
             <![CDATA[
+                <h3>Abstract:</h3>
                 Project Title: {$item}
                 <br /><br />
             ]]>
