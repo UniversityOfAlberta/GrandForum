@@ -216,11 +216,7 @@ class AVOIDDashboard extends SpecialPage {
         $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_CHECK_EULA", "EULA", 0);
         $blob->load($blob_address);
         $consent = $blob->getData();
-        
-        $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
-        $blob_address = ReportBlob::create_address("RP_AVOID", "AVOID_Questions_tab0", "avoid_age", 0);
-        $blob->load($blob_address);
-        $age = $blob->getData();
+
         if($consent != "Yes"){
             // Consent not Yes
             return"";
@@ -228,16 +224,6 @@ class AVOIDDashboard extends SpecialPage {
         $report = new DummyReport("IntakeSurvey", $me);
         foreach($report->sections as $section){
             if($section instanceof EditableReportSection){
-                if(($age == "less than 60" || $age < 65) && 
-                   ($section->name == "Health Related QoL" || 
-                    $section->name == "Health Related QoL2" ||
-                    $section->name == "Health Related QoL3" ||
-                    $section->name == "Health Related QoL4" ||
-                    $section->name == "Health Related QoL5" ||
-                    $section->name == "Health Related QoL6" ||
-                    $section->name == "Health Related QoL7")){
-                    continue;
-                }
                 $percent = $section->getPercentComplete();
                 if($percent < 100){
                     return $section->name;

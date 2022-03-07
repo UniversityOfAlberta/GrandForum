@@ -43,20 +43,6 @@
                         $(':input[type="submit"]').prop('disabled', true).hide();
                     }
                 }
-        
-                var age_check = '{getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}';
-                function checkAge(){
-                    if(age_check == "less than 60" || age_check < 65){
-                        $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
-                        $("#HealthRelatedQoL2").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL3").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL4").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL5").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL6").addClass("disabled_lnk");
-                        $("#HealthRelatedQoL7").addClass("disabled_lnk");
-                        $("#HealthStatus").hide().addClass("disabled_lnk");
-                    }
-                }
                 
                 function hideConsent(){
                     if($(".selectedReportTab").text() == "Consent" && consent == "Yes"){
@@ -71,11 +57,9 @@
                 
                 hideConsent();
                 checkConsent(consent);
-                checkAge();
                 
                 $(document).ready(function(){
                     checkConsent(consent);
-                    checkAge();
                 });
                 
                 setInterval(function(){
@@ -182,8 +166,8 @@
         <Static>
             <![CDATA[
             <script type='text/javascript'>
-                $("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
-                $("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); checkAge(); });
+                $("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
+                $("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
             </script>
                 ]]>
         </Static>
@@ -202,44 +186,6 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    function checkAge(){
-                        if($("select[name='GettingtoKnowYou_socio_info1']").val() == "less than 60"){
-                            var age = 40;
-                        }
-                        else{
-                            age = parseInt($("select[name='GettingtoKnowYou_socio_info1']").val());
-                        }
-                        if(age >=65){
-                            $("#GettingtoKnowYou").show();
-                            $("#Self-Assessment").show();
-                            $("#HealthRelatedQoL").show().removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL2").removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL3").removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL4").removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL5").removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL6").removeClass("disabled_lnk");
-                            $("#HealthRelatedQoL7").removeClass("disabled_lnk");
-                            $("#HealthStatus").show().removeClass("disabled_lnk");                                        
-                        }
-                        else{
-                            $("#HealthRelatedQoL").hide().addClass("disabled_lnk");
-                            $("#HealthRelatedQoL2").addClass("disabled_lnk");
-                            $("#HealthRelatedQoL3").addClass("disabled_lnk");
-                            $("#HealthRelatedQoL4").addClass("disabled_lnk");
-                            $("#HealthRelatedQoL5").addClass("disabled_lnk");
-                            $("#HealthRelatedQoL6").addClass("disabled_lnk");
-                            $("#HealthRelatedQoL7").addClass("disabled_lnk");
-                            $("#HealthStatus").hide().addClass("disabled_lnk");
-                        }
-                    }
-                    checkAge();
-                    $("select[name='GettingtoKnowYou_socio_info1']").change(checkAge);
-                </script>
-            ]]>
-        </Static>
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
@@ -1487,23 +1433,17 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
-        <Static>
-            {set(age, {getText(RP_AVOID,AVOID_Questions_tab0,avoid_age,0,{$user_id},0)}}
-        </Static>
         <If if="{and({==({getProgress(eula)},100)},
                      {==({getProgress(socio_info)},100)},
                      {==({getProgress(behaviouralassess)},100)},
-                     {or({&lt;({get(age)},65)}, {==({get(age)},less than 60)}, {and(
-                             {==({getProgress(healthquestions)},100)},
-                             {==({getProgress(healthquestions2)},100)},
-                             {==({getProgress(healthquestions3)},100)},
-                             {==({getProgress(healthquestions4)},100)},
-                             {==({getProgress(healthquestions5)},100)},
-                             {==({getProgress(healthquestions6)},100)},
-                             {==({getProgress(healthquestions7)},100)},
-                             {==({getProgress(clinicalfrailty)},100)}
-                         )}
-                     )}
+                     {==({getProgress(healthquestions)},100)},
+                     {==({getProgress(healthquestions2)},100)},
+                     {==({getProgress(healthquestions3)},100)},
+                     {==({getProgress(healthquestions4)},100)},
+                     {==({getProgress(healthquestions5)},100)},
+                     {==({getProgress(healthquestions6)},100)},
+                     {==({getProgress(healthquestions7)},100)},
+                     {==({getProgress(clinicalfrailty)},100)}
                 )}">
             <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
                 <![CDATA[
