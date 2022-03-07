@@ -53,6 +53,8 @@ AvoidResource = Backbone.Model.extend({
         Custom_YouTube:"",
         Categories:"",
         LastVerifiedOn:"",
+	lat:"",
+	lon: "",
     }
 });
 

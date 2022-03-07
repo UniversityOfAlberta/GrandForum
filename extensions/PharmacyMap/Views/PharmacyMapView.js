@@ -210,74 +210,71 @@ PharmacyMapView = Backbone.View.extend({
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         table = this.table;
     },
-    AddMarkers: function (geocoder, group) {
-        var pinColor = "FE7569";
-        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0, 0),
-            new google.maps.Point(10, 34));
-        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-            new google.maps.Size(40, 37),
-            new google.maps.Point(0, 0),
-            new google.maps.Point(12, 35));
-        _.each(group, function (val) {
-            if (val.PhysicalAddress1 != null) {
-                var pharmLoc = null;
-                var marker = null;
-                var geocodeUrl = (val.PhysicalPostalCode != "") 
-                                 ? 'https://geocode.maps.co/search?q=' + val.PhysicalPostalCode
-                                 : 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1;
-                $.ajax({
-                    type: 'GET',
-                    url: geocodeUrl,
-                    data: { get_param: 'value' },
-                    dataType: 'json',
-                    success: function (data) {
-			if(data.length >0){
-                        pharmLoc = new google.maps.LatLng(data[0].lat, data[0].lon);
-                        if (pharmLoc != null) {
-                                marker = new google.maps.Marker({
-                                position: pharmLoc,
-                                map: map,
-                                data: "pharm",
-                                title: val.name,
-                                icon: pinImage,
-                                shadow: pinShadow
-                            });
-                var infowindow = new google.maps.InfoWindow({
-                    content: "Name: " 
-                             + val.PublicName_Program
-                             + "<br>"
-                             + "Address: "
-                             + val.PhysicalAddress1
-                             + "<br>" 
-                             + "Phone: "
-                             + val.Phone1Number
-                             + "<br>"
-                             + "Email: "
-                             + val.EmailAddressMain
-			     + "<br>"
-                             + "Website: <a href='"
-                             + val.WebsiteAddress
-			     + "' target='_blank'>" 
-			     + val.WebsiteAddress
-			     + "</a>"
+
+
+AddMarkers: function (geocoder, group) {
+    var pinColor = "FE7569";
+    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(10, 34));
+    var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        new google.maps.Size(40, 37),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(12, 35));
+    _.each(group, function (val) {
+        if (val.lon != "" && val.lat != "") {
+            var pharmLoc = null;
+            var marker = null;
+            var geocodeUrl = (val.PhysicalPostalCode != "")
+                ? 'https://geocode.maps.co/search?q=' + val.PhysicalPostalCode
+                : 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1;
+
+            pharmLoc = new google.maps.LatLng(val.lat, val.lon);
+            if (pharmLoc != null) {
+                marker = new google.maps.Marker({
+                    position: pharmLoc,
+                    map: map,
+                    data: "pharm",
+                    title: val.name,
+                    icon: pinImage,
+                    shadow: pinShadow
                 });
-                
-                marker.addListener('click', function(){
+                var infowindow = new google.maps.InfoWindow({
+                    content: "Name: "
+                        + val.PublicName_Program
+                        + "<br>"
+                        + "Address: "
+                        + val.PhysicalAddress1
+                        + "<br>"
+                        + "Phone: "
+                        + val.Phone1Number
+                        + "<br>"
+                        + "Email: "
+                        + val.EmailAddressMain
+                        + "<br>"
+                        + "Website: <a href='"
+                        + val.WebsiteAddress
+                        + "' target='_blank'>"
+                        + val.WebsiteAddress
+                        + "</a>"
+                });
+
+                marker.addListener('click', function () {
                     infowindow.open(map, marker);
                 });
 
 
 
-                        }
-			}
-                    }
-                });
-
             }
-        });
-    },
+
+
+
+        }
+    });
+},
+
+
 
     render: function () {
         //this.$el.empty();

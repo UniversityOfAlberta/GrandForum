@@ -437,6 +437,8 @@
     /* Other */
     $config->setValue("analyticsCode", "");
     
+    $config->setValue("geoapifyAPI", "");
+    
     $config->setValue("googleAPI", "");
     
     $config->setValue("reCaptchaSiteKey", "");

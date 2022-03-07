@@ -58,7 +58,11 @@ class AvoidResource extends BackboneModel {
     var $Categories;
     var $LastVerifiedOn;
 
-    
+    //extra
+    var $lon;
+    var $lat; 
+
+
     static function newFromId($id){
         if(isset($cache[$id])){
             return $cache[$id];
@@ -173,8 +177,8 @@ class AvoidResource extends BackboneModel {
             $this->Custom_YouTube = $row['Custom_YouTube'];
             $this->Categories = $row['Categories'];
             $this->LastVerifiedOn = $row['LastVerifiedOn'];
-
-
+	    $this->lon = $row['lon'];
+	    $this->lat = $row['lat'];
         }
     }
     
@@ -226,7 +230,9 @@ class AvoidResource extends BackboneModel {
                     'Custom_Twitter'=> $this->Custom_Twitter,
                     'Custom_YouTube'=> $this->Custom_YouTube,
                     'Categories'=> $this->Categories,
-                    'LastVerifiedOn'=> $this->LastVerifiedOn,
+		    'LastVerifiedOn'=> $this->LastVerifiedOn,
+		    'lon' => $this->lon,
+		    'lat' => $this->lat,
                 );
         return $json;
     }
@@ -282,7 +288,9 @@ class AvoidResource extends BackboneModel {
                                             'Custom_Twitter'=> $this->Custom_Twitter,
                                             'Custom_YouTube'=> $this->Custom_YouTube,
                                             'Categories'=> $this->Categories,
-                                            'LastVerifiedOn'=> $this->LastVerifiedOn,
+					    'LastVerifiedOn'=> $this->LastVerifiedOn,
+					    'lat' => $this->lat,
+					    'lon' => $this->lon,
                                             ),true);
                 if($status){
                     DBFunctions::commit();
