@@ -159,7 +159,7 @@ class IndexTable {
         }
         if($me->isRoleAtLeast(ADEAN)){
             $idsHeader = "<th style='white-space: nowrap;'>Google Scholar</th>
-                          <th style='white-space: nowrap;'>Scopus</th>
+                          <th style='white-space: nowrap;'>Sciverse</th>
                           <th style='white-space: nowrap;'>ORCID</th>
                           <th style='white-space: nowrap;'>WoS</th>";
         }
