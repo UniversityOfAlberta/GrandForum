@@ -147,6 +147,7 @@ class IndexTable {
         $me = Person::newFromId($wgUser->getId());
         $data = Person::getAllPeople($table);
         $idHeader = "";
+        $idsHeader = "";
         $contactHeader = "";
         $subRoleHeader = "";
         $projectsHeader = "";
@@ -155,6 +156,12 @@ class IndexTable {
         if($me->isRoleAtLeast(ADMIN)){
             $idHeader = "<th style='white-space: nowrap;'>User Id</th>
                          <th style='white-space: nowrap;'>Employee Id</th>";
+        }
+        if($me->isRoleAtLeast(ADEAN)){
+            $idsHeader = "<th style='white-space: nowrap;'>Google Scholar</th>
+                          <th style='white-space: nowrap;'>ORCID</th>
+                          <th style='white-space: nowrap;'>Scopus</th>
+                          <th style='white-space: nowrap;'>WoS</th>";
         }
         if($me->isLoggedIn()){
             $contactHeader = "<th style='white-space: nowrap;'>Email</th>";
@@ -182,7 +189,8 @@ class IndexTable {
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$ldapHeader}
                                     {$contactHeader}
-                                    {$idHeader}</tr>
+                                    {$idHeader}
+                                    {$idsHeader}</tr>
                                 </thead>
                                 <tbody>");
         foreach($data as $person){
@@ -213,6 +221,12 @@ class IndexTable {
             if($idHeader != ''){
                 $wgOut->addHTML("<td>{$person->getId()}</td>");
                 $wgOut->addHTML("<td>{$person->getEmployeeId()}</td>");
+            }
+            if($idsHeader != ''){
+                $wgOut->addHTML("<td>{$person->getGoogleScholar()}</td>");
+                $wgOut->addHTML("<td>{$person->getSciverseId()}</td>");
+                $wgOut->addHTML("<td>{$person->getOrcId()}</td>");
+                $wgOut->addHTML("<td>{$person->getWOS()}</td>");
             }
             $wgOut->addHTML("</tr>");
         }
