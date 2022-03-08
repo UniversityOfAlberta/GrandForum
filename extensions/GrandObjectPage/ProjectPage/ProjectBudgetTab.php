@@ -229,6 +229,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $endYear = date('Y', time() + (1 * 30 * 24 * 60 * 60)); // Roll-over budget in December
                 $midYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Keep previous year open until April
             }
+            else if($config->getValue('networkName') == "FES"){
+                $endYear = date('Y'); // Roll-over budget in the new year
+                $midYear = date('Y'); // Keep previous year open until the new year
+            }
             else{
                 $endYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Roll-over budget in April
                 $midYear = date('Y', time() - (3 * 30 * 24 * 60 * 60)); // Keep previous year open until April

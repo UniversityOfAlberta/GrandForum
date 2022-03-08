@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="APPEL OUVERT – Domaines Prioritaires" reportType="RP_OPEN2022" pdfType="RPTP_OPEN2022" pdfFiles="OpenCall2022PDF" ajax="true" allowIdProjects="true" disabled="false" year="2022">
+<Report name="APPEL OUVERT – Domaines Prioritaires" reportType="RP_OPEN2022" pdfType="RPTP_OPEN2022" pdfFiles="OpenCall2022PDF" ajax="true" allowIdProjects="true" disabled="true" year="2022">
     <Permissions>
         <Role role="" />
     </Permissions>

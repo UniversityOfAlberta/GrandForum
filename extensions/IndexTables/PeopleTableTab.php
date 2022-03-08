@@ -115,6 +115,10 @@ class PeopleTableTab extends AbstractTab {
         }
         $statusHeader = "";
         if($me->isRoleAtLeast(STAFF)){
+            $statusHeader .= "<th>Google Scholar</th>
+                              <th>ORCID</th>
+                              <th>Scopus</th>
+                              <th>Researcher Id</th>";
             if($config->getValue("genderEnabled")){
                 $statusHeader .= "<th>Gender</th>";
             }
@@ -276,6 +280,10 @@ class PeopleTableTab extends AbstractTab {
                     $lastRole = $person->getRole(HQP, true);
                     $status = "Inactive (".substr($lastRole->getEndDate(), 0, 10).")";
                 }
+                $html .= "<td>{$person->getGoogleScholar()}</td>
+                          <td>{$person->getOrcid()}</td>
+                          <td>{$person->getScopus()}</td>
+                          <td>{$person->getResearcherId()}</td>";
                 if($config->getValue("genderEnabled")){
                     $html .= "<td align='left'>{$person->getGender()}</td>";
                 }

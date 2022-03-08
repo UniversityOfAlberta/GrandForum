@@ -474,30 +474,24 @@
 
     <!-- Activities -->
     <Activities category="Activity">
-        <Activity type="Event" status="Invited|Not Invited">
+        <Activity type="Other Event" status="Invited|Not Invited">
             <data>
                 <field label="Event Type" type="String">event_type</field>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
         
-        <Activity type="Conference/Workshop" status="Invited|Not Invited">
+        <Activity type="Conference/Symposium/Workshop Contribution" status="Invited|Not Invited">
             <data>
-                <field label="Conference" type="String">conference</field>
+                <field label="Involvement/Contribution Type" type="Select" options="Attendance only|Conference session|Event Chair/MC|Keynote|Oral Presentation|Poster Presentation|Session Chair|Symposium Contribution|Workshop Contribution">involvement</field>
+                <field label="Conference/Symposium/Workshop Name" type="String">conference</field>
                 <field label="Location" type="String">location</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
-                <field label="URL" type="URL">url</field>
-            </data>
-        </Activity>
-        
-        <Activity type="Invited/Keynote" status="Invited|Not Invited">
-            <data>
-                <field label="Conference" type="String">conference</field>
-                <field label="Location" type="String">location</field>
-                <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Chair Name" type="String">chair_name</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>
@@ -510,15 +504,19 @@
             </data>
         </Activity>
         
-        <Activity type="Visiting Student (outgoing)" status="">
+        <Activity type="Visiting Researcher (outgoing)" status="">
             <data>
-                <field label="Student Name" type="String">student_name</field>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
             </data>
         </Activity>
         
-        <Activity type="Visiting Student (incoming)" status="">
+        <Activity type="Visiting Researcher (incoming)" status="">
             <data>
-                <field label="Student Name" type="String">student_name</field>
+                <field label="Researcher Type" type="Select" options="BSc|BA|MSc|MA|PhD|PDF|Professor (all levels)|Other|Research Associate">researcher_type</field>
+                <field label="Researcher Name" type="String">student_name</field>
+                <field label="External Institution" type="String">institution</field>
             </data>
         </Activity>
         
@@ -526,7 +524,9 @@
             <data>
                 <field label="Event Title" type="String">conference</field>
                 <field label="Location" type="String">location</field>
+                <field lable="Interviewer Name" type="String">interviewer</field>
                 <field label="Organizing Body" type="String">organizing_body</field>
+                <field label="Publisher" type="String">publisher</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Activity>

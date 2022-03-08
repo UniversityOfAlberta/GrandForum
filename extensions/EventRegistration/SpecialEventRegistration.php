@@ -135,9 +135,11 @@ class SpecialEventRegistration extends SpecialPage{
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
         else if($default->title == "Ethical Data and AI - Salon #2" ||
-                $default->title == "Ethical Data and AI - Salon #3"){
-            $misc = "<h3>How do you plan to attend?</h3>
+                $default->title == "Ethical Data and AI - Salon #3" ||
+                $default->title == "Ethical Data and AI - Salon #4"){
+            $misc = "<h3>How do you plan to assist?</h3>
                      <select name='misc[Attend]' required>
+                        <option></option>
                         <option>Online</option>
                         <option>In person</option>
                      </select>";
@@ -145,6 +147,9 @@ class SpecialEventRegistration extends SpecialPage{
         else if($default->title == "AI in Construction - Academia and Industry, Meet and Greet Event"){
             $roles = array("Industry Partner", "Researcher");
             $defaultRole = "Industry Partner";
+        }
+        else if($default->title == "AI4Society Reverse EXPO"){
+            $roles = array("Audience");
         }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);

@@ -475,6 +475,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEpicConference(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -527,10 +528,9 @@ class ApplicationsTable extends SpecialPage{
     function generateIH(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2020, "2020-21"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2019, "2019-20"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2018, "2018-19"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
+        for($year=YEAR; $year >= 2017; $year--){
+            $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, $year, "{$year}-".($year+1)));
+        }
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
