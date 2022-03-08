@@ -4,6 +4,8 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
     
     function getData(){
         $data = array();
+        $dept = $this->getAttr("department", "");
+        $uni = $this->getAttr("university", "University of Alberta");
         $start = $this->getAttr("start", REPORTING_CYCLE_START);
         $end = $this->getAttr("end", REPORTING_CYCLE_END);
         $atsec = (strtolower($this->getAttr("atsec", "false")) == "true");
@@ -18,6 +20,10 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
+            if($dept != "" && !$person->isInDepartment($dept, $uni, $start, $end)){
+                // If department is specified, only inlclude people from that department
+                continue;
+            }
             /*if(!$person->isSubRole("SPECIAL2020") &&
                !$me->isRole(DEAN) &&
                !$me->isRole(DEANEA) &&

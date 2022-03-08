@@ -22,7 +22,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Biological Sciences" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Biological Sciences" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -62,7 +62,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Chemistry" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Chemistry" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -102,7 +102,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Computing Science" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Computing Science" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -142,7 +142,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Earth And Atmospheric Sciences" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Earth And Atmospheric Sciences" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -182,7 +182,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Mathematical And Statistical Sciences" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Mathematical And Statistical Sciences" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -222,7 +222,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Physics" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Physics" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
@@ -262,7 +262,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="DepartmentPeopleReportItemSet" department="Psychology" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" department="Psychology" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01" university="University of Alberta">
             <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
                 <Static>
                     <![CDATA[
