@@ -134,25 +134,6 @@
             <![CDATA[
                     <h3>Communication Consent </h3>
                     <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
-                </div>
-                <script type='text/javascript'>
-                    $(".program-button").click(function(e){
-                        var checkbox = $('input[type=checkbox]', this);
-                        if($(e.target).not("input").length == 1){
-                            $(checkbox).click();
-                        }
-                    });
-                    
-                    $(".program-button input").change(function(){
-                        var checked = $(this).is(":checked");
-                        if(checked){
-                            $("#register").slideDown();
-                        }
-                        else {
-                            $("#register").slideUp();
-                        }
-                    }).change();
-                </script>
             ]]>
         </Static>
         <ReportItem id="submit" type="SubmitEmail">
@@ -201,5 +182,28 @@
                 </table>
             ]]>
         </ReportItem>
+        <Static>
+            <![CDATA[
+                </div>
+                <script type='text/javascript'>
+                    $(".program-button").click(function(e){
+                        var checkbox = $('input[type=checkbox]', this);
+                        if($(e.target).not("input").length == 1){
+                            $(checkbox).click();
+                        }
+                    });
+                    
+                    $(".program-button input").change(function(){
+                        var checked = $(this).is(":checked");
+                        if(checked){
+                            $("#register").slideDown();
+                        }
+                        else {
+                            $("#register").slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
     </ReportSection>
 </Report>
