@@ -501,7 +501,7 @@
         <ReportItem id="active_specify_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="active_specify_end" orientation="vertical" options="I am physically and/or mentally unable to be active|I don't know where/how to get help in my community|I have trouble maintaining a routine when it comes to activity|Other" optional="true">
             <![CDATA[
             <span id="active_specify_end">
-            <h3>What is the hardest part of staying active for you? (choose all that apply):</h3>
+            <h3>What challenges have you faced when it comes to staying active? (choose all that apply):</h3>
             {$item}
             </span>
             ]]>
@@ -955,7 +955,7 @@
         <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
             <![CDATA[
             <span id="diet_end">
-            <h3>What is the hardest part of maintaining a balanced diet for you? (choose all that apply):</h3>
+            <h3>What challenges have you faced when it comes to maintaining a balanced diet? (choose all that apply):</h3>
             {$item}
             </span>
             ]]>
