@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Faculty Publications" title="Faculty Publications" reportType="RP_FAC_PUBLICATIONS" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="DEAN">
+            <SectionPermission id="fac_publications" permissions="rw" />
+        </Role>
+        <Role role="DEANEA">
+            <SectionPermission id="fac_publications" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="fac_publications" tooltip="Publications" name="Publications" title="Faculty Publications" blobSection="BLOB_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table id='products' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeople" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" includeHQP="false" start="CYCLE_START" end="CYCLE_END">
+                <Static>
+                    <![CDATA[
+                        <tr><td>{$user_name}</td><td>{$product_type}</td><td> {$product_citation}</td></tr>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $('#products').dataTable({
+                       'aLengthMenu': [[-1], ['All']],
+                        'iDisplayLength': -1,
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel', 'pdf'
+                        ]
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>
