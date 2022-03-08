@@ -40,6 +40,11 @@ You should log in and change your password now.';
         case "readonlytext":
             $message = '$1';
             break;
+        case "passwordreset-emailelement":
+            $message = "<u>Username:</u> <b>$1</b><br />
+                        <br />
+                        <u>Temporary Password:</u> <b>$2</b>";
+            break;
     }
     return true;
   }
