@@ -124,6 +124,8 @@ if(TESTING){
     $wgEnotifWatchlist = false; # UPO
 }
 
+$wgAllowHTMLEmail = true;
+
 # MySQL specific settings
 $wgDBprefix         = "mw_";
 
