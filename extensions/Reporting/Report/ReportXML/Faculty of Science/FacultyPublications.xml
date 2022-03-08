@@ -8,6 +8,13 @@
         <Role role="DEANEA">
         </Role>
     </Permissions>
+    <ReportSection id="publications" tooltip="Faculty Publications" name="Faculty Publications" title="Faculty Publications" blobSection="BLOB_NONE" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Click one of the departments on the left to show a list of publications per department.
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="bio" tooltip="Biological Sciences" name="Biological Sciences" title="Biological Sciences" blobSection="BLOB_NONE" type="ReportSection">
         <Static>
             <![CDATA[

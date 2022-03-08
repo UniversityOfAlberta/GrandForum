@@ -20,10 +20,6 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
         
         $data = array();
         foreach($allPeople as $person){
-            if($dept != "" && !$person->isInDepartment($dept, $uni, $start, $end)){
-                // If department is specified, only inlclude people from that department
-                continue;
-            }
             /*if(!$person->isSubRole("SPECIAL2020") &&
                !$me->isRole(DEAN) &&
                !$me->isRole(DEANEA) &&
@@ -61,6 +57,11 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 // Secondary check for Chairs.  Chairs should only show up for Dean, Vice Dean, HR
                 continue;
             }
+            if($dept != "" && !$person->isInDepartment($dept, $uni, $start, $end)){
+                // If department is specified, only inlclude people from that department
+                continue;
+            }
+            
             // SPECIAL CASES BELOW
             
             $index = @$fec[$person->getId()];
