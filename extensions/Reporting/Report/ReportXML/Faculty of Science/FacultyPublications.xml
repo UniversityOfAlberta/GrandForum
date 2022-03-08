@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="Faculty Publications" title="Faculty Publications" reportType="RP_FAC_PUBLICATIONS" personId="0" ajax="true" disabled="false">
     <Permissions>
+        <Role role="VDEAN">
+            <SectionPermission id="fac_publications" permissions="rw" />
+        </Role>
         <Role role="DEAN">
             <SectionPermission id="fac_publications" permissions="rw" />
         </Role>
