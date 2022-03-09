@@ -96,7 +96,6 @@ class AVOIDDashboard extends SpecialPage {
         $api = new UserFrailtyIndexAPI();
         $score = $api->getFrailtyScore($me->getId());
         $frailty = "";
-        $score = 19;
         if($score >= 0 && $score <= 3){
             $frailty = "Based on the answers in the assessment, you are classified as <u style='color: green;'>no risk</u> to becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
 ";
