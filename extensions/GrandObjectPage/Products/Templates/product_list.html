@@ -15,40 +15,9 @@
             <th width='48%'>Authors</th>
             <th style='display:none;'>Status</th>
             <th style='display:none;'>Citation</th>
-            <% if(networkName == "FES"){ %>
-                <th style='display:none;'>Internal Collaboration</th>
-                <th style='display:none;'>UCalgary</th>
-                <th style='display:none;'>International Partner</th>
-                <th style='display:none;'>HQP Led</th>
-                <th style='display:none;'>Url</th>
-                <th style='display:none;'>Location</th>
-                <th style='display:none;'>Article Number</th>
-                <th style='display:none;'>Published In</th>
-                <th style='display:none;'>Impact Factor</th>
-                <% if(this.model.category == "Award"){ %>
-                    <th style='display:none;'>Frequency</th>
-                    <th style='display:none;'>Value</th>
-                    <th style='display:none;'>Institution</th>
-                <% } else if(this.model.category == "IP Management"){ %>
-                    <th style='display:none;'>HQP Trained</th>
-                <% } else if(this.model.category == "Activity"){ %>
-                    <th style='display:none;'>Involvement/Contribution Type</th>
-                    <th style='display:none;'>Conference/Symposium/Workshop Name</th>
-                    <th style='display:none;'>Chair Name</th>
-                    <th style='display:none;'>Organizing Body</th>
-                    <th style='display:none;'>Researcher Type</th>
-                <% } else if(this.model.category == "Publication"){ %>
-                    <th style='display:none;'>Volume</th>
-                    <th style='display:none;'>Pages</th>
-                    <th style='display:none;'>Publisher</th>
-                    <th style='display:none;'>Conference</th>
-                    <th style='display:none;'>Event Title</th>
-                    <th style='display:none;'>Organizing Body</th>
-                    <th style='display:none;'>University</th>
-                    <th style='display:none;'>Book Title</th>
-                <% } %>
-            <% } %>
-            <th style='display:none;'>Extra</th>
+            <% _.each(this.getFields(), function(field){ %>
+                <th style='display:none;'><%= field.label.replaceAll("<br />", " ") %></th>
+            <% }) %>
             <% if(projectsEnabled){ %>
                 <th>Projects</th>
                 <% if(_.contains(allowedRoles, STAFF)){ %>

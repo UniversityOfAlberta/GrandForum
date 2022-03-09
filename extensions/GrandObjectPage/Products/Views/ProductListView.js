@@ -87,43 +87,9 @@ ProductListView = Backbone.View.extend({
             row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
             row.push(model.status);
             row.push(model.citation);
-            if(networkName == "FES"){
-                addCol(row, model.data.collaboration);
-                addCol(row, model.data.ucalgary);
-                addCol(row, model.data.partner);
-                addCol(row, model.data.hqp);
-                addCol(row, model.data.url);
-                addCol(row, model.data.location);
-                addCol(row, model.data.number);
-                addCol(row, model.data.published_in);
-                addCol(row, model.data.impact_factor);
-                if(model.category == "IP Management"){
-                    addCol(row, model.data.hqp_trained);
-                }
-                if(model.category == "Award"){
-                    addCol(row, model.data.frequency);
-                    addCol(row, model.data.value);
-                    addCol(row, model.data.institution);
-                }
-                if(model.category == "Activity"){
-                    addCol(row, model.data.involvement);
-                    addCol(row, model.data.conference);
-                    addCol(row, model.data.chair_name);
-                    addCol(row, model.data.organizing_body);
-                    addCol(row, model.data.researcher_type);
-                }
-                if(model.category == "Publication"){
-                    addCol(row, model.data.volume);
-                    addCol(row, model.data.pages);
-                    addCol(row, model.data.publisher);
-                    addCol(row, model.data.conference);
-                    addCol(row, model.data.event_title);
-                    addCol(row, model.data.organizing_body);
-                    addCol(row, model.data.university);
-                    addCol(row, model.data.book_title);
-                }
-            }
-            row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
+            _.each(this.getFields(), function(field, index){
+                addCol(row, model.data[index]);
+            });
             if(projectsEnabled){
                 row.push(projects.join(', '));
                 if(_.contains(allowedRoles, STAFF)){
@@ -155,6 +121,18 @@ ProductListView = Backbone.View.extend({
         return this.render();
     },
     
+    getFields: function(){
+        if(typeof(productStructure.categories[this.model.category]) == 'undefined'){
+            return {};
+        }
+        var fields = _.reduce(productStructure.categories[this.model.category].types, function(memo, obj){ return Object.assign(memo, obj.data);}, {});
+        if(networkName == "FES" && this.model.category == "Publication"){
+            delete fields['date_accepted'];
+            delete fields['date_submitted'];
+        }
+        return fields;
+    },
+    
     render: function(){
         this.$el.empty();
         this.$el.css('display', 'none');
@@ -171,24 +149,13 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
-        var targets = [ 4, 5, 6 ];
-        if(networkName == "FES"){
-            if(this.model.category == "Publication"){
-                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
-            }
-            else if (this.model.category == "Award"){
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-            }
-            else if (this.model.category == "IP Management"){
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
-            }
-            else if (this.model.category == "Activity"){
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-            }
-            else {
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-            }
+        var targets = [ 4, 5 ];
+        if(networkName == "FES" && this.model.category == "Publication"){
+            targets = [ 6, 7 ];
         }
+        _.each(this.getFields(), function(field){
+            targets.push(_.last(targets) + 1);
+        });
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
