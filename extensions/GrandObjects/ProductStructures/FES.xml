@@ -299,7 +299,7 @@
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="PhD Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+        <Publication type="Doctoral Thesis/Dissertation" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
                 <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
@@ -323,6 +323,7 @@
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" label="Department" type="String">department</field>
+                <field label="Database or Archive Name" type="String">database</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
@@ -477,7 +478,7 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="Venue" type="String">venue</field>
-                <field bibtex="howpublished" label="How Published" type="String">how_published</field>
+                <field bibtex="howpublished" label="Form of Publication" type="String">how_published</field>
                 <field bibtex="note" label="Note" type="String">note</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
