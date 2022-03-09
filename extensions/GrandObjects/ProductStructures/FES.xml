@@ -360,7 +360,7 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field ccv_id="b3c8a60c053a405597b92899d95765a3" ccv_name="Conference Name" bibtex="booktitle" label="Conference Name" type="String">event_title</field>
-                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="City" type="String">event_location</field>
+                <field ccv_id="c2efd9725588489b8df73467c5597c32" ccv_name="City" label="Conference Location" placeholder="City, Province and Country" type="String">event_location</field>
                 <field ccv_id="684ccb1fcdd7421f89b304ff5c40579d" ccv_name="Page Range" bibtex="pages" label="Page Range" type="String">pages</field>
                 <field ccv_id="0c357193a93f4137a87394401ac81958" ccv_name="Publisher" bibtex="publisher" label="Publisher" type="String">publisher</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
@@ -447,6 +447,20 @@
                
         <Publication type="Website" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <data>
+                <field label="URL" type="URL">url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Database" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Event Title" type="String">conference</field>
+                <field label="Location" type="String">location</field>
+                <field label="Database Holder" type="String">organizing_body</field>
                 <field label="URL" type="URL">url</field>
             </data>
         </Publication>

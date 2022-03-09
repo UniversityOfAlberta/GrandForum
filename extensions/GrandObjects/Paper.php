@@ -624,6 +624,7 @@ class Paper extends BackboneModel{
                                 $fattrs = $field->attributes();
                                 $fid = "$field";
                                 $flabel = "{$fattrs->label}";
+                                $fplaceholder = "{$fattrs->placeholder}";
                                 $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
                                 $fccvtk = "{$fattrs->ccvtk}";
                                 $fbibtex = "{$fattrs->bibtex}";
@@ -633,6 +634,7 @@ class Paper extends BackboneModel{
                                 $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
                                                                                                          'bibtex' => $fbibtex,
                                                                                                          'label' => $flabel,
+                                                                                                         'placeholder' => $fplaceholder,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);

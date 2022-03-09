@@ -81,7 +81,7 @@
                 </td>
                 <td class="field">
                     <% if(val.type == "String"){ %>
-                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;"}) %>
+                        <%= HTML.TextBox(this, 'data.' + index, {style: "width:200px;", placeholder: val.placeholder}) %>
                     <% } else if(val.type == "Integer"){ %>
                         <%= HTML.TextBox(this, 'data.' + index, {style: "width:100px;", class: "integer"}) %>
                     <% } else if(val.type == "Radio"){ %>
