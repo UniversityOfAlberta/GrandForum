@@ -53,7 +53,8 @@ abstract class EliteProfile extends BackboneModel {
                                       FROM `grand_report_blobs`
                                       WHERE `rp_type` = 'RP_".static::$rpType."'
                                       AND `rp_section` = 'PROFILE'
-                                      AND `rp_item` = 'MATCHES'");
+                                      AND `rp_item` = 'MATCHES'
+                                      AND user_id IN (SELECT user_id FROM grand_pdf_report WHERE type = 'RPTP_".static::$rpType."')");
         $matchedProfiles = array();
         foreach($data as $row){
             $userId = $row['user_id'];
