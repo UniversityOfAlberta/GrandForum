@@ -261,7 +261,7 @@
             <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="Masters Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+        <Publication type="Master Thesis" supervised="true" ccv_id="88eee2e0553d47a5a0968a00084913cb" ccv_name="Supervised Student Publications" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <title ccv_id="d4a704abd690462589a1a259508cc1d8" ccv_name="Publication Title"></title>
             <statuses ccv_id="fa5c5a2edf324a05b3e572b240aa218a" ccv_name="Publishing Status">
                 <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
@@ -285,6 +285,7 @@
                 <field label="Completed in joint supervision&lt;br />with University of Calgary?" type="Check">uofc</field>
                 <field ccv_id="04e44a26f4c84f56ac0fa55c42700adc" ccv_name="Published In" bibtex="school" label="University" type="String">university</field>
                 <field ccv_id="14fe01a0009e42728738e27b778a7bfc" ccv_name="Publisher" bibtex="publisher" label="Department" type="String">department</field>
+                <field label="Database or Archive Name" type="String">database</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
@@ -435,6 +436,7 @@
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
                 <field label="Publisher" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
                 <field label="#Citations" type="String">citations</field>
