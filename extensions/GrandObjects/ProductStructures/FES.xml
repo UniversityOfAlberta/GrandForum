@@ -388,7 +388,6 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field bibtex="school" label="Organization" type="String">university</field>
-                <field label="Department" type="String">department</field>
                 <field label="Article Number" type="String">number</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
