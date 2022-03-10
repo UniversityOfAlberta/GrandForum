@@ -387,8 +387,9 @@
                 <field label="UCalgary Collaboration" type="Check">ucalgary</field>
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
-                <field bibtex="school" label="University" type="String">university</field>
+                <field bibtex="school" label="Organization" type="String">university</field>
                 <field label="Department" type="String">department</field>
+                <field label="Article Number" type="String">number</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
                 <field bibtex="issn" label="ISSN" type="String">issn</field>
                 <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
@@ -411,7 +412,8 @@
                 <field ccv_id="212fa7b750264e6496a9e4a4c4968810" ccv_name="Other Organization" label="Published In" type="String">published_in</field>
                 <field label="Pages" type="String">pages</field>
                 <field ccv_id="e3264fc9e17442e492bc8d5dca60e165" ccv_name="Editors" label="Editor" type="String">editor</field>
-                <field label="Publisher" type="String">publisher</field>
+                <field label="Organization" type="String">publisher</field>
+                <field label="Article Number" type="String">number</field>
                 <field ccv_id="d570e2086e0e4e7d911cbb631a631af5" ccv_name="URL" label="Publication URL" type="URL">url</field>
                 <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
                 <field label="#Citations" type="String">citations</field>
@@ -478,6 +480,28 @@
                 <field label="International Co-author" type="Check">partner</field>
                 <field label="HQP Led" type="Check">hqp</field>
                 <field label="Episode Number" type="String">venue</field>
+                <field bibtex="howpublished" label="Publisher" type="String">how_published</field>
+                <field bibtex="note" label="Note" type="String">note</field>
+                <field bibtex="isbn" label="ISBN" type="String">isbn</field>
+                <field bibtex="issn" label="ISSN" type="String">issn</field>
+                <field bibtex="doi" label="Publication DOI" type="DOI">doi</field>
+                <field bibtex="url" label="Publication URL" type="URL">url</field>
+                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
+                <field label="#Citations" type="String">citations</field>
+                <field label="Citation source URL" type="URL">citations_url</field>
+            </data>
+        </Publication>
+        
+        <Publication type="Research-Specific Short Film" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+            <data>
+                <field label="Date Submitted" type="Date">date_submitted</field>
+                <field label="Date Accepted" type="Date">date_accepted</field>
+                <field label="Lead Author">lead_author</field>
+                <field label="Internal Collaboration" type="Check">collaboration</field>
+                <field label="UCalgary Collaboration" type="Check">ucalgary</field>
+                <field label="International Co-author" type="Check">partner</field>
+                <field label="HQP Led" type="Check">hqp</field>
+                <field label="Venue" type="String">venue</field>
                 <field bibtex="howpublished" label="Publisher" type="String">how_published</field>
                 <field bibtex="note" label="Note" type="String">note</field>
                 <field bibtex="isbn" label="ISBN" type="String">isbn</field>
