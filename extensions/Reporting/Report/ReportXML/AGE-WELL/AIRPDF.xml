@@ -154,7 +154,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS" limit="200">
+        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS" limit="300">
             <![CDATA[
                 <li><b>State the project goals and objectives</b>
                     {$item}
