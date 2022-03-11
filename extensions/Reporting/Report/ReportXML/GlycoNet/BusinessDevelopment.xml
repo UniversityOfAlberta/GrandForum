@@ -132,6 +132,9 @@
                               'ND-05'
                               'ND-06'
                               'ND-09'
+                              'ND-10'
+                              'ND-11'
+                              'ND-13'
                               'RG-1'
                               'RG-2'
                               'RG-3'
@@ -281,6 +284,8 @@
                               'CR-06'
                               'CR-07'
                               'ND-12'
+                              'ND-14'
+                              'ND-15'
                               'TP-18','{$project_name}')}">
                 <Static>
                     <![CDATA[
@@ -389,8 +394,11 @@
                               'Project 2'
                               'CD-46'
                               'CD-81'
+                              'CD-83'
+                              'CD-86'
                               'TP-1'
-                              'CR-14','{$project_name}')}">
+                              'CR-14'
+                              'CR-15','{$project_name}')}">
                 <Static>
                     <![CDATA[
                         <tr>
@@ -645,6 +653,7 @@
                               'Project 2'
                               'CD-41'
                               'CD-62'
+                              'CD-85'
                               'DO-18'
                               'TP-38','{$project_name}')}">
                 <Static>
