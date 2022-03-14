@@ -13,7 +13,7 @@ $wgHooks['SubLevelTabs'][] = 'QASummary::createSubTabs';
 class QASummary extends SpecialPage{
 
     function QASummary() {
-        parent::__construct("QASummary", STAFF.'+', true);
+        parent::__construct("QASummary", null, true);
     }
 
     function execute($par){
@@ -45,14 +45,19 @@ class QASummary extends SpecialPage{
     }
     
     function userCanExecute($user){
-        $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isSubRole('QA_PHYS') ||
-                                                 $person->isSubRole('QA_CHEM') ||
-                                                 $person->isSubRole('QA_BIOL') ||
-                                                 $person->isSubRole('QA_CMPUT') ||
-                                                 $person->isSubRole('QA_MATH') ||
-                                                 $person->isSubRole('QA_EAS') ||
-                                                 $person->isSubRole('QA_PSYCH'));
+        $me = Person::newFromUser($user);
+        return ($me->isRole(CHAIR) || 
+                $me->isRole(DEAN) || 
+                $me->isRole(DEANEA) || 
+                $me->isRole(VDEAN) || 
+                $me->isRoleAtLeast(STAFF) || 
+                $me->isSubRole('QA_PHYS') ||
+                $me->isSubRole('QA_CHEM') ||
+                $me->isSubRole('QA_BIOL') ||
+                $me->isSubRole('QA_CMPUT') ||
+                $me->isSubRole('QA_MATH') ||
+                $me->isSubRole('QA_EAS') ||
+                $me->isSubRole('QA_PSYCH'));
     }
     
     static function createSubTabs(&$tabs){
