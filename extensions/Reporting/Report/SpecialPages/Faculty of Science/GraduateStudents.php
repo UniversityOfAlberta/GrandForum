@@ -10,13 +10,18 @@ $wgHooks['SubLevelTabs'][] = 'GraduateStudents::createSubTabs';
 class GraduateStudents extends SpecialPage {
     
     function GraduateStudents(){
-        parent::__construct("GraduateStudents", CHAIR, true);
+        parent::__construct("GraduateStudents", null, true);
+    }
+    
+    function userCanExecute($user){
+        $me = Person::newFromUser($user);
+        return ($me->isRole(CHAIR) || $me->isRole(DEAN) || $me->isRole(DEANEA) || $me->isRole(VDEAN) || $me->isRoleAtLeast(STAFF));
     }
     
     function execute($par){
         global $wgOut;
         $me = Person::newFromWgUser();
-        $dept = $me->getDepartment();
+        $dept = ($me->isRole(DEAN) || $me->isRole(DEANEA) || $me->isRole(VDEAN) || $me->isRoleAtLeast(STAFF)) ? "" : $me->getDepartment();
         $start = REPORTING_CYCLE_START;
         $end   = REPORTING_CYCLE_END;
         $hqps = Person::getAllPeopleDuring(HQP, $start, $end);
@@ -33,6 +38,7 @@ class GraduateStudents extends SpecialPage {
                                 <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Employee Id</th>
+                                <th>Department</th>
                                 <th>Position</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -48,7 +54,7 @@ class GraduateStudents extends SpecialPage {
                 continue;
             }
             foreach($universities as $uni){
-                if($uni['department'] == $dept && in_array(strtolower($uni['position']), Person::$studentPositions[$table])){
+                if($dept == "" || ($uni['department'] == $dept && in_array(strtolower($uni['position']), Person::$studentPositions[$table]))){
                     $university = $uni;
                     break;
                 }
@@ -71,9 +77,10 @@ class GraduateStudents extends SpecialPage {
                 $wgOut->addHTML("<td>{$hqp->getLastName()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getEmail()}</td>");
                 $wgOut->addHTML("<td>{$hqp->getEmployeeId()}</td>");
-                $wgOut->addHTML("<td>{$uni['position']}</td>");
-                $wgOut->addHTML("<td align='center'>".substr($uni['start'], 0, 10)."</td>");
-                $wgOut->addHTML("<td align='center'>".substr($uni['end'], 0, 10)."</td>");
+                $wgOut->addHTML("<td>{$university['department']}</td>");
+                $wgOut->addHTML("<td>{$university['position']}</td>");
+                $wgOut->addHTML("<td align='center'>".substr($university['start'], 0, 10)."</td>");
+                $wgOut->addHTML("<td align='center'>".substr($university['end'], 0, 10)."</td>");
                 $wgOut->addHTML("<td>".implode("; ", $sups)."</td>");
                 $wgOut->addHTML("<td>".implode("; ", $cosups)."</td>");
                 $wgOut->addHTML("</tr>");
@@ -101,6 +108,13 @@ class GraduateStudents extends SpecialPage {
             
             $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "ugrad") ? "selected" : false;
             $tabs["Chair"]['subtabs'][] = TabUtils::createSubTab("Undergraduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=ugrad", $selected);
+        }
+        if($person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN)){
+            $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "grad") ? "selected" : false;
+            $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Graduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=grad", $selected);
+            
+            $selected = @($wgTitle->getText() == "GraduateStudents" && $_GET['table'] == "ugrad") ? "selected" : false;
+            $tabs["Dean"]['subtabs'][] = TabUtils::createSubTab("Undergraduate Students", "$wgServer$wgScriptPath/index.php/Special:GraduateStudents?table=ugrad", $selected);
         }
         return true;
     }

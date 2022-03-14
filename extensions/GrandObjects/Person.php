@@ -10,6 +10,7 @@ class Person extends BackboneModel {
     static $cache = array();
     static $rolesCache = array();
     static $universityCache = array();
+    static $allUniversityCache = array();
     static $aliasCache = array();
     static $authorshipCache = array();
     static $employeeIdCache = array();
@@ -2194,39 +2195,43 @@ class Person extends BackboneModel {
      * @return array The Universities that this Person was at between the given range
      */ 
     function getUniversitiesDuring($startRange, $endRange){
-        if(Cache::exists("user_university_{$this->id}_{$startRange}_{$endRange}")){
-            return Cache::fetch("user_university_{$this->id}_{$startRange}_{$endRange}");
-        }
-        $sql = "SELECT * 
-                FROM grand_user_university uu, grand_universities u, grand_positions p
-                WHERE uu.user_id = '{$this->id}'
-                AND u.university_id = uu.university_id
-                AND uu.position_id = p.position_id
-                AND ( 
-                ( (end_date != '0000-00-00 00:00:00') AND
-                (( start_date BETWEEN '$startRange' AND '$endRange' ) || ( end_date BETWEEN '$startRange' AND '$endRange' ) || (start_date <= '$startRange' AND end_date >= '$endRange') ))
-                OR
-                ( (end_date = '0000-00-00 00:00:00') AND
-                ((start_date <= '$endRange')))
-                )
-                ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
-        $data = DBFunctions::execSQL($sql);
-        $universities = array();
-        if(count($data) > 0){
+        if(empty(self::$allUniversityCache)){
+            if(Cache::exists("user_university")){
+                $data = Cache::fetch("user_university");
+            }
+            else{
+                $sql = "SELECT id, user_id, university_name, department, position, research_area, start_date, end_date
+                        FROM grand_user_university uu, grand_universities u, grand_positions p
+                        WHERE u.university_id = uu.university_id
+                        AND uu.position_id = p.position_id
+                        ORDER BY REPLACE(end_date, '0000-00-00 00:00:00', '9999-99-99 99:99:99') DESC, start_date DESC, id DESC";
+                $data = DBFunctions::execSQL($sql);
+                Cache::store("user_university", $data);
+            }
             foreach($data as $row){
                 if($row['university_name'] != "Unknown"){
-                    $universities[] = array("id"         => $row['id'],
-                                            "university" => $row['university_name'],
-                                            "department" => $row['department'],
-                                            "position"   => $row['position'],
-                                            "research_area" => $row['research_area'],
-                                            "start" => $row['start_date'],
-                                            "end" => $row['end_date']);
+                    self::$allUniversityCache[$row['user_id']][] = array("id" => $row['id'],
+                                                                         "university" => $row['university_name'],
+                                                                         "department" => $row['department'],
+                                                                         "position" => $row['position'],
+                                                                         "research_area" => $row['research_area'],
+                                                                         "start" => $row['start_date'],
+                                                                         "end" => $row['end_date']);
                 }
             }
         }
-        Cache::store("user_university_{$this->id}_{$startRange}_{$endRange}", $universities);
-        return $universities;
+        $unis = array();
+        if(isset(self::$allUniversityCache[$this->getId()])){
+            foreach(self::$allUniversityCache[$this->getId()] as $uni){
+                if(($uni['end'] != "0000-00-00 00:00:00" && (($uni['start'] >= $startRange && $uni['start'] <= $endRange) || 
+                                                             ($uni['end'] >= $startRange && $uni['end'] <= $endRange) ||
+                                                             ($uni['start'] <= $endRange && $uni['end'] >= $endRange))) || 
+                   ($uni['end'] == "0000-00-00 00:00:00" && $uni['start'] <= $endRange)){
+                    $unis[] = $uni;
+                }
+            }
+        }
+        return $unis;
     }
     
     function isInDepartment($department, $university, $startRange, $endRange){
