@@ -3315,7 +3315,7 @@ class Person extends BackboneModel {
      * @param string $endRange The end date
      * @return array This Person's Supervisors
      */
-    function getSupervisorsDuring($startRange, $endRange){
+    function getSupervisorsDuring($startRange, $endRange, $split=false){
         $sql = "SELECT *
                 FROM grand_relations
                 WHERE user2 = '{$this->id}'
@@ -3329,13 +3329,24 @@ class Person extends BackboneModel {
                 )";
     
         $data = DBFunctions::execSQL($sql);
-        $sups = array();
+        if($split){
+            $sups = array(CO_SUPERVISES => array(),
+                          SUPERVISES => array());
+        }
+        else{
+            $sups = array();
+        }
         $sups_uniq_ids = array();
         foreach($data as $row){
             $sup = Person::newFromId($row['user1']);
             if( !in_array($sup->getId(), $sups_uniq_ids) && $sup->getName() != ""){
                 $sups_uniq_ids[] = $sup->getId();
-                $sups[] = $sup;
+                if($split){
+                    $sups[$row['type']][] = $sup;
+                }
+                else{
+                    $sups[] = $sup;
+                }
             }
         }
         return $sups;

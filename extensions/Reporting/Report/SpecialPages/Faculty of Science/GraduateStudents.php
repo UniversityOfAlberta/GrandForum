@@ -54,22 +54,20 @@ class GraduateStudents extends SpecialPage {
                 continue;
             }
             foreach($universities as $uni){
-                if($dept == "" || ($uni['department'] == $dept && in_array(strtolower($uni['position']), Person::$studentPositions[$table]))){
+                if((($dept == "" || $uni['department'] == $dept) && in_array(strtolower($uni['position']), Person::$studentPositions[$table]))){
                     $university = $uni;
                     break;
                 }
             }
             if($university != null){
-                $supervisors = $hqp->getSupervisorsDuring($start, $end);
+                $supervisors = $hqp->getSupervisorsDuring($start, $end, true);
                 $sups = array();
                 $cosups = array();
-                foreach($supervisors as $supervisor){
-                    if($supervisor->isRelatedToDuring($hqp, SUPERVISES, $start, $end)){
-                        $sups[] = $supervisor->getNameForForms();
-                    }
-                    else if($supervisor->isRelatedToDuring($hqp, CO_SUPERVISES, $start, $end)){
-                        $cosups[] = $supervisor->getNameForForms();
-                    }
+                foreach($supervisors[SUPERVISES] as $supervisor){
+                    $sups[] = $supervisor->getNameForForms();
+                }
+                foreach($supervisors[CO_SUPERVISES] as $supervisor){
+                    $cosups[] = $supervisor->getNameForForms();
                 }
                 $wgOut->addHTML("<tr>");
                 $wgOut->addHTML("<td>{$hqp->getFirstName()}</td>");
