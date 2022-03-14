@@ -22,19 +22,19 @@ class QASummary extends SpecialPage{
         $tabbedPage = new TabbedAjaxPage("qasummary");
         $person = Person::newFromWgUser();
         
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_PHYS"))
+        if(self::checkRole($person) || $person->isSubRole("QA_PHYS"))
             $tabbedPage->addTab(new DepartmentTab("Physics", array("PHYS")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_CHEM"))
+        if(self::checkRole($person) || $person->isSubRole("QA_CHEM"))
             $tabbedPage->addTab(new DepartmentTab("Chemistry", array("CHEM")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_BIOL"))
+        if(self::checkRole($person) || $person->isSubRole("QA_BIOL"))
             $tabbedPage->addTab(new DepartmentTab("Biological Sciences", array("BIOL")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_CMPUT"))
+        if(self::checkRole($person) || $person->isSubRole("QA_CMPUT"))
             $tabbedPage->addTab(new DepartmentTab("Computing Science", array("CMPUT")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_MATH"))
+        if(self::checkRole($person) || $person->isSubRole("QA_MATH"))
             $tabbedPage->addTab(new DepartmentTab("Mathematical And Statistical Sciences", array("MATH", "STAT")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_EAS"))
+        if(self::checkRole($person) || $person->isSubRole("QA_EAS"))
             $tabbedPage->addTab(new DepartmentTab("Earth And Atmospheric Sciences", array("EAS")));
-        if($person->isRoleAtLeast(STAFF) || $person->isSubRole("QA_PSYCH"))
+        if(self::checkRole($person) || $person->isSubRole("QA_PSYCH"))
             $tabbedPage->addTab(new DepartmentTab("Psychology", array("PSYCH")));
         
         $tabbedPage->showPage();
@@ -44,13 +44,17 @@ class QASummary extends SpecialPage{
         </script>");
     }
     
+    function checkRole($person){
+        return ($person->isRole(CHAIR) || 
+                $person->isRole(DEAN) || 
+                $person->isRole(DEANEA) || 
+                $person->isRole(VDEAN) || 
+                $person->isRoleAtLeast(STAFF));
+    }
+    
     function userCanExecute($user){
         $me = Person::newFromUser($user);
-        return ($me->isRole(CHAIR) || 
-                $me->isRole(DEAN) || 
-                $me->isRole(DEANEA) || 
-                $me->isRole(VDEAN) || 
-                $me->isRoleAtLeast(STAFF) || 
+        return (self::checkRole($me) || 
                 $me->isSubRole('QA_PHYS') ||
                 $me->isSubRole('QA_CHEM') ||
                 $me->isSubRole('QA_BIOL') ||
