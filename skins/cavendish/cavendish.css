@@ -2025,6 +2025,16 @@ div.program-text {
 /* Mobile */
 @media only screen and (max-width: 767px) {
 
+    #topheader .smallLogo {
+        height: 31px !important;
+        top: 2px  !important;
+    }
+
+    #reportIssue, #contactUs {
+        margin-left: 5px !important;
+        margin-right: 5px !important;
+    }
+
     #bodyContent {
         padding: 10px 10px !important;
         left: 0;
