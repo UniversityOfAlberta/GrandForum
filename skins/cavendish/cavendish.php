@@ -384,22 +384,6 @@ class CavendishTemplate extends QuickTemplate {
 		        }
 		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
 		    }
-
-		    function setMinWidth(){
-	            $("body").css('min-width', '0');
-	            minWidth = parseInt($("#header ul").css('left')) +
-	                       parseInt($("#header ul").css('right')) +
-	                       parseInt($("body").css('margin-left')) +
-	                       parseInt($("body").css('margin-right'));
-	            $.each($("#header li"), function(index, val){
-	                minWidth += $(this).width() + 
-	                            parseInt($(this).css('padding-left')) + 
-	                            parseInt($(this).css('padding-right')) +
-	                            parseInt($(this).css('margin-left')) + 
-	                            parseInt($(this).css('margin-right'));
-	            });
-	            $("html").css('min-width', minWidth);
-	        }
 	        
 	        function addAPIMessages(response){
 	            clearError();
@@ -489,7 +473,6 @@ class CavendishTemplate extends QuickTemplate {
 		        setNavHeight();
                 $(window).resize(setBodyContentTop);
                 $(window).resize(setNavHeight);
-		        setMinWidth();
 		        
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();

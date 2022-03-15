@@ -2025,6 +2025,11 @@ div.program-text {
 /* Mobile */
 @media only screen and (max-width: 767px) {
 
+    html, body {
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+
     #topheader .smallLogo {
         height: 31px !important;
         top: 2px  !important;
