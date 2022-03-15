@@ -7,6 +7,12 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="HQP-Candidate">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
     </Permissions>
     <ReportSection id="instructions" tooltip="Instructions" name="Instructions" title="The EPIC Conference (2022)" type="ReportSection">
         <Static>
@@ -86,24 +92,35 @@
             <![CDATA[
                 <table>
                     <tr>
-                        <td><b>Name:</b></td><td>{$user_name}</td>
+                        <td class='label'>Name:</td>
+                        <td class='value'>{$user_name}</td>
                     </tr>
                     <tr>
-                        <td><b>Email:</b></td><td>{$user_email}</td>
+                        <td class='label'>Email:</td>
+                        <td class='value'>{$user_email}</td>
                     </tr>
                     <tr>
-                        <td><b>Twitter handle:</b></td><td>{$user_twitter}</td>
+                        <td class='label'>Twitter handle:</td>
+                        <td class='value'>{$user_twitter}</td>
                     </tr>
                     <tr>
-                        <td><b>Academic Status:</b></td><td>{$user_level}</td>
+                        <td class='label'>Academic Status:</td>
+                        <td class='value'>{$user_level}</td>
                     </tr>
                     <tr>
-                        <td><b>Institution:</b></td><td>{$user_uni}</td>
+                        <td class='label'>Institution:</td>
+                        <td class='value'>{$user_uni}</td>
                     </tr>
                 </table>
                 <small>If any of the above are missing or incorrect, they can be updated on your <a href='{$user_url}' target='_blank'>profile</a>.</small>
             ]]>
         </Static>
+        <ReportItem id="cfn" type="Radio" blobType="BLOB_TEXT" blobItem="CFN" options="Yes|No">
+            <![CDATA[
+                <h3>Are you an HQP from CFN-NCE (Canadian Frailty Network):</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (Max 2):</h3>
