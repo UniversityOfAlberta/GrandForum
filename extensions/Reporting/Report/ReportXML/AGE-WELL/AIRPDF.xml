@@ -70,7 +70,7 @@
                 </li>
             ]]>
         </ReportItem>
-        <ReportItem id="vi" type="IntegerReportItem" min="0" max="40000" width="43px" align="left" blobItem="INVESTMENT">
+        <ReportItem id="vi" type="IntegerReportItem" min="0" max="50000" width="43px" align="left" blobItem="INVESTMENT">
             <![CDATA[
                 <li>
                     <b>Total value of AGE-WELL investment requested:</b> ${$item}
