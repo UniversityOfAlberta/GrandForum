@@ -2040,6 +2040,22 @@ div.program-text {
         top: 91px;
     }
     
+    #topheader {
+        padding: 5px 10px 5px 10px !important;
+    }
+    
+    #header ul {
+        left: 0 !important;
+    }
+    
+    #topheader .login a:not(#status_logout):not(#status_help_faq){
+        display: none !important;
+    }
+    
+    #topheader .login {
+        right: 2px !important;
+    }
+    
     #nav li > span {
         text-align: center;
     }

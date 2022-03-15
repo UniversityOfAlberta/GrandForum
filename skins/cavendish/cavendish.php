@@ -921,7 +921,9 @@ class CavendishTemplate extends QuickTemplate {
 		    }
         ?>
 	    <div id="header" style="<?php if(count($headerTabs) == 0 && $config->getValue('showSideBar')){ echo 'display:none;'; } ?>">
-	        <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
+	        <?php if(count($headerTabs) > 0){ ?>
+	            <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
+	        <?php } ?>
 		    <a name="top" id="contentTop"></a>
 	        <ul class="top-nav">
 	            <?php echo implode("\n", $headerTabs); ?>
