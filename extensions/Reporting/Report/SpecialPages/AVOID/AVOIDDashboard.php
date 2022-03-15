@@ -111,7 +111,7 @@ class AVOIDDashboard extends SpecialPage {
         else if($score > 16){
             $frailty = "Based on your answers in the assessment, you are at <u style='color: red;'>high risk</u> of being frail.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
         }
-        $wgOut->addHTML("<div class='modules module-2cols'>
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</div>
                             <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
                                 {$frailty}<br />
@@ -121,13 +121,13 @@ class AVOIDDashboard extends SpecialPage {
         
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
-        $wgOut->addHTML("<div class='modules module-2cols'>
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
-                            <span class='program-body' style='font-size: 1.5em; line-height: 1em;'>{$events->getText()}</span>
+                            <span class='program-body'>{$events->getText()}</span>
                          </div>");
         
         // Education
-        $wgOut->addHTML("<div class='modules module-2cols'>");
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
         $cols = 3;
         $n = 0;
@@ -152,7 +152,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Programs
-        $wgOut->addHTML("<div class='modules module-2cols'>");
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
         
         $cols = 3;
@@ -174,7 +174,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Education Resources
-        $wgOut->addHTML("<div class='modules module-2cols'>
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></div>
                             <div class='program-body'><ul>");
         $cols = 4;
@@ -185,7 +185,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</ul></div></div>");
                          
         // Community Program Library
-        $wgOut->addHTML("<div class='modules module-2cols'>
+        $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></div>
                             <div class='program-body'><ul>");
         $cols = 4;

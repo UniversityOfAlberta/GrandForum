@@ -50,6 +50,7 @@ class CavendishTemplate extends QuickTemplate {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php $this->text('lang') ?>" lang="<?php $this->text('lang') ?>" dir="<?php $this->text('dir') ?>">
 	<head>
 		<meta http-equiv="Content-Type" content="<?php $this->text('mimetype') ?>; charset=<?php $this->text('charset') ?>" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
         <?php if(!TESTING && $wgScriptPath != "" && !DEMO){ ?>
             <meta name="robots" content="noindex, nofollow" />
             <meta name="googlebot" content="noindex, nofollow" />
@@ -479,6 +480,8 @@ class CavendishTemplate extends QuickTemplate {
                     }   
                 });
             }
+            
+            
 	        
 		    $(document).ready(function(){
 		        renderProductLinks();
@@ -1029,6 +1032,17 @@ class CavendishTemplate extends QuickTemplate {
 	    </div><!-- end of the FOOTER div -->
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
+	<script type="text/javascript">
+	    function setBodyContentTop(){
+	        if(window.matchMedia('(max-width: 767px)').matches){
+                $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
+            }
+            else{
+                $("#bodyContent").css("top", 90);
+            }
+	    }
+	    setBodyContentTop();
+	</script>
 </div><!-- end of the CONTAINER div -->
 <?php echo wfReportTimeOld(); ?>
 

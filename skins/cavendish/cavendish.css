@@ -39,6 +39,11 @@
    Meta
 
    Body */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+   
 html {
     height: 100%;
 }   
@@ -1933,27 +1938,27 @@ div.program-text {
     gap: 12px;
 }
 
-.module-2cols {
+.module-2cols, .module-2cols-outer {
     width: calc(50% - 16px);
 }
 
-.module-3cols {
+.module-3cols, .module-3cols-outer {
     width: calc(33.333% - 16px);
 }
 
-.module-4cols {
+.module-4cols, .module-4cols-outer {
     width: calc(25% - 16px);
 }
 
-.module-5cols {
+.module-5cols, .module-5cols-outer {
     width: calc(20% - 16px);
 }
 
-.module-6cols {
+.module-6cols, .module-6cols-outer {
     width: calc(16.667% - 16px);
 }
 
-.module-8cols {
+.module-8cols, .module-8cols-outer {
     width: calc(12.5% - 16px);
 }
 
@@ -2008,4 +2013,117 @@ div.program-text {
     font-weight: bold;
     font-size: 1.5em;
     line-height: 1.5em;
+}
+
+.quiz-footer {
+    width: calc(100% + 20px); 
+    margin-left:-10px; 
+    margin-right: -10px; 
+    margin-bottom: -10px;
+}
+
+/* Mobile */
+@media only screen and (max-width: 767px) {
+
+    #bodyContent {
+        padding: 10px 10px !important;
+        left: 0;
+        border-width: 1px 0 0 0 !important;
+    }
+    
+    #side {
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        top: 91px;
+    }
+    
+    #nav li > span {
+        text-align: center;
+    }
+    
+    #side > ul {
+        margin-top: 0;
+    }
+    
+    #side #userloginForm form {
+        left: 0;
+    }
+    
+    #side #userloginForm form > div {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    #outerHeader {
+        left: 0;
+    }
+
+    .displayTableCell {
+        display: none;
+    }
+    
+    video {
+        height: auto !important;
+    }
+    
+    #outerReport {
+        border: none !important;
+    }
+    
+    #reportBody {
+        min-height: auto !important;
+    }
+    
+    #reportMain {
+        min-height: auto !important;
+        height: auto !important;
+    }
+    
+    #reportMain > div {
+        min-height: auto !important;
+    }
+    
+    #reportMain > div > div {
+        width: auto !important;
+        min-width: auto !important;
+        padding: 0 !important;
+    }
+    
+    .module-2cols-outer, 
+    .module-3cols-outer,
+    .module-4cols-outer,
+    .module-5cols-outer,
+    .module-6cols-outer,
+    .module-8cols-outer {
+        width: 100% !important;
+    }
+    
+    .program-header {
+        font-size: 1.25em;
+        padding: 0.75em;
+        border-radius: 0.75em 0 0.75em 0;
+    }
+    
+    .program-body {
+        font-size: 1.25em;
+    }
+    
+    .module-progress {
+        height: calc(1.75em + 2px);
+    }
+    
+    .module-progress-text {
+        font-size: 1.25em;
+    }
+    
+    .quiz-footer {
+        width: 100%; 
+        margin-left: 0; 
+        margin-right: 0; 
+        margin-bottom: 0;
+    }
+
 }

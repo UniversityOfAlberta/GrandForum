@@ -37,7 +37,7 @@ class QuizReportSection extends EditableReportSection {
         }
         
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                             <div id='reportBody' style='min-height: 500px;font-size: 1.5em; line-height: 1.5em;'>
+                             <div id='reportBody' class='program-body' style='min-height: 500px;'>
                              <div id='reportHeader' style='margin:0.5em 0 0.5em 0; font-size:2em; line-height: 1em; font-weight: bold;'>{$number}{$this->title}</div>");
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
@@ -66,7 +66,7 @@ class QuizReportSection extends EditableReportSection {
                             <div id='reportFooter'>
                                 <input type='submit' value='Next' name='submit' style='width:100px;' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
-                             <img src='{$wgServer}{$wgScriptPath}/skins/Quiz.png' style='width: calc(100% + 20px); margin-left:-10px; margin-right: -10px; margin-bottom: -10px;' />
+                             <img class='quiz-footer' src='{$wgServer}{$wgScriptPath}/skins/Quiz.png' />
                          </form></div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             $('input[name=submit][value=Next]').click(function(){
