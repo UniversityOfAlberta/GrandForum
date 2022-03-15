@@ -2123,6 +2123,10 @@ div.program-text {
         padding: 0 !important;
     }
     
+    .modules {
+        gap: 6px;
+    }
+    
     .module-2cols-outer, 
     .module-3cols-outer,
     .module-4cols-outer,
