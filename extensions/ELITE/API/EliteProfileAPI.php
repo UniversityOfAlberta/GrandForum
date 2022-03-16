@@ -46,6 +46,9 @@ class EliteProfileAPI extends RESTAPI {
         if(!$profile->exists()){
             $this->throwError("This profile does not exist");
         }
+        if(!$profile->isAllowedToView()){
+            $this->throwError("You are not allowed to edit this profile");
+        }
         $_POST['file'] = $this->POST('file');
         $profile->status = $this->POST('status');
         $profile->comments = $this->POST('comments');

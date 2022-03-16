@@ -309,11 +309,9 @@ abstract class EliteProfile extends BackboneModel {
     }
     
     function updateHires(){
-        if($this->isAllowedToView()){
-            $me = Person::newFromWgUser();
-            $this->saveBlobValue('HIRES', $this->hires, BLOB_ARRAY);
-            $this->sendHiresMail($me);
-        }
+        $me = Person::newFromWgUser();
+        $this->saveBlobValue('HIRES', $this->hires, BLOB_ARRAY);
+        $this->sendHiresMail($me);
     }
     
     function delete(){
