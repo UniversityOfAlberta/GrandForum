@@ -142,7 +142,7 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonCitationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
-                if($me->isRoleAtLeast(STAFF)){
+                if($me->isRoleAtLeast(STAFF) || $me->isRole(DEAN) || $me->isRole(VDEAN)){
                     $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
                 }
                 //$tabbedPage->addTab(new PersonVisualTab($person,$visibility));
