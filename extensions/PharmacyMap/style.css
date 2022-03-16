@@ -210,8 +210,7 @@ input[type=button] {
 }
 
 #map-container {
-    height:700px;
-    /*display: table-row;*/
+    height: 700px;
 }
 
 #map {
@@ -220,7 +219,6 @@ input[type=button] {
     height:100%;
     border-radius:15px;
     bottom: 30px;
-
 }
 
 #db_powered{
@@ -229,4 +227,10 @@ input[type=button] {
     text-align: center;
     font-size: 1.25em;
     user-select: none;
+}
+
+@media only screen and (max-width: 767px) {
+    #map-container {
+        height: calc(50vh);
+    }
 }
