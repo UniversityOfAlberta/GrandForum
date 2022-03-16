@@ -1,20 +1,26 @@
-<td align="center" style="width:40px">
-    <%= PublicName_Program %>
-</td>
-<td align="center" style="width:80em">
-	<%= AgencyDescription %>
-</td>
-<td align="center" style="width:40px">
-        <%= Eligibility %>
-</td>
-<td align="center" style="width:40px">
-    <%= ParentAgency %>
-</td>
-<td style="width:40px">
-	<%= PhysicalAddress1 %>
-</td>
-<td style="width:40px">
-	Email: <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
-	Phone: <%= Phone1Number %><br />
-	Website: <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a>
+<td valign="top" style="width:40px">
+    <h3 style="margin-top:0;"><%= PublicName_Program %></h3>
+    <%= AgencyDescription %>
+    <br /><br />
+    <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
+    <div style="display:none;">
+        <% if(Eligibility != ""){ %>
+            <b>Eligibility:</b> <%= Eligibility %><br />
+        <% } %>
+        <% if(ParentAgency != ""){ %>
+            <b>Organization:</b> <%= ParentAgency %><br />
+        <% } %>
+        <% if(PhysicalAddress1 != ""){ %>
+            <b>Address:</b> <%= PhysicalAddress1 %><br />
+        <% } %>
+        <% if (EmailAddressMain != ""){ %>
+            <b>Email:</b> <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
+        <% } %>
+        <% if (Phone1Number != ""){ %>
+            <b>Phone:</b> <%= Phone1Number %><br />
+        <% } %>
+        <% if (WebsiteAddress != ""){ %>
+            <b>Website:</b> <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a><br />
+        <% } %>
+    </div>
 </td>

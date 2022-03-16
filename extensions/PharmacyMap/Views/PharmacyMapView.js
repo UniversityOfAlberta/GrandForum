@@ -1,7 +1,6 @@
 PharmacyMapView = Backbone.View.extend({
     template: _.template($('#pharmacy_map_template').html()),
     map: null,
-    geocoder: null,
     lat: 44.8052529,
     long: -76.6619867,
     zoom: 8,
@@ -40,7 +39,6 @@ PharmacyMapView = Backbone.View.extend({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-		    console.log(pos);
                 this.map.setCenter(pos);
                 this.zoom = 30;
             }, this), function () {
@@ -52,26 +50,26 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     findCategory: function (ev) {
-	    if(ev != null){
-        var cat = $(ev.currentTarget).data('cat');;
-        if (this.buttons[cat].hasOwnProperty('children')) {
-            this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
-            this.buttons = this.buttons[cat]["children"];
-            //$('#address_bar').hide();
-            //$('#map-container').hide();
-        }
-        else {
+        if(ev != null){
+            var cat = $(ev.currentTarget).data('cat');
+            if (this.buttons[cat].hasOwnProperty('children')) {
+                this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
+                this.buttons = this.buttons[cat]["children"];
+                //$('#address_bar').hide();
+                //$('#map-container').hide();
+            }
+            else {
+                this.refresh = false;
+                this.renderMap = true;
+                //this.model.cat = this.buttons[cat]["text"];
+                this.model.cat = this.buttons[cat]["code"];
+                this.model.fetch();
+            }
+        } else {
             this.refresh = false;
             this.renderMap = true;
-            //this.model.cat = this.buttons[cat]["text"];
-	    this.model.cat = this.buttons[cat]["code"];
             this.model.fetch();
         }
-	    }else{
-            this.refresh = false;
-            this.renderMap = true;
-            this.model.fetch();
-	    }
         this.drawButtons();
     },
 
@@ -101,7 +99,6 @@ PharmacyMapView = Backbone.View.extend({
             width: '50%'
         });
         this.map = map;
-        this.geocoder = new google.maps.Geocoder();
 
         var input = document.getElementById('lat');
         var searchBox = new google.maps.places.SearchBox(input);
@@ -111,30 +108,30 @@ PharmacyMapView = Backbone.View.extend({
         });
 
         var markers = [];
-	searchBox.addListener('places_changed',$.proxy(function(){
-        var places = searchBox.getPlaces();
-        if(places.length == 0){
-        return;
-        }
+        searchBox.addListener('places_changed',$.proxy(function(){
+            var places = searchBox.getPlaces();
+            if(places.length == 0){
+                return;
+            }
 
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach($.proxy(function(place){
-            this.lat = place.geometry.location.lat();
-            this.long = place.geometry.location.lng();
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach($.proxy(function(place){
+                this.lat = place.geometry.location.lat();
+                this.long = place.geometry.location.lng();
 
-        if (place.geometry.viewport){
-            bounds.union(place.geometry.viewport);
-        } else {
-            bounds.extend(place.geometry.location);
-        }
-         }, this));
-         if(places.length >1){
-         map.fitBounds(bounds);
-         }
-         else if(places.length==1){
-             map.setCenter(bounds.getCenter());
-             this.zoom = 50;
-         }
+                if (place.geometry.viewport){
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            }, this));
+            if(places.length >1){
+                map.fitBounds(bounds);
+            }
+            else if(places.length==1){
+                map.setCenter(bounds.getCenter());
+                this.zoom = 50;
+            }
         }, this));
     },
 
@@ -142,15 +139,10 @@ PharmacyMapView = Backbone.View.extend({
         var cat_view = new CategoryButtonsView({ model: this.model, parent: this });
         this.cat_json = cat_json;
         this.buttons = this.cat_json;
-	if(this.model.cat != null){
-	    //fix buttons
-	    console.log(this.model.cat.split('-'));
+        if(this.model.cat != null){
+            //fix buttons
             this.findCategory();
         }
-
-
-
-
     },
 
     drawButtons: function () {
@@ -163,20 +155,19 @@ PharmacyMapView = Backbone.View.extend({
             if (this.previous.length > 1) {
                 text2 = this.previous[this.previous.length - 2]["text"];
             }
-            this.$('#prev_category').append('<div id="prev_button"></div>');
-            this.$('#prev_button').append('<a href="#" class="previous_button">' + text2 + '</a> > ' + text);
+            text = ' > ' + text;
         }
+        this.$('#prev_category').append('<h3 id="prev_button"></h3>');
+        this.$('#prev_button').append('<a href="#" class="previous_button">' + text2 + "</a>" + text);
         for (var i = 0; i < this.buttons.length; i++) {
             var obj = this.buttons[i];
-            this.$('#treemap-container').append('<div id="treemap"></div>');
+            this.$('#treemap-container').append('<div id="treemap" class="modules"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<a class="category program-button menuTooltip" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a>');
-
+                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-		var r = $('<a class="category program-button menuTooltip" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '</a>');
-
+                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '</a></div>');
             }
             this.$('#treemap').append(r);
         }
@@ -212,7 +203,7 @@ PharmacyMapView = Backbone.View.extend({
     },
 
 
-AddMarkers: function (geocoder, group) {
+AddMarkers: function (group) {
     var pinColor = "FE7569";
     var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
         new google.maps.Size(21, 34),
@@ -226,9 +217,6 @@ AddMarkers: function (geocoder, group) {
         if (val.lon != "" && val.lat != "") {
             var pharmLoc = null;
             var marker = null;
-            var geocodeUrl = (val.PhysicalPostalCode != "")
-                ? 'https://geocode.maps.co/search?q=' + val.PhysicalPostalCode
-                : 'https://geocode.maps.co/search?q=' + val.PhysicalAddress1;
 
             pharmLoc = new google.maps.LatLng(val.lat, val.lon);
             if (pharmLoc != null) {
@@ -263,13 +251,7 @@ AddMarkers: function (geocoder, group) {
                 marker.addListener('click', function () {
                     infowindow.open(map, marker);
                 });
-
-
-
             }
-
-
-
         }
     });
 },
@@ -286,14 +268,15 @@ AddMarkers: function (geocoder, group) {
 
         if(this.renderMap){
             this.initMap();
-            var empty = [];
-            this.AddMarkers(this.geocoder, empty);
-            this.AddMarkers(this.geocoder, data);
-            $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '> div.wrap >h3' });
+            this.AddMarkers(data);
+            var active = (this.previous.length == 0) ? false : 0;
+            $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader', active: active });
+            $('#accordionHeader').show();
             $('#address_bar').show();
             $('#map-container').show();
             $('#table').show();
         }
+        $('#body_accordion .wrap').show();
         this.addRows(this.model);
         if(this.refresh){
             $('#address_bar').hide();
@@ -310,7 +293,8 @@ AddMarkers: function (geocoder, group) {
         $('#listTable_filter').css("font-weight","bold");
         $('#listTable_filter').css("font-size","1.6em");
         $('#listTable_filter').css("position","absolute");
-        $(".dataTables_filter input").css("width","230px");
+        $(".dataTables_filter input").css("width","230px")
+                                     .css("vertical-align", "bottom");
         $('#listTable_filter').css("margin-left","5px")
                               .css("left", 0)
                               .css("text-align", "left");

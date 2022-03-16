@@ -21,7 +21,6 @@ PageRouter = Backbone.Router.extend({
     routes: {
         "": "defaultRoute", 
         ":category_code": "viewCategory"
-
     }
 });
 
@@ -50,8 +49,8 @@ pageRouter.on('route:viewCategory', function(category_code) {
     //var pharms = new Universities();
     var pharms = new AvoidResources();
     pharms.cat = category_code;
-    pharms.fetch();
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
+    this.currentView.findCategory();
 });
 
 

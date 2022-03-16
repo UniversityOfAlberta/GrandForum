@@ -60,10 +60,10 @@ table.wikitable tr.deleted {
 
 @media print {
    #map{
-	min-height:300px;
+        min-height:300px;
    }
    #map-container {
-	min-height:300px;
+        min-height:300px;
    }
 }
 
@@ -104,6 +104,10 @@ table.wikitable tr.deleted {
 .animateToLeft{
     -webkit-transform: translate(-100px); /* Safari */
     transform: translate(-100px);
+}
+
+#treemap-container {
+    padding: 0 0 1em 0 !important;
 }
 
 #treemap {
@@ -173,28 +177,19 @@ input[type=button] {
 }
 
 .category{
-  font-size:1.6em !important;
-  width: 30%;
-  height: 88%;
-  margin: 5px;
-  text-align:center;
+    margin: 0;
+    width: 100%;
+    text-align:center;
     font-weight: bold;
     line-height: 1em;
-    height: 1em;
     padding: 0.6em;
     white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .note_small{
     font-size: 0.6em !important;
     width:300px;
-
-}
-
-
-#table{
-  width:65%;
-  float:left;
 }
 
 #listTable {
@@ -216,10 +211,7 @@ input[type=button] {
 
 #map-container {
     height:700px;
-    width:32%;
     /*display: table-row;*/
-    position: absolute;
-    right: 15px;
 }
 
 #map {
@@ -231,6 +223,10 @@ input[type=button] {
 
 }
 
-#banner_dbpowered{
-
+#db_powered{
+    width: 100%; 
+    margin-top: 1em;
+    text-align: center;
+    font-size: 1.25em;
+    user-select: none;
 }
