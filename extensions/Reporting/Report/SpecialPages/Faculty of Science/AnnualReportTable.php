@@ -19,7 +19,9 @@ class AnnualReportTable extends SpecialPage{
     
     function userCanExecute($user){
         $person = Person::newFromUser($user);
-        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR) || $person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA));
+        return ($person->isRoleAtLeast(STAFF) || $person->isRole(HR) || 
+                $person->isRole(CHAIR) || $person->isRole(ACHAIR) || $person->isRole(EA) ||
+                $person->isRole(DEAN) || $person->isRole(DEANEA) || $person->isRole(VDEAN));
     }
 
     function execute($par){
@@ -68,7 +70,7 @@ class AnnualReportTable extends SpecialPage{
             }
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
-                if($case != "" && !$person->isMe()){
+                if($case != ""){
                     $ar->person = $person;
                     $rec->person = $person;
                     $pdf = $ar->getPDF();
