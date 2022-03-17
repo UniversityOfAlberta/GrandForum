@@ -87,32 +87,24 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video7" tooltip="Sleep" name="Sleep" title="Sleep" type="VideoReportSection">
-        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/7. Sleep.mp4">
+    <ReportSection id="video7" tooltip="Motivation" name="Motivation" title="Motivation" type="VideoReportSection">
+        <ReportItem id="video7" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/7. Motivation.mp4">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video8" tooltip="Motivation" name="Motivation" title="Motivation" type="VideoReportSection">
-        <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/8. Motivation.mp4">
+    <ReportSection id="video8" tooltip="Confidence" name="Confidence" title="Confidence" type="VideoReportSection">
+        <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/8. Confidence.mp4">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video9" tooltip="Confidence" name="Confidence" title="Confidence" type="VideoReportSection">
-        <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Confidence.mp4">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    
-    <ReportSection id="video10" tooltip="Support" name="Support" title="Support" type="VideoReportSection">
-        <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/10. Support.mp4">
+    <ReportSection id="video9" tooltip="Support" name="Support" title="Support" type="VideoReportSection">
+        <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Support.mp4">
             <![CDATA[
                 {$item}
             ]]>
@@ -181,33 +173,8 @@
     </ReportSection>
     
     <!-- Question 3 -->
-    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. At least 30 minutes before bedtime|b. 4 to 6 hours before bedtime|c. 2 to 4 hours before bedtime|d. At least 6 hours before bedtime">
-            <![CDATA[
-                <h3>When should we have our last cup of coffee or favourite caffeinated drink?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    
-    <!-- Answer 3 -->
-    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="b. 4 to 6 hours before bedtime">
-            <![CDATA[
-                {$item}
-                <p>
-                    Physical activity is directly associated with deeper sleep and better sleep quality. Ensuring we follow proper sleep hygiene practices, such as limiting eating and drinking before bed or going to bed and waking up at the same time every day, will help us maximize those benefits. 
-                </p>
-                <p>
-                    Check out the resource bank for more information on sleep hygiene, including the reasons why we suggest the tips we do.
-                </p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    
-    <!-- Question 4 -->
-    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz4"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
             <![CDATA[
                 <h3>How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
                 {$item}
@@ -215,9 +182,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Answer 4 -->
-    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="c. 150 minutes per week">
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="c. 150 minutes per week">
             <![CDATA[
                 {$item}
                 <p>
@@ -230,9 +197,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Question 5 -->
-    <ReportSection id="q5" tooltip="Quiz" name="Quiz5"  title="QUESTION 5" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q5" type="Radio" blobItem="Q5" blobType="BLOB_TEXT" options="True|False">
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
                 <h3>It is unsafe for older adults to do muscle strengthening exercises.</h3>
                 {$item}
@@ -240,9 +207,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Answer 5 -->
-    <ReportSection id="a5" tooltip="Answers" name="Answer5" title="QUESTION 5" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q5" type="Answer" blobItem="Q5" blobType="BLOB_TEXT" label="Answer 5" answer="False">
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="False">
             <![CDATA[
                 {$item}
                 <b>The truth is, older adults can safely do muscle strengthening exercises.</b>
@@ -256,8 +223,8 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video11" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
-        <ReportItem id="video11" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/12. Conclusion.mp4">
+    <ReportSection id="video10" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video10" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/11. Conclusion.mp4">
             <![CDATA[
                 {$item}
             ]]>

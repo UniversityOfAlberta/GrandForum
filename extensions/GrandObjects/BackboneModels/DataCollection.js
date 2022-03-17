@@ -85,7 +85,7 @@ DataCollection = Backbone.Model.extend({
     
     // Initializes an array which can be used for tracking how much of a video has been watched
     video: function(field, duration){
-        return this.getField(field, _.omit([].fill.call({length: Math.ceil(duration)}, 0), 'length'));
+        return this.getField(field, _.values(_.omit([].fill.call({length: Math.ceil(duration)}, 0), 'length')));
     },
     
     // Used to sum one of the fields (if it is an array)
