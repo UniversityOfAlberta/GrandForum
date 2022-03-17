@@ -25,38 +25,44 @@ class PersonRelationsTab extends AbstractTab {
         if($wgUser->isLoggedIn() && ($visibility['edit'] || (!$visibility['edit'] && (count($person->getRelations('public')) > 0 || count($person->getSupervisors(true)) > 0 || ($visibility['isMe'] && count($person->getRelations()) > 0))))){
             if($person->isRoleAtLeast(HQP) || ($person->isRole(INACTIVE) && $person->wasLastRoleAtLeast(HQP))){
                 if(count($person->getSupervisors(true)) > 0){
+                    $universities = $person->getUniversities();
                     if($me->isAllowedToEdit($this->person)){
                         $this->html .= "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ManagePeople'>Manage HQP</a>";
                     }
                     $this->html .= "<table id='relations_table' class='wikitable' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
-                                    <thead><tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Last Name</th><th>First Name</th></tr></thead><tbody>";
+                                    <thead><tr><th>Start Date</th><th>End Date</th><th>Position</th><th>Relation</th><th>Last Name</th><th>First Name</th></tr></thead><tbody>";
                     foreach($person->getSupervisors(true) as $supervisor){
                         // TODO: These loops are a little inneficient, it should probably be extracted to a function, and optimized
-                        $relations = array_merge($supervisor->getRelations(SUPERVISES, true), $supervisor->getRelations(CO_SUPERVISES, true));
+                        $relations = array_merge($supervisor->getRelations(SUPERVISES, true), 
+                                                 $supervisor->getRelations(CO_SUPERVISES, true));
                         foreach($relations as $r){
                             $hqp = $r->getUser2();
                             if($hqp->getId() == $person->getId()){
                                 $start_date = substr($r->getStartDate(), 0, 10);
                                 $end_date = substr($r->getEndDate(), 0, 10);
-                                $end_date = ($end_date == '0000-00-00')? "Current" : $end_date;
+                                $end_date = ($end_date == '0000-00-00') ? "Current" : $end_date;
                                 
-                                if($r->getEndDate() != "0000-00-00 00:00:00"){
-                                    $position = $hqp->getUniversityDuring($r->getEndDate(), $r->getEndDate());
+                                $position = "";
+                                foreach($universities as $university){
+                                    if($university['id'] == $r->getUniversity()){
+                                        $position = $university['position'];
+                                        break;
+                                    }
                                 }
-                                else{
-                                    $position = $hqp->getUniversity();
-                                }
-                                $position = $position['position'];
 
                                 $this->html .= 
-                                "<tr><td>$start_date</td><td>$end_date</td><td>$position</td>
-                                <td><a href='{$supervisor->getUrl()}'>{$supervisor->getLastName()}</a></td>
-                                <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td></tr></tbody>";
+                                "<tr>
+                                    <td>$start_date</td>
+                                    <td>$end_date</td>
+                                    <td>$position</td>
+                                    <td>{$r->getType()}</td>
+                                    <td><a href='{$supervisor->getUrl()}'>{$supervisor->getLastName()}</a></td>
+                                    <td><a href='{$supervisor->getUrl()}'>{$supervisor->getFirstName()}</a></td>
+                                 </tr>";
                             }
                         }
                     }
-                    
-                    $this->html .= "</table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false});</script>";
+                    $this->html .= "</tbody></table><script type='text/javascript'>$('#relations_table').dataTable({autoWidth: false});</script>";
                 }
             }
         }

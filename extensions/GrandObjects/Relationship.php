@@ -13,9 +13,7 @@ class Relationship extends BackboneModel {
     var $university;
     var $type;
     var $status;
-    var $projects;
     var $thesis;
-    var $projectsWaiting;
     var $startDate;
     var $endDate;
     var $comment;
@@ -60,8 +58,6 @@ class Relationship extends BackboneModel {
             $this->university = $data[0]['university'];
             $this->type = $data[0]['type'];
             $this->status = $data[0]['status'];
-            $this->projects = $data[0]['projects'];
-            $this->projectsWaiting = true;
             $this->thesis = $data[0]['thesis'];
             $this->startDate = $data[0]['start_date'];
             $this->endDate = $data[0]['end_date'];
@@ -102,23 +98,6 @@ class Relationship extends BackboneModel {
     // Returns the status of this Relationship
     function getStatus(){
         return $this->status;
-    }
-    
-    // Returns an array of Project objects for this Relationship
-    function getProjects(){
-        if($this->projectsWaiting){
-            $projects = $this->projects;
-            $this->projects = array();
-            if($projects != ""){
-                $projects = unserialize($projects);
-                foreach($projects as $project){
-                    $proj = Project::newFromId($project);
-                    $this->projects[] = $proj;
-                }
-            }
-            $this->projectsWaiting = false;
-        }
-        return $this->projects;
     }
     
     function getThesis(){

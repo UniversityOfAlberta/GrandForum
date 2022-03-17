@@ -68,7 +68,7 @@ class AnnualReportTable extends SpecialPage{
             }
             foreach($people as $person){
                 $case = $person->getCaseNumber($y);
-                if($case != ""){
+                if($case != "" && !$person->isMe()){
                     $ar->person = $person;
                     $rec->person = $person;
                     $pdf = $ar->getPDF();
