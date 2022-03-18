@@ -28,12 +28,10 @@ class EducationResources extends SpecialPage {
         $wgOut->addHTML("<div class='modules' style='margin-bottom: 1em;'>");
         $n = 0;
         foreach($categories as $category){
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$category->id}";
-            $percent = rand(0,100);
-            $wgOut->addHTML("<div id='category{$category->id}' data-id='{$category->id}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationResources/{$category->id}.png' />
+            $wgOut->addHTML("<a id='category{$category->id}' title='{$category->title}' data-id='{$category->id}' class='module module-{$cols}cols' href='#'>
+                <img src='{$wgServer}{$wgScriptPath}/EducationResources/{$category->id}.png' alt='{$category->title}' />
                 <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$category->title}</div>
-            </div>");
+            </a>");
             $n++;
         }
         if($n % $cols > 0){
@@ -52,10 +50,12 @@ class EducationResources extends SpecialPage {
             $wgOut->addHTML("</ul></div>");
         }
         $wgOut->addHTML("</div><script type='text/javascript'>
-            $('.module').click(function(){
+            $('.module').click(function(e){
+                e.preventDefault();
                 var id = $(this).attr('data-id');
                 $('.resources').hide();
                 $('#resources' + id).show();
+                $(this).blur();
             });
             
             $('a.resource').click(function(){

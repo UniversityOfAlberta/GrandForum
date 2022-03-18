@@ -135,13 +135,13 @@ class AVOIDDashboard extends SpecialPage {
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
             $percent = EducationModules::completion($module->id);
-            $wgOut->addHTML("<div id='module{$module->id}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' />
+            $wgOut->addHTML("<a id='module{$module->id}' title='{$module->title}' class='module module-{$cols}cols' href='{$url}'>
+                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' alt='{$module->title}' />
                 <div class='module-progress'>
                     <div class='module-progress-bar' style='width:{$percent}%;'></div>
                     <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                 </div>
-            </div>");
+            </a>");
             $n++;
         }
         if($n % $cols > 0){
@@ -160,10 +160,10 @@ class AVOIDDashboard extends SpecialPage {
         foreach($programs as $key => $program){
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-            $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
+            $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
+                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
                 <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
-            </div>");
+            </a>");
             $n++;
         }
         if($n % $cols > 0){
@@ -198,9 +198,6 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>
         <script type='text/javascript'>
             $('#bodyContent h1').hide();
-            $('.module').click(function(){
-                document.location = $(this).attr('href');
-            });
             
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));

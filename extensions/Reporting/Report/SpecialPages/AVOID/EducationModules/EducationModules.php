@@ -32,13 +32,13 @@ class EducationModules extends SpecialPage {
         foreach($modules as $module){
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
             $percent = self::completion($module->id);
-            $wgOut->addHTML("<div id='module{$module->id}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' />
+            $wgOut->addHTML("<a id='module{$module->id}' class='module module-{$cols}cols' title='{$module->title}' href='{$url}'>
+                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' alt='{$module->title}' />
                 <div class='module-progress'>
                     <div class='module-progress-bar' style='width:{$percent}%;'></div>
                     <div class='module-progress-text'>".number_format($percent)."% Complete</div>
                 </div>
-            </div>");
+            </a>");
             $n++;
         }
         if($n % $cols > 0){
@@ -46,12 +46,7 @@ class EducationModules extends SpecialPage {
                 $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
             }
         }
-        $wgOut->addHTML("</div>
-        <script type='text/javascript'>
-            $('.module').click(function(){
-                document.location = $(this).attr('href');
-            });
-        </script>");
+        $wgOut->addHTML("</div>");
     }
     
     static function modulesJSON(){

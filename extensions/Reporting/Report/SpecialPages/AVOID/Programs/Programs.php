@@ -38,11 +38,10 @@ class Programs extends SpecialPage {
             foreach($programs as $program){
                 if($program->category == $category){
                     $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-                    $percent = rand(0,100);
-                    $wgOut->addHTML("<div id='module{$program->id}' class='module module-{$cols}cols' href='{$url}'>
-                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' />
+                    $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
+                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
                         <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
-                    </div>");
+                    </a>");
                     $n++;
                 }
             }
@@ -53,13 +52,7 @@ class Programs extends SpecialPage {
             }
             $wgOut->addHTML("</div>");
         }
-        $wgOut->addHTML("</div>
-        <script type='text/javascript'>
-            var programs = {$json};
-            $('.module').click(function(){
-                document.location = $(this).attr('href');
-            });
-        </script>");
+        $wgOut->addHTML("</div>");
     }
 
     static function createTab(&$tabs){
