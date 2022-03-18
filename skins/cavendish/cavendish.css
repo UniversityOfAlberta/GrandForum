@@ -2022,8 +2022,8 @@ div.program-text {
     margin-bottom: -10px;
 }
 
-/* Mobile */
-@media only screen and (max-width: 767px) {
+/* Mobile */ 
+@media only screen and (max-width: 1024px) {
 
     html, body {
         min-width: 100% !important;
@@ -2063,9 +2063,7 @@ div.program-text {
         left: 0 !important;
     }
     
-    #topheader .login a:not(#status_logout):not(#status_help_faq){
-        display: none !important;
-    }
+    
     
     #topheader .login {
         right: 2px !important;
@@ -2127,15 +2125,6 @@ div.program-text {
         gap: 6px;
     }
     
-    .module-2cols-outer, 
-    .module-3cols-outer,
-    .module-4cols-outer,
-    .module-5cols-outer,
-    .module-6cols-outer,
-    .module-8cols-outer {
-        width: 100% !important;
-    }
-    
     .program-header {
         font-size: 1.25em;
         padding: 0.75em;
@@ -2161,4 +2150,19 @@ div.program-text {
         margin-bottom: 0;
     }
 
+}
+
+@media only screen and (max-width: 767px) {
+    #topheader .login a:not(#status_logout):not(#status_help_faq){
+        display: none !important;
+    }
+    
+    .module-2cols-outer, 
+    .module-3cols-outer,
+    .module-4cols-outer,
+    .module-5cols-outer,
+    .module-6cols-outer,
+    .module-8cols-outer {
+        width: 100% !important;
+    }
 }
