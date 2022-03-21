@@ -137,7 +137,7 @@ class SpecialEventRegistration extends SpecialPage{
         else if($default->title == "Ethical Data and AI - Salon #2" ||
                 $default->title == "Ethical Data and AI - Salon #3" ||
                 $default->title == "Ethical Data and AI - Salon #4"){
-            $misc = "<h3>How do you plan to assist?</h3>
+            $misc = "<h3>How do you plan to attend?</h3>
                      <select name='misc[Attend]' required>
                         <option></option>
                         <option>Online</option>
