@@ -1962,7 +1962,9 @@ div.program-text {
     width: calc(12.5% - 16px);
 }
 
-.module {
+.module, .module:hover, .module:visited {
+    color: #333333;
+    text-decoration: none;
     border-radius: 10px;
     border: 2px solid #548ec9;
     overflow: hidden;
@@ -1977,7 +1979,7 @@ div.program-text {
     flex: 1 1 auto;
 }
 
-.module:hover {
+.module:hover, .module:focus {
     -webkit-transform: scale(1.025);
     -moz-transform: scale(1.025);
     -ms-transform: scale(1.025);
@@ -1994,6 +1996,7 @@ div.program-text {
     height: calc(2em + 4px);
     border-top: 2px solid #548ec9;
     position: relative;
+    text-decoration: none !important;
 }
 
 .module-progress-bar {
@@ -2010,6 +2013,7 @@ div.program-text {
     position: relative;
     width: 100%;
     text-align: center;
+    text-decoration: none !important;
     font-weight: bold;
     font-size: 1.5em;
     line-height: 1.5em;
@@ -2022,8 +2026,8 @@ div.program-text {
     margin-bottom: -10px;
 }
 
-/* Mobile */
-@media only screen and (max-width: 767px) {
+/* Mobile */ 
+@media only screen and (max-width: 1024px) {
 
     html, body {
         min-width: 100% !important;
@@ -2063,9 +2067,7 @@ div.program-text {
         left: 0 !important;
     }
     
-    #topheader .login a:not(#status_logout):not(#status_help_faq){
-        display: none !important;
-    }
+    
     
     #topheader .login {
         right: 2px !important;
@@ -2127,15 +2129,6 @@ div.program-text {
         gap: 6px;
     }
     
-    .module-2cols-outer, 
-    .module-3cols-outer,
-    .module-4cols-outer,
-    .module-5cols-outer,
-    .module-6cols-outer,
-    .module-8cols-outer {
-        width: 100% !important;
-    }
-    
     .program-header {
         font-size: 1.25em;
         padding: 0.75em;
@@ -2161,4 +2154,19 @@ div.program-text {
         margin-bottom: 0;
     }
 
+}
+
+@media only screen and (max-width: 767px) {
+    #topheader .login a:not(#status_logout):not(#status_help_faq){
+        display: none !important;
+    }
+    
+    .module-2cols-outer, 
+    .module-3cols-outer,
+    .module-4cols-outer,
+    .module-5cols-outer,
+    .module-6cols-outer,
+    .module-8cols-outer {
+        width: 100% !important;
+    }
 }

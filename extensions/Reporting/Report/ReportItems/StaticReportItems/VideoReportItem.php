@@ -30,6 +30,7 @@ class VideoReportItem extends StaticReportItem {
                     });
                     $('video').on('timeupdate', function(){
                         var {$id}Watched = dc.video('{$id}Watched', this.duration);
+                        {$id}Watched = {$id}Watched.slice(0, Math.ceil(this.duration));
                         {$id}Watched[Math.floor(this.currentTime)] = 1;
                         dc.setField('{$id}Watched', {$id}Watched);
                     });
