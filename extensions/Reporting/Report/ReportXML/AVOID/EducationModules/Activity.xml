@@ -27,10 +27,6 @@
                         $("#Answer4").hasClass("selectedReportTab")){
                         $("#Quiz").text("Quiz (Q4)").addClass("fakeSelectedReportTab");
                     }
-                    else if($("#Quiz5").hasClass("selectedReportTab") ||
-                        $("#Answer5").hasClass("selectedReportTab")){
-                        $("#Quiz").text("Quiz (Q5)").addClass("fakeSelectedReportTab");
-                    }
                     else{
                         $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
                     }
@@ -173,8 +169,8 @@
     </ReportSection>
     
     <!-- Question 3 -->
-    <ReportSection id="q3" tooltip="Quiz" name="Quiz4"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
             <![CDATA[
                 <h3>How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
                 {$item}
