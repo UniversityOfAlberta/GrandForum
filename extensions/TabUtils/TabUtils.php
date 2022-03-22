@@ -17,7 +17,7 @@ class TabUtils {
      * @return array The array of tab information ['id', 'text', 'href', 'selected', 'subtabs']
      */
     static function createTab($text, $href="", $selected=""){
-        return array('id' => "lnk-".htmlspecialchars(strip_tags($text)),
+        return array('id' => "lnk-".htmlspecialchars(strip_tags(str_replace(" ", "-", $text))),
                      'text' => $text,
                      'href' => $href,
                      'selected' => $selected,
