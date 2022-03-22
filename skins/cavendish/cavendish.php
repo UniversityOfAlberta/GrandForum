@@ -793,9 +793,9 @@ class CavendishTemplate extends QuickTemplate {
 	                  </a>";
 	        }
 	        echo "</div>";
-            echo "<a id='status_help_faq' name='question_mark_8x16' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_8x16.png' alt='Help/FAQ' />&nbsp;&nbsp;<span class='en'>Help/FAQ</span><span class='fr'>Aide/FAQ</span></a>";
+            echo "<a id='status_help_faq' name='question_mark_16x32' class='menuTooltip' title='Help/FAQ' href='$wgServer$wgScriptPath/index.php/Help:Contents'><img src='$wgServer$wgScriptPath/skins/icons/white/question_mark_16x32.png' alt='Help/FAQ' style='height: 16px;' />&nbsp;&nbsp;<span class='en'>Help/FAQ</span><span class='fr'>Aide/FAQ</span></a>";
             if(count($config->getValue("socialLinks")) > 0){
-	            echo "<a id='share' style='cursor:pointer;' name='share_16x16' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_16x16.png' />&nbsp;▼</a>";
+	            echo "<a id='share' style='cursor:pointer;' name='share_32x32' class='menuTooltipHTML'><img src='$wgServer$wgScriptPath/skins/icons/white/share_32x32.png' style='height: 16px;' />&nbsp;▼</a>";
 	        }
 	        if($wgUser->isLoggedIn()){
 		        $p = Person::newFromId($wgUser->getId());
@@ -806,12 +806,12 @@ class CavendishTemplate extends QuickTemplate {
 		            $notificationAnimation = "animation: shake 2s; animation-iteration-count: infinite;";
 		            $notificationText = " (".count($notifications).")";
 		        }
-		        echo "<a id='status_notifications' name='mail_16x12' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_16x12.png' alt='Notifications' style='$notificationAnimation' /></a>";
+		        echo "<a id='status_notifications' name='mail_32x24' class='menuTooltip' title='Notifications$notificationText' href='$wgServer$wgScriptPath/index.php?action=viewNotifications'><img src='$wgServer$wgScriptPath/skins/icons/white/mail_32x24.png' alt='Notifications' style='$notificationAnimation;height:12px;' /></a>";
 		        echo "<a id='status_profile' class='menuTooltip' title='Profile' href='{$p->getUrl()}'>{$p->getNameForForms()}</a>";
 		        echo "<a id='status_profile_photo' class='menuTooltip' title='Profile' href='{$p->getUrl()}'><img class='photo' src='{$p->getPhoto()}' alt='Profile' /></a>";
 		        if(!$wgImpersonating && !$wgDelegating){
 		            $logoutUrl = urlencode("{$wgServer}{$_SERVER['REQUEST_URI']}");
-	                echo "<a id='status_logout' name='arrow_right_16x16' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout&returnto={$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_16x16.png' alt='Logout' /></a>";
+	                echo "<a id='status_logout' name='arrow_right_32x32' class='menuTooltip' style='cursor: pointer;' title='Logout' href='{$wgServer}{$wgScriptPath}/index.php?action=logout&returnto={$logoutUrl}'><img src='$wgServer$wgScriptPath/skins/icons/white/arrow_right_32x32.png' alt='Logout' style='height: 16px;' /></a>";
 	            }
 	        }
 	        echo "</div>";
