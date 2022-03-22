@@ -845,7 +845,26 @@
                     <h3>How many friends do you feel close to such that you could call on them for help?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
+	</ReportItem>
+	<ReportItem id="interact7_avoid" blobItem="interact7_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
+            <![CDATA[
+                    <h3>How often do you feel that you lack companionship?</h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+	</ReportItem>
+	<ReportItem id="interact8_avoid" blobItem="interact8_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
+	    <![CDATA[
+		    <h3>How often do you feel left out?</h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+	</ReportItem>
+        <ReportItem id="interact9_avoid" blobItem="interact9_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
+            <![CDATA[
+                    <h3>How often do you feel isolated from others?</h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
         </ReportItem>
+		    
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
 		<span id="interact_end">
@@ -1054,7 +1073,9 @@
             <h2 style='margin-top:0;'>Health Related Quality of Life</h2>
             <p>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
             <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center;"><br />
-                <b>Health Questionnaire</b>
+			    Canada (English)<br />
+			    <b>Health Questionnaire</b><br />
+				   <b>English version for Canada</b>
         </div>
                 ]]>
     </Static>
@@ -1069,7 +1090,7 @@
     <ReportSection id="healthquestions2" tooltip="Health Related QoL2" name="Health Related QoL2" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please tap the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus1_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems in walking about|I have slight problems in walking about|I have moderate problems in walking about|I have severe problems in walking about|I am unable to walk about" blobItem="healthstatus_avoid">
@@ -1084,7 +1105,7 @@
     <ReportSection id="healthquestions3" tooltip="Health Related QoL3" name="Health Related QoL3" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please tap the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus2_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems washing or dressing myself|I have slight problems washing or dressing myself|I have moderate problems washing or dressing myself|I have severe problems washing or dressing myself|I am unable to wash or dress myself " blobItem="healthstatus_avoid2">
@@ -1097,7 +1118,7 @@
     <ReportSection id="healthquestions4" tooltip="Health Related QoL4" name="Health Related QoL4" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please tap the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus3_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems doing my usual activities|I have slight problems doing my usual activities|I have moderate problems doing my usual activities|I have severe problems doing my usual activities|I am unable to do my usual activities" blobItem="healthstatus_avoid3">
@@ -1110,12 +1131,12 @@
     <ReportSection id="healthquestions5" tooltip="Health Related QoL5" name="Health Related QoL5" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please tap the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus4_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no pain or discomfort|I have slight pain or discomfort|I have moderate pain or discomfort|I have severe pain or discomfort|I have extreme pain or discomfort" blobItem="healthstatus_avoid4">
             <![CDATA[
-                    <h3>PAIN/DISCOMFORT</h3>
+                    <h3>PAIN / DISCOMFORT</h3>
                     <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
@@ -1123,12 +1144,12 @@
     <ReportSection id="healthquestions6" tooltip="Health Related QoL6" name="Health Related QoL6" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
             <![CDATA[
-        <p>Please select the ONE box that best describes your health TODAY.</p>
+        <p>Please tap the ONE box that best describes your health TODAY.</p>
                 ]]>
         </Static>
         <ReportItem id="healthstatus5_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I am not anxious or depressed|I am slightly anxious or depressed|I am moderately anxious or depressed|I am severely anxious or depressed|I am extremely anxious or depressed" blobItem="healthstatus_avoid5">
             <![CDATA[
-                    <h3>ANXIETY/DEPRESSION</h3>
+                    <h3>ANXIETY / DEPRESSION</h3>
                     <div class="requiredField" style="margin:0;">{$item}</div>
             ]]>
         </ReportItem>
@@ -1146,9 +1167,9 @@
             <h3>We would like to know how good or bad your health is TODAY.</h3>
             <lu>
                 <li>This scale is numbered from 0 to 100.</li>
-                <li>100 means the best health you can imagine.</li>
-                <li>0 means the worst health you can imagine.</li>
-                <li>Mark on the scale to indicate how your health is TODAY.</li>
+		<li>100 means the <u>best</u> health you can imagine.</li>
+		<li>0 means the <u>worst</u> health you can imagine.</li>
+                <li>Please tap on the scale to indicate how your health is TODAY.</li>
             </lu>
             <br />
                     <div class="requiredField">{$item}</div>

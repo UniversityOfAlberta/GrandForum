@@ -63,7 +63,8 @@ class AvoidHealthReportSection extends EditableReportSection {
         }
         $wgOut->addHTML("</div>
 			    <div id='reportFooter'>
-				<div class='trademark' style='text-align:center'>© 2009 EuroQol Research Foundation. EQ-5D™ is a trade mark of the EuroQol Research Foundation. UK (English) v1.2</div>
+				<div class='trademark' style='text-align:center'>
+© EuroQol Research Foundation. EQ-5D™ is a trade mark of the EuroQol Research Foundation. Canada (English) v1.2</div>
                                 <input type='submit' value='Next' name='submit' style='width:100px;float:right;' $disabled />&nbsp;<span class='autosaveSpan'></span><img id='submit_throbber' style='display:none;vertical-align:-20%;' src='../skins/Throbber.gif' />
                              </div>
                          </form></div>\n");
