@@ -1072,7 +1072,7 @@
         <div style="width:100%;text-align:center">
             <h2 style='margin-top:0;'>Health Related Quality of Life</h2>
             <p>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
-            <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center;"><br />
+            <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center; max-width: 100%;"><br />
 			    Canada (English)<br />
 			    <b>Health Questionnaire</b><br />
 				   <b>English version for Canada</b>
