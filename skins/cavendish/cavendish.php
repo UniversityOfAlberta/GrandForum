@@ -905,7 +905,7 @@ class CavendishTemplate extends QuickTemplate {
         ?>
 	    <div id="header" style="<?php if(count($headerTabs) == 0 && $config->getValue('showSideBar')){ echo 'display:none;'; } ?>">
 	        <?php if(count($headerTabs) > 0){ ?>
-	            <a id="allTabs"><img src="<?php echo $wgServer.$wgScriptPath; ?>/skins/hamburger<?php if($config->getValue("sideInverted")){ echo "_inverted"; } ?>.png" /></a>
+	            <a id="allTabs">&#9776;</a>
 	        <?php } ?>
 		    <a name="top" id="contentTop"></a>
 	        <ul class="top-nav">
@@ -1019,7 +1019,7 @@ class CavendishTemplate extends QuickTemplate {
 	</div><!-- end of MBODY div -->
 	<script type="text/javascript">
 	    function setBodyContentTop(){
-	        if(window.matchMedia('(max-width: 767px)').matches){
+	        if(window.matchMedia('(max-width: 1024px)').matches){
                 $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
             }
             else{

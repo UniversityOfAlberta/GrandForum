@@ -115,7 +115,7 @@
 		padding: 0 7px 0 7px;
 	}
 	
-	#header ul a:hover {
+	#header ul a:hover, #header ul a:focus {
 	    height: 42px;
 	    line-height: 40px;
 	}

@@ -11,7 +11,7 @@ $(document).ready(function(){
     if(!showSideBar){
         $("#reportIssue, #contactUs").css("display", "inline-block")
                                      .css("margin-right", "10px")
-                                     .css("margin-top", "7px")
+                                     .css("margin-top", "8px")
                                      .css("float", "right");
     }
     

@@ -1857,13 +1857,15 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 
 .program-body a:not(.program-button), 
 .program-body a:not(.program-button):hover, 
-.program-body a:not(.program-button):visited {
+.program-body a:not(.program-button):visited,
+.program-body a:not(.program-button):focus {
     color: black !important;
     text-decoration: underline;
     text-decoration-color: #e97936;
 }
 
-.program-body a:not(.program-button):hover {
+.program-body a:not(.program-button):hover, 
+.program-body a:not(.program-button):focus {
     color: #e97936 !important;
 }
 
@@ -1907,7 +1909,7 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     background: #e97936;
 }
 
-.program-button:hover {
+.program-button:hover, .program-button:focus {
     background: #f69443;
     color: white !important;
     text-decoration: none !important;

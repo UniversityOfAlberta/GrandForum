@@ -117,7 +117,7 @@ h1 {
     color: $hlc !important;
 }
 
-.selected .highlights-tab, .highlights-tab:hover {
+.selected .highlights-tab, .highlights-tab:hover, .highlights-tab:focus {
     border-width: 3px 0 0 0;
     border-style: solid;
     border-color: $hl;
