@@ -2124,7 +2124,7 @@ div.program-text {
     #reportMain > div > div {
         width: auto !important;
         min-width: auto !important;
-        padding: 0 !important;
+        padding: 10px 0 0 0 !important;
     }
     
     .modules {
@@ -2170,5 +2170,9 @@ div.program-text {
     .module-6cols-outer,
     .module-8cols-outer {
         width: 100% !important;
+    }
+    
+    input, textarea, select {
+        max-width: 100%;
     }
 }
