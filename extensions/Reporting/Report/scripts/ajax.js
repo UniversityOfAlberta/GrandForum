@@ -46,7 +46,7 @@ $(document).ready(function(){
         if($(this).hasClass('selectedReportTab')){
             currentSectionHref = href;
         }
-        $(this).removeAttr('href');
+        $(this).attr('href', '#');
         
         $(this).click(function(){
             var selectedIndex = $(".reportTab").index($(".selectedReportTab"));

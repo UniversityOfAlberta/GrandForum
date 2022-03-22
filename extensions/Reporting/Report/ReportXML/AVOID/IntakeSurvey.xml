@@ -156,13 +156,6 @@
                 {$item}
             ]]>
     </ReportItem>
-    <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    $('#mw-content-text').css("height", "");
-                </script>
-                ]]>
-        </Static>
         <Static>
             <![CDATA[
             <script type='text/javascript'>
@@ -186,13 +179,6 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                                $('#mw-content-text').css("height", "");
-                </script>
-                ]]>
-        </Static>
         <ReportItem id="socio_info2" type="RadioReportItem" options="Man|Woman|Prefer not to say|Prefer to self describe myself" blobItem="avoid_gender">
             <![CDATA[
                             <h3>What is your gender?</h3>
@@ -468,20 +454,13 @@
     <ReportSection id="behaviouralassess" tooltip="Behavioural Self-Assessment" name="Self-Assessment" title="Behavioural Self-Assessment" blobSection="behaviouralassess" type="NextPrevReportSection" pagebreak="false" >
         <Static>
             <![CDATA[
-                <script type='text/javascript'>
-                                $('#mw-content-text').css("height", "");
-                </script>
-                ]]>
-        </Static>
-        <Static>
-            <![CDATA[
                     <i>The following section will ask you about your health-related behaviours and lifestyle. The answers will be used to personalize your
                     program experience based on the specific supports that you need and the challenges that you face. Please answer these questions to the best of your ability and recollection.</i>
                 ]]>
         </Static>
         <ReportItem id="behave1_avoid" blobItem="behave1_avoid" type="RadioReportItem" orientation="horizontal" options="Some of the day|Most of the day|All day">
             <![CDATA[
-        <br/><br/><div id="reportHeader" class="headers-behaviour"><b>Activity</b></div><hr>
+                    <br/><br/><div id="reportHeader" class="headers-behaviour"><b>Activity</b></div><hr>
                     <h3>During the last 7 days, how much time did you spend sitting during the day?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
@@ -501,8 +480,8 @@
         <ReportItem id="active_specify_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="active_specify_end" orientation="vertical" options="I am physically and/or mentally unable to be active|I don't know where/how to get help in my community|I have trouble maintaining a routine when it comes to activity|Other" optional="true">
             <![CDATA[
             <span id="active_specify_end">
-            <h3>What challenges have you faced when it comes to staying active? (choose all that apply):</h3>
-            {$item}
+                <h3>What challenges have you faced when it comes to staying active? (choose all that apply):</h3>
+                {$item}
             </span>
             ]]>
         </ReportItem>
@@ -1079,13 +1058,6 @@
         </div>
                 ]]>
     </Static>
-    <Static>
-            <![CDATA[
-        <script type='text/javascript'>
-                $('#mw-content-text').css("height", "100%");
-        </script>
-                ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="healthquestions2" tooltip="Health Related QoL2" name="Health Related QoL2" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
@@ -1155,13 +1127,6 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL7" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
-     <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                                $('#mw-content-text').css("height", "100%");
-                </script>
-                ]]>
-        </Static>
         <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" default="50" orientation="vertical" blobItem="healthstatus_avoid6">
             <![CDATA[
             <h3>We would like to know how good or bad your health is TODAY.</h3>
@@ -1184,13 +1149,6 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                                $('#mw-content-text').css("height", "");
-                </script>
-                ]]>
-        </Static>
 
         <ReportItem id="symptoms_avoid2" blobItem="symptoms_avoid2" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[

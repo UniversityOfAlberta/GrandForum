@@ -295,6 +295,10 @@ a:hover {
     color: $hlc;
 }
 
+a.reportTab:focus {
+    border-color: $hlc;
+}
+
 a:visited {
     color: $hlc;
 }
