@@ -1,7 +1,18 @@
 [
     {
+        "id": "IngredientsForChange",
+        "title": "Ingredients for Change",
+        "videos": 5,
+        "questions": 4,
+        "tags": ["everything"],
+        "resources": []
+    },
+    {
         "id": "Activity",
         "title": "Activity",
+        "videos": 10,
+        "questions": 4,
+        "tags": ["activity module"],
         "resources": [
             {
                 "file": "9. Balance with Hal _ Joanne.mp4",
@@ -31,8 +42,11 @@
         ]
     },
     {
-        "id": "Vaccinate",
+        "id": "Vaccination",
         "title": "Vaccinate",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["vaccination module"],
         "resources": [
             {
                 "file": "11. Vaccinate with Hal _ Joanne.mp4",
@@ -69,6 +83,9 @@
     {
         "id": "OptimizeMedication",
         "title": "Optimize Medication",
+        "videos": 6,
+        "questions": 3,
+        "tags": ["optimize medication module"],
         "resources": [
             {
                 "file": "15. Optimize Medication with Hal _ Joanne.mp4",
@@ -105,6 +122,9 @@
     {
         "id": "Interact",
         "title": "Interact",
+        "videos": 7,
+        "questions": 3,
+        "tags": ["interact module"],
         "resources": [
             {
                 "file": "19. Isolation Tip Sheet (without Technology).pdf",
@@ -125,7 +145,10 @@
     },
     {
         "id": "DietAndNutrition",
-        "title": "Diet & Nutrition",
+        "title": "Diet and Nutrition",
+        "videos": 12,
+        "questions": 4,
+        "tags": ["diet and nutrition module"],
         "resources": [
             {
                 "file": "20. Chili Recipe with Hal _ Joanne.mp4",
@@ -153,5 +176,13 @@
                 "tags": ["diet and nutrition vid"]
             }
         ]
+    },
+    {
+        "id": "Sleep",
+        "title": "Sleep",
+        "videos": 0,
+        "questions": 0,
+        "tags": [],
+        "resources": []
     }
 ]

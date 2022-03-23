@@ -52,7 +52,7 @@ class AVOIDDashboard extends SpecialPage {
         $programs = $this->sort($programs, $tags);
         
         $resources = array();
-        $categories = json_decode(file_get_contents("{$dir}EducationResources/resources.json"));
+        $categories = EducationResources::JSON();
         foreach($categories as $category){
             foreach($category->resources as $resource){
                 $resource->category = $category->id;
@@ -61,10 +61,10 @@ class AVOIDDashboard extends SpecialPage {
         }
         $resources = $this->sort($resources, $tags);
         
-        $modules = EducationModules::modulesJSON();
+        $modules = EducationResources::JSON();
         $modules = $this->sort($modules, $tags);
         usort($modules, function($a, $b){
-            return (floor(EducationModules::completion($a->id)/100) > floor(EducationModules::completion($b->id)/100));
+            return (floor(EducationResources::completion($a->id)/100) > floor(EducationResources::completion($b->id)/100));
         });
         
         $communityResources = array();
@@ -97,22 +97,22 @@ class AVOIDDashboard extends SpecialPage {
         $score = $api->getFrailtyScore($me->getId());
         $frailty = "";
         if($score >= 0 && $score <= 3){
-            $frailty = "Based on the answers in the assessment, you are classified as <u style='color: green;'>no risk</u> to becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>no risk</span> to becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
 ";
         }
         else if($score > 3 && $score <= 8){
-            $frailty = "Based on the answers in the assessment, you are classified as <u style='color: #F6BE00;'>low risk</u> to becoming frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>low risk</span> to becoming frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
 ";
         }
         else if($score > 8 && $score <= 16){
-            $frailty = "Based on the answers in the assessment, you are at <u style='color: darkorange;'>medium risk</u> of being frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>medium risk</span> of being frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
 ";
         }
         else if($score > 16){
-            $frailty = "Based on your answers in the assessment, you are at <u style='color: red;'>high risk</u> of being frail.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
+            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>high risk</span> of being frail.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
         }
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</div>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
                                 {$frailty}<br />
                                 <a style='margin-top:0.5em; display:inline-block' href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty</a>
@@ -122,19 +122,19 @@ class AVOIDDashboard extends SpecialPage {
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</div>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</h1>
                             <span class='program-body'>{$events->getText()}</span>
                          </div>");
         
         // Education
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationModules'>View All</a></div>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>");
         $cols = 3;
         $n = 0;
         foreach($modules as $key => $module){
             if($key >= $cols){ break; }
             $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
-            $percent = EducationModules::completion($module->id);
+            $percent = EducationResources::completion($module->id);
             $wgOut->addHTML("<a id='module{$module->id}' title='{$module->title}' class='module module-{$cols}cols' href='{$url}'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' alt='{$module->title}' />
                 <div class='module-progress'>
@@ -153,7 +153,7 @@ class AVOIDDashboard extends SpecialPage {
         
         // Programs
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></div>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></h1>");
         
         $cols = 3;
         $n = 0;
@@ -175,7 +175,7 @@ class AVOIDDashboard extends SpecialPage {
         
         // Education Resources
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></div>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>
                             <div class='program-body'><ul>");
         $cols = 4;
         foreach($resources as $key => $resource){
@@ -186,7 +186,7 @@ class AVOIDDashboard extends SpecialPage {
                          
         // Community Program Library
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></div>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></h1>
                             <div class='program-body'><ul>");
         $cols = 4;
         foreach($communityResources as $key => $category){
@@ -197,7 +197,7 @@ class AVOIDDashboard extends SpecialPage {
         
         $wgOut->addHTML("</div>
         <script type='text/javascript'>
-            $('#bodyContent h1').hide();
+            $('#bodyContent h1:not(.program-header)').hide();
             
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));
