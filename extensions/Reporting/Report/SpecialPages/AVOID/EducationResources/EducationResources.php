@@ -117,6 +117,9 @@ class EducationResources extends SpecialPage {
                 $('.resources').hide();
                 $('#resources' + id).show();
                 $(this).blur();
+                
+                var scrollTop = $('#resources' + id).position().top + $('#bodyContent').scrollTop();
+                $('#bodyContent').scrollTop(scrollTop);
             });
             
             $('a.resource').click(function(){
