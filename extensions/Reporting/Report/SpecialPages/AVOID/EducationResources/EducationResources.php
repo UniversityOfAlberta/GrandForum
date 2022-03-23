@@ -98,7 +98,7 @@ class EducationResources extends SpecialPage {
                 if(count($category->resources) > 0){
                     $wgOut->addHTML("<ul style='margin-top: 0;'>");
                     foreach($category->resources as $resource){
-                        $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$category->id}/{$resource->file}'>{$resource->title}</a></li>");
+                        $wgOut->addHTML("<li><a class='resource' data-resource='{$category->id}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}/Resources/{$resource->file}'>{$resource->title}</a></li>");
                     }
                     $wgOut->addHTML("</ul>");
                 }
