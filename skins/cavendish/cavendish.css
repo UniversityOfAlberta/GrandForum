@@ -1859,7 +1859,6 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
 .program-body a:not(.program-button):hover, 
 .program-body a:not(.program-button):visited,
 .program-body a:not(.program-button):focus {
-    color: black !important;
     text-decoration: underline;
     text-decoration-color: #e97936;
 }
