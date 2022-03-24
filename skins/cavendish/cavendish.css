@@ -1908,6 +1908,7 @@ h1.program-header {
     -moz-user-select: none;    
     -ms-user-select: none;      
     user-select: none;
+    text-shadow: 1px 1px 1px black, 0 0 3px black;
 }
 
 .program-button, .program-button:visited {
