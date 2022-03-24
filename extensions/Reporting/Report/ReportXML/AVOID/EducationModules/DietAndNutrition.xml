@@ -206,7 +206,7 @@
     <ReportSection id="q4" tooltip="Quiz" name="Quiz4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
         <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="a. Maintaining a balanced diet can help you avoid tooth decay|b. Healthy teeth allow you to comfortably and safely eat the food you want|c. Good oral hygiene can help you avoid malnourishment|d. All of the above">
             <![CDATA[
-                <h3>If you’re a vegetarian, it’s impossible to get enough protein in your diet.</h3>
+                <h3>How does oral hygiene relate to diet?</h3>
                 {$item}
             ]]>
         </ReportItem>
