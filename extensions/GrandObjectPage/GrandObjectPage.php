@@ -7,9 +7,11 @@
     require_once("Backbone/BackbonePage.php");
     if($config->getValue("profilesEnabled")){
         require_once("PersonPage.php");
-        require_once("ProjectPage.php");
-        require_once("ThemePage.php");
-        require_once("MilestonesLog.php");
+        if($config->getValue("projectsEnabled")){
+            require_once("ProjectPage.php");
+            require_once("ThemePage.php");
+            require_once("MilestonesLog.php");
+        }
     }
     else{
         // Profiles are disabled
