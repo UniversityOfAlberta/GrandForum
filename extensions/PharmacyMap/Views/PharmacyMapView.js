@@ -267,6 +267,7 @@ AddMarkers: function (group) {
 
     render: function () {
         //this.$el.empty();
+        main.set('title', 'Using the Community Program Library');
         var data = this.model.toJSON();
         this.$el.html(this.template({
             output: data,
