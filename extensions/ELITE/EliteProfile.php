@@ -206,8 +206,16 @@ abstract class EliteProfile extends BackboneModel {
         global $config;
         $subject = "";
         $message = "";
+        $to = $this->person->getEmail();
         if($this->status == "Accepted"){
             list($subject, $message) = $this->acceptedMessage();
+            foreach($this->hires as $key => $hire){
+                if($hire == "Accepted"){
+                    $posting = ElitePosting::newFromId($key);
+                    $host = $posting->getUser();
+                    $to .= ",{$host->getEmail()}";
+                }
+            }
         }
         else if($this->status == "Shortlist"){
             list($subject, $message) = $this->shortlistMessage();
@@ -247,10 +255,9 @@ abstract class EliteProfile extends BackboneModel {
                 $message .= "Content-Disposition: attachment; filename=\"".$fileObj->filename."\"".$eol.$eol;
                 $message .= @chunk_split($exploded[1]).$eol.$eol;
             }
-            
             $message .= "--".$uid."--";
             
-            mail($this->person->getEmail(), $subject, $message, $headers);
+            mail($to, $subject, $message, $headers);
         }
     }
     
