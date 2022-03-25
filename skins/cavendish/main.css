@@ -229,7 +229,7 @@ a {
     background: none;
 }
 
-a:hover {
+a:hover, a:focus {
     text-decoration: underline;
 }
 
@@ -272,6 +272,7 @@ img {
 p {
     margin: .5em 0 1em 0;
     line-height: 1.5em;
+    max-width: 1200px;
 }
 
 p img {

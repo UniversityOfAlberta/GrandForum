@@ -291,7 +291,7 @@ a {
     color: $hlc;
 }
 
-a:hover {
+a:hover, a:focus {
     color: $hlc;
 }
 

@@ -1046,7 +1046,7 @@
             <![CDATA[
         <div style="width:100%;text-align:center">
             <h2 style='margin-top:0;'>Health Related Quality of Life</h2>
-            <p>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
+            <p style='max-width: 100%;'>The AVOID Frailty Program aims to support you in improvements to your physical and social wellbeing. The questions in this section will help us to understand these aspects of your life before you start the program, and we will ask again in 6 months to see if anything has changed.</p>
             <img src="{$wgServer}{$wgScriptPath}/skins/eq5d5l_logo.png" width="500px" style="text-align:center; max-width: 100%;"><br />
 			    Canada (English)<br />
 			    <b>Health Questionnaire</b><br />
@@ -1125,15 +1125,20 @@
     <ReportSection id="healthquestions7" tooltip="Health Related QoL7" name="Health Related QoL7" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <ReportItem id="healthstatus6_avoid" type="RangeSliderReportItem" step="5" default="50" orientation="vertical" blobItem="healthstatus_avoid6">
             <![CDATA[
-            <h3>We would like to know how good or bad your health is TODAY.</h3>
-            <lu>
-                <li>This scale is numbered from 0 to 100.</li>
-		<li>100 means the <u>best</u> health you can imagine.</li>
-		<li>0 means the <u>worst</u> health you can imagine.</li>
-                <li>Please tap on the scale to indicate how your health is TODAY.</li>
-            </lu>
-            <br />
-                    <div class="requiredField">{$item}</div>
+                <div style='display:flex;flex-wrap: wrap;min-height: 400px;'>
+                    <div>
+                        <h3>We would like to know how good or bad your health is TODAY.</h3>
+                        <lu>
+                            <li>This scale is numbered from 0 to 100.</li>
+                            <li>100 means the <u>best</u> health you can imagine.</li>
+                            <li>0 means the <u>worst</u> health you can imagine.</li>
+                            <li>Please tap on the scale to indicate how your health is TODAY.</li>
+                        </lu>
+                    </div>
+                    <div class='flex-slider'>
+                        {$item}
+                    </div>
+                </div>
             ]]>
         </ReportItem>
     </ReportSection>

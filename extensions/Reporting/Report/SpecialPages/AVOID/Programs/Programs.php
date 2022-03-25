@@ -40,7 +40,7 @@ class Programs extends SpecialPage {
                     $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
                     $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
                         <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                        <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$program->title}</div>
+                        <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
                     </a>");
                     $n++;
                 }

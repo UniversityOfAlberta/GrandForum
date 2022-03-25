@@ -426,23 +426,16 @@ div.options > label > input:checked +img {
 	border: 2px solid #00587e;
 }
 .label-top-slider{
-display: inline-block;
-    position: absolute;
-    top: 30px;
+    display: block;
     width: 170px;
-    right: 10px;
-    padding-right: 20px !important;
+    margin-bottom: 20px;
     font-size: 0.8em;
     text-align:center;
 }
 
 .label-bottom-slider{
-display: inline-block;
-    position: absolute;
-    bottom: 70px;
+    display: block;
     width: 170px;
-    right: 10px;
-    padding-right: 20px !important;
     font-size: 0.8em;
     text-align:center;
 }
@@ -450,32 +443,49 @@ display: inline-block;
 
 .slider-wrapper {
   display: inline-block;
-  width: 20px;
-  height: 150px;
-  float: right;
-  padding-right: 100px;
 }
 
 .slider-wrapper input {
   width: 150px;
   height: 20px;
-  margin-top: 30px;
-  transform-origin: 35px 35px;
+  margin-left: 63px;
+  transform-origin: 125px 120px;
   transform: rotate(-90deg);
 }
 
+.flex-slider {
+    position: absolute; 
+    top: 30px; 
+    right: 20px;
+    overflow: hidden;
+}
+
 .label-health{
+    display: inline-block;
     width: 150px;
+    min-width: 150px;
+    height: 94px;
     border-style: solid;
     text-align: center;
     background: black;
     color: white;
     padding: 10px;
-    position: absolute;
-    right: 400px;
+    margin-top: 260px;
+    margin-right: 125px;
 }
 
 .headers-behaviour{
     padding-top:30px;
+}
 
+@media only screen and (max-width: 767px) {
+    
+    .flex-slider {
+        position: static;
+    }
+    
+    .label-health {
+        margin-right: 0;
+    }
+    
 }

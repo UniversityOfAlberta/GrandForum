@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="consent" tooltip="Cyber Seniors" name="Cyber Seniors" title="Cyber Seniors" blobSection="CONSENT" type="NextPrevReportSection">
+    <ReportSection id="consent" tooltip="Cyber Seniors" name="Cyber Seniors" title="Cyber Seniors" blobSection="CONSENT" type="ReportSection">
         <Static>
             <![CDATA[
                 <script type="text/javascript">
@@ -19,12 +19,12 @@
                             <img src="{$wgServer}{$wgScriptPath}/skins/cyber_seniors.jpg" style='width: 100%; max-height: 160px; object-fit: contain;' />
                         </div>
                         <div style='margin-right:15px;'>
-                            <div class="program-box" style="width:100%; box-sizing: border-box;">Access to free technology</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Free Tech Training</div><br />
                             <div class="program-box" style="width:100%; box-sizing: border-box;">Social engagement</div><br />
                             <div class="program-box" style="width:100%; box-sizing: border-box;">Safe opportunity to engage</div>
                         </div>
                         <div>
-                            <div class="program-box" style="width:100%; box-sizing: border-box;">Improve your well-being</div><br />
+                            <div class="program-box" style="width:100%; box-sizing: border-box;">Free Tech Resources</div><br />
                             <div class="program-box" style="width:100%; box-sizing: border-box;">Increase computer literacy</div><br />
                             <div class="program-box" style="width:100%; box-sizing: border-box;">Increase self-sufficiency</div>
                         </div>
