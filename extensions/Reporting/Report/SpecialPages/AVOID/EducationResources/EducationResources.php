@@ -66,7 +66,7 @@ class EducationResources extends SpecialPage {
         foreach($categories as $category){
             $wgOut->addHTML("<a id='category{$category->id}' title='{$category->title}' data-id='{$category->id}' class='category module module-{$cols}cols-outer' href='#'>
                 <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$category->id}.png' alt='{$category->title}' />
-                <div class='module-progress-text' style='border-top: 2px solid #548ec9;'>{$category->title}</div>
+                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$category->title}</div>
             </a>");
             $n++;
         }
