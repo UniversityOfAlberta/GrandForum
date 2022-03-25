@@ -234,3 +234,9 @@ input[type=button] {
         height: calc(50vh);
     }
 }
+
+#load_map {
+   text-align:center;
+   display:none;
+
+}

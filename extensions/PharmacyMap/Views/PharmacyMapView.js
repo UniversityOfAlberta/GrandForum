@@ -57,6 +57,7 @@ PharmacyMapView = Backbone.View.extend({
                 this.buttons = this.buttons[cat]["children"];
                 //$('#address_bar').hide();
                 //$('#map-container').hide();
+                this.drawButtons();
             }
             else {
                 this.refresh = false;
@@ -64,13 +65,15 @@ PharmacyMapView = Backbone.View.extend({
                 //this.model.cat = this.buttons[cat]["text"];
                 this.model.cat = this.buttons[cat]["code"];
                 this.model.fetch();
+                $(".throbber", ev.currentTarget).show();
             }
         } else {
             this.refresh = false;
             this.renderMap = true;
             this.model.fetch();
+            this.drawButtons();
         }
-        this.drawButtons();
+        
     },
 
     previousCategory: function () {
@@ -167,7 +170,7 @@ PharmacyMapView = Backbone.View.extend({
                 var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '</a></div>');
+                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
             }
             this.$('#treemap').append(r);
         }
@@ -214,11 +217,10 @@ AddMarkers: function (group) {
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 35));
     _.each(group, function (val) {
-        if (val.lon != "" && val.lat != "") {
+        if (val.Longitude != "" && val.Latitude != "") {
             var pharmLoc = null;
             var marker = null;
-
-            pharmLoc = new google.maps.LatLng(val.lat, val.lon);
+            pharmLoc = new google.maps.LatLng(val.Latitude, val.Longitude);
             if (pharmLoc != null) {
                 marker = new google.maps.Marker({
                     position: pharmLoc,
@@ -228,15 +230,20 @@ AddMarkers: function (group) {
                     icon: pinImage,
                     shadow: pinShadow
                 });
+		var phoneNumber = "";
+		if(val.PhoneNumbers.length != 0){
+		    phoneNumber = val["PhoneNumbers"][0]["Phone"];
+		}
+
                 var infowindow = new google.maps.InfoWindow({
                     content: "Name: "
-                        + val.PublicName_Program
+                        + val.PublicName
                         + "<br>"
                         + "Address: "
                         + val.PhysicalAddress1
                         + "<br>"
                         + "Phone: "
-                        + val.Phone1Number
+                        + phoneNumber
                         + "<br>"
                         + "Email: "
                         + val.EmailAddressMain

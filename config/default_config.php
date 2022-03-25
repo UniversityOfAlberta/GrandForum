@@ -437,6 +437,8 @@
     /* Other */
     $config->setValue("analyticsCode", "");
     
+    $config->setValue("211Key", "");
+    
     $config->setValue("geoapifyAPI", "");
     
     $config->setValue("googleAPI", "");

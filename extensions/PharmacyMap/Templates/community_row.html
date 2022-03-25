@@ -1,5 +1,5 @@
 <td valign="top" style="width:40px">
-    <h3 style="margin-top:0;"><%= PublicName_Program %></h3>
+    <h3 style="margin-top:0;"><%= PublicName %></h3>
     <%= AgencyDescription %>
     <br /><br />
     <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
@@ -16,8 +16,8 @@
         <% if (EmailAddressMain != ""){ %>
             <b>Email:</b> <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
         <% } %>
-        <% if (Phone1Number != ""){ %>
-            <b>Phone:</b> <%= Phone1Number %><br />
+        <% if ( PhoneNumbers.length != 0){ %>
+            <b>Phone:</b> <%= PhoneNumbers[0].Phone %><br />
         <% } %>
         <% if (WebsiteAddress != ""){ %>
             <b>Website:</b> <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a><br />
