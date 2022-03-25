@@ -167,10 +167,10 @@ PharmacyMapView = Backbone.View.extend({
             this.$('#treemap-container').append('<div id="treemap" class="modules"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-                var r = $('<div class="module-3cols-outer"><a class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
             }
             this.$('#treemap').append(r);
         }
