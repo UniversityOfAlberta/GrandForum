@@ -1925,6 +1925,10 @@ h1.program-header {
     cursor: pointer;
 }
 
+.program-button *, .program-button * {
+    text-decoration: none !important;
+}
+
 .program-text {
     font-weight: bold;
 }
