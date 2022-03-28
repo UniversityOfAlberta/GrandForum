@@ -67,14 +67,6 @@ table.wikitable tr.deleted {
    }
 }
 
-#backbone_main {
-    height: 100%;
-}
-
-#mw-content-text {
-    height: 100%;
-}
-
 #footer {
     display: none;
 }

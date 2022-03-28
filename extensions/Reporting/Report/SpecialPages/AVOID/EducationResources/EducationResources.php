@@ -133,7 +133,8 @@ class EducationResources extends SpecialPage {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         if(AVOIDDashboard::hasSubmittedSurvey()){
             $selected = @($wgTitle->getText() == "EducationResources" || ($wgTitle->getText() == "Report" && (strstr($_GET['report'], "EducationModules/") !== false))) ? "selected" : false;
-            $tabs["EducationResources"] = TabUtils::createTab("AVOID Education", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
+            $tabs["EducationResources"] = TabUtils::createTab("<span class='desktop-text'>AVOID Education</span>
+                                                               <span class='mobile-text'>Education</span>", "{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources", $selected);
         }
         return true;
     }

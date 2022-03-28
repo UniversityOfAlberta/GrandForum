@@ -2008,7 +2008,7 @@ div.program-text {
 
 .module-progress {
     height: calc(2em + 4px);
-    border-top: 2px solid #548ec9;
+    border-top: 2px solid #005f9d;
     position: relative;
     text-decoration: none !important;
 }
@@ -2038,6 +2038,14 @@ div.program-text {
     margin-left:-10px; 
     margin-right: -10px; 
     margin-bottom: -10px;
+}
+
+.mobile-text {
+    display: none;
+}
+
+.desktop-text {
+    display: initial;
 }
 
 /* Mobile */ 
@@ -2180,8 +2188,24 @@ div.program-text {
         display: none !important;
     }
     
+    #header .top-nav-element:not(:first-child) {
+        margin: 0 0 0 3px !important;
+    }
+    
+    #header ul a {
+        padding: 0 5px 0 5px !important;
+    }
+    
     .module {
         flex: 1 1 auto;
+    }
+    
+    .mobile-text {
+        display: initial;
+    }
+    
+    .desktop-text {
+        display: none;
     }
     
     .module-2cols-outer,
