@@ -550,86 +550,95 @@ class ReportXMLParser {
     }
 
     // Parses the <ReportItemSet> element of the XML
-    function parseReportItemSet(&$section, $node, $data=array()){
+    function parseReportItemSet(&$section, $node, $data=array(), $lazy=true, $itemset=null){
         $attributes = $node->attributes();
         $children = $node->children();
-        //$itemset = $section->getReportItemById("{$attributes->id}");
-        if($node->getName() == "If" ||
-           $node->getName() == "ElseIf" ||
-           $node->getName() == "Else" ||
-           $node->getName() == "For"){
-           @$node->addAttribute("type", $node->getName());
-        }
-        /*if($itemset != null){
-            $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
-            $itemset->iteration = 0;
-        }*/
-        if(isset($attributes->type)){
-            $type = "{$attributes->type}";
-            if(self::class_exists($type)){
-                $itemset = new $type();
+        if($lazy === true || $lazy == 'both'){
+            if($node->getName() == "If" ||
+               $node->getName() == "ElseIf" ||
+               $node->getName() == "Else" ||
+               $node->getName() == "For"){
+               @$node->addAttribute("type", $node->getName());
             }
-            else if(self::class_exists($type."ReportItemSet")){
-                $type = $type."ReportItemSet";
-                $itemset = new $type();
+            if($itemset != null){
+                $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
+                $itemset->iteration = 0;
+            }
+            if(isset($attributes->type)){
+                $type = "{$attributes->type}";
+                if(self::class_exists($type)){
+                    $itemset = new $type();
+                }
+                else if(self::class_exists($type."ReportItemSet")){
+                    $type = $type."ReportItemSet";
+                    $itemset = new $type();
+                }
+                else{
+                    $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
+                    return;
+                }
+                $position = isset($attributes->position) ? "{$attributes->position}" : null;
+                $section->addReportItem($itemset, $position);
+            }
+            else if($itemset != null){
+                // DO nothing
+                $type = get_class($itemset);
             }
             else{
-                $this->errors[] = "ReportItemSet '{$attributes->type}' does not exists";
+                $this->errors[] = "ReportItemSet '' does not exists";
                 return;
             }
-            $position = isset($attributes->position) ? "{$attributes->position}" : null;
-            $section->addReportItem($itemset, $position);
-        }
-        else if($itemset != null){
-            // DO nothing
-            $type = get_class($itemset);
-        }
-        else{
-            $this->errors[] = "ReportItemSet '' does not exists";
-            return;
-        }
-        if(isset($attributes->id)){
-            $itemset->setId("{$attributes->id}");
-        }
-        else{
-            $this->errors[] = "{$type} does not contain an id";
-        }
-        if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
-            $section->deleteReportItem($itemset);
-        }
-        if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "false"){
-            $section->undeleteReportItem($itemset);
-        }
-        if(isset($attributes->blobIndex)){
-            $itemset->setBlobIndex("{$attributes->blobIndex}");
-        }
-        if(isset($attributes->private)){
-            $itemset->setPrivate(strtolower($attributes->private) == "true");
-        }
-        if(isset($data['project_id'])){
-            $itemset->setProjectId($data['project_id']);
-        }
-        if(isset($data['milestone_id'])){
-            $itemset->setMilestoneId($data['milestone_id']);
-        }
-        if(isset($data['product_id'])){
-            $itemset->setProductId($data['product_id']);
-        }
-        if(isset($data['extra'])){
-            $itemset->setExtra($data['extra']);
-        }
-        if(isset($data['person_id'])){
-            $itemset->setPersonId($data['person_id']);
-        }
-        foreach($attributes as $key => $value){
-            if($key != "type" &&
-               $key != "blobType" &&
-               $key != "blobItem" &&
-               $key != "blobSubItem" &&
-               $key != "id" &&
-               $key != "value" &&
-               $key != "binary"){
-                $itemset->setAttribute("{$key}", "{$value}");
+            $itemset->parser = $this;
+            $itemset->section = $section;
+            $itemset->node = $node;
+            $itemset->data = $data;
+            if(isset($attributes->id)){
+                $itemset->setId("{$attributes->id}");
+            }
+            else{
+                $this->errors[] = "{$type} does not contain an id";
+            }
+            if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "true"){
+                $section->deleteReportItem($itemset);
+            }
+            if(isset($attributes->delete) && strtolower("{$attributes->delete}") == "false"){
+                $section->undeleteReportItem($itemset);
+            }
+            if(isset($attributes->blobIndex)){
+                $itemset->setBlobIndex("{$attributes->blobIndex}");
+            }
+            if(isset($attributes->private)){
+                $itemset->setPrivate(strtolower($attributes->private) == "true");
+            }
+            if(isset($data['project_id'])){
+                $itemset->setProjectId($data['project_id']);
+            }
+            if(isset($data['milestone_id'])){
+                $itemset->setMilestoneId($data['milestone_id']);
+            }
+            if(isset($data['product_id'])){
+                $itemset->setProductId($data['product_id']);
+            }
+            if(isset($data['extra'])){
+                $itemset->setExtra($data['extra']);
+            }
+            if(isset($data['person_id'])){
+                $itemset->setPersonId($data['person_id']);
+            }
+            foreach($attributes as $key => $value){
+                if($key != "type" &&
+                   $key != "blobType" &&
+                   $key != "blobItem" &&
+                   $key != "blobSubItem" &&
+                   $key != "id" &&
+                   $key != "value" &&
+                   $key != "binary"){
+                    $itemset->setAttribute("{$key}", "{$value}");
+                }
+            }
+            if($lazy === true){
+                // Don't start loading the data yet
+                return $itemset;
             }
         }
         $newData = $itemset->getData();
@@ -648,7 +657,7 @@ class ReportXMLParser {
                             $c->getName() == "ElseIf" ||
                             $c->getName() == "Else" ||
                             $c->getName() == "For"){
-                        $item = $this->parseReportItemSet($itemset, $c, $value);
+                        $item = $this->parseReportItemSet($itemset, $c, $value, 'both');
                     }
                     if($item == null){
                         continue;
