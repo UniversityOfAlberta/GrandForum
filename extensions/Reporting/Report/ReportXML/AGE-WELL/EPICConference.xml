@@ -140,6 +140,12 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="copresenting" type="Radio" blobItem="COPRESENTING" options="Yes|No">
+            <![CDATA[
+                <h3>Are you co-presenting with a stakeholder?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
             <![CDATA[
                 <h3>Consent Information</h3>

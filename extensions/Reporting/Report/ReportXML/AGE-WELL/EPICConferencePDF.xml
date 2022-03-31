@@ -56,7 +56,13 @@
         <ReportItem id="abstract" type="Textarea" blobType="BLOB_TEXT" blobItem="ABSTRACT" rich="true" limit="250">
             <![CDATA[
                 <p>Abstract:</p>
-                {$item}
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="copresenting" type="Radio" blobItem="COPRESENTING" options="Yes|No">
+            <![CDATA[
+                <h3>Are you co-presenting with a stakeholder?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
