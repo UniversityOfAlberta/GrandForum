@@ -70,7 +70,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" types="Text|Text|Text|Text" sizes="|||" orientation="vertical">
+        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" types="Text|Text|Text|Text" sizes="|||" orientation="vertical" optional="true">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Secondary Contact for PL</b><br /><small>(i.e., Project Manager, Assistant etc.)</small></td>
@@ -78,7 +78,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="pi" type="MultiText" blobType="BLOB_ARRAY" blobItem="PI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add PI">
+        <ReportItem id="pi" type="MultiText" blobType="BLOB_ARRAY" blobItem="PI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add PI" optional="true">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Principal Investigators</b></td>
@@ -86,7 +86,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="ci" type="MultiText" blobType="BLOB_ARRAY" blobItem="CI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add CI">
+        <ReportItem id="ci" type="MultiText" blobType="BLOB_ARRAY" blobItem="CI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add CI" optional="true">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Co-Investigators</b></td>
@@ -94,7 +94,7 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" types="Text|Text|Text|Text|Text" orientation="vertical" multiple="true" addText="Add Partner">
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" types="Text|Text|Text|Text|Text" orientation="vertical" multiple="true" addText="Add Partner" optional="true">
             <![CDATA[
                 <tr>
                     <td><b style='white-space:nowrap;'>Partners</b><br /><small>Please list currently identified and potential partners. Additional partners can be added in the full application.</small></td>
@@ -154,15 +154,55 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-        <If id="reviewerCheck" if="{or({&lt;({getArrayCount(RP_EARLY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
+        <If if="{or({&lt;({getArrayCount(RP_EARLY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
                                        {&lt;({getArrayCount(RP_EARLY_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
             <![CDATA[
                 <div class="error">You must provide 3 national and international reviewers</div>
             ]]>
         </If>
-        <ElseIf id="complete" if="{!=({getProgress(intent)}, 100)}">
+        <ElseIf id="c1" if="{!=({getProgress(intent)}, 100)}">
             <![CDATA[
                 <div class="error">You must complete all fields in the Letter of Intent</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c2" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Project Leader (PL)</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c3" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PL_CONTACT, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Secondary Contact for PL</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c4" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PI, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Principal Investigators</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c5" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, CI, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Co-Investigators</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c6" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PARTNERS, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Partners</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c7" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, MENTOR, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Mentor</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c8" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for National Scientific Reviewers</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c9" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for International Scientific Reviewers</div>
             ]]>
         </ElseIf>
         <Else>
