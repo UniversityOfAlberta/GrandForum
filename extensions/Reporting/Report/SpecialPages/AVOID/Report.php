@@ -11,6 +11,7 @@ $wgHooks['BeforePageDisplay'][] = 'Report::addFooter';
 $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
 
 require_once("AVOIDDashboard.php");
+require_once("FrailtyReport.php");
 require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 
@@ -46,7 +47,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath;
         $wgOut->addScript("<style>
             #avoidButtons {
-                margin-top: 5px;
+                margin-top: 15px;
                 text-align: center;
                 width: 100%;
             }

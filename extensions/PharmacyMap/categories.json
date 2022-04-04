@@ -124,7 +124,7 @@
     },
     {
         "text": "Interact",
-        "code": "CFN-INT-",
+        "code": "CFN-INT",
         "description": "Explore opportunities to meet new people in your community!",
         "tags": ["interact programs"],
         "children": [
@@ -145,7 +145,7 @@
             {
                 "text": "Recreation",
                 "value": 88,
-                "code": "CFN-INT-REC-",
+                "code": "CFN-INT-REC",
                 "description": "Join a club or group to meet people that share your interests ",
                 "tags": ["recreation programs"],
                 "children": [

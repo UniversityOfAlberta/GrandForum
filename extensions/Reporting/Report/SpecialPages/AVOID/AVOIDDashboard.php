@@ -41,8 +41,18 @@ class AVOIDDashboard extends SpecialPage {
         return $objs;
     }
     
+    function generateReport(){
+        $api = new UserFrailtyIndexAPI();
+        $scores = $api->getFrailtyScore($me->getId());
+        
+        exit;
+    }
+    
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
+        if(isset($_GET['generateReport'])){
+            $this->generateReport();
+        }
         $dir = dirname(__FILE__) . '/';
         $me = Person::newFromWgUser();
         $_GET['id'] = $me->getId();
@@ -94,28 +104,42 @@ class AVOIDDashboard extends SpecialPage {
         
         // Frailty Status
         $api = new UserFrailtyIndexAPI();
-        $score = $api->getFrailtyScore($me->getId());
+        $scores = $api->getFrailtyScore($me->getId());
+        $score = $scores["Total"];
+        $label = $scores["Label"];
         $frailty = "";
-        if($score >= 0 && $score <= 3){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>no risk</span> to becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        if($label == "no risk"){
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
-        else if($score > 3 && $score <= 8){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>low risk</span> to becoming frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        else if($label == "low risk"){
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
-        else if($score > 8 && $score <= 16){
-            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>medium risk</span> of being frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        else if($label == "medium risk"){
+            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.
 ";
         }
-        else if($score > 16){
-            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>high risk</span> of being frail.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
+        else if($label == "high risk"){
+            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
         }
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
                                 {$frailty}<br />
-                                <a style='margin-top:0.5em; display:inline-block' href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty</a>
+                                <div style='margin-top:0.5em;'>
+                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
+                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a>
+                                </div>
+                                <div style='margin-top:0.5em;'>
+                                    <b>Where do I go from here?</b>
+                                    <ul>
+                                        <li>Review your report and recommendations</li>
+                                        <li>Review the education recommended to you, or of interest</li>
+                                        <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
+                                        <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
+                                    </ul>
+                                </div>
                             </div>
                          </div>");
         
@@ -196,12 +220,22 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</ul></div></div>");
         
         $wgOut->addHTML("</div>
+        <div title='My Personal Report and Recommendations' style='display:none; overflow: hidden; padding:0 !important;' id='reportDialog'><iframe style='width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe></div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));
                 dc.increment('count');
+            });
+            
+            $('#viewReport').click(function(){
+                $('#reportDialog').dialog({
+                    modal: true,
+                    draggable: false,
+                    width: 'auto',
+                    height: $(window).height()*0.75
+                });
             });
         </script>");
     }
