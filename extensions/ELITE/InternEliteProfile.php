@@ -206,6 +206,33 @@ Programme ELITE pour la Jeunesse Noire
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
         mail($person->getEmail(), $subject, $message, $headers);
+        
+        // Now send email to coordinator
+        $subject = "ELITE Program for Black Youth – Feedback Submitted";
+        if(@$_POST['hire']->action == "Accepted"){
+            $message = "Dear Program Coordinator,
+                        An internship host has accepted an intern. Please proceed to review and finalize the position.
+
+                        Thank you.
+
+                        Regards,
+
+                        André McDonald
+                        ELITE Program Director";
+        }
+        else{
+            $message = "Dear Program Coordinator,
+                        An internship host has declined an intern. Please proceed to review and finalize the position.
+
+                        Thank you.
+
+                        Regards,
+
+                        André McDonald
+                        ELITE Program Director";
+        }
+        $message = nl2br($message);
+        mail("elite@ualberta.ca", $subject, $message, $headers);
     }
     
 }

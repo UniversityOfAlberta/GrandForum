@@ -1,8 +1,8 @@
 <div id="acceptDialog" title="Accept Candidate" style="display:none;">
     Are you sure you want to accept this candidate?
 </div>
-<div id="rejectDialog" title="Reject Candidate" style="display:none;">
-    Are you sure you want to reject this candidate?
+<div id="rejectDialog" title="Decline Candidate" style="display:none;">
+    Are you sure you want to decline this candidate?
 </div>
 <table id="profiles" frame="box" rules="all">
     <thead>
@@ -38,7 +38,7 @@
                             <%= profile.get('hires')[match.id] %>
                         <% } else { %>
                             <button class="accept" data-id="<%= profile.get('id') %>" data-match="<%= match.id %>">Accept</button>
-                            <button class="reject" data-id="<%= profile.get('id') %>" data-match="<%= match.id %>">Reject</button>
+                            <button class="reject" data-id="<%= profile.get('id') %>" data-match="<%= match.id %>">Decline</button>
                         <% } %>
                     </td>
                 </tr>

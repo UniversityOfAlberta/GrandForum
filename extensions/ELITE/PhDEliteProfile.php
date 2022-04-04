@@ -182,6 +182,33 @@ Programme ELITE pour la Jeunesse Noire
         $headers  = "Content-type: text/html\r\n"; 
         $headers .= "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>" . "\r\n";
         mail($person->getEmail(), $subject, $message, $headers);
+        
+        // Now send email to coordinator
+        $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Submitted";
+        if(@$_POST['hire']->action == "Accepted"){
+            $message = "Dear Program Coordinator,
+                        A PhD supervisor has accepted a candiate. Please proceed to review and finalize the position.
+
+                        Thank you.
+
+                        Regards,
+
+                        André McDonald
+                        ELITE Program Director";
+        }
+        else{
+            $message = "Dear Program Coordinator,
+                        A PhD supervisor has declined a candidate. Please proceed to review and finalize the position.
+
+                        Thank you.
+
+                        Regards,
+
+                        André McDonald
+                        ELITE Program Director";
+        }
+        $message = nl2br($message);
+        mail("elite@ualberta.ca", $subject, $message, $headers);
     }
     
 }
