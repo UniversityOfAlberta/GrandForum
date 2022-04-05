@@ -960,7 +960,7 @@ button.mce-close {
     -moz-box-shadow:    0 0 10px -1px #000;
     -webkit-box-shadow: 0 0 10px -1px #000;
     box-shadow:         0 0 10px -1px #000;
-    border: 1px solid #888 !important;
+    border: 1px solid #888;
 }
 
 .ui-datepicker-calendar a.ui-state-default {

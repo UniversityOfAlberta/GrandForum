@@ -269,7 +269,9 @@ class FrailtyReport extends SpecialPage {
                          'left'    => 1);
         $html = "<html>
                     <head>
-                        <link href='https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700;1,800&display=swap' rel='stylesheet'> 
+                        <script language='javascript' type='text/javascript' src='{$wgServer}{$wgScriptPath}/scripts/jquery.min.js?version=3.4.1'></script>
+                        <link href='https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700;1,800&display=swap' rel='stylesheet'>
+                        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
                         <style>
                             @page {
                                 margin-top: 0cm;
@@ -282,6 +284,7 @@ class FrailtyReport extends SpecialPage {
                                 width: 216mm;
                                 position: relative;
                                 overflow-x: hidden;
+                                transform-origin: top left;
                             }
                             
                             body {
@@ -504,6 +507,17 @@ class FrailtyReport extends SpecialPage {
         }
         $html .= "      </table><br /><br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
+                        <script type='text/javascript'>
+                            var initialWidth = $(window).width();
+                            
+                            $(window).resize(function(){
+                                $('html').width('100%');
+                                var desiredWidth = $(window).width();
+                                $('html').width('216mm');
+                                var scaleFactor = desiredWidth/initialWidth;
+                                $('html').css('transform', 'scale(' + scaleFactor + ')');
+                            }).resize();
+                        </script>
                     </body>
                 </html>";
         

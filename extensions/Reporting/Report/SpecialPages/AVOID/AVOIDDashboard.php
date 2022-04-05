@@ -220,7 +220,9 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</ul></div></div>");
         
         $wgOut->addHTML("</div>
-        <div title='My Personal Report and Recommendations' style='display:none; overflow: hidden; padding:0 !important;' id='reportDialog'><iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe></div>
+        <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
+            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
+        </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
@@ -230,30 +232,74 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#viewReport').click(function(){
-                $('#reportDialog').dialog({
-                    modal: true,
-                    draggable: false,
-                    width: 'auto',
-                    height: $(window).height()*0.80,
-                    position: { 'my': 'center', 'at': 'center' }
-                });
+                $('#bodyContent').css('overflow-y', 'hidden');
+                if($('#reportDialog', $('.ui-dialog')).length == 0){
+                    $('#reportDialog').dialog({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        width: 'auto',
+                        height: $(window).height()*0.90,
+                        position: { 'my': 'center', 'at': 'center' },
+                        close: function(){
+                            $('#bodyContent').css('overflow-y', 'auto');
+                            viewFullScreen = false;
+                        }
+                    });
+                    $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
+                    $('.ui-dialog-titlebar').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('#viewFullScreen', $('.ui-dialog')).click(function(){
+                        viewFullScreen = !viewFullScreen;
+                        $(window).resize();
+                    });
+                }
+                else{
+                    $('#reportDialog').dialog('open');
+                }
+                $(window).resize();
             });
             
-            var initialFrameWidth = $('#frailtyFrame').width();
+            var viewFullScreen = false;
+            var initialFrameWidth = $('#reportDialog').width();
+            $('#frailtyFrame').width('100%');
             
             $(window).resize(function(){
-                var desiredWidth = $(window).width()*0.75;
-                var scaleFactor = Math.min(1.50, Math.max(1, desiredWidth/initialFrameWidth));
-                $('#frailtyFrame').css('transform', 'scale(' + scaleFactor + ')')
-                                  .css('width', initialFrameWidth*scaleFactor)
-                                  .css('height', (100/scaleFactor) + '%');
-                if($('#reportDialog').is(':visible')){
-                    $('#reportDialog').dialog({
-                        height: $(window).height()*0.80
-                    });
-                    $('#reportDialog').dialog({
-                        position: { 'my': 'center', 'at': 'center' }
-                    });
+                if(viewFullScreen){
+                    $('#viewFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                        $('.ui-dialog').css('padding', 0)
+                                       .css('border-width', 0);
+                        $('#reportDialog').dialog({
+                            height: $(window).height(),
+                            width: $(window).width()
+                        });
+                        $('#reportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                }
+                else{
+                    $('.ui-dialog').css('padding', 2)
+                                   .css('border-width', 1);
+                                   
+                    $('#viewFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    
+                    var desiredWidth = $(window).width()*0.75;
+                    if(window.matchMedia('(max-width: 767px)').matches){
+                        desiredWidth = $(window).width()*0.99;
+                    }
+                    else if(window.matchMedia('(max-width: 1024px)').matches){
+                        desiredWidth = $(window).width()*0.80;
+                    }
+                    
+                    var scaleFactor = desiredWidth/initialFrameWidth;
+                    if($('#reportDialog').is(':visible')){
+                        $('#reportDialog').dialog({
+                            height: $(window).height()*0.90,
+                            width: initialFrameWidth*scaleFactor
+                        });
+                        $('#reportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                    }
                 }
             }).resize();
         </script>");
