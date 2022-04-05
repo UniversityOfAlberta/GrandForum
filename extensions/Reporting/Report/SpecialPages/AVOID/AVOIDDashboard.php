@@ -220,7 +220,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</ul></div></div>");
         
         $wgOut->addHTML("</div>
-        <div title='My Personal Report and Recommendations' style='display:none; overflow: hidden; padding:0 !important;' id='reportDialog'><iframe style='width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe></div>
+        <div title='My Personal Report and Recommendations' style='display:none; overflow: hidden; padding:0 !important;' id='reportDialog'><iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe></div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
@@ -234,9 +234,28 @@ class AVOIDDashboard extends SpecialPage {
                     modal: true,
                     draggable: false,
                     width: 'auto',
-                    height: $(window).height()*0.75
+                    height: $(window).height()*0.80,
+                    position: { 'my': 'center', 'at': 'center' }
                 });
             });
+            
+            var initialFrameWidth = $('#frailtyFrame').width();
+            
+            $(window).resize(function(){
+                var desiredWidth = $(window).width()*0.75;
+                var scaleFactor = Math.min(1.50, Math.max(1, desiredWidth/initialFrameWidth));
+                $('#frailtyFrame').css('transform', 'scale(' + scaleFactor + ')')
+                                  .css('width', initialFrameWidth*scaleFactor)
+                                  .css('height', (100/scaleFactor) + '%');
+                if($('#reportDialog').is(':visible')){
+                    $('#reportDialog').dialog({
+                        height: $(window).height()*0.80
+                    });
+                    $('#reportDialog').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
+                }
+            }).resize();
         </script>");
     }
     
