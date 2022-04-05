@@ -175,12 +175,12 @@
                 <div class="error">You must complete all fields for Secondary Contact for PL</div>
             ]]>
         </ElseIf>
-        <ElseIf id="c4" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PI, 0, {$user_id}, 0)})}">
+        <ElseIf id="c4" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, PI, 0, {$user_id}, 0, pi)})}">
             <![CDATA[
                 <div class="error">You must complete all fields for Principal Investigators</div>
             ]]>
         </ElseIf>
-        <ElseIf id="c5" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, CI, 0, {$user_id}, 0)})}">
+        <ElseIf id="c5" if="{!({isArrayComplete(RP_EARLY_APPLICATION, INTENT, CI, 0, {$user_id}, 0, ci)})}">
             <![CDATA[
                 <div class="error">You must complete all fields for Co-Investigators</div>
             ]]>

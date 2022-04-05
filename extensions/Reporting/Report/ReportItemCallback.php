@@ -1967,8 +1967,11 @@ class ReportItemCallback {
         return $full;
     }
     
-    function isArrayComplete($rp, $section, $blobId, $subId, $personId, $projectId){
+    function isArrayComplete($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
         $data = $this->getArray($rp, $section, $blobId, $subId, $personId, $projectId);
+        if($index != null && isset($data[$index])){
+            $data = $data[$index];
+        }
         $full = $this->checkArray($data);
         return $full;
     }
