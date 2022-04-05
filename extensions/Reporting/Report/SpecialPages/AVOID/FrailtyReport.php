@@ -118,8 +118,7 @@ class FrailtyReport extends SpecialPage {
             "programs" => array(
                 "Peer Coaching" => "PeerCoaching",
                 "Cyber Seniors Webinar(s):" => array(
-                    "Apps for Better Sleep" => "https://cyberseniors.org/previous-webinars/mobile-apps/apps-for-better-sleep/",
-                    "Assistive Tech for Fall Prevention" => "https://cyberseniors.org/previous-webinars/telemedicine/assistive-tech-for-fall-prevention/"
+                    "Apps for Better Sleep" => "https://cyberseniors.org/previous-webinars/mobile-apps/apps-for-better-sleep/"
                 )
             ),
             "community" => array(
