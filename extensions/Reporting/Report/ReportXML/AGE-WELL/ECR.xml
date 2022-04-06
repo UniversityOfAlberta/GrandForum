@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="ECR Grants" reportType="RP_ECR" pdfType="RPTP_ECR" pdfFiles="ECRPDF" year="2022" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="STAFF">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role subrole="ECR">
+            <SectionPermission id="description" permissions="rw" />
+            <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="description" tooltip="Program Description" name="Program Description" type="ReportSection" blobSection="APPLICATION" title="ECR Grants">
+        <Static>
+            <![CDATA[
+                <h2>PROGRAM DESCRIPTION</h2>
+                <p>AGE-WELL ECR Grants are offered twice per year to eligible participants in the AGE-WELL Early Career Researcher Program. The grants are intended to support participants to build and scale independent research programs in the ‘AGE-WELL way’: emphasizing co-creation, transdisciplinary working, and integrating knowledge mobilization and commercialization as project end goals.</p>
+                
+                <h2>Eligibility</h2>
+                <ul>
+                    <li>Applicants must be participants in the AGE-WELL ECR Program</li>
+                    <li>Applicants must hold an EPIC Certificate</li>
+                    <li>Applicants must be able to hold Tri-Council funds</li>
+                </ul>
+                <p>Please note that successful recipients are unable to hold more than one AGE-WELL ECR Grant per calendar year.</p>
+                
+                <h2>Eligible Activities</h2>
+                <p>To be considered for funding, proposals must clearly align to one of <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>AGE-WELL’s Challenge Areas</a> and demonstrate network values including transdisciplinarity and co-creation in order to accelerate the delivery of technology-based solutions that make a meaningful difference in the lives of older Canadians.</p>
+                <p>Eligible activities include those which:</p>
+                <ol>
+                    <li>support the inclusion of older adults and caregivers in your research and/or teaching</li>
+                    <li>support knowledge mobilization or commercialization activities</li>
+                    <li>fund small scale research or pilot projects to enable larger research grant applications</li>
+                </ol>
+                
+                <h2>Funds Available</h2>
+                <p>AGE-WELL ECR Grants are up to $7500 over 6 months. Applicants should review the Use of Grant Funds section of the <a target="_blank" href='http://www.nserc-crsng.gc.ca/Professors-Professeurs/FinancialAdminGuide-GuideAdminFinancier/index_eng.asp'>Tri-Agency (CIHR, NSERC and SSHRC) Financial Administration Guide</a> for a complete listing and description of allowable costs and activities.</p>
+                
+                <h2>Grant Terms</h2>
+                <table class='wikitable'>
+                    <tr>
+                        <th>Applications Open</th>
+                        <th>Award Notifications Sent</th>
+                        <th>Award Term</th>
+                    </tr>
+                    <tr>
+                        <td>April 15, 2022</td>
+                        <td>May 2022</td>
+                        <td>April 1, 2022 – October 31, 2022</td>
+                    </tr>
+                    <tr>
+                        <td>August 1, 2022</td>
+                        <td>September 2022</td>
+                        <td>October 1, 2022 – March 31, 2023</td>
+                    </tr>
+                    <tr>
+                        <td>February 1, 2023</td>
+                        <td>March 2023</td>
+                        <td>April 1, 2023 – September 30, 2023</td>
+                    </tr>
+                    <tr>
+                        <td>August 1, 2023</td>
+                        <td>September 2023</td>
+                        <td>October 1, 2023 – March 31, 2023</td>
+                    </tr>
+                </table>
+                
+                <h2>Application Review Criteria</h2>
+                <p>The following criteria and scoring scheme are used to evaluate the applications:</p>
+                <table class='wikitable'>
+                    <tr>
+                        <td valign='top'>Objectives & Rationale</td>
+                        <td valign='top'>25%</td>
+                        <td valign='top'>
+                            <ul style='margin-top: 0;'>
+                                <li style='margin-top: -1px;'>the activity or project’s relevance to AGE-WELL values and mission</li>
+                                <li>the activity or project reflects the ‘AGE-WELL Way’</li>
+                                <li>originality or novelty of proposed activity or project</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign='top'>Deliverables & Feasibility</td>
+                        <td valign='top'>40%</td>
+                        <td valign='top'>
+                            <ul style='margin-top: 0;'>
+                                <li style='margin-top: -1px;'>appropriateness of the methods and theoretical approach</li>
+                                <li>probability that the objectives will be met within the timeline proposed</li>
+                                <li>involvement of partners or stakeholders in the design and conduct of proposed activities</li>
+                                <li>appropriateness of requested budget and justification of proposed costs</li>
+                                <li>quality and appropriateness of any knowledge mobilization or commercialization plans</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign='top'>Potential Impact</td>
+                        <td valign='top'>35%</td>
+                        <td valign='top'>
+                            <ul style='margin-top: 0;'>
+                                <li style='margin-top: -1px;'>potential positive impact on the lives of older adults and caregivers</li>
+                                <li>the associated benefits to older adults and caregivers is feasibly described</li>
+                                <li>if applicable, quality of plan to sustain impact beyond AGE-WELL funding</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <p>AGE-WELL ECR Grant applications will be assigned a score for each of the three criteria above, based on the following scoring table. The appropriate weighting is then applied to arrive at a final score. Applications must receive a score of 6 or higher for each of the three criteria to be recommended for funding.</p>
+                
+                <table class='wikitable'>
+                    <tr>
+                        <th align='left'>Score</th><th align='left'>Descriptor</th>
+                    </tr>
+                    <tr>
+                        <td>8-9</td>
+                        <td>Very good to excellent</td>
+                    </tr>
+                    <tr>
+                        <td>6-7</td>
+                        <td>Good to very good</td>
+                    </tr>
+                    <tr>
+                        <td>4-5</td>
+                        <td>Satisfactory to good</td>
+                    </tr>
+                    <tr>
+                        <td>Below 4</td>
+                        <td>Unsatisfactory</td>
+                    </tr>
+                </table>
+                <p>Please direct any program or application questions to <a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <ReportItem id="user_name" type="Text" blobItem="USER_NAME" default="{$user_name}" width="200px">
+            <![CDATA[
+                <h2>Part 1: Project Information</h2>
+                <table>
+                    <tr>
+                        <td class='label'>Name:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_title" type="Text" blobItem="USER_TITLE" default="{$user_level}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Title:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_uni" type="Text" blobItem="USER_UNI" default="{$user_uni}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Institution:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_dept" type="Text" blobItem="USER_DEPT" default="{$user_dept}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Department:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                    <tr>
+                        <td class='label'>Project Title:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Text" blobItem="CHALLENGE" width="400px">
+            <![CDATA[
+                <h3>AGE-WELL Challenge Area of best fit (max. 2)</h3>
+                <small>(Challenge Area descriptions are available here: <a href='https://agewell-nce.ca' target='_blank'>https://agewell-nce.ca</a>)</small><br />
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested" type="Integer" blobItem="REQUESTED" width="100px">
+            <![CDATA[
+                <h3>Total value of AGE-WELL investment requested:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No">
+            <![CDATA[
+                <h3>Is research ethics review required for this project?</h3>
+                <small>If yes, please note that you will be required to submit approval to AGE-WELL</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="type" type="Radio" blobItem="TYPE" options="Inclusion of older adults and caregivers in your research and/or teaching|Knowledge mobilization/commercialization activities|Small scale research or pilot project to enable larger research grant applications">
+            <![CDATA[
+                <h2>Part 2: Narrative Application</h2>
+                <h3>Activity Type:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <!-- INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING -->
+        <ReportItem id="1_objectives1" type="Textarea" blobItem="1_OBJECTIVES1" rich="true" limit="200">
+            <![CDATA[
+                <div id='type1' style='display:none;'>
+                <h3>INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING</h3>
+                <p>AGE-WELL is passionate about achieving real-world impact through practical and useful technologies or technology-based services and policies. We are committed to involving older people and caregivers in all stages of our research and development and throughout our training programs. Eligible activities for these funds will enable and empower older adults and caregivers to participate in your research and/or teaching activities.</p>
+                <h4>Objectives</h4>
+                <p>1. Please describe your proposed project or activity, its goals or objectives. Are you proposing older adult and/or caregiver inclusion in your research or in your teaching? How will older adults and/or caregivers be included?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_objectives2" type="Textarea" blobItem="1_OBJECTIVES2" rich="true" limit="150">
+            <![CDATA[
+                <p>2. Describe the rationale for this activity. Why is this work important? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="1_deliverables" type="Textarea" blobItem="1_DELIVERABLES" rich="true" limit="150">
+            <![CDATA[
+                <h4>Deliverables</h4>
+                <p>3. Please provide a bullet point list of project/activity deliverables and associated timeline</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="1_outcomes" type="Textarea" blobItem="1_OUTCOMES" rich="true" limit="250">
+            <![CDATA[
+                <h4>Potential Outcomes & Impact</h4>
+                <p>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates capacity-building or the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <!-- KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES -->
+        <ReportItem id="2_type" type="Radio" blobItem="2_TYPE" options="Knowledge mobilization activity|Commercialization activity">
+            <![CDATA[
+                <div id='type2' style='display:none;'>
+                <h3>KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES</h3>
+                <p>These funds support post-discovery projects focused on making impact beyond traditional academic dissemination activities. These may include a wide variety of knowledge mobilization or commercialization activities from public-focused symposia/presentations and social media campaigns to patent support and market research.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_ktee_objectives1" type="Textarea" blobItem="2_KTEE_OBJECTIVES1" rich="true" limit="200">
+            <![CDATA[
+                <div id='type2_ktee' style='display:none;'>
+                <h4>Objectives</h4>
+                <p>1. Please describe your proposed project or activity, its goals or objectives (please note that plans must move beyond traditional academic dissemination activities i.e. beyond research publications and conferences). Include your key audience and the applicability of your findings/work to each.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_ktee_objectives2" type="Textarea" blobItem="2_KTEE_OBJECTIVES2" rich="true" limit="150">
+            <![CDATA[
+                <p>2. Describe the rationale for this activity. Why is this work important? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_ktee_deliverables" type="Textarea" blobItem="2_KTEE_DELIVERABLES" rich="true" limit="150">
+            <![CDATA[
+                <h4>Deliverables</h4>
+                <p>3. Please provide a bullet point list of project/activity deliverables and associated timeline</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_ktee_impact" type="Textarea" blobItem="2_KTEE_IMPACT" rich="true" limit="250">
+            <![CDATA[
+                <h4>Deliverables</h4>
+                <p>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_comm_objectives1" type="Textarea" blobItem="2_COMM_OBJECTIVES1" rich="true" limit="200">
+            <![CDATA[
+                <div id='type2_comm' style='display:none;'>
+                <h4>Objectives</h4>
+                <p>1. Please describe your proposed project or activity, its goals or objectives. What is the value of the project for older adults and/or caregivers? What problem does this project solve?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_comm_objectives2" type="Textarea" blobItem="2_COMM_OBJECTIVES2" rich="true" limit="150">
+            <![CDATA[
+                <p>2. Describe the rationale for this activity. Why is this work important? What is the value proposition? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_comm_deliverables_table" type="MultiText" blobType="BLOB_ARRAY" blobItem="2_COMM_DELIVERABLES_TABLE" indices="1|2|3|4" labels="List 2 competitive advantages to your proposed solution|What is your market size? Provide a sense of the size/scale of the target audience/market (in Canada and beyond).|Please list your top 2 competitors or existing/substitute solutions|Is your IP Protected? Please answer yes or no. If yes, how?" types="Textarea|Textarea|Textarea|Textarea" sizes="300|300|300|300" orientation="vertical">
+            <![CDATA[
+                <h4>Deliverables</h4>
+                <p>Please complete the table below:</p>
+                <div style='width:600px;'>{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_comm_deliverables" type="Textarea" blobItem="2_COMM_DELIVERABLES" rich="true" limit="100">
+            <![CDATA[
+                <p>3. Please provide a bullet point list of project/activity deliverables</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="2_comm_impact" type="Textarea" blobItem="2_COMM_IMPACT" rich="true" limit="250">
+            <![CDATA[
+                <p>3. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
+                {$item}
+                </div>
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <!-- SMALL SCALE RESEARCH OR PILOT PROJECT -->
+        <ReportItem id="3_objectives1" type="Textarea" blobItem="3_OBJECTIVES1" rich="true" limit="200">
+            <![CDATA[
+                <div id='type3' style='display:none;'>
+                <h3>SMALL SCALE RESEARCH OR PILOT PROJECT</h3>
+                <p>These grants will support early-stage, scalable research projects including pilot studies, feasibility studies and novel approaches that are aligned with AGE-WELL’s mission and vision. This seed funding is meant to enable early career researchers to foster collaboration and better position their work for future, larger funding competitions.</p>
+                <h4>Background, Research Question, and/or Objectives</h4>
+                <p>1. Please describe your proposed project or activity, its goals or objectives. Clearly state the underlying hypothesis (if applicable) and describe your methodological approach</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_objectives2" type="Textarea" blobItem="3_OBJECTIVES2" rich="true" limit="150">
+            <![CDATA[
+                <p>2. Describe the rationale for this activity. Why is this work important? What is the value proposition? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_deliverables" type="Textarea" blobItem="3_DELIVERABLES" rich="true" limit="150">
+            <![CDATA[
+                <h4>Deliverables</h4>
+                <p>3. Please provide a bullet point list of research project deliverables and associated timeline</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_impact1" type="Textarea" blobItem="3_IMPACT1" rich="true" limit="150">
+            <![CDATA[
+                <h4>Potential Impact</h4>
+                <p>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="3_impact2" type="Textarea" blobItem="3_IMPACT2" rich="true" limit="150">
+            <![CDATA[
+                <p>5. Describe any plan to apply for future funding opportunities or pursue collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</p>
+                {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $("input[name=ApplicationForm_type]").change(function(){
+                        var value = $("input[name=ApplicationForm_type]:checked").val();
+                        switch(value){
+                            case "Inclusion of older adults and caregivers in your research and/or teaching":
+                                $("#type1").show();
+                                $("#type2").hide();
+                                $("#type3").hide();
+                                break;
+                            case "Knowledge mobilization/commercialization activities":
+                                $("#type1").hide();
+                                $("#type2").show();
+                                $("#type3").hide();
+                                break;
+                            case "Small scale research or pilot project to enable larger research grant applications":
+                                $("#type1").hide();
+                                $("#type2").hide();
+                                $("#type3").show();
+                                break;
+                            default:
+                                $("#type1").hide();
+                                $("#type2").hide();
+                                $("#type3").hide();
+                                break;
+                        }
+                    }).change();
+                    
+                    $("input[name=ApplicationForm_2_type]").change(function(){
+                        var value = $("input[name=ApplicationForm_2_type]:checked").val();
+                        switch(value){
+                            case "Knowledge mobilization activity":
+                                $("#type2_ktee").show();
+                                $("#type2_comm").hide();
+                                break;
+                            case "Commercialization activity":
+                                $("#type2_ktee").hide();
+                                $("#type2_comm").show();
+                                break;
+                            default:
+                                $("#type1_ktee").hide();
+                                $("#type2_comm").hide();
+                                break;
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <!--ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
+        <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                <h3>Partner Letters of Support</h3>
+                Please submit letters of support for all listed partners in a single PDF.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cvs" type="Upload" blobItem="CVS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                <h3>Team Curriculum Vitae:</h3>
+                Please submit curriculum vitae for all listed team members in a single PDF.
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection-->
+</Report>

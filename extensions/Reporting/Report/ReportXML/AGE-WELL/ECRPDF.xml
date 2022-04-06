@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Emerging Entrepreneur Award (2022)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2022" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Emerging Entrepreneur Award (2022)</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h3>BACKGROUND INFORMATION</h3>
+                <table class="wikitable" frame="box" rules="all" width="100%">
+                    <tr>
+                        <td><b>Applicant Name</b></td>
+                        <td>{$user_name}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="status" type="Text" blobItem="STATUS" placeholder="e.g. PhD Year 1, Occupational therapy">
+            <![CDATA[
+                <tr>
+                    <td style="width:50%;"><b>Academic status and Department</b></td>
+                    <td style="width:50%;">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sup" type="Text" blobItem="SUP">
+            <![CDATA[
+                <tr>
+                    <td><b>Supervisor Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="Text" blobItem="UNI">
+            <![CDATA[
+                <tr>
+                    <td><b>Institution/University</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="degree" type="Text" blobItem="DEGREE" placeholder="e.g. PhD, Occupational therapy, University of Toronto">
+            <![CDATA[
+                <tr>
+                    <td><b>Terminal degree received, date (month/year), department, and institution</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE">
+            <![CDATA[
+                <tr>
+                    <td><b>Project Title/Company Name</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="launch" type="Radio" blobItem="LAUNCH" options="Launch|Support">
+            <![CDATA[
+                <tr>
+                    <td><b>Are you applying to launch a start up or support an existing company?</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="cofounder" type="Radio" blobItem="COFOUNDER" options="Yes|No">
+            <![CDATA[
+                <tr>
+                    <td><b>If you selected Support above, are you listed as a co-founder of the company?</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Text" blobItem="CHALLENGE">
+            <![CDATA[
+                <tr>
+                    <td><b>AGE-WELL Challenge Area of best fit (max. 2)</b></td>
+                    <td>{$item}</td>
+                </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
+            <![CDATA[
+                <h3>PLAIN LANGUAGE SUMMARY</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="rationale" type="Textarea" blobItem="RATIONALE" rich="true" limit="150">
+            <![CDATA[
+                <h3>RATIONALE AND APPROACH</h3>
+                <h4>Summarize the rationale for the solution(150 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="unique" type="Textarea" blobItem="UNIQUE" rich="true" limit="150">
+            <![CDATA[
+                <h4>What is unique or innovative about this innovation/solution? (150 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="Textarea" blobItem="VALUE" rich="true" limit="200">
+            <![CDATA[
+                <h4>What is the value of the solution for older adults and/or caregivers? (200 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="customers" type="Textarea" blobItem="CUSTOMERS" rich="true" limit="100">
+            <![CDATA[
+                <h4>Who are your customers? What is the Market Size? (100 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="competitive" type="Textarea" blobItem="COMPETITIVE" rich="true" limit="200">
+            <![CDATA[
+                <h4>What are the competitive advantages of your proposed solution and who are your competitors? (200 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="Textarea" blobItem="IP" rich="true" limit="100">
+            <![CDATA[
+                <h3>INTELLECTUAL PROPERTY</h3>
+                <h4>How have you protected any intellectual property such as patents, trade secrets, copyright etc.(100 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="needs" type="Textarea" blobItem="NEEDS" rich="true" limit="100">
+            <![CDATA[
+                <h4>What are your needs moving forward (e.g. IP or legal support, partnerships etc.) (100 words)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="motivated" type="Textarea" blobItem="MOTIVATED" rich="true" limit="100">
+            <![CDATA[
+                <h3>PROJECT TEAM</h3>
+                <h4>How long have you been committed to this venture? Please provide some indication of your level of commitment going forward (100 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="MultiText" blobType="BLOB_ARRAY" class="wikitable" width="100%" blobItem="TEAM" rich="true" labels="Name|Email|Institution" multiple="true">
+            <![CDATA[
+                <h4>Please list all team members (you will be asked to submit curriculum vitae for each member)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="expertise" type="Textarea" blobItem="EXPERTISE" rich="true" limit="200">
+            <![CDATA[
+                <h4>Describe how the expertise of your team will contribute to the success of the proposed initiative. Identify additional skills needed to fill expertise gaps on your team, if any, and how you plan to address them (200 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="Textarea" blobItem="PARTNERS" rich="true" limit="200">
+            <![CDATA[
+                <h3>PARTNERSHIPS</h3>
+                <h4>Industry and/or community partners (200 words max)</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Textarea" blobItem="FUNDING" rich="true">
+            <![CDATA[
+                <h4>Other funding obtained/applied for</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+    </ReportSection>
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="HeaderReportSection" blobSection="DOCS" title="Documents" pagebreak="false">
+        <ReportItem id="letters" type="UploadPDF" blobSection="DOCS" blobItem="LETTERS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cvs" type="UploadPDF" blobSection="DOCS" blobItem="CVS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
