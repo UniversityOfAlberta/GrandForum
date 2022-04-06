@@ -280,7 +280,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
             <![CDATA[
                 <ul>
-                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls'><b>Milestones Template</b></a></li>
+                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template2.xlsx'><b>Milestones Template</b></a></li>
                     <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
                     <li>Add an “X” to the shaded boxes.</li>
                     <li>Names should be added in the format: First Name Last Name.</li>

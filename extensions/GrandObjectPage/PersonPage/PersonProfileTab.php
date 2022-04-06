@@ -196,6 +196,9 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->middleName = @$_POST['middle_name'];
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
+            if(isset($_POST['employeeId'])){
+                $this->person->employeeId = $_POST['employeeId'];
+            }
             $this->person->gender = @$_POST['gender'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
@@ -734,8 +737,15 @@ EOF;
                             <tr>
                                 <td class='label'>Aliases:<br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
                                 <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+                   
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == 'FES'){
+            $this->html .= "<tr>
+                                <td align='right'><b>Employee Id:</b></td>
+                                <td><input size='10' type='text' name='employeeId' value='".str_replace("'", "&#39;", $person->getEmployeeId())."'></td>
+                            </tr>";
+        }
+        $this->html .= "    <tr>
                                 <td class='label'>Email:</td>";
         if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
             $this->html .= "<td class='value'><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";

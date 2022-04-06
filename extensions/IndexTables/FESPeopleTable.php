@@ -27,6 +27,7 @@ class FESPeopleTable extends SpecialPage {
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Employee ID</th>
                     <th>Roles</th>
                     <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                     <th>Projects</th>
@@ -104,6 +105,7 @@ class FESPeopleTable extends SpecialPage {
             $wgOut->addHTML("<tr>
                              <td>{$person->getReversedName()}</td>
                              <td>{$person->getEmail()}</td>
+                             <td>{$person->getEmployeeId()}</td>
                              <td>{$person->getRoleString()}</td>
                              <td>".implode(", ", $positions)."</td>
                              <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
