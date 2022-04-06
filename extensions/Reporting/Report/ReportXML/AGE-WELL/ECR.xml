@@ -310,7 +310,7 @@
         </ReportItem>
         <ReportItem id="2_comm_impact" type="Textarea" blobItem="2_COMM_IMPACT" rich="true" limit="250">
             <![CDATA[
-                <p>3. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
+                <p>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p>
                 {$item}
                 </div>
                 </div>
