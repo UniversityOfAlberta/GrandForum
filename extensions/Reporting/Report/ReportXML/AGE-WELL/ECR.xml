@@ -8,7 +8,7 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
-        <Role subrole="ECR">
+        <Role role="" subRole="ECR">
             <SectionPermission id="description" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
             <SectionPermission id="documents" permissions="rw" />
