@@ -405,18 +405,26 @@
             ]]>
         </Static>
     </ReportSection>
-    <!--ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
-        <ReportItem id="letters" type="Upload" blobItem="LETTERS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
             <![CDATA[
-                <h3>Partner Letters of Support</h3>
-                Please submit letters of support for all listed partners in a single PDF.
+                <h2>Part 3: Budget</h2>
+                Complete the Budget Template and upload a maximum 1 page free-form budget justification.
+                <h3>Upload Budget</h3>
+                <p><a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL ECR Budget Template.xlsx'>Budget Template</a></p>
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="cvs" type="Upload" blobItem="CVS" blobType="BLOB_RAW" mime="application/pdf" fileSize="20">
+        <ReportItem id="budget_just" type="Upload" blobItem="BUDGET_JUST" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <h3>Team Curriculum Vitae:</h3>
-                Please submit curriculum vitae for all listed team members in a single PDF.
+                <h3>Upload a maximum 1 page free-form budget justification.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="Upload" blobItem="CV" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20">
+            <![CDATA[
+                <h2>Part 4: CV</h2>
+                <p>Please ensure your Forum bio information is completely up-to-date and upload a pdf of your CV (any CCV format is accepted).</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -428,5 +436,5 @@
     </ReportSection>
     <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
-    </ReportSection-->
+    </ReportSection>
 </Report>
