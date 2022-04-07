@@ -61,7 +61,7 @@
                         <td class='label' style='width:1%; white-space: nowrap;'>Project Title:</td>
                         <td class='value'>{$item}</td>
                     </tr>
-                </table>
+                </table><br />
             ]]>
         </ReportItem>
         <ReportItem id="challenge" type="Text" blobItem="CHALLENGE" width="400px">
@@ -80,6 +80,7 @@
             <![CDATA[
                 <h3>Is research ethics review required for this project?</h3>
                 {$item}<br />
+                <br />
             ]]>
         </ReportItem>
         <ReportItem id="type" type="Radio" blobItem="TYPE" options="Inclusion of older adults and caregivers in your research and/or teaching|Knowledge mobilization/commercialization activities|Small scale research or pilot project to enable larger research grant applications">
