@@ -10,13 +10,19 @@ class UniqueUserValidation extends UIValidation {
     }
     
     function validateFn($value){
-        $firstName = @$_POST['first_name_field'];
-        $lastName = @$_POST['last_name_field'];
-        if("$firstName.$lastName" == "."){
+        if(isset($_POST['user_name_field'])){
+            $username = $_POST['user_name_field'];
+        }
+        else{
+            $firstName = @$_POST['first_name_field'];
+            $lastName = @$_POST['last_name_field'];
+            $username = "$firstName.$lastName";
+        }
+        if($username == "." || $username == ""){
             return true;
         }
-        $person = Person::newFromName("$firstName.$lastName");
-        $this->personName = "$firstName.$lastName";
+        $person = Person::newFromName($username);
+        $this->personName = $username;
         return ($person == null || $person->getName() == "");
     }
     
