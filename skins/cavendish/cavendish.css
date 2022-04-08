@@ -1742,6 +1742,12 @@ select span.noshow {
     padding: 2px 0 2px 0;
 }
 
+.checkCell:hover, .checkCell input {
+    cursor: pointer;
+    background: #e9793620;
+    transition: 0.25s;
+}
+
 /* Baqckbone popup */
 .checkboxCell {
     white-space: nowrap;

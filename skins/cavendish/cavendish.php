@@ -477,6 +477,12 @@ class CavendishTemplate extends QuickTemplate {
 		        $('a.disabledButton').click(function(e){
                     e.preventDefault();
                 });
+                $('.checkCell').click(function(e){
+                    if(e.target == this){
+                        $('input', this).click();
+                    }
+                });
+                
 		        $('.tooltip').qtip({
 		            position: {
 		                adjust: {

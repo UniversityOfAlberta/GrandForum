@@ -99,7 +99,7 @@ class AVOIDDashboard extends SpecialPage {
         }
         $communityResources = $this->sort($communityResources, $tags);
         
-        $wgOut->setPageTitle("AVOID Dashboard");
+        $wgOut->setPageTitle("My Profile");
         $wgOut->addHTML("<div class='modules'>");
         
         // Frailty Status
@@ -125,21 +125,17 @@ class AVOIDDashboard extends SpecialPage {
         }
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
-                            <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
-                                {$frailty}<br />
-                                <div style='margin-top:0.5em;'>
-                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
-                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a>
-                                </div>
-                                <div style='margin-top:0.5em;'>
-                                    <b>Where do I go from here?</b>
-                                    <ul>
-                                        <li>Review your report and recommendations</li>
-                                        <li>Review the education recommended to you, or of interest</li>
-                                        <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
-                                        <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
-                                    </ul>
-                                </div>
+                            <div class='program-body' style='width: 100%;'>
+                                <p>{$frailty}</p>
+                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
+                                <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
+                                <b>Where do I go from here?</b>
+                                <ul>
+                                    <li>Review your report and recommendations</li>
+                                    <li>Review the education recommended to you, or of interest</li>
+                                    <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
+                                    <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
+                                </ul>
                             </div>
                          </div>");
         
@@ -147,77 +143,56 @@ class AVOIDDashboard extends SpecialPage {
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</h1>
-                            <span class='program-body'>{$events->getText()}</span>
+                            <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
         // Education
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>");
-        $cols = 3;
-        $n = 0;
-        foreach($modules as $key => $module){
-            if($key >= $cols){ break; }
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
-            $percent = EducationResources::completion($module->id);
-            $wgOut->addHTML("<a id='module{$module->id}' title='{$module->title}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' alt='{$module->title}' />
-                <div class='module-progress'>
-                    <div class='module-progress-bar' style='width:{$percent}%;'></div>
-                    <div class='module-progress-text'>".number_format($percent)."% Complete</div>
-                </div>
-            </a>");
-            $n++;
-        }
-        if($n % $cols > 0){
-            for($i = 0; $i < $cols - ($n % $cols); $i++){
-                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
-            }
-        }
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan <small>(Work in progress)</small></h1>");
+        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan Overview and review the Ingredients for Change Module to increase your chance of success.</p>
+                            <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
+                        
+                            <p>
+                                Create NEW Action Plan<br />
+                                Current Action Plan (View/Submit)
+                            </p>
+                        </div>");
         $wgOut->addHTML("</div>");
         
         // Programs
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></h1>");
-        
-        $cols = 3;
-        $n = 0;
-        foreach($programs as $key => $program){
-            if($key >= $cols){ break; }
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-            $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
-            </a>");
-            $n++;
-        }
-        if($n % $cols > 0){
-            for($i = 0; $i < $cols - ($n % $cols); $i++){
-                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
-            }
-        }
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
+        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <p>
+                                Action Plan Daily Tracker - Accomplished your plan today?
+                            </p>
+                            <table class='wikitable' style='width: 100%;'>
+                                    <tr>
+                                        <th style='width: 14.2%;'>Mon</th>
+                                        <th style='width: 14.2%;'>Tue</th>
+                                        <th style='width: 14.2%;'>Wed</th>
+                                        <th style='width: 14.2%;'>Thu</th>
+                                        <th style='width: 14.2%;'>Fri</th>
+                                        <th style='width: 14.2%;'>Sat</th>
+                                        <th style='width: 14.2%;'>Sun</th>
+                                     </tr>
+                                     <tr>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
+                                     </tr>
+                                </table>
+                            
+                            <p>Action Plans Log  - Review your accomplishments!</p>
+
+                            <p>Education Module Progress</p>
+                        </div>");
         $wgOut->addHTML("</div>");
-        
-        // Education Resources
-        $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>
-                            <div class='program-body'><ul>");
-        $cols = 4;
-        foreach($resources as $key => $resource){
-            if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a class='resource' data-resource='{$resource->category}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
-        }
-        $wgOut->addHTML("</ul></div></div>");
-                         
-        // Community Program Library
-        $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></h1>
-                            <div class='program-body'><ul>");
-        $cols = 4;
-        foreach($communityResources as $key => $category){
-            if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
-        }
-        $wgOut->addHTML("</ul></div></div>");
         
         $wgOut->addHTML("</div>
         <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
@@ -225,11 +200,6 @@ class AVOIDDashboard extends SpecialPage {
         </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
-            
-            $('a.resource').click(function(){
-                dc.init(me.get('id'), $(this).attr('data-resource'));
-                dc.increment('count');
-            });
             
             $('#viewReport').click(function(){
                 $('#bodyContent').css('overflow-y', 'hidden');
