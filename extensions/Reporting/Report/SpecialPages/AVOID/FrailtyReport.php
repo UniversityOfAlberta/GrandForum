@@ -116,10 +116,7 @@ class FrailtyReport extends SpecialPage {
                 "Activity" => "Activity"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Apps for Better Sleep" => "https://cyberseniors.org/previous-webinars/mobile-apps/apps-for-better-sleep/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Home & Care Partners ↴ Help at Home" => "CFN-HOMECARE-HELP",
