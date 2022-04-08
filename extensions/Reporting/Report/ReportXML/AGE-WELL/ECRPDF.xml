@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="ECR Grants" reportType="RP_ECR" pdfType="RPTP_ECR" pdfFiles="ECRPDF" year="2022" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>ECR Grants</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="APPLICATION" type="EditableReportSection">
+        <ReportItem id="user_name" type="Text" blobItem="USER_NAME" default="{$user_name}" width="200px">
+            <![CDATA[
+                <h2>Part 1: Project Information</h2>
+                <table style='width:100%;'>
+                    <tr>
+                        <td class='label' style='width:1%; white-space: nowrap;'>Name:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_title" type="Text" blobItem="USER_TITLE" default="{$user_level}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label' style='width:1%; white-space: nowrap;'>Title:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_uni" type="Text" blobItem="USER_UNI" default="{$user_uni}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label' style='width:1%; white-space: nowrap;'>Institution:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="user_dept" type="Text" blobItem="USER_DEPT" default="{$user_dept}" width="200px">
+            <![CDATA[
+                    <tr>
+                        <td class='label' style='width:1%; white-space: nowrap;'>Department:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                    <tr>
+                        <td class='label' style='width:1%; white-space: nowrap;'>Project Title:</td>
+                        <td class='value'>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenge" type="Text" blobItem="CHALLENGE" width="400px">
+            <![CDATA[
+                <h3>AGE-WELL Challenge Area of best fit (max. 2)</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested" type="Integer" blobItem="REQUESTED" width="100px">
+            <![CDATA[
+                <h3>Total value of AGE-WELL investment requested:</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes|No">
+            <![CDATA[
+                <h3>Is research ethics review required for this project?</h3>
+                {$item}<br />
+                <br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="type" type="Radio" blobItem="TYPE" options="Inclusion of older adults and caregivers in your research and/or teaching|Knowledge mobilization/commercialization activities|Small scale research or pilot project to enable larger research grant applications">
+            <![CDATA[
+                <h2>Part 2: Narrative Application</h2>
+                <h3>Activity Type:</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <!-- INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING -->
+        <If if="{==({getText(RP_ECR, APPLICATION, TYPE, 0, {$user_id}, 0)}, Inclusion of older adults and caregivers in your research and/or teaching)}">
+            <ReportItem id="1_objectives1" type="Textarea" blobItem="1_OBJECTIVES1" rich="true" limit="200">
+                <![CDATA[
+                    <h3>INCLUSION OF OLDER ADULTS AND CAREGIVERS IN YOUR RESEARCH AND/OR TEACHING</h3>
+                    <h4>Objectives</h4>
+                    <p style='font-weight: bold;'>1. Please describe your proposed project or activity, its goals or objectives. Are you proposing older adult and/or caregiver inclusion in your research or in your teaching? How will older adults and/or caregivers be included?</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="1_objectives2" type="Textarea" blobItem="1_OBJECTIVES2" rich="true" limit="150">
+                <![CDATA[
+                    <p style='font-weight: bold;'>2. Describe the rationale for this activity. Why is this work important? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="1_deliverables" type="Textarea" blobItem="1_DELIVERABLES" rich="true" limit="150">
+                <![CDATA[
+                    <h4>Deliverables</h4>
+                    <p style='font-weight: bold;'>3. Please provide a bullet point list of project/activity deliverables and associated timeline</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            
+            <ReportItem id="1_outcomes" type="Textarea" blobItem="1_OUTCOMES" rich="true" limit="250">
+                <![CDATA[
+                    <h4>Potential Outcomes & Impact</h4>
+                    <p style='font-weight: bold;'>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates capacity-building or the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <!-- KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES -->
+        <ElseIf if="{==({getText(RP_ECR, APPLICATION, TYPE, 0, {$user_id}, 0)}, Knowledge mobilization/commercialization activities)}">
+            <ReportItem id="2_type" type="Radio" blobItem="2_TYPE" options="Knowledge mobilization activity|Commercialization activity">
+                <![CDATA[
+                    <h3>KNOWLEDGE MOBILIZATION OR COMMERCIALIZATION ACTIVITIES</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <If if="{==({getText(RP_ECR, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Knowledge mobilization activity)}">
+                <ReportItem id="2_ktee_objectives1" type="Textarea" blobItem="2_KTEE_OBJECTIVES1" rich="true" limit="200">
+                    <![CDATA[
+                        <h4>Objectives</h4>
+                        <p style='font-weight: bold;'>1. Please describe your proposed project or activity, its goals or objectives (please note that plans must move beyond traditional academic dissemination activities i.e. beyond research publications and conferences). Include your key audience and the applicability of your findings/work to each.</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_ktee_objectives2" type="Textarea" blobItem="2_KTEE_OBJECTIVES2" rich="true" limit="150">
+                    <![CDATA[
+                        <p style='font-weight: bold;'>2. Describe the rationale for this activity. Why is this work important? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_ktee_deliverables" type="Textarea" blobItem="2_KTEE_DELIVERABLES" rich="true" limit="150">
+                    <![CDATA[
+                        <h4>Deliverables</h4>
+                        <p style='font-weight: bold;'>3. Please provide a bullet point list of project/activity deliverables and associated timeline</p>
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_ktee_impact" type="Textarea" blobItem="2_KTEE_IMPACT" rich="true" limit="250">
+                    <![CDATA[
+                        <h4>Potential Impact</h4>
+                        <p style='font-weight: bold;'>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+            </If>
+            <ElseIf if="{==({getText(RP_ECR, APPLICATION, 2_TYPE, 0, {$user_id}, 0)}, Commercialization activity)}">
+                <ReportItem id="2_comm_objectives1" type="Textarea" blobItem="2_COMM_OBJECTIVES1" rich="true" limit="200">
+                    <![CDATA[
+                        <h4>Objectives</h4>
+                        <p style='font-weight: bold;'>1. Please describe your proposed project or activity, its goals or objectives. What is the value of the project for older adults and/or caregivers? What problem does this project solve?</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_comm_objectives2" type="Textarea" blobItem="2_COMM_OBJECTIVES2" rich="true" limit="150">
+                    <![CDATA[
+                        <p style='font-weight: bold;'>2. Describe the rationale for this activity. Why is this work important? What is the value proposition? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_comm_deliverables_table" class="wikitable" type="MultiText" blobType="BLOB_ARRAY" blobItem="2_COMM_DELIVERABLES_TABLE" indices="1|2|3|4" labels="List 2 competitive advantages to your proposed solution|What is your market size? Provide a sense of the size/scale of the target audience/market (in Canada and beyond).|Please list your top 2 competitors or existing/substitute solutions|Is your IP Protected? Please answer yes or no. If yes, how?" types="Textarea|Textarea|Textarea|Textarea" orientation="vertical">
+                    <![CDATA[
+                        <h4>Deliverables</h4>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_comm_deliverables" type="Textarea" blobItem="2_COMM_DELIVERABLES" rich="true" limit="100">
+                    <![CDATA[
+                        <p style='font-weight: bold;'>3. Please provide a bullet point list of project/activity deliverables</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="2_comm_impact" type="Textarea" blobItem="2_COMM_IMPACT" rich="true" limit="250">
+                    <![CDATA[
+                        <p style='font-weight: bold;'>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p><br />
+                        {$item}<br />
+                    ]]>
+                </ReportItem>
+            </ElseIf>
+        </ElseIf>
+        
+        <!-- SMALL SCALE RESEARCH OR PILOT PROJECT -->
+        <ElseIf if="{==({getText(RP_ECR, APPLICATION, TYPE, 0, {$user_id}, 0)}, Small scale research or pilot project to enable larger research grant applications)}">
+            <ReportItem id="3_objectives1" type="Textarea" blobItem="3_OBJECTIVES1" rich="true" limit="200">
+                <![CDATA[
+                    <h3>SMALL SCALE RESEARCH OR PILOT PROJECT</h3>
+                    <p>These grants will support early-stage, scalable research projects including pilot studies, feasibility studies and novel approaches that are aligned with AGE-WELL’s mission and vision. This seed funding is meant to enable early career researchers to foster collaboration and better position their work for future, larger funding competitions.</p>
+                    <h4>Background, Research Question, and/or Objectives</h4>
+                    <p style='font-weight: bold;'>1. Please describe your proposed project or activity, its goals or objectives. Clearly state the underlying hypothesis (if applicable) and describe your methodological approach</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="3_objectives2" type="Textarea" blobItem="3_OBJECTIVES2" rich="true" limit="150">
+                <![CDATA[
+                    <p style='font-weight: bold;'>2. Describe the rationale for this activity. Why is this work important? What is the value proposition? How does it align with AGE-WELL values and mission? How does it reflect the ‘AGE-WELL Way’?</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="3_deliverables" type="Textarea" blobItem="3_DELIVERABLES" rich="true" limit="150">
+                <![CDATA[
+                    <h4>Deliverables</h4>
+                    <p style='font-weight: bold;'>3. Please provide a bullet point list of research project deliverables and associated timeline</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="3_impact1" type="Textarea" blobItem="3_IMPACT1" rich="true" limit="150">
+                <![CDATA[
+                    <h4>Potential Impact</h4>
+                    <p style='font-weight: bold;'>4. Describe the anticipated impacts and associated benefits and beneficiaries of this project, including how your project contributes to and/or facilitates the commercialization, translation, mobilization and/or policy use of research to accelerate Canadian innovation, and economic competitiveness, and to improve the lives of older adults and/or caregivers.</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="3_impact2" type="Textarea" blobItem="3_IMPACT2" rich="true" limit="150">
+                <![CDATA[
+                    <p style='font-weight: bold;'>5. Describe any plan to apply for future funding opportunities or pursue collaborations that will help to ensure the project objectives are met following the AGE-WELL funding period.</p><br />
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+        </ElseIf>
+    </ReportSection>
+    <ReportSection id="documents" tooltip="Documents" name="Documents" type="EditableReportSection" blobSection="DOCS" title="Documents" pagebreak="false">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
+            <![CDATA[
+                <h2>Part 3: Budget</h2>
+                <h3>Upload Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget_just" type="Upload" blobItem="BUDGET_JUST" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h3>Upload a maximum 1 page free-form budget justification.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadPDF" blobItem="CV" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="20">
+            <![CDATA[
+                <h2>Part 4: CV</h2>
+                <p>Please ensure your Forum bio information is completely up-to-date and upload a pdf of your CV (any CCV format is accepted).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

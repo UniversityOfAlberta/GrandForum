@@ -91,6 +91,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>EEA</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=edge'>Edge</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=air'>AIR</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>ECR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
@@ -132,6 +133,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "air" && $me->isRoleAtLeast(SD)){
             $this->generateAir();
+        }
+        else if($program == "ecr" && $me->isRoleAtLeast(SD)){
+            $this->generateECR();
         }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
@@ -268,6 +272,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_AIR', null, 2022, "2022"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateECR(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ECR', null, 2022, "2022"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
