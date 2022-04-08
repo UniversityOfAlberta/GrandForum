@@ -142,7 +142,7 @@ class AVOIDDashboard extends SpecialPage {
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</h1>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Upcoming Events</h1>
                             <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
@@ -162,7 +162,7 @@ class AVOIDDashboard extends SpecialPage {
         
         // Programs
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <p>
                                 Action Plan Daily Tracker - Accomplished your plan today?
