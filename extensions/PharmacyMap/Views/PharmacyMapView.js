@@ -19,8 +19,7 @@ PharmacyMapView = Backbone.View.extend({
         "click #findLocation": "findLocation",
         "click #printMap": "printMap",
         "click .category": "findCategory",
-        "click .previous_button": "previousCategory",
-
+        "click .previous_button": "previousCategory"
     },
 
     printMap: function () {
@@ -51,29 +50,57 @@ PharmacyMapView = Backbone.View.extend({
 
     findCategory: function (ev) {
         if(ev != null){
+            // Clicked category button
             var cat = $(ev.currentTarget).data('cat');
             if (this.buttons[cat].hasOwnProperty('children')) {
                 this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
                 this.buttons = this.buttons[cat]["children"];
-                //$('#address_bar').hide();
-                //$('#map-container').hide();
                 this.drawButtons();
             }
             else {
                 this.refresh = false;
                 this.renderMap = true;
-                //this.model.cat = this.buttons[cat]["text"];
                 this.model.cat = this.buttons[cat]["code"];
                 this.model.fetch();
                 $(".throbber", ev.currentTarget).show();
             }
         } else {
+            // Category Route
+            // This is super ugly, but it works...
+            _.each(this.cat_json, function(button1){
+                if(button1.hasOwnProperty('children')){
+                    _.each(button1.children, function(button2){
+                        if(button2.hasOwnProperty('children')){
+                            _.each(button2.children, function(button3){
+                                if(button3.code == this.model.cat){
+                                    if(button3.hasOwnProperty('children')){
+                                        this.buttons = button3.children;
+                                    }
+                                    else{
+                                        this.buttons = button2.children;
+                                    }
+                                }
+                            }.bind(this));
+                        }
+                        if(button2.code == this.model.cat){
+                            if(button2.hasOwnProperty('children')){
+                                this.buttons = button2.children;
+                            }
+                            else{
+                                this.buttons = button1.children;
+                            }
+                        }
+                    }.bind(this));
+                }
+                if(button1.code == this.model.cat){
+                    this.buttons = button1.children;
+                }
+            }.bind(this));
             this.refresh = false;
             this.renderMap = true;
             this.model.fetch();
             this.drawButtons();
         }
-        
     },
 
     previousCategory: function () {
@@ -149,6 +176,7 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     drawButtons: function () {
+        var hash = document.location.hash.replace("#", "");
         this.$('#treemap').remove();
         this.$('#prev_button').remove();
         var text = "";
@@ -161,16 +189,16 @@ PharmacyMapView = Backbone.View.extend({
             text = ' > ' + text;
         }
         this.$('#prev_category').append('<h3 id="prev_button"></h3>');
-        this.$('#prev_button').append('<a href="#" class="previous_button">' + text2 + "</a>" + text);
+        this.$('#prev_button').append('<a href="#' + hash + '" class="previous_button">' + text2 + "</a>" + text);
         for (var i = 0; i < this.buttons.length; i++) {
             var obj = this.buttons[i];
             this.$('#treemap-container').append('<div id="treemap" class="modules"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#' + hash + '" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
             }
             this.$('#treemap').append(r);
         }
@@ -277,8 +305,7 @@ AddMarkers: function (group) {
         if(this.renderMap){
             this.initMap();
             this.AddMarkers(data);
-            var active = (this.previous.length == 0) ? false : 0;
-            $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader', active: active });
+            $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader'});
             $('#accordionHeader').show();
             $('#address_bar').show();
             $('#map-container').show();
