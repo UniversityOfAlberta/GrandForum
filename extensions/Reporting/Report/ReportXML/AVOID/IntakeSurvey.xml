@@ -191,7 +191,7 @@
 
                                         ]]>
         </ReportItem>
-        <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="30px" max_length="3">
+        <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="45px" max_length="3">
             <![CDATA[
                 <h3>Please enter the first 3 digits of your postal code:</h3>
                 <div class="requiredField">{$item}</div>

@@ -1101,6 +1101,9 @@ abstract class AbstractReport extends SpecialPage {
         $wgOut->addHTML("</div>\n");
         $wgOut->addHTML("<script type='text/javascript'>
             autosaveDiv = $('.autosaveSpan');
+            if(networkName == 'AVOID'){
+                $('#reportMain').addClass('program-body');
+            }
         </script>");
     }
     

@@ -28,18 +28,18 @@ class RadioReportItem extends AbstractReportItem {
 		                $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
 		            }
 		            if($buttonPosition == "left"){
-		                $items[] = "<table cellspacing='0' cellpadding='2'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		                $items[] = "<table cellspacing='0' cellpadding='2'><tr><td><input style='vertical-align:top;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
 		            }
 		            else{
-		                $items[] = "<table cellspacing='0' cellpadding='2'><tr><td>{$labels[$i]}&nbsp;</td><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked /></td></tr>{$score}</table>";
+		                $items[] = "<table cellspacing='0' cellpadding='2'><tr><td>{$labels[$i]}&nbsp;</td><td><input style='vertical-align:top;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked /></td></tr>{$score}</table>";
 		            }
 		        }
 		        else{
 		            if($orientation == 'horizontal'){
-		                $items[] = "<input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
+		                $items[] = "<input style='vertical-align:top;display:table-cell;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;{$option}";
 		            }
 		            else{
-		                $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
+		                $items[] = "<div style='display:table;padding-bottom:1px;padding-top:1px;'><input style='vertical-align:top;display:table-cell;transform-origin:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;<div style='display:table-cell;'>{$option}</div></div>";
 		            }
 		        }
 		    }
