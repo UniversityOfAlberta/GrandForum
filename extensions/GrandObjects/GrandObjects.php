@@ -35,6 +35,7 @@ autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
 autoload_register('GrandObjects/API/DataCollection');
 autoload_register('GrandObjects/API/AvoidResource');
+autoload_register('GrandObjects/API/ActionPlan');
 
 global $apiRequest;
 // Person
@@ -211,10 +212,14 @@ $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectionAPI');
 
-//AVOID Resource
+// AVOID Resource
 $apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAPI');
+
+// AVOID ActionPlan
+$apiRequest->addAction('Hidden','actionplan', 'ActionPlanAPI');
+$apiRequest->addAction('Hidden','actionplan/:id', 'ActionPlanAPI');
 
 function addScript($file){
     global $wgServer, $wgScriptPath;
@@ -222,7 +227,6 @@ function addScript($file){
 }
 
 function createModels(){
-
     addScript("RelationModel");
     addScript("RangeCollection");
     addScript("Thread");
@@ -253,7 +257,8 @@ function createModels(){
     addScript("CRMOpportunity");
     addScript("CRMTask");
     addScript("DataCollection");
-    addScript("AvoidResource"); 
+    addScript("AvoidResource");
+    addScript("ActionPlan");
     return true;
 }
 ?>

@@ -11,7 +11,7 @@ function runFrailtyReport($par) {
 
 class FrailtyReport extends SpecialPage {
     
-    static $rows = array(
+    static $healthRows = array(
         "Nutritional Status" => array(
             "img" => "diet.png",
             "education" => array(
@@ -245,6 +245,94 @@ class FrailtyReport extends SpecialPage {
         )
     );
     
+    static $behavioralRows = array(
+        "Activity" => array(
+            "img" => "Activity.png",
+            "education" => array(
+                "Activity" => "Activity"
+            ),
+            "programs" => array(
+                "Peer Coaching" => "PeerCoaching",
+                "Cyber Seniors Webinar(s):" => array(
+                    "Yoga for Seniors: Benefits and How to access online" => "https://cyberseniors.org/previous-webinars/mobile-apps/yoga-for-seniors-how-to-access-online/",
+                    "Exercise class with Renee" => "https://cyberseniors.org/previous-webinars/featured-webinars/exercise-class-with-renee-wed/",
+                    "Zumba Gold with Renee" => "https://cyberseniors.org/previous-webinars/exercise-health/zumba-gold-with-renee/"
+                )
+            ),
+            "community" => array(
+                "Activity" => "CFN-ACT",
+                "Interact" => "CFN-INT"
+            )
+        ),
+        "Vaccination" => array(
+            "img" => "Vaccination.png",
+            "education" => array(
+                "Vaccination" => "Vaccination"
+            ),
+            "programs" => array(
+                "Peer Coaching" => "PeerCoaching"
+            ),
+            "community" => array(
+                "Vaccination/Optimize Medication" => "CFN-VAC",
+                "Transportation" => "CFN-TRANSPORT"
+            )
+        ),
+        "Optimize Medication" => array(
+            "img" => "OptimizeMedication.png",
+            "education" => array(
+                 "Optimize Medication" => "OptimizeMedication"
+            ),
+            "programs" => array(
+                "Peer Coaching" => "PeerCoaching",
+                "Cyber Seniors Webinar(s):" => array(
+                    "How to Fill Prescriptions Online" => "https://cyberseniors.org/previous-webinars/telemedicine/how-to-refill-prescriptions-online/",
+                    "Medisafe Pill Reminder App" => "https://cyberseniors.org/previous-webinars/mobile-apps/medisafe-pill-reminder-app/"
+                )
+            ),
+            "community" => array(
+                "Vaccination/Optimize Medication" => "CFN-VAC",
+                "Activity → Exercise" => "CFN-ACT-EX",
+                "Interact" => "CFN-INT"
+            )
+        ),
+        "Interact" => array(
+            "img" => "Interact.png",
+            "education" => array(
+                "Interact" => "Interact"
+            ),
+            "programs" => array(
+                "Peer Coaching" => "PeerCoaching",
+                "Community Connectors" => "CommunityConnectors",
+                "Cyber Seniors Webinar(s):" => array(
+                    "Staying Connected through technology" => "https://cyberseniors.org/stories/cyber-seniors-in-the-news/staying-connected-through-technology/"
+                )
+            ),
+            "community" => array(
+                "Interact" => "CFN-INT",
+                "Activity" => "CFN-ACT"
+            )
+        ),
+        "Diet and Nutrition" => array(
+            "img" => "DietAndNutrition.png",
+            "education" => array(
+                "Diet and Nutrition" => "DietAndNutrition"
+            ),
+            "programs" => array(
+                "Peer Coaching" => "PeerCoaching",
+                "Cyber Seniors Webinar(s):" => array(
+                    "Ordering Groceries Online" => "https://cyberseniors.org/previous-webinars/mobile-apps/ordering-groceries-online/",
+                    "All Recipes" => "https://cyberseniors.org/previous-webinars/mobile-apps/all-recipes/",
+                    "Nutrition Apps" => "https://cyberseniors.org/previous-webinars/mobile-apps/nutrition-apps/",
+                    "How to Use Mealime" => "https://cyberseniors.org/previous-webinars/online-services/how-to-use-mealime/"
+                )
+            ),
+            "community" => array(
+                "Diet and Nutrition" => "CFN-DIET",
+                "Activity" => "CFN-ACT"
+            )
+        )
+    );
+    
     function __construct() {
         SpecialPage::__construct("FrailtyReport", null, true, 'runFrailtyReport');
     }
@@ -252,6 +340,46 @@ class FrailtyReport extends SpecialPage {
     function userCanExecute($wgUser){
         $person = Person::newFromUser($wgUser);
         return $person->isLoggedIn();
+    }
+    
+    function drawRow($key, $row, $scores){
+        global $wgServer, $wgScriptPath;
+        $need = "N";
+        $education = "";
+        $programs = "";
+        $community = "";
+        if($scores[$key] > 0){
+            $need = "Y";
+            foreach($row['education'] as $k => $e){
+                $education .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+            }
+            foreach($row['programs'] as $k => $p){
+                if(is_array($p)){
+                    $links = array();
+                    foreach($p as $k1 => $p1){
+                        $links[] = "<a href='{$p1}' target='_blank'>{$k1}</a>";
+                    }
+                    $programs .= "<p>{$k} ".implode(", ", $links)."</p>";
+                }
+                else{
+                    $programs .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/{$p}' target='_blank'>{$k}</a></p>";
+                }
+            }
+            foreach($row['community'] as $k => $p){
+                $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
+                $k = str_replace("→", "</span>→<span class='cb'>", $k);
+                $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
+                $community .= "<p><span class='cb'>{$k}</span></p>";
+            }
+        }
+        $html = "<tr>
+                    <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
+                    <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>
+                    <td align='center'>{$education}</td>
+                    <td align='center' style='font-size: 0.8em;'>{$programs}</td>
+                    <td style='font-size: 0.9em;'>{$community}</td>
+                 </tr>";
+        return $html;
     }
     
     function generateReport(){
@@ -318,7 +446,7 @@ class FrailtyReport extends SpecialPage {
                                 color: #06619b;
                                 
                                 margin-top: 1em;
-                                margin-right: 4.5em;
+                                margin-right: 1.5em;
                             }
                             
                             .title {
@@ -380,6 +508,19 @@ class FrailtyReport extends SpecialPage {
                                 vertical-align: middle;
                             }
                             
+                            table.recommendations th.dark-top {
+                                background: #67a0cd;
+                                padding: 4px;
+                                vertical-align: middle;
+                                font-size: 0.9em;
+                            }
+                            
+                            table.recommendations td.white {
+                                border: none;
+                                background: white;
+                                height: 1em;
+                            }
+                            
                             td, th {
                                 border-width: 0 3px 3px 0;
                                 line-height: 1em;
@@ -430,22 +571,25 @@ class FrailtyReport extends SpecialPage {
                         </div>
                         <div class='title-box'>
                             <div class='title'>
-                                My Frailty Status: Report from<br />
-                                Healthy Aging Assessment
+                                My Frailty and Behavioural Status:<br />
+                                Report from Healthy Aging Assessment
                             </div>
                             <div class='frailtyStatus'>My Frailty Status: <u>{$scores['Label']}</u></div>
                         </div>
                         <div class='list'>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />This report shows the items that went into your frailty status.  Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item.  If you do not see any recommendations, it means that no needs were identified from your answers.</p>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where you start and focus your efforts.  You can use this as a place to start on your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.</p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />Your frailty status is a calculation based on your stated health outcomes that may be improved by meeting the behavioural recommendations for each AVOID component. This report reflects your answers in the assessment for those two sections. Where a risk was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no risks were identified from your answers.</p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start and to refer back to throughout your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.</p>
                             <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' />The recommendations throughout this program are meant to support healthy behaviour.  They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist)</p>
                         </div>
                         <br />
                         <br />
                         <table class='recommendations' cellspacing='0' style='width: 100%;'>
                             <tr>
+                                <th class='dark-top' colspan='5'>The following risks and recommendations are from the health outcomes section of the assessment</th>
+                            </tr>
+                            <tr>
                                 <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
-                                    <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>Need<br />Identified?<br />(Y/N)</div>
+                                    <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>Risk<br />Identified?<br />(Y/N)</div>
                                 </th>
                                 <th rowspan='2' style='min-width: 6em; width: 6em;'>
                                     Topic
@@ -465,42 +609,14 @@ class FrailtyReport extends SpecialPage {
                                     <small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small>
                                 </th>
                             </tr>";
-        foreach(self::$rows as $key => $row){
-            $need = "N";
-            $education = "";
-            $programs = "";
-            $community = "";
-            if($scores[$key] > 0){
-                $need = "Y";
-                foreach($row['education'] as $k => $e){
-                    $education .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
-                }
-                foreach($row['programs'] as $k => $p){
-                    if(is_array($p)){
-                        $links = array();
-                        foreach($p as $k1 => $p1){
-                            $links[] = "<a href='{$p1}' target='_blank'>{$k1}</a>";
-                        }
-                        $programs .= "<p>{$k} ".implode(", ", $links)."</p>";
-                    }
-                    else{
-                        $programs .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/{$p}' target='_blank'>{$k}</a></p>";
-                    }
-                }
-                foreach($row['community'] as $k => $p){
-                    $k = preg_replace("/(.*(^|→|↴))(?!.*(→|↴))(.*)/", "$1<a style='vertical-align:top;' target='_blank' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$p}'>$4</a>", $k);
-                    $k = str_replace("→", "</span>→<span class='cb'>", $k);
-                    $k = str_replace("↴", "</span>↴<span class='cb' style='width: 100%; text-align: right;'>", $k);
-                    $community .= "<p><span class='cb'>{$k}</span></p>";
-                }
-            }
-            $html .= "      <tr>
-                                <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
-                                <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>
-                                <td align='center'>{$education}</td>
-                                <td align='center' style='font-size: 0.8em;'>{$programs}</td>
-                                <td style='font-size: 0.9em;'>{$community}</td>
-                            </tr>";
+        foreach(self::$healthRows as $key => $row){
+            $html .= $this->drawRow($key, $row, $scores);
+        }
+        
+        $html .= "<tr><td class='white' colspan='5'></td></tr>
+                  <tr style='page-break-after: avoid;'><th class='dark-top' colspan='5'>The following risks and recommendations are from the behavioural portion of the assessment</th></tr>";
+        foreach(self::$behavioralRows as $key => $row){
+            $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
         }
         $html .= "      </table><br /><br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />

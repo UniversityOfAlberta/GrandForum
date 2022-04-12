@@ -312,6 +312,75 @@ class UserFrailtyIndexAPI extends API{
         }
         return 0;
     }
+    
+    function getBehavioralScores($user_id){
+        $scores = array();
+        
+        // Activity
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave0_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave2_avoid", $user_id));
+        $score = 0;
+        foreach($answers as $answer){
+            if($answer == "All day" || $answer == "Rarely or not at all"){
+                $score += 1;
+            }
+        }
+        $scores["Activity"] = ($score >= 1) ? 1 : 0;
+        
+        // Vaccination
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate4_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate5_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate6_avoid", $user_id));
+        $score = 0;
+        foreach($answers as $answer){
+            if($answer == "No"){
+                $score += 1;
+            }
+        }
+        $scores["Vaccination"] = ($score >= 1) ? 1 : 0;
+        
+        // Optimize Medication
+        $answer = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "meds3_avoid", $user_id);
+        $scores["Optimize Medication"] = ($answer == "No") ? 1 : 0;
+        
+        // Interact
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact4_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact5_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact6_avoid", $user_id));
+        $score = 0;
+        foreach($answers as $answer){
+            switch($answer){
+                case "None": $score += 0; break;
+                case "1": $score += 1; break;
+                case "2": $score += 2; break;
+                case "3-4": $score += 3; break;
+                case "5-8": $score += 4; break;
+                case "9+": $score += 5; break;
+            }
+        }
+        $scores["Interact"] = ($score > 12) ? 1 : 0;
+        
+        // Diet and Nutrition
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet4_avoid", $user_id));
+        $score = 0;
+        foreach($answers as $answer){
+            if($answer == "No"){
+                $score += 1;
+            }
+        }
+        $scores["Diet and Nutrition"] = ($score > 0) ? 1 : 0;
+
+        return $scores;
+    }
 
     function getFrailtyScore($user_id){
         $scores = array();
@@ -331,9 +400,12 @@ class UserFrailtyIndexAPI extends API{
         $scores["Health Conditions"] = $this->getSymptomsScore($user_id);
         $scores["Self-Perceived Health"] = $this->getSelfPerceivedHealth($user_id);
         $scores["Total"] = 0;
-        foreach($scores as $score){
-            $scores["Total"] += $score;
+        foreach($scores as $key => $score){
+            if($key != "Total"){
+                $scores["Total"] += $score;
+            }
         }
+        $scores["Behavioral"] = $this->getBehavioralScores($user_id);
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
