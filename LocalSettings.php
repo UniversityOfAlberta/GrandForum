@@ -28,6 +28,10 @@ if(PHP_SAPI != 'cli'){
     header('Expires: 0');
 }
 
+if(!isset($_GET['embed'])){
+    header('X-Frame-Options: SAMEORIGIN');
+}
+
 date_default_timezone_set('America/Edmonton');
 if( defined( 'MW_INSTALL_PATH' ) ) {
 	$IP = MW_INSTALL_PATH;
