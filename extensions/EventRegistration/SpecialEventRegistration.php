@@ -154,6 +154,7 @@ class SpecialEventRegistration extends SpecialPage{
         }
         else if($default->title == "Energy Hackathon 2022 - APIC"){
             $roles = array("Participant", "Judge", "Host");
+            $defaultRole = "Participant";
         }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
