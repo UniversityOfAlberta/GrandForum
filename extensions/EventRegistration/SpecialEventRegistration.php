@@ -152,6 +152,9 @@ class SpecialEventRegistration extends SpecialPage{
         else if($default->title == "AI4Society Reverse EXPO"){
             $roles = array("Audience");
         }
+        else if($default->title == "Energy Hackathon 2022 - APIC"){
+            $roles = array("Participant", "Judge", "Host");
+        }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
