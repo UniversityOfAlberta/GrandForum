@@ -25,7 +25,7 @@
                 {$item}<br /><br />
             ]]>
         </ReportItem>
-        <ReportItem id="streams" type="Checkbox" width="100px" blobType="BLOB_ARRAY" blobItem="STREAMS" options="Applying for CFN funding alone|Applying for the AGE-WELL/CFN co-funding|Applying for the Perley Health/CFN co-funding|Applying for the Sepsis Canada/CFN co-funding" min="0" max="250000">
+        <ReportItem id="stream" type="Radio" width="100px" blobType="BLOB_TEXT" blobItem="STREAM" options="1. Applying for CFN alone funding|2. Applying for the AGE-WELL/CFN funding support|3. Applying for the Perley Health/CFN co-funding|4. Applying for the Sepsis Canada/CFN co-funding" min="0" max="250000">
             <![CDATA[
                 <h4>Please indicate which stream of funding you are applying for</h4>
                 {$item}<br /><br />
