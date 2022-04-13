@@ -58,6 +58,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ifp'>IFP</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=kt'>KT</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=rcha'>RCHA</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>Early Career</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cat'>Catalyst</a>";
         }
         
@@ -77,6 +78,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "rcha" && $me->isRoleAtLeast(SD)){
             $this->generateRCHA();
+        }
+        else if($program == "ecr" && $me->isRoleAtLeast(SD)){
+            $this->generateECR();
         }
         else if($program == "cat" && $me->isRoleAtLeast(SD)){
             $this->generateCat();
@@ -162,6 +166,14 @@ class ApplicationsTable extends SpecialPage{
         $cis->setId("ci");
         $tabbedPage->addTab(new ApplicationTab("RCHA2021Application", $fullApplicants, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab("RCHA2021Intent", null, 2021, "2021 Intent", array("PIs" => $pis, "CIs" => $cis)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateECR(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        //$tabbedPage->addTab(new ApplicationTab("EarlyCareerApplication", $fullApplicants, 2022, "2022"));
+        $tabbedPage->addTab(new ApplicationTab("EarlyCareerIntent", null, 2022, "2022 Intent"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
