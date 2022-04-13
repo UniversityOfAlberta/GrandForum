@@ -18,11 +18,30 @@ class ActionPlanAPI extends RESTAPI {
     }
 
     function doPOST(){
-        return $this->doGET();
+        $me = Person::newFromWgUser();
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in to create an Action Plan");
+        }
+        $plan = new ActionPlan(array());
+        $plan->goals = $this->POST('goals');
+        $plan->barriers = $this->POST('barriers');
+        $plan->plan = $this->POST('plan');
+        $plan->tracker = $this->POST('tracker');
+        $plan->create();
+        return $plan->toJSON();
     }
 
     function doPUT(){
-        return $this->doGET();
+        $plan = ActionPlan::newFromId($this->getParam('id'));
+        if(!$plan->isAllowedToView()){
+            $this->throwError("You are not allowed to edit this Action Plan");
+        }
+        $plan->goals = $this->POST('goals');
+        $plan->barriers = $this->POST('barriers');
+        $plan->plan = $this->POST('plan');
+        $plan->tracker = $this->POST('tracker');
+        $plan->update();
+        return $plan->toJSON();
     }
 
     function doDELETE(){

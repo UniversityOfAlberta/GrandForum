@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AddLatLongAvoidResource extends AbstractMigration
+class ActionPlanTracker extends AbstractMigration
 {
     /**
      * Change Method.
@@ -29,12 +29,10 @@ class AddLatLongAvoidResource extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function up()
+    public function change()
     {
-        $table = $this->table('grand_avoid_resources');
-        $table->addColumn('lat', 'string')
-              ->addColumn('lon', 'string')
+        $table = $this->table('grand_action_plan');
+        $table->addColumn('tracker', 'text', array('after' => 'plan'))
               ->save();
     }
-
 }

@@ -144,6 +144,10 @@ $egAnnokiExtensions['EventRegistration'] = array('name' => 'EventRegistration',
 
 $egAnnokiExtensions['CommunityMap'] = array('name' => 'CommunityMap',
                                          'path' => "$IP/extensions/PharmacyMap/PharmacyMap.php");
+                                         
+$egAnnokiExtensions['ActionPlan'] = array('name' => 'ActionPlan',
+                                          'path' => "$IP/extensions/ActionPlan/ActionPlan.php");
+                                         
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){

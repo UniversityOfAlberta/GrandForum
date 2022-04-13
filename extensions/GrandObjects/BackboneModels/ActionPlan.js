@@ -6,13 +6,22 @@ ActionPlan = Backbone.Model.extend({
     urlRoot: 'index.php?action=api.actionplan',
 
     defaults: function() {
-        return{
+        return {
             id: null,
             userId: "",
             date: "",
             goals: "",
             barriers: "",
             plan: "",
+            tracker: {
+                "Mon": false,
+                "Tue": false,
+                "Wed": false,
+                "Thu": false,
+                "Fri": false,
+                "Sat": false,
+                "Sun": false
+            },
             created: ""
         };
     }

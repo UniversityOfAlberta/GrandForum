@@ -154,9 +154,10 @@ class AVOIDDashboard extends SpecialPage {
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
-                                Create NEW Action Plan<br />
+                                <a id='createActionPlan' href='#'>Create NEW Action Plan</a><br />
                                 Current Action Plan (View/Submit)
                             </p>
+                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -227,6 +228,10 @@ class AVOIDDashboard extends SpecialPage {
                     $('#reportDialog').dialog('open');
                 }
                 $(window).resize();
+            });
+            
+            $('#createActionPlan').click(function(){
+                var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), el: $('#createActionPlanDialog')});
             });
             
             var viewFullScreen = false;

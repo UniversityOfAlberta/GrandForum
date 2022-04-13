@@ -12,6 +12,7 @@ class ActionPlan extends BackboneModel {
     var $goals;
     var $barriers;
     var $plan;
+    var $tracker = array();
     var $created;
     
     /**
@@ -45,6 +46,7 @@ class ActionPlan extends BackboneModel {
             $this->goals = $data[0]['goals'];
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
+            $this->tracker = json_decode($data[0]['tracker']);
             $this->created = $data[0]['created'];
         }
     }
@@ -75,6 +77,10 @@ class ActionPlan extends BackboneModel {
     
     function getPlan(){
         return $this->plan;
+    }
+    
+    function getTracker(){
+        return $this->tracker;
     }
     
     /**
@@ -113,6 +119,7 @@ class ActionPlan extends BackboneModel {
                                       'goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
+                                      'tracker' => json_encode($this->tracker),
                                       'created' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
@@ -124,7 +131,8 @@ class ActionPlan extends BackboneModel {
             DBFunctions::update('grand_action_plan',
                                 array('goals' => $this->goals,
                                       'barriers' => $this->barriers,
-                                      'plan' => $this->pla),
+                                      'plan' => $this->plan,
+                                      'tracker' => json_encode($this->tracker)),
                                 array('id' => $this->id));
             DBFunctions::commit();
         }
@@ -146,6 +154,7 @@ class ActionPlan extends BackboneModel {
                          'goals' => $this->getGoals(),
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),
+                         'tracker' => $this->getTracker(),
                          'created' => $this->created,
                          'modified' => $this->modified);
         }
