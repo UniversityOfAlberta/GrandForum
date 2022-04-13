@@ -33,7 +33,7 @@ class ActionPlan extends BackboneModel {
                                     array('user_id' => $userId));
         $array = array();
         foreach($data as $row){
-            $array[] = ActionPlan(array($row));
+            $array[] = new ActionPlan(array($row));
         }
         return $array;
     }
@@ -42,7 +42,7 @@ class ActionPlan extends BackboneModel {
         if(count($data) > 0){
             $this->id = $data[0]['id'];
             $this->userId = $data[0]['user_id'];
-            $this->date = $data[0]['page'];
+            $this->date = $data[0]['date'];
             $this->goals = $data[0]['goals'];
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
@@ -155,8 +155,7 @@ class ActionPlan extends BackboneModel {
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),
                          'tracker' => $this->getTracker(),
-                         'created' => $this->created,
-                         'modified' => $this->modified);
+                         'created' => $this->created);
         }
         return array();
     }

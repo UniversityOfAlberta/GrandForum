@@ -1,9 +1,12 @@
 ActionPlanCreateView = Backbone.View.extend({
 
     template: _.template($('#action_plan_create_template').html()),
+    actions: undefined,
+    dialog: undefined,
 
-    initialize: function() {
+    initialize: function(options) {
         this.render();
+        this.actions = options.actions;
     },
 
     events: {
@@ -24,7 +27,11 @@ ActionPlanCreateView = Backbone.View.extend({
                     'Save': {
                         text: 'Create Action Plan',
                         click: function(){
-                            this.model.save();
+                            this.model.save(null, {
+                                success: function(){
+                                    this.actions.fetch();
+                                }.bind(this)
+                            });
                             this.dialog.dialog('close');
                         }.bind(this)
                     },
@@ -35,13 +42,15 @@ ActionPlanCreateView = Backbone.View.extend({
             });
             $('.ui-dialog').addClass('program-body');
             $(window).resize(function(){
-                this.dialog.dialog({
-                    width: 'auto',
-                    height: $(window).height()*0.85,
-                });
-                this.dialog.dialog({
-                    position: { 'my': 'center', 'at': 'center' }
-                });
+                if(this.dialog.is(":visible")){
+                    this.dialog.dialog({
+                        width: 'auto',
+                        height: $(window).height()*0.85,
+                    });
+                    this.dialog.dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
+                }
             }.bind(this)).resize();
         }
         return this.$el;

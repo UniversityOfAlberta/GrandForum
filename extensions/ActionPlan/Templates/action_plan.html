@@ -1,0 +1,9 @@
+<h3>What is one broader goal you’d like to start working on now?</h3>
+<%= nl2br(goals) %>
+
+<h3>What do you think are the barriers or challenges to meeting this goal?</h3>
+<%= nl2br(barriers) %>
+
+<h3>My Action Plan This Week</h3>
+<b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
+<%= nl2br(plan) %>

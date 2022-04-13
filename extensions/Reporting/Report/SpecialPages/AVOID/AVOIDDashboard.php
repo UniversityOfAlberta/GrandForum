@@ -154,10 +154,11 @@ class AVOIDDashboard extends SpecialPage {
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
-                                <a id='createActionPlan' href='#'>Create NEW Action Plan</a><br />
-                                Current Action Plan (View/Submit)
+                                <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/Submit)</div>
                             </p>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -230,8 +231,25 @@ class AVOIDDashboard extends SpecialPage {
                 $(window).resize();
             });
             
+            var actionPlans = new ActionPlans();
+            actionPlans.fetch();
+            actionPlans.on('sync', function(){
+                if(actionPlans.length > 0){
+                    $('#newPlan').hide();
+                    $('#currentPlan').show();
+                }
+                else{
+                    $('#newPlan').show();
+                    $('#currentPlan').hide();
+                }
+            });
+            
             $('#createActionPlan').click(function(){
-                var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), el: $('#createActionPlanDialog')});
+                var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), actions: actionPlans, el: $('#createActionPlanDialog')});
+            });
+            
+            $('#viewActionPlan').click(function(){
+                var viewActionPlan = new ActionPlanView({model: actionPlans.at(0), el: $('#viewActionPlanDialog')});
             });
             
             var viewFullScreen = false;
