@@ -166,32 +166,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
-                            <p>
-                                Action Plan Daily Tracker - Accomplished your plan today?
-                            </p>
-                            <table class='wikitable' style='width: 100%;'>
-                                    <tr>
-                                        <th style='width: 14.2%;'>Mon</th>
-                                        <th style='width: 14.2%;'>Tue</th>
-                                        <th style='width: 14.2%;'>Wed</th>
-                                        <th style='width: 14.2%;'>Thu</th>
-                                        <th style='width: 14.2%;'>Fri</th>
-                                        <th style='width: 14.2%;'>Sat</th>
-                                        <th style='width: 14.2%;'>Sun</th>
-                                     </tr>
-                                     <tr>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                        <td class='checkCell' align='center'><input type='checkbox' /></td>
-                                     </tr>
-                                </table>
-                            
-                            <p>Action Plans Log  - Review your accomplishments!</p>
-
+                            <div id='actionPlanTracker' style='display:none;'></div>
                             <p>Education Module Progress</p>
                         </div>");
         $wgOut->addHTML("</div>");
@@ -232,17 +207,23 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             var actionPlans = new ActionPlans();
-            actionPlans.fetch();
+            var tracker = undefined;
             actionPlans.on('sync', function(){
                 if(actionPlans.length > 0){
                     $('#newPlan').hide();
                     $('#currentPlan').show();
+                    $('#actionPlanTracker').show();
+                    if(tracker == undefined){
+                        tracker = new ActionPlanTrackerView({model: actionPlans.at(0), el: $('#actionPlanTracker')});
+                    }
                 }
                 else{
                     $('#newPlan').show();
                     $('#currentPlan').hide();
+                    $('#actionPlanTracker').hide();
                 }
             });
+            actionPlans.fetch();
             
             $('#createActionPlan').click(function(){
                 var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), actions: actionPlans, el: $('#createActionPlanDialog')});

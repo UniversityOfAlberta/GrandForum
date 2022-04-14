@@ -6,7 +6,7 @@ class ActionPlanAPI extends RESTAPI {
         $me = Person::newFromWgUser();
         if($this->getParam('id') != ""){
             $plan = ActionPlan::newFromId($this->getParam('id'));
-            if(!$plan->canView()){
+            if(!$plan->canUserRead()){
                 $this->throwError("You are not allowd to view this action plan");
             }
             return $plan->toJSON();
@@ -33,7 +33,7 @@ class ActionPlanAPI extends RESTAPI {
 
     function doPUT(){
         $plan = ActionPlan::newFromId($this->getParam('id'));
-        if(!$plan->isAllowedToView()){
+        if(!$plan->canUserRead()){
             $this->throwError("You are not allowed to edit this Action Plan");
         }
         $plan->goals = $this->POST('goals');
