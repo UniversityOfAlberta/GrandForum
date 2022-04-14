@@ -14,6 +14,8 @@ class FrailtyReport extends SpecialPage {
     static $healthRows = array(
         "Nutritional Status" => array(
             "img" => "diet.png",
+            "no" => "Great job, keep it up!<br />
+                     Protein, calcium and vitamin D are particularly important to maintain strong bones and muscles.",
             "education" => array(
                 "Diet and Nutrition" => "DietAndNutrition"
             ),
@@ -31,6 +33,8 @@ class FrailtyReport extends SpecialPage {
         ),
         "Oral Health" => array(
             "img" => "dental-care.png",
+            "no" => "Way to go! <br />
+                     Good oral hygiene practices can help you to avoid tooth pain that makes it difficult to eat. Make sure you continue with regular visits to your dentist.",
             "education" => array(
                 "Diet and Nutrition" => "DietAndNutrition"
             ),
@@ -43,6 +47,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Fatigue" => array(
             "img" => "tiredness.png",
+            "no" => "Getting older means your sleep will change, but not necessarily impact your daily living. It looks like you’ve got this under control!",
             "education" => array(
                 "Sleep" => "Sleep"
             ),
@@ -61,6 +66,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Pain" => array(
             "img" => "back.png",
+            "no" => "If you’re not experiencing pain or discomfort, that’s great! Age isn’t synonymous with aches and pains, but by the looks of things, you already know that!",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -74,6 +80,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Physical Activity" => array(
             "img" => "physical-activity.png",
+            "no" => "You are extending independent living, reducing your risk of many chronic conditions, and reducing your risk of falls. Great job!",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -86,6 +93,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Strength" => array(
             "img" => "muscle.png",
+            "no" => "Keep up your strength! We naturally lose muscle tone as we age, so it’s great you’re combating that now!",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -98,6 +106,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Walking Speed" => array(
             "img" => "marathon.png",
+            "no" => "Walking is a great exercise you can continue to do as you age. It’s great for strength, mobility and reducing your risk of falling. Sounds like you aren’t slowing down, keep it up!",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -112,6 +121,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Falls and Balance" => array(
             "img" => "falling.png",
+            "no" => "Did you know that every 12 seconds a Canadian aged 65years+ experiences a fall? Sounds like you’ve reduced your risk. Way to go!",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -157,6 +167,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Mental Health" => array(
             "img" => "mental-health.png",
+            "no" => "Mental Health problems are prevalent at every age. If your mental health status changes, speak with your family doctor.",
             "education" => array(
                 "Interact" => "Interact",
                 "Activity" => "Activity"
@@ -179,6 +190,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Multiple Medications" => array(
             "img" => "syringe.png",
+            "no" => "Continue to conduct annual medication reviews with your doctor or pharmacist. These reviews could result in reducing a dose, changing medications or stopping an unnecessary medication.",
             "education" => array(
                 "Optimize Medication" => "OptimizeMedication"
             ),
@@ -227,6 +239,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Sensory: Hearing and Vision" => array(
             "img" => "sensory.png",
+            "no" => "If anything changes with vision or hearing, visit your appropriate health care provider.",
             "education" => array(
                 
             ),
@@ -248,6 +261,7 @@ class FrailtyReport extends SpecialPage {
     static $behavioralRows = array(
         "Activity" => array(
             "img" => "Activity.png",
+            "no" => "Way to stay active! If you want to learn more, you can view the Activity module in education resources or any activity-related webinar within Cyber-Seniors.",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -266,6 +280,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Vaccination" => array(
             "img" => "Vaccination.png",
+            "no" => "As we age, it’s harder to recover from infectious diseases like the flu, pneumonia, and COVID-19. Way to keep up with your vaccines!",
             "education" => array(
                 "Vaccination" => "Vaccination"
             ),
@@ -279,6 +294,8 @@ class FrailtyReport extends SpecialPage {
         ),
         "Optimize Medication" => array(
             "img" => "OptimizeMedication.png",
+            "no" => "It’s great that you feel like you have your medications under control. 
+If you need help with managing the medications you are on, visit the following Cyber-Seniors Webinars: How to Fill Prescriptions Online, Medisafe Pill Reminder App",
             "education" => array(
                  "Optimize Medication" => "OptimizeMedication"
             ),
@@ -297,6 +314,8 @@ class FrailtyReport extends SpecialPage {
         ),
         "Interact" => array(
             "img" => "Interact.png",
+            "no" => "Keep up with your social interactions. It provides you with mental and physical health benefits!<br />
+                     If you want to learn more, you can view the Interact module in education resources",
             "education" => array(
                 "Interact" => "Interact"
             ),
@@ -314,6 +333,10 @@ class FrailtyReport extends SpecialPage {
         ),
         "Diet and Nutrition" => array(
             "img" => "DietAndNutrition.png",
+            "no" => "Great job, keep it up! <br />
+                     Continue to incorporate protein, calcium and vitamin D  - to maintain strong bones and muscles.<br />
+                     <br />
+                    If you want to learn more about diet and nutrition, you can view the Nutrition & Diet education module, or any nutrition-related webinar within Cyber-Seniors.",
             "education" => array(
                 "Diet and Nutrition" => "DietAndNutrition"
             ),
@@ -374,11 +397,16 @@ class FrailtyReport extends SpecialPage {
         }
         $html = "<tr>
                     <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
-                    <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>
-                    <td align='center'>{$education}</td>
+                    <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>";
+        if($need == "Y"){
+            $html .= "<td align='center'>{$education}</td>
                     <td align='center' style='font-size: 0.8em;'>{$programs}</td>
-                    <td style='font-size: 0.9em;'>{$community}</td>
-                 </tr>";
+                    <td style='font-size: 0.9em;'>{$community}</td>";
+        }
+        else{
+            $html .= @"<td colspan='3'>{$row['no']}</td>";
+        }
+        $html .= "</tr>";
         return $html;
     }
     
