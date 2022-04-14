@@ -136,6 +136,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Urinary Continence" => array(
             "img" => "urinary-tract.png",
+            "no" => "",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -149,6 +150,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Memory" => array(
             "img" => "memory.png",
+            "no" => "",
             "education" => array(
                 "Activity" => "Activity",
                 "Interact" => "Interact"
@@ -208,6 +210,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Health Conditions" => array(
             "img" => "medical-chechup.png",
+            "no" => "",
             "education" => array(
                 "Diet and Nutrition" => "DietAndNutrition",
                 "Activity" => "Activity"
@@ -227,6 +230,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Self-Perceived Health" => array(
             "img" => "fever.png",
+            "no" => "",
             "education" => array(
                 
             ),
@@ -404,7 +408,7 @@ If you need help with managing the medications you are on, visit the following C
                     <td style='font-size: 0.9em;'>{$community}</td>";
         }
         else{
-            $html .= @"<td colspan='3'>{$row['no']}</td>";
+            $html .= "<td colspan='3'>{$row['no']}</td>";
         }
         $html .= "</tr>";
         return $html;
