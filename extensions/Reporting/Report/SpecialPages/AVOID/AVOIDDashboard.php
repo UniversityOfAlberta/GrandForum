@@ -155,7 +155,7 @@ class AVOIDDashboard extends SpecialPage {
                         
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/Submit)</div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/<a id='submitActionPlan' href='#'>Submit</a>)</div>
                             </p>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
@@ -167,7 +167,8 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <div id='actionPlanTracker' style='display:none;'></div>
-                            <p>Education Module Progress</p>
+                            <div id='pastActionPlans'></div>
+                            <p><b>Education Module Progress</b></p>
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -207,9 +208,10 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             var actionPlans = new ActionPlans();
+            var actionPlanHistoryView = new ActionPlanHistoryView({model: actionPlans, el: $('#pastActionPlans')});
             var tracker = undefined;
             actionPlans.on('sync', function(){
-                if(actionPlans.length > 0){
+                if(actionPlans.length > 0 && !actionPlans.at(0).get('submitted')){
                     $('#newPlan').hide();
                     $('#currentPlan').show();
                     $('#actionPlanTracker').show();
@@ -221,16 +223,25 @@ class AVOIDDashboard extends SpecialPage {
                     $('#newPlan').show();
                     $('#currentPlan').hide();
                     $('#actionPlanTracker').hide();
+                    if(tracker != undefined){
+                        tracker.undelegateEvents();
+                    }
+                    tracker = undefined;
                 }
             });
             actionPlans.fetch();
-            
+
             $('#createActionPlan').click(function(){
                 var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), actions: actionPlans, el: $('#createActionPlanDialog')});
             });
             
             $('#viewActionPlan').click(function(){
                 var viewActionPlan = new ActionPlanView({model: actionPlans.at(0), el: $('#viewActionPlanDialog')});
+            });
+            
+            $('#submitActionPlan').click(function(){
+                actionPlans.at(0).set('submitted', true);
+                actionPlans.at(0).save();
             });
             
             var viewFullScreen = false;

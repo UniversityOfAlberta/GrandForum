@@ -14,14 +14,15 @@ ActionPlan = Backbone.Model.extend({
             barriers: "",
             plan: "",
             tracker: {
-                "Mon": false,
-                "Tue": false,
-                "Wed": false,
-                "Thu": false,
-                "Fri": false,
-                "Sat": false,
-                "Sun": false
+                "Mon": "0",
+                "Tue": "0",
+                "Wed": "0",
+                "Thu": "0",
+                "Fri": "0",
+                "Sat": "0",
+                "Sun": "0"
             },
+            submitted: false,
             created: ""
         };
     }

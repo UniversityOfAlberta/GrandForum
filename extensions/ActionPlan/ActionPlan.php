@@ -32,14 +32,16 @@ class ActionPlanPage extends BackbonePage {
         return array('Backbone/*',
                      'action_plan',
                      'action_plan_create',
-                     'action_plan_tracker');
+                     'action_plan_tracker',
+                     'action_plan_history');
     }
     
     function getViews(){
         return array('Backbone/*',
                      'ActionPlanView',
                      'ActionPlanCreateView',
-                     'ActionPlanTrackerView');
+                     'ActionPlanTrackerView',
+                     'ActionPlanHistoryView');
     }
     
     function getModels(){

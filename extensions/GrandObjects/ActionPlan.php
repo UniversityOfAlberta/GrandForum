@@ -13,6 +13,7 @@ class ActionPlan extends BackboneModel {
     var $barriers;
     var $plan;
     var $tracker = array();
+    var $submitted;
     var $created;
     
     /**
@@ -30,7 +31,8 @@ class ActionPlan extends BackboneModel {
     static function newFromUserId($userId){
         $data = DBFunctions::select(array('grand_action_plan'),
                                     array('*'),
-                                    array('user_id' => $userId));
+                                    array('user_id' => $userId),
+                                    array('created' => 'DESC'));
         $array = array();
         foreach($data as $row){
             $array[] = new ActionPlan(array($row));
@@ -47,6 +49,7 @@ class ActionPlan extends BackboneModel {
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
             $this->tracker = json_decode($data[0]['tracker']);
+            $this->submitted = $data[0]['submitted'];
             $this->created = $data[0]['created'];
         }
     }
@@ -81,6 +84,10 @@ class ActionPlan extends BackboneModel {
     
     function getTracker(){
         return $this->tracker;
+    }
+    
+    function getSubmitted(){
+        return ($this->submitted != 0);
     }
     
     /**
@@ -120,6 +127,7 @@ class ActionPlan extends BackboneModel {
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
                                       'tracker' => json_encode($this->tracker),
+                                      'submitted' => $this->submitted,
                                       'created' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
@@ -132,7 +140,8 @@ class ActionPlan extends BackboneModel {
                                 array('goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
-                                      'tracker' => json_encode($this->tracker)),
+                                      'tracker' => json_encode($this->tracker),
+                                      'submitted' => $this->submitted),
                                 array('id' => $this->id));
             DBFunctions::commit();
         }
@@ -155,6 +164,7 @@ class ActionPlan extends BackboneModel {
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),
                          'tracker' => $this->getTracker(),
+                         'submitted' => $this->getSubmitted(),
                          'created' => $this->created);
         }
         return array();
