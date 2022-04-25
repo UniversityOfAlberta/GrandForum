@@ -1,0 +1,34 @@
+<div id="dialogMessages"></div>
+<form id="eventregisterform" class="navbar-form">
+<table id="userData">
+    <tr>
+        <td class="label">First Name:</td>
+        <td class="field"><input type="text" id="firstname" name="firstname" value="<%= userFirstName %>"></td>
+    </tr>
+    <tr>
+        <td class="label">Last Name:</td>
+        <td class="field"><input type="text" id="lastname" name="lastname" value="<%= userLastName %>"></td>
+    </tr>
+    <tr>
+        <td class="label">Email:</td>
+        <td class="field"><input type="text" id="email" name="email" value="<%= useremail %>"></td>
+    </tr>
+    <% if(this.addQuestion){ %>
+        <tr>
+            <td class="label">Question:</td>
+            <td class="field"><textarea style='width:100%;height:100px;' id='question' name='question'></textarea></td>
+        </tr>
+    <%} %>
+</table>
+<br />
+    <% if(!this.isDialog){ %>
+
+    <div style="display:inline-block;">
+        <button id='registerEvent'>Submit</button><span class="throbber" style="display:none;"></span>
+    </div>
+
+    <div style="display:inline-block;">
+        <button id='cancel'>Cancel</button>
+    </div>
+    <% } %>
+</form>

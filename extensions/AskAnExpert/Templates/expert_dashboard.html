@@ -1,0 +1,45 @@
+<div class='program-body' style='overflow: auto;'>
+    <div style='display:flex;'>
+        <div class='program-header' style="text-align:center">
+		ASK AN AVOID Frailty <br /> EXPERT
+                        </div>
+        <div class='' style='min-width: 200px;'>
+		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 180px;' />
+        </div>
+	<div style="position:absolute;top:0px;right:10px;">
+		<% if(allowedRoles.includes("Admin")){%>
+                <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a--!>
+	
+		<a href="#" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a>
+
+                <% } %>
+	</div>
+    </div>
+    <div id="editDialog" style="display:none;"></div>
+    <div class="expert_announce">
+	    This month we welcome <%= output.name_of_expert %>, an expert in <%= output.expert_field  %>. 
+    </div>
+    <div style='display:flex; clear: both;'>
+        <div style='width:40%; padding-right:1em;'>
+            <img src="<%= wgServer + wgScriptPath %>/skins/meetingevent.jpeg" style='float: left; height: 300px;' />
+        </div>
+        <div style='width:60%; padding-left:1em;'>
+            <div class='program-box' style='display:flex;'>
+		    Do you have questions about the what, why and how of <%= output.expert_field  %> and healthy aging?<br /><br />
+		    We will share your most frequently asked questions with our expert and they will answer them in a LIVE webinar on  <%= output.date  %> at  <%= output.time  %>.<br />
+		    Can’t make the webinar? The Q&A will be in the resource section after the live event.
+
+            </div>
+            <br />
+            <p>
+	    <a id="submitquestion" href="#">Click here</a> to Submit a Question by  <%= output.date  %>.
+	    </p>
+	    <p>
+	    Register for the webinar. You will be emailed the webinar link prior to the event.
+	    </p>
+	    <p>
+	    <span id="webinarlink"></span>
+            </p>
+        </div>
+    </div>
+</div>

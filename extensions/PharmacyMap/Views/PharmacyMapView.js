@@ -9,6 +9,9 @@ PharmacyMapView = Backbone.View.extend({
     cat_json: null,
     category: null,
     previous: [],
+    arrmarkers: [],
+    interval: null,
+    infowindows: [],
     renderMap: false,
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
@@ -20,7 +23,6 @@ PharmacyMapView = Backbone.View.extend({
         "click #printMap": "printMap",
         "click .category": "findCategory",
         "click .previous_button": "previousCategory",
-
     },
 
     printMap: function () {
@@ -50,7 +52,7 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     findCategory: function (ev) {
-        if(ev != null){
+        if (ev != null) {
             var cat = $(ev.currentTarget).data('cat');
             if (this.buttons[cat].hasOwnProperty('children')) {
                 this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
@@ -73,7 +75,7 @@ PharmacyMapView = Backbone.View.extend({
             this.model.fetch();
             this.drawButtons();
         }
-        
+
     },
 
     previousCategory: function () {
@@ -85,8 +87,8 @@ PharmacyMapView = Backbone.View.extend({
             this.buttons = this.cat_json;
         }
         this.refresh = false;
-            //$('#address_bar').hide();
-            //$('#map-container').hide();
+        //$('#address_bar').hide();
+        //$('#map-container').hide();
         this.drawButtons();
     },
 
@@ -111,27 +113,27 @@ PharmacyMapView = Backbone.View.extend({
         });
 
         var markers = [];
-        searchBox.addListener('places_changed',$.proxy(function(){
+        searchBox.addListener('places_changed', $.proxy(function () {
             var places = searchBox.getPlaces();
-            if(places.length == 0){
+            if (places.length == 0) {
                 return;
             }
 
             var bounds = new google.maps.LatLngBounds();
-            places.forEach($.proxy(function(place){
+            places.forEach($.proxy(function (place) {
                 this.lat = place.geometry.location.lat();
                 this.long = place.geometry.location.lng();
 
-                if (place.geometry.viewport){
+                if (place.geometry.viewport) {
                     bounds.union(place.geometry.viewport);
                 } else {
                     bounds.extend(place.geometry.location);
                 }
             }, this));
-            if(places.length >1){
+            if (places.length > 1) {
                 map.fitBounds(bounds);
             }
-            else if(places.length==1){
+            else if (places.length == 1) {
                 map.setCenter(bounds.getCenter());
                 this.zoom = 50;
             }
@@ -142,7 +144,7 @@ PharmacyMapView = Backbone.View.extend({
         var cat_view = new CategoryButtonsView({ model: this.model, parent: this });
         this.cat_json = cat_json;
         this.buttons = this.cat_json;
-        if(this.model.cat != null){
+        if (this.model.cat != null) {
             //fix buttons
             this.findCategory();
         }
@@ -167,10 +169,10 @@ PharmacyMapView = Backbone.View.extend({
             this.$('#treemap-container').append('<div id="treemap" class="modules"></div>');
             if (obj.hasOwnProperty('children')) {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + ' (+)"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="' + obj.code + '" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + ' (+)</a></div>');
             } else {
                 //var r = $('<input type="button" width="25%" class="category" data-cat=' + i + ' title="' + obj.description + '" value="' + obj.text + '"/>');
-                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="'+obj.code+'" data-cat=' + i + ' title="' + obj.description + '">' +obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
+                var r = $('<div class="module-3cols-outer"><a href="#" class="category program-button" id="' + obj.code + '" data-cat=' + i + ' title="' + obj.description + '">' + obj.text + '<span class="throbber" style="display:none;position:absolute;margin-left:5px;"></span></a></div>');
             }
             this.$('#treemap').append(r);
         }
@@ -196,74 +198,129 @@ PharmacyMapView = Backbone.View.extend({
         this.$('#listTable').show();
         this.$('.dataTables_scrollHead table').show();
         this.$('.DTFC_LeftHeadWrapper table').show();
+
+        this.initMap();
+        this.AddMarkers(rows.toJSON());
     },
 
     createDataTable: function () {
         // Create the DataTable
-        this.table = this.$('#listTable').DataTable();
+        this.table = this.$('#listTable').DataTable({
+            "scrollY": "650px"
+        });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         table = this.table;
+
+
+    },
+
+    rowClick: function () {
+        google.maps.event.trigger(this.arrmarkers[i], "click");
+    },
+
+    refreshMap: function () {
+        this.initMap();
+        this.AddMarkers(this.model.toJSON());
     },
 
 
-AddMarkers: function (group) {
-    var pinColor = "FE7569";
-    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        new google.maps.Size(21, 34),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(10, 34));
-    var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-        new google.maps.Size(40, 37),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(12, 35));
-    _.each(group, function (val) {
-        if (val.Longitude != "" && val.Latitude != "") {
-            var pharmLoc = null;
-            var marker = null;
-            pharmLoc = new google.maps.LatLng(val.Latitude, val.Longitude);
-            if (pharmLoc != null) {
-                marker = new google.maps.Marker({
-                    position: pharmLoc,
-                    map: map,
-                    data: "pharm",
-                    title: val.name,
-                    icon: pinImage,
-                    shadow: pinShadow
-                });
-		var phoneNumber = "";
-		if(val.PhoneNumbers.length != 0){
-		    phoneNumber = val["PhoneNumbers"][0]["Phone"];
-		}
+    AddMarkers: function (group) {
+        var pinColor = "FE7569";
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(10, 34));
+        var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+            new google.maps.Size(40, 37),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(12, 35));
+        var i = 0;
+        _.each(group, function (val) {
+            if (val.Longitude != "" && val.Latitude != "") {
+                var pharmLoc = null;
+                var marker = null;
+                pharmLoc = new google.maps.LatLng(val.Latitude, val.Longitude);
+                if (pharmLoc != null) {
+                    marker = new google.maps.Marker({
+                        position: pharmLoc,
+                        map: map,
+                        data: "pharm",
+                        title: val.name,
+                        icon: pinImage,
+                        shadow: pinShadow
+                    });
+                    this.arrmarkers.push(marker);
+                    i++;
+                    var phoneNumber = "";
+                    if (val.PhoneNumbers.length != 0) {
+                        phoneNumber = val["PhoneNumbers"][0]["Phone"];
+                    }
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: "Name: "
-                        + val.PublicName
-                        + "<br>"
-                        + "Address: "
-                        + val.PhysicalAddress1
-                        + "<br>"
-                        + "Phone: "
-                        + phoneNumber
-                        + "<br>"
-                        + "Email: "
-                        + val.EmailAddressMain
-                        + "<br>"
-                        + "Website: <a href='"
-                        + val.WebsiteAddress
-                        + "' target='_blank'>"
-                        + val.WebsiteAddress
-                        + "</a>"
-                });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "Name: "
+                            + val.PublicName
+                            + "<br>"
+                            + "Address: "
+                            + val.PhysicalAddress1
+                            + "<br>"
+                            + "Phone: "
+                            + phoneNumber
+                            + "<br>"
+                            + "Email: "
+                            + val.EmailAddressMain
+                            + "<br>"
+                            + "Website: <a href='"
+                            + val.WebsiteAddress
+                            + "' target='_blank'>"
+                            + val.WebsiteAddress
+                            + "</a>"
+                    });
+                    this.infowindows.push(infowindow);
+                    marker.addListener('click', function () {
+                        for (var i = 0; i < this.infowindows.length; i++) {
+                            this.infowindows[i].close();
+                        }
+			for (var i=0; i < this.arrmarkers.length; i++){
+                            this.arrmarkers[i].setAnimation(null);
+                        }
+			marker.setAnimation(google.maps.Animation.BOUNCE);
+                        infowindow.open(map, marker);
+                        var input = $('input[type="search"]');
+                        input.val("\"" + val.PublicName + "\"" + " " + val.PhysicalAddress1);
+                        var e = $.Event("keyup", { keyCode: 13 });
+                        input.trigger(e);
+                    }.bind(this));
 
-                marker.addListener('click', function () {
-                    infowindow.open(map, marker);
-                });
+
+                    //close all tabs and open tab that is clicked on table
+                    var tr_id = "#row_" + val.id;
+                    var tr = $(tr_id).parent();
+                    tr.click(function () {
+                        for (var i = 0; i < this.infowindows.length; i++) {
+                            this.infowindows[i].close();
+                        }
+			for (var i=0; i < this.arrmarkers.length; i++){
+ 			    this.arrmarkers[i].setAnimation(null);
+			}
+                        infowindow.open(map, marker);
+			marker.setAnimation(google.maps.Animation.BOUNCE);
+			map.setZoom(10);
+			map.panTo(marker.getPosition());
+                    }.bind(this));
+
+                    //closing info tab by clicking on outside of map
+                    google.maps.event.addListener(map, "click", function (event) {
+                        infowindow.close();
+			marker.setAnimation(null);
+                        var input = $('input[type="search"]');
+                        input.val("");
+                        var e = $.Event("keyup", { keyCode: 13 });
+                        input.trigger(e);
+                    });
+                }
             }
-        }
-    });
-},
-
-
+        }.bind(this));
+    },
 
     render: function () {
         //this.$el.empty();
@@ -273,20 +330,18 @@ AddMarkers: function (group) {
             output: data,
             findCat: this.findCat.bind(this)
         }));
+        this.addRows(this.model);
 
-        if(this.renderMap){
-            this.initMap();
-            this.AddMarkers(data);
+        if (this.renderMap) {
+            $('#table').show();
             var active = (this.previous.length == 0) ? false : 0;
             $('#body_accordion').accordion({ autoHeight: false, collapsible: true, header: '#accordionHeader', active: active });
             $('#accordionHeader').show();
             $('#address_bar').show();
             $('#map-container').show();
-            $('#table').show();
         }
         $('#body_accordion .wrap').show();
-        this.addRows(this.model);
-        if(this.refresh){
+        if (this.refresh) {
             $('#address_bar').hide();
             $('#map-container').hide();
             $('#table').hide();
@@ -295,20 +350,24 @@ AddMarkers: function (group) {
         var title = $("#pageTitle").clone();
         $(title).attr('id', 'copiedTitle');
         this.$el.prepend(title);
-        var r = $('<p class="note_small">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p><a style="float:right; font-size:0.7em;" href='+wgServer+wgScriptPath+'/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
-            //$('#copiedTitle').append(r);
- 
-        $('#listTable_filter').css("font-weight","bold");
-        $('#listTable_filter').css("font-size","1.6em");
-        $('#listTable_filter').css("position","absolute");
-        $(".dataTables_filter input").css("width","230px")
-                                     .css("vertical-align", "bottom");
-        $('#listTable_filter').css("margin-left","5px")
-                              .css("left", 0)
-                              .css("text-align", "left");
-        $(".dataTables_filter input").css("margin-left","15px");
-        this.drawButtons();        
+        var r = $('<p class="note_small">Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p><a style="float:right; font-size:0.7em;" href=' + wgServer + wgScriptPath + '/index.php/Special:Report?report=SubmitProgram class="program-button" title="Submit a Program">Submit a Program</a>');
+        //$('#copiedTitle').append(r);
+
+        $('#listTable_filter').css("font-weight", "bold");
+        $('#listTable_filter').css("font-size", "1.6em");
+        $('#listTable_filter').css("position", "absolute");
+        $(".dataTables_filter input").css("width", "230px")
+            .css("vertical-align", "bottom");
+        $('#listTable_filter').css("margin-left", "5px")
+            .css("left", 0)
+            .css("text-align", "left");
+        $(".dataTables_filter input").css("margin-left", "15px");
+        this.drawButtons();
+        $(document).on('click', '.paginate_button', function () {
+            this.refreshMap();
+        }.bind(this));
         return this.$el;
     }
 
 });
+

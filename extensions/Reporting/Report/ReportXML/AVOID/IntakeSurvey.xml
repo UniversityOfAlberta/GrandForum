@@ -151,7 +151,7 @@
             </p>
                 {$item}
             ]]>
-    </ReportItem>
+        </ReportItem>
         <Static>
             <![CDATA[
             <script type='text/javascript'>
@@ -551,11 +551,11 @@
                                 function specifyVax(){
                                         if($("input:radio[name='SelfAssessment_vaccinate1_avoid']:checked").val() == "Yes"){
                                                 $('span#vaxspecify').show();
-                                                $('span#vaccinateyes').hide();
+                                                $('span.vaccinateyes').hide();
                                         }
                                         else{ 
                                         $('span#vaxspecify').hide();
-                                        $('span#vaccinateyes').show();}
+                                        $('span.vaccinateyes').show();}
                                 }
                                 _.defer(specifyVax);
                     $("input:radio[name='SelfAssessment_vaccinate1_avoid']").change(specifyVax);
@@ -564,7 +564,7 @@
         </Static>
         <ReportItem id="vaccinate2_avoid" blobItem="vaccinate2_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No" optional="true">
             <![CDATA[
-                <span id="vaccinateyes">
+                <span class="vaccinateyes">
                     <h3>Have you had your annual flu vaccine this year?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
@@ -584,7 +584,7 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                        <script type='text/javascript'>
+                <script type='text/javascript'>
                                 $('span#vaccinate3specify').hide();
                                 function specifyShingles(){
                                         if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "Yes"){
@@ -596,8 +596,8 @@
                                 }
                                 _.defer(specifyShingles);
                     $("input:radio[name='SelfAssessment_vaccinate3_avoid']").change(specifyShingles);
-            </script>        
-        ]]>
+                </script>        
+            ]]>
         </Static>
         <ReportItem id="vaccinate4_avoid" blobItem="vaccinate4_avoid" type="RadioReportItem" orientation="horizontal" options="Yes|No"  optional="true">
             <![CDATA[
@@ -645,6 +645,7 @@
         </Static>
         <ReportItem id="vax_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="vax_end" orientation="vertical" options="I was not aware of the recommended vaccines|I don't know where or how to get vaccinated|I don't see the point of getting vaccinated|Other" optional="true">
             <![CDATA[
+            <span class="vaccinateyes">
             <span id="vax_end">
             <h3>What are the main reasons that you have not had all of the recommended vaccinations listed above? (choose all that apply):</h3>
             {$item}
@@ -655,6 +656,7 @@
             <![CDATA[
                 <span id="vax_end_specify">
                         Specify: {$item}
+                </span>
                 </span>
                 ]]>
         </ReportItem>
@@ -667,8 +669,7 @@
                                             else if($("input:radio[name='SelfAssessment_vaccinate3_avoid']:checked").val() == "No"){$('span#vax_end').show();}
                                             else if($("input:radio[name='SelfAssessment_vaccinate4_avoid']:checked").val() == "No"){$('span#vax_end').show();}
                                             else if($("input:radio[name='SelfAssessment_vaccinate5_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-                                                else if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
-
+                                            else if($("input:radio[name='SelfAssessment_vaccinate6_avoid']:checked").val() == "No"){$('span#vax_end').show();}
                                             else{$('span#vax_end').hide();}
                                    }
                              _.defer(specifyVaxEnd);
@@ -700,9 +701,10 @@
         </Static>
         <Static>
             <![CDATA[
-                        <br/>
-            <div id="reportHeader" class="headers-behaviour"><b>OPTIMIZE MEDICATION</b></div><hr>
-                ]]>
+                <br/>
+                <span class="vaccinateyes">
+                <div id="reportHeader" class="headers-behaviour"><b>OPTIMIZE MEDICATION</b></div><hr>
+            ]]>
         </Static>
         <ReportItem id="meds1_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
             <![CDATA[
@@ -735,6 +737,8 @@
                 <span id="meds_end_specify">
                         Specify: {$item}
                 </span>
+                </span>
+
                 ]]>
         </ReportItem>
         <Static>
@@ -820,26 +824,25 @@
                     <h3>How many friends do you feel close to such that you could call on them for help?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
-	</ReportItem>
-	<ReportItem id="interact7_avoid" blobItem="interact7_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
+        </ReportItem>
+        <ReportItem id="interact7_avoid" blobItem="interact7_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
             <![CDATA[
                     <h3>How often do you feel that you lack companionship?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
-	</ReportItem>
-	<ReportItem id="interact8_avoid" blobItem="interact8_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
-	    <![CDATA[
+        </ReportItem>
+        <ReportItem id="interact8_avoid" blobItem="interact8_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
+            <![CDATA[
 		    <h3>How often do you feel left out?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
-	</ReportItem>
+        </ReportItem>
         <ReportItem id="interact9_avoid" blobItem="interact9_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
             <![CDATA[
                     <h3>How often do you feel isolated from others?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-		    
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
 		<span id="interact_end">
@@ -1053,7 +1056,7 @@
 				   <b>English version for Canada</b>
         </div>
                 ]]>
-    </Static>
+        </Static>
     </ReportSection>
     <ReportSection id="healthquestions2" tooltip="Health Related QoL2" name="Health Related QoL2" blobSection="HEALTH_QUESTIONS" type="AvoidHealthReportSection" hidden="true" >
         <Static>
@@ -1062,7 +1065,7 @@
                 ]]>
         </Static>
         <ReportItem id="healthstatus1_avoid" type="AvoidHealthRadioReportItem" orientation="vertical" options="I have no problems in walking about|I have slight problems in walking about|I have moderate problems in walking about|I have severe problems in walking about|I am unable to walk about" blobItem="healthstatus_avoid">
-        <![CDATA[
+            <![CDATA[
             <div class="options">
                     <h3>MOBILITY</h3>
                 <div class="requiredField" style="margin:0;">{$item}</div>
@@ -1150,7 +1153,6 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-
         <ReportItem id="symptoms_avoid2" blobItem="symptoms_avoid2" type="RadioReportItem" orientation="vertical" options="Rarely|Occasional amount|Most of the time">
             <![CDATA[
                     <h3>During your waking time, how often do you feel <b>tired or fatigued?</b></h3>
@@ -1198,7 +1200,7 @@
                     <h3>Is the distance that you are able to walk limited by your health?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
-	</ReportItem>
+        </ReportItem>
         <ReportItem id="symptoms_avoid8_specify" type="RadioReportItem" orientation="vertical" blobItem="SYMPTOMS8SPECIFY" options="Less than 1 kilometer occasionally|Less than 1 kilometer most days|Less than 100 meters most occasionally|Less than 100 meters most days" optional="true">
             <![CDATA[
 		<span id="symptoms8_specify">
@@ -1456,5 +1458,4 @@
             You must complete all of the questions in the survey.
         </Else>
     </ReportSection>
-
 </Report>

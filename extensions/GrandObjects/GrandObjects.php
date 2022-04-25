@@ -35,6 +35,7 @@ autoload_register('GrandObjects/API/Posting');
 autoload_register('GrandObjects/API/CRM');
 autoload_register('GrandObjects/API/DataCollection');
 autoload_register('GrandObjects/API/AvoidResource');
+autoload_register('GrandObjects/API/AskAnExpertEvent');
 
 global $apiRequest;
 // Person
@@ -216,6 +217,10 @@ $apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAPI');
 
+//AVOID AskAnExpertEvent
+$apiRequest->addAction('Hidden','askanexpert', 'AskAnExpertEventAPI');
+$apiRequest->addAction('Hidden','askanexpert/:id', 'AskAnExpertEventAPI');
+
 function addScript($file){
     global $wgServer, $wgScriptPath;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
@@ -253,7 +258,8 @@ function createModels(){
     addScript("CRMOpportunity");
     addScript("CRMTask");
     addScript("DataCollection");
-    addScript("AvoidResource"); 
+    addScript("AvoidResource");
+    addScript("AskAnExpertEvent");
     return true;
 }
 ?>
