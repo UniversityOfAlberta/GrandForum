@@ -136,7 +136,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Urinary Continence" => array(
             "img" => "urinary-tract.png",
-            "no" => "",
+            "no" => "You are doing well. Maintaining a healthy lifestyle is an important strategy to avoid incontinence. If you do develop problems, see your healthcare provider since incontinence is not an inevitable part of aging and there are measures that can be taken to help.",
             "education" => array(
                 "Activity" => "Activity"
             ),
@@ -150,7 +150,7 @@ class FrailtyReport extends SpecialPage {
         ),
         "Memory" => array(
             "img" => "memory.png",
-            "no" => "",
+            "no" => "You are doing well. Just as exercise is important to keep muscle strength, doing activities which require mental effort are important for brain function to be maintained.",
             "education" => array(
                 "Activity" => "Activity",
                 "Interact" => "Interact"
