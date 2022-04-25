@@ -67,7 +67,7 @@
 		"wikimedia/xmp-reader": "0.7.0",
 		"zordius/lightncandy": "1.2.5",
 		"phpoffice/phpspreadsheet": "^1.20",
-		"dompdf/dompdf": "^1.1"
+		"dompdf/dompdf": "^1.2"
 	},
 	"require-dev": {
 		"composer/spdx-licenses": "1.5.3",
@@ -147,7 +147,10 @@
 	},
 	"config": {
 		"optimize-autoloader": true,
-		"prepend-autoloader": false
+		"prepend-autoloader": false,
+		"allow-plugins": {
+			"wikimedia/composer-merge-plugin": true
+		}
 	},
 	"extra": {
 		"merge-plugin": {

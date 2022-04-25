@@ -7,9 +7,11 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'Report::createTab';
 $wgHooks['SubLevelTabs'][] = 'Report::createSubTabs';
+$wgHooks['BeforePageDisplay'][] = 'Report::addFooter';
 $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
 
 require_once("AVOIDDashboard.php");
+require_once("FrailtyReport.php");
 require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 
@@ -39,6 +41,22 @@ class Report extends AbstractReport{
             }
         }
         return true;
+    }
+    
+    static function addFooter($wgOut, $skin){
+        global $wgServer, $wgScriptPath;
+        $wgOut->addScript("<style>
+            #avoidButtons {
+                margin-top: 15px;
+                text-align: center;
+                width: 100%;
+            }
+            
+            #footer {
+                display: none;
+            }
+        </style>");
+        $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js'></script>");
     }
     
     static function disableSubTabs($wgOut, $skin){

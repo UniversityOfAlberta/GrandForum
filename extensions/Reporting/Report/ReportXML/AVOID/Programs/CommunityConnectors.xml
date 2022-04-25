@@ -10,7 +10,7 @@
                     $("#reportHeader").hide();
                     $("#reportHeader").next().hide();
                 </script>
-                <div class='program-body' style='overflow: auto;'>
+                <div style='overflow: auto;'>
                     
                     <div style='display:flex; align-items: center;'>
                         <div class='program-header'>

@@ -36,6 +36,7 @@ autoload_register('GrandObjects/API/CRM');
 autoload_register('GrandObjects/API/DataCollection');
 autoload_register('GrandObjects/API/AvoidResource');
 autoload_register('GrandObjects/API/AskAnExpertEvent');
+autoload_register('GrandObjects/API/ActionPlan');
 
 global $apiRequest;
 // Person
@@ -212,7 +213,7 @@ $apiRequest->addAction('Hidden','datacollection', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:id', 'DataCollectionAPI');
 $apiRequest->addAction('Hidden','datacollection/:personId/:page', 'DataCollectionAPI');
 
-//AVOID Resource
+// AVOID Resource
 $apiRequest->addAction('Hidden','avoidResource', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResource/:id', 'AvoidResourceAPI');
 $apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAPI');
@@ -221,13 +222,16 @@ $apiRequest->addAction('Hidden','avoidResources/:cat/', 'AvoidResourceCategoryAP
 $apiRequest->addAction('Hidden','askanexpert', 'AskAnExpertEventAPI');
 $apiRequest->addAction('Hidden','askanexpert/:id', 'AskAnExpertEventAPI');
 
+// AVOID ActionPlan
+$apiRequest->addAction('Hidden','actionplan', 'ActionPlanAPI');
+$apiRequest->addAction('Hidden','actionplan/:id', 'ActionPlanAPI');
+
 function addScript($file){
     global $wgServer, $wgScriptPath;
     echo "<script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/GrandObjects/BackboneModels/$file.js?".filemtime("extensions/GrandObjects/BackboneModels/$file.js")."'></script>\n";
 }
 
 function createModels(){
-
     addScript("RelationModel");
     addScript("RangeCollection");
     addScript("Thread");
@@ -260,6 +264,7 @@ function createModels(){
     addScript("DataCollection");
     addScript("AvoidResource");
     addScript("AskAnExpertEvent");
+    addScript("ActionPlan");
     return true;
 }
 ?>

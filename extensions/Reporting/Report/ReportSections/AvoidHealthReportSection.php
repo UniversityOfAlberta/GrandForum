@@ -37,7 +37,7 @@ class AvoidHealthReportSection extends EditableReportSection {
         }
         
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                             <div id='reportBody' style='min-height: 400px;font-size: 1.5em; line-height: 1.5em;overflow:hidden;'>");
+                             <div id='reportBody' style='min-height: 400px;overflow:hidden;'>");
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
                 $(document).ready(function(){

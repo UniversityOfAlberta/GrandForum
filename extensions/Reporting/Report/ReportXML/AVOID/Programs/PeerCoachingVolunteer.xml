@@ -10,7 +10,7 @@
                     $("#reportHeader").hide();
                     $("#reportHeader").next().hide();
                 </script>
-                <div class='program-body' style='overflow: auto;'>
+                <div style='overflow: auto;'>
                     <img src="{$wgServer}{$wgScriptPath}/skins/man3.png" style='float: right; height: 175px; transform: scaleX(-1);' />
                     <div style='display:flex; align-items: center;'>
                         <div class='program-header'>
@@ -72,7 +72,7 @@
                 <div id='register' style='display: none;'>
             ]]>
         </Static>
-        <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" default="{$user_name}">
+        <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" width="250px" default="{$user_name}">
             <![CDATA[
                 <table style="width:100%;">
                     <tr>
@@ -81,7 +81,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="address" type="Text" blobItem="ADDRESS" blobType="BLOB_TEXT">
+        <ReportItem id="address" type="Text" blobItem="ADDRESS" blobType="BLOB_TEXT" width="250px">
             <![CDATA[
                     <tr>
                         <td class="label required">Mailing address:</td>
@@ -89,7 +89,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="phone" type="Text" blobItem="PHONE" blobType="BLOB_TEXT">
+        <ReportItem id="phone" type="Text" blobItem="PHONE" blobType="BLOB_TEXT" width="250px">
             <![CDATA[
                     <tr>
                         <td class="label required">Phone Number:</td>
@@ -97,7 +97,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" default="{$user_email}">
+        <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" width="250px" default="{$user_email}">
             <![CDATA[
                     <tr>
                         <td class="label required">Email:</td>
@@ -105,7 +105,7 @@
                     </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="age" type="Text" blobItem="AGE" blobType="BLOB_TEXT">
+        <ReportItem id="age" type="Text" blobItem="AGE" blobType="BLOB_TEXT" width="250px">
             <![CDATA[
                     <tr>
                         <td class="label required">Age:</td>

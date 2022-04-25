@@ -147,7 +147,9 @@ $egAnnokiExtensions['CommunityMap'] = array('name' => 'CommunityMap',
 
 $egAnnokiExtensions['AskAnExpertPage'] = array('name' => 'AskAnExpertPage',
                                          'path' => "$IP/extensions/AskAnExpert/AskAnExpert.php");
-
+                               
+$egAnnokiExtensions['ActionPlan'] = array('name' => 'ActionPlan',
+                                          'path' => "$IP/extensions/ActionPlan/ActionPlan.php");
 
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){

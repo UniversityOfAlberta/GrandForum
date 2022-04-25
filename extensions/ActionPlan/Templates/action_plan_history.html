@@ -1,0 +1,12 @@
+<% if(this.model.length > 0){ %>
+    <p style="margin-bottom: 0;"><b>Action Plans Log - Review your accomplishments!</b></p>
+    <div style="max-height: 9em; overflow-y: auto;">
+    <ul>
+        <% this.model.each(function(action){ %>
+            <% if(action.get('submitted')){ %>
+                <li><%= dateTimeHelpers.formatDate(action.get('date'), 'yyyy-MM-dd', 'd MMMM, yyyy') %></li>
+            <% } %>
+        <% }) %>
+    </ul>
+    </div>
+<% } %>

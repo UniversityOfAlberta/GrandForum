@@ -32,10 +32,9 @@ class AddLatLongAvoidResource extends AbstractMigration
     public function up()
     {
         $table = $this->table('grand_avoid_resources');
-	$table->addColumn('lat', 'string')
-	      ->addColumn('lon', 'string')
+        $table->addColumn('lat', 'string')
+              ->addColumn('lon', 'string')
               ->save();
-
     }
 
 }

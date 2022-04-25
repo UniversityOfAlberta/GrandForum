@@ -50,7 +50,7 @@ pageRouter.on('route:viewCategory', function(category_code) {
     var pharms = new AvoidResources();
     pharms.cat = category_code;
     this.currentView = new PharmacyMapView({el: $("#currentView"), model: pharms});
-    this.currentView.findCategory();
+    this.currentView.addCategoryButtons();
 });
 
 

@@ -50,7 +50,7 @@ class PharmacyMap extends BackbonePage {
     }
     
     static function createTab(&$tabs){
-        $tabs["Map"] = TabUtils::createTab("Community Program Library");
+        $tabs["Map"] = TabUtils::createTab("Community Programs", "", "");
         return true;
     }
     
@@ -59,35 +59,12 @@ class PharmacyMap extends BackbonePage {
         if($wgUser->isLoggedIn()){
             if(AVOIDDashboard::hasSubmittedSurvey()){
                 $selected = @($wgTitle->getText() == "PharmacyMap") ? "selected" : false;
-                $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Program Library", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);
+                $tabs["Map"]['subtabs'][] = TabUtils::createSubTab("Community Programs", "{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap", $selected);
             }
         }
         return true;
     }
-    
-    static function createToolboxLinks(&$toolbox){
-        global $wgServer, $wgScriptPath, $wgUser,$wgOut,$wgLang;
-        $me = Person::newFromWgUser();
-        $title_locate = "Locate a Community";
-        if($wgLang->getCode() == "fr"){
-             $title_locate = "Localiser une Pharmacie";
-        }
-        $title_add = "Add a Community";
-        if($wgLang->getCode() == "fr"){
-             $title_add = "Ajouter une Pharmacie";
-        }
-        if($me->isLoggedIn()){
-            if(AVOIDDashboard::hasSubmittedSurvey()){
-                $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_locate, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap");
-            }
-        }
-        if($me->isRoleAtLeast(HQP)){
-            if(AVOIDDashboard::hasSubmittedSurvey()){
-                $toolbox['Other']['links'][] = TabUtils::createToolboxLink($title_add, "$wgServer$wgScriptPath/index.php/Special:PharmacyMap#/add");
-            }
-        }
-        return true;
-    }
+
 }
 
 ?>

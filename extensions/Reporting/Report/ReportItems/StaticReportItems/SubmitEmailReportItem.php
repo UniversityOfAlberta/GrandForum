@@ -13,7 +13,7 @@ class SubmitEmailReportItem extends StaticReportItem {
         $message = str_replace("'", "&#39;", $this->getAttr('message', "Thank you for submitting"));
         $html = "<iframe id='programFrame' style='width:100%;display:none;' src=''></iframe>
                  <div id='program-messages'></div>
-                 <div class='program-body'>
+                 <div>
                      <a id='programSubmit' class='program-button' style='min-width: 100px; text-align: center;' id='{$this->getPostId()}' type='button' value='Submit'>Submit <span style='display:none;' class='throbber'></span></a>
                  </div>
                  <script type='text/javascript'>

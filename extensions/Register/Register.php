@@ -87,15 +87,20 @@ class Register extends SpecialPage{
         $formTable = new FormTable("form_table");
         
         $firstNameLabel = new Label("first_name_label", "<span class='en'>First Name</span><span class='fr'>Prénom</span>", "The first name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOSPACES);
+        $firstNameField = new TextField("first_name_field", "First Name", "", VALIDATE_NOT_NULL);
         $firstNameRow = new FormTableRow("first_name_row");
         $firstNameRow->append($firstNameLabel)->append($firstNameField->attr('size', 20));
         
         $lastNameLabel = new Label("last_name_label", "<span class='en'>Last Name</span><span class='fr'>Nom</span>", "The last name of the user (cannot contain spaces)", VALIDATE_NOT_NULL);
-        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOSPACES);
+        $lastNameField = new TextField("last_name_field", "Last Name", "", VALIDATE_NOT_NULL);
         $lastNameRow = new FormTableRow("last_name_row");
         $lastNameRow->append($lastNameLabel)->append($lastNameField->attr('size', 20));
-        $lastNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
+        
+        $userNameLabel = new Label("user_name_label", "<span class='en'>Username</span><span class='fr'>Username</span>", "The username", VALIDATE_NOT_NULL);
+        $userNameField = new TextField("user_name_field", "Last Name", "", VALIDATE_NOT_NULL);
+        $userNameRow = new FormTableRow("user_name_row");
+        $userNameRow->append($userNameLabel)->append($userNameField->attr('size', 20));
+        $userNameField->registerValidation(new UniqueUserValidation(VALIDATION_POSITIVE, VALIDATION_ERROR));
         
         $emailLabel = new Label("email_label", "<span class='en'>Email</span><span class='fr'>Courriel</span>", "The email address of the user", VALIDATE_NOT_NULL);
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
@@ -124,6 +129,7 @@ class Register extends SpecialPage{
         
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
+                  ->append($userNameRow)
                   ->append($emailRow);
         if($config->getValue('networkName') == 'ELITE'){
             $formTable->append($typeRow);
@@ -176,6 +182,19 @@ class Register extends SpecialPage{
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            $('[name=first_name_field], [name=last_name_field]').on('input', function(){
+                var username = $('[name=first_name_field]').val() + '.' + $('[name=last_name_field]').val();
+                username = username.replaceAll(' ', '')
+                                   .replaceAll(\"'\", '');
+                if(!$('[name=user_name_field]').hasClass('changed')){
+                    $('[name=user_name_field]').val(username);
+                }
+            });
+            $('[name=user_name_field]').on('input', function(){
+                $('[name=user_name_field]').addClass('changed');
+            });
+        </script>");
     }
     
     function handleSubmit($wgOut){
@@ -185,12 +204,12 @@ class Register extends SpecialPage{
         if($status){
             $form->getElementById('first_name_field')->setPOST('wpFirstName');
             $form->getElementById('last_name_field')->setPOST('wpLastName');
+            $form->getElementById('user_name_field')->setPOST('wpName');
             $form->getElementById('email_field')->setPOST('wpEmail');
             
             $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
             $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
-            $_POST['wpName'] = ucfirst(str_replace("&#39;", "", strtolower($_POST['wpFirstName']))).".".ucfirst(str_replace("&#39;", "", strtolower($_POST['wpLastName'])));
             $_POST['candidate'] = "1";
             if($config->getValue('networkName') == "ADA" || 
                $config->getValue('networkName') == "CFN" ||
@@ -219,8 +238,14 @@ class Register extends SpecialPage{
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
             
-            if(!preg_match("/^[À-Ÿa-zA-Z\-]+\.[À-Ÿa-zA-Z\-]+$/", $_POST['wpName'])){
-                $wgMessage->addError("This User Name is not in the format 'FirstName.LastName'");
+            if(strlen($_POST['wpName']) < 5){
+                $wgMessage->addError("This User Name must be atleast 5 characters long.");
+            }
+            else if(!preg_match("/[À-Ÿa-zA-Z]+/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name must include atleast 1 alphabet character.");
+            }
+            else if(!preg_match("/^[À-Ÿa-zA-Z\-\.0-9]+$/", $_POST['wpName'])){
+                $wgMessage->addError("This User Name must only inlcude alphanumeric characters, periods and dashes.");
             }
             else if($_POST['wpFirstName'] == $_POST['wpLastName']){
                 // Help filter out spam bots

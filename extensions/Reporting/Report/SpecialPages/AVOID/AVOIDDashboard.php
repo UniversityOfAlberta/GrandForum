@@ -41,8 +41,18 @@ class AVOIDDashboard extends SpecialPage {
         return $objs;
     }
     
+    function generateReport(){
+        $api = new UserFrailtyIndexAPI();
+        $scores = $api->getFrailtyScore($me->getId());
+        
+        exit;
+    }
+    
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
+        if(isset($_GET['generateReport'])){
+            $this->generateReport();
+        }
         $dir = dirname(__FILE__) . '/';
         $me = Person::newFromWgUser();
         $_GET['id'] = $me->getId();
@@ -89,120 +99,194 @@ class AVOIDDashboard extends SpecialPage {
         }
         $communityResources = $this->sort($communityResources, $tags);
         
-        $wgOut->setPageTitle("AVOID Dashboard");
+        $wgOut->setPageTitle("My Profile");
         $wgOut->addHTML("<div class='modules'>");
         
         // Frailty Status
         $api = new UserFrailtyIndexAPI();
-        $score = $api->getFrailtyScore($me->getId());
+        $scores = $api->getFrailtyScore($me->getId());
+        $score = $scores["Total"];
+        $label = $scores["Label"];
         $frailty = "";
-        if($score >= 0 && $score <= 3){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>no risk</span> to becoming frail. This program can provide you with information and support about healthy behaviour to help you maintain a low level of risk, and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        if($label == "no risk"){
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
-        else if($score > 3 && $score <= 8){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>low risk</span> to becoming frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        else if($label == "low risk"){
+            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
-        else if($score > 8 && $score <= 16){
-            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>medium risk</span> of being frail. Always consult your physician for clinical support and use this program to find information and support for healthy behaviour that will help prevent and mitigate the onset of frailty as you age. We will ask again in 6 months so you can see how you have progressed.
+        else if($label == "medium risk"){
+            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.
 ";
         }
-        else if($score > 16){
-            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>high risk</span> of being frail.  Please  consult your physician before using any of the behavioural supports provided in this program. We will ask again in 6 months so you can see how you have progressed.";
+        else if($label == "high risk"){
+            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
         }
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
-                            <div class='program-body' style='margin-top: 0.5em; margin-bottom: 0.75em; width: 100%;'>
-                                {$frailty}<br />
-                                <a style='margin-top:0.5em; display:inline-block' href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty</a>
+                            <div class='program-body' style='width: 100%;'>
+                                <p>{$frailty}</p>
+                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
+                                <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
+                                <b>Where do I go from here?</b>
+                                <ul>
+                                    <li>Review your report and recommendations</li>
+                                    <li>Review the education recommended to you, or of interest</li>
+                                    <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
+                                    <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
+                                </ul>
                             </div>
                          </div>");
         
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>Upcoming Events</h1>
-                            <span class='program-body'>{$events->getText()}</span>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Upcoming Events</h1>
+                            <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
         // Education
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Modules <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>");
-        $cols = 3;
-        $n = 0;
-        foreach($modules as $key => $module){
-            if($key >= $cols){ break; }
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=EducationModules/{$module->id}";
-            $percent = EducationResources::completion($module->id);
-            $wgOut->addHTML("<a id='module{$module->id}' title='{$module->title}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$module->id}/thumbnail.png' alt='{$module->title}' />
-                <div class='module-progress'>
-                    <div class='module-progress-bar' style='width:{$percent}%;'></div>
-                    <div class='module-progress-text'>".number_format($percent)."% Complete</div>
-                </div>
-            </a>");
-            $n++;
-        }
-        if($n % $cols > 0){
-            for($i = 0; $i < $cols - ($n % $cols); $i++){
-                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
-            }
-        }
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan <small>(Work in progress)</small></h1>");
+        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan Overview and review the Ingredients for Change Module to increase your chance of success.</p>
+                            <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
+                        
+                            <p>
+                                <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/<a id='submitActionPlan' href='#'>Submit</a>)</div>
+                            </p>
+                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
+                        </div>");
         $wgOut->addHTML("</div>");
         
         // Programs
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:Programs'>View All</a></h1>");
-        
-        $cols = 3;
-        $n = 0;
-        foreach($programs as $key => $program){
-            if($key >= $cols){ break; }
-            $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-            $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
-                <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
-            </a>");
-            $n++;
-        }
-        if($n % $cols > 0){
-            for($i = 0; $i < $cols - ($n % $cols); $i++){
-                $wgOut->addHTML("<div class='module-empty module-{$cols}cols'></div>");
-            }
-        }
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
+        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <div id='actionPlanTracker' style='display:none;'></div>
+                            <div id='pastActionPlans'></div>
+                            <p><b>Education Module Progress</b></p>
+                        </div>");
         $wgOut->addHTML("</div>");
         
-        // Education Resources
-        $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Education Resources <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:EducationResources'>View All</a></h1>
-                            <div class='program-body'><ul>");
-        $cols = 4;
-        foreach($resources as $key => $resource){
-            if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a class='resource' data-resource='{$resource->category}-{$resource->file}' target='_blank' href='{$wgServer}{$wgScriptPath}/EducationResources/{$resource->category}/{$resource->file}'>{$resource->title}</a></li>");
-        }
-        $wgOut->addHTML("</ul></div></div>");
-                         
-        // Community Program Library
-        $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Community Programs <a style='float: right; font-size: 0.75em; color:white;' href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap'>View All</a></h1>
-                            <div class='program-body'><ul>");
-        $cols = 4;
-        foreach($communityResources as $key => $category){
-            if($key >= $cols){ break; }
-            $wgOut->addHTML("<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/{$category->code}'>{$category->text}</a></li>");
-        }
-        $wgOut->addHTML("</ul></div></div>");
-        
         $wgOut->addHTML("</div>
+        <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
+            <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
+        </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
-            $('a.resource').click(function(){
-                dc.init(me.get('id'), $(this).attr('data-resource'));
-                dc.increment('count');
+            $('#viewReport').click(function(){
+                $('#bodyContent').css('overflow-y', 'hidden');
+                if($('#reportDialog', $('.ui-dialog')).length == 0){
+                    $('#reportDialog').dialog({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        width: 'auto',
+                        height: $(window).height()*0.90,
+                        position: { 'my': 'center', 'at': 'center' },
+                        close: function(){
+                            $('#bodyContent').css('overflow-y', 'auto');
+                            viewFullScreen = false;
+                        }
+                    });
+                    $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
+                    $('.ui-dialog-titlebar').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('#viewFullScreen', $('.ui-dialog')).click(function(){
+                        viewFullScreen = !viewFullScreen;
+                        $(window).resize();
+                    });
+                }
+                else{
+                    $('#reportDialog').dialog('open');
+                }
+                $(window).resize();
             });
+            
+            var actionPlans = new ActionPlans();
+            var actionPlanHistoryView = new ActionPlanHistoryView({model: actionPlans, el: $('#pastActionPlans')});
+            var tracker = undefined;
+            actionPlans.on('sync', function(){
+                if(actionPlans.length > 0 && !actionPlans.at(0).get('submitted')){
+                    $('#newPlan').hide();
+                    $('#currentPlan').show();
+                    $('#actionPlanTracker').show();
+                    if(tracker == undefined){
+                        tracker = new ActionPlanTrackerView({model: actionPlans.at(0), el: $('#actionPlanTracker')});
+                    }
+                }
+                else{
+                    $('#newPlan').show();
+                    $('#currentPlan').hide();
+                    $('#actionPlanTracker').hide();
+                    if(tracker != undefined){
+                        tracker.undelegateEvents();
+                    }
+                    tracker = undefined;
+                }
+            });
+            actionPlans.fetch();
+
+            $('#createActionPlan').click(function(){
+                var createActionPlanView = new ActionPlanCreateView({model: new ActionPlan(), actions: actionPlans, el: $('#createActionPlanDialog')});
+            });
+            
+            $('#viewActionPlan').click(function(){
+                var viewActionPlan = new ActionPlanView({model: actionPlans.at(0), el: $('#viewActionPlanDialog')});
+            });
+            
+            $('#submitActionPlan').click(function(){
+                actionPlans.at(0).set('submitted', true);
+                actionPlans.at(0).save();
+            });
+            
+            var viewFullScreen = false;
+            var initialFrameWidth = $('#reportDialog').width();
+            $('#frailtyFrame').width('100%');
+            
+            $(window).resize(function(){
+                if(viewFullScreen){
+                    $('#viewFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                        $('.ui-dialog').css('padding', 0)
+                                       .css('border-width', 0);
+                        $('#reportDialog').dialog({
+                            height: $(window).height(),
+                            width: $(window).width()
+                        });
+                        $('#reportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                }
+                else{
+                    $('.ui-dialog').css('padding', 2)
+                                   .css('border-width', 1);
+                                   
+                    $('#viewFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    
+                    var desiredWidth = $(window).width()*0.75;
+                    if(window.matchMedia('(max-width: 767px)').matches){
+                        desiredWidth = $(window).width()*0.99;
+                    }
+                    else if(window.matchMedia('(max-width: 1024px)').matches){
+                        desiredWidth = $(window).width()*0.80;
+                    }
+                    
+                    var scaleFactor = desiredWidth/initialFrameWidth;
+                    if($('#reportDialog').is(':visible')){
+                        $('#reportDialog').dialog({
+                            height: $(window).height()*0.90,
+                            width: initialFrameWidth*scaleFactor
+                        });
+                        $('#reportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                    }
+                }
+            }).resize();
         </script>");
     }
     

@@ -3,11 +3,14 @@
 class ElseReportItemSet extends IfReportItemSet {
     
     function checkCondition(){
+        $ret = true;
         $prev = $this->getPrev();
-        if($prev instanceof IfReportItemSet || $prev instanceof IfReportItem){
-            return !$this->getPrev()->checkCondition();
+        while($prev instanceof IfReportItemSet || $prev instanceof IfReportItem){
+            $cond = $prev->getAttr("if", '');
+            $ret = $ret && !($cond == "1");
+            $prev = $prev->getPrev();
         }
-        return false;
+        return $ret;
     }
 
 }

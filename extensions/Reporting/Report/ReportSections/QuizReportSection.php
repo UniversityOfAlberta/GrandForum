@@ -37,7 +37,7 @@ class QuizReportSection extends EditableReportSection {
         }
         
         $wgOut->addHTML("<div><form action='$action' autocomplete='off' method='post' name='report' enctype='multipart/form-data'$autosave>
-                             <div id='reportBody' class='program-body' style='min-height: 500px;'>
+                             <div id='reportBody' style='min-height: 500px;'>
                              <div id='reportHeader' style='margin:0.5em 0 0.5em 0; font-size:2em; line-height: 1em; font-weight: bold;'>{$number}{$this->title}</div>");
         if(!$this->checkPermission('w') || !DBFunctions::DBWritable()){
             $wgOut->addHTML("<script type='text/javascript'>
@@ -99,7 +99,6 @@ class QuizReportSection extends EditableReportSection {
                     }, 100);
                 });
             }
-            $('#reportBody input[type=radio], #reportBody input[type=checkbox]').css('vertical-align', 'baseline').css('height', '1.5em');
             dc.radio('{$this->id}', 'input[type=radio]');
         </script>");
     }

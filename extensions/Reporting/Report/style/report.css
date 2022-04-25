@@ -228,6 +228,10 @@ table.small textarea {
     padding-bottom:5px;
 }
 
+.program-body #reportFooter input {
+    width: 140px !important;
+}
+
 #reportInstructions {
     font-size: 11px;
     display:table-cell;

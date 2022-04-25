@@ -57,7 +57,8 @@ class Programs extends SpecialPage {
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
-        $tabs["Programs"] = TabUtils::createTab("AVOID Programs");
+        $tabs["Programs"] = TabUtils::createTab("<span class='desktop-text'>AVOID Programs</span>
+                                                 <span class='mobile-text'>Programs</span>");
         return true;
     }
     

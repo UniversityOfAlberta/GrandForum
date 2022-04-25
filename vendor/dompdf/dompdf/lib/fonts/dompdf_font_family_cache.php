@@ -1,0 +1,100 @@
+<?php return function ($fontDir, $rootDir) {
+return array (
+  'sans-serif' => array(
+    'normal' => $fontDir . '/Helvetica',
+    'bold' => $fontDir . '/Helvetica-Bold',
+    'italic' => $fontDir . '/Helvetica-Oblique',
+    'bold_italic' => $fontDir . '/Helvetica-BoldOblique',
+  ),
+  'times' => array(
+    'normal' => $fontDir . '/Times-Roman',
+    'bold' => $fontDir . '/Times-Bold',
+    'italic' => $fontDir . '/Times-Italic',
+    'bold_italic' => $fontDir . '/Times-BoldItalic',
+  ),
+  'times-roman' => array(
+    'normal' => $fontDir . '/Times-Roman',
+    'bold' => $fontDir . '/Times-Bold',
+    'italic' => $fontDir . '/Times-Italic',
+    'bold_italic' => $fontDir . '/Times-BoldItalic',
+  ),
+  'courier' => array(
+    'normal' => $fontDir . '/Courier',
+    'bold' => $fontDir . '/Courier-Bold',
+    'italic' => $fontDir . '/Courier-Oblique',
+    'bold_italic' => $fontDir . '/Courier-BoldOblique',
+  ),
+  'helvetica' => array(
+    'normal' => $fontDir . '/Helvetica',
+    'bold' => $fontDir . '/Helvetica-Bold',
+    'italic' => $fontDir . '/Helvetica-Oblique',
+    'bold_italic' => $fontDir . '/Helvetica-BoldOblique',
+  ),
+  'zapfdingbats' => array(
+    'normal' => $fontDir . '/ZapfDingbats',
+    'bold' => $fontDir . '/ZapfDingbats',
+    'italic' => $fontDir . '/ZapfDingbats',
+    'bold_italic' => $fontDir . '/ZapfDingbats',
+  ),
+  'symbol' => array(
+    'normal' => $fontDir . '/Symbol',
+    'bold' => $fontDir . '/Symbol',
+    'italic' => $fontDir . '/Symbol',
+    'bold_italic' => $fontDir . '/Symbol',
+  ),
+  'serif' => array(
+    'normal' => $fontDir . '/Times-Roman',
+    'bold' => $fontDir . '/Times-Bold',
+    'italic' => $fontDir . '/Times-Italic',
+    'bold_italic' => $fontDir . '/Times-BoldItalic',
+  ),
+  'monospace' => array(
+    'normal' => $fontDir . '/Courier',
+    'bold' => $fontDir . '/Courier-Bold',
+    'italic' => $fontDir . '/Courier-Oblique',
+    'bold_italic' => $fontDir . '/Courier-BoldOblique',
+  ),
+  'fixed' => array(
+    'normal' => $fontDir . '/Courier',
+    'bold' => $fontDir . '/Courier-Bold',
+    'italic' => $fontDir . '/Courier-Oblique',
+    'bold_italic' => $fontDir . '/Courier-BoldOblique',
+  ),
+  'dejavu sans' => array(
+    'bold' => $fontDir . '/DejaVuSans-Bold',
+    'bold_italic' => $fontDir . '/DejaVuSans-BoldOblique',
+    'italic' => $fontDir . '/DejaVuSans-Oblique',
+    'normal' => $fontDir . '/DejaVuSans',
+  ),
+  'dejavu sans mono' => array(
+    'bold' => $fontDir . '/DejaVuSansMono-Bold',
+    'bold_italic' => $fontDir . '/DejaVuSansMono-BoldOblique',
+    'italic' => $fontDir . '/DejaVuSansMono-Oblique',
+    'normal' => $fontDir . '/DejaVuSansMono',
+  ),
+  'dejavu serif' => array(
+    'bold' => $fontDir . '/DejaVuSerif-Bold',
+    'bold_italic' => $fontDir . '/DejaVuSerif-BoldItalic',
+    'italic' => $fontDir . '/DejaVuSerif-Italic',
+    'normal' => $fontDir . '/DejaVuSerif',
+  ),
+  'lato' => array(
+    'italic' => $fontDir . '/lato_italic_cdcb9897598adcb97505200ab6dc6a47',
+    'bold_italic' => $fontDir . '/lato_bold_italic_e07ad00867cb862a5addcac53480bd6d',
+    '900_italic' => $fontDir . '/lato_900_italic_0280907f0c78d8e27f694bc19860da33',
+    'normal' => $fontDir . '/lato_normal_7e89c2707278385e59b149142f779d6e',
+    'bold' => $fontDir . '/lato_bold_a37fb3b180e8dc9f478950eed9f4a19a',
+    '900' => $fontDir . '/lato_900_d0ec20a586fc4eabf7504efbeb83dff7',
+  ),
+  'nunito sans' => array(
+    'italic' => $fontDir . '/nunito_sans_italic_ae2aa49e07f41a2399d4ab6f43e26665',
+    '600_italic' => $fontDir . '/nunito_sans_600_italic_0c99ad488ad1365dd902d68d64bb44ab',
+    'bold_italic' => $fontDir . '/nunito_sans_bold_italic_652e5a0fd0d676a3bee50bfcb0c2052d',
+    '800_italic' => $fontDir . '/nunito_sans_800_italic_f7df78c081182250583b975c37fef027',
+    'normal' => $fontDir . '/nunito_sans_normal_5f8bd6dad1ddfe9cac6f687665f7ed79',
+    '600' => $fontDir . '/nunito_sans_600_7e399b19c90406d684d481f7a4636592',
+    'bold' => $fontDir . '/nunito_sans_bold_e10965010b4e0d9b6294c0e0c3342b95',
+    '800' => $fontDir . '/nunito_sans_800_45a3add0808c285c8daa2c8cdb045ba4',
+  ),
+);
+}; ?>
