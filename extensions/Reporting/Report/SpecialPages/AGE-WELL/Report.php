@@ -66,9 +66,9 @@ class Report extends AbstractReport {
         }*/
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate')){
-            if(date('Y-m-d') >= "2021-04-30"){
+            if(date('Y-m-d') >= "2022-04-29"){
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPApplication")) ? "selected" : false;
-                $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Award 2021", "{$url}HQPApplication", $selected);
+                $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Award 2022", "{$url}HQPApplication", $selected);
             }
         }
         if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){

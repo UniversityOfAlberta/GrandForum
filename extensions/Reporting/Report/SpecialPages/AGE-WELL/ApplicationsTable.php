@@ -425,6 +425,34 @@ class ApplicationsTable extends SpecialPage{
         $shrf->setBlobSection(HQP_APPLICATION_FORM);
         $shrf->setId("SHRF");
         
+        $uw = new CheckboxReportItem();
+        $uw->setBlobType(BLOB_ARRAY);
+        $uw->setBlobItem("HQP_APPLICATION_UW");
+        $uw->setBlobSection(HQP_APPLICATION_FORM);
+        $uw->setId("UW");
+        
+        $uofc = new CheckboxReportItem();
+        $uofc->setBlobType(BLOB_ARRAY);
+        $uofc->setBlobItem("HQP_APPLICATION_UOFC");
+        $uofc->setBlobSection(HQP_APPLICATION_FORM);
+        $uofc->setId("UOFC");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2022, "2022", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "UBC" => $ubc,
+                                                                                             "NBHRF" => $nbhrf,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "UW" => $uw,
+                                                                                             "UOFC" => $uofc,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords)));
+        
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2021, "2021", array("Level" => $level,
                                                                                              "Michael F. Harcourt" => $michael,
                                                                                              "Indigenous" => $ind,
