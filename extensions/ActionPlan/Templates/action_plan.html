@@ -7,3 +7,25 @@
 <h3>My Action Plan This Week</h3>
 <b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
 <%= nl2br(plan) %>
+
+<p><b>Action Plan Daily Tracker - Accomplished your plan today?</b></p>
+<table class='wikitable' style='width: 100%;'>
+    <tr>
+        <th style='width: 14.2%;'>Mon</th>
+        <th style='width: 14.2%;'>Tue</th>
+        <th style='width: 14.2%;'>Wed</th>
+        <th style='width: 14.2%;'>Thu</th>
+        <th style='width: 14.2%;'>Fri</th>
+        <th style='width: 14.2%;'>Sat</th>
+        <th style='width: 14.2%;'>Sun</th>
+     </tr>
+     <tr>
+        <td class='checkCell' align='center'><% if(tracker.Mon == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Tue == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Wed == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Thu == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Fri == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Sat == 1){ %> &#10003; <% } %></td>
+        <td class='checkCell' align='center'><% if(tracker.Sun == 1){ %> &#10003; <% } %></td>
+     </tr>
+</table>
