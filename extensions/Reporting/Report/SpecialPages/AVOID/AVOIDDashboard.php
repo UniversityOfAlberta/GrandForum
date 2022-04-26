@@ -108,7 +108,7 @@ class AVOIDDashboard extends SpecialPage {
         $score = $scores["Total"];
         $label = $scores["Label"];
         $frailty = "";
-        if($label == "no risk"){
+        if($label == "very low risk"){
             $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
