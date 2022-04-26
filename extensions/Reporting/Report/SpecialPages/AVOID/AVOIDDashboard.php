@@ -127,7 +127,7 @@ class AVOIDDashboard extends SpecialPage {
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body' style='width: 100%;'>
                                 <p>{$frailty}</p>
-                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
+                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a><br />
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
                                 <b>Where do I go from here?</b>
                                 <ul>
