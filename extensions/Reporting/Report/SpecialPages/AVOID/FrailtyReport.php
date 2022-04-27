@@ -416,10 +416,14 @@ If you need help with managing the medications you are on, visit the following C
     
     function generateReport(){
         global $wgServer, $wgScriptPath, $config;
+        $dir = dirname(__FILE__) . '/';
+        require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
         $me = Person::newFromWgUser();
         $api = new UserFrailtyIndexAPI();
         $scores = $api->getFrailtyScore($me->getId());
-        
+
+        $pdfNoDisplay = (!isset($_GET['preview'])) ? ".pdfnodisplay { display:none }" : "";
+
         $margins = array('top'     => 1,
                          'right'   => 1,
                          'bottom'  => 1,
@@ -471,6 +475,8 @@ If you need help with managing the medications you are on, visit the following C
                                 margin-right: 3%;
                                 vertical-align: middle;
                             }
+                            
+                            $pdfNoDisplay
                             
                             .title-box {
                                 text-align: center;
@@ -607,6 +613,7 @@ If you need help with managing the medications you are on, visit the following C
                                 Report from Healthy Aging Assessment
                             </div>
                             <div class='frailtyStatus'>My Frailty Status: <u>{$scores['Label']}</u></div>
+                            <div class='pdfnodisplay' style='margin-top:1em;'>Your recommendations with direct links to resources are below.<br />You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.</div>
                         </div>
                         <div class='list'>
                             <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />Your frailty status is a calculation based on your stated health outcomes that may be improved by meeting the behavioural recommendations for each AVOID component. This report reflects your answers in the assessment for those two sections. Where a risk was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no risks were identified from your answers.</p>
@@ -669,6 +676,23 @@ If you need help with managing the medications you are on, visit the following C
         $margin = (isset($_GET['preview'])) ? 0 : 5;
         $html = str_replace("↴", "<span class='cb' style='margin-top:{$margin}px; margin-bottom:-{$margin}px; vertical-align: top; font-family: dejavu sans; font-style: initial;'>&nbsp;↴&nbsp;</span><br />", $html);
         $html = str_replace("→", "<span class='cb' style='margin-top:".($margin/2)."px; margin-bottom:-".($margin/2)."px; vertical-align: top; font-family: dejavu sans; font-style: initial;'>&nbsp;→&nbsp;</span>", $html);
+        
+        if(!isset($_GET['preview'])){
+            $dom = new SmartDomDocument();
+            $dom->loadHTML($html);
+            $as = $dom->getElementsByTagName("a");
+            for($i=0; $i<$as->length; $i++){
+                $a = $as->item($i);
+                if($a->getAttribute('class') != 'anchor' && 
+                   $a->getAttribute('class') != 'mce-item-anchor' &&
+                   $a->getAttribute('class') != 'externalLink' && 
+                   $a->textContent != ""){
+                    $i--;
+                    DOMRemove($a);
+                }
+            }
+            $html = "$dom";
+        }
         
         return $html;
     }

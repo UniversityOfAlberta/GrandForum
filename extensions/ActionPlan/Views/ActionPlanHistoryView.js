@@ -8,7 +8,12 @@ ActionPlanHistoryView = Backbone.View.extend({
     },
 
     events: {
-        
+        "click .viewActionPlan": "viewActionPlan"
+    },
+    
+    viewActionPlan: function(e){
+        var id = $(e.target).attr('data-id');
+        var viewActionPlan = new ActionPlanView({model: actionPlans.get(id), el: $('#viewActionPlanDialog')});
     },
 
     render: function (){

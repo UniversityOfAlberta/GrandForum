@@ -187,11 +187,15 @@ class Register extends SpecialPage{
                 var username = $('[name=first_name_field]').val() + '.' + $('[name=last_name_field]').val();
                 username = username.replaceAll(' ', '')
                                    .replaceAll(\"'\", '');
+                username = username.charAt(0).toUpperCase() + username.slice(1);
                 if(!$('[name=user_name_field]').hasClass('changed')){
                     $('[name=user_name_field]').val(username);
                 }
             });
             $('[name=user_name_field]').on('input', function(){
+                var username = $('[name=user_name_field]').val();
+                username = username.charAt(0).toUpperCase() + username.slice(1);
+                $('[name=user_name_field]').val(username);
                 $('[name=user_name_field]').addClass('changed');
             });
         </script>");
@@ -237,7 +241,7 @@ class Register extends SpecialPage{
             
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
-            
+            $_POST['wpName'] = ucfirst($_POST['wpName']);
             if(strlen($_POST['wpName']) < 5){
                 $wgMessage->addError("This User Name must be atleast 5 characters long.");
             }

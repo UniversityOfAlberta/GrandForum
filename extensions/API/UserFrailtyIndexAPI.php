@@ -409,7 +409,7 @@ class UserFrailtyIndexAPI extends API{
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
-            $scores["Label"] = "no risk";
+            $scores["Label"] = "very low risk";
         }
         else if($scores["Total"] > 3 && $scores["Total"] <= 8){
             $scores["Label"] = "low risk";

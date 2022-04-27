@@ -108,7 +108,7 @@ class AVOIDDashboard extends SpecialPage {
         $score = $scores["Total"];
         $label = $scores["Label"];
         $frailty = "";
-        if($label == "no risk"){
+        if($label == "very low risk"){
             $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
 ";
         }
@@ -127,7 +127,7 @@ class AVOIDDashboard extends SpecialPage {
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body' style='width: 100%;'>
                                 <p>{$frailty}</p>
-                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a> (<a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'>Printable</a>)<br />
+                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a><br />
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
                                 <b>Where do I go from here?</b>
                                 <ul>
@@ -155,8 +155,9 @@ class AVOIDDashboard extends SpecialPage {
                         
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/<a id='submitActionPlan' href='#'>Submit</a>)</div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
                             </p>
+                            <div id='actionPlanTracker' style='display:none;'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
                         </div>");
@@ -166,7 +167,6 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
-                            <div id='actionPlanTracker' style='display:none;'></div>
                             <div id='pastActionPlans'></div>
                             <p><b>Education Module Progress</b></p>
                         </div>");

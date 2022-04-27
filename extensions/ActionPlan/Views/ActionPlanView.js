@@ -20,19 +20,7 @@ ActionPlanView = Backbone.View.extend({
                 resizable: false,
                 width: 'auto',
                 height: $(window).height()*0.85,
-                position: { 'my': 'center', 'at': 'center' },
-                buttons: {
-                    'Save': {
-                        text: 'Create Action Plan',
-                        click: function(){
-                            this.model.save();
-                            this.dialog.dialog('close');
-                        }.bind(this)
-                    },
-                    'Cancel': function(){
-                        this.dialog.dialog('close');
-                    }.bind(this)
-                }
+                position: { 'my': 'center', 'at': 'center' }
             });
             $('.ui-dialog').addClass('program-body');
             $(window).resize(function(){
