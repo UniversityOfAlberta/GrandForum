@@ -155,7 +155,7 @@ class AVOIDDashboard extends SpecialPage {
                         
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a>/<a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
