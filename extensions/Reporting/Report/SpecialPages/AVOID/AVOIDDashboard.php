@@ -131,8 +131,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
                                 <b>Where do I go from here?</b>
                                 <ul>
-                                    <li>Review your report and recommendations</li>
-                                    <li>Review the education recommended to you, or of interest</li>
+                                    <li>Review your personal report and the education recommended, or of interest to you</li>
                                     <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
                                     <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
                                 </ul>
