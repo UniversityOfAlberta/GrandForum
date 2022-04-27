@@ -1,7 +1,10 @@
 <div id="dialogMessages"></div>
 <form id="eventregisterform" class="navbar-form">
 <table id="userData">
+	    <% if(!this.isQuestion){ %>
+
     <tr>
+
         <td class="label">First Name:</td>
         <td class="field"><input type="text" id="firstname" name="firstname" value="<%= userFirstName %>"></td>
     </tr>
@@ -9,11 +12,12 @@
         <td class="label">Last Name:</td>
         <td class="field"><input type="text" id="lastname" name="lastname" value="<%= userLastName %>"></td>
     </tr>
+    <% } %>
     <tr>
         <td class="label">Email:</td>
         <td class="field"><input type="text" id="email" name="email" value="<%= useremail %>"></td>
     </tr>
-    <% if(this.addQuestion){ %>
+    <% if(this.isQuestion){ %>
         <tr>
             <td class="label">Question:</td>
             <td class="field"><textarea style='width:100%;height:100px;' id='question' name='question'></textarea></td>

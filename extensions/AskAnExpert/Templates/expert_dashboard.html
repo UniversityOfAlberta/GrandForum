@@ -7,15 +7,14 @@
 		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 180px;' />
         </div>
 	<div style="position:absolute;top:0px;right:10px;">
-		<% if(allowedRoles.includes("Admin")){%>
-                <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a--!>
-	
-		<a href="#" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a>
-
-                <% } %>
+		<% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
+            <!--a href="<%= wgServer+wgScriptPath%>/index.php/Special:AskAnExpert#/1/edit" id="editeventbtn" style="float:right" class="program-button" title="Edit">Edit Event</a-->
+            <a href="#" id="editeventbtn" style="float:right" class="editbutton" title="Edit">Edit Event</a>
+        <% } %>
 	</div>
     </div>
     <div id="editDialog" style="display:none;"></div>
+    <div id="registerDialog" style="display:none;"></div>
     <div class="expert_announce">
 	    This month we welcome <%= output.name_of_expert %>, an expert in <%= output.expert_field  %>. 
     </div>
@@ -32,10 +31,10 @@
             </div>
             <br />
             <p>
-	    <a id="submitquestion" href="#">Click here</a> to Submit a Question by  <%= output.date  %>.
+	    <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to Submit a Question by  <%= output.date  %>.
 	    </p>
 	    <p>
-	    Register for the webinar. You will be emailed the webinar link prior to the event.
+	    <a id="registerevent" class="registerbtn" data-cat="register" href="#">Register</a> for the webinar. You will be emailed the webinar link prior to the event.
 	    </p>
 	    <p>
 	    <span id="webinarlink"></span>

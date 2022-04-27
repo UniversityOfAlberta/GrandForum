@@ -79,10 +79,20 @@ class AskAnExpert extends BackbonePage {
         $uid = md5(uniqid(time()));
         $firstName = $_POST['firstname'];
         $lastName = $_POST['lastname'];
-        $email = $_POST['email'];
-        $subj = "Contact Us - {$_POST['topic']}";
+	$email = $_POST['email'];
+	$question = $_POST['question'];
+	if($question == "No Question"){
+	    $subj = "Ask An Expert - {$_POST['topic']}";
+	}
+	else{
+		$subj = "Ask An Expert - {$_POST['topic']}";
+	}
         $msg = "<p></p><br />
-                <b>User:</b> {$_POST['firstname']} {$_POST['lastname']} ({$email})";
+		<b>Firstname:</b>{$_POST['firstname']}<br /><b>Lastname</b>: {$_POST['lastname']} <br /><b>Email:</b>({$email})
+		<br />";
+	if($question != "No Question"){
+            $msg .= "<b>Question:</b>{$question}";
+        }
 
         $eol = "\r\n";
         // Basic headers
@@ -98,7 +108,7 @@ class AskAnExpert extends BackbonePage {
         $message .= $msg.$eol.$eol;
         $message .= "--".$uid."--";
 
-        mail("rjsdee@gmail.com", "[{$config->getValue('networkName')}] {$subj}", $message, $header);
+        mail($config->getValue('supportEmail'), "[{$config->getValue('networkName')}] {$subj}", $message, $header);
         exit;
     }
     return true;

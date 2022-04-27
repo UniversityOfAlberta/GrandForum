@@ -1,5 +1,6 @@
 EventRegisterView = Backbone.View.extend({
     isDialog: false,
+    isQuestion: false,
 
     initialize: function(options){
         this.parent = this;
@@ -8,6 +9,9 @@ EventRegisterView = Backbone.View.extend({
         if(options.isDialog != undefined){
             this.isDialog = options.isDialog;
         }
+	if(options.isQuestion != undefined){
+	    this.isQuestion = options.isQuestion;
+	}
         this.template = _.template($('#event_register_template').html());
     },
     
@@ -45,14 +49,21 @@ EventRegisterView = Backbone.View.extend({
 	var form = $('form#eventregisterform');
 	var dataToSend = {};
 
-        dataToSend.topic = "Registration";
+        	dataToSend.topic = "Registration";
                 dataToSend.firstname = form.find('#firstname').val();
                 dataToSend.lastname = form.find('#lastname').val();
                 dataToSend.email =form.find('#email').val();
+	        if(this.isQuestion){
+		    dataToSend.question = form.find('#question').val();
+		    dataToSend.topic = "Registration & Question";
+		}
+	    	else{
+		    dataToSend.question = "No Question";
+		}
                 $.post(wgServer + wgScriptPath + '/index.php?action=registerExpertEventAction', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
-                    addSuccess('Your message has been sent to support.');
+                    addSuccess('Thank you for submitting a question to our expert of the month. It is possible that our expert may not be able to answer all questions, but we will be sure to get to the most common ones. If you are submitting a question, there is no need to also register for the webinar.', true);
                 }.bind(this));
     },
     

@@ -20,12 +20,15 @@ class AskAnExpertEventAPI extends RESTAPI {
             return $ask_an_expert->toJSON();
 	}
 	else{
-		//$ask_an_expert_all = new Colleddction(AskAnExpertEvent::getAllExpertEvents());
-		//
-		//return $ask_an_expert_all->toJSON();
-		$ask_an_expert = AskAnExpertEvent::newFromId(1);
-		return $ask_an_expert->toJSON();
-
+		$ask_an_expert_all = AskAnExpertEvent::getAllExpertEvents();
+		//change later if we need to accomodate more than 1 event
+		if(count($ask_an_expert_all)>0){
+			return $ask_an_expert_all[0]->toJSON();
+		}
+		else{
+			$ask_an_expert = new AskAnExpertEvent(array());
+			return $ask_an_expert->toJSON();
+		}
         }
 
     }
@@ -36,19 +39,18 @@ class AskAnExpertEventAPI extends RESTAPI {
    */
     function doPOST(){
         $askanexpertevent = new AskAnExpertEvent(array());
-        header('Content-Type: application/json');
-        $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
+	header('Content-Type: application/json');
+	$askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
-	//get date and time
-	$date = $this->POST('date_of_event');
-	$time = $this->POST('time_of_event');
-	$askanexpertevent->date_of_event = "$date $time";
-        $askanexpertevent->active = true;
+        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+        $askanexpertevent->zoomlink = $this->POST('zoomlink');
+	$askanexpertevent->active = 1;
+	$askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
         if(!$status){
             $this->throwError("The Event could not be created");
         }
-        $askanexpertevent = AvoidResource::newFromId($askanexpertevent->getId());
+        $askanexpertevent = AskAnExpertEvent::newFromId($askanexpertevent->getId());
         return$askanexpertevent->toJSON();
     }
 

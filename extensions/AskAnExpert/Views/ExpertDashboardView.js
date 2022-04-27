@@ -1,6 +1,6 @@
 ExpertDashboardView = Backbone.View.extend({
     editDialog: null,
-
+    registerDialog:null,
     template: _.template($('#expert_dashboard_template').html()),
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
@@ -8,10 +8,11 @@ ExpertDashboardView = Backbone.View.extend({
 
     events: {
         "click #editeventbtn": "openEdit",
+	"click .registerbtn": "openRegister",
     },
 
     openEdit: function () {
-        var view = new ExpertEditView({ el: this.editDialog, model: this.model, isDialog: true });
+        var view = new ExpertEditView({ el: this.editDialog, model: this.model, isDialog: true , parent_location: location});
         this.editDialog.view = view;
         this.editDialog.dialog({
             height: $(window).height() * 0.45,
@@ -23,12 +24,30 @@ ExpertDashboardView = Backbone.View.extend({
     },
 
 
-
+    openRegister: function(ev){
+	var cat = $(ev.currentTarget).data('cat');
+	var question = false;
+	var heightmultiplier = 0.35;
+	if(cat == "question"){
+	    question = true;
+            heightmultiplier = 0.50;
+        }
+        var view = new EventRegisterView({ el: this.registerDialog, model: this.model, isDialog: true, isQuestion: question});
+        this.registerDialog.view = view;
+        this.registerDialog.dialog({
+            height: $(window).height() * heightmultiplier,
+            width: 350,
+            title: "Register For Event",
+        });
+        this.registerDialog.dialog('open');
+        view.render();
+    },
 
 
     render: function () {
         this.$el.empty();
         var data = this.model.toJSON();
+	if(data["date_of_event"] != null){
         //split time and date TODO: do this in class function instead
         var split = data["date_of_event"].split(" ");
         var parts = split[0].split('-');
@@ -38,6 +57,7 @@ ExpertDashboardView = Backbone.View.extend({
         var datestring = date.toDateString();
         data["date"] = datestring;
         data["time"] = time;
+	}
         this.$el.html(this.template({
             output: data,
         }));
@@ -69,6 +89,37 @@ ExpertDashboardView = Backbone.View.extend({
                 }.bind(this)
             }
         });
+
+        this.registerDialog = this.$("#registerDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            open: function () {
+                $("html").css("overflow", "hidden");
+            },
+            beforeClose: function () {
+                this.registerDialog.view.stopListening();
+                this.registerDialog.view.undelegateEvents();
+                this.registerDialog.view.$el.empty();
+                $("html").css("overflow", "auto");
+            }.bind(this),
+            buttons: {
+                "Submit": function () {
+                    this.registerDialog.view.registerEvent();
+                    this.registerDialog.dialog('close');
+		    this.window.scrollTo(0, 0);
+                }.bind(this),
+
+                "Cancel": function () {
+                    this.registerDialog.dialog('close');
+		    this.window.scrollTo(0, 0);
+                }.bind(this)
+            }
+        });
+
+
 
         return this.$el;
     }

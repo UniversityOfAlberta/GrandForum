@@ -1,8 +1,9 @@
 ExpertEditView = Backbone.View.extend({
     isDialog: false,
+    parent_loaction:null,
 
     initialize: function(options){
-        this.parent = this;
+	this.parent_location = options.parent_location;
         this.listenTo(this.model, "sync", this.render);
 
         if(options.isDialog != undefined){
@@ -48,11 +49,14 @@ ExpertEditView = Backbone.View.extend({
 		"zoomlink": form.find('#zoomlink').val(),
 		"date_of_event": datetimestr,
 	});
-	console.log(this.model);
+	var isNew = this.model.isNew();
         this.model.save(null, {
             success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveEvent").prop('disabled', false);
+		if(isNew){
+		    this.parent_location.reload();
+		}
                 clearAllMessages();
             }.bind(this),
             error: function(o, e){
@@ -75,12 +79,17 @@ ExpertEditView = Backbone.View.extend({
     
     render: function(){
 	var data = this.model.toJSON();
+	var date = "";
+	var time = "";
+	data["date"] = "";
+	data["time"] = "";
+	if(data["date_of_event"] != null){
 	var split = data["date_of_event"].split(" ");
-        var date = split[0];
-        var time = split[1];
+        date = split[0];
+        time = split[1];
         data["date"] = date;
         data["time"] = time;
-
+	}
         this.$el.html(this.template(data));
         return this.$el;
     }
