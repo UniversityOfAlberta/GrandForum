@@ -1,12 +1,27 @@
+<img src="<%= wgServer + wgScriptPath %>/skins/bg_top2.png" style="z-index: -2; position: absolute; top:0; left: 0; right:0; width: 100%;" />
+<div class='logos'>
+    <img src="<%= wgServer + wgScriptPath %>/skins/logo3.png" />
+    <img style="width:12.5%;" src="<%= wgServer + wgScriptPath %>/skins/logo2.png" />
+    <img src="<%= wgServer + wgScriptPath %>/skins/logo1.png" />
+</div>
+
+<div class="actionPlanTitle">My Weekly<br />Action Plan</div>
+
 <h3>What is one broader goal you’d like to start working on now?</h3>
-<%= nl2br(goals) %>
+<div class="textarea">
+    <%= nl2br(goals) %>
+</div>
 
 <h3>What do you think are the barriers or challenges to meeting this goal?</h3>
-<%= nl2br(barriers) %>
+<div class="textarea">
+    <%= nl2br(barriers) %>
+</div>
 
 <h3>My Action Plan This Week</h3>
-<b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
-<%= nl2br(plan) %>
+<div class="textarea">
+    <b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
+    <%= nl2br(plan) %>
+</div>
 
 <p><b>Action Plan Daily Tracker - Accomplished your plan today?</b></p>
 <table class='wikitable' style='width: 100%;'>
@@ -29,3 +44,5 @@
         <td align='center'><% if(tracker.Sun == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
      </tr>
 </table>
+
+<img src="<%= wgServer + wgScriptPath %>/skins/bg_bottom.png" style="z-index: -2; position: absolute; left: 0; right:0; width: 100%;" />

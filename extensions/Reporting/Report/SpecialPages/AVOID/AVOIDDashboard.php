@@ -157,8 +157,8 @@ class AVOIDDashboard extends SpecialPage {
                                 <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
-                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
-                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog' class='actionPlanDialog'></div>
                         </div>");
         $wgOut->addHTML("</div>");
         

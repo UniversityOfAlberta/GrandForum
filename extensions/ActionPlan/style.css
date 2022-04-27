@@ -1,2 +1,51 @@
 /* Any custom styles should go here */
+.actionPlanDialog {
+    overflow-x: hidden !important;
+}
 
+.actionPlanDialog .logos {
+    width: 100%;
+    text-align: center;
+    margin-top: -12px;
+}
+
+.actionPlanDialog .logos img {
+    width: 30%;
+    margin-left: 3%;
+    margin-right: 3%;
+    vertical-align: middle;
+}
+
+.actionPlanTitle {
+    width: 100%;
+    text-align: center;
+    font-size: calc(250vw/100);
+    line-height: 1.25em;
+    margin-top: 0.25em;
+    margin-bottom: calc(100vw * 0.1);
+}
+
+@media only screen and (max-width: 767px) {
+
+    .actionPlanTitle {
+        font-size: calc(350vw/100);
+    }
+
+}
+
+.actionPlanDialog h3 {
+    background: #8fd1c6;
+    border-radius: 14px 14px 0 0;
+    padding: 14px;
+    margin-top: 1em;
+    margin-bottom: 0;
+    font-weight: 500 !important;
+}
+
+.actionPlanDialog textarea, .actionPlanDialog .textarea {
+    background: #fae6cb;
+    border: none !important;
+    border-radius: 0 0 14px 14px;
+    padding: 14px !important;
+    resize: none;
+}
