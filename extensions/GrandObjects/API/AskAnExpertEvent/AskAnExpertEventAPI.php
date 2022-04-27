@@ -18,19 +18,18 @@ class AskAnExpertEventAPI extends RESTAPI {
                 $this->throwError("You must be logged in to view this");
             }
             return $ask_an_expert->toJSON();
-	}
-	else{
-		$ask_an_expert_all = AskAnExpertEvent::getAllExpertEvents();
-		//change later if we need to accomodate more than 1 event
-		if(count($ask_an_expert_all)>0){
-			return $ask_an_expert_all[0]->toJSON();
-		}
-		else{
-			$ask_an_expert = new AskAnExpertEvent(array());
-			return $ask_an_expert->toJSON();
-		}
         }
-
+        else{
+            $ask_an_expert_all = AskAnExpertEvent::getAllExpertEvents();
+            //change later if we need to accomodate more than 1 event
+            if(count($ask_an_expert_all)>0){
+                return $ask_an_expert_all[0]->toJSON();
+            }
+            else{
+                $ask_an_expert = new AskAnExpertEvent(array());
+                return $ask_an_expert->toJSON();
+            }
+        }
     }
 
   /**
@@ -39,13 +38,13 @@ class AskAnExpertEventAPI extends RESTAPI {
    */
     function doPOST(){
         $askanexpertevent = new AskAnExpertEvent(array());
-	header('Content-Type: application/json');
-	$askanexpertevent->name_of_expert = $this->POST('name_of_expert');
+        header('Content-Type: application/json');
+        $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
         $askanexpertevent->date_of_event = $this->POST('date_of_event');
         $askanexpertevent->zoomlink = $this->POST('zoomlink');
-	$askanexpertevent->active = 1;
-	$askanexpertevent->currently_on = 1;
+        $askanexpertevent->active = 1;
+        $askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
         if(!$status){
             $this->throwError("The Event could not be created");
@@ -66,9 +65,9 @@ class AskAnExpertEventAPI extends RESTAPI {
         }
         header('Content-Type: application/json');
         $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
-	$askanexpertevent->expert_field = $this->POST('expert_field');
-	$askanexpertevent->date_of_event = $this->POST('date_of_event');
-	$askanexpertevent->zoomlink = $this->POST('zoomlink');
+        $askanexpertevent->expert_field = $this->POST('expert_field');
+        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+        $askanexpertevent->zoomlink = $this->POST('zoomlink');
         $askanexpertevent->active = 1;
         $status = $askanexpertevent->update();
         if(!$status){
