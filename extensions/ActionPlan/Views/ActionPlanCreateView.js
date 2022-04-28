@@ -43,8 +43,14 @@ ActionPlanCreateView = Backbone.View.extend({
                         click: function(){
                             this.model.save(null, {
                                 success: function(){
+                                    clearSuccess('#actionPlanMessages');
+                                    addSuccess('Action Plan created!', false, '#actionPlanMessages');
                                     this.actions.fetch();
-                                }.bind(this)
+                                }.bind(this),
+                                error: function(){
+                                    clearError('#actionPlanMessages');
+                                    addError('Error creating action plan', false, '#actionPlanMessages');
+                                }
                             });
                             this.dialog.dialog('close');
                         }.bind(this)
