@@ -149,12 +149,13 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <div id='actionPlanMessages'></div>
                             <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan Overview and review the Ingredients for Change Module to increase your chance of success.</p>
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a> / <a id='repeatActionPlan' href='#'>Repeat for another week</a>)</div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
@@ -239,8 +240,40 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#submitActionPlan').click(function(){
+                $('#submitActionPlan').blur();
+                actionPlans.at(0).set('submitted', true);
+                actionPlans.at(0).save(null, {
+                    success: function(){
+                        clearSuccess('#actionPlanMessages');
+                        addSuccess('Action Plan submitted!', false, '#actionPlanMessages');
+                    },
+                    error: function(){
+                        clearError('#actionPlanMessages');
+                        addError('Error submitting action plan', false, '#actionPlanMessages');
+                    }
+                });
+            });
+            
+            $('#repeatActionPlan').click(function(){
+                $('#repeatActionPlan').blur();
+                tracker.undelegateEvents();
+                tracker = undefined;
+                var copy = new ActionPlan(actionPlans.at(0).toJSON());
+                copy.set('id', ActionPlan.prototype.defaults().id);
+                copy.set('tracker', ActionPlan.prototype.defaults().tracker);
                 actionPlans.at(0).set('submitted', true);
                 actionPlans.at(0).save();
+                actionPlans.unshift(copy);
+                copy.save(null, {
+                    success: function(){
+                        clearSuccess('#actionPlanMessages');
+                        addSuccess('Action Plan copied!', false, '#actionPlanMessages');
+                    },
+                    error: function(){
+                        clearError('#actionPlanMessages');
+                        addError('Error copying action plan', false, '#actionPlanMessages');
+                    }
+                });
             });
             
             var viewFullScreen = false;

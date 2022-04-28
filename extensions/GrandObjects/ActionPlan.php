@@ -166,7 +166,7 @@ class ActionPlan extends BackboneModel {
     function toArray(){
         if($this->canUserRead()){
             return array('id' => $this->id,
-                         'user_id' => $this->getUserId(),
+                         'userId' => $this->getUserId(),
                          'date' => $this->getDate(),
                          'goals' => $this->getGoals(),
                          'barriers' => $this->getBarriers(),
