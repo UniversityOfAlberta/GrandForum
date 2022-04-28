@@ -194,7 +194,7 @@ class AVOIDDashboard extends SpecialPage {
                         }
                     });
                     $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
-                    $('.ui-dialog-titlebar').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
                     $('#viewFullScreen', $('.ui-dialog')).click(function(){
                         viewFullScreen = !viewFullScreen;
                         $(window).resize();
