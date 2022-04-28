@@ -23,6 +23,25 @@
     <%= nl2br(plan) %>
 </div>
 
+<h4>What AVOID component(s) does your action plan address?</h4>
+<ul>
+    <% if(components.A == "1"){ %>
+        <li>Activity</li>
+    <% } if(components.V == "1"){ %>
+        <li>Vaccinate</li>
+    <% } if(components.O == "1"){ %>
+        <li>Optimize Medication</li>
+    <% } if(components.I == "1"){ %>
+        <li>Interact</li>
+    <% } if(components.D == "1"){ %>
+        <li>Diet & Nutrition</li>
+    <% } if(components.S == "1"){ %>
+        <li>Sleep</li>
+    <% } if(components.F == "1"){ %>
+        <li>Falls Prevention</li>
+    <% } %>
+</ul>
+
 <p><b>Action Plan Daily Tracker - Accomplished your plan today?</b></p>
 <table class='wikitable' style='width: 100%;'>
     <tr>
