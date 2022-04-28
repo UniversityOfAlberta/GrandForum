@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class NewExpertEventTable extends AbstractMigration
+class ActionPlanComponents extends AbstractMigration
 {
     /**
      * Change Method.
@@ -31,15 +31,8 @@ class NewExpertEventTable extends AbstractMigration
      */
     public function change()
     {
-       $table = $this->table('grand_avoid_expert_event');
-       $table->addColumn('name_of_expert','text')
-             ->addColumn('expert_field', 'text')
-             ->addColumn('zoomlink', 'text')
-             ->addColumn('date_of_event', 'datetime')
-             ->addColumn('active', 'boolean')
-             ->addColumn('date_created', 'datetime', array('default' => 'CURRENT_TIMESTAMP'))
-             ->addColumn('currently_on', 'boolean')
-             ->save();
+        $table = $this->table('grand_action_plan');
+        $table->addColumn('components', 'text', array('after' => 'tracker'))
+              ->save();
     }
-
 }

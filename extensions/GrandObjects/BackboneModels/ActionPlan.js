@@ -5,6 +5,16 @@ ActionPlan = Backbone.Model.extend({
 
     urlRoot: 'index.php?action=api.actionplan',
 
+    getComponents: function(){
+        var components = [];
+        _.each(this.get('components'), function(val, comp){
+            if(val == "1"){
+                components.push(comp);
+            }
+        });
+        return components;
+    },
+
     defaults: function() {
         return {
             id: null,
@@ -21,6 +31,15 @@ ActionPlan = Backbone.Model.extend({
                 "Fri": "0",
                 "Sat": "0",
                 "Sun": "0"
+            },
+            components: {
+                "A": "0",
+                "V": "0",
+                "O": "0",
+                "I": "0",
+                "D": "0",
+                "S": "0",
+                "F": "0"
             },
             submitted: false,
             created: ""
