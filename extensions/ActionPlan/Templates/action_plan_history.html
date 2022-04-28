@@ -4,7 +4,14 @@
     <ul>
         <% this.model.each(function(action){ %>
             <% if(action.get('submitted')){ %>
-                <li><a class="viewActionPlan" href="#" data-id="<%= action.id %>"><%= dateTimeHelpers.formatDate(action.get('date'), 'yyyy-MM-dd', 'd MMMM, yyyy') %></a></li>
+                <li>
+                    <a class="viewActionPlan" href="#" data-id="<%= action.id %>">
+                        <%= dateTimeHelpers.formatDate(action.get('date'), 'yyyy-MM-dd', 'd MMMM, yyyy') %>
+                        <% if(action.getComponents().length > 0){ %>
+                            <span> - <%= action.getComponents().join(", ") %></span>
+                        <% } %>
+                    </a>
+                </li>
             <% } %>
         <% }) %>
     </ul>
