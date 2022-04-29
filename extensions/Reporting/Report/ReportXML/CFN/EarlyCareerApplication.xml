@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Springboard Grants Program – Early Career Researcher Competition" reportType="RP_EARLY_APPLICATION2" pdfType="RP_EARLY_APPLICATION2" pdfFiles="EarlyCareerApplicationPDF" year="2022" disabled="false" ajax="true">
+    <Permissions>
+
+    </Permissions>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" showProgress="true">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text" optional="true">
+            <![CDATA[
+                <div style="text-align: center; width:100%;border: 1px solid black;">
+                    <p>Please read the Application Instructions and RFP documents before completing this online application. See <a href='http://www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/' target="_blank">www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/</a></p>
+                    <p><b>Please provide all information in English</b></p>
+                    <p><b>CFN will reject all submissions that are incomplete.</b></p> 
+                    <p><b>Rejected submissions will not be reviewed/considered for funding.</b></p>
+                </div><br />
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b><br /><small>A CFN File Number will be assigned to you after Intent to Apply<br />has been received</small>
+                        </td>
+                        <td>{$value}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Title of Proposal provided in Letter of Intent:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="18" width="30px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Length of Study:</b><br />
+                            <small>(Maximum 18 months)</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer" width="75px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Funding Requested:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds" blobItem="FUNDS" type="Integer" width="75px">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Total Partnership Contribution:</b><br />
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
+            <![CDATA[
+                <h2>Please provide information on the Project Leader (i.e., Lead Principal Investigator/Early Career Researcher)</h2>
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td align="right">
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" blobItem="LAST_NAME" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" blobItem="DESIGNATIONS" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Designations:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" blobItem="EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="day_phone" blobItem="DAY_PHONE" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Daytime Phone:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
+            <![CDATA[
+                        <td align="right">
+                            <b>Other Phone (optional):</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" blobItem="INSTITUTION" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td colspan='3' align="right">
+                            <b>Host Institution that will receive and administer funds:</b>
+                        </td>
+                        <td colspan='3'>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text" width='250px'>
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Secondary Contact Name:</b>
+                        </td>
+                        <td colspan="2">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
+            <![CDATA[
+                        <td colspan="2" align="right">
+                            <b>Secondary Telephone Number:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="2" align="right">
+                            <b>Secondary Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="stream" type="Radio" blobItem="STREAM" options="Applying for CFN alone funding|Applying for the AGE-WELL/CFN funding support|Applying for the Perley Health/CFN co-funding|Applying for the Sepsis Canada/CFN co-funding">
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td valign="top"><b>Select which stream of funding you are applying for as indicated in your Letter of Intent. You can only choose one stream:</b>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes, I expect that this study will require an ethics review|No, I do not expect that this study will require an ethics review">
+            <![CDATA[
+                <h3>1.3 Research Ethics/Environmental Assessment</h3>
+                <p>Please answer the question below.</p>
+                <p>Research Ethics: If the proposed study involves biohazards, humans, human embryonic stem cells or animals, certification of approval by your institutional certification committee must be provided to CFN prior to the release of funds.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Project Summary" title="Section 2 - Project Summary" showProgress="true">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.1: Lay Project Summary</h2>
+                <ul>
+                    <li>Provide a non-confidential proposal summary in lay terms.</li>
+                    <li>A lay summary is an overview of a project described in a way that can be easily understood by those without prior experience of the subject.</li>
+                    <li>This summary may be used externally in media releases, communications and posted on the CFN’s website.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="project_summary" blobItem="PROJECT_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>2.2: Scientific Project Summary</h2>
+                <ul>
+                    <li>Provide a non-confidential scientific summary of your proposal, highlighting the study hypothesis, objectives, milestones and deliverables, outputs and outcomes (impacts).</li>
+                    <li>This summary may be used externally in media releases, communications and posted on the CFN’s website.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="scientific" type="EditableReportSection" blobSection="SCIENTIFIC" name="3 - Scientific Excellence" title="Section 3 - Scientific Excellence" showProgress="true">
+        <ReportItem id="background" blobItem="BACKGROUND" type="Textarea" limit="750" rich="true">
+            <![CDATA[
+                <h2>3.1: Background, Knowledge Gap(s) and Rationale</h2>
+                <ul>
+                    <li>Provide a comprehensive review of the relevant background literature and identify the knowledge gaps.</li>
+                    <li>Clearly state the rationale for the project and how the results of this proposal may be used to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</li>
+                    <li>For applications to the Perley Health/CFN co-funding stream, clearly describe how the results of the project will be used to improve the lives of older adults and/or Veterans living with frailty in long-term care.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hypothesis" blobItem="HYPOTHESIS" type="Textarea" limit="150" rich="true">
+            <![CDATA[
+                <h2>3.2: Hypothesis and/or Study Question(s)</h2>
+                <ul>
+                    <li>State the proposed hypothesis and/or research question(s) to be addressed in the study.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="goal" blobItem="GOAL" type="Textarea" limit="150" rich="true">
+            <![CDATA[
+                <h2>3.3: Overall Goal and Objectives</h2>
+                <ul>
+                    <li>Describe the overall goal and specific objectives of the study.</li>
+                    <li>For applications to the Perley Health/CFN co-funding stream, clearly describe how the overall goal and objectives align with one or more of the Perley Health Centre of Excellence research priorities (see www.perleyhealth.ca/research-priorities).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="methodological" blobItem="METHODOLOGICAL" type="Textarea" limit="500" rich="true">
+            <![CDATA[
+                <h2>3.4: Overall Goal and Objectives</h2>
+                <ul>
+                    <li>Describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed outputs and outcomes.</li>
+                    <li>For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.<br />Note: For proposals enrolling study participants, a frailty assessment of all study participants using a published validated frailty assessment instrument appropriate for the care setting must be included. For knowledge syntheses, evaluation of the impact of frailty must be included.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" blobItem="MILESTONES" type="Textarea" limit="750" rich="true">
+            <![CDATA[
+                <h2>3.5: Study Milestones, Deliverables, Outputs and Outcomes</h2>
+                <ul>
+                    <li>Describe all milestones, deliverables, outputs and outcomes for the study.</li>
+                    <li>Describe how completion of the study will enhance the Early Career Researcher’s ability to develop future partnerships and collaborations with external organizations and stakeholders (e.g. health care practices, service providers, care facilities, etc.).</li>
+                    <li>Please report on one or more real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes.</li> 
+                    <li>Describe an end-of-grant knowledge translation plan.</li>
+                    <li>Describe the potential of the study to be recognized nationally and globally for scientific excellence and to improve the care for Canadians living with frailty and/or improving the lives of their caregivers.</li>
+                    <li>Provide a detailed project schedule and describe how this project will be managed, and milestones and deliverables tracked. Note: The project schedule is mandatory and will be used to track progress of the study.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Summary" title="Section 4 - Project Feasibility" showProgress="true">
+        <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" limit="500" rich="true">
+            <![CDATA[
+                <h2>4.1: Feasibility</h2>
+                <ul>
+                    <li>Identify all feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study.  Specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay timely completion of the study.</li>
+                    <li>Describe how the investigative team plans on mitigating and overcoming these barriers, challenges and limitations.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" blobItem="DESCRIPTION" type="Textarea" limit="500" rich="true">
+            <![CDATA[
+                <h2>4.2: Description of Study Team</h2>
+                <ul>
+                    <li>Please describe the expertise and experience of the Early Career Researcher and other team members to demonstrate that they can achieve the goals and objectives of the study.</li>
+                    <li>Please describe why the Early Career Researcher and other team members’ environment (e.g., academic institution and/or other organization) are appropriate to enable successful completion of the project.</li>
+                    <li>Note: All Individual team members will need to be listed in the Project Team Information Excel document (see Application Instructions).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Textarea" limit="500" rich="true">
+            <![CDATA[
+                <h2>4.3: Budget Description and Justification</h2>
+                <ul>
+                    <li>In addition to the information provided in the Budget Excel document (see Application Instructions) please justify your budget items and associated costs.</li>
+                    <li><i>NB: For AGE-WELL/CFN co-funding stream only - AGE-WELL and CFN will separately administer $25,000 each for the AGE-WELL-CFN co-funding stream. Applicants are asked to submit minimally two $25,000 budgets (budget excel documents).</i></li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="5 - Capacity Building" title="Section 5 - Capacity Building – Highly Qualified Personnel" showProgress="true">
+        <ReportItem id="hqp" blobItem="HQP" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>5.1: Highly Qualified Personnel (HQP)</h2>
+                <ul>
+                    <li>The inclusion of HQP trainees who will be directly involved in a meaningful way in the study will enhance the competitiveness of the proposal although it is not an absolute requirement for funding streams other than the Sepsis Canada/CFN funding stream. HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
+                    <li>If HQP are involved in the study, please describe the role of each HQP and the experience/expertise afforded to them by involvement in the study.</li>
+                    <li>If there are no HQP in the proposal please indicate “No HQP Involved”.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="mentorship" type="EditableReportSection" blobSection="MENTORSHIP" name="6 - Mentorship Plan" title="Section 6 - Mentorship Plan&lt;br />&lt;small>(Only complete this section if you are applying for the Sepsis Canada/CFN co-funding stream)&lt;/small>" showProgress="true">
+        <ReportItem id="mentorship" blobItem="MENTORSHIP" type="Textarea" limit="250" rich="true" optional="true">
+            <![CDATA[
+                <h2>6.1: Mentorship Plan</h2>
+                <ul>
+                    <li>Please provide a mentorship plan involving a <a href='https://cihr-irsc.gc.ca/e/34190.html#r14' target="_blank">senior researcher</a> or a <a href='https://cihr-irsc.gc.ca/e/34190.html#r14' target="_blank">mid-career researcher</a> that will provide guidance to the Early Career Researcher, and one or more trainees (e.g., post-doctoral scholars, graduate students or undergraduate students).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="networking" type="EditableReportSection" blobSection="NETWORKING" name="7 - Networking" title="Section 7 - Project Networking and Engagement" showProgress="true">
+        <ReportItem id="networking" blobItem="NETWORKING" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>7.1: Project Networking</h2>
+                <ul>
+                    <li>Please describe how completion of the proposed study will enhance the Early Career Researcher’s ability to develop future partnerships and collaborations with external organizations and stakeholders (e.g. health care practices, service providers, care facilities, etc.).</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="engagement" blobItem="ENGAGEMENT" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h2>7.2: Citizen Engagement</h2>
+                <p>CFN is committed to empowering and engaging older adults living with frailty and their families and caregivers and other knowledge users.</p>
+                <ul>
+                    <li>Please describe how knowledge users (e.g., frail older adults and their family or friend caregivers with lived experience and/or sepsis lived experience, decision makers, stakeholders, practitioners) are involved in the study in a meaningful and tightly integrated manner.</li>
+                    <li>For clarity, meaningfully involved participation of knowledge users includes being involved in the planning and execution of the project and/or in assisting in the interpretation and translation/mobilization of the findings.</li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="8 - Supporting Information" title="Section 8 - Supporting Information" showProgress="true">
+        <ReportItem id="supporting" blobItem="SUPPORTING" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <p>Upload a <b>single pdf document</b>. Appendix document can include tables, figures, and references to support full proposal. The Appendix document does not contribute to the page limit of the full proposal.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="9 - Partnerships" title="Section 9 - Partnerships &amp; Letters of Support" showProgress="true">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
+            <![CDATA[
+                <ul>
+                    <li>Complete the table below.</li>
+                    <li>Individuals from the partner organizations that will be participating as project team members must be listed in the Project Team Information document and a single PDF document of all letters of support must be uploaded (See Application Instructions).</li>
+                    <li>All financial information provided in the table below must also appear in the submitted Budget Excel document (See Application Instructions).</li>
+                    <li>Where an investigator has a “financial interest” (as defined by NCE Conflict of Interest Guidelines) in a partner, the potential conflict of interest should be declared in the table.  This does not preclude the partnership in any way, but provides transparency during the review process. Please see CFN Conflict of Interest Policy and Guidelines for additional guidance <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-conflict-of-interest-policy.pdf' target='_blank'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-conflict-of-interest-policy.pdf</a></li>
+                </ul>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Letters of Support</h3>
+                <p>Upload a single PDF file that contains letters of support for each partner or collaborator etc.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="10 - Other Funding" title="Section 10 - Other Funding" showProgress="true">
+        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" sizes="100|150|100|150|200|75|75" multiple="true">
+            <![CDATA[
+                <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If if="{or({!=({getProgress(information)},100)},
+                    {!=({getProgress(summary)},100)},
+                    {!=({getProgress(proposal)},100)},
+                    {!=({getProgress(supporting)},100)},
+                    {!=({getProgress(partnerships)},100)},
+                    {!=({getProgress(funding)},100)},
+                    {!=({getProgress(documents)},100)},
+                    {!=({getProgress(cv)},100)},
+                    {!=({getProgress(signatures)},100)},
+                    {!=({getProgress(ethics)},100)}
+                )}">
+            <![CDATA[
+                You have not completed the application.
+            ]]>
+        </If>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},research@cfn-nce.ca" />
+        </Else>
+    </ReportSection>
+</Report>
