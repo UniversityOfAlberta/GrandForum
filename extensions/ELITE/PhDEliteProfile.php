@@ -187,7 +187,7 @@ Programme ELITE pour la Jeunesse Noire
         $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Submitted";
         if(@$_POST['hire']->action == "Accepted"){
             $message = "Dear Program Coordinator,
-                        A PhD supervisor has accepted a candiate. Please proceed to review and finalize the position.
+                        A PhD supervisor has accepted a candidate. Please proceed to review and finalize the position.
 
                         Thank you.
 
