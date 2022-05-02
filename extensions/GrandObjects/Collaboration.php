@@ -399,7 +399,7 @@ class Collaboration extends BackboneModel{
             if($status){
                 $status = DBFunctions::insert("grand_collaboration_files", 
                                               array('collaboration_id' => $this->id,
-                                                    'file' => $file),
+                                                    'file' => json_encode($file)),
                                               true);
             }
         }
