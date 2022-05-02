@@ -19,13 +19,13 @@ Feature: Products
     Scenario: Viewing list of Publications
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         Then I should see "New Publication"
         
     Scenario: Viewing list of Publications as guest
         Given I am on "index.php"
         And I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         Then I should see "No data available in table"
         
     Scenario: Viewing Publication as guest (should get error)
@@ -35,7 +35,7 @@ Feature: Products
     Scenario: Changing the permissions of a product
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         And I follow "New Publication"
         And I press "Edit Publication"
         And I wait until I see "Visibility" up to "1000"
@@ -46,7 +46,7 @@ Feature: Products
     Scenario: Viewing list of Publications as guest
         Given I am on "index.php"
         And I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         Then I should see "New Publication"
         
     Scenario: Viewing Publication as guest (should get error)
@@ -56,7 +56,7 @@ Feature: Products
     Scenario: Editing a Publication
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         And I follow "New Publication"
         And I press "Edit Publication"
         And I wait until I see "Authors" up to "1000"
@@ -71,7 +71,7 @@ Feature: Products
     Scenario: Deleting a Publication
         Given I am logged in as "NI.User1" using password "NI.Pass1"
         When I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         And I follow "New Publication"
         And I accept confirmation dialogs
         And I press "Delete Publication"
@@ -80,7 +80,7 @@ Feature: Products
         And I wait until I see "This publication has been deleted, and will not show up anywhere else on the forum" up to "1000"
         Then I should see "This publication has been deleted, and will not show up anywhere else on the forum"
         When I go to "index.php/Special:Products#/Publication"
-        And I wait until see "Search:" up to "1000"
+        And I wait until I see "Search:" up to "1000"
         Then I should not see "New Publication"
         
     Scenario: Adding a new Publication with Tags
