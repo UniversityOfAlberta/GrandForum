@@ -57,6 +57,7 @@ class EliteProfileAPI extends RESTAPI {
         
         $hire = $this->POST('hire');
         if(!empty($hire)){
+            $_POST['hire'] = $hire;
             $match = $hire->match;
             $action = $hire->action;
             $profile->hires[$match] = $action; // Either Accepted or Rejected
