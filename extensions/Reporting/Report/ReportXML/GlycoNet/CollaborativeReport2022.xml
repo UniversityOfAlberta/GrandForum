@@ -293,23 +293,14 @@
     <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p>Letters from partners indicating the nature of their involvement in the project and their anticipated contribution (cash and/or in-kind) are required. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the project for the GlycoNet renewal application. <b>Projects for which there is not a written commitment of a 1:1 match (including 50% cash) to the GlycoNet request will be disqualified.</b></p>
-
-                Partner letters must use the following format:
+                <p>A letter must be provided supporting all Partner contributions listed in the budget.</p>
+                Letters must:
                 <ul>
-                    <li>Name of the Partner (e.g. company, foundation, institution, etc.) on letterhead.</li>
-                    <li>Contact name and contact information.</li>
-                    <li><b>Amount, nature, and area of anticipated support.</b></li>
-                    <li>Letters must:
-                        <ul>
-                            <li>Come from a senior executive with signing authority for the contributions being committed.</li>
-                            <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
-                            <li>Be on partner letterhead, be dated and signed.</li>
-                        </ul>
-                    </li>
-                    <li>Please take into account University overhead for sponsored research when discussing funding with partners. This amount cannot be counted as matching.</li>
-                    <li>Eligible partner funding must be for the period of July 1, 2020 to July 1, 2021.</li>
+                    <li>Come from a senior executive with signing authority for the contributions being committed.</li>
+                    <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
+                    <li>Be on partner letterhead, be dated and signed within the past two months.</li>
                 </ul>
+                <br />
                 {$item}
             ]]>
         </ReportItem>
