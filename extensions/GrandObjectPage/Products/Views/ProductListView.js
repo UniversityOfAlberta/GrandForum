@@ -122,7 +122,7 @@ ProductListView = Backbone.View.extend({
     },
     
     getFields: function(){
-        if(typeof(productStructure.categories[this.model.category]) == 'undefined'){
+        if(typeof(productStructure.categories[this.model.category]) == 'undefined' || Object.assign == undefined){
             return {};
         }
         var fields = _.reduce(productStructure.categories[this.model.category].types, function(memo, obj){ return Object.assign(memo, obj.data);}, {});
