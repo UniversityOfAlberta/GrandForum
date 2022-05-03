@@ -150,7 +150,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan <small>(Work in progress)</small></h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
-                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan Overview and review the Ingredients for Change Module to increase your chance of success.</p>
+                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a href='{$wgServer}{$wgScriptPath}/data/Overview.pdf'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
