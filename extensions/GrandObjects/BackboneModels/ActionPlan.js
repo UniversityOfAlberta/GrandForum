@@ -48,9 +48,36 @@ ActionPlan = Backbone.Model.extend({
 
 });
 
+ActionPlan.comp2Text = function(comp){
+    switch(comp){
+        case "A": 
+            return "Activity";
+        case "V":
+            return "Vaccinate";
+        case "O":
+            return "Optimize Medication";
+        case "I":
+            return "Interact";
+        case "D":
+            return "Diet & Nutrition";
+        case "S":
+            return "Sleep";
+        case "F":
+            return "Falls Prevention";
+    }
+    return "Other";
+}
+
 ActionPlans = Backbone.Collection.extend({
 
     model: ActionPlan,
+    
+    getComponents: function(){
+        var components = this.reduce(function(memo, model){
+            return _.union(memo, model.getComponents());
+        }, []);
+        return components;
+    },
 
     url: function(){
         return 'index.php?action=api.actionplan';
