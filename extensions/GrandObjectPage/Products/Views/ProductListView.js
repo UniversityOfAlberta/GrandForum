@@ -97,6 +97,7 @@ ProductListView = Backbone.View.extend({
                     row.push(topProjects.join(', '));
                 }
             }
+            row.push(model.description);
             data.push(row);
         }, this);
         return data;
@@ -156,6 +157,9 @@ ProductListView = Backbone.View.extend({
         _.each(this.getFields(), function(field){
             targets.push(_.last(targets) + 1);
         });
+        if(typeof data[0] != 'undefined'){
+            targets.push(data[0].length-1);
+        }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],
 	                                    'autoWidth': false,
