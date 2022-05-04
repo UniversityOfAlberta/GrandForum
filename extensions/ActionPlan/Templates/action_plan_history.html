@@ -2,7 +2,7 @@
     <p style="margin-bottom: 0;"><b>Action Plans Log - Review your accomplishments!</b></p>
     <div class="modules" style="gap:0;">
         <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
-            <div class="module-3cols-outer" style="flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">
+            <div class="" style="width: 250px;margin-bottom:0.5em;flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">
                 <span class="AVOID <%= comp %>"><%= comp %></span><span style="vertical-align: text-bottom;"><%= ActionPlan.comp2Text(comp).substring(1) %></span>
                 <div style="max-height: 9em; overflow-y: auto;">
                     <ul>
@@ -19,7 +19,8 @@
                 </div>
             </div>
         <% }.bind(this)) %>
-        <div class="module-3cols-outer" style="flex: 1 1 auto;"></div>
-        <div class="module-3cols-outer" style="flex: 1 1 auto;"></div>
+        <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
+            <div class="module-3cols-outer" style="width: 250px;flex: 1 1 auto;"></div>
+        <% }) %>
     </div>
 <% } %>
