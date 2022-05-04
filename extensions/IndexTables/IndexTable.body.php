@@ -358,6 +358,7 @@ class IndexTable {
         }
         $wgOut->addHTML("</tbody></table>");
         $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
+                                                                            'aLengthMenu': [[100,-1], [100,'All']], 
                                                                             'iDisplayLength': 100, 
                                                                             'autoWidth': false,
                                                                             'dom': 'Blfrtip',
