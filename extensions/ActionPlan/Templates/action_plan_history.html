@@ -1,9 +1,9 @@
 <% if(this.model.length > 0){ %>
     <p style="margin-bottom: 0;"><b>Action Plans Log - Review your accomplishments!</b></p>
-    <div class="modules">
+    <div class="modules" style="gap:0;">
         <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
-            <div class="module-3cols-outer">
-                <u><%= ActionPlan.comp2Text(comp) %></u>
+            <div class="module-3cols-outer" style="flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">
+                <span class="AVOID <%= comp %>"><%= comp %></span><span style="vertical-align: text-bottom;"><%= ActionPlan.comp2Text(comp).substring(1) %></span>
                 <div style="max-height: 9em; overflow-y: auto;">
                     <ul>
                         <% this.model.each(function(action){ %>
@@ -19,5 +19,7 @@
                 </div>
             </div>
         <% }.bind(this)) %>
+        <div class="module-3cols-outer" style="flex: 1 1 auto;"></div>
+        <div class="module-3cols-outer" style="flex: 1 1 auto;"></div>
     </div>
 <% } %>

@@ -150,7 +150,7 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan</h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
-                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Overview.pdf'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
+                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
@@ -160,6 +160,7 @@ class AVOIDDashboard extends SpecialPage {
                             <div id='actionPlanTracker' style='display:none;'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
                             <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog' class='actionPlanDialog'></div>
+                            <div title='Action Plan Overview' style='display:none;padding:0;' id='actionPlanOverview'></div>
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -178,6 +179,19 @@ class AVOIDDashboard extends SpecialPage {
         </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
+            
+            $('#viewActionPlanOverview').click(function(){
+                $('#actionPlanOverview').html('<iframe style=\"width:100%;height:99%;border:none;\" src=\"{$wgServer}{$wgScriptPath}/data/Overview.pdf\"></iframe>');
+                $('#actionPlanOverview').dialog({
+                    modal: true,
+                    draggable: false,
+                    resizable: false,
+                    width: 'auto',
+                    height: $(window).height()*0.90,
+                    position: { 'my': 'center', 'at': 'center' }
+                });
+                $(window).resize();
+            });
             
             $('#viewReport').click(function(){
                 $('#bodyContent').css('overflow-y', 'hidden');
@@ -317,6 +331,15 @@ class AVOIDDashboard extends SpecialPage {
                             position: { 'my': 'center', 'at': 'center' }
                         });
                     }
+                }
+                if($('#actionPlanOverview').is(':visible')){
+                    $('#actionPlanOverview').dialog({
+                        height: $(window).height()*0.90,
+                        width: initialFrameWidth*scaleFactor
+                    });
+                    $('#actionPlanOverview').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
                 }
             }).resize();
         </script>");

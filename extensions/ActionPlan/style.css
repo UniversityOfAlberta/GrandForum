@@ -49,3 +49,45 @@
     padding: 14px !important;
     resize: none;
 }
+
+.AVOID {
+    border-radius: 10em;
+    font-size: 1.5em;
+    width: 1.5em;
+    display: inline-block;
+    height: 1.5em;
+    text-align: center;
+    line-height: 1.5em;
+    font-weight: bold;
+    color: white;
+    margin: 2px;
+    margin-left: 0;
+}
+
+.AVOID.A {
+    background: #c7db55;
+}
+
+.AVOID.V {
+    background: #2cace2;
+}
+
+.AVOID.O {
+    background: #f79234;
+}
+
+.AVOID.I {
+    background: #3ab094;
+}
+
+.AVOID.D {
+    background: #4b8ecc;
+}
+
+.AVOID.S {
+    background: #71ad94;
+}
+
+.AVOID.F {
+    background: #2cace2;
+}
