@@ -2072,6 +2072,40 @@ div.program-text {
     display: initial;
 }
 
+/* Members Only section */
+.members-only {
+    text-decoration: none !important;
+    position: relative;
+    cursor: default !important;
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    -ms-transform: none !important;
+    -o-transform: none !important;
+}
+
+.members-only > *:not(.members-only-overlay) {
+    filter: grayscale(100%);
+    opacity: 0.333;
+}
+
+.members-only-overlay {
+    color: #555555;
+    text-decoration: none !important;
+    text-align: center;
+    text-shadow: 0 0 0.5em white;
+    position: absolute;
+    top: 0.5em;
+    bottom: 0;
+    left: 0.5em;
+    right: 0.5em;
+    font-size: 2.5em;
+    line-height: 1em;
+}
+
+.members-only-overlay *:not(a) {
+    text-decoration: none !important;
+}
+
 /* Mobile */ 
 @media only screen and (max-width: 1024px) {
 
@@ -2196,6 +2230,10 @@ div.program-text {
     
     .module-progress-text {
         font-size: 1.25em;
+    }
+    
+    .members-only-overlay {
+        font-size: 2em;
     }
     
     .quiz-footer {

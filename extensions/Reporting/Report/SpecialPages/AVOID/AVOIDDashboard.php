@@ -58,6 +58,8 @@ class AVOIDDashboard extends SpecialPage {
         $_GET['id'] = $me->getId();
         $tags = (new UserTagsAPI())->getTags($me->getId());
         
+        $membersOnly = ($me->isRole("Provider")) ? "members-only" : "";
+        
         $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
         $programs = $this->sort($programs, $tags);
         
@@ -123,9 +125,10 @@ class AVOIDDashboard extends SpecialPage {
         else if($label == "high risk"){
             $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
         }
+        
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
-                            <div class='program-body' style='width: 100%;'>
+                            <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p>{$frailty}</p>
                                 <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a><br />
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
@@ -145,10 +148,10 @@ class AVOIDDashboard extends SpecialPage {
                             <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
-        // Education
+        // Weekly Action Plan
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan</h1>");
-        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+        $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
                             <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
@@ -371,6 +374,9 @@ class AVOIDDashboard extends SpecialPage {
     
     static function hasSubmittedSurvey(){
         $me = Person::newFromWgUser();
+        if($me->isRole("Provider")){
+            return true;
+        }
         $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
         $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
         $blob->load($blob_address);

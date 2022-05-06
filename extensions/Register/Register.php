@@ -106,6 +106,27 @@ class Register extends SpecialPage{
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
+        
+        // These next 4 fields for are for AVOID
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "Age of loved one", "The age of the loved one", VALIDATE_NOT_NULL);
+        $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOT_NULL);
+        $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
+        $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
+        
+        $ageLabel = new Label("age_label", "Age", "The age of the user", VALIDATE_NOT_NULL);
+        $ageField = new TextField("age_field", "Age", "", VALIDATE_NOT_NULL);
+        $ageRow = new FormTableRow("age_row");
+        $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
+        
+        $practiceLabel = new Label("practice_label", "Practice", "The practice of the user", VALIDATE_NOT_NULL);
+        $practiceField = new TextField("practice_field", "Practice", "", VALIDATE_NOT_NULL);
+        $practiceRow = new FormTableRow("practice_row");
+        $practiceRow->append($practiceLabel)->append($practiceField->attr('size', 20));
+        
+        $roleLabel = new Label("role_label", "Role", "The role of the user", VALIDATE_NOT_NULL);
+        $roleField = new TextField("role_field", "Role", "", VALIDATE_NOT_NULL);
+        $roleRow = new FormTableRow("role_row");
+        $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
 
         $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
         $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
@@ -133,6 +154,16 @@ class Register extends SpecialPage{
                   ->append($emailRow);
         if($config->getValue('networkName') == 'ELITE'){
             $formTable->append($typeRow);
+        }
+        if($config->getValue('networkName') == 'AVOID'){
+            if(isset($_GET['role']) && $_GET['role'] == "Partner"){
+                $formTable->append($ageRow);
+                $formTable->append($ageOfLovedOneRow);
+            }
+            if(isset($_GET['role']) && $_GET['role'] == "Clinician"){
+                $formTable->append($practiceRow);
+                $formTable->append($roleRow);
+            }
         }
         $formTable->append($captchaRow)
                   ->append($submitRow);
@@ -178,7 +209,8 @@ class Register extends SpecialPage{
         if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0){
             $wgOut->addHTML("<i><b>Note:</b> Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist'))."</i><br /><br />");
         }
-        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register' method='post'>\n");
+        $getRole = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? "?role={$_GET['role']}" : "";
+        $wgOut->addHTML("<form action='$wgScriptPath/index.php/Special:Register{$getRole}' method='post'>\n");
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
@@ -231,7 +263,12 @@ class Register extends SpecialPage{
                 }
             }
             else if($config->getValue('networkName') == "AVOID"){
-                $_POST['wpUserType'] = CI;
+                if(isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")){
+                    $_POST['wpUserType'] = "Provider";
+                }
+                else{
+                    $_POST['wpUserType'] = CI;
+                }
                 $_POST['candidate'] = "0";
             }
             else{
@@ -260,6 +297,14 @@ class Register extends SpecialPage{
                 $wgMessage->addError("Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist')));
             }
             else{
+                $_POST['wpExtra'] = array();
+                if($config->getValue("networkName") == "AVOID"){                    
+                    $_POST['wpExtra']['ageOfLovedOne'] = @$_POST['age_of_loved_one_field'];
+                    $_POST['wpExtra']['ageField'] = @$_POST['age_field'];
+                    $_POST['wpExtra']['practiceField'] = @$_POST['practice_field'];
+                    $_POST['wpExtra']['roleField'] = @$_POST['role_field'];
+                }
+                
                 $wgGroupPermissions['*']['createaccount'] = true;
                 GrandAccess::$alreadyDone = array();
                 $wgUser = User::newFromId(1);

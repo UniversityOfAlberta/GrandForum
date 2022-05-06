@@ -57,6 +57,18 @@ class Report extends AbstractReport{
             }
         </style>");
         $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js'></script>");
+        $wgOut->addHTML("<div title='Become a Member' style='display:none;' id='becomeMemberDialog'>
+                            <div id='memberMessages'></div>
+                            <p>After Completing a Healthy Aging Assessment, Members will Receive:</p>
+                            <ul>
+                                <li>A Personalized Report with Recommendations</li>
+                                <li>Enhanced Behavioural Support</li>
+                                <li>Ongoing Health Monitoring</li>
+                                <li>Opportunities for In-Person Assessments</li>
+                                <li>Access to Peer Coaching</li>
+                            </ul>
+                            <a id='becomeMember' class='program-button' href='#'>Yes, I want to be a member</a>
+                        </div>");
     }
     
     static function disableSubTabs($wgOut, $skin){
