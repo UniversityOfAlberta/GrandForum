@@ -108,13 +108,13 @@ class Register extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
         
         // These next 4 fields for are for AVOID
-        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "Age of loved one", "The age of the loved one", VALIDATE_NOT_NULL);
-        $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOT_NULL);
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
+        $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
         $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
         
-        $ageLabel = new Label("age_label", "Age", "The age of the user", VALIDATE_NOT_NULL);
-        $ageField = new TextField("age_field", "Age", "", VALIDATE_NOT_NULL);
+        $ageLabel = new Label("age_label", "Age", "The age of the user", VALIDATE_NOTHING);
+        $ageField = new TextField("age_field", "Age", "", VALIDATE_NOTHING);
         $ageRow = new FormTableRow("age_row");
         $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
         
@@ -201,7 +201,8 @@ class Register extends SpecialPage{
                             </span><br /><br />");
         }
         else if($config->getValUE("networkName") == "AVOID"){
-            $wgOut->addHTML("<p><b style='font-size: 1.5em;'>This program is in development, and only meant only for people identified by admin. If you found this by accident and/or have not been directed by an admin member, please do not register.</b></p>By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+            $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : "Member";
+            $wgOut->addHTML("<p><b style='font-size: 1.5em;'>This program is in development, and only meant only for people identified by admin. If you found this by accident and/or have not been directed by an admin member, please do not register.</b></p>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
