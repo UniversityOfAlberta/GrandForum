@@ -4,10 +4,10 @@
 
     </Permissions>
     <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" showProgress="true">
-        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text" optional="true">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
             <![CDATA[
                 <div style="text-align: center; width:100%;border: 1px solid black;">
-                    <p>Please read the Application Instructions and RFP documents before completing this online application. See <a href='http://www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/' target="_blank">www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/</a></p>
+                    <p>Prior to completing the full Application please review the Applications Instructions and Program Guidelines. See <a href='http://www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/' target="_blank">www.cfn-nce.ca/research/request-for-proposals-avoid-frailty-regional-centres-for-healthy-aging-grants-competition/</a></p>
                     <p><b>Please provide all information in English</b></p>
                     <p><b>CFN will reject all submissions that are incomplete.</b></p> 
                     <p><b>Rejected submissions will not be reviewed/considered for funding.</b></p>
@@ -15,9 +15,9 @@
                 <table class="wikitable" frame="box" rules="all">
                     <tr>
                         <td>
-                            <b>CFN File Number:</b><br /><small>A CFN File Number will be assigned to you after Intent to Apply<br />has been received</small>
+                            <b>CFN File Number:</b><br /><small>A CFN file number was assigned to you upon<br />submission of your Letter of Intent.<br />Please input the CFN File number.</small>
                         </td>
-                        <td>{$value}</td>
+                        <td>{$item}</td>
                     </tr>
             ]]>
         </ReportItem>
@@ -188,7 +188,7 @@
         </ReportItem>
         <ReportItem id="ethics" type="Radio" blobItem="ETHICS" options="Yes, I expect that this study will require an ethics review|No, I do not expect that this study will require an ethics review">
             <![CDATA[
-                <h3>1.3 Research Ethics/Environmental Assessment</h3>
+                <h3>1.1 Research Ethics/Environmental Assessment</h3>
                 <p>Please answer the question below.</p>
                 <p>Research Ethics: If the proposed study involves biohazards, humans, human embryonic stem cells or animals, certification of approval by your institutional certification committee must be provided to CFN prior to the release of funds.</p>
                 {$item}
@@ -225,7 +225,7 @@
                 <ul>
                     <li>Provide a comprehensive review of the relevant background literature and identify the knowledge gaps.</li>
                     <li>Clearly state the rationale for the project and how the results of this proposal may be used to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</li>
-                    <li>For applications to the Perley Health/CFN co-funding stream, clearly describe how the results of the project will be used to improve the lives of older adults and/or Veterans living with frailty in long-term care.</li>
+                    <li><b>For applications to the Perley Health/CFN co-funding stream, clearly describe how the results of the project will be used to improve the lives of older adults and/or Veterans living with frailty in long-term care.</b></li>
                 </ul>
                 {$item}
             ]]>
@@ -244,14 +244,14 @@
                 <h2>3.3: Overall Goal and Objectives</h2>
                 <ul>
                     <li>Describe the overall goal and specific objectives of the study.</li>
-                    <li>For applications to the Perley Health/CFN co-funding stream, clearly describe how the overall goal and objectives align with one or more of the Perley Health Centre of Excellence research priorities (see www.perleyhealth.ca/research-priorities).</li>
+                    <li><b>For applications to the Perley Health/CFN co-funding stream, clearly describe how the overall goal and objectives align with one or more of the Perley Health Centre of Excellence research priorities (see www.perleyhealth.ca/research-priorities).</b></li>
                 </ul>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="methodological" blobItem="METHODOLOGICAL" type="Textarea" limit="500" rich="true">
             <![CDATA[
-                <h2>3.4: Overall Goal and Objectives</h2>
+                <h2>3.4: Methodological Approach</h2>
                 <ul>
                     <li>Describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed outputs and outcomes.</li>
                     <li>For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.<br />Note: For proposals enrolling study participants, a frailty assessment of all study participants using a published validated frailty assessment instrument appropriate for the care setting must be included. For knowledge syntheses, evaluation of the impact of frailty must be included.</li>
@@ -274,7 +274,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Summary" title="Section 4 - Project Feasibility" showProgress="true">
+    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="4 - Project Feasibility" title="Section 4 - Project Feasibility" showProgress="true">
         <ReportItem id="feasibility" blobItem="FEASIBILITY" type="Textarea" limit="500" rich="true">
             <![CDATA[
                 <h2>4.1: Feasibility</h2>
@@ -301,7 +301,7 @@
                 <h2>4.3: Budget Description and Justification</h2>
                 <ul>
                     <li>In addition to the information provided in the Budget Excel document (see Application Instructions) please justify your budget items and associated costs.</li>
-                    <li><i>NB: For AGE-WELL/CFN co-funding stream only - AGE-WELL and CFN will separately administer $25,000 each for the AGE-WELL-CFN co-funding stream. Applicants are asked to submit minimally two $25,000 budgets (budget excel documents).</i></li>
+                    <li><b><i>NB: For AGE-WELL/CFN co-funding stream only - AGE-WELL and CFN will separately administer $25,000 each for the AGE-WELL-CFN co-funding stream. Applicants are asked to submit minimally two $25,000 budgets (budget excel documents).</i></b></li>
                 </ul>
                 {$item}
             ]]>
@@ -312,9 +312,9 @@
             <![CDATA[
                 <h2>5.1: Highly Qualified Personnel (HQP)</h2>
                 <ul>
-                    <li>The inclusion of HQP trainees who will be directly involved in a meaningful way in the study will enhance the competitiveness of the proposal although it is not an absolute requirement for funding streams other than the Sepsis Canada/CFN funding stream. HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
+                    <li>The inclusion of HQP trainees who will be directly involved in a meaningful way in the study will enhance the competitiveness of the proposal although it is not an absolute requirement for funding streams <b>other than the Sepsis Canada/CFN funding stream.</b> HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
                     <li>If HQP are involved in the study, please describe the role of each HQP and the experience/expertise afforded to them by involvement in the study.</li>
-                    <li>If there are no HQP in the proposal please indicate “No HQP Involved”.</li>
+                    <li><b>If there are no HQP in the proposal please indicate “No HQP Involved”.</b></li>
                 </ul>
                 {$item}
             ]]>
