@@ -21,7 +21,7 @@ class PersonSopTab extends AbstractEditableTab {
         $sop = $person->getSop();
         $admissionStatus = ($sop != null) ? $sop->getFinalAdmit() : "Not Submitted";
         $this->html .= "<div name='container' style='display:flex;'>";
-        if($me->isRoleAtLeast("Staff")){
+        if($me->isRoleAtLeast("Faculty")){
             $this->html .= "<div style='margin: 6px;padding: 0px 12px 15px 12px;'><h3>Application Decision</h3>$admissionStatus</div>";
             if ($admissionStatus == "Admit") {
                 $supers = $gsms->getAssignedSupervisors();
