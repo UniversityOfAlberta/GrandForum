@@ -361,7 +361,51 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="9 - Partnerships" title="Section 9 - Partnerships &amp; Letters of Support" showProgress="true">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="9 - Project Team" title="Section 9 - Project Team Information" showProgress="true">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <h3>Project Team Information</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Project_Team_Information.xlsx'>project team information Excel document</a> and upload a <b>single Excel file named ECR2022-##_Surname_TeamList.xlsx</b>. (Note: Unless otherwise noted, when naming documents, “ECR2022-##” refers to the CFN File #. The Surname refers to the Project Leader’s surname.).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Budget.xlsx'>project budget Excel document</a> and upload a <b>single Excel file named ECR2022-##_Surname_Budget.xlsx</b>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents. <b>For AGE-WELL/CFN co-funding stream only</b> - AGE-WELL and CFN will separately administer $25,000 each for the AGE-WELL-CFN ECR Award. Applicants are asked to minimally submit two $25,000 budget excel documents.”</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>PI/Co-I CVs</h3>
+                <p>Principal and Co-Investigators’ CIHR biosketch CVs. Upload a <b>single PDF file named ECR2022-##_Surname_PI_CVs.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Other Member CV(s)</h3>
+                <p>CVs/Resumes for other project team member(s). Submit a <b>single PDF file named ECR2022-##_Surname_TeamCVs.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Required Signatures.docx'>project budget Excel document</a> and upload a <b>a single PDF containing signature documents for each Principal Investigator.  Name the PDF document ECR2022-##_Surname_Signatures.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Ethics</h3>
+                <p>Proof of study submission to Research Ethics Board. Submit a <b>single PDF containing proof of ethics submission for each investigator.  Name the PDF document ECR2022-##_Surname_REB.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="10 - Partnerships" title="Section 10 - Partnerships &amp; Letters of Support" showProgress="true">
         <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Select(Yes,No)|Text|Select(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
             <![CDATA[
                 <ul>
@@ -381,7 +425,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="10 - Other Funding" title="Section 10 - Other Funding" showProgress="true">
+    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="11 - Other Funding" title="Section 11 - Other Funding" showProgress="true">
         <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" sizes="100|150|100|150|200|75|75" multiple="true">
             <![CDATA[
                 <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
