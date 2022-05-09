@@ -108,13 +108,13 @@ class Register extends SpecialPage{
         $emailRow->append($emailLabel)->append($emailField);
         
         // These next 4 fields for are for AVOID
-        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
+        $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "or Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
         $ageOfLovedOneRow->append($ageOfLovedOneLabel)->append($ageOfLovedOneField->attr('size', 3));
         
-        $ageLabel = new Label("age_label", "Age", "The age of the user", VALIDATE_NOTHING);
-        $ageField = new TextField("age_field", "Age", "", VALIDATE_NOTHING);
+        $ageLabel = new Label("age_label", "Guest User Age", "The age of the user", VALIDATE_NOTHING);
+        $ageField = new TextField("age_field", "Guest User Age", "", VALIDATE_NOTHING);
         $ageRow = new FormTableRow("age_row");
         $ageRow->append($ageLabel)->append($ageField->attr('size', 3));
         
