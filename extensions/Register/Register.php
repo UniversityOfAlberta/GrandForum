@@ -202,7 +202,16 @@ class Register extends SpecialPage{
         }
         else if($config->getValUE("networkName") == "AVOID"){
             $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : "Member";
-            $wgOut->addHTML("<p><b style='font-size: 1.5em;'>This program is in development, and only meant only for people identified by admin. If you found this by accident and/or have not been directed by an admin member, please do not register.</b></p>By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+            if($role == "Member"){
+                $wgOut->setPageTitle("Member Registration");
+            }
+            else if($role == "Partner"){
+                $wgOut->setPageTitle("Care Partner/Guest Registration");
+            }
+            else if($role == "Clinician"){
+                $wgOut->setPageTitle("Clinician Registration");
+            }
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
