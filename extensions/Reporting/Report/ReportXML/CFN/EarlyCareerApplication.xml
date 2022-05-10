@@ -307,7 +307,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="feasibility" type="EditableReportSection" blobSection="FEASIBILITY" name="5 - Capacity Building" title="Section 5 - Capacity Building – Highly Qualified Personnel" showProgress="true">
+    <ReportSection id="capacity" type="EditableReportSection" blobSection="CAPACITY" name="5 - Capacity Building" title="Section 5 - Capacity Building – Highly Qualified Personnel" showProgress="true">
         <ReportItem id="hqp" blobItem="HQP" type="Textarea" limit="250" rich="true">
             <![CDATA[
                 <h2>5.1: Highly Qualified Personnel (HQP)</h2>
@@ -441,14 +441,15 @@
     <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <If if="{or({!=({getProgress(information)},100)},
                     {!=({getProgress(summary)},100)},
-                    {!=({getProgress(proposal)},100)},
+                    {!=({getProgress(scientific)},100)},
+                    {!=({getProgress(feasibility)},100)},
+                    {!=({getProgress(capacity)},100)},
+                    {!=({getProgress(mentorship)},100)},
+                    {!=({getProgress(networking)},100)},
                     {!=({getProgress(supporting)},100)},
-                    {!=({getProgress(partnerships)},100)},
-                    {!=({getProgress(funding)},100)},
                     {!=({getProgress(documents)},100)},
-                    {!=({getProgress(cv)},100)},
-                    {!=({getProgress(signatures)},100)},
-                    {!=({getProgress(ethics)},100)}
+                    {!=({getProgress(partnerships)},100)},
+                    {!=({getProgress(other_funding)},100)}
                 )}">
             <![CDATA[
                 You have not completed the application.
