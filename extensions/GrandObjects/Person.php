@@ -81,6 +81,7 @@ class Person extends BackboneModel {
     var $degreeStartDate;
     var $movedOn;
     var $thesis;
+    var $extra = array();
     var $leadershipCache = array();
     var $themesCache = array();
     var $hqpCache = array();
@@ -337,6 +338,7 @@ class Person extends BackboneModel {
                                               'user_agencies',
                                               'user_mitacs',
                                               'user_crc',
+                                              'user_extra',
                                               'user_gender',
                                               'user_pronouns',
                                               'user_birth_date',
@@ -885,6 +887,7 @@ class Person extends BackboneModel {
             $this->office = @$data[0]['user_office'];
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
+            $this->extra = @json_decode($data[0]['user_extra'], true);
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
@@ -977,6 +980,7 @@ class Person extends BackboneModel {
                       'keywords' => $this->getKeywords(),
                       'publicProfile' => $publicProfile,
                       'privateProfile' => $privateProfile,
+                      'extra' => $this->getExtra(),
                       'url' => $this->getUrl(),
                       'candidate' => ($this->isCandidate() == 1));
         if($config->getValue('networkName') == 'FES'){
@@ -1042,6 +1046,7 @@ class Person extends BackboneModel {
                                           'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
+                                          'user_extra' => json_encode($this->extra),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_name' => EQ($this->getName())));
@@ -1110,6 +1115,7 @@ class Person extends BackboneModel {
                                           'user_agencies' => json_encode($this->getAgencies()),
                                           'user_mitacs' => $this->getMitacs(),
                                           'user_crc' => json_encode($this->getCanadaResearchChair()),
+                                          'user_extra' => json_encode($this->extra),
                                           'user_public_profile' => $this->getProfile(false),
                                           'user_private_profile' => $this->getProfile(true)),
                                     array('user_id' => EQ($this->getId())));
@@ -4798,7 +4804,27 @@ class Person extends BackboneModel {
         }
         return "";
     }
+    
+    /**
+     * Returns This Person's extra
+     * @return string This Person's extra
+     * TODO: This should probably be expanded to also include other fields
+     * like the crc, ecr etc. to slim down the number of random fields in the user model
+     */
+    function getExtra($field=null, $default=""){
+        $me = Person::newFromWgUser();
+        if($me->isLoggedIn()){
+            if($field != null){
+                return isset($this->extra[$field]) ? $this->extra[$field] : $default;
+            }
+            return $this->extra;
+        }
+        else{
+            return array();
+        }
+    }
 }
+
 if(isset($facultyMap)){
     Person::$facultyMap = array_flip(array_flatten($facultyMap));
     foreach(Person::$facultyMap as $key => $val){

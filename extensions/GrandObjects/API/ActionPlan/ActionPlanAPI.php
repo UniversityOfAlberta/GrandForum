@@ -27,6 +27,7 @@ class ActionPlanAPI extends RESTAPI {
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
         $plan->tracker = $this->POST('tracker');
+        $plan->components = $this->POST('components');
         $plan->submitted = $this->POST('submitted');
         $plan->create();
         return $plan->toJSON();
@@ -41,6 +42,7 @@ class ActionPlanAPI extends RESTAPI {
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
         $plan->tracker = $this->POST('tracker');
+        $plan->components = $this->POST('components');
         $plan->submitted = $this->POST('submitted');
         $plan->update();
         return $plan->toJSON();

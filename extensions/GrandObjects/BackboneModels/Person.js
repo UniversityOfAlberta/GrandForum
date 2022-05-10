@@ -187,6 +187,7 @@ Person = Backbone.Model.extend({
         keywords: '',
         publicProfile: '',
         privateProfile: '',
+        extra: {},
         url: '',
         candidate: false
     }

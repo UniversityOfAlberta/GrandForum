@@ -1,10 +1,19 @@
+<img src="<%= wgServer + wgScriptPath %>/skins/bg_top2.png" style="z-index: -2; position: absolute; top:0; left: 0; right:0; width: 100%;" />
+<div class='logos'>
+    <img src="<%= wgServer + wgScriptPath %>/skins/logo3.png" />
+    <img style="width:12.5%;" src="<%= wgServer + wgScriptPath %>/skins/logo2.png" />
+    <img src="<%= wgServer + wgScriptPath %>/skins/logo1.png" />
+</div>
+
+<div class="actionPlanTitle">My Weekly<br />Action Plan</div>
+
 <h3>What is one broader goal you’d like to start working on now?</h3>
 <%= HTML.TextArea(this, 'goals', {style: 'height: 200px;width:100%;'}) %>
 
 <h3>What do you think are the barriers or challenges to meeting this goal?</h3>
 <%= HTML.TextArea(this, 'barriers', {style: 'height: 200px;width:100%;'}) %>
 
-<h3>Goals to Action</h3>
+<h4>Goals to Action</h4>
 <p>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</p>
 Your action plan should:
 <ul>
@@ -24,3 +33,37 @@ Here are a few examples of action plans:
 <%= HTML.TextArea(this, 'plan', {style: 'height: 200px;width:100%;'}) %>
 
 <p>As you learned from the Ingredients for Change module, feeling confident is an important part of change. On a scale of 0-10, with 0 being not at all sure and 10 being absolutely sure, how sure are you that you can complete this plan?  If you answer 7 or above, your action plan is probably reasonable.  <b>If you answer below 7, you should revisit your plan.</b>  Why are you unsure? What problems do you expect to encounter? Change your action plan before saving it to make yourself more successful.</p>
+
+<h4>What AVOID component(s) does your action plan address? Choose all that apply.</h4>
+<table>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
+    </tr>
+    <tr>
+        <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
+        <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
+    </tr>
+</table>
+
+<img src="<%= wgServer + wgScriptPath %>/skins/bg_bottom.png" style="z-index: -2; position: absolute; left: 0; right:0; width: 100%;" />

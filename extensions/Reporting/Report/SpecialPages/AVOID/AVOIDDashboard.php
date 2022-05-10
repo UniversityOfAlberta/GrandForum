@@ -58,6 +58,8 @@ class AVOIDDashboard extends SpecialPage {
         $_GET['id'] = $me->getId();
         $tags = (new UserTagsAPI())->getTags($me->getId());
         
+        $membersOnly = ($me->isRole("Provider")) ? "members-only" : "";
+        
         $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
         $programs = $this->sort($programs, $tags);
         
@@ -123,16 +125,16 @@ class AVOIDDashboard extends SpecialPage {
         else if($label == "high risk"){
             $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
         }
+        
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
-                            <div class='program-body' style='width: 100%;'>
+                            <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p>{$frailty}</p>
                                 <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a><br />
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
                                 <b>Where do I go from here?</b>
                                 <ul>
-                                    <li>Review your report and recommendations</li>
-                                    <li>Review the education recommended to you, or of interest</li>
+                                    <li>Review your personal report and the education recommended, or of interest to you</li>
                                     <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
                                     <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
                                 </ul>
@@ -146,20 +148,22 @@ class AVOIDDashboard extends SpecialPage {
                             <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
-        // Education
+        // Weekly Action Plan
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan <small>(Work in progress)</small></h1>");
-        $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
-                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan Overview and review the Ingredients for Change Module to increase your chance of success.</p>
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan</h1>");
+        $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
+                            <div id='actionPlanMessages'></div>
+                            <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
                             <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
                         
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
-                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a>)</div>
+                                <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a> / <a id='repeatActionPlan' href='#'>Repeat for another week</a>)</div>
                             </p>
                             <div id='actionPlanTracker' style='display:none;'></div>
-                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog'></div>
-                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='createActionPlanDialog' class='actionPlanDialog'></div>
+                            <div title='My Weekly Action Plan' style='display:none;' id='viewActionPlanDialog' class='actionPlanDialog'></div>
+                            <div title='Action Plan Overview' style='display:none;padding:0;' id='actionPlanOverview'></div>
                         </div>");
         $wgOut->addHTML("</div>");
         
@@ -179,6 +183,19 @@ class AVOIDDashboard extends SpecialPage {
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
+            $('#viewActionPlanOverview').click(function(){
+                $('#actionPlanOverview').html('<iframe style=\"width:100%;height:99%;border:none;\" src=\"{$wgServer}{$wgScriptPath}/data/Overview.pdf\"></iframe>');
+                $('#actionPlanOverview').dialog({
+                    modal: true,
+                    draggable: false,
+                    resizable: false,
+                    width: 'auto',
+                    height: $(window).height()*0.90,
+                    position: { 'my': 'center', 'at': 'center' }
+                });
+                $(window).resize();
+            });
+            
             $('#viewReport').click(function(){
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
@@ -195,7 +212,7 @@ class AVOIDDashboard extends SpecialPage {
                         }
                     });
                     $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
-                    $('.ui-dialog-titlebar').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
                     $('#viewFullScreen', $('.ui-dialog')).click(function(){
                         viewFullScreen = !viewFullScreen;
                         $(window).resize();
@@ -240,8 +257,40 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#submitActionPlan').click(function(){
+                $('#submitActionPlan').blur();
+                actionPlans.at(0).set('submitted', true);
+                actionPlans.at(0).save(null, {
+                    success: function(){
+                        clearSuccess('#actionPlanMessages');
+                        addSuccess('Action Plan submitted!', false, '#actionPlanMessages');
+                    },
+                    error: function(){
+                        clearError('#actionPlanMessages');
+                        addError('Error submitting action plan', false, '#actionPlanMessages');
+                    }
+                });
+            });
+            
+            $('#repeatActionPlan').click(function(){
+                $('#repeatActionPlan').blur();
+                tracker.undelegateEvents();
+                tracker = undefined;
+                var copy = new ActionPlan(actionPlans.at(0).toJSON());
+                copy.set('id', ActionPlan.prototype.defaults().id);
+                copy.set('tracker', ActionPlan.prototype.defaults().tracker);
                 actionPlans.at(0).set('submitted', true);
                 actionPlans.at(0).save();
+                actionPlans.unshift(copy);
+                copy.save(null, {
+                    success: function(){
+                        clearSuccess('#actionPlanMessages');
+                        addSuccess('Action Plan copied!', false, '#actionPlanMessages');
+                    },
+                    error: function(){
+                        clearError('#actionPlanMessages');
+                        addError('Error copying action plan', false, '#actionPlanMessages');
+                    }
+                });
             });
             
             var viewFullScreen = false;
@@ -286,6 +335,15 @@ class AVOIDDashboard extends SpecialPage {
                         });
                     }
                 }
+                if($('#actionPlanOverview').is(':visible')){
+                    $('#actionPlanOverview').dialog({
+                        height: $(window).height()*0.90,
+                        width: initialFrameWidth*scaleFactor
+                    });
+                    $('#actionPlanOverview').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
+                }
             }).resize();
         </script>");
     }
@@ -316,6 +374,9 @@ class AVOIDDashboard extends SpecialPage {
     
     static function hasSubmittedSurvey(){
         $me = Person::newFromWgUser();
+        if($me->isRole("Provider")){
+            return true;
+        }
         $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
         $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
         $blob->load($blob_address);

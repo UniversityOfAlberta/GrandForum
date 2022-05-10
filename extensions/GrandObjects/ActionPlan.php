@@ -13,6 +13,7 @@ class ActionPlan extends BackboneModel {
     var $barriers;
     var $plan;
     var $tracker = array();
+    var $components = array();
     var $submitted;
     var $created;
     
@@ -49,6 +50,7 @@ class ActionPlan extends BackboneModel {
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
             $this->tracker = json_decode($data[0]['tracker']);
+            $this->components = json_decode($data[0]['components']);
             $this->submitted = $data[0]['submitted'];
             $this->created = $data[0]['created'];
         }
@@ -84,6 +86,10 @@ class ActionPlan extends BackboneModel {
     
     function getTracker(){
         return $this->tracker;
+    }
+    
+    function getComponents(){
+        return $this->components;
     }
     
     function getSubmitted(){
@@ -127,6 +133,7 @@ class ActionPlan extends BackboneModel {
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
                                       'tracker' => json_encode($this->tracker),
+                                      'components' => json_encode($this->components),
                                       'submitted' => $this->submitted,
                                       'created' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
@@ -141,6 +148,7 @@ class ActionPlan extends BackboneModel {
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
                                       'tracker' => json_encode($this->tracker),
+                                      'components' => json_encode($this->components),
                                       'submitted' => $this->submitted),
                                 array('id' => $this->id));
             DBFunctions::commit();
@@ -158,12 +166,13 @@ class ActionPlan extends BackboneModel {
     function toArray(){
         if($this->canUserRead()){
             return array('id' => $this->id,
-                         'user_id' => $this->getUserId(),
+                         'userId' => $this->getUserId(),
                          'date' => $this->getDate(),
                          'goals' => $this->getGoals(),
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),
                          'tracker' => $this->getTracker(),
+                         'components' => $this->getComponents(),
                          'submitted' => $this->getSubmitted(),
                          'created' => $this->created);
         }

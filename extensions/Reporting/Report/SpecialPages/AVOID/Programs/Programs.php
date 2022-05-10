@@ -20,6 +20,7 @@ class Programs extends SpecialPage {
 	
 	function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle("AVOID Programs");
         $json = file_get_contents("{$dir}programs.json");
@@ -36,9 +37,10 @@ class Programs extends SpecialPage {
             <div class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>{$category}</div>");
             $n = 0;
             foreach($programs as $program){
+                $membersOnly = ($me->isRole("Provider") && $program->id == "PeerCoaching") ? "members-only" : "";
                 if($program->category == $category){
                     $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-                    $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols' href='{$url}'>
+                    $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
                         <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
                         <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
                     </a>");

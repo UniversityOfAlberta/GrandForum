@@ -3,7 +3,7 @@
 $wgHooks['BeforePageDisplay'][] = 'initActionPlan';
 
 function initActionPlan($out, $skin){
-    global $wgServer, $wgScriptPath, $config;
+    global $wgServer, $wgScriptPath, $wgOut, $config;
     $me = Person::newFromWgUser();
     
     BackbonePage::$dirs['actionplanpage'] = dirname(__FILE__);
@@ -13,6 +13,7 @@ function initActionPlan($out, $skin){
     $actionPlan->loadHelpers();
     $actionPlan->loadViews();
     $actionPlan->loadMain();
+    $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/ActionPlan/style.css?".filemtime("extensions/ActionPlan/style.css")."' type='text/css' rel='stylesheet' />");
     return true;
 }
 

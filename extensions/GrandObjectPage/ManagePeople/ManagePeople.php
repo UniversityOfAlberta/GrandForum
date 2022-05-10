@@ -10,7 +10,11 @@ class ManagePeople extends BackbonePage {
     }
     
     function userCanExecute($user){
+        global $config;
         $me = Person::newFromWgUser();
+        if($config->getValue('networkName') == "AVOID"){
+            return ($me->isRoleAtLeast(STAFF));
+        }
         return $me->isRoleAtLeast(NI);
     }
     

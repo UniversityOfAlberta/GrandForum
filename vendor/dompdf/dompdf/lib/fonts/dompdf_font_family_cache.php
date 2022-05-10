@@ -79,12 +79,12 @@ return array (
     'normal' => $fontDir . '/DejaVuSerif',
   ),
   'lato' => array(
-    'italic' => $fontDir . '/lato_italic_cdcb9897598adcb97505200ab6dc6a47',
-    'bold_italic' => $fontDir . '/lato_bold_italic_e07ad00867cb862a5addcac53480bd6d',
-    '900_italic' => $fontDir . '/lato_900_italic_0280907f0c78d8e27f694bc19860da33',
-    'normal' => $fontDir . '/lato_normal_7e89c2707278385e59b149142f779d6e',
-    'bold' => $fontDir . '/lato_bold_a37fb3b180e8dc9f478950eed9f4a19a',
-    '900' => $fontDir . '/lato_900_d0ec20a586fc4eabf7504efbeb83dff7',
+    'italic' => $fontDir . '/lato_italic_5f9fe0ebd0ec226a4406d347755c8993',
+    'bold_italic' => $fontDir . '/lato_bold_italic_ae00390ee2848c2b4873ef4034df511f',
+    '900_italic' => $fontDir . '/lato_900_italic_7253dd8155eef4e4e3adf6b585555191',
+    'normal' => $fontDir . '/lato_normal_e84d821566a5c4c11d867dc495c5d1d6',
+    'bold' => $fontDir . '/lato_bold_390c1eb4db6823132bd56ad1e5f68b57',
+    '900' => $fontDir . '/lato_900_afe7ed65fe68e861f4e12df839d37a08',
   ),
   'nunito sans' => array(
     'italic' => $fontDir . '/nunito_sans_italic_ae2aa49e07f41a2399d4ab6f43e26665',

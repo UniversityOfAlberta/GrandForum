@@ -24,9 +24,13 @@ ActionPlanView = Backbone.View.extend({
             });
             $('.ui-dialog').addClass('program-body');
             $(window).resize(function(){
+                var desiredWidth = $(window).width()*0.75;
+                if(window.matchMedia('(max-width: 767px)').matches){
+                    desiredWidth = $(window).width()*0.99;
+                }
                 if(this.dialog.is(":visible")){
                     this.dialog.dialog({
-                        width: 'auto',
+                        width: desiredWidth,
                         height: $(window).height()*0.85,
                     });
                     this.dialog.dialog({

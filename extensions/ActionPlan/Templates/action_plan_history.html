@@ -1,12 +1,26 @@
 <% if(this.model.length > 0){ %>
     <p style="margin-bottom: 0;"><b>Action Plans Log - Review your accomplishments!</b></p>
-    <div style="max-height: 9em; overflow-y: auto;">
-    <ul>
-        <% this.model.each(function(action){ %>
-            <% if(action.get('submitted')){ %>
-                <li><a class="viewActionPlan" href="#" data-id="<%= action.id %>"><%= dateTimeHelpers.formatDate(action.get('date'), 'yyyy-MM-dd', 'd MMMM, yyyy') %></a></li>
-            <% } %>
+    <div class="modules" style="gap:0;">
+        <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
+            <div style="width: 250px;margin-bottom:0.5em;flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">
+                <span class="AVOID <%= comp %>"><%= comp %></span><span style="vertical-align: text-bottom;"><%= ActionPlan.comp2Text(comp).substring(1) %></span>
+                <div style="max-height: 9em; overflow-y: auto;">
+                    <ul>
+                        <% this.model.each(function(action){ %>
+                            <% if(action.get('submitted') && action.getComponents().indexOf(comp) != -1){ %>
+                                <li>
+                                    <a class="viewActionPlan" href="#" data-id="<%= action.id %>">
+                                        <%= dateTimeHelpers.formatDate(action.get('date'), 'yyyy-MM-dd', 'd MMMM, yyyy') %>
+                                    </a>
+                                </li>
+                            <% } %>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        <% }.bind(this)) %>
+        <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
+            <div style="width: 250px;flex: 1 1 auto;"></div>
         <% }) %>
-    </ul>
     </div>
 <% } %>

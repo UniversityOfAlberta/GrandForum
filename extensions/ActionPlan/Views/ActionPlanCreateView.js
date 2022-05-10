@@ -7,6 +7,19 @@ ActionPlanCreateView = Backbone.View.extend({
     initialize: function(options) {
         this.render();
         this.actions = options.actions;
+        this.model.bind("change", this.validations, this);
+    },
+    
+    validations: function(){
+        if(this.model.getComponents().length > 0){
+            $("#saveActionPlanButton").button("option", "disabled", false);
+            $(".ui-dialog-buttonset .warning", this.$el.parent()).hide();
+        }
+        else{
+            $("#saveActionPlanButton").button("option", "disabled", true);
+            $(".ui-dialog-buttonset .warning", this.$el.parent()).show();
+            $(".ui-dialog-buttonset .warning", this.$el.parent()).text("You must select at least one AVOID component");
+        }
     },
 
     events: {
@@ -25,12 +38,19 @@ ActionPlanCreateView = Backbone.View.extend({
                 position: { 'my': 'center', 'at': 'center' },
                 buttons: {
                     'Save': {
+                        id: "saveActionPlanButton",
                         text: 'Create Action Plan',
                         click: function(){
                             this.model.save(null, {
                                 success: function(){
+                                    clearSuccess('#actionPlanMessages');
+                                    addSuccess('Action Plan created!', false, '#actionPlanMessages');
                                     this.actions.fetch();
-                                }.bind(this)
+                                }.bind(this),
+                                error: function(){
+                                    clearError('#actionPlanMessages');
+                                    addError('Error creating action plan', false, '#actionPlanMessages');
+                                }
                             });
                             this.dialog.dialog('close');
                         }.bind(this)
@@ -42,9 +62,13 @@ ActionPlanCreateView = Backbone.View.extend({
             });
             $('.ui-dialog').addClass('program-body');
             $(window).resize(function(){
+                var desiredWidth = $(window).width()*0.75;
+                if(window.matchMedia('(max-width: 767px)').matches){
+                    desiredWidth = $(window).width()*0.99;
+                }
                 if(this.dialog.is(":visible")){
                     this.dialog.dialog({
-                        width: 'auto',
+                        width: desiredWidth,
                         height: $(window).height()*0.85,
                     });
                     this.dialog.dialog({
@@ -52,7 +76,16 @@ ActionPlanCreateView = Backbone.View.extend({
                     });
                 }
             }.bind(this)).resize();
+            $(".ui-dialog-buttonset", this.$el.parent()).prepend("<div class='warning'></div>");
+            $(".ui-dialog-buttonset .warning", this.$el.parent()).css('display', 'inline-block')
+                                                                 .css('margin', 0)
+                                                                 .css('margin-top', '0')
+                                                                 .css('margin-bottom', '5px')
+                                                                 .css('font-size', '1em')
+                                                                 .css('float', 'left')
+                                                                 .css('padding-right', '15px')
         }
+        this.validations();
         return this.$el;
     }
 
