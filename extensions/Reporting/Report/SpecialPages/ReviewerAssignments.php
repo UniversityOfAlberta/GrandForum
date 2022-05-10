@@ -56,7 +56,8 @@ class ReviewerAssignments extends SpecialPage {
         $wgOut->addHTML("<script type='text/javascript'>
             $('#reviewerAssignments').DataTable({
                 'aLengthMenu': [[100,-1], [100,'All']], 
-                'iDisplayLength': -1
+                'iDisplayLength': -1,
+                'order': [[ 3, 'desc' ], [ 2, 'asc' ]]
             });
         </script>");
     }
