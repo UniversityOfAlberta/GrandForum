@@ -71,7 +71,7 @@ class EducationResources extends SpecialPage {
             $n++;
         }
         if(max($n % $cols, $n % 4) > 0){
-            for($i = 0; $i < $cols - max($n % $cols, $n % 3); $i++){
+            for($i = 0; $i < $cols - max($n % $cols, $n % 4); $i++){
                 $wgOut->addHTML("<div class='module-empty module-{$cols}cols-outer'></div>");
             }
         }
