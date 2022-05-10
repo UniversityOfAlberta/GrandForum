@@ -59,7 +59,7 @@ class EducationResources extends SpecialPage {
         $wgOut->setPageTitle("AVOID Education");
         $categories = self::JSON();
         
-        $cols = 7;
+        $cols = 8;
         $wgOut->addHTML("<p class='program-body'>Click the topic that you want to learn about.</p>");
         $wgOut->addHTML("<div class='modules' style='margin-bottom: 1em;'>");
         $n = 0;
@@ -70,7 +70,7 @@ class EducationResources extends SpecialPage {
             </a>");
             $n++;
         }
-        if(max($n % $cols, $n % 3) > 0){
+        if(max($n % $cols, $n % 4) > 0){
             for($i = 0; $i < $cols - max($n % $cols, $n % 3); $i++){
                 $wgOut->addHTML("<div class='module-empty module-{$cols}cols-outer'></div>");
             }
