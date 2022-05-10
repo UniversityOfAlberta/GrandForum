@@ -15,7 +15,7 @@ ExpertDashboardView = Backbone.View.extend({
         var view = new ExpertEditView({ el: this.editDialog, model: this.model, isDialog: true , parent_location: location});
         this.editDialog.view = view;
         this.editDialog.dialog({
-            height: $(window).height() * 0.45,
+            height: $(window).height() * 0.55,
             width: 350,
             title: "Edit Event",
         });
@@ -37,7 +37,7 @@ ExpertDashboardView = Backbone.View.extend({
         this.registerDialog.dialog({
             height: $(window).height() * heightmultiplier,
             width: 350,
-            title: "Register For Event",
+            title: "Ask a Question",
         });
         this.registerDialog.dialog('open');
         view.render();
@@ -49,15 +49,25 @@ ExpertDashboardView = Backbone.View.extend({
         var data = this.model.toJSON();
 	if(data["date_of_event"] != null){
         //split time and date TODO: do this in class function instead
-        var split = data["date_of_event"].split(" ");
-        var parts = split[0].split('-');
-        var date = new Date(parts[0], parts[1] - 1, parts[2]);
-        var timesplit = split[1].split(":");
-        var time = timesplit[0] + ":" + timesplit[1];
-        var datestring = date.toDateString();
-        data["date"] = datestring;
-        data["time"] = time;
+        	var split = data["date_of_event"].split(" ");
+        	var parts = split[0].split('-');
+        	var date = new Date(parts[0], parts[1] - 1, parts[2]);
+        	var timesplit = split[1].split(":");
+        	var time = timesplit[0] + ":" + timesplit[1];
+        	var datestring = date.toDateString();
+        	data["date"] = datestring;
+        	data["time"] = time;
 	}
+	if(data["date_for_questions"] != null){
+        //split time and date TODO: do this in class function instead
+                var split = data["date_for_questions"].split(" ");
+                var parts = split[0].split('-');
+                var date = new Date(parts[0], parts[1] - 1, parts[2]);
+                var timesplit = split[1].split(":");
+                var time = timesplit[0] + ":" + timesplit[1];
+                var datestring = date.toDateString();
+                data["date_for_questions"] = datestring;
+        }
         this.$el.html(this.template({
             output: data,
         }));

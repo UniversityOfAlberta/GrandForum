@@ -1,7 +1,7 @@
 <div class='program-body' style='overflow: auto;'>
     <div style='display:flex;'>
         <div class='program-header' style="text-align:center">
-		ASK AN AVOID Frailty <br /> EXPERT
+		Ask an AVOID Frailty Expert
                         </div>
         <div class='' style='min-width: 200px;'>
 		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 180px;' />
@@ -31,13 +31,15 @@
             </div>
             <br />
             <p>
-	    <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to Submit a Question by  <%= output.date  %>.
+	    <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to Submit a Question by  <%= output.date_for_questions  %>.
 	    </p>
 	    <p>
 	    <a id="registerevent" class="registerbtn" data-cat="register" href="#">Register</a> for the webinar. You will be emailed the webinar link prior to the event.
 	    </p>
 	    <p>
-	    <span id="webinarlink"></span>
+	    <% if (output.zoomlink != ""){ %>
+            <a href='<%=output.zoomlink %>' target='_blank'>Webinar Link</a><br />
+	    <% } %>
             </p>
         </div>
     </div>

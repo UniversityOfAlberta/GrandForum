@@ -63,7 +63,7 @@ EventRegisterView = Backbone.View.extend({
                 $.post(wgServer + wgScriptPath + '/index.php?action=registerExpertEventAction', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
-                    addSuccess('Thank you for submitting a question to our expert of the month. It is possible that our expert may not be able to answer all questions, but we will be sure to get to the most common ones. If you are submitting a question, there is no need to also register for the webinar.', true);
+                    addSuccess('Thank you for submitting a question to our expert of the month. It is possible that our expert may not be able to answer all questions, but we will be sure to get to the most common ones.', true);
                 }.bind(this));
     },
     

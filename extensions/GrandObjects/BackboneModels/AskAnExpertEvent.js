@@ -15,6 +15,7 @@ AskAnExpertEvent = Backbone.Model.extend({
 	date_created:"",
 	currently_on:false,
 	zoomlink:"",
+	date_for_questions:"",
     }
 });
 

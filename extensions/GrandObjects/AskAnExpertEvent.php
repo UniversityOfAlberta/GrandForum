@@ -17,6 +17,7 @@ class AskAnExpertEvent extends BackboneModel {
     var $date_created;
     var $currently_on;
     var $zoomlink;
+    var $date_for_questions;
 
     static function newFromId($id){
         if(isset($cache[$id])){
@@ -65,7 +66,8 @@ class AskAnExpertEvent extends BackboneModel {
             $this->active = $row['active'];
             $this->date_created = $row['date_created'];
             $this->currently_on = $row['currently_on'];
-            $this->zoomlink = $row['zoomlink'];
+	    $this->zoomlink = $row['zoomlink'];
+	    $this->date_for_questions = $row["date_for_questions"];
         }
     }
     
@@ -79,7 +81,8 @@ class AskAnExpertEvent extends BackboneModel {
                     'active' => $this->active,
                     'date_created' => $this->date_created,
                     'currently_on' => $this->currently_on,
-                    'zoomlink' => $this->zoomlink,
+		    'zoomlink' => $this->zoomlink,
+		    'date_for_questions' => $this->date_for_questions,
                 );
         return $json;
     }
@@ -95,7 +98,8 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'active' => $this->active,
                                                 'date_created' => $this->date_created,
                                                 'currently_on' => $this->currently_on,
-                                                'zoomlink' => $this->zoomlink
+						'zoomlink' => $this->zoomlink,
+						'date_for_questions' => $this->date_for_questions,
                                           ), true);
             if($status){
                 DBFunctions::commit();
@@ -116,7 +120,9 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'active' => $this->active,
                                                 'date_created' => $this->date_created,
                                                 'currently_on' => $this->currently_on,
-                                                'zoomlink' => $this->zoomlink),
+						'zoomlink' => $this->zoomlink,
+						'date_for_questions' => $this->date_for_questions,
+					  ),
                                           array('id' => EQ($this->id)),
                                           array(),
                                           true);
