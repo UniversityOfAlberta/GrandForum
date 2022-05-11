@@ -144,33 +144,7 @@
     
     <!-- Question 2 -->
     <ReportSection id="q2" tooltip="Quiz" name="Quiz2"  title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. Avoid doing physical activity|b. Wear safe footwear indoors and outdoors|c. Adapt your space to your needs|d. Both answers b. and c.">
-            <![CDATA[
-                <h3>What can you do to avoid the risk of falling?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    
-    <!-- Answer 2 -->
-    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="d. Both answers b. and c.">
-            <![CDATA[
-                {$item}
-                <b>(wear safe footwear indoors and outdoors; adapt your space to your needs)</b>
-                <p>
-                    Physical activity is one of the most important aspects of reducing your risk of falls, especially when it comes to improving your balance. However, it’s not the only thing you can do. Earlier in the module we looked at four main areas, including physical activity, wearing appropriate footwear, adapting your space, and using handrails whenever they’re available.
-                </p>
-                <p>
-                    Be sure to check out the resource bank for more detailed information on these steps.
-                </p>
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    
-    <!-- Question 3 -->
-    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. 30 minutes per week|b. Until you feel tired|c. 150 minutes per week|d. 400 minutes per week">
             <![CDATA[
                 <h3>How many minutes of moderate to vigorous aerobic activity should you get a week?</h3>
                 {$item}
@@ -178,9 +152,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Answer 3 -->
-    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="c. 150 minutes per week">
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="c. 150 minutes per week">
             <![CDATA[
                 {$item}
                 <p>
@@ -193,9 +167,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Question 4 -->
-    <ReportSection id="q4" tooltip="Quiz" name="Quiz4"  title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="True|False">
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
             <![CDATA[
                 <h3>It is unsafe for older adults to do muscle strengthening exercises.</h3>
                 {$item}
@@ -203,9 +177,9 @@
         </ReportItem>
     </ReportSection>
     
-    <!-- Answer 4 -->
-    <ReportSection id="a4" tooltip="Answers" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
-        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="False">
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="False">
             <![CDATA[
                 {$item}
                 <b>The truth is, older adults can safely do muscle strengthening exercises.</b>
