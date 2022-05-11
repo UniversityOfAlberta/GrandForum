@@ -183,7 +183,43 @@
         "videos": 0,
         "questions": 0,
         "tags": [],
-        "resources": []
+        "resources": [
+            {
+                "file": "Anxiety Canada - Getting a Good Night_s Sleep.pdf",
+                "title": "Getting a Good Night's Sleep",
+                "tags": []
+            },
+            {
+                "file": "Are Adults Getting Enough Sleep.pdf",
+                "title": "Are Adults Getting Enough Sleep",
+                "tags": []
+            },
+            {
+                "file": "Canadian Mental Health Association Sleep Booklet.pdf",
+                "title": "Sleep Booklet",
+                "tags": []
+            },
+            {
+                "file": "Canadian Sleep Society - Sleep in Aging.pdf",
+                "title": "Sleep in Aging",
+                "tags": []
+            },
+            {
+                "file": "Helpful Hints for Better Sleep.pdf",
+                "title": "Helpful Hints for Better Sleep",
+                "tags": []
+            },
+            {
+                "file": "Sleeping Pills.pdf",
+                "title": "Sleeping Pills",
+                "tags": []
+            },
+            {
+                "file": "When Sleep Becomes An Issue - Alzheimer-Society-Canada.pdf",
+                "title": "When Sleep Becomes An Issue",
+                "tags": []
+            }
+        ]
     },
     {
         "id": "FallsPrevention",
@@ -191,6 +227,38 @@
         "videos": 0,
         "questions": 0,
         "tags": [],
-        "resources": []
+        "resources": [
+            {
+                "file": "14 Exercises for Seniors to Improve Strength and Balance.pdf",
+                "title": "14 Exercises for Seniors to Improve Strength and Balance",
+                "tags": []
+            },
+            {
+                "file": "Fall Prevention Guide.pdf",
+                "title": "Fall Prevention Guide",
+                "tags": []
+            },
+            {
+                "file": "Preventing Falls on Stairs.pdf",
+                "title": "Preventing Falls on Stairs",
+                "tags": []
+            },
+            {
+                "file": "Preventing Vision Related Falls.pdf",
+                "title": "Preventing Vision Related Falls",
+                "tags": []
+            },
+            {
+                "file": "What to do AFTER a fall.pdf",
+                "title": "What to do AFTER a fall",
+                "tags": []
+            }
+            ,
+            {
+                "file": "You CAN prevent falls.pdf",
+                "title": "You CAN prevent falls",
+                "tags": []
+            }
+        ]
     }
 ]
