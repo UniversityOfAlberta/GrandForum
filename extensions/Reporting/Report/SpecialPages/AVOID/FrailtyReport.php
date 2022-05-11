@@ -657,7 +657,10 @@ If you need help with managing the medications you are on, visit the following C
         foreach(self::$behavioralRows as $key => $row){
             $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
         }
-        $html .= "      </table><br /><br /><br /><br /><br /><br />
+        $html .= "      </table>
+                        <br />
+                        <div style='width:100%; text-align:center;'><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></div>
+                        <br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
                         <script type='text/javascript'>
                             var initialWidth = $(window).width();

@@ -87,14 +87,14 @@ return array (
     '900' => $fontDir . '/lato_900_afe7ed65fe68e861f4e12df839d37a08',
   ),
   'nunito sans' => array(
-    'italic' => $fontDir . '/nunito_sans_italic_ae2aa49e07f41a2399d4ab6f43e26665',
-    '600_italic' => $fontDir . '/nunito_sans_600_italic_0c99ad488ad1365dd902d68d64bb44ab',
-    'bold_italic' => $fontDir . '/nunito_sans_bold_italic_652e5a0fd0d676a3bee50bfcb0c2052d',
-    '800_italic' => $fontDir . '/nunito_sans_800_italic_f7df78c081182250583b975c37fef027',
-    'normal' => $fontDir . '/nunito_sans_normal_5f8bd6dad1ddfe9cac6f687665f7ed79',
-    '600' => $fontDir . '/nunito_sans_600_7e399b19c90406d684d481f7a4636592',
-    'bold' => $fontDir . '/nunito_sans_bold_e10965010b4e0d9b6294c0e0c3342b95',
-    '800' => $fontDir . '/nunito_sans_800_45a3add0808c285c8daa2c8cdb045ba4',
+    'italic' => $fontDir . '/nunito_sans_italic_4e8e274c8656c4966826544f9598e60c',
+    '600_italic' => $fontDir . '/nunito_sans_600_italic_eb6ef712316855dfa454f4c82809708c',
+    'bold_italic' => $fontDir . '/nunito_sans_bold_italic_be28eb8d066dab619b7225a592875afb',
+    '800_italic' => $fontDir . '/nunito_sans_800_italic_d76e8570c29e7f0ca0db8e6b27a99308',
+    'normal' => $fontDir . '/nunito_sans_normal_acd629bae00064397b5c8f7b6d0b8c79',
+    '600' => $fontDir . '/nunito_sans_600_c85e2aeb2d1e3a94d7a61a47797b10fc',
+    'bold' => $fontDir . '/nunito_sans_bold_65e5651c2f5ddf8fd88cac008a499a73',
+    '800' => $fontDir . '/nunito_sans_800_f011c336c0e2650ccbcebf25e4612ce2',
   ),
 );
 }; ?>
