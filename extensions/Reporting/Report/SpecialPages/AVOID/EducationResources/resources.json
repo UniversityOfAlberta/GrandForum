@@ -16,22 +16,22 @@
         "resources": [
             {
                 "file": "9. Balance with Hal _ Joanne.mp4",
-                "title": "Balance with Hal & Joanne",
+                "title": "Balance Video with Hal & Joanne",
                 "tags": [ "balance" ]
             },
             {
                 "file": "9. Staying Active with Hal _ Joanne.mp4",
-                "title": "Staying Active with Hal & Joanne",
+                "title": "Staying Active Video with Hal & Joanne",
                 "tags": [ "activity", "aerobic" ]
             },
             {
                 "file": "9. Strength with Hal _ Joanne.mp4",
-                "title": "Strength with Hal & Joanne",
+                "title": "Strength Video with Hal & Joanne",
                 "tags": [ "strength" ]
             },
             {
                 "file": "Activity Vid.mp4",
-                "title": "Activity Video",
+                "title": "Exercise at Home Video",
                 "tags": [ "activity vid" ]
             },
             {
@@ -50,7 +50,7 @@
         "resources": [
             {
                 "file": "11. Vaccinate with Hal _ Joanne.mp4",
-                "title": "Vaccinate with Hal & Joanne",
+                "title": "Vaccinate Video with Hal & Joanne",
                 "tags": [ "vaccination" ]
             },
             {
@@ -70,12 +70,12 @@
             },
             {
                 "file": "Vaccinate Vid.mp4",
-                "title": "Vaccinate Vid",
+                "title": "Vaccination Video",
                 "tags": [ "vaccinate vid" ]
             },
             {
                 "file": "Vaccines Work Poster PHAC.pdf",
-                "title": "Vaccines Work Poster PHAC",
+                "title": "Vaccines Work",
                 "tags": [ ]
             }
         ]
@@ -89,17 +89,17 @@
         "resources": [
             {
                 "file": "15. Optimize Medication with Hal _ Joanne.mp4",
-                "title": "Optimize Medication with Hal & Joanne",
+                "title": "Optimize Medication Video with Hal & Joanne",
                 "tags": [ "optimize medication" ]
             },
             {
                 "file": "17. 5 Minutes on Frailty - Optimize Medication.mov",
-                "title": "5 Minutes on Frailty (Optimize Medication)",
+                "title": "Pharmacists Q&A Video",
                 "tags": [ "optimize medication" ]
             },
             {
                 "file": "fact+sheet_Deprescribing_ENGLISH+FINAL_web (1).pdf",
-                "title": "Fact Sheet",
+                "title": "Deprescribing Facts",
                 "tags": []
             },
             {
@@ -109,7 +109,7 @@
             },
             {
                 "file": "Medication Tracker Sheet Planner.pdf",
-                "title": "Medication Tracker Sheet Planner",
+                "title": "Medication Tracker",
                 "tags": [ "medtrack" ]
             },
             {
@@ -152,27 +152,27 @@
         "resources": [
             {
                 "file": "20. Chili Recipe with Hal _ Joanne.mp4",
-                "title": "Chili Recipe with Hal & Joanne",
+                "title": "Chili Recipe Video with Hal & Joanne",
                 "tags": [ "protein" ]
             },
             {
                 "file": "20. Protein with Hal _ Joanne.mp4",
-                "title": "Protein with Hal & Joanne",
+                "title": "The Importance of Protein Video with Hal & Joanne",
                 "tags": [ "protein" ]
             },
             {
                 "file": "22. AVOID Frailty Grocery List.pdf",
-                "title": "AVOID Frailty Grocery List",
+                "title": "Grocery Shopping List",
                 "tags": [ "diet and nutrition", "protein", "calcium", "vitamin d" ]
             },
             {
                 "file": "23. 5 Minutes on Frailty - Diet _ Nutrition.mov",
-                "title": "5 Minutes on Frailty (Diet & Nutrition)",
+                "title": "Nutrition and Aging Q&A Video",
                 "tags": [ "diet and nutrition" ]
             },
             {
                 "file": "Diet_Nutrition Vid.mp4",
-                "title": "Diet & Nutrition Video",
+                "title": "Why Protein Video",
                 "tags": ["diet and nutrition vid"]
             }
         ]
