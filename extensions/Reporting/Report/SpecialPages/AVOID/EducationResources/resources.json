@@ -38,6 +38,26 @@
                 "file": "Falls Prevention.pdf",
                 "title": "Falls Prevention",
                 "tags": [ "falls" ]
+            },
+            {
+                "file": "Movement is Medicine.pdf",
+                "title": "Movement is Medicine",
+                "tags": []
+            },
+            {
+                "file": "physical-literacy-infographic-en.pdf",
+                "title": "What is Physical Literacy",
+                "tags": []
+            },
+            {
+                "file": "physical-literacy-key-messages-en.pdf",
+                "title": "Physical Literacy Key Messages",
+                "tags": []
+            },
+            {
+                "file": "Tips to Get Active.pdf",
+                "title": "Tips to Get Active",
+                "tags": []
             }
         ]
     },
@@ -66,6 +86,11 @@
             {
                 "file": "Immunizations Across the Lifespan.pdf",
                 "title": "Immunizations Accross the Lifespan",
+                "tags": []
+            },
+            {
+                "file": "Shingles Patient Fact Sheet.pdf",
+                "title": "Shingles Patient Fact Sheet",
                 "tags": []
             },
             {
@@ -171,9 +196,59 @@
                 "tags": [ "diet and nutrition" ]
             },
             {
+                "file": "A Guide to Healthy Eating for Older Adults.pdf",
+                "title": "A Guide to Healthy Eating for Older Adults",
+                "tags": [ ]
+            },
+            {
+                "file": "Canada_s Food Guide snap shot image.pdf",
+                "title": "Canada's Food Guide snap shot image",
+                "tags": [ ]
+            },
+            {
+                "file": "Canadian Celiac gluten free diet booklet.pdf",
+                "title": "Canadian Celiac gluten free diet booklet",
+                "tags": [ ]
+            },
+            {
                 "file": "Diet_Nutrition Vid.mp4",
                 "title": "Why Protein Video",
                 "tags": ["diet and nutrition vid"]
+            },
+            {
+                "file": "Gluten-Free Lemon Blueberry Muffins Recipe.pdf",
+                "title": "Gluten-Free Lemon Blueberry Muffins Recipe",
+                "tags": [ ]
+            },
+            {
+                "file": "Hearty Chicken Noodle Soup Recipe.pdf",
+                "title": "Hearty Chicken Noodle Soup Recipe",
+                "tags": [ ]
+            },
+            {
+                "file": "Meet Your Iron Needs on a Gluten-Free Diet.pdf",
+                "title": "Meet Your Iron Needs on a Gluten-Free Diet",
+                "tags": [ ]
+            },
+            {
+                "file": "Open-Faced Egg Salad Sandwiches.pdf",
+                "title": "Open-Faced Egg Salad Sandwiches",
+                "tags": [ ]
+            },
+            {
+                "file": "Protein Foods for Older Adults.pdf",
+                "title": "Protein Foods for Older Adults",
+                "tags": [ ]
+            },
+            {
+                "file": "Tofu and Vegetable Stir Fry Recipe.pdf",
+                "title": "Tofu and Vegetable Stir Fry Recipe",
+                "tags": [ ]
+            },
+            {
+                "file": "Vegetarian Tacos.pdf",
+                "title": "Vegetarian Tacos",
+                "tags": [ ]
             }
         ]
     },
