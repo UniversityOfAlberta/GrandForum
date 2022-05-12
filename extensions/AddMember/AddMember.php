@@ -44,6 +44,11 @@ class AddMember extends SpecialPage{
         else{
             $form = self::createForm();
             $status = $form->validate();
+            if($form->getElementById("hqp_position_field0")->value == "" &&
+               $form->getElementById("position_field0")->value == ""){
+                $wgMessage->addError("The field 'Position' must not be empty");
+                $status = false;   
+            }
             if($status){
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
                 $form->getElementById('middle_name_field')->setPOST('wpMiddleName');
@@ -329,10 +334,10 @@ class AddMember extends SpecialPage{
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
-        $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOTHING);
+        $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOT_NULL);
         $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", 
                                                                                         "Canadian" => "Canadian/Landed Immigrant", 
-                                                                                        "Foreign"), VALIDATE_NOTHING);
+                                                                                        "Foreign"), VALIDATE_NOT_NULL);
         $nationalityField->attr("style", "width: 260px;");
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);
@@ -390,12 +395,18 @@ class AddMember extends SpecialPage{
                   ->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
             $extraText = "";
+            $validation = ($i == 0) ? VALIDATE_NOT_NULL : VALIDATE_NOTHING;
             if($i == 0 && $config->getValue("networkName") == "MtS"){
                 $year = date('Y', time() - 3*30);
                 $nextYear = $year+1;
                 $extraText = "If applicable, please list the start and expected end-date of educational or fellowship programs personnel is (1) currently pursuing, and/or (2) will begin within this fiscal year, and/or (3) will end this fiscal year (March {$year}-{$nextYear}):<br />";
             }
-            $programLabel = new Label("program_label{$i}", "{$extraText}Program ".($i+1)." (can leave blank if N/A)", "", VALIDATE_NOTHING);
+            if($validation == VALIDATE_NOTHING){
+                $programLabel = new Label("program_label{$i}", "{$extraText}Program ".($i+1)." (can leave blank if N/A)", "", VALIDATE_NOTHING);
+            }
+            else{
+                $programLabel = new Label("program_label{$i}", "{$extraText}Program ".($i+1), "", VALIDATE_NOTHING);
+            }
             $programLabel->colon = "";
             $programLabel->colspan = 2;
             $programLabel->attr('style', 'text-align:left;max-width:400px;');
@@ -404,29 +415,29 @@ class AddMember extends SpecialPage{
             $programRow->attr('id', "program_row$i");
             
             $defaultUniversity = ($i == 0) ? $me->getUni() : "";
-            $universityLabel = new Label("university_label$i", "Institution", "The intitution that the user is a member of", VALIDATE_NOTHING);
-            $universityField = new ComboBox("university_field$i", "Instutution", $defaultUniversity, $universities, VALIDATE_NOTHING);
+            $universityLabel = new Label("university_label$i", "Institution", "The intitution that the user is a member of", $validation);
+            $universityField = new ComboBox("university_field$i", "Instutution", $defaultUniversity, $universities, $validation);
             $universityField->attr("style", "width: 250px;");
             $universityRow = new FormTableRow("university_row$i");
             $universityRow->append($universityLabel)->append($universityField);
             $universityRow->attr('id', "university_row$i");
             
             $defaultDepartment = ($i == 0) ? $me->getDepartment() : "";
-            $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", VALIDATE_NOTHING);
-            $deptField = new ComboBox("dept_field$i", $config->getValue('deptsTerm'), $defaultDepartment, $departments, VALIDATE_NOTHING);
+            $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", $validation);
+            $deptField = new ComboBox("dept_field$i", $config->getValue('deptsTerm'), $defaultDepartment, $departments, $validation);
             $deptField->attr("style", "width: 250px;");
             $deptRow = new FormTableRow("dept_row$i");
             $deptRow->append($deptLabel)->append($deptField);
             $deptRow->attr('id', "dept_row$i");
             
-            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", VALIDATE_NOTHING);
+            $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", $validation);
             $hqpPositionField = new SelectBox("hqp_position_field$i", "Position", "", $hqpPositions, VALIDATE_NOTHING);
             $hqpPositionField->attr("style", "width: 260px;");
             $hqpPositionRow = new FormTableRow("hqp_position_row$i");
             $hqpPositionRow->append($hqpPositionLabel)->append($hqpPositionField);
             $hqpPositionRow->attr('id', "hqp_position_row$i");
             
-            $positionLabel = new Label("position_label$i", "Position", "The title of this user", VALIDATE_NOTHING);
+            $positionLabel = new Label("position_label$i", "Position", "The title of this user", $validation);
             $positionField = new ComboBox("position_field$i", "Position", "", $positions, VALIDATE_NOTHING);
             $positionField->attr("style", "width: 250px;");
             $positionRow = new FormTableRow("position_row$i");
@@ -464,7 +475,7 @@ class AddMember extends SpecialPage{
         if(!$me->isRoleAtLeast(STAFF)){
             $formTable->getElementById("cand_row")->attr('style', 'display:none;');
         }
-        if(!$config->getValue('alumniEnabled')){
+        if(!$config->getValue('alumniEnabled') && $config->getValue('networkName') == "FES"){
             $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
@@ -519,8 +530,6 @@ class AddMember extends SpecialPage{
                     $('#end_row1').show();
                     $('#end_row2').show();
                     
-                    $('#nationality_row').show();
-                    
                     $('#employment_row1').show();
                     $('#employment_row2').show();
                 }
@@ -549,8 +558,6 @@ class AddMember extends SpecialPage{
                     
                     $('#end_row1').hide();
                     $('#end_row2').hide();
-                    
-                    $('#nationality_row').hide();
                     
                     $('#employment_row1').hide();
                     $('#employment_row2').hide();
