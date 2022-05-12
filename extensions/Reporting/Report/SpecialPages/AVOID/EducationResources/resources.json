@@ -10,7 +10,7 @@
     {
         "id": "Activity",
         "title": "Activity",
-        "videos": 10,
+        "videos": 8,
         "questions": 3,
         "tags": ["activity module"],
         "resources": [
