@@ -28,8 +28,8 @@ config/config_agewell.php
 config/config_glyconet.php
 data/review-feedback
 docs/_build/
-EducationModules/
-EducationResources/
+/EducationModules/
+/EducationResources/
 extensions/AnnokiControl/query_log.txt
 maintenance/expert/
 maintenance/templates/bin

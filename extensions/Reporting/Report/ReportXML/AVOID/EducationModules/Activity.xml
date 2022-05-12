@@ -23,10 +23,6 @@
                         $("#Answer3").hasClass("selectedReportTab")){
                         $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
                     }
-                    else if($("#Quiz4").hasClass("selectedReportTab") ||
-                        $("#Answer4").hasClass("selectedReportTab")){
-                        $("#Quiz").text("Quiz (Q4)").addClass("fakeSelectedReportTab");
-                    }
                     else{
                         $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
                     }

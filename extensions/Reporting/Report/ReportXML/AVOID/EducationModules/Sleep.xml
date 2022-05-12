@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Sleep" reportType="RP_SLEEP" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz4").hasClass("selectedReportTab") ||
+                        $("#Answer4").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q4)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="Benefits" name="Benefits" title="Benefits" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/2. Benefits.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Sleep &amp; Aging" name="Sleep &amp; Aging" title="Sleep &amp; Aging" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/3. Sleep _ Aging.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="Optimize Sleep" name="Optimize Sleep" title="Optimize Sleep" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/4. How.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Sleep Video" name="Sleep Video" title="Sleep Video" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/5. Sleep Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'Sleep');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve read about the three main ingredients (or factors) involved in making changes to your behaviour, let's review and see how much you remember.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>It is normal for sleep to become more of a challenge as we age.</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q1', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="True">
+            <![CDATA[
+                {$item}
+                <p>It’s normal to experience earlier bedtimes and earlier wake-up times, more sleep during the day, less sleep during the night, lighter sleep, and more awakenings during sleep.</p>
+                <p>These changes may be normal, but they may not necessarily have an impact on your daily living. For some people, less sleep is required as they get older.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="a. At least 30 minutes before bedtime|b. 4 to 6 hours before bedtime|c. 2 to 4 hours before bedtime|d. At least 6 hours before bedtime">
+            <![CDATA[
+                <h3>When should we have our last cup of coffee or favourite caffeinated drink?</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q2', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers1" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="b. 4 to 6 hours before bedtime">
+            <![CDATA[
+                {$item}
+                <p>This will ensure there is no caffeine in your system causing you to toss and turn and unable to fall asleep.</p>
+                
+                <p>Reducing overall liquid intake before bed will help decrease the number of times you need to urinate throughout the night.</p>
+                
+                <p>Check out the resource library for more information on sleep.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="a. Develop a consistent bedtime routine|b. Exercise during the day|c. Have a glass of wine right before you go to bed|d. Keep your room dark, quiet and cool">
+            <![CDATA[
+                <h3>What is not an example of a good sleep habit:</h3>
+                {$item}
+                <script type='text/javascript'>
+                    dc.radio('q3', 'input[type=radio]');
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers1" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="c. Have a glass of wine right before you go to bed">
+            <![CDATA[
+                {$item}
+                <p>Alcohol can cause sleep disturbances, poorer quality of sleep, and may initiate another trip to the bathroom during the night.</p>
+                <p>On the other hand, a consistent bedtime routine, exercise, and keeping a cool and quiet room for sleeping can all help with sleep quality.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 4 -->
+    <ReportSection id="q4" tooltip="Quiz" name="Quiz4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Radio" blobItem="Q4" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Overall, good health is associated with better sleep.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 4 -->
+    <ReportSection id="a4" tooltip="Answers1" name="Answer4" title="QUESTION 4" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q4" type="Answer" blobItem="Q4" blobType="BLOB_TEXT" label="Answer 4" answer="True">
+            <![CDATA[
+                {$item}
+                <b>If you follow the AVOID Frailty components, good sleep will likely follow.</b>
+                <p>Regular activity, making sure you see your doctor or pharmacist for annual medication reviews, keeping stress levels down, having someone to turn to for support and interaction, and being aware of timing regarding caffeine and alcohol can lead to better quality sleep.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Sleep/7. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Back to Modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Redirecting back to AVOID Education...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+
+</Report>

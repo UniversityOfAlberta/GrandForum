@@ -255,8 +255,8 @@
     {
         "id": "Sleep",
         "title": "Sleep",
-        "videos": 0,
-        "questions": 0,
+        "videos": 6,
+        "questions": 4,
         "tags": [],
         "resources": [
             {
