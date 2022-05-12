@@ -123,16 +123,6 @@
                         <td>
                             {$item}
                         </td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
-            <![CDATA[
-                        <td align="right">
-                            <b>Other Phone (optional):</b>
-                        </td>
-                        <td>
-                            {$item}
-                        </td>
                     </tr>
             ]]>
         </ReportItem>
@@ -143,41 +133,6 @@
                             <b>Host Institution that will receive and administer funds:</b>
                         </td>
                         <td colspan='3'>
-                            {$item}
-                        </td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text">
-            <![CDATA[
-                    <tr>
-                        <td align="right">
-                            <b>Secondary Contact Name:</b>
-                        </td>
-                        <td colspan="2">
-                            {$item}
-                        </td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
-            <![CDATA[
-                        <td colspan="2" align="right">
-                            <b>Secondary Telephone Number:</b>
-                        </td>
-                        <td>
-                            {$item}
-                        </td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
-            <![CDATA[
-                    <tr>
-                        <td colspan="3"></td>
-                        <td colspan="2" align="right">
-                            <b>Secondary Email:</b>
-                        </td>
-                        <td>
                             {$item}
                         </td>
                     </tr>
@@ -303,7 +258,7 @@
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="9 - Project Team" title="Section 9 - Project Team Information" showProgress="true">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="9 - Additional Documents" title="Section 9 - Additional Documents" showProgress="true">
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
                 <h3>Project Team Information</h3>
