@@ -74,10 +74,18 @@ class AVOIDDashboard extends SpecialPage {
         $resources = $this->sort($resources, $tags);
         
         $modules = EducationResources::JSON();
-        $modules = $this->sort($modules, $tags);
-        usort($modules, function($a, $b){
-            return (floor(EducationResources::completion($a->id)/100) > floor(EducationResources::completion($b->id)/100));
-        });
+        $complete = array();
+        $inProgress = array();
+        foreach($modules as $module){
+            $completion = EducationResources::completion($module->id);
+            $text = "<li><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$module->id}'>{$module->title}</a></li>";
+            if($completion == 100){
+                $complete[] = $text;
+            }
+            else if($completion > 0){
+                $inProgress[] = $text;
+            }
+        }
         
         $communityResources = array();
         $cat_json = PharmacyMap::getCategoryJSON();
@@ -167,12 +175,22 @@ class AVOIDDashboard extends SpecialPage {
                         </div>");
         $wgOut->addHTML("</div>");
         
-        // Programs
+        // Progress
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
-        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress <small>(Work in progress)</small></h1>");
+        $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
                             <div id='pastActionPlans'></div>
-                            <p><b>Education Module Progress</b></p>
+                            <h3 style='margin-bottom: 0;margin-top:0;'>Education Module Progress</h3>
+                            <div class='modules'>
+                                 <div class='module-2cols-outer'>
+                                    <b>Completed</b>
+                                    <ul>".implode($complete)."</ul>
+                                 </div>
+                                 <div class='module-2cols-outer'>
+                                    <b>In Progress</b>
+                                    <ul>".implode($inProgress)."</ul>
+                                 </div>
+                            </div>
                         </div>");
         $wgOut->addHTML("</div>");
         
