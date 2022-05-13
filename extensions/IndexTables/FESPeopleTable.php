@@ -58,6 +58,7 @@ class FESPeopleTable extends SpecialPage {
                     <th style='display:none;'>Group</th>
                     <th>Nationality</th>
                     <th>Status</th>
+                    <th>Relationships?</th>
                     <th>Supervises</th>
                     <th>Mentors</th>
                     <th>Works With</th>
@@ -147,6 +148,7 @@ class FESPeopleTable extends SpecialPage {
             foreach($person->getRelations(WORKS_WITH, true, true) as $r){
                 $worksWith[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
             }
+            $relationships = (count($supervises) + count($mentors) + count($worksWith) > 0) ? "Yes" : "No";
             $wgOut->addHTML("<td style='display:none;'>{$person->getPronouns()}</td>
                              <td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
@@ -154,6 +156,7 @@ class FESPeopleTable extends SpecialPage {
                              <td style='display:none;'>{$person->getEthnicity()}</td>
                              <td>{$person->getNationality()}</td>
                              <td>{$status}</td>
+                             <td>{$relationships}</td>
                              <td>".implode(", ", $supervises)."</td>
                              <td>".implode(", ", $mentors)."</td>
                              <td>".implode(", ", $worksWith)."</td>
