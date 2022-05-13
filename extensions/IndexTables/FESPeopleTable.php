@@ -148,7 +148,8 @@ class FESPeopleTable extends SpecialPage {
             foreach($person->getRelations(WORKS_WITH, true, true) as $r){
                 $worksWith[$r->getUser1()->getId()] = "<span style='white-space:nowrap;'>{$r->getUser1()->getNameForForms()}</span>";
             }
-            $relationships = (count($supervises) + count($mentors) + count($worksWith) > 0) ? "Yes" : "No";
+            $inverse = $person->getRelations('all', true, true);
+            $relationships = (count($supervises) + count($mentors) + count($worksWith) + count($inverse) > 0) ? "Yes" : "No";
             $wgOut->addHTML("<td style='display:none;'>{$person->getPronouns()}</td>
                              <td style='display:none;'>{$person->getIndigenousStatus()}</td>
                              <td style='display:none;'>{$person->getDisabilityStatus()}</td>
