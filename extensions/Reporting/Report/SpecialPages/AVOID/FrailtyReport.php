@@ -422,12 +422,21 @@ If you need help with managing the medications you are on, visit the following C
         $api = new UserFrailtyIndexAPI();
         $scores = $api->getFrailtyScore($me->getId());
 
-        $pdfNoDisplay = (!isset($_GET['preview'])) ? ".pdfnodisplay { display:none }" : "";
-
         $margins = array('top'     => 1,
                          'right'   => 1,
                          'bottom'  => 1,
                          'left'    => 1);
+
+        $pdfNoDisplay = (!isset($_GET['preview'])) ? ".pdfnodisplay { display:none }" : "";
+        $bodyMargins = (!isset($_GET['preview'])) ? "margin-top: {$margins['top']}cm;
+                                                     margin-right: {$margins['right']}cm;
+                                                     margin-bottom: {$margins['bottom']}cm;
+                                                     margin-left: {$margins['left']}cm;" : "margin: 0;";
+        $bodyPadding = (!isset($_GET['preview'])) ? "" : "padding-top: {$margins['top']}cm;
+                                                          padding-right: {$margins['right']}cm;
+                                                          padding-bottom: {$margins['bottom']}cm;
+                                                          padding-left: {$margins['left']}cm;";
+
         $html = "<html>
                     <head>
                         <script language='javascript' type='text/javascript' src='{$wgServer}{$wgScriptPath}/scripts/jquery.min.js?version=3.4.1'></script>
@@ -445,17 +454,33 @@ If you need help with managing the medications you are on, visit the following C
                                 width: 216mm;
                                 position: relative;
                                 overflow-x: hidden;
-                                transform-origin: top left;
                             }
                             
                             body {
-                                margin-top: {$margins['top']}cm;
-                                margin-right: {$margins['right']}cm;
-                                margin-bottom: {$margins['bottom']}cm;
-                                margin-left: {$margins['left']}cm;
+                                {$bodyMargins}
                                 font-family: 'Nunito Sans';
                                 font-weight: 600;
                                 line-height: 1em;
+                            }
+                            
+                            div.stickyContainer {
+                                position: absolute;
+                                bottom: 0;
+                                left: 1cm;
+                                right: 1cm;
+                                width: auto;
+                            }
+                            
+                            table.sticky {
+                                transform-origin: top left;
+                                z-index: 1000;
+                                position: sticky;
+                                top: 0;
+                            }
+                            
+                            div.body {
+                                transform-origin: top left;
+                                {$bodyPadding}
                             }
                             
                             small {
@@ -601,6 +626,36 @@ If you need help with managing the medications you are on, visit the following C
                         </style>
                     </head>
                     <body>
+                        <div class='stickyContainer pdfnodisplay'>
+                            <table class='sticky recommendations' cellspacing='0' style='width: 100%;'>
+                                <tr>
+                                    <th class='dark-top' colspan='5'>The following risks and recommendations are from the health outcomes section of the assessment</th>
+                                </tr>
+                                <tr>
+                                    <th rowspan='2' style='min-width: 6em; width: 6em; padding-bottom: 0; position: relative;'>
+                                        <div style='line-height: 1em; position: absolute; top: 8px; left: 0;width:100%; text-align: center;'>Risk<br />Identified?<br />(Y/N)</div>
+                                    </th>
+                                    <th rowspan='2' style='min-width: 6em; width: 6em;'>
+                                        Topic
+                                    </th>
+                                    <th class='dark' colspan='3'>
+                                        AVOID Frailty Program Support Recommendation
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th align='left' style='width: 5.5em;'>
+                                        <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
+                                    </th>
+                                    <th align='left' style='width: 10em;'>
+                                        <small><i>AVOID Frailty<br />Programs<br /></i></small>
+                                    </th>
+                                    <th align='left' style='width: 13em;'>
+                                        <small><i>Community Program<br />Category (Find these in the <br />Community Program Library)<br /></i></small>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class='body'>
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_top.png' style='z-index: -2; position: absolute; top:0; left: 0; right:0; width: 216mm;' />
                         <div class='logos'>
                             <img src='{$wgServer}{$wgScriptPath}/skins/logo3.png' />
@@ -638,10 +693,10 @@ If you need help with managing the medications you are on, visit the following C
                                 </th>
                             </tr>
                             <tr>
-                                <th align='left'>
+                                <th align='left' style='width: 5.5em;'>
                                     <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
                                 </th>
-                                <th align='left'>
+                                <th align='left' style='width: 10em;'>
                                     <small><i>AVOID Frailty<br />Programs<br /></i></small>
                                 </th>
                                 <th align='left' style='width: 13em;'>
@@ -670,9 +725,14 @@ If you need help with managing the medications you are on, visit the following C
                                 var desiredWidth = $(window).width();
                                 $('html').width('216mm');
                                 var scaleFactor = desiredWidth/initialWidth;
-                                $('html').css('transform', 'scale(' + scaleFactor + ')');
+                                $('div.body').css('transform', 'scale(' + scaleFactor + ')');
+                                $('div.stickyContainer').css('top', 643*scaleFactor);
+                                $('table.sticky').css('transform', 'scale(' + scaleFactor + ')')
+                                                 .css('margin-left', scaleFactor - 1 + 'cm');
+                                $('body').height($('div.body').outerHeight()*scaleFactor);
                             }).resize();
                         </script>
+                        </div>
                     </body>
                 </html>";
         
