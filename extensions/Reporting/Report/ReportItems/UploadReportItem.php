@@ -8,7 +8,7 @@ class UploadReportItem extends AbstractReportItem {
         if(isset($_GET['delete']) && 
            $_GET['delete'] != "" &&
             (($this->getMD5(false) == $_GET['delete']) ||
-             (decrypt($this->getMD5(false), true) == decrypt($_GET['delete'], true)))){
+             (decrypt($this->getMD5(false), true) != "" && decrypt($this->getMD5(false), true) == decrypt($_GET['delete'], true)))){
             $this->delete();
             exit;
         }
