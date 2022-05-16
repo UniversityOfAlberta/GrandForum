@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Springboard Grants Program - Early Career Researcher Competition" reportType="RP_EARLY_APPLICATION" pdfType="RP_EARLY_INTENT" pdfFiles="EarlyCareerIntentPDF" year="2022" ajax="true" disabled="false">
+<Report name="Springboard Grants Program - Early Career Researcher Competition" reportType="RP_EARLY_APPLICATION" pdfType="RP_EARLY_INTENT" pdfFiles="EarlyCareerIntentPDF" year="2022" ajax="true" disabled="true">
     <Permissions>
         <Role role="NI">
             <SectionPermission id="intent" permissions="rw" />

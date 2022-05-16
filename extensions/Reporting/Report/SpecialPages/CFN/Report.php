@@ -75,10 +75,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Application", "{$url}RCHA2021Application", $selected);
         }
-        if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
+        /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EarlyCareerIntent")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Early Career LOI", "{$url}EarlyCareerIntent", $selected);
-        }
+        }*/
         /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate") || $person->getId() == "3124"){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);
