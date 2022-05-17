@@ -106,6 +106,28 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
     }
 }
 
+/**
+ * https://www.mediawiki.org/wiki/Extension:LastUserLogin
+ * Updates the database when a user logs in
+ * @param Title &$title
+ * @param mixed $unused
+ * @param OutputPage $output
+ * @param User $user
+ * @param WebRequest $request
+ * @param MediaWiki $mediaWiki
+ */
+function touchUser(
+	Title &$title, $unused, OutputPage $output, User $user, WebRequest $request, MediaWiki $mediaWiki
+) {
+	if ( !$request->wasPosted() ) {
+		$userUpdate = $user->getInstanceForUpdate();
+		if ( $userUpdate ) {
+			$userUpdate->touch();
+			$userUpdate->saveSettings();
+		}
+	}
+}
+
 function onUserCanExecute($special, $subpage){
     if(!$special->userCanExecute($special->getUser())){
         permissionError();

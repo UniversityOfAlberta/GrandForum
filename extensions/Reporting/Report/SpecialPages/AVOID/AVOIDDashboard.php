@@ -390,8 +390,13 @@ class AVOIDDashboard extends SpecialPage {
         return "";
     }
     
-    static function hasSubmittedSurvey(){
-        $me = Person::newFromWgUser();
+    static function hasSubmittedSurvey($userId=null){
+        if($userId != null){
+            $me = Person::newFromId($userId);
+        }
+        else{
+            $me = Person::newFromWgUser();
+        }
         if($me->isRole("Provider")){
             return true;
         }

@@ -1282,6 +1282,14 @@ class Person extends BackboneModel {
     function getRegistration(){
         return $this->getUser()->getRegistration();
     }
+    
+    /**
+     * Returns when the User last user activity occured
+     * @return string Returns when the User last user activity occured
+     */
+    function getTouched(){
+        return $this->getUser()->getTouched();
+    }
       
     /**
      * Returns whether this Person is a member of the given Project or not
