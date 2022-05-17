@@ -185,17 +185,36 @@
         <ReportItem id="specify_socio_info2" type="Text" blobItem="GENDERSPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id='specifygender'>
-                                Please Specify:
-                {$item}
+                    Please Specify:
+                    {$item}
                 </span>
-
-                                        ]]>
+            ]]>
         </ReportItem>
         <ReportItem id="postalcode" type="Text" blobItem="POSTAL" width="45px" max_length="3">
             <![CDATA[
                 <h3>Please enter the first 3 digits of your postal code:</h3>
-                <div class="requiredField">{$item}</div>
-                    ]]>
+                <div class="requiredField">{$item} <span id="postalCodeError" class="inlineError" style="display:none;">This is not a valid postal code.</span></div>
+                <script type="text/javascript">
+                    $('[name=GettingtoKnowYou_postalcode]').on('input', function(){
+                        $(this).val($(this).val().toUpperCase());
+                        var val = $(this).val();
+                        var matches = val.match(/[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ]|CFN/);
+                        if(_.size(matches) != 1){
+                            $('#postalCodeError').show();
+                        }
+                        else{
+                            $('#postalCodeError').hide();
+                        }
+                    });
+                    $('[name=GettingtoKnowYou_postalcode]').change(function(){
+                        var val = $(this).val();
+                        var matches = val.match(/[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ]|CFN/);
+                        if(_.size(matches) != 1){
+                            $(this).val('');
+                        }
+                    });
+                </script>
+            ]]>
         </ReportItem>
         <Static>
             <![CDATA[
