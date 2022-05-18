@@ -123,6 +123,7 @@ class FrailtyReport extends SpecialPage {
             "img" => "falling.png",
             "no" => "Did you know that every 12 seconds a Canadian aged 65years+ experiences a fall? Sounds like you’ve reduced your risk. Way to go!",
             "education" => array(
+                "Falls Prevention" => "FallsPrevention",
                 "Activity" => "Activity"
             ),
             "programs" => array(
