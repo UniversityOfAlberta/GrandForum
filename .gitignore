@@ -38,6 +38,7 @@ maintenance/templates/files/
 maintenance/templates/vendor/
 maintenance/avoid_stuff/
 maintenance/alloc.csv
+maintenance/reminders.json
 npm-debug.log
 symfony/bin
 symfony/behat.yml
