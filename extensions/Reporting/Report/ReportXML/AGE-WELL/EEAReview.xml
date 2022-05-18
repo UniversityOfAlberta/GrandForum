@@ -13,7 +13,7 @@
                 <h3>Review Form and Instructions</h3>
                 <p>All applications will be reviewed by the HQP Advisory Committee based on the following criteria:</p>
                 <ol>
-                    <li>Rationale and Approach (20%)
+                    <li>Rationale and Approach (25%)
                         <ul>
                             <li>What problem does this project solve?</li>
                             <li>What sets this innovation apart?</li>
@@ -93,7 +93,7 @@ Major: weakness that severely limits the quality of the proposal or potential of
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="1" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="EEA_REVIEW_1" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
                     <![CDATA[
-                        <h2>1. Rationale and Approach (20%)</h2>
+                        <h2>1. Rationale and Approach (25%)</h2>
                         <small>
                             <ul>
                                 <li>What problem does this project solve?</li>
