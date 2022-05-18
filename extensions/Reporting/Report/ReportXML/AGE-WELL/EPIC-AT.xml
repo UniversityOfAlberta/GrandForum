@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="EPIC-AT Health Research Training Platform Fellowships (2022)" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" pdfFiles="EPIC-AT" ajax="true" disabled="false" year="2022">
+<Report name="EPIC-AT Award 2022" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" pdfFiles="EPIC-AT" ajax="true" disabled="false" year="2022">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="identification" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
         <Role role="HQP" subRole="EPIC-AT">
             <SectionPermission id="background" permissions="rw" />
             <SectionPermission id="application" permissions="rw" />
+            <SectionPermission id="identification" permissions="rw" />
+            <SectionPermission id="documents" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2022)" type="ReportSection">
+    <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2022)" type="ReportSection" renderpdf="false">
         <Static>
             <![CDATA[
                 <h2>Information Package</h2>
@@ -154,7 +158,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection">
         <Static>
             <![CDATA[
                 <table style='width: 100%;'>
@@ -229,10 +233,185 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+        <ReportItem id="goals" type="Textarea" blobType="BLOB_TEXT" blobItem="GOALS" rich="true" limit="250">
             <![CDATA[
                 <tr>
-                    <td colspan='2'><h3>2. Self-Identification Form</h3>
+                    <td colspan='2'><h3>2. ALIGNMENT WITH EPIC-AT PROGRAM</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Statement of alignment with EPIC-AT Program Goals</b><br />
+                        <p>EPIC-AT is inviting fellowship applications from those trainees and ECRs researching in AgeTech, specifically related to digital health solutions for older adults with complex health needs and their caregivers.</p>
+
+                        In this section, applicants should describe: 
+                        <ol>
+                            <li>How does your research connect to research foci of EPIC-AT? How does your work align with its mission?</li>
+                            <li>Why is this work important to you?</li>
+                            <li>How does your project transcend typical disciplinary boundaries?</li>
+                            <li>Will this work result in real-world solutions? Why or why not? If yes, how?</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="bio" type="Textarea" blobType="BLOB_TEXT" blobItem="BIO" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>3. PERSONAL STATEMENT</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Biography</b><br />
+                        <p>EPIC-AT Fellows will be the catalyst that drives forward the Canadian innovation landscape in AgeTech in the digital health solutions for older adults with complex health needs and their caregivers.</p>
+
+                        In this section, applicants should describe:
+                        <ol>
+                            <li>What past experiences and achievements make you an ideal EPIC-AT Fellow?</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="career" type="Textarea" blobType="BLOB_TEXT" blobItem="CAREER" rich="true" limit="350">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'>
+                        <b>Career Path</b><br />
+                        In this section applicants should describe:
+                        <ol>
+                            <li>What are your career goals?</li>
+                            <li>Where do you see yourself in 5-10 years?</li>
+                            <li>What skills gaps have you identified for yourself that you would like to fill over the next year?</li>
+                            <li>How do you see EPIC-AT helping you achieve your goals?</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="focus" type="Textarea" blobType="BLOB_TEXT" blobItem="FOCUS" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>4. SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Research focus and objectives</b><br />
+                        <p>In this section describe the following aspects of your research:</p>
+                        <ol>
+                            <li>What is the overall aim of your research?</li>
+                            <li>What are your specific research questions (if appropriate)</li>
+                            <li>List your specific objectives - these should include both the research objectives AND the ”non-academic” objectives, such as knowledge transfer etc. (these objectives should be related to the specific project activities that will be mapped out in “tasks/activities” in the next section)</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="achieve" type="Textarea" blobType="BLOB_TEXT" blobItem="ACHIEVE" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'>
+                        <b>How will you achieve your project goals?</b><br />
+                        <p>In this section describe the following aspects of your research:</p>
+                        <ol>
+                            <li>Brief overview of the approach (design/methods) you will use to meet your project objectives</li>
+                            <li>Describe the type of research being undertaken e.g. technology development, review, feasibility study, pilot study, requirements analysis, prototype development, intervention study, evaluation study, etc.</li>
+                            <li>Describe the tasks and activities planned (provide detail on specific tasks to be carried out to meet the project objectives you identified above). “Activities” may include research activities, KT, innovation, commercialization, team-building and training, etc.</li>
+                            <li>Provide specific timing of the various tasks, activities and milestones, where milestones are critical points in the project (e.g., completion of a task)</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="engagement" type="Textarea" blobType="BLOB_TEXT" blobItem="ENGAGEMENT" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'>
+                        <b>Stakeholder Engagement</b><br />
+                        <p>Stakeholder engagement is a foundational aspect of EPIC-AT’s approach to research excellence. In this section, describe:</p>
+                        <ol>
+                            <li>How have, or how will, the principles of EDI be incorporated into your research plan?</li>
+                            <li>Are partners and/or stakeholders involved in the design and conduct of proposed activities? If yes, how? If no, why not?</li>
+                        </ol>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="impact" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT" rich="true" limit="200">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'><h3>5. POTENTIAL IMPACT AND FEASIBILITY</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'>
+                        <b>Potential Impact</b><br />
+                        <p>In this section, please provide a brief statement of the potential positive impact your work will have on the lives of older adults with complex health needs and their caregivers.</p>
+
+                        <p>As applicable, address the following:</p>
+
+                        <p><b>Social innovation</b><br />
+                        What are practical benefits of your research to the wider community?</p>
+
+                        <p><b>Technological innovation</b><br />
+                        What are the novel aspects and contributions of your research from a technical point of view?</p>
+
+                        <p><b>Policy and practice innovation</b><br />
+                        How might policies, services and care be transformed by your research?</p>
+
+                        <p><b>Scientific innovation</b><br />
+                        What are the key scientific outputs from this research?</p>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="impact_plan" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT_PLAN" rich="true" limit="250">
+            <![CDATA[
+                <tr>
+                    <td colspan='2'>
+                        <b>Impact Plan</b><br />
+                        <p>EPIC-AT seeks to equip trainees and ECRs with the skills to translate their work into real-world impact.</p>
+
+                        <p>While the success ultimately depends on the rate of uptake and meaningful application of knowledge or products by end users, non-traditional academic knowledge mobilization, commercialization and effective implementation of solutions are a platform goal.</p>  
+
+                        <p>Not every Fellow is expected to be directly responsible for a commercial outcome or uptake of knowledge, but all projects should be actively contributing to these overall goals.</p>
+
+                        <p>Please address your plan to ensure your work achieves the impact described in the previous section.</p>
+                        {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="HQP_APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td colspan='2'>
                         <p>Please note that the information provided here will not be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</p>
                         
                         <p>All applications for fellowships require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
@@ -295,181 +474,31 @@
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a first generation postsecondary student?<br />
 This is defined as an individual whose parents did not complete postsecondary education. </b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="goals" type="Textarea" blobType="BLOB_TEXT" blobItem="GOALS" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'><h3>3. ALIGNMENT WITH EPIC-AT PROGRAM</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <b>Statement of alignment with EPIC-AT Program Goals</b><br />
-                        <p>EPIC-AT is inviting fellowship applications from those trainees and ECRs researching in AgeTech, specifically related to digital health solutions for older adults with complex health needs and their caregivers.</p>
-
-                        In this section, applicants should describe: 
-                        <ol>
-                            <li>How does your research connect to research foci of EPIC-AT? How does your work align with its mission?</li>
-                            <li>Why is this work important to you?</li>
-                            <li>How does your project transcend typical disciplinary boundaries?</li>
-                            <li>Will this work result in real-world solutions? Why or why not? If yes, how?</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="bio" type="Textarea" blobType="BLOB_TEXT" blobItem="BIO" rich="true" limit="200">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'><h3>4. PERSONAL STATEMENT</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <b>Biography</b><br />
-                        <p>EPIC-AT Fellows will be the catalyst that drives forward the Canadian innovation landscape in AgeTech in the digital health solutions for older adults with complex health needs and their caregivers.</p>
-
-                        In this section, applicants should describe:
-                        <ol>
-                            <li>What past experiences and achievements make you an ideal EPIC-AT Fellow?</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="career" type="Textarea" blobType="BLOB_TEXT" blobItem="CAREER" rich="true" limit="350">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>Career Path</b><br />
-                        In this section applicants should describe:
-                        <ol>
-                            <li>What are your career goals?</li>
-                            <li>Where do you see yourself in 5-10 years?</li>
-                            <li>What skills gaps have you identified for yourself that you would like to fill over the next year?</li>
-                            <li>How do you see EPIC-AT helping you achieve your goals?</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="focus" type="Textarea" blobType="BLOB_TEXT" blobItem="FOCUS" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'><h3>5. SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <b>Research focus and objectives</b><br />
-                        <p>In this section describe the following aspects of your research:</p>
-                        <ol>
-                            <li>What is the overall aim of your research?</li>
-                            <li>What are your specific research questions (if appropriate)</li>
-                            <li>List your specific objectives - these should include both the research objectives AND the ”non-academic” objectives, such as knowledge transfer etc. (these objectives should be related to the specific project activities that will be mapped out in “tasks/activities” in the next section)</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="achieve" type="Textarea" blobType="BLOB_TEXT" blobItem="ACHIEVE" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>How will you achieve your project goals?</b><br />
-                        <p>In this section describe the following aspects of your research:</p>
-                        <ol>
-                            <li>Brief overview of the approach (design/methods) you will use to meet your project objectives</li>
-                            <li>Describe the type of research being undertaken e.g. technology development, review, feasibility study, pilot study, requirements analysis, prototype development, intervention study, evaluation study, etc.</li>
-                            <li>Describe the tasks and activities planned (provide detail on specific tasks to be carried out to meet the project objectives you identified above). “Activities” may include research activities, KT, innovation, commercialization, team-building and training, etc.</li>
-                            <li>Provide specific timing of the various tasks, activities and milestones, where milestones are critical points in the project (e.g., completion of a task)</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="engagement" type="Textarea" blobType="BLOB_TEXT" blobItem="ENGAGEMENT" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>Stakeholder Engagement</b><br />
-                        <p>Stakeholder engagement is a foundational aspect of EPIC-AT’s approach to research excellence. In this section, describe:</p>
-                        <ol>
-                            <li>How have, or how will, the principles of EDI be incorporated into your research plan?</li>
-                            <li>Are partners and/or stakeholders involved in the design and conduct of proposed activities? If yes, how? If no, why not?</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="impact" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT" rich="true" limit="200">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'><h3>6. POTENTIAL IMPACT AND FEASIBILITY</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <b>Potential Impact</b><br />
-                        <p>In this section, please provide a brief statement of the potential positive impact your work will have on the lives of older adults with complex health needs and their caregivers.</p>
-
-                        <p>As applicable, address the following:</p>
-
-                        <p><b>Social innovation</b><br />
-                        What are practical benefits of your research to the wider community?</p>
-
-                        <p><b>Technological innovation</b><br />
-                        What are the novel aspects and contributions of your research from a technical point of view?</p>
-
-                        <p><b>Policy and practice innovation</b><br />
-                        How might policies, services and care be transformed by your research?</p>
-
-                        <p><b>Scientific innovation</b><br />
-                        What are the key scientific outputs from this research?</p>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="impact_plan" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT_PLAN" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>Impact Plan</b><br />
-                        <p>EPIC-AT seeks to equip trainees and ECRs with the skills to translate their work into real-world impact.</p>
-
-                        <p>While the success ultimately depends on the rate of uptake and meaningful application of knowledge or products by end users, non-traditional academic knowledge mobilization, commercialization and effective implementation of solutions are a platform goal.</p>  
-
-                        <p>Not every Fellow is expected to be directly responsible for a commercial outcome or uptake of knowledge, but all projects should be actively contributing to these overall goals.</p>
-
-                        <p>Please address your plan to ensure your work achieves the impact described in the previous section.</p>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-
-        <Static>
-            <![CDATA[
                 </table>
             ]]>
-        </Static>
+        </ReportItem>
     </ReportSection>
+    
+    <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
+        <ReportItem id="admission" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h2>Formal evidence of admission to a Master's or Doctoral program or Postdoctoral position</h2>
+                <p>Master’s and Doctoral students can submit their acceptance letters as formal evidence of admission to a graduate program. Applicants can also submit their transcripts as evidence of registration to a graduate program.</p>
+
+                <p>Postdoctoral fellows can submit a copy of their engagement letters as formal evidence of admission to a post‐doctoral position. In the event that engagement letters are not available, a letter from the applicant’s supervisor is sufficient. Please ensure to include the Award period and funding amount in the letter.</p>
+                <b>The uploaded file must be a PDF Document</b>.
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h2>Curriculum Vitae</h2>
+                <p>Please prepare the document and submit as a PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>

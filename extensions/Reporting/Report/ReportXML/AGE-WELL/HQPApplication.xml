@@ -567,13 +567,13 @@
         <Static blobType="BLOB_RAW" blobItem="HQP_APPLICATION_SUPPORT2" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Two Confidential Letters of Support (one must be from your proposed supervisor)</h2>
-                <p>Letters must be sent via email (<a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>) directly by the referee using their department letterhead. Electronic signature or scanned signed documents are accepted. </p> 
+                <p>Letters must be sent via email (<a href='mailto:training@agewell-nce.ca'>training@agewell-nce.ca</a>) directly by the referee using their department letterhead. Electronic signature or scanned signed documents are accepted.</p> 
 
-<p>You need two confidential letters of support:</p>
-<ul>
-    <li>a letter from an individuals familiar with your research, academic background, and aptitude; and</li>
-    <li>a letter from your proposed academic supervisor.</li>
-</ul>{$item}
+                <p>You need two confidential letters of support:</p>
+                <ul>
+                    <li>a letter from an individuals familiar with your research, academic background, and aptitude; and</li>
+                    <li>a letter from your proposed academic supervisor.</li>
+                </ul>{$item}
             ]]>
         </Static>
         <ReportItem id="admission" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
