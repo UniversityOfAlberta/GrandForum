@@ -493,7 +493,7 @@ This is defined as an individual whose parents did not complete postsecondary ed
         <ReportItem id="cv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Curriculum Vitae</h2>
-                <p>Please prepare the document and submit as a PDF.</p>
+                <p>All applicants are required to upload a CV.</p>
                 {$item}
             ]]>
         </ReportItem>
