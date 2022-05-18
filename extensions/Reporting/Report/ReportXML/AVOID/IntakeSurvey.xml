@@ -333,7 +333,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="employment_avoid" type="SelectReportItem" options="Employed|Unempoyed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid">
+        <ReportItem id="employment_avoid" type="SelectReportItem" options="Employed|Unemployed|I am permanently unable to work|I volunteer or look after children or other family members|I am retired|Other (specify):" blobItem="employment_avoid">
             <![CDATA[
                     <h3>Employment status:</h3>
                     <div class="requiredField">{$item}</div>
