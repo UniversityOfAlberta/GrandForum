@@ -299,8 +299,8 @@
     {
         "id": "FallsPrevention",
         "title": "Falls Prevention",
-        "videos": 0,
-        "questions": 0,
+        "videos": 6,
+        "questions": 3,
         "tags": [],
         "resources": [
             {

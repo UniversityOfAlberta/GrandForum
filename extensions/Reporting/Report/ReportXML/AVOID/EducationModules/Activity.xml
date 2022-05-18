@@ -173,8 +173,8 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="video9" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
-        <ReportItem id="video9" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Conclusion.mp4">
+    <ReportSection id="video8" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video8" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/Activity/9. Conclusion.mp4">
             <![CDATA[
                 {$item}
             ]]>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Falls Prevention" reportType="RP_FALLS_PREVENTION" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                if(typeof quizInterval != 'undefined'){
+                    clearInterval(quizInterval);
+                }
+                quizInterval = setInterval(function(){
+                    if($("#Quiz").hasClass("selectedReportTab") ||
+                       $("#Answer1").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q1)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz2").hasClass("selectedReportTab") ||
+                        $("#Answer2").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q2)").addClass("fakeSelectedReportTab");
+                    }
+                    else if($("#Quiz3").hasClass("selectedReportTab") ||
+                        $("#Answer3").hasClass("selectedReportTab")){
+                        $("#Quiz").text("Quiz (Q3)").addClass("fakeSelectedReportTab");
+                    }
+                    else{
+                        $("#Quiz").text("Quiz").removeClass("fakeSelectedReportTab");
+                    }
+                }, 100);
+            </script>
+        ]]>
+    </Script>
+
+    <ReportSection id="video1" tooltip="Introduction" name="Introduction" title="Introduction" type="VideoReportSection">
+        <ReportItem id="video1" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/1. Introduction.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video2" tooltip="What" name="What" title="What" type="VideoReportSection">
+        <ReportItem id="video2" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/2. What.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video3" tooltip="Why" name="Why" title="Why" type="VideoReportSection">
+        <ReportItem id="video3" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/3. Why.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video4" tooltip="How" name="How" title="How" type="VideoReportSection">
+        <ReportItem id="video4" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/4. How.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video5" tooltip="Balance Video" name="Balance Video" title="Balance Video" type="VideoReportSection">
+        <ReportItem id="video5" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/5. Balance Video.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 1 -->
+    <ReportSection id="q1" tooltip="Quiz" name="Quiz"  title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    dc.init(me.get('id'), 'FallsPrevention');
+                    dc.increment('quizPageCount');
+                    dc.timer('quizTime');
+                </script>
+                <p>Now that you’ve read about falls prevention and why it’s important for a healthy and safe lifestyle, let’s review and see how much you remember.</p>
+            ]]>
+        </Static>
+        <ReportItem id="q1" type="Radio" blobItem="Q1" blobType="BLOB_TEXT" options="a. Avoid doing physical activity|b. Wear safe footwear indoors and outdoors|c. Adapt your space to your needs|d. Both answers b. and c.">
+            <![CDATA[
+                <h3>What can you do to avoid the risk of falling?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 1 -->
+    <ReportSection id="a1" tooltip="Answers1" name="Answer1" title="QUESTION 1" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q1" type="Answer" blobItem="Q1" blobType="BLOB_TEXT" label="Answer 1" answer="d. Both answers b. and c.">
+            <![CDATA[
+                {$item}
+                <b>(wear safe footwear indoors and outdoors; adapt your space to your needs)</b>
+                <p>Physical activity is one of the most important aspects of reducing your risk of falls, especially when it comes to improving your balance. However, it’s not the only thing you can do. Wearing appropriate footwear and adapting your space will lower your risk for falling.</p>
+                    
+                <p>Be sure to check out the education resources for more detailed information on these steps.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 2 -->
+    <ReportSection id="q2" tooltip="Quiz" name="Quiz2"  title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Radio" blobItem="Q2" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>Vision is related to falls prevention</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 2 -->
+    <ReportSection id="a2" tooltip="Answers" name="Answer2" title="QUESTION 2" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q2" type="Answer" blobItem="Q2" blobType="BLOB_TEXT" label="Answer 2" answer="True">
+            <![CDATA[
+                {$item}
+                <b>The truth is, if you can’t see well, your risk for falling increases.</b>
+                <p>
+                    A decreased sharpness in vision, an inability to distinguish between shades, problems with glare, and slower adaption to darkness can occur with age. Some age-related eye diseases increase risk for falling, as do dimly lit rooms.
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Question 3 -->
+    <ReportSection id="q3" tooltip="Quiz" name="Quiz3"  title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Radio" blobItem="Q3" blobType="BLOB_TEXT" options="True|False">
+            <![CDATA[
+                <h3>If you do happen to fall, your risk for falling again increases.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <!-- Answer 3 -->
+    <ReportSection id="a3" tooltip="Answers" name="Answer3" title="QUESTION 3" blobSection="QUIZ" type="QuizReportSection" hidden="true">
+        <ReportItem id="q3" type="Answer" blobItem="Q3" blobType="BLOB_TEXT" label="Answer 3" answer="False">
+            <![CDATA[
+                {$item}
+                <b>The truth is, if you are scared of falling and stop moving your body, your risk increases. But one fall isn’t indicative of another one.</b>
+                <p>If you continue to be cognizant of the risks, you can put forth the effort to prevent falling. Remember that exercise is the best defence for falls prevention.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="video6" tooltip="Conclusion" name="Conclusion" title="Conclusion" type="VideoReportSection">
+        <ReportItem id="video6" type="Video" url="{$wgServer}{$wgScriptPath}/EducationModules/FallsPrevention/7. Conclusion.mp4">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="backtomodules" name="Back to Modules" type="ReportSection">
+        <Static>
+            <![CDATA[
+                Redirecting back to AVOID Education...
+                <script type="text/javascript">
+                    setTimeout(function(){
+                        document.location = wgServer + wgScriptPath + '/index.php/Special:EducationResources';
+                    }, 1000);
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+</Report>
