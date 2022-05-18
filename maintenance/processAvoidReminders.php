@@ -2,7 +2,7 @@
 
 require_once('commandLine.inc');
 
-$me = User::newFromId(1);
+$wgUser = User::newFromId(1);
 
 $people = Person::getAllPeople();
 
