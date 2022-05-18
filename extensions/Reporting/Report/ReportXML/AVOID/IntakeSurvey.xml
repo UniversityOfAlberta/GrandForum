@@ -314,6 +314,19 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="living_environment" type="SelectReportItem" options="Independent, at home|Private home with informal care|Private home with formal care|Naturally Occurring Retirement| Community|Retirement home|Assisted living facility|Long-Term Care with 24/7 skilled nursing care|Other (specify):" blobItem="living_environment">
+            <![CDATA[
+                    <h3>What best describes your living environment?</h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="living_specify" type="Text" blobItem="LIVINGSPECIFY" width="400px" optional="true">
+            <![CDATA[
+                <span id="living_specify">
+                        Specify: {$item}
+                </span>
+                ]]>
+        </ReportItem>
         <ReportItem id="education_avoid" type="SelectReportItem" options="No certificate, diploma, or degree|Secondary (highschool) diploma or equivalency certificate|Apprenticeship or trades certificate or diploma|College, CEGEP, or non-university certificate or diploma|University certificate of diploma below bachelor level|University certificate, diploma, or degree at bachelor level or above|Prefer not to say" blobItem="education_avoid">
             <![CDATA[
                     <h3>Please specify your highest level of education:</h3>
@@ -336,15 +349,25 @@
         <Static>
             <![CDATA[
             <script type='text/javascript'>
-                            $('span#employspecify').hide();
+                $('span#employspecify').hide();
                 function specifyEmploy(){
-                                        if($("select[name='GettingtoKnowYou_employment_avoid']").val() == "Other (specify):"){
-                                                $('span#employspecify').show();
-                                        }
-                                        else{ $('span#employspecify').hide();}
-                                }
-                                _.defer(specifyEmploy);
-                                $("select[name='GettingtoKnowYou_employment_avoid']").change(specifyEmploy);
+                    if($("select[name='GettingtoKnowYou_employment_avoid']").val() == "Other (specify):"){
+                            $('span#employspecify').show();
+                    }
+                    else{ $('span#employspecify').hide();}
+                }
+                _.defer(specifyEmploy);
+                $("select[name='GettingtoKnowYou_employment_avoid']").change(specifyEmploy);
+                
+                $('span#living_specify').hide();
+                function specifyLiving(){
+                    if($("select[name='GettingtoKnowYou_living_environment']").val() == "Other (specify):"){
+                            $('span#living_specify').show();
+                    }
+                    else{ $('span#living_specify').hide();}
+                }
+                _.defer(specifyLiving);
+                $("select[name='GettingtoKnowYou_living_environment']").change(specifyLiving);
             </script>
         ]]>
         </Static>
