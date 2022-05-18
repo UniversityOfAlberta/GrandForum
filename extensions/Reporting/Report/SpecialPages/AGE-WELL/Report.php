@@ -44,10 +44,10 @@ class Report extends AbstractReport {
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
-        if(($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate'))){
+        /*if(($person->isRoleAtLeast(INACTIVE) || $person->isRoleAtLeast(INACTIVE.'-Candidate'))){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEA")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Emerging Entrepreneur", "{$url}EEA", $selected);
-        }
+        }*/
         /*if($person->isRole(HQP) || $person->isRole(HQP.'-Candidate')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Edge")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Edge", "{$url}Edge", $selected);
@@ -232,7 +232,7 @@ class Report extends AbstractReport {
                 }
             }
         }*/
-        if(count($person->getEvaluates("EEA-2021", 2021)) > 0){
+        if(count($person->getEvaluates("EEA-2022", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA Review", "{$url}EEAReview", $selected);
         }
