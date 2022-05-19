@@ -32,7 +32,7 @@
                         $("#HealthRelatedQoL7").removeClass("disabled_lnk");
                         $("#HealthStatus").show().removeClass("disabled_lnk");
                         $("#Submit").show();
-                        $(':input[type="submit"]').prop('disabled', false).show();
+                        $('input[type="submit"]').prop('disabled', false);
                     }
                     else{
                         $("#GettingtoKnowYou").hide();
@@ -40,7 +40,10 @@
                         $("#HealthRelatedQoL").hide();
                         $("#HealthStatus").hide();
                         $("#Submit").hide();
-                        $(':input[type="submit"]').prop('disabled', true).hide();
+                        $('input[type="submit"]').prop('disabled', true);
+                        _.delay(function(){
+                            $('input[type="submit"]').prop('disabled', true);
+                        }, 250);
                     }
                 }
                 
@@ -154,11 +157,54 @@
         </ReportItem>
         <Static>
             <![CDATA[
-            <script type='text/javascript'>
-                $("input:radio[name='Consent_eula']").change(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
-                $("input:radio[name='Consent_eula']").click(function(){ checkConsent($("input:radio[name='Consent_eula']:checked").val()); });
-            </script>
-                ]]>
+                <div title='Guest Access' style='display:none;' id='becomeGuestDialog'>
+                    <div id='guestMessages'></div>
+                    <p>We respect your decision to not be part of our study. If you have made a mistake, close this box and change your consent response to ‘yes’. If you do not want to be part of our study, you can still take advantage of the AVOID Frailty program with limited guest access.</p>
+                    <a id='becomeGuest' class='program-button' href='#'>Yes, I want to be a guest</a>
+                </div>
+                <script type='text/javascript'>
+                    $("input:radio[name='Consent_eula']").on('click change', function(){
+                        var value = $("input:radio[name='Consent_eula']:checked").val();
+                        checkConsent(value); 
+                        if(value == "No"){
+                            $("#becomeGuestDialog").dialog({
+                                width: 'auto',
+                                resizable: false,
+                                draggable: false,
+                                modal: true
+                            });
+                            $("#becomeGuestDialog a").blur();
+                            $('.ui-dialog').addClass('program-body')
+                            $(window).resize();
+                        }
+                    });
+                    
+                    $("#becomeGuest").click(function(){
+                        var id = parseInt(_.first(_.pluck(_.filter(me.get('roles'), function(role){ return role.role == CI; }), 'id')));
+                        console.log(id);
+                        var role = new Role({id: id, name: "Provider"});
+                        role.save(null, {
+                            success: function(){
+                                document.location = wgServer + wgScriptPath;
+                            },
+                            error: function(){
+                                addError("There was a problem becoming a full member.", false, "#guestMessages");
+                            }
+                        });
+                    });
+                    
+                    $(window).resize(function(){
+                        if($('#becomeGuestDialog').is(':visible')){
+                            $('#becomeGuestDialog').dialog({
+                                width: 'auto'
+                            });
+                            $('#becomeGuestDialog').dialog({
+                                position: { 'my': 'center', 'at': 'center' }
+                            });
+                        }
+                    });
+                </script>
+            ]]>
         </Static>
     </ReportSection>
     <ReportSection id="socio_info" tooltip="Getting to Know You" name="Getting to Know You" title="Getting to Know You" blobSection="AVOID_Questions_tab0" type="NextPrevReportSection" pagebreak="false">
