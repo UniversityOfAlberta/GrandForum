@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="EPIC-AT Award 2022" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" ajax="true" disabled="false" year="2022">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Award 2022</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h3>1. ADMINISTRATIVE INFORMATION</h3>
+                <table style='width: 100%;'>
+                    <tr><td align='right' style='width:1%;'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
+                    <tr><td align='right'><b>Email Address:</b></td><td>{$user_email}</td></tr>
+            ]]>
+        </Static>
+        <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT" placeholder="e.g., PhD Year 1, Occupational therapy or Assistant Professor, Year 3">
+            <![CDATA[
+                    <tr><td align='right' style='white-space:nowrap;'><b>Academic Status & Department:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="supervisor" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_SUP" placeholder="If you are an ECR, please leave this blank">
+            <![CDATA[
+                    <tr><td align='right'><b>Supervisor Name:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" placeholder="Please list the institution where funds will be held">
+            <![CDATA[
+                    <tr><td align='right'><b>Institution/University:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="level" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_LVL" orientation="vertical" delimiter="&lt;br />" options="Master's (8,000)|PhD ($8,000)|Postdoctoral ($8,000)|Early Career Researcher ($10,000)" optional="true">
+            <![CDATA[
+                    <tr><td align='right' valign='top'><b>Fellowship Category:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="level" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_LVL" orientation="vertical" delimiter="&lt;br />" options="AGE-WELL NCE|Centre de recherche Institut universitaire de gériatrie de Montréal (CRIUGM)|Reseau provincial de recherche en adaptation-réadaptation (REPAR)|Réseau Québécois de recherche sur le viellissement (RQRV)" optional="true">
+            <![CDATA[
+                    <tr><td align='right' valign='top'><b>Memberships:</b></td><td valign="top">{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="PROJECT_TITLE">
+            <![CDATA[
+                    <tr><td align='right'><b>Research Project Title:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KEYWORDS" multiple="true" max="6">
+            <![CDATA[
+                    <tr><td align='right' valign='top' style='padding-top:5px;'><b>Keywords:</b></td><td>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="lay_summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="LAY_SUMMARY" rich="true" limit="200">
+            <![CDATA[
+                <p><b>Lay Summary</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="goals" type="Textarea" blobType="BLOB_TEXT" blobItem="GOALS" rich="true" limit="250">
+            <![CDATA[
+                <h3>2. ALIGNMENT WITH EPIC-AT PROGRAM</h3>
+                <p><b>Statement of alignment with EPIC-AT Program Goals</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="bio" type="Textarea" blobType="BLOB_TEXT" blobItem="BIO" rich="true" limit="200">
+            <![CDATA[
+                <h3>3. PERSONAL STATEMENT</h3>
+                <p><b>Biography</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="career" type="Textarea" blobType="BLOB_TEXT" blobItem="CAREER" rich="true" limit="350">
+            <![CDATA[
+                <p><b>Career Path</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="focus" type="Textarea" blobType="BLOB_TEXT" blobItem="FOCUS" rich="true" limit="250">
+            <![CDATA[
+                <h3>4. SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
+                <p><b>Research focus and objectives</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="achieve" type="Textarea" blobType="BLOB_TEXT" blobItem="ACHIEVE" rich="true" limit="250">
+            <![CDATA[
+                <p><b>How will you achieve your project goals?</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="engagement" type="Textarea" blobType="BLOB_TEXT" blobItem="ENGAGEMENT" rich="true" limit="250">
+            <![CDATA[
+                <b>Stakeholder Engagement</b><br />
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="impact" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT" rich="true" limit="200">
+            <![CDATA[
+                <h3>5. POTENTIAL IMPACT AND FEASIBILITY</h3>
+                <p><b>Potential Impact</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="impact_plan" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT_PLAN" rich="true" limit="250">
+            <![CDATA[
+                <p><b>Impact Plan</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" type="HeaderReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
+        <ReportItem id="admission" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>

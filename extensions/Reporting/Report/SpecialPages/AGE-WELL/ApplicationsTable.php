@@ -100,6 +100,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=fellow'>Policy Challenge</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=epicconference'>EPIC Conference</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=epicat'>EPIC AT</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer Institute</a>";
@@ -148,6 +149,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "epicconference" && $me->isRoleAtLeast(SD)){
             $this->generateEpicConference();
+        }
+        else if($program == "epicat" && $me->isRoleAtLeast(SD)){
+            $this->generateEpicAt();
         }
         else if($program == "fellow" && $me->isRoleAtLeast(SD)){
             $this->generateFellow();
@@ -524,6 +528,13 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_FELLOW', null, 2018, "2018"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateEpicAt(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2022, "2022"));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
