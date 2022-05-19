@@ -32,7 +32,7 @@
                         $("#HealthRelatedQoL7").removeClass("disabled_lnk");
                         $("#HealthStatus").show().removeClass("disabled_lnk");
                         $("#Submit").show();
-                        $('input[type="submit"]').prop('disabled', false);
+                        $('input[type="submit"]').prop('disabled', false).show();
                     }
                     else{
                         $("#GettingtoKnowYou").hide();
@@ -40,10 +40,7 @@
                         $("#HealthRelatedQoL").hide();
                         $("#HealthStatus").hide();
                         $("#Submit").hide();
-                        $('input[type="submit"]').prop('disabled', true);
-                        _.delay(function(){
-                            $('input[type="submit"]').prop('disabled', true);
-                        }, 250);
+                        $('input[type="submit"]').prop('disabled', true).hide();
                     }
                 }
                 
@@ -103,13 +100,15 @@
                     if($("#reportWarning").length == 0){
                         $("#reportFooter").prepend("<div id='reportWarning' style='display:none;margin:0;' class='warning'>You have not yet completed all of the questions.</div>");
                     }
-                    if($(".requiredFieldIncomplete:visible").length > 0){
-                        $("input[type=submit]").hide();
-                        $("#reportWarning").show();
-                    }
-                    else{
-                        $("input[type=submit]").show();
-                        $("#reportWarning").hide();
+                    if($(".selectedReportTab").text() != "Consent"){
+                        if($(".requiredFieldIncomplete:visible").length > 0){
+                            $("input[type=submit]").hide();
+                            $("#reportWarning").show();
+                        }
+                        else{
+                            $("input[type=submit]").show();
+                            $("#reportWarning").hide();
+                        }
                     }
                 }, 250);
             </script>
