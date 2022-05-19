@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="EPIC-AT Award 2022" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" pdfFiles="EPIC-ATPDF" ajax="true" disabled="false" year="2022">
     <Permissions>
-        <Role role="STAFF+">
-            <SectionPermission id="background" permissions="rw" />
-            <SectionPermission id="application" permissions="rw" />
-            <SectionPermission id="identification" permissions="rw" />
-            <SectionPermission id="documents" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
-        <Role role="HQP" subRole="EPIC-AT">
-            <SectionPermission id="background" permissions="rw" />
-            <SectionPermission id="application" permissions="rw" />
-            <SectionPermission id="identification" permissions="rw" />
-            <SectionPermission id="documents" permissions="rw" />
-            <SectionPermission id="review" permissions="rw" />
-            <SectionPermission id="submit" permissions="rw" />
-        </Role>
+
     </Permissions>
     <ReportSection id="background" tooltip="Information" name="Information" title="EPIC-AT Health Research Training Platform Fellowships (2022)" type="ReportSection" renderpdf="false">
         <Static>
