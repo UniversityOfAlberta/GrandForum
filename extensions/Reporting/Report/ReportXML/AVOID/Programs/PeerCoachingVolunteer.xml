@@ -26,7 +26,7 @@
                             <span class='program-text'>Who can volunteer to coach?</span><br />
                             <p>Members of the AVOID Frailty for Healthy Aging Program are eligible to become Peer Coaches. Peer Coaches provide support in self-managing health through behaviour change and empowerment. This complements and enhances professional health care.</p>
                             <img src="{$wgServer}{$wgScriptPath}/skins/people3.png" style='float: right; height: 200px;' />
-                            <p>Coaches do not provide medical/clinical advice or treatment.</p>
+                            <p>Coaches do not provide medical / clinical advice or treatment.</p>
                             
                             <br />
                             <span class='program-text'>Benefits of coaching:</span><br />
