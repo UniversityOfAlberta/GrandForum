@@ -172,7 +172,7 @@ class ApplicationsTable extends SpecialPage{
     function generateECR(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        //$tabbedPage->addTab(new ApplicationTab("EarlyCareerApplication", $fullApplicants, 2022, "2022"));
+        $tabbedPage->addTab(new ApplicationTab("EarlyCareerApplication", null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab("EarlyCareerIntent", null, 2022, "2022 Intent"));
         $wgOut->addHTML($tabbedPage->showPage());
     }

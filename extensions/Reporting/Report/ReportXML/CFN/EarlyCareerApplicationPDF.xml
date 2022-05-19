@@ -72,7 +72,7 @@
         </ReportItem>
         <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
             <![CDATA[
-                <h2>Please provide information on the Project Leader (i.e., Lead Principal Investigator/Early Career Researcher)</h2>
+                <h2>Please provide information on the Project Leader</h2>
                 <table class="wikitable" frame="box" rules="all" style="width:100%;">
                     <tr>
                         <td align="right">
