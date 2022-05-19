@@ -156,10 +156,11 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                <div title='Guest Access' style='display:none;' id='becomeGuestDialog'>
+                <div title='Limited Guest Access' style='display:none;' id='becomeGuestDialog'>
                     <div id='guestMessages'></div>
                     <p>We respect your decision to not be part of our study. If you have made a mistake, close this box and change your consent response to ‘yes’. If you do not want to be part of our study, you can still take advantage of the AVOID Frailty program with limited guest access.</p>
-                    <a id='becomeGuest' class='program-button' href='#'>Yes, I want to be a guest</a>
+                    <a id='becomeGuest' class='program-button' href='#'>Limited Guest Access</a>&nbsp;
+                    <a id='closeGuest' class='program-button' href='#'>Close and Change Response</a>
                 </div>
                 <script type='text/javascript'>
                     $("input:radio[name='Consent_eula']").on('click change', function(){
@@ -180,7 +181,6 @@
                     
                     $("#becomeGuest").click(function(){
                         var id = parseInt(_.first(_.pluck(_.filter(me.get('roles'), function(role){ return role.role == CI; }), 'id')));
-                        console.log(id);
                         var role = new Role({id: id, name: "Provider"});
                         role.save(null, {
                             success: function(){
@@ -190,6 +190,10 @@
                                 addError("There was a problem becoming a full member.", false, "#guestMessages");
                             }
                         });
+                    });
+                    
+                    $("#closeGuest").click(function(){
+                        $('#becomeGuestDialog').dialog('close');
                     });
                     
                     $(window).resize(function(){
