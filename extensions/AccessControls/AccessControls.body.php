@@ -107,7 +107,6 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
 }
 
 /**
- * https://www.mediawiki.org/wiki/Extension:LastUserLogin
  * Updates the database when a user logs in
  * @param Title &$title
  * @param mixed $unused
@@ -116,15 +115,13 @@ function checkLoggedIn($title, $article, $output, $user, $request, $mediaWiki){
  * @param WebRequest $request
  * @param MediaWiki $mediaWiki
  */
-function touchUser(
-	Title &$title, $unused, OutputPage $output, User $user, WebRequest $request, MediaWiki $mediaWiki
-) {
-	if ( !$request->wasPosted() ) {
-		$userUpdate = $user->getInstanceForUpdate();
-		if ( $userUpdate ) {
-			$userUpdate->touch();
-			$userUpdate->saveSettings();
-		}
+function touchUser(Title &$title, $unused, OutputPage $output, User $user, WebRequest $request, MediaWiki $mediaWiki){
+    global $wgUser;
+	if(!$request->wasPosted() && $wgUser->isLoggedIn()){
+	    $timestamp = date('YmdHis');
+        DBFunctions::update('mw_user',
+                            array('user_touched' => $timestamp),
+                            array('user_id' => $wgUser->getId()));
 	}
 }
 

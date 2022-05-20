@@ -28,6 +28,14 @@ function addReminder($id, $person){
     $reminders["{$id}_{$person->getId()}"]['time'] = time();
 }
 
+function sendMail($subject, $message, $person){
+    global $config;
+    $message = nl2br($message);
+    $headers  = "Content-type: text/html\r\n"; 
+    $headers .= "From: {$config->getValue('siteName')} <noreply@healthyagingcentres.ca>" . "\r\n";
+    mail($person->getEmail(), $subject, $message, $headers);
+}
+
 foreach($people as $person){
     // Completed Assessment
     if($person->isRole(CI) && AVOIDDashboard::hasSubmittedSurvey($person->getId()) && getReminder("CompletedAssessment", $person)['count'] < 1){
