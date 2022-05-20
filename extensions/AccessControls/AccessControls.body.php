@@ -122,6 +122,7 @@ function touchUser(Title &$title, $unused, OutputPage $output, User $user, WebRe
         DBFunctions::update('mw_user',
                             array('user_touched' => $timestamp),
                             array('user_id' => $wgUser->getId()));
+        DBFunctions::commit();
 	}
 }
 
