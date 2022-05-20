@@ -35,7 +35,6 @@
                     <p>Peer Coaches <b>provide support in self-managing health through behaviour change</b>. This complements and enhances professional health care.</p>
                     
                     <p>Coaches do not provide medical/clinical advice or treatment.</p>
-                    Coming Soon: This program will open as the first round of coaches are trained.
                     <div class='program-button' onClick='$(".toggleHeader").click();'>
                         Click Here to view the Consent Form and get started with a Peer Coach
                     </div>
