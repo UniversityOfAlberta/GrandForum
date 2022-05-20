@@ -6,7 +6,9 @@ $wgUser = User::newFromId(1);
 
 $people = Person::getAllPeople();
 
-$reminders = @json_decode(file_get_contents("reminders.json"), true);
+$dir = dirname(__FILE__);
+
+$reminders = @json_decode(file_get_contents("{$dir}/reminders.json"), true);
 if($reminders == null){
     $reminders = array();
 }
@@ -84,6 +86,6 @@ foreach($people as $person){
     
 }
 
-file_put_contents("reminders.json", json_encode($reminders));
+file_put_contents("{$dir}/reminders.json", json_encode($reminders));
 
 ?>
