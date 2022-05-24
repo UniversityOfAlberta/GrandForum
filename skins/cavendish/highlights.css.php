@@ -307,6 +307,10 @@ a:active {
     color: $hlc;
 }
 
+.fontSize:hover, .fontSize.selected {
+    color: $th !important;
+}
+
 /* Carousel */
 
 .carouselPrev, .carouselNext {

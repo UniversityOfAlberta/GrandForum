@@ -465,8 +465,6 @@ class CavendishTemplate extends QuickTemplate {
                 });
             }
             
-            
-	        
 		    $(document).ready(function(){
 		        renderProductLinks();
 		        setBodyContentTop();
@@ -737,7 +735,10 @@ class CavendishTemplate extends QuickTemplate {
             }
             echo "<div class='smallLogo'><a href='{$this->data['nav_urls']['mainpage']['href']}' title='$wgSitename'><img src='$wgServer$wgScriptPath/{$config->getValue('logo')}' alt='{$wgSitename}' /></a></div>";
             echo "<div class='search'><div id='globalSearch'></div></div>";
-            echo "<div class='login'>";
+            echo "<div class='login'>
+                    <span id='fontSizeContainer'>
+                        Font Size: <a class='fontSize fontSizeSmall'>A</a><a class='fontSize fontSizeMedium'>A</a><a class='fontSize fontSizeLarge'>A</a>
+                    </span>";
             if($config->getValue('bilingual')){
                 echo "<select name='lang' style='vertical-align:middle;'>";
                 echo ($wgLang->getCode() == "en") ? "<option value='en' selected>English</option>" : "<option value='en'>English</option>";
@@ -1025,6 +1026,32 @@ class CavendishTemplate extends QuickTemplate {
 		</div><!-- end of MAINCONTENT div -->	
 	</div><!-- end of MBODY div -->
 	<script type="text/javascript">
+	    var fontSize = $.cookie('fontSize');
+        $(".fontSize").click(function(){
+            $(".fontSize").removeClass("selected");
+            $(this).addClass("selected");
+            if($(this).hasClass("fontSizeSmall")){
+                fontSize = "13px";
+            }
+            else if($(this).hasClass("fontSizeMedium")){
+                fontSize = "14px";
+            }
+            else if($(this).hasClass("fontSizeLarge")){
+                fontSize = "16px";
+            }
+            $.cookie('fontSize', fontSize, {expires: 180});
+            $("#bodyContent").css("font-size", fontSize);
+        });
+        if(fontSize == "13px"){
+            $(".fontSizeSmall").click();
+        }
+        else if(fontSize == "14px" || fontSize == undefined){
+            $(".fontSizeMedium").click();
+        }
+        else if(fontSize == "16px"){
+            $(".fontSizeLarge").click();
+        }
+        
 	    function setBodyContentTop(){
 	        if(window.matchMedia('(max-width: 1024px)').matches){
                 $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
