@@ -91,11 +91,7 @@ $wgExtensionCredits['specialpage'][] = array(
 				       );
 				       
 function permissionError(){
-    global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle;
-    if($wgTitle == null){
-        // Depending on when this function is called, the title may not be created yet, so make an empty one
-        $wgTitle = new Title();
-    }
+    global $wgOut, $wgUser, $wgServer, $wgScriptPath;
     $wgOut->setPageTitle("Permission error");
     $wgOut->addHTML("<p>You are not allowed to execute the action you have requested.</p>");
     if(!$wgUser->isLoggedIn()){
