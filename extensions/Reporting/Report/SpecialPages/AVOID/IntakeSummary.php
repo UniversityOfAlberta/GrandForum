@@ -33,7 +33,7 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
                             <tr>");
-        $wgOut->addHTML("<th>User Name</th>");
+        $wgOut->addHTML("");
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -49,7 +49,7 @@ class IntakeSummary extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
                 $wgOut->addHTML("<tr>
-                                    <th>{$person->getNameForForms()}</th>");
+                                    ");
                 foreach($report->sections as $section){
                     foreach($section->items as $item){
                         if($item->blobItem != "" && $item->blobItem !== 0){
