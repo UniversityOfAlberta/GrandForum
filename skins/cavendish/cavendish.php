@@ -380,7 +380,16 @@ class CavendishTemplate extends QuickTemplate {
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
 		        }
 		        if($("#submenu").is(":visible")){
+		            
 		            $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
+		        }
+		        else {
+		            if(window.matchMedia('(max-width: 1024px)').matches){
+                        $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
+                    }
+                    else{
+                        $("#bodyContent").css("top", 90);
+                    }
 		        }
 		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
 		    }
@@ -1051,16 +1060,6 @@ class CavendishTemplate extends QuickTemplate {
         else if(fontSize == "16px"){
             $(".fontSizeLarge").click();
         }
-        
-	    function setBodyContentTop(){
-	        if(window.matchMedia('(max-width: 1024px)').matches){
-                $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
-            }
-            else{
-                $("#bodyContent").css("top", 90);
-            }
-	    }
-	    setBodyContentTop();
 	</script>
 </div><!-- end of the CONTAINER div -->
 <?php echo wfReportTimeOld(); ?>

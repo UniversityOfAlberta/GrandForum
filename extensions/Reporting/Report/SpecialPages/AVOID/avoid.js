@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    if($('.top-nav-element.selected').text().trim() == "Manager"){
+        $("#submenu").show();
+    }
+
     $('#bodyContent').append("<div id='avoidButtons' class='program-body'></div>");
     
     $('#avoidButtons').append("<a id='scrollToTop' class='program-button' style='min-width: 14em;margin-left:5px;margin-right:5px;' href='#'>Top of Page</a>");
