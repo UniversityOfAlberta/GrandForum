@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Proposal 2021-22" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2021" disabled="false" ajax="true">
-    <ReportSection id="proposal" type="HeaderReportSection" blobSection="PROPOSAL" name="Project Proposal 2021-22" title="Project Proposal 2021-22" pagebreak="false">
+<Report name="Project Proposal 2022-23" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2022" disabled="false" ajax="true">
+    <ReportSection id="proposal" type="HeaderReportSection" blobSection="PROPOSAL" name="Project Proposal 2022-23" title="Project Proposal 2022-23" pagebreak="false">
         <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <h4 style='font-size:1.20em;'>Project Proposal 2021-22</h4>
+                <h4 style='font-size:1.20em;'>Project Proposal 2022-23</h4>
                 <br />
                 <br />
                 <br />

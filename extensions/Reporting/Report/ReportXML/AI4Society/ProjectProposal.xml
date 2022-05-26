@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Proposal 2021-22" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2021" disabled="false" ajax="true">
+<Report name="Project Proposal 2022-23" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2022" disabled="false" ajax="true">
     <Permissions>
         <Role role="INACTIVE+"></Role>
         <Role role="INACTIVE-Candidate+"></Role>
     </Permissions>
-    <ReportSection id="instructions" type="ReportSection" name="Instructions" title="Project Proposal 2021-22">
+    <ReportSection id="instructions" type="ReportSection" name="Instructions" title="Project Proposal 2022-23">
         <Static>
             <![CDATA[
-                <p>Thank you for submitting your proposal to AI4Society. Please, complete this template to share your idea with us. Note that projects should be approved before the end of March and will have a length of (unless there is a specific reason for a different timeline) one year from the approval date.</p>
-
+                <p>Thank you for submitting your proposal to AI4Society. Please, complete this template to share your idea with us. Note that projects should be approved before the end of March 2023 and will have a length of (unless there is a specific reason for a different timeline) one year from the approval date.</p>
+                
                 <h3>Applications should:</h3>
                 <ul>
-                    <li>Be led by a full-time faculty member of the University of Alberta.</li>
-                    <li>Include an interdisciplinary team of researchers. Researchers at other universities and community researchers are welcome as team members.</li>
-                    <li>Be relevant to the focus of the AI4Society Signature Area.</li>
+                    <li>Be led by a full-time faculty member of the University of Alberta</li>
+                    <li>Include an interdisciplinary team of researchers, across Departments and Faculties. (Researchers at other universities and community researchers are welcome)</li>
+                    <li>Be relevant to the focus of the AI4Society Signature Area</li>
                 </ul>
-
-                <p>Please consult our Initiatives and Support Protocols (<a href="https://ai4society.ca/protocols/" target="_blank">https://ai4society.ca/protocols/</a>) web page to learn more about how AI4Society can support the formation of a collaboratory, or the development of teaching materials, or the development of other types of partnerships.</p>
-
-                <p>Here are the types of proposals we are prioritizing for this coming academic year:</p>
-
+                
+                <p>We are looking specifically for proposals for grant writing support, for projects, and for “big questions” events. Researchers can also consult our Initiatives and Support Protocols (https://ai4society.ca/protocols/) web page to learn about forming a collaboratory, developing teaching materials and developing other types of partnerships. Here are the types of proposals we are prioritizing for this coming academic year:</p>
                 <ol>
-                    <li><b>Projects.</b> Do you have a research project you would like to start that would bring researchers together and develop a new agenda? AI4Society has set aside funding for seed grants for research initiatives associated with the existing collaboratories. AI4Society will provide up to $10,000 in funding and in-kind support to viable projects that fit our mandate and which have the potential to develop into self-funded projects. The proposal should identify grant programs that the team plans to apply for funding the activities of the research beyond the seed funding allocated by AI4Society.</li>
-                    <li><b>Grant Preparation Support.</b> Are you thinking of writing a grant? AI4Society can help you with mentoring, peer review and with funding for grant preparation activities. Depending on the size of the grant you plan to apply for AI4Society can provide up to $5,000 in preparation support. (Talk to us if you are preparing a very large grant and need more; we can help get you support.)</li>
-                    <li><b>Big Questions for Society.</b> Are there interesting questions you would like to see addressed in public? AI4Society seeks proposals for questions, formats and potential speakers to address these questions. AI4Society will support the organization and fees of three public events. We encourage researchers to think big and to talk to us about potential events that could involve the public./li>
-                </ol> 
-
-<h3>Process</h3>
-<p>Proposals are reviewed as they come. We will continue to accept applications over the academic year or until our funding is exhausted.</p>
-<p>Applicants are encouraged to talk to the Director (Eleni Stroulia) or Associate Director (Geoffrey Rockwell) before preparing a full proposal.</p>
-<p>If you have any question please contact Nicolás Arnáez: <a href="mailto:ai4s@ualberta.ca">ai4s@ualberta.ca</a></p>
+                    <li><b>Projects</b> Do you have a research project you would like to start that would bring researchers together and develop a new agenda? AI4Society has set aside funding for seed grants for research initiatives associated with the existing collaboratories. AI4Society will provide up to $15,000 in funding and in-kind support to viable projects that fit our mandate and which have the potential to develop into self-funded projects. The proposal should identify grant programs that the team plans to apply for funding the activities of the research beyond the seed funding allocated by AI4Society.</li>
+                    <li><b>Grant Preparation Support</b> Are you thinking of writing a grant? AI4Society can help you with mentoring, peer review and with funding for grant preparation activities. Depending on the size of the grant you plan to apply for AI4Society can provide up to $2,000 in preparation support. (Talk to us if you are preparing a very large grant and need more; we can help get you support.)</li>
+                    <li><b>Big Questions for Society</b> Are there interesting questions you would like to see addressed in public? AI4Society seeks proposals for questions, formats and potential speakers to address these questions. AI4Society will support the organization and fees of three public events. We encourage researchers to think big and to talk to us about potential events that could involve the public.</li>
+                </ol>
+                <h3>Process</h3>
+                <p>Proposals are reviewed as they come. We will continue to accept applications over the academic year or until our funding is exhausted.</p>
+                <p>Applicants are encouraged to talk to the Director (Eleni Stroulia) or Associate Director (Geoffrey Rockwell) before preparing a full proposal.</p>
+                <p>If you have any question please contact Nicolás Arnáez: <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a></p>
             ]]>
         </Static>
     </ReportSection>
