@@ -50,7 +50,7 @@ class IntakeSummary extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
                 $api = new UserFrailtyIndexAPI();
-                $scores = $api->getFrailtyScore($me->getId());
+                $scores = $api->getFrailtyScore($person->getId());
                 $wgOut->addHTML("<tr>
                                     <td>{$scores["Total"]}</td>");
                 foreach($report->sections as $section){
