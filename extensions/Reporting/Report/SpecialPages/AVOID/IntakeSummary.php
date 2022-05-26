@@ -13,6 +13,35 @@ function runIntakeSummary($par) {
 
 class IntakeSummary extends SpecialPage {
     
+    static $map = array(
+        'avoid_age' => 'Age',
+        'avoid_gender' => 'Gender',
+        'GENDERSPECIFY' => 'Gender (Specify)',
+        'POSTAL' => 'Postal Code',
+        'ethnicity_avoid' => 'Ethnicity1',
+        'ethnicity_avoid2' => 'Ethnicity2',
+        'ETHNICITYINDIGENOUSSPECIFY' => 'Ethnicity (Specify)',
+        'transportation_avoid' => 'Transportation',
+        'income_avoid' => 'Income',
+        'assistive_avoid' => 'Assistive',
+        'living_avoid' => 'Living',
+        'living_environment' => 'Living Environment',
+        'LIVINGSPECIFY' => 'Living (Specify)',
+        'education_avoid' => 'Education',
+        'employment_avoid' => 'Employment',
+        'EMPLOYSPECIFY' => 'Employ (Specify)',
+        'device_avoid' => 'Device',
+        'DEVICESPECIFY' => 'Device (Specify)',
+        'tech_avoid' => 'Tech',
+        'internetissues_avoid' => 'Internet Issues',
+        'program_avoid' => 'AVOID Program',
+        'PROGRAMLOCATIONSPECIFY' => 'AVOID Program (Specify)',
+        'platform_avoid' => 'Platform',
+        'PROGRAMPLATFORMOTHERSPECIFY' => 'Platform (Specify)',
+        'PROGRAMOTHERSPECIFY' => 'Program (Specify)',
+        
+    );
+    
     function __construct() {
         SpecialPage::__construct("IntakeSummary", null, true, 'runIntakeSummary');
     }
@@ -34,11 +63,11 @@ class IntakeSummary extends SpecialPage {
                             <thead>
                             <tr>
                                 <th>Frailty Score</th>");
-        $wgOut->addHTML("");
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
-                    $wgOut->addHTML("<th>".str_replace("_", " ", $item->blobItem)."</th>");
+                    $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
+                    $wgOut->addHTML("<th>{$label}</th>");
                 }
             }
         }                       

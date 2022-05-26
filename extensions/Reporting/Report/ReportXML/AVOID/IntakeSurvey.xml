@@ -435,18 +435,18 @@
         </ReportItem>
         <Static>
             <![CDATA[
-                        <script type='text/javascript'>
-                                $('span#devicespecify').hide();
-                                function specifyDevice(){
-                                        if($("input:radio[value='Yes']").is(':checked')){
-                                                $('span#devicespecify').show();
-                                        }
-                                        else{ $('span#devicespecify').hide();}
-                                }
-                                _.defer(specifyDevice);
+                <script type='text/javascript'>
+                    $('span#devicespecify').hide();
+                    function specifyDevice(){
+                            if($("input:radio[value='Yes']").is(':checked')){
+                                    $('span#devicespecify').show();
+                            }
+                            else{ $('span#devicespecify').hide();}
+                    }
+                    _.defer(specifyDevice);
                     $("input:radio[name='GettingtoKnowYou_device_avoid']").change(specifyDevice);
-            </script>
-                ]]>
+                </script>
+            ]]>
         </Static>
         <ReportItem id="tech1" type="SelectReportItem" options="Yes|No" blobItem="tech_avoid">
             <![CDATA[
@@ -473,7 +473,7 @@
                 </span>
                 ]]>
         </ReportItem>
-        <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="device_avoid" optional="true">
+        <ReportItem id="program_platform__specify" type="RadioReportItem" options="Facebook|Twitter|LinkedIn|Other" blobItem="platform_avoid" optional="true">
             <![CDATA[
                 <span id="programspecify">
             <p>Please specify platform: {$item}</p>
@@ -524,17 +524,17 @@
                                 }
                                 _.defer(specifyEmploy);
                                 $("select[name='GettingtoKnowYou_program_avoid']").change(specifyFrail);
-                
-                $('span#programplatformotherspecify').hide();
-                function specifyPlatform(){
-                    if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
+                    specifyFrail();
+                    $('span#programplatformotherspecify').hide();
+                    function specifyPlatform(){
+                        if($("input:radio[name='GettingtoKnowYou_program_platform__specify']:checked").val() == "Other"){
                                                 $('span#programplatformotherspecify').show();
                                         }
                                         else{ $('span#programplatformotherspecify').hide();}
                                 }
                                 _.defer(specifyPlatform);
                                $("input:radio[name='GettingtoKnowYou_program_platform__specify']").change(specifyPlatform);
-                        </script>
+                    </script>
                 ]]>
         </Static>
     </ReportSection>
