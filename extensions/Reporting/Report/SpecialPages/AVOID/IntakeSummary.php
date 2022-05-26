@@ -32,7 +32,8 @@ class IntakeSummary extends SpecialPage {
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
-                            <tr>");
+                            <tr>
+                                <th>Frailty Score</th>");
         $wgOut->addHTML("");
         foreach($report->sections as $section){
             foreach($section->items as $item){
@@ -48,8 +49,10 @@ class IntakeSummary extends SpecialPage {
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
+                $api = new UserFrailtyIndexAPI();
+                $scores = $api->getFrailtyScore($me->getId());
                 $wgOut->addHTML("<tr>
-                                    ");
+                                    <td>{$scores["Total"]}</td>");
                 foreach($report->sections as $section){
                     foreach($section->items as $item){
                         if($item->blobItem != "" && $item->blobItem !== 0){
@@ -69,7 +72,14 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("</tbody>
                         </table>
         <script type='text/javascript'>
-            $('#summary').DataTable();
+            $('#summary').DataTable({
+                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                'iDisplayLength': -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel'
+                ]
+            });
         </script>");
     }
     

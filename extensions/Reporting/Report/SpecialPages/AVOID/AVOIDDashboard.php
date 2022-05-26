@@ -44,7 +44,6 @@ class AVOIDDashboard extends SpecialPage {
     function generateReport(){
         $api = new UserFrailtyIndexAPI();
         $scores = $api->getFrailtyScore($me->getId());
-        
         exit;
     }
     
