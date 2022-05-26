@@ -38,7 +38,7 @@ class IntakeSummary extends SpecialPage {
         'PROGRAMLOCATIONSPECIFY' => 'AVOID Program (Specify)',
         'platform_avoid' => 'Platform',
         'PROGRAMPLATFORMOTHERSPECIFY' => 'Platform (Specify)',
-        'PROGRAMOTHERSPECIFY' => 'Program (Specify)',
+        'PROGRAMOTHERSPECIFY' => 'Program (Specify)'
         
     );
     
