@@ -628,7 +628,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="vax_text_specify" blobItem="ACTIVESPECIFY" type="Textarea" optional="true">
+        <ReportItem id="vax_text_specify" blobItem="VACCINATESPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="vaxspecify">
                         Please let us know the reason for this if you are comfortable doing so: {$item}
@@ -803,7 +803,7 @@
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="meds2_avoid" blobItem="meds1_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
+        <ReportItem id="meds2_avoid" blobItem="meds2_avoid" type="RadioReportItem" orientation="horizontal" options="0-4|5 or more">
             <![CDATA[
                     <h3>How many over the counter medications, including supplements/vitamins do you take on a daily basis?</h3>
                     <div class="requiredField">{$item}</div>
