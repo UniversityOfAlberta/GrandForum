@@ -842,7 +842,7 @@ EOF;
         $managePeople->loadHelpers();
         $managePeople->loadViews();
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
-        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input type='button' id='addUniversity' value='Add Institution' />
+        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input style='margin-top: 3px;' type='button' id='addUniversity' value='Add Institution' />
         <script type='text/javascript'>
             $('input[name=aliases]').tagit({
                 allowSpaces: true,
