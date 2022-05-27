@@ -13,16 +13,23 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser;
+        $me = Person::newFromWgUser();
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         $keywords = $this->person->getKeywords(", ");
         if($this->person->getProfile() != "" || $keywords != ""){
-            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
-            if($keywords != ""){
-                $this->html .= "<b>Keywords:</b> {$keywords}<br />";
+            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>
+                            <table>";
+            if($me->isRoleAtLeast(STAFF)){
+                $this->html .= ($this->person->getFirstName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>First Name:</b></td><td>{$this->person->getFirstName()}</td></tr>" : "";
+                $this->html .= ($this->person->getMiddleName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Middle Name:</b></td><td>{$this->person->getMiddleName()}</td></tr>" : "";
+                $this->html .= ($this->person->getLastName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Last Name:</b></td><td>{$this->person->getLastName()}</td></tr>" : "";
+                $this->html .= ($this->person->getEmployeeId() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Employee Id:</b></td><td>{$this->person->getEmployeeId()}</td></tr>" : "";
             }
+            $this->html .= ($keywords != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Keywords:</b></td><td>{$keywords}</td></tr>" : "";
+            $this->html .= "</table>";
             $this->showProfile($this->person, $this->visibility);
         }
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
