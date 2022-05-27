@@ -772,7 +772,9 @@ EOF;
                         </tr>";
             }
         }
-        
+        if($config->getValue("networkName") == "FES"){
+            $this->html .= "<b>Please add your name, middle name, and last name as per your employment records</b>";
+        }
         $this->html .= "<table>
                             <tr>
                                 <td class='label'>First Name:</td>
