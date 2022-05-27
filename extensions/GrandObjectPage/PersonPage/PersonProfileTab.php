@@ -240,8 +240,53 @@ class PersonProfileTab extends AbstractEditableTab {
      * Displays the profile for this user
      */
     function showProfile($person, $visibility){
-        global $wgUser;
-        $this->html .= "<div id='profileText' style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
+        global $wgUser, $config;
+        $this->html .= "<div id='profileText' style='text-align:justify;'>";
+        $this->html .= $person->getProfile($wgUser->isLoggedIn());
+        if($visibility['isMe'] || $visibility['isSupervisor']){
+            $crc = "";
+            $this->html .= "<ul>";
+            if($config->getValue('crcEnabled')){
+                $crcObj = $person->getCanadaResearchChair();
+                if(@strstr($crcObj['rank'], "Yes") !== false){
+                    $rank = "";                    
+                    switch($crcObj['rank']){
+                        case "Yes, I am a Tier 1 Canada Research Chair (CRC) or equivalent":
+                            $rank = "CRCT1";
+                            break;
+                        case "Yes, I am a Tier 2 Canada Research Chair (CRC) or equivalent":
+                            $rank = "CRCT2";
+                            break;
+                        case "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent":
+                            $rank = "CERC";
+                            break;
+                        case "Yes, I am a Canada 150 Research Chair (C150) or equivalent";
+                            $rank = "C150";
+                            break;
+                    }
+                    $this->html .= "<li>[{$crcObj['title']}] {$rank}, {$crcObj['date']}</li>";
+                }
+            }
+
+            if($config->getValue('ecrEnabled')){
+                if($person->getEarlyCareerResearcher() == "Yes"){
+                    $this->html .= "<li>FES ECR</li>";
+                }
+            }
+            $agencies = "";
+            if($config->getValue('agenciesEnabled')){
+                $agencies = $person->getAgencies();
+                if(count($agencies) > 0){
+                    $this->html .= "<li>Applies for funding from:<ul>";
+                    foreach($agencies as $agency){
+                        $this->html .= "<li>{$agency}</li>";
+                    }
+                    $this->html .= "</ul></li>";
+                }
+            }
+            $this->html .= "</ul>";
+        }
+        $this->html .= "</div>";
     }
     
     /**
