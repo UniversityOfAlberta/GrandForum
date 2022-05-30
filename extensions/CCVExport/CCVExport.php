@@ -346,12 +346,6 @@ class CCVExport extends SpecialPage {
                     $value = self::setChild($field, 'value', 'type', 'String');
                     self::setValue($value, $person->getMiddleName());
                     break;
-                case "3d258d8ceb174d3eb2ae1258a780d91b": // Sex
-                    $gender = $person->getGender();
-                    $value = self::setChild($field, 'lov');
-                    self::setAttribute($value, 'id', self::getLovId("Sex", $gender, "No Response"));
-                    self::setValue($value, self::getLovVal("Sex", $gender, "No Response"));
-                    break;
             }
         }
     }
@@ -629,23 +623,6 @@ class CCVExport extends SpecialPage {
         
                 $hqp_uni = $hqp->getUni();
                 self::setValue($val, $hqp_uni);
-            }
-            else if($item_name == "Student Canadian Residency Status"){
-                $status_map = array('Canadian'=>array("00000000000000000000000000000034","Canadian Citizen"),
-                                    'Landed Immigrant'=>array("00000000000000000000000000000035","Permanent Resident"),
-                                    'Foreign'=>array("00000000000000000000000000000040","Study Permit"),
-                                    'Visa Holder'=>array("00000000000000000000000000000040","Study Permit"));
-
-                $field = $ccv_item->addChild("field");
-                $field->addAttribute('id', $item_id);
-                $field->addAttribute('label', $item_name);
-                $hqp_status = $hqp->getNationality();
-                if(!empty($hqp_status) && isset($status_map[$hqp_status])){
-                    $val = $field->addChild('lov');
-                    $lov_id = $status_map[$hqp_status][0];
-                    $val->addAttribute('id', $lov_id);
-                    self::setValue($val, $status_map[$hqp_status][1]);
-                }
             }
             elseif($item_name == "Degree Type or Postdoctoral Status"){    //else if($item_name == "Study / Postdoctoral Level"){
                 $uni = $hqp->getUniversity();

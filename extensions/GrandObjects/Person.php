@@ -47,7 +47,8 @@ class Person extends BackboneModel {
                                                       "research assistant",
                                                       "research/technical assistant", 
                                                       "research internship",
-                                                      "professional end user"),
+                                                      "professional end user",
+                                                      "staff"),
                                      'ugrad' => array("bsc",
                                                       "b.sc.",
                                                       "bsc student",
@@ -75,8 +76,6 @@ class Person extends BackboneModel {
     var $employeeId;
     var $email;
     var $phone;
-    var $nationality;
-    var $gender;
     var $photo;
     var $twitter;
     var $website;
@@ -378,6 +377,7 @@ class Person extends BackboneModel {
         }
         else {
             // Not loaded yet
+            $keys = array_keys(self::$userRows);
             self::$userRows[$id] = array(); // This is to make sure that this doesn't get called too many times
             $data = DBFunctions::select(array('mw_user'),
                                         array('user_id',
@@ -397,10 +397,9 @@ class Person extends BackboneModel {
                                               'user_public_profile',
                                               'profile_start_date',
                                               'profile_end_date',
-                                              'user_nationality',
-                                              'user_gender',
                                               'candidate'),
-                                        array('deleted' => NEQ(1)));
+                                        array('deleted' => NEQ(1),
+                                              'user_id' => NOT_IN($keys)));
             foreach($data as $row){
                 Cache::store("mw_user_{$row['user_id']}", $row);
                 self::$userRows[$row['user_id']] = $row;
@@ -1355,8 +1354,6 @@ class Person extends BackboneModel {
             $this->middleName = @$data[0]['middle_name'];
             $this->employeeId = @$data[0]['employee_id'];
             $this->email = @$data[0]['user_email'];
-            $this->gender = @$data[0]['user_gender'];
-            $this->nationality = @$data[0]['user_nationality'];
             $this->university = false;
             $this->twitter = @$data[0]['user_twitter'];
             $this->website = @$data[0]['user_website'];
@@ -1406,8 +1403,6 @@ class Person extends BackboneModel {
                       'reversedName' => $this->getReversedName(),
                       'email' => $this->getEmail(),
                       'phone' => $this->getPhoneNumber(),
-                      'gender' => $this->getGender(),
-                      'nationality' => $this->getNationality(),
                       'twitter' => $this->getTwitter(),
                       'website' => $this->getWebsite(),
                       'ldap' => $this->getLdap(),
@@ -1448,8 +1443,6 @@ class Person extends BackboneModel {
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
                                           'wos' => $this->getWOS(),
-                                          'user_gender' => $this->getGender(),
-                                          'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false),
                                           'profile_start_date' => $this->getProfileStartDate(),
                                           'profile_end_date' => $this->getProfileEndDate()),
@@ -1484,8 +1477,6 @@ class Person extends BackboneModel {
                                           'sciverse_id' => $this->getSciverseId(),
                                           'orcid' => $this->getOrcId(),
                                           'wos' => $this->getWOS(),
-                                          'user_gender' => $this->getGender(),
-                                          'user_nationality' => $this->getNationality(),
                                           'user_public_profile' => $this->getProfile(false)
                                           ),
                                     array('user_id' => EQ($this->getId())));
@@ -1649,22 +1640,6 @@ class Person extends BackboneModel {
             return @trim($data[0]['number']);
         }
         return "";
-    }
-    
-    /**
-     * Returns the gender of this Person
-     * @return string The gender of this Person
-     */
-    function getGender(){
-        return $this->gender;
-    }
-    
-    /**
-     * Returns the nationality of this Person
-     * @return string The nationality of this Person
-     */
-    function getNationality(){
-        return $this->nationality;
     }
     
     /**

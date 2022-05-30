@@ -216,9 +216,6 @@ EOF;
         $name_normal = $person->getNameForForms();
         
         if($person->isActive() ){
-
-            $gender = $person->getGender();
-            $nationality = $person->getNationality();
             $email = $person->getEmail();
             $email = ($email == "{$config->getValue('supportEmail')}")? "" : $email;
             $profile_pub = $person->getProfile();
@@ -228,9 +225,7 @@ EOF;
             $ni_department = $ni_uni['department'];
             $ni_position = $ni_uni['position'];
 
-            if(empty($gender)){ $ni_errors['profile_errors'][] = "Missing gender information"; }
             if(empty($email)){ $ni_errors['profile_errors'][] = "Missing contact email"; }
-            if(empty($nationality)){ $ni_errors['profile_errors'][] = "Missing nationality"; }
             if(empty($ni_university)){ $ni_errors['profile_errors'][] = "Missing university"; }
             if(empty($ni_department)){ $ni_errors['profile_errors'][] = "Missing department"; }
             if(empty($ni_position)){ $ni_errors['profile_errors'][] = "Missing title"; }

@@ -120,8 +120,6 @@ Person = Backbone.Model.extend({
         fullName: '',
         reversedName: '',
         email: '',
-        nationality: '',
-        gender: '',
         photo: wgServer + wgScriptPath + '/skins/face.png',
         cachedPhoto: wgServer + wgScriptPath + '/skins/face.png',
         twitter: '',

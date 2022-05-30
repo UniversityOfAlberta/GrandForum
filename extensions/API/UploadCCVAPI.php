@@ -21,10 +21,6 @@ class UploadCCVAPI extends API{
                                "Doctorate" => "Graduate Student - Doctoral",
                                "PhD Student" => "Graduate Student - Doctoral",
                                "Post-doctorate" => "Post-Doctoral Fellow");
-                               
-    static $genderMap = array("00000000000000000000000000000282" => "Male",
-                              "00000000000000000000000000000283" => "Female",
-                              "00000000000000000000000000000284" => "");
                               
     static $honorificMap = array("00000000000000000000000000000317" => "Dr.",
                                  "00000000000000000000000000000318" => "Mr.",
@@ -374,7 +370,6 @@ class UploadCCVAPI extends API{
      */
     function updatePersonalInfo($person, $info){
         $person->honorific = (isset(self::$honorificMap[$info['greeting']])) ? self::$honorificMap[$info['greeting']] : "";
-        $person->gender = (isset(self::$genderMap[$info['sex']])) ? self::$genderMap[$info['sex']] : "";
         $person->language = (isset(self::$languageMap[$info['correspondence_language']])) ? self::$languageMap[$info['correspondence_language']] : "";
         $person->firstName = (isset($info['first_name'])) ? $info['first_name'] : "";
         $person->lastName = (isset($info['last_name'])) ? $info['last_name'] : "";

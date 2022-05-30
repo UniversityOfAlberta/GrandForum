@@ -19,10 +19,8 @@ class PersonAPI extends RESTAPI {
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
-        $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
-        $person->nationality = $this->POST('nationality');
         if($person->exists()){
             $this->throwError("A user by the name of <i>{$person->getName()}</i> already exists");
         }
@@ -45,10 +43,8 @@ class PersonAPI extends RESTAPI {
         $person->name = $this->POST('name');
         $person->twitter = $this->POST('twitter');
         $person->website = $this->POST('website');
-        $person->gender = $this->POST('gender');
         $person->publicProfile = $this->POST('publicProfile');
         $person->privateProfile = $this->POST('privateProfile');
-        $person->nationality = $this->POST('nationality');
         $status = $person->update();
         if(!$status){
             $this->throwError("The user <i>{$person->getName()}</i> could not be updated");

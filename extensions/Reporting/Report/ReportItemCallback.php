@@ -81,7 +81,6 @@ class ReportItemCallback {
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
             "user_phone" => "getUserPhone",
-            "user_gender" => "getUserGender",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
@@ -96,7 +95,6 @@ class ReportItemCallback {
             "user_research_area" => "getUserResearchArea",
             "user_fec" => "getUserFEC",
             "user_case_number" => "getUserCaseNumber",
-            "user_nationality" => "getUserNationality",
             "user_supervisors" => "getUserSupervisors",
             "user_grad_count" => "getUserGradCount",
             "user_msc_count" => "getUserMscCount",
@@ -486,11 +484,6 @@ class ReportItemCallback {
         return $person->getPhoneNumber();
     }
     
-    function getUserGender(){
-        $person = Person::newFromId($this->reportItem->personId);
-        return $person->getGender();
-    }
-    
     function getParentId(){
         return $this->reportItem->getParent()->personId;
     }
@@ -595,12 +588,6 @@ class ReportItemCallback {
     function getUserCaseNumber(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getCaseNumber($this->reportItem->getReport()->year);
-    }
-    
-    function getUserNationality(){
-        $person = Person::newFromId($this->reportItem->personId);
-        $nationality = $person->getNationality();
-        return $nationality;
     }
     
     function getUserSupervisors(){

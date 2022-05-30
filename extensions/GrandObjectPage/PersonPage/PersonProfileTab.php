@@ -189,7 +189,6 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->sciverseId = @$_POST['sciverseId'];
             $this->person->orcId = @$_POST['orcId'];
             $this->person->wos = @$_POST['wos'];
-            $this->person->nationality = @$_POST['nationality'];
             $this->person->publicProfile = @$_POST['public_profile'];
             $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
@@ -444,28 +443,7 @@ EOF;
     function showEditContact($person, $visibility){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath;
         $university = $person->getUniversity();
-        $nationality = "";
         $me = Person::newFromWgUser();
-        if($this->canEdit()){
-            if($person->isRoleDuring(HQP, "0000", "9999") ||
-               $person->isRoleDuring(NI, "0000", "9999")){
-                $canSelected = ($person->getNationality() == "Canadian") ? "selected='selected'" : "";
-                $amerSelected = ($person->getNationality() == "American") ? "selected='selected'" : "";
-                $immSelected = ($person->getNationality() == "Landed Immigrant" || $person->getNationality() == "Foreign") ? "selected='selected'" : "";
-                $visaSelected = ($person->getNationality() == "Visa Holder") ? "selected='selected'" : "";
-                $nationality = "<tr>
-                    <td align='right'><b>Nationality:</b></td>
-                    <td>
-                        <select name='nationality'>
-                            <option value='Canadian' $canSelected>Canadian</option>
-                            <option value='American' $amerSelected>American</option>
-                            <option value='Landed Immigrant' $immSelected>Landed Immigrant</option>
-                            <option value='Visa Holder' $visaSelected>Visa Holder</option>
-                        </select>
-                    </td>
-                </tr>";
-            }
-        }
         $this->html .= "<table>
                             <tr>
                                 <td align='right'><b>First Name:</b></td>
@@ -487,7 +465,6 @@ EOF;
                                 <td align='right'><b>Email:</b></td>
                                 <td><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>
                             </tr>
-                            {$nationality}
                         </table>";
         
         $this->html .= "<script type='text/javascript'>
