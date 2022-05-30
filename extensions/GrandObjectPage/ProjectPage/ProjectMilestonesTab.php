@@ -559,7 +559,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
             $this->html .= "<script type='text/javascript'>
                 var colors = ".json_encode(Milestone::$statuses).";
                 
-                setInterval(function(){
+                var scrollScheduleFn = function(){
                     $('table.milestones thead').hide();
                     $('table.milestones').css('overflow-anchor', 'none');
                     $('table.milestones').each(function(i, table){
@@ -568,10 +568,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         var toShow = [];
                         $('tr.top_border', table).each(function(i, el){
                             var activityId = $(el).attr('data-id');
-                            var extraHeight = 0;
-                            //if(skin == 'cavendish2'){
-                                extraHeight = $('#bodyContent').position().top - 20;
-                            //}
+                            var extraHeight = $('#bodyContent').position().top - 20;
                             if(!found && (($(el).offset().top - 100 - extraHeight - window.scrollY) > - $(el).height() || $('tr.top_border', table).length-1 == i)){
                                 toShow.push($('tr[data-activity=' + activityId + ']', table));
                                 found = true;
@@ -583,7 +580,14 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                         $(toShow).each(function(){ $(this).show(); });
                         $(toHide).each(function(){ $(this).hide(); });
                     });
-                }, 50);
+                };
+                
+                $('#bodyContent').scroll(_.throttle(scrollScheduleFn, 50));
+                
+                $('#project').bind('tabsselect', function(event, ui){
+                    _.defer(scrollScheduleFn);
+                });
+                _.defer(scrollScheduleFn);
                 
                 $('#milestones_table td').qtip();
                 $('#milestones_table td.comment img').qtip({

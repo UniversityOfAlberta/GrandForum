@@ -59,6 +59,10 @@ class ProjectDashboardTab extends AbstractEditableTab {
                 $this->project->saveTechnology();
                 $this->project->savePolicy();
             }
+            if(isset($_POST['upToDate'])){
+                $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
+                $this->project->saveUpToDate($year, $_POST['upToDate']);
+            }
         }
     }
     
@@ -88,6 +92,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         global $wgServer, $wgScriptPath, $config;
         $me = Person::newFromWgUser();
         if($me->isRoleAtLeast(HQP) && ($me->isMemberOf($this->project) || !$me->isSubRole("UofC"))){
+            $this->showUpToDate($this->project, $this->visibility);
             if(!$this->project->isSubProject()){
                 $this->showTopProducts($this->project, $this->visibility);
                 if($config->getValue('projectTechEnabled')){
@@ -109,6 +114,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
     
     function generateEditBody(){
         global $config;
+        $this->showEditUpToDate($this->project, $this->visibility);
         if(!$this->project->isSubProject()){
             $this->showEditTopProducts($this->project, $this->visibility);
             if($config->getValue('projectTechEnabled')){
@@ -353,6 +359,27 @@ class ProjectDashboardTab extends AbstractEditableTab {
                         </script>";
         $this->html .= "<button id='editPolicy' type='submit' value='Save Dashboard' name='submit'>Save</button>
                         <input id='cancelPolicy' type='submit' value='Cancel' name='submit' /><br /><br />";
+    }
+    
+    function showUpToDate($project, $visibility){
+        global $config;
+        if($config->getValue('networkName') == "FES"){
+            $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
+            $upToDate = $project->getUpToDate($year);
+            if($upToDate){
+                $this->html .= "<p><b>The information in this section is current as per the end of Fiscal Year ($year-".($year+1).")</b></p>\n";
+            }
+        }
+    }
+    
+    function showEditUpToDate($project, $visibility){
+        global $config;
+        if($config->getValue('networkName') == "FES"){
+            $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
+            $upToDate = $project->getUpToDate($year);
+            $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year ($year-".($year+1).")</b>" => 1));
+            $this->html .= "<input type='hidden' name='upToDate' value='0' />{$field->render()}";
+        }
     }
     
     function showTopProducts($project, $visibility){
