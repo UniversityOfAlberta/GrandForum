@@ -28,31 +28,37 @@ class SpecialMaterialSubmission extends SpecialPage{
         else{
             // Add Event Registration
             $f = 1;
+            $status = true;
             foreach($_FILES as $file){
                 if($file['name'] != ""){
                     $fileName = "{$_POST['name']}_Event{$_POST['event']}_File{$f}_{$file['name']}";
-                    move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}");
+                    $status = ($status && move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}"));
                     $_POST["misc"]["file{$f}"] = $fileName;
                     $_POST["misc"]["desc{$f}"] = $_POST["desc{$f}"];
                     $f++;
                 }
             }
-            $eventRegistration = new EventRegistration(array());
-            $eventRegistration->eventId = $_POST['event'];
-            $eventRegistration->type = "Material Submission";
-            $eventRegistration->email = $_POST['email'];
-            $eventRegistration->name = $_POST['name'];
-            $eventRegistration->role = $_POST['role'];
-            $eventRegistration->misc = @$_POST['misc'];
-            $eventRegistration->create();
-            $wgMessage->addSuccess("Thank you for submitting your materials");
-            $event = EventPosting::newFromId($_POST['event']);
-            if($event != null && $event->title != ""){
-                redirect($event->getUrl());
+            if(!$status){
+                $wgMessage->addError("There was a problem uploading materials");
+            }
+            else{
+                $eventRegistration = new EventRegistration(array());
+                $eventRegistration->eventId = $_POST['event'];
+                $eventRegistration->type = "Material Submission";
+                $eventRegistration->email = $_POST['email'];
+                $eventRegistration->name = $_POST['name'];
+                $eventRegistration->role = $_POST['role'];
+                $eventRegistration->misc = @$_POST['misc'];
+                $eventRegistration->create();
+                $wgMessage->addSuccess("Thank you for submitting your materials");
+                $event = EventPosting::newFromId($_POST['event']);
+                if($event != null && $event->title != ""){
+                    redirect($event->getUrl());
+                }
             }
         }
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
-        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}");
+        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialMaterialSubmission{$getStr}");
     }
 
     function execute($par){
