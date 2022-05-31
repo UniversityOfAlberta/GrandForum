@@ -80,9 +80,10 @@ class AdminDataCollection extends SpecialPage{
 		foreach($links as $link){
 		    $page_name = trim($link["page"]);
 		    $page_data = json_decode($link["data"],true);
+		    $views = isset($page_data["count"]) ? $page_data["count"] : 0;
 		    $wgOut->addHTML("
 				<b>$page_name</b><br />
-				Views: {$page_data["count"]}
+				Views: $views}
 				<br /><br />");
 
 		}
