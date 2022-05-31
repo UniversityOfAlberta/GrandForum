@@ -695,6 +695,7 @@ class ProjectMilestonesTab extends AbstractEditableTab {
                     });
                     $('select.leaders').chosen({width:'99%'});
                     $('#milestones_table .chosen-container').css('font-size', 'small');
+                    _.defer(scrollScheduleFn);
                 });
                 
             </script>";
