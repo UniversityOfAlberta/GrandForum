@@ -21,16 +21,31 @@ class AdminDataCollection extends SpecialPage{
 	if(count($people) > 0){
             $wgOut->addHTML("<table class='wikitable sortable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
                         <tr style='background:#EEEEEE;'>
-                            <th>Name</th> <th>Age</th> <th>Postal Code</th><th>Role</th><th>Data Collected</th>
+                            <th>Name</th> <th>Age</th> <th>Postal Code</th><th>Role</th><th>Date Registered</th><th>Extra</th><th>Data Collected</th>
 			</tr>");
             foreach($people as $person){
                 $name = $person->getRealName();
 		$avoid_age = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "avoid_age", $person->getId());
 		$avoid_age = str_replace("less than", "<", $avoid_age);
                 $avoid_age = str_replace("more than", ">", $avoid_age);
-                $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+		$postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+		$registration_str = $person->getRegistration();
+		$registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
-                            <td>$name</td> <td nowrap>$avoid_age</td> <td>$postal_code</td><td>{$person->getRoleString()}</td>");
+			    <td>$name</td> <td nowrap>$avoid_age</td> <td>$postal_code</td><td>{$person->getRoleString()}</td><td nowrap>{$registration_date}</td>");
+
+		//grab clinician data
+		$age_lovedone = $person->getExtra('ageOfLovedOne', '');
+		$age = $person->getExtra('ageField', '');
+		$practice = $person->getExtra('practiceField', '');
+		$rolefield = $person->getExtra('roleField', '');
+		$wgOut->addHTML("<td>
+			$age_lovedone <br />
+			$age <br />
+			$practice <br />
+			$rolefield <br />
+			</td>");
+
                 $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
                 $resource_data = DBFunctions::execSQL($resource_data_sql);
                 $links = array();
@@ -76,24 +91,40 @@ class AdminDataCollection extends SpecialPage{
                             }
                     }
 		}
-		$wgOut->addHTML("<td VALIGN=TOP>");
-		foreach($links as $link){
-		    $page_name = trim($link["page"]);
-		    $page_data = json_decode($link["data"],true);
-		    $views = isset($page_data["count"]) ? $page_data["count"] : 0;
-		    $wgOut->addHTML("
-				<b>$page_name</b><br />
-				Views: $views}
-				<br /><br />");
+		if(count($links)>0){
+		    $wgOut->addHTML("<td VALIGN=TOP><b>Resource Links</b><br /><table>");
+		    $x_num = 0;
+		    foreach($links as $link){
+		        $page_name = trim($link["page"]);
+		        $page_data = json_decode($link["data"],true);
+		        $views = isset($page_data["count"]) ? $page_data["count"] : 0;
+		        if($x_num%2==0){
+		    	    $wgOut->addHTML("
+				<tr style='background-color:#ececec'><td>
+				$page_name</td><td nowrap>
+				Views: $views
+				</td>
+				</tr>");
+		        }
+		        else{
+                            $wgOut->addHTML("
+                                <tr style=''><td>
+                                $page_name</td><td nowrap>
+                                Views: $views
+                                </td>
+                                </tr>");
+		        }
+		        $x_num++;
 
-		}
-		$wgOut->addHTML("</td>");
+		    }
+		    $wgOut->addHTML("</table></td>");
+		    }
+                }
+                $wgOut->addHTML("</table>");
             }
-            $wgOut->addHTML("</table>");
-        }
-	else{
-            $wgOut->addHTML("You have not created any polls.");
-	}
+	    else{
+                $wgOut->addHTML("You have not created any polls.");
+	    }
     }
 
     function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
