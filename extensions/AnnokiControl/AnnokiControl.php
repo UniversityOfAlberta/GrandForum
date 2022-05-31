@@ -151,6 +151,9 @@ $egAnnokiExtensions['AskAnExpertPage'] = array('name' => 'AskAnExpertPage',
 $egAnnokiExtensions['ActionPlan'] = array('name' => 'ActionPlan',
                                           'path' => "$IP/extensions/ActionPlan/ActionPlan.php");
 
+$egAnnokiExtensions['AdminDataCollection'] = array('name' => 'AdminDataCollection',
+                                          'path' => "$IP/extensions/AdminDataCollection/AdminDataCollection.php");
+
 /** Install all enumerated Annoki-based extensions **/
 foreach($egAnnokiExtensions as $key => $extension){
     if (isExtensionEnabled($key) && is_readable($extension['path'])){
