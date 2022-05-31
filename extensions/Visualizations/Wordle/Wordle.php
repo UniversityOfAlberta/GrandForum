@@ -136,8 +136,9 @@ class Wordle extends Visualization {
             if(maxWidth == "100%"){
                 maxWidth = $("#vis{$this->index}").width();
                 setInterval(function(){
-                    if($("#vis{$this->index}").is(":visible") && $("#vis{$this->index}").width() > 0 && maxWidth != $("#vis{$this->index}").width() && Math.abs(maxWidth - $("#vis{$this->index}").width()) > 25){
-                        maxWidth = $("#vis{$this->index}").width();
+                    var width = $("#vis{$this->index}").width();
+                    if($("#vis{$this->index}").is(":visible") && width > 0 && maxWidth != width && Math.abs(maxWidth - width) > 25){
+                        maxWidth = width;
                         if(maxWidth > 0){
                             for(fId in data){
                                 var f = data[fId].freq;
@@ -146,7 +147,7 @@ class Wordle extends Visualization {
                             doCloud();
                         }
                     }
-                }, 100);
+                }, 250);
             }
             
             var started = new Array();
