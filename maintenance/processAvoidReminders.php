@@ -61,13 +61,12 @@ foreach($people as $person){
     // Abandoned healthy aging assessment
     $report = new DummyReport("IntakeSurvey", $person, null, REPORTING_YEAR, true);
     if($person->isRole(CI) && 
-       $report->hasStarted() && 
        !AVOIDDashboard::hasSubmittedSurvey($person->getId()) && 
        (time() - strtotime($person->getRegistration()))/86400 > 2 &&
        getReminder("AbandonedAssessment", $person)['count'] < 2 && time() - getReminder("AbandonedAssessment", $person)['time'] > 2*86400){
         addReminder("AbandonedAssessment", $person);
         $subject = "Get your personal report";
-        $message = "<p>You started your AVOID Frailty Healthy Aging Assessment, but didn't get your full report.  The report will provide you with valuable information about your frailty status and give you personalized recommendations about what you can do within the program to improve your health.  By logging in at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a>, you will continue where you left off.  Do yourself the favour, and get to the good part!</p>";
+        $message = "<p>You've registered with AVOID Frailty but haven't completed the Healthy Aging Assessment. That means you're missing out on your personal report. The report will provide you with valuable information about your frailty status and give you recommendations about what you can do within the program to improve your health. Log back in <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a>, and continue where you left off. Get to the good part!</p>";
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
