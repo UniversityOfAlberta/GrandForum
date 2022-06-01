@@ -11,6 +11,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpMiddleName", false, "The User's middle name", "Middle Name");
         $this->addPOST("wpLastName", false, "The User's last name", "Last Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
+        $this->addPOST("wpUserSubType", false, "The User Sub Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
         $this->addPOST("university",false, "", "");
@@ -111,6 +112,7 @@ class RequestUserAPI extends API{
 		$wpMiddleName = isset($_POST['wpMiddleName']) ? $_POST['wpMiddleName'] : "";
 		$wpLastName = isset($_POST['wpLastName']) ? $_POST['wpLastName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
+		$wpUserSubType = isset($_POST['wpUserSubType']) ? $_POST['wpUserSubType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
 		$university = isset($_POST['university']) ? $_POST['university'] : "";
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
@@ -138,6 +140,7 @@ class RequestUserAPI extends API{
 		                          'wpMiddleName'=> $wpMiddleName,
 		                          'wpLastName' => $wpLastName,
 		                          'wpUserType' => $wpUserType,
+		                          'wpUserSubType' => $wpUserSubType,
 		                          'wpNS' => $wpNS,
 		                          'university' => $university,
 		                          'department' => $department,

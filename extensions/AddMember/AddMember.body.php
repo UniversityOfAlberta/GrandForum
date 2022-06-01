@@ -34,40 +34,46 @@ class UserCreate {
         
         $roleId = null;
         // Add Roles
-        if(isset($_POST['wpUserType'])){
-            if($_POST['wpUserType'] != ""){
-                foreach($_POST['wpUserType'] as $role){
-                    if($role == ""){
-                        continue;
-                    }
-                    //Add Role to DB
-                    DBFunctions::insert('mw_user_groups',
-                                        array('ug_user' => $id,
-                                              'ug_group' => $role));
-                    DBFunctions::insert('grand_roles',
-                                        array('user_id' => $id,
-                                              'role' => $role,
-                                              'start_date' => @$_POST['start_date'],
-                                              'end_date' => @$_POST['end_date']));
-                    $roleId = DBFunctions::insertId();
-                    // Add Projects
-                    if(isset($_POST['wpNS'])){
-                        $box = $_POST['wpNS'];
-                        while (list ($key,$val) = @each ($box)) {
-                            if($val != null && $val != ""){
-                                $project = Project::newFromName($val);
-                                DBFunctions::insert('mw_user_groups',
-                                                    array('ug_user' => $id,
-                                                          'ug_group' => $val));
-                                DBFunctions::insert('grand_role_projects',
-                                                    array('role_id' => $roleId,
-                                                          'project_id' => $project->getId()));
-                                Cache::delete("project{$project->getId()}_people");
-                                Cache::delete("project{$project->getId()}_peopleDuring", true);
-                            }
+        if(isset($_POST['wpUserType']) && $_POST['wpUserType'] != ""){
+            foreach($_POST['wpUserType'] as $role){
+                if($role == ""){
+                    continue;
+                }
+                //Add Role to DB
+                DBFunctions::insert('mw_user_groups',
+                                    array('ug_user' => $id,
+                                          'ug_group' => $role));
+                DBFunctions::insert('grand_roles',
+                                    array('user_id' => $id,
+                                          'role' => $role,
+                                          'start_date' => @$_POST['start_date'],
+                                          'end_date' => @$_POST['end_date']));
+                $roleId = DBFunctions::insertId();
+                // Add Projects
+                if(isset($_POST['wpNS'])){
+                    $box = $_POST['wpNS'];
+                    while (list ($key,$val) = @each ($box)) {
+                        if($val != null && $val != ""){
+                            $project = Project::newFromName($val);
+                            DBFunctions::insert('mw_user_groups',
+                                                array('ug_user' => $id,
+                                                      'ug_group' => $val));
+                            DBFunctions::insert('grand_role_projects',
+                                                array('role_id' => $roleId,
+                                                      'project_id' => $project->getId()));
+                            Cache::delete("project{$project->getId()}_people");
+                            Cache::delete("project{$project->getId()}_peopleDuring", true);
                         }
                     }
                 }
+            }
+        }
+        // Add Roles
+        if(isset($_POST['wpUserSubType']) && $_POST['wpUserSubType'] != ""){
+            foreach($_POST['wpUserSubType'] as $subrole){
+                DBFunctions::insert('grand_role_subtype',
+                                    array('user_id' => $id,
+                                          'sub_role' => $subrole));
             }
         }
         Cache::delete("rolesCache");

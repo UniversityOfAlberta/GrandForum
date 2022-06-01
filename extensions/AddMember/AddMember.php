@@ -16,7 +16,7 @@ class AddMember extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
+        global $config, $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
         $user = Person::newFromId($wgUser->getId());
         if(isset($_GET['action']) && $_GET['action'] == "view" && $user->isRoleAtLeast(STAFF)){
             if(isset($_POST['submit']) && $_POST['submit'] == "Accept"){
@@ -56,6 +56,9 @@ class AddMember extends SpecialPage{
                 $form->getElementById('email_field')->setPOST('wpEmail');
                 $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
+                if($user->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+                    $form->getElementById('subrole_field')->setPOST('wpUserSubType');
+                }
                 $form->getElementById('project_field')->setPOST('wpNS');
                 $form->getElementById('nationality_field')->setPOST('nationality');
                 $form->getElementById('employment_field')->setPOST('employment');
@@ -82,25 +85,13 @@ class AddMember extends SpecialPage{
                 $_POST['start_date'] = "{$_POST["start_date0"]}\n{$_POST["start_date1"]}\n{$_POST["start_date2"]}";
                 
                 $form->getElementById('cand_field')->setPOST('candidate');
-                
-                if(isset($_POST['wpNS'])){
-                    $nss = implode(", ", array_unique($_POST['wpNS']));
-                }
-                else{
-                    $nss = "";
-                }
-                if(isset($_POST['wpUserType'])){
-                    $types = implode(", ", $_POST['wpUserType']);
-                }
-                else{
-                    $types = "";
-                }
 
                 $_POST['wpRealName'] = "{$_POST['wpFirstName']} {$_POST['wpLastName']}";
                 $_POST['wpName'] = str_replace(" ", "", str_replace("&#39;", "", $_POST['wpFirstName']).".".str_replace("&#39;", "", $_POST['wpLastName']));
                 $_POST['user_name'] = $user->getName();
-                $_POST['wpUserType'] = $types;
-                $_POST['wpNS'] = $nss;
+                $_POST['wpUserType'] = (isset($_POST['wpUserType'])) ? implode(", ", $_POST['wpUserType']) : "";
+                $_POST['wpUserSubType'] = (isset($_POST['wpUserSubType'])) ? implode(", ", $_POST['wpUserSubType']) : "";
+                $_POST['wpNS'] = (isset($_POST['wpNS'])) ? implode(", ", array_unique($_POST['wpNS'])) : "";
                 $result = APIRequest::doAction('RequestUser', false);
                 if($result){
                     $form->reset();
@@ -129,7 +120,8 @@ class AddMember extends SpecialPage{
                             <th>User Name</th>
                             <th>Timestamp</th>
                             <th>Staff</th>
-                            <th>User Type</th>
+                            <th>Roles</th>
+                            <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                             <th>Projects</th>
                             <th>Institution</th>
                             <th>Candidate</th>
@@ -143,7 +135,8 @@ class AddMember extends SpecialPage{
                             <th>Requesting User</th>
                             <th>User Name</th>
                             <th>Timestamp</th>
-                            <th>User Type</th>
+                            <th>Roles</th>
+                            <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                             <th>Projects</th>
                             <th>Institution</th>
                             {$hqpType}
@@ -197,6 +190,7 @@ class AddMember extends SpecialPage{
                 $wgOut->addHTML("<td><a target='_blank' href='{$request->getAcceptedBy()->getUrl()}'>{$request->getAcceptedBy()->getName()}</a></td>");
             }
             $wgOut->addHTML("<td>{$request->getRoles()}</td>
+                             <td>{$request->getSubRoles()}</td>
                              <td align='left'>{$request->getProjects()}</td>
                              <td>".str_replace("\n", ", ", trim($request->getUniversity()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getDepartment()))."<br />
@@ -219,6 +213,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='wpMiddleName' value='{$request->getMiddleName()}' />
                             <input type='hidden' name='wpLastName' value='{$request->getLastName()}' />
                             <input type='hidden' name='wpUserType' value='{$request->getRoles()}' />
+                            <input type='hidden' name='wpUserSubType' value='{$request->getSubRoles()}' />
                             <input type='hidden' name='wpNS' value='{$request->getProjects()}' />
                             <input type='hidden' name='candidate' value='{$request->getCandidate()}' />
                             <input type='hidden' name='nationality' value='".str_replace("'", "&#39;", $request->getNationality())."' />
@@ -308,6 +303,13 @@ class AddMember extends SpecialPage{
         $rolesField = new VerticalCheckBox("role_field", "Roles", array(), $roleOptions, $roleValidations);
         $rolesRow = new FormTableRow("role_row");
         $rolesRow->append($rolesLabel)->append($rolesField);
+        
+        $subRolesLabel = new Label("subrole_label", Inflect::pluralize($config->getValue('subRoleTerm')), "The ".strtolower(Inflect::pluralize($config->getValue('subRoleTerm')))." the new user should belong to", VALIDATE_NOTHING);
+        $subRolesLabel->attr('style', 'width:160px;');
+        $subRolesField = new VerticalCheckBox("subrole_field", Inflect::pluralize($config->getValue('subRoleTerm')), array(), array_flip($config->getValue('subRoles')), VALIDATE_NOTHING);
+        $subRolesRow = new FormTableRow("subrole_row");
+        $subRolesRow->attr('id', "subrole_row");
+        $subRolesRow->append($subRolesLabel)->append($subRolesField);
 
         $projects = Project::getAllProjects();
         foreach($projects as $key => $project){
@@ -390,8 +392,11 @@ class AddMember extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow)
                   ->append($sendEmailRow)
-                  ->append($rolesRow)
-                  ->append($projectsRow)
+                  ->append($rolesRow);
+        if($me->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
+            $formTable->append($subRolesRow);
+        }
+        $formTable->append($projectsRow)
                   ->append($nationalityRow);
         for($i = 0; $i < 3; $i++){
             $extraText = "";
@@ -506,6 +511,10 @@ class AddMember extends SpecialPage{
                 });
                 if(found){
                     // HQP
+                    if(networkName == 'FES'){
+                        $('#subrole_row').show();
+                    }
+                    
                     $('#program_row0').show();
                     $('#program_row1').show();
                     $('#program_row2').show();
@@ -535,6 +544,10 @@ class AddMember extends SpecialPage{
                 }
                 else{
                     // Not HQP
+                    if(networkName == 'FES'){
+                        $('#subrole_row').hide();
+                    }
+                    
                     $('#program_row0').hide();
                     $('#program_row1').hide();
                     $('#program_row2').hide();
