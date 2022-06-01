@@ -81,8 +81,19 @@ foreach($people as $person){
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     
-    // Created an action plan 
-    
+    // Created an action plan
+    $actionPlans = ActionPlan::newFromUserId($person->getId());
+    foreach($actionPlans as $actionPlan){
+        if(!$actionPlan->submitted &&
+           getReminder("ActionPlanCheckIn{$actionPlan->getId()}", $person)['count'] < 1 &&
+           strtotime($actionPlan->getDate()) + 7*86400 < time()){
+            addReminder("ActionPlanCheckIn{$actionPlan->getId()}", $person);
+            $subject = "Time to Submit your Action Plan";
+            $message = "<p>How has your week been? Did you do what you committed to? Don't forget to sign back into your account at <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a> to submit your weekly action <a href='https://healthyagingcentres.ca/portal/index.php/Special:AVOIDDashboard'>plan</a>. It will show up in your logged accomplishments. If things didn't go as planned, that's okay too! Maybe you want to edit your weekly plan to something more attainable.</p>";
+            sendMail($subject, $message, $person);
+            echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
+        }
+    }
 }
 
 file_put_contents("{$dir}/reminders.json", json_encode($reminders));
