@@ -840,6 +840,21 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    /**
+     * Returns whether atleast one user with the role exists
+     * @param string $role The role to check
+     */
+    static function peopleWithRoleExists($role){
+        $dbRole = DBFunctions::execSQL("SELECT role
+                                        FROM `grand_roles` r, mw_user u
+                                        WHERE r.user_id = u.user_id
+                                        AND role = '$role'
+                                        AND u.deleted = 0
+                                        AND u.candidate = 0
+                                        LIMIT 1");
+        return !empty($dbRole);
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
