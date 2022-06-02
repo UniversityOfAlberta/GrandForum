@@ -31,7 +31,7 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         if(count($roles) == 1){
               $role = $roles[0];
-              $dbRole = DBFunctions::execSQL("SELECT role FROM grand_roles WHERE role = '$role' LIMIT 1");
+              $dbRole = DBFunctions::execSQL("SELECT role FROM `grand_roles` r, mw_user u WHERE r.user_id = u.user_id AND role = '$role' AND u.deleted = 0 LIMIT 1");
               if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
                     !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
@@ -42,7 +42,7 @@ class IndexTable {
             sort($roles);
             $peopleSubTab = TabUtils::createSubTab('People', "", "");
             foreach($roles as $role){
-                $dbRole = DBFunctions::execSQL("SELECT role FROM grand_roles WHERE role = '$role' LIMIT 1");
+                $dbRole = DBFunctions::execSQL("SELECT role FROM `grand_roles` r, mw_user u WHERE r.user_id = u.user_id AND role = '$role' AND u.deleted = 0 LIMIT 1");
                 if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
                     !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
