@@ -31,7 +31,8 @@ class IndexTable {
         $roles = array_values($wgAllRoles);
         if(count($roles) == 1){
               $role = $roles[0];
-              if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true, true))){
+              $dbRole = DBFunctions::execSQL("SELECT role FROM grand_roles WHERE role = '$role' LIMIT 1");
+              if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
                     !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                     $peopleSubTab = TabUtils::createSubTab('People', "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
@@ -41,7 +42,8 @@ class IndexTable {
             sort($roles);
             $peopleSubTab = TabUtils::createSubTab('People', "", "");
             foreach($roles as $role){
-                if(($role != HQP || $me->isLoggedIn()) && count(Person::getAllPeople($role, true, true))){
+                $dbRole = DBFunctions::execSQL("SELECT role FROM grand_roles WHERE role = '$role' LIMIT 1");
+                if(($role != HQP || $me->isLoggedIn()) && count($dbRole) > 0){
                     $selected = ($lastRole == NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role &&
                     !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                     if($role == AR){
