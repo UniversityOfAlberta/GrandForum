@@ -112,7 +112,8 @@ class IndexTable {
         sort($roles);
         $roles = array_filter(array_unique($roles));
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
+            $dbRole = DBFunctions::execSQL("SELECT role FROM `grand_roles` r, mw_user u WHERE r.user_id = u.user_id AND role = '$role' AND u.deleted = 0 LIMIT 1");
+            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count($dbRole) > 0){
                 $selected = ($lastRole === NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", $role), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
