@@ -11,7 +11,7 @@ $wgHooks['SubLevelTabs'][] = 'AdminDataCollection::createSubTabs';
 class AdminDataCollection extends SpecialPage{
 
     function __construct() {
-        SpecialPage::__construct("AdminDataCollection", HQP.'+', true);
+        SpecialPage::__construct("AdminDataCollection", STAFF.'+', true);
     }
 
     function execute($par){
