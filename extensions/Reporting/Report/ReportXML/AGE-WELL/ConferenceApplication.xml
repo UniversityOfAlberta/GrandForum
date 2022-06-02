@@ -31,12 +31,12 @@
                 </script>
                 <p>Not your typical conference research presentation! This year’s program will again feature innovation talks that emphasize the co-creation approach AGE-WELL takes when doing research by engaging diverse stakeholders. Each talk will consist of a 15-minute presentation and 5-minute Q&A. Researchers must co-present with a partner, older adult or caregiver involved in their project. Innovation Talks are open to HQP, Project Leads, Investigators and their project stakeholders from any AGE-WELL funding program (e.g. Core Research Projects, Platform Projects, SIP, AIR or Innovation Hubs).</p>
                 
-                <p>Application Deadline: Friday July 29, 2022</p>
+                <p>Application Deadline: Friday Aug 5, 2022</p>
                 
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="2_if" if="{>(2022-07-30 00:00:00,{$timestamp})}">
+        <If id="2_if" if="{>(2022-08-05 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="2_accordion">
@@ -160,9 +160,13 @@
                     <li>What’s your medium (song, dance, skit, sculpture, dramatic storytelling)?:</li>
                     <li>Why should you compete?</li>
                 </ol>
+                
+                <p>Application Deadline: Friday Aug 5, 2022</p>
+                
+                <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="1_if" if="{>(2022-07-30 00:00:00,{$timestamp})}">
+        <If id="1_if" if="{>(2022-08-05 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="1_accordion">
@@ -258,12 +262,12 @@
                     });
                 </script>
                 <p>AGE-WELL 2022 will feature poster session open to all network participants. Only one poster per project is permitted. Posters with HQP first authors will automatically be entered in our poster competition.</p>
-                <p>Application Deadline: Friday July 29, 2022</p>
+                <p>Application Deadline: Friday Aug 5, 2022</p>
                 
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="4_if" if="{>(2022-07-30 00:00:00,{$timestamp})}">
+        <If id="4_if" if="{>(2022-08-05 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="4_accordion">
@@ -380,12 +384,12 @@
                 </script>
                 <p>AGE-WELL 2022 will feature up to 4 Lunch ‘n’ Learn sessions. These 60- or 75- minute workshops will be accessible to attendees as sign-up sessions through the AGE-WELL Conference app.  Lunch ‘n’ Learns slots are available to Challenge Area, Crosscutting Activity Teams, Innovation Hubs and Platform Project teams. <u>Sessions must be interactive</u>.</p>
                 
-                <p>Application Deadline: Friday July 29, 2022</p>
+                <p>Application Deadline: Friday Aug 5, 2022</p>
                 
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="3_if" if="{>(2022-07-30 00:00:00,{$timestamp})}">
+        <If id="3_if" if="{>(2022-08-05 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="3_accordion">
@@ -516,12 +520,12 @@
                 
                 <p>Note: AGE-WELL 2022 will also include Exhibits conference requiring separate application.</p>
 
-                <p>Application Deadline: Friday July 29, 2022</p>
+                <p>Application Deadline: Friday Aug 5, 2022</p>
                 
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="5_if" if="{>(2022-07-30 00:00:00,{$timestamp})}">
+        <If id="5_if" if="{>(2022-08-05 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="5_accordion">
