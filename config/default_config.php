@@ -141,18 +141,12 @@
         'UI',
         'Notification',
         'GrandObjectPage',
-        'Cal',
         //'Twitter',
         'MailingList',
         'AddMember',
         'EditMember',
         //'HQPRegister',
-        'Poll',
-        'QueryableTable',
-        'IndexTables',
         'Reporting',
-        'NCETable',
-        'EmptyEmailList',
         'GlobalSearch',
         'Impersonation',
         'Visualizations',
@@ -160,9 +154,7 @@
         'Duplicates',
         //'AllocatedBudgets',
         'ProjectEvolution',
-        //'AdvancedSearch',
-        'CCVExport',
-        'MyThreads'
+        'CCVExport'
     ));
     
     $config->setValue("reportingExtras", array('EvaluationTable'        => false,
