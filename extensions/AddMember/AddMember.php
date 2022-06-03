@@ -66,7 +66,17 @@ class AddMember extends SpecialPage{
                 $form->getElementById('rec_country_field')->setPOST('recruitmentCountry');
                 for($i = 0; $i < 3; $i++){
                     $form->getElementById("university_field{$i}")->setPOST("university{$i}");
-                    $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
+                    if(!$config->getValue('splitDept')){
+                        $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
+                    }
+                    else{
+                        $form->getElementById("dept_fac_field{$i}")->setPOST("department_fac{$i}");
+                        $form->getElementById("dept_dept_field{$i}")->setPOST("department_dept{$i}");
+                        $_POST["department{$i}"] = $_POST["department_fac{$i}"] . " / " . $_POST["department_dept{$i}"];
+                        if($_POST["department{$i}"] == " / "){
+                            $_POST["department{$i}"] = "";
+                        }
+                    }
                     if($form->getElementById("hqp_position_field{$i}")->value != ""){
                         // For HQP Role
                         $form->getElementById("hqp_position_field{$i}")->setPOST("position{$i}");
@@ -427,13 +437,30 @@ class AddMember extends SpecialPage{
             $universityRow->append($universityLabel)->append($universityField);
             $universityRow->attr('id', "university_row$i");
             
-            $defaultDepartment = ($i == 0) ? $me->getDepartment() : "";
-            $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", $validation);
-            $deptField = new ComboBox("dept_field$i", $config->getValue('deptsTerm'), $defaultDepartment, $departments, $validation);
-            $deptField->attr("style", "width: 250px;");
-            $deptRow = new FormTableRow("dept_row$i");
-            $deptRow->append($deptLabel)->append($deptField);
-            $deptRow->attr('id', "dept_row$i");
+            if(!$config->getValue('splitDept')){
+                $defaultDepartment = ($i == 0) ? $me->getDepartment() : "";
+                $deptLabel = new Label("dept_label$i", $config->getValue('deptsTerm'), "The ".strtolower($config->getValue('deptsTerm'))." of this user", $validation);
+                $deptField = new ComboBox("dept_field$i", $config->getValue('deptsTerm'), $defaultDepartment, $departments, $validation);
+                $deptField->attr("style", "width: 250px;");
+                $deptRow = new FormTableRow("dept_row$i");
+                $deptRow->append($deptLabel)->append($deptField);
+                $deptRow->attr('id', "dept_row$i");
+            }
+            else{
+                $deptFacLabel = new Label("dept_fac_label$i", "Faculty", "The faculty of this user", $validation);
+                $deptFacField = new TextField("dept_fac_field$i", "Faculty", "", $validation);
+                $deptFacField->attr("style", "width: 250px;");
+                $deptFacRow = new FormTableRow("dept_fac_row$i");
+                $deptFacRow->append($deptFacLabel)->append($deptFacField);
+                $deptFacRow->attr('id', "dept_fac_row$i");
+                
+                $deptDeptLabel = new Label("dept_dept_label$i", "Department", "The department of this user", $validation);
+                $deptDeptField = new TextField("dept_dept_field$i", "Deptartment", "", $validation);
+                $deptDeptField->attr("style", "width: 250px;");
+                $deptDeptRow = new FormTableRow("dept_dept_row$i");
+                $deptDeptRow->append($deptDeptLabel)->append($deptDeptField);
+                $deptDeptRow->attr('id', "dept_dept_row$i");
+            }
             
             $hqpPositionLabel = new Label("hqp_position_label$i", "Position", "The academic title of this user (only required for HQP)", $validation);
             $hqpPositionField = new SelectBox("hqp_position_field$i", "Position", "", $hqpPositions, VALIDATE_NOTHING);
@@ -462,9 +489,15 @@ class AddMember extends SpecialPage{
             $endRow->attr('id', "end_row$i");
 
             $formTable->append($programRow)
-                      ->append($universityRow)
-                      ->append($deptRow)
-                      ->append($hqpPositionRow)
+                      ->append($universityRow);
+            if(!$config->getValue('splitDept')){
+                $formTable->append($deptRow);
+            }
+            else {
+                $formTable->append($deptFacRow)
+                          ->append($deptDeptRow);
+            }
+            $formTable->append($hqpPositionRow)
                       ->append($positionRow)
                       ->append($startRow)
                       ->append($endRow);

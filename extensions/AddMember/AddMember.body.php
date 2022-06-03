@@ -71,9 +71,11 @@ class UserCreate {
         // Add Roles
         if(isset($_POST['wpUserSubType']) && $_POST['wpUserSubType'] != ""){
             foreach($_POST['wpUserSubType'] as $subrole){
-                DBFunctions::insert('grand_role_subtype',
-                                    array('user_id' => $id,
-                                          'sub_role' => $subrole));
+                if($subrole != ""){
+                    DBFunctions::insert('grand_role_subtype',
+                                        array('user_id' => $id,
+                                              'sub_role' => $subrole));
+                }
             }
         }
         Cache::delete("rolesCache");

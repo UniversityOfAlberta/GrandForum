@@ -126,7 +126,11 @@
     
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
+    
+    // Whether to split the dept (Faculty / Dept)
+    $config->setValue("splitDept", false);
 
+    // Visual format for names
     $config->setValue("nameFormat", "{%First} {%M.} {%Last}");
     
     // Whether to include the middle name in most places
