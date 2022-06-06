@@ -566,6 +566,11 @@ class AddMember extends SpecialPage{
                     $('#dept_row1').show();
                     $('#dept_row2').show();
                     
+                    $('#dept_fac_row1').show();
+                    $('#dept_fac_row2').show();
+                    $('#dept_dept_row1').show();
+                    $('#dept_dept_row2').show();
+                    
                     $('#start_row1').show();
                     $('#start_row2').show();
                     
@@ -598,6 +603,11 @@ class AddMember extends SpecialPage{
                     
                     $('#dept_row1').hide();
                     $('#dept_row2').hide();
+                    
+                    $('#dept_fac_row1').hide();
+                    $('#dept_fac_row2').hide();
+                    $('#dept_dept_row1').hide();
+                    $('#dept_dept_row2').hide();
                     
                     $('#start_row1').hide();
                     $('#start_row2').hide();
