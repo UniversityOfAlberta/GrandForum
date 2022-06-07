@@ -50,13 +50,19 @@ PharmacyMapView = Backbone.View.extend({
             map.setCenter(map.getCenter());
         }
     },
+    
+    record: function(cat){
+        dc.init(me.get('id'), 'ProgramLibrary-' + cat);
+        dc.increment("pageCount");
+    },
 
     findCategory: function (ev) {
         if(ev != null){
             // Clicked category button
             var cat = $(ev.currentTarget).data('cat');
+            this.record(this.buttons[cat]["code"]);
             if (this.buttons[cat].hasOwnProperty('children')) {
-                this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"] });
+                this.previous.push({ "buttons": this.buttons, "text": this.buttons[cat]["text"], "code": this.buttons[cat]["code"] });
                 this.buttons = this.buttons[cat]["children"];
                 this.drawButtons();
             }
@@ -70,6 +76,7 @@ PharmacyMapView = Backbone.View.extend({
         } else {
             // Category Route
             // This is super ugly, but it works...
+            this.record(this.model.cat);
             _.each(this.cat_json, function(button1){
                 if(button1.hasOwnProperty('children')){
                     _.each(button1.children, function(button2){
@@ -108,11 +115,18 @@ PharmacyMapView = Backbone.View.extend({
 
     previousCategory: function () {
         if (this.previous.length > 0) {
-            var previous_buttons = this.previous.pop()
+            var previous_buttons = this.previous.pop();
             this.buttons = previous_buttons["buttons"];
+            if(this.previous.length > 0){
+                this.record(_.last(this.previous)['code']);
+            }
+            else{
+                this.record("INDEX");
+            }
         }
         else {
             this.buttons = this.cat_json;
+            this.record("INDEX");
         }
         this.refresh = false;
         //$('#address_bar').hide();
@@ -169,6 +183,9 @@ PharmacyMapView = Backbone.View.extend({
     },
 
     addCategoryButtons: function () {
+        if(this.model.cat == undefined){
+            this.record("INDEX");
+        }
         var cat_view = new CategoryButtonsView({ model: this.model, parent: this });
         this.cat_json = cat_json;
         this.buttons = this.cat_json;
@@ -239,8 +256,6 @@ PharmacyMapView = Backbone.View.extend({
         });
         this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
         table = this.table;
-
-
     },
 
     rowClick: function () {

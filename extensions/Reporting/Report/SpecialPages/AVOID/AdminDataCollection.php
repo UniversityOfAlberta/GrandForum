@@ -19,11 +19,26 @@ class AdminDataCollection extends SpecialPage{
         $this->getOutput()->setPageTitle("Admin Data Collection");
         $people = Person::getAllPeople();
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
+        $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
         if(count($people) > 0){
-            $wgOut->addHTML("<table class='wikitable sortable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
-                                <tr style='background:#EEEEEE;'>
-                                    <th>Name</th> <th>Age</th> <th>Postal Code</th><th>Role</th><th>Date Registered</th><th>Extra</th><th>Data Collected</th>
-                                </tr>");
+            $wgOut->addHTML("<table id='data' class='wikitable' cellpadding='5' cellspacing='1' style='background:#CCCCCC;'>
+                                <thead>
+                                    <tr style='background:#EEEEEE;'>
+                                        <th rowspan='2'>Name</th>
+                                        <th rowspan='2'>Age</th>
+                                        <th rowspan='2'>Postal Code</th>
+                                        <th rowspan='2'>Role</th>
+                                        <th rowspan='2'>Date Registered</th>
+                                        <th rowspan='2'>Extra</th>
+                                        <th colspan='10'>Data Collected</th>
+                                    </tr>
+                                    <tr>
+                                        <th>".implode("</th><th>", $topics)."</th>
+                                        <th>Program Library</th>
+                                        <th>Resource Links</th>
+                                    </tr>
+                                </thead>
+                                <tbody>");
             foreach($people as $person){
                 $name = $person->getRealName();
                 $avoid_age = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "avoid_age", $person->getId());
@@ -59,13 +74,14 @@ class AdminDataCollection extends SpecialPage{
                 $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
                 $resource_data = DBFunctions::execSQL($resource_data_sql);
                 $links = array();
-                foreach($resource_data as $page){
-                    $topics = array("IngredientsForChange","Activity","OptimizeMedication","Vaccination","Interact","DietAndNutrition","Sleep","FallsPrevention");
-                    $page_name = trim($page["page"]);
-                    $page_data = json_decode($page["data"], true);
-                    if($page_name != ""){
-                        if(in_array($page_name, $topics)){
-                            $wgOut->addHTML("<td VALIGN=TOP><b>$page_name</b><br />");
+
+                // Topics
+                foreach($topics as $topic){
+                    $wgOut->addHTML("<td style='padding:0;'>");
+                    foreach($resource_data as $page){
+                        $page_name = trim($page["page"]);
+                        $page_data = json_decode($page["data"], true);
+                        if($page_name == $topic){
                             $wgOut->addHTML("<table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
                             $x_num = 0;
                             foreach($page_data as $key => $value){
@@ -95,28 +111,29 @@ class AdminDataCollection extends SpecialPage{
                             }
                             $wgOut->addHTML("</table>");
                         }
-                        else{
-                            $links[] = $page;
-                        }
                     }
+                    $wgOut->addHTML("</td>");
                 }
-                if(count($links)>0){
-                    $wgOut->addHTML("<td VALIGN=TOP><b>Resource Links</b><br /><table>");
-                    $x_num = 0;
-                    foreach($links as $link){
-                        $page_name = trim($link["page"]);
-                        $page_data = json_decode($link["data"],true);
+                
+                // Program Library
+                $wgOut->addHTML("<td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
+                $x_num = 0;
+                foreach($resource_data as $page){
+                    $page_name = trim($page["page"]);
+                    if(strstr($page_name, "ProgramLibrary") !== false){
+                        $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
+                        $page_data = json_decode($page["data"],true);
                         $views = isset($page_data["count"]) ? $page_data["count"] : 0;
                         if($x_num%2==0){
                             $wgOut->addHTML("
-                                <tr style='background-color:#ececec'><td>
+                                <tr style='background-color:#ececec'><td style='white-space:nowrap;'>
                                     $page_name</td><td nowrap>
                                     Views: $views
                                 </td></tr>");
                         }
                         else{
                             $wgOut->addHTML("
-                                <tr style=''><td>
+                                <tr style=''><td style='white-space:nowrap;'>
                                 $page_name</td><td nowrap>
                                 Views: $views
                                 </td>
@@ -124,10 +141,45 @@ class AdminDataCollection extends SpecialPage{
                         }
                         $x_num++;
                     }
-                    $wgOut->addHTML("</table></td>");
+                    else if(!in_array($page_name, $topics) && $page_name != ""){
+                        $links[] = $page;
+                    }
                 }
+                
+                // Resource Links
+                $wgOut->addHTML("</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
+                $x_num = 0;
+                foreach($links as $link){
+                    $page_name = trim($link["page"]);
+                    $page_data = json_decode($link["data"],true);
+                    $views = isset($page_data["count"]) ? $page_data["count"] : 0;
+                    if($x_num%2==0){
+                        $wgOut->addHTML("
+                            <tr style='background-color:#ececec'><td>
+                                $page_name</td><td nowrap>
+                                Views: $views
+                            </td></tr>");
+                    }
+                    else{
+                        $wgOut->addHTML("
+                            <tr style=''><td>
+                            $page_name</td><td nowrap>
+                            Views: $views
+                            </td>
+                            </tr>");
+                    }
+                    $x_num++;
+                }
+                $wgOut->addHTML("</table></td>");
             }
-            $wgOut->addHTML("</table>");
+            $wgOut->addHTML("</tbody>
+                            </table>
+                            <script type='text/javascript'>
+                                table = $('#data').DataTable({
+                                    aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                                    iDisplayLength: -1,
+                                });
+                            </script>");
         }
         else{
             $wgOut->addHTML("You have not created any polls.");
