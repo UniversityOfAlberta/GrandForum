@@ -20,6 +20,7 @@ class NITableTab extends PeopleTableTab {
             $people[$person->getId()] = $person;
         }
         $emailHeader = "";
+        $emplIdHeader = "";
         $idHeader = "";
         $epicHeader = "";
         $subRoleHeader = "";
@@ -30,6 +31,9 @@ class NITableTab extends PeopleTableTab {
         }
         if($me->isLoggedIn()){
             $emailHeader = "<th style='white-space: nowrap;'>Email</th><th>".AR."</th><th>".CI."</th><th>".PL."</th>";
+        }
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == "FES"){
+            $emplIdHeader = "<th style='white-space: nowrap;'>Employee ID</th>";
         }
         if($config->getValue('projectsEnabled') && !isset($committees[$this->table])){
             $projectsHeader = "<th style='white-space: nowrap;'>Projects</th>";
@@ -75,6 +79,7 @@ class NITableTab extends PeopleTableTab {
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$statusHeader}
                                     {$emailHeader}
+                                    {$emplIdHeader}
                                     {$idHeader}
                                 </tr>
                             </thead>
@@ -193,6 +198,9 @@ class NITableTab extends PeopleTableTab {
                 $this->html .= "<td align='center' style='font-size:2em;'>{$isAR}</td>
                                 <td align='center' style='font-size:2em;'>{$isCI}</td>
                                 <td align='center' style='font-size:2em;'>{$isPL}</td>";
+            }
+            if($emplIdHeader != ''){
+                $this->html .= "<td>{$person->getEmployeeId()}</td>";
             }
             if($idHeader != ''){
                 $this->html .= "<td>{$person->getId()}</td>";

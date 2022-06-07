@@ -13,6 +13,7 @@ class CreateUserAPI extends API{
         $this->addPOST("wpMiddleName",false,"The User's middle name","My Middle Name");
         $this->addPOST("wpLastName",false,"The User's last name","My Last Name");
         $this->addPOST("wpUserType",true,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
+        $this->addPOST("wpUserSubType",false,"The User Roles, must be in the form \"Role1, Role2, ...\"","HQP, RMC");
         $this->addPOST("wpNS",false,"The list of projects that the user is a part of.  Must be in the form \"Project1, Project2, ...\"","MEOW, NAVEL");
         $this->addPOST("wpExtra",false,"","");
         $this->addPOST("wpSendMail",false,"Whether or not to send an email to the user or not.  This value should be either 'true' or 'false'.  If this parameter is not included, it is assumed that not email should be sent","true");
@@ -43,6 +44,14 @@ class CreateUserAPI extends API{
         foreach($roles as $role){
             $_POST['wpUserType'][] = $role;
         }
+        
+        $oldWPSubType = $_POST['wpUserSubType'];
+        $subroles = explode(", ", $_POST['wpUserSubType']);
+        unset($_POST['wpUserSubType']);
+        foreach($subroles as $subrole){
+            $_POST['wpUserSubType'][] = $subrole;
+        }
+        
         if(!$me->isLoggedIn()){
             // Check email whitelist to help prevent spam
             $splitEmail = explode("@", $_POST['wpEmail']);

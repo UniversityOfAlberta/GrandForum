@@ -21,7 +21,7 @@
                 <h1>SECTION 1: INTRO & CONSENT</h1>
                 <p>Network Members are required to submit an end-of-year progress report by April 30, each year. This report is designed to capture emerging research findings, knowledge mobilization activities, new partnerships, successes, and opportunities for future improvement.</p>
                 <p>In addition to this progress report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift.  Form 300 can be downloaded and attached under section 8.</p>
-                <p>This report and corresponding documents are <b>due no later than April 30, 2021, 4 p.m. EST</b>.</p> 
+                <p>This report and corresponding documents are <b>due no later than April 30 @ 4 p.m. EST</b>.</p> 
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
@@ -280,6 +280,14 @@
                     </tr>
             ]]>
         </ReportItem>
+        <ReportItem id="report_writing" type="Textarea" blobItem="REPORT_WRITING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Report Writing and Finding Dissemination</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
         <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
             <![CDATA[
                     <tr>
@@ -327,7 +335,7 @@
             <![CDATA[
                 <h2>Community Engagement in Research Index (CERI)</h2>
                 <h3>3.6 Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</h3>
-                <p><small>
+                <p>Please fill out this section to the best of your ability. Although a number of areas may be designated ‘1’, we understand that not all categories and activities will apply across all projects. Please only leave sections blank that are not applicable to the current stage of your project, or study overall.<br /><small>
                     1 (Community partners do not participate in this activity) <br />
                     2 (Community partners are consulted on or advise on this activity)<br />
                     3 (Community partners are actively engaged in this activity as collaborators/co-investigators)
@@ -409,10 +417,16 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 </table>
             ]]>
         </Static>
+        <ReportItem id="findings_date" type="Calendar" reportItem="FINDINGS_DATE">
+            <![CDATA[
+                <h3>4.3 Provide an estimation of when shareable project findings are next expected. This can include reports, tools, journal publications, webinars etc.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
         <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true"
-                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Other)|Textarea|Textarea|Textarea|Date" 
+                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date" 
                     indices="activity|endgroup|activities|impact|reach|date" 
                     labels="Knowledge Mobilization Activity|End Group(s)&lt;br />&lt;small style='font-weight:normal;'>(Select the End Group(s) the Knowledge Mobilization Activity engaged)&lt;/small>|Knowledge Mobilization Activities&lt;br />&lt;small style='font-weight:normal;'>(include links to related materials)&lt;/small>|Impact&lt;br />&lt;small style='font-weight:normal;'>(i.e., what happened once the end user group engaged with your KMb materials?)&lt;/small>|Actual Reach/Projected reach per selected End Group&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Date(s) of Activity/ Projected Date of Activity" 
                     sizes="200|200|200|200|200|75">
@@ -420,6 +434,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 <h2>Knowledge Mobilization Activities and Impact</h2>
                 <h3>5.1 Describe the knowledge mobilization activities you completed in the previous year for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
                 {$item}
+                Please note we encourage projects to send notice of public activities to <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a> for promotion to the network and via MtS social media.
             ]]>
         </ReportItem>
         <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="200">
@@ -480,6 +495,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
             <![CDATA[
                 <br />
                 <p><i>Disclaimer: pending availability of MtS and AWHC/COH staff</i></p>
+                <p>Please note all projects have access to a <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0' target='_blank'>base Knowledge Mobilization package</a> to support your project.</p>
             ]]>
         </Static>
     </ReportSection>

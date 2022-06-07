@@ -15,7 +15,7 @@ Freeze = Backbone.Model.extend({
 
 });
 
-Freeze.features = ['Description', 'Schedule/Milestones', 'Budget', 'Projections'];
+Freeze.features = ['Description', 'Schedule/Milestones', 'Budget', 'Projections', 'EDI'];
 Freeze.globalFeatures = ['Manage People', 'Leverages', 'Collaborations', 'Publications'];
 
 Freezes = Backbone.Collection.extend({

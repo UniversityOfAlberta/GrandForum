@@ -181,6 +181,7 @@ class ReportItemCallback {
             "round" => "round",
             "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
+            "isArrayComplete" => "isArrayComplete",
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
@@ -191,6 +192,7 @@ class ReportItemCallback {
             "or" => "orCond",
             "contains" => "contains",
             "!contains" => "notContains",
+            "!" => "not",
             "==" => "eq",
             "!=" => "neq",
             ">" => "gt",
@@ -1955,6 +1957,25 @@ class ReportItemCallback {
         return (is_numeric($val)) ? number_format($val, $decimals, $dec_point, $thousands_sep) : $val;
     }
     
+    function checkArray($data){
+        $full = ($data != "");
+        if(is_array($data)){
+            foreach($data as $val){
+                $full = ($full && $this->checkArray($val));
+            }
+        }
+        return $full;
+    }
+    
+    function isArrayComplete($rp, $section, $blobId, $subId, $personId, $projectId, $index=null){
+        $data = $this->getArray($rp, $section, $blobId, $subId, $personId, $projectId);
+        if($index != null && isset($data[$index])){
+            $data = $data[$index];
+        }
+        $full = $this->checkArray($data);
+        return $full;
+    }
+    
     function replace($pattern, $replacement, $string){
         return str_replace($pattern, $replacement, $string);
     }
@@ -2003,6 +2024,10 @@ class ReportItemCallback {
     
     function notContains($val1, $val2){
         return !$this->contains($val1, $val2);
+    }
+    
+    function not($val){
+        return !$val;
     }
     
     function eq($val1, $val2){

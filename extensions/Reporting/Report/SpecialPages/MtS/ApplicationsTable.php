@@ -64,6 +64,7 @@ class ApplicationsTable extends SpecialPage{
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=impact'>Impact</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=datatech'>DataTech</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=openround2'>OpenRound2</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=opencall2022'>OpenCall2022</a>";
 
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
@@ -85,6 +86,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "openround2"){
             $this->generateOpenRound2();
+        }
+        else if($program == "opencall2022"){
+            $this->generateOpenCall2022();
         }
         return;
     }
@@ -286,8 +290,10 @@ class ApplicationsTable extends SpecialPage{
         global $wgOut;
         
         $tabbedPage = new InnerTabbedPage("reports");
-        $tab2021 = new ApplicationTab(RP_PROGRESS, null, 2021, "2021", array());                                           
-        $tabbedPage->addTab($tab2021);
+        for($year=date('Y'); $year >= 2021; $year--){
+            $tab = new ApplicationTab(RP_PROGRESS, null, $year, "{$year}", array());                                           
+            $tabbedPage->addTab($tab);
+        }
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
@@ -414,6 +420,49 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_OPEN2', null, 2020, "2020", $fields));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateOpenCall2022(){
+        global $wgOut;
+
+        $survey = array('title' => 'Title',
+                        'applicant' => 'Applicant',
+                        'position' => 'Position',
+                        'dept' => 'Department',
+                        'institution' => 'Institution',
+                        'dept' => 'Department',
+                        'tri_council' => "Tri-Council",
+                        'sign_off' => "Sign-Off",
+                        'other_funding' => "Other Funding",
+                        'sources' => "Sources",
+                        'ci1' => 'CI1',
+                        'ci1_institution' => 'CI1 Institution',
+                        'ci2' => 'CI2',
+                        'ci2_institution' => 'CI2 Institution',
+                        'involve' => "Involve",
+                        'amount' => "Amount",
+                        'stream' => "Stream",
+                        'pillar' => "Pillars");
+        
+        $fields = array();
+        foreach($survey as $key => $label){
+            if($key == "involve" || $key == "stream" || $key == "pillar"){
+                $field = new CheckboxReportItem();
+                $field->setBlobType(BLOB_ARRAY);
+            }
+            else{
+                $field = new TextReportItem();
+                $field->setBlobType(BLOB_TEXT);
+            }
+            $field->setBlobSection("SURVEY");
+            $field->setBlobItem(strtoupper($key));
+            $field->setId($key);
+            $fields[$label] = $field;
+        }
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_OPEN2022', null, 2022, "2022", $fields));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

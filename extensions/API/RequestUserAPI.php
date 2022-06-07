@@ -11,6 +11,7 @@ class RequestUserAPI extends API{
         $this->addPOST("wpMiddleName", false, "The User's middle name", "Middle Name");
         $this->addPOST("wpLastName", false, "The User's last name", "Last Name");
         $this->addPOST("wpUserType", true, "The User Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
+        $this->addPOST("wpUserSubType", false, "The User Sub Roles Must be in the form \"Role1, Role2, ...\"", "HQP, RMC");
         $this->addPOST("wpNS", false, "The list of projects that the user is a part of.  Must be in the form\"Project1, Project2, ...\"", "MEOW, NAVEL");
         $this->addPOST("candidate", false, "Whether or not this person is a candidate user or not", "");
         $this->addPOST("university",false, "", "");
@@ -29,7 +30,7 @@ class RequestUserAPI extends API{
     }
 
 	function doAction($doEcho=true){
-		global $wgRequest, $wgUser, $wgOut, $wgMessage;
+		global $wgRequest, $wgUser, $wgOut, $wgMessage, $wgServer, $wgScriptPath, $config;
 		$me = Person::newFromUser($wgUser);
 		if(!isset($_POST['wpName']) || $_POST['wpName'] == null){
 			if($doEcho){
@@ -111,6 +112,7 @@ class RequestUserAPI extends API{
 		$wpMiddleName = isset($_POST['wpMiddleName']) ? $_POST['wpMiddleName'] : "";
 		$wpLastName = isset($_POST['wpLastName']) ? $_POST['wpLastName'] : "";
 		$wpUserType = isset($_POST['wpUserType']) ? $_POST['wpUserType'] : "";
+		$wpUserSubType = isset($_POST['wpUserSubType']) ? $_POST['wpUserSubType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
 		$university = isset($_POST['university']) ? $_POST['university'] : "";
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
@@ -138,6 +140,7 @@ class RequestUserAPI extends API{
 		                          'wpMiddleName'=> $wpMiddleName,
 		                          'wpLastName' => $wpLastName,
 		                          'wpUserType' => $wpUserType,
+		                          'wpUserSubType' => $wpUserSubType,
 		                          'wpNS' => $wpNS,
 		                          'university' => $university,
 		                          'department' => $department,
@@ -152,6 +155,12 @@ class RequestUserAPI extends API{
 		                          'created' => 0));
 		
 		$me = Person::newFromId($requesting_user);
+		if($config->getValue('networkName') == "FES"){
+		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
+		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
+		               "X-Mailer: PHP/".phpversion();
+		    mail("fesadmin@ualberta.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers);
+		}
 		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
 		if($doEcho){
 		    echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="APPEL OUVERT – Domaines Prioritaires" reportType="RP_OPEN2022" pdfType="RPTP_OPEN2022" pdfFiles="OpenCall2022PDF" ajax="true" allowIdProjects="true" disabled="true" year="2022">
+    <Permissions>
+        <Role role="" />
+    </Permissions>
+    <ReportSection id="background" tooltip="APPEL OUVERT – Domaines Prioritaires" name="Contexte" title="APPEL OUVERT – Domaines Prioritaires" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <span style='color: red;'>Avant de commencer votre demande, assurez-vous d’avoir choisi le bon appel</span>
+                <h2>CONTEXTE ET OBJECTIFS</h2>
+                <p>Changer de direction (CdD) a publié un appel de propositions ouvert pour l’hiver 2022. Cette phase répond aux lacunes dans le <a href="http://makingtheshiftinc.ca/research/" target="_blank">programme de recherche</a> actuel de CdD et s’intéresse à la prévention de l’itinérance chez les jeunes et à des projets qui complètent la portée des projets qui bénéficient déjà d’un financement de la part de CdD.</p>
+
+                Lors de la rédaction et la soumission de leurs propositions, les candidats doivent :
+                <ul>
+                    <li>montrer que le projet comble une lacune dans le cadre du programme de recherche CdD et les domaines prioritaires énumérés dans le <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022.pdf' target="_blank">Guide du candidat</a>;</li>
+                    <li>démontrer un lien solide à la prévention de l’itinérance chez les jeunes, tel qu’elle est définie dans la Feuille de route pour <a href="https://www.homelesshub.ca/youthpreventionroadmap" target="_blank">la prévention de l’Itinérance chez les jeunes</a>;</li>
+                    <li>exposer en détail une trajectoire de recherche à impact (p. ex. comment la traduction et la diffusion des résultats favoriseront la transformation de programmes, de pratiques, de politiques et de systèmes); et</li>
+                    <li>proposer un budget de projet clair et réaliste qui fournit un compte rendu détaillé des contributions en espèce et en nature.</li>
+                </ul>
+                
+                <p>Les propositions seront d’abord soumises à un processus d’évaluation par les pairs rigoureux et ensuite évaluées de nouveau par le Comité de gestion de la recherche CdD. Les deux groupes consistent en des experts en recherche, des fournisseurs de service, des universitaires ayant une expérience vécue et des représentants du gouvernement. Par la suite, les projets retenus seront recommandés au conseil d’administration, pour qu’il prenne la décision finale en matière de financement. Les instructions de soumission et le gabarit budget sont disponibles dans le <a href='{$wgServer}{$wgScriptPath}/data/MtS_Open_Call_Applicant_Guide_Winter_2022_FR.pdf' target="_blank">Guide du candidat</a>.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="survey" tooltip="Informations sur le projet" name="Informations sur le projet" title="Informations sur le projet" blobSection="SURVEY" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Titre de la proposition</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="applicant" type="Text" blobItem="APPLICANT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Nom du candidat</b><br />
+                    <small>Prénom et nom du chercheur principal</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="position" type="Text" blobItem="POSITION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Position</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="dept" type="Text" blobItem="DEPT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Département ou faculté</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Établissement</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <!--ReportItem id="telephone" type="Text" blobItem="TELEPHONE" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Telephone</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Email address</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem-->
+        <ReportItem id="tri_council" type="Select" blobItem="TRI_COUNCIL" width="400px" 
+                    labels="|Oui|Non|Demande de statut en cours|Je ne sais pas"
+                    options="|Yes|No|Currently applying for status|I don't know">
+            <![CDATA[
+                <p>
+                    <b>Votre établissement est-il admissible au financement des trois conseils?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sign_off" type="Select" blobItem="SIGN_OFF" width="400px" 
+                    labels="|Oui|Non"
+                    options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Avez-vous l’approbation de votre établissement?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_funding" type="Select" blobItem="OTHER_FUNDING" width="400px" 
+                    labels="|Oui|Non"
+                    options="|Yes|No">
+            <![CDATA[
+                <p>
+                    <b>Disposez-vous d’autres sources de financement pour votre projet?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="sources" type="Textarea" blobItem="SOURCES">
+            <![CDATA[
+                <p>
+                    <b>Si vous avez d’autres sources de financement, veuillez les indiquer avec le montant.</b><br />
+                    <small>(Par exemple : Subvention de partenariat du CRSH, 300 000 $) Sinon, saisissez N/A.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1" type="Text" blobItem="CI1" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Nom de cochercheur 1</b><br />
+                    <small>Indiquez tous les cochercheurs et collaborateurs au projet (qui sont admissibles au financement des trois conseils). N’indiquez pas les étudiants de cycles supérieurs, les stagiaires postdoctoraux, les associés de recherche, les assistants de recherche, les stagiaires d’été et toute autre personne dont l’allocation serait des frais admissibles.</small><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci1_institution" type="Text" blobItem="CI1_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Établissement de cochercheur 1</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2" type="Text" blobItem="CI2" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Nom de co-chercheur 2 (s’il y a lieu)</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci2_institution" type="Text" blobItem="CI2_INSTITUTION" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Établissement de cochercheur 2</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="involve" type="Checkbox" blobItem="INVOLVE" blobType="BLOB_ARRAY" width="400px"
+                    labels="Recherche avec des êtres humains|Recherche avec des cellules souches pluripotentes humaines|Recherche qui exige l’utilisation d’animaux|Recherche qui présente des risques biologiques|Recherche qui utilise des agents infectieux|Recherche qui utilise des substances radioactives|Recherche qui comporte des risques environnementaux|Recherche qui comporte des renseignements contrôlés|Recherche au Yukon, dans les Territoires du Nord-Ouest ou au Nunavut|Rien de ce qui précède"
+                    options="Research involving humans|Research involving human pluripotent stem cells|Research requiring the use of animals|Research involving biohazards|Research involving infections agents|Research involving radioactive materials|Research activities having potential effects on the environment|Research involving controlled information|Research performed in the Yukon, the Northwest Territories, and Nunavut|None of the above">
+            <![CDATA[
+                <p>
+                    <b>Votre projet implique-t-il l’un des éléments suivants :</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="amount" type="Text" blobItem="AMOUNT" width="400px">
+            <![CDATA[
+                <p>
+                    <b>Indiquez le montant total de votre demande de financement à CdD.</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" 
+                    labels="A. Réduction des méfaits axée sur les jeunes|B. Système juridique|C. Analyse coûts-avantages|D. Prévention des expulsions|E. Données et technologie : Le rôle des données administratives liées dans la prévention de l’itinérance chez les jeunes|F. Chemins de l’itinérance|G. Tout autre sujet relatif à la prévention"
+                    options="A. Youth Focused Harm Reduction|B. Legal and Justice System|C. Cost-Benefit Analysis|D. Evictions Prevention|E. Data &amp; Technology: Understanding the Role of Linked Administrative Data in Preventing Youth Homelessness|F. Pathways into Homelessness|G. Open Prevention Topic">
+            <![CDATA[
+                <p>
+                    <b>À quels volets de financement correspond votre projet?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pillar" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PILLAR" 
+                    labels="Thème 1 : Passer à la prévention grâce à l’intervention précoce|Thème 2 : Sortir de l’itinérance de façon durable|Thème 3 : Favoriser la santé, le bien-être et l’inclusion|Thème 4 : Améliorer les résultats pour les jeunes Autochtones|Thème 5 : Prendre appui sur les données et la technologie pour orienter l’élaboration des politiques et la pratique"
+                    options="Theme 1: Shifting to Prevention through Early Intervention|Theme 2: Sustaining Successful Exits from Homelessness|Theme 3: Enabling Health, Well-being, and Inclusion|Theme 4: Enhancing Outcomes for Indigenous Youth|Theme 5: Leveraging Data and Technology to Drive Policy and Practice">
+            <![CDATA[
+                <p>
+                    <b>À quels piliers du programme de recherche CdD votre projet correspond-il?</b><br />
+                    {$item}
+                </p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" tooltip="Proposition" title="Proposition" name="Proposition" blobSection="PROPOSAL" type="EditableReportSection">
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="500px">
+            <![CDATA[
+                <h3>Titre de la proposition</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="abstract" type="Textarea" blobItem="ABSTRACT" rich="true" limit="150">
+            <![CDATA[
+                <h3>II. Description du projet</h3>
+                <h4>Résumé</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="questions" type="Textarea" blobItem="QUESTIONS" rich="true" limit="100">
+            <![CDATA[
+                <h4>Questions de recherche</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="200">
+            <![CDATA[
+                <h4>Objectifs</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="methodology" type="Textarea" blobItem="METHODOLOGY" rich="true" limit="500">
+            <![CDATA[
+                <h4>Méthodologie</h4>
+                <small>Comment allez-vous mettre en œuvre le projet et atteindre ses objectifs? Si vous envisagez des recherches avec des sujets humains, détaillez comment vous prévoyez obtenir l’approbation éthique ainsi que le processus de consultation et identifiez les mesures que vous prendrez pour limiter les perturbations liées à la COVID-19.</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="description" type="Textarea" blobItem="DESCRIPTION" rich="true" limit="1000">
+            <![CDATA[
+                <h4>Description détaillée du projet</h4>
+                <small>Quels sont les domaines d’intérêt de votre recherche et quelle sera sa contribution? Comment ce projet compte-t-il atteindre ses objectifs et sous-objectifs? Comment le projet correspond-il au programme de recherche CdD (c.-à-d. qu’est le lien avec la prévention de l’itinérance chez les jeunes)? Comment allez-vous encourager la participation des membres de la communauté dans le projet? Comment allez-vous faire place aux expériences de personnes ayant une expérience vécue dans votre recherche?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="community" type="Textarea" blobItem="COMMUNITY" rich="true" limit="300">
+            <![CDATA[
+                <h4>Implication de la communauté et des partenariats</h4>
+                <small>Comment allez-vous encourager la participation des membres de la communauté dans le projet proposé (p. ex. le processus, les rôles ou la rémunération)? Comment allez-vous faire place aux expériences de personnes ayant une expérience vécue dans votre recherche? Comment allez-vous assurer que le projet respecte les principes d’équité, de diversité et d’inclusion?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes" type="Textarea" blobItem="OUTCOMES" rich="true" limit="300">
+            <![CDATA[
+                <h4>Résultats et impact attendus</h4>
+                <small>Qui bénéficiera de vos recherches? Quels sont les résultats escomptés (p. ex., ce projet comble-t-il une lacune dans l’ensemble des données actuel? appuie-t-il l’élaboration des politiques et la capacité de décision de la communauté?) Comment proposez-vous traduire les conclusions de recherche en ressources, outils, formations, présentations, etc. susceptibles d’aider les décideurs, les praticiens, les défenseurs et d’autres chercheurs à l’avancement d’approches de prévention de l’itinérance chez les jeunes?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="team" type="Textarea" blobItem="TEAM" rich="true" limit="300">
+            <![CDATA[
+                <h4>Équipe de projet</h4>
+                <small>Quels sont les rôles, les expériences et les compétences au sein de votre équipe qui font que vous êtes bien positionnés pour mener à bien le projet? Que faites-vous pour mettre en valeur les partenariats, nouveaux ou existants, y compris avec les personnes ayant une expérience vécue?</small>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="members" type="MultiText" blobItem="MEMBERS" blobType="BLOB_ARRAY" labels="Nom complet|Établissement|Adresse électronique|Rôle au sein du projet" indices="fullname|institution|email|projectrole" types="Text|Text|Text|Select(Co-Investigator,Collaborator)" multiple="true">
+            <![CDATA[
+                <h3>III. Liste des cochercheurs et des collaborateurs</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="references" type="Textarea" blobItem="REFERENCES" rich="true">
+            <![CDATA[
+                <h3>IV. Références (jusqu’à 20 ressources)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <![CDATA[
+                <h3>V. Budget</h3>
+                <p>Téléchargez le <a href="{$wgServer}{$wgScriptPath}/data/MtS_Budget_Template_2022-2025_FR.xlsx" target="_blank">gabarit budget</a> et chargez-le en respectant la convention de nommage suivante : [NomDuChercheurPrincipal_CinqPremierMotsDuTitre]_Budget_MtSDataCall_[YYYYMMDD]</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Réviser" name="Réviser" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="Soumettre" name="Soumettre" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportMain .en").hide();
+                    $("#reportMain .fr").removeClass("fr");
+                    $("#download_button_OpenCall2022PDF").text("APPEL OUVERT – Domaines prioritaires 2022 en format PDF");
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

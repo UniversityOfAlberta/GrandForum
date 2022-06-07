@@ -28,30 +28,37 @@ class SpecialMaterialSubmission extends SpecialPage{
         else{
             // Add Event Registration
             $f = 1;
+            $status = true;
             foreach($_FILES as $file){
                 if($file['name'] != ""){
                     $fileName = "{$_POST['name']}_Event{$_POST['event']}_File{$f}_{$file['name']}";
-                    move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}");
+                    $status = ($status && move_uploaded_file($file["tmp_name"], "extensions/EventRegistration/uploads/{$fileName}"));
                     $_POST["misc"]["file{$f}"] = $fileName;
+                    $_POST["misc"]["desc{$f}"] = $_POST["desc{$f}"];
                     $f++;
                 }
             }
-            $eventRegistration = new EventRegistration(array());
-            $eventRegistration->eventId = $_POST['event'];
-            $eventRegistration->type = "Material Submission";
-            $eventRegistration->email = $_POST['email'];
-            $eventRegistration->name = $_POST['name'];
-            $eventRegistration->role = $_POST['role'];
-            $eventRegistration->misc = @$_POST['misc'];
-            $eventRegistration->create();
-            $wgMessage->addSuccess("Thank you for submitting your materials");
-            $event = EventPosting::newFromId($_POST['event']);
-            if($event != null && $event->title != ""){
-                redirect($event->getUrl());
+            if(!$status){
+                $wgMessage->addError("There was a problem uploading materials");
+            }
+            else{
+                $eventRegistration = new EventRegistration(array());
+                $eventRegistration->eventId = $_POST['event'];
+                $eventRegistration->type = "Material Submission";
+                $eventRegistration->email = $_POST['email'];
+                $eventRegistration->name = $_POST['name'];
+                $eventRegistration->role = $_POST['role'];
+                $eventRegistration->misc = @$_POST['misc'];
+                $eventRegistration->create();
+                $wgMessage->addSuccess("Thank you for submitting your materials");
+                $event = EventPosting::newFromId($_POST['event']);
+                if($event != null && $event->title != ""){
+                    redirect($event->getUrl());
+                }
             }
         }
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
-        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}");
+        redirect("{$wgServer}{$wgScriptPath}/index.php/Special:SpecialMaterialSubmission{$getStr}");
     }
 
     function execute($par){
@@ -93,7 +100,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
 
-        $roles = array("Keynote Speaker", "Host", "Presenter");
+        $roles = array("Audience", "Keynote Speaker", "Host", "Presenter");
         $roleLabel = "Participant Role";
         $roleField = new SelectBox("role", "role", "Presenter", $roles);
         
@@ -159,18 +166,22 @@ class SpecialMaterialSubmission extends SpecialPage{
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 1</td>
                             <td><input id='file1' type='file' name='drive1' /></td>
+                            <td><input style='width:300px;' type='text' name='desc1' placeholder='Description...' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 2</td>
                             <td><input id='file2' type='file' name='drive2' /></td>
+                            <td><input style='width:300px;' type='text' name='desc2' placeholder='Description...' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 3</td>
                             <td><input id='file3' type='file' name='drive3' /></td>
+                            <td><input style='width:300px;' type='text' name='desc3' placeholder='Description...' /></td>
                         </tr>
                         <tr>
                             <td class='label' style='vertical-align: middle;'>File 4</td>
                             <td><input id='file4' type='file' name='drive4' /></td>
+                            <td><input style='width:300px;' type='text' name='desc4' placeholder='Description...' /></td>
                         </tr>
                     </table>
                     <b>NOTE: Total file limit is {$maxFileSize}MB, if you need more space please upload them to a server and share the link with us here:</b>

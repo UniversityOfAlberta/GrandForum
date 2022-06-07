@@ -401,7 +401,18 @@ PersonRoles = RangeCollection.extend({
  */
 PersonUniversity = RelationModel.extend({
     initialize: function(){
-    
+        var dSplit = this.get('department').split(' / ', 2);
+        var fac = dSplit[0];
+        var dept = (dSplit.length > 1) ? dSplit[1] : "";
+        this.set('department_fac', fac);
+        this.set('department_dept', dept);
+        
+        this.bind('change:department_fac', function(){
+            this.set('department', this.get('department_fac') + " / " + this.get('department_dept'));
+        });
+        this.bind('change:department_dept', function(){
+            this.set('department', this.get('department_fac') + " / " + this.get('department_dept'));
+        });
     },
     
     urlRoot: function(){
@@ -422,6 +433,8 @@ PersonUniversity = RelationModel.extend({
         personId: "",
         univeristy: "",
         department: "",
+        department_fac: "",
+        department_dept: "",
         position: "",
         personUniversityId: "",
         startDate: new Date().toISOString().substr(0, 10),

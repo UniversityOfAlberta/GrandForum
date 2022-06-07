@@ -132,6 +132,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
                             {$pronounsField->render()}
                             
                             <h3>Date of birth</h3>
+                            Your exact age will not be displayed, but rather the age group you would fall under, as defined by Statistics Canada<br />
                             <input type='date' name='birthDate' value='".str_replace("'", "&#39;", $person->getBirthDate())."'>
                             
                             <h3>From <a href='https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=410445' target='_blank'>Statistics Canada</a>, gender refers to the gender that a person internally feels ('gender identity' along the gender spectrum) and/or the gender a person publicly expresses ('gender expression') in their daily life. Which gender group do you belong to?</h3>

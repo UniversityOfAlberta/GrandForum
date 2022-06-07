@@ -91,6 +91,8 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=access'>ACCESS</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=eea'>EEA</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=edge'>Edge</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=air'>AIR</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ecr'>ECR</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=catalyst'>Catalyst</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=award'>Award</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=wp'>WP</a>";
@@ -99,6 +101,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=project'>Project Evaluation</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=fellow'>Policy Challenge</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=epicconference'>EPIC Conference</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=epicat'>EPIC AT</a>";
         }
         if($me->isRoleAtLeast(SD) || count($me->getEvaluates('RP_SUMMER', 2015, "Person")) > 0 || $me->getName() == "Euson.Yeung" || $me->getName() == "Susan.Jaglal"){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=summer'>Summer Institute</a>";
@@ -130,6 +133,12 @@ class ApplicationsTable extends SpecialPage{
         else if($program == "edge" && $me->isRoleAtLeast(SD)){
             $this->generateEdge();
         }
+        else if($program == "air" && $me->isRoleAtLeast(SD)){
+            $this->generateAir();
+        }
+        else if($program == "ecr" && $me->isRoleAtLeast(SD)){
+            $this->generateECR();
+        }
         else if($program == "catalyst" && $me->isRoleAtLeast(SD)){
             $this->generateCatalyst();
         }
@@ -141,6 +150,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "epicconference" && $me->isRoleAtLeast(SD)){
             $this->generateEpicConference();
+        }
+        else if($program == "epicat" && $me->isRoleAtLeast(SD)){
+            $this->generateEpicAt();
         }
         else if($program == "fellow" && $me->isRoleAtLeast(SD)){
             $this->generateFellow();
@@ -261,6 +273,20 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateAir(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_AIR', null, 2022, "2022"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateECR(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ECR', null, 2022, "2022"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateCatalyst(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
@@ -273,7 +299,8 @@ class ApplicationsTable extends SpecialPage{
     function generateAccess(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2022', null, 2021, "2022-01"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2022', null, 2022, "2022-04"));
+        $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_01_2022', null, 2022, "2022-01"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_10_2021', null, 2021, "2021-10"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_07_2021', null, 2021, "2021-07"));
         $tabbedPage->addTab(new ApplicationTab('RP_ACCESS_04_2021', null, 2021, "2021-04"));
@@ -403,6 +430,34 @@ class ApplicationsTable extends SpecialPage{
         $shrf->setBlobSection(HQP_APPLICATION_FORM);
         $shrf->setId("SHRF");
         
+        $uw = new CheckboxReportItem();
+        $uw->setBlobType(BLOB_ARRAY);
+        $uw->setBlobItem("HQP_APPLICATION_UW");
+        $uw->setBlobSection(HQP_APPLICATION_FORM);
+        $uw->setId("UW");
+        
+        $uofc = new CheckboxReportItem();
+        $uofc->setBlobType(BLOB_ARRAY);
+        $uofc->setBlobItem("HQP_APPLICATION_UOFC");
+        $uofc->setBlobSection(HQP_APPLICATION_FORM);
+        $uofc->setId("UOFC");
+        
+        $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2022, "2022", array("Level" => $level,
+                                                                                             "Michael F. Harcourt" => $michael,
+                                                                                             "Indigenous" => $ind,
+                                                                                             "MIRA" => $mira,
+                                                                                             "UofT" => $uoft,
+                                                                                             "UBC" => $ubc,
+                                                                                             "NBHRF" => $nbhrf,
+                                                                                             "SHRF" => $shrf,
+                                                                                             "UW" => $uw,
+                                                                                             "UOFC" => $uofc,
+                                                                                             "Supervisor" => $sup,
+                                                                                             "Institution" => $uni,
+                                                                                             "Status/Department" => $dept,
+                                                                                             "Project Title" => $title,
+                                                                                             "Keywords" => $keywords)));
+        
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2021, "2021", array("Level" => $level,
                                                                                              "Michael F. Harcourt" => $michael,
                                                                                              "Indigenous" => $ind,
@@ -452,6 +507,7 @@ class ApplicationsTable extends SpecialPage{
     function generateSummer(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2019, "2019"));
         $tabbedPage->addTab(new ApplicationTab('RP_SUMMER', null, 2018, "2018"));
@@ -463,6 +519,7 @@ class ApplicationsTable extends SpecialPage{
     function generateEpicConference(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab('RP_EPIC_CONFERENCE', null, 2020, "2020"));
         $wgOut->addHTML($tabbedPage->showPage());
@@ -475,9 +532,17 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateEpicAt(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2022, "2022"));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateEEA(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2022, "2022"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2021, "2021"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2020, "2020"));
         $tabbedPage->addTab(new ApplicationTab('RP_EEA', null, 2019, "2019"));
@@ -515,10 +580,9 @@ class ApplicationsTable extends SpecialPage{
     function generateIH(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2020, "2020-21"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2019, "2019-20"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2018, "2018-19"));
-        $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, 2017, "2017-18"));
+        for($year=YEAR; $year >= 2017; $year--){
+            $tabbedPage->addTab(new ApplicationTab('RP_WP_REPORT', $this->ihs, $year, "{$year}-".($year+1)));
+        }
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

@@ -2,8 +2,8 @@
 
 class EvolveProjectTab extends ProjectTab {
 
-    function EvolveProjectTab(){
-        parent::ProjectTab("Evolve");
+    function __construct(){
+        ProjectTab::__construct("Evolve");
     }
     
     static function createForm(){

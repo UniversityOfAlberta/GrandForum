@@ -12,35 +12,33 @@
         <Static>
             <![CDATA[
                 <h3>Background and Description of Opportunity</h3>
-                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health.  Areas of focus for GlycoNet in Cycle II (2020–2025) are infectious diseases, chronic diseases (including diabetes & obesity), neurodegenerative diseases, and cancer.  Additional information about Network research can be found at <a href='https://www.glyconet.ca' target='_blank'>https://www.glyconet.ca</a>.</p>
+                <p>The Canadian Glycomics Network (GlycoNet) is a Network of Centres of Excellence that focuses on the role of glycans (carbohydrates) in health. Areas of focus for GlycoNet in Cycle II (2020–2024) are infectious diseases, chronic diseases (including diabetes & obesity), neurodegenerative diseases, and cancer. Additional information about Network research can be found at <a target='_blank' href='https://www.glyconet.ca'>www.glyconet.ca</a>.</p>
                 
                 <p>A key goal of GlycoNet is to support research projects that are multi-disciplinary, as defined by the NCE program.  Accordingly, this Request for Proposals seeks to fund projects that involve two or more research groups in different disciplines.</p>
                 
-                <h3>Requirements for Cycle II</h3>
+                <h3>Requirements</h3>
                 <p>Project applications must:</p>
                 <ul>
-                    <li>Primarily address the gaps identified in the GlycoNet research themes and be targeted to the role/use of glycans in reducing the economic burden and/or treatment of infectious diseases, chronic diseases, neurodegenerative diseases, and/or cancer.</li>
+                    <li>Primarily address the GlycoNet research themes and be targeted to the role/use of glycans in reducing the economic burden and/or treatment of infectious diseases, chronic diseases, neurodegenerative diseases, and/or cancer. Research in other areas of glycomics will be considered, especially those in One Health.</li>
                     <li>Must have multi-disciplinary teams involving researchers as described above.</li>
-                    <li>Lead to tangible deliverables by the end of the project, leading to disease treatment or diagnosis.</li>
+                    <li>Provide a plan of how equity, diversity and inclusion will be implemented within the project team and its activities.</li>
+                    <li>Lead to tangible deliverables by the end of the project, leading to translational research as the next step.</li>
                     <li>Present a knowledge mobilization plan to communicate results to partners and stakeholders.</li>
-                    <li>Demonstrate a 1:1 financial match with partner funding; at least 50% of the matching funds should be cash. Partner funding must be NCE eligible; in particular, other Canadian Federal funding (e.g., CIHR, NSERC, SSHRC, CFI) is ineligible for matching.</li>
+                    <li>Demonstrate a 1:1 financial match with partner funding; at least 50% of the matching funds should be cash.</li>
+                    <li>Partner funding must be NCE eligible; in particular, other Canadian Federal funding (e.g., CIHR, NSERC, SSHRC, CFI) is ineligible for matching.</li>
                     <li>Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li>
                     <li>Provide information on the number and type (i.e. undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project.</li>
-                    <li>Demonstrate equity, diversity and inclusion within the project team and its activities.</li>
                     <li>List the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</li>
                 </ul>
                 
                 <h3>Funding Available</h3>
-                <p>GlycoNet has set aside up to $450,000 for this competition. Proposals may request up to $150,000 in funding and require 1:1 matching as outlined above. Projects requesting less than the maximum amount will be considered. Projects must be completed within 12 months.</p>
+                <p>GlycoNet has set aside up to $1,300,000 for this competition for both new research and extensions of current projects. At least 50% of the allocated budget will be reserved for new projects, with priority given to researchers who have not received GlycoNet funding in Cycle II (April 1, 2020 to current). Proposals may request up to $150,000 in funding and require 1:1 matching as outlined above. Projects requesting less than the maximum amount will be considered. Projects must be completed within 12-18 months and no later than March 31, 2024.</p>
                 
                 <h3>Eligibility</h3>
-                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; CIHR, NSERC or SSHRC. Furthermore, GlycoNet requires that all investigators receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council. Questions about project suitability can be directed to the GlycoNet Administrative Office (<a href='mailto:glyconet@ualberta.ca'>glyconet@ualberta.ca</a>).</p>
+                <p>Based on NCE requirements, this opportunity is open only to individuals who are eligible to hold Tri-Council funds; CIHR, NSERC or SSHRC. Furthermore, GlycoNet requires that investigators, other than Early Career Researchers, receiving Network funding must have other peer-reviewed support. Such support need not be from the Tri-Council. Questions about project suitability can be directed to the GlycoNet Administrative Office (<a href='mailto:info@glyconet.ca'>info@glyconet.ca</a>).</p>
                 
                 <h3>Proposal and Submission</h3>
-                <p>Full Applications must be submitted through the GlycoNet Forum by 23:59 (PST) on Wednesday, April 10, 2020.  Applications received after this deadline will not be considered. Results are expected by June 30, 2020.</p>
-                
-                <h3>Additional Information</h3>
-                <p>Questions about this opportunity can be sent to <a href='mailto:glyconet@ualberta.ca'>glyconet@ualberta.ca</a>.</p>
+                <p>Full Applications must be submitted through the GlycoNet Forum by 23:59 (PT) on Wednesday, May 18, 2022. Applications received after this deadline will not be considered. Notice of award is expected by August 2022. Questions about this opportunity can be sent to <a href='mailto:info@glyconet.ca'>info@glyconet.ca</a>.</p>
             ]]>
         </Static>
     </ReportSection>
@@ -95,7 +93,7 @@
         <ReportItem id="edi" type="Textarea" blobType="BLOB_TEXT" blobItem="CAT_DESC_EDI" rich="true" limit="500">
             <![CDATA[
                 <h2>Equity and Diversity</h2>
-                <p>The summary on project fulfilling EDI requirements</p>
+                <p>A plan of how equity, diversity and inclusion will be implemented within the project team and its activities</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -128,11 +126,11 @@
         <ReportItem id="reviewers" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="CAT_DESC_REV" multiple="true" labels="Name|E-Mail|Affiliation" types="text|text|text">
             <![CDATA[
                 <h2>Suggested Reviewers</h2>
-                At least seven suggested reviewers for the application.  
+                At least five suggested reviewers for the application  
                 <ul>
-                    <li>At least three of the five suggested reviewers must be working at locations outside of Canada.</li>
-                    <li>Suggested reviewers should not be members of the GlycoNet Scientific Advisory Board, Research Management Committee or Board of Directors.</li>
-                    <li>GlycoNet follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>.  Please consult the policy before suggesting reviewers.</li>
+                    <li>At least three of the five suggested reviewers must be working at locations outside of Canada</li>
+                    <li>Suggested reviewers should not be members of the GlycoNet Scientific Advisory Board or Research Management Committee or Board of Directors.</li>
+                    <li>GlycoNet follows the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/CIHR_Harmonized_COIC_Form-e.pdf'>CIHR/NSERC Conflict of Interest Policy</a>. Please consult the policy before suggesting reviewers</li>
                 </ul>
                 {$item}
             ]]>
@@ -165,10 +163,11 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="response" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RESPONSE" rich="true" height="300px">
+        <!-- Relevance -->
+        <ReportItem id="relevance" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_RELEVANCE" rich="true" height="300px" limit="500">
             <![CDATA[
-                <h2>Response to Reviewer's Comments</h2>
-                <p>Provide a point-by-point response to the reviewer comments, clearly indicating the changes made or rebutting the critiques. While there is no page or word limit, please keep this concise.</p>
+                <h2>Relevance and Impact</h2>
+                <p>Relevance and impact (including socio-economic) of the project, and identify the tangible deliverables that will lead to translational research as the next step.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -205,11 +204,7 @@
         <ReportItem id="training" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="CAT_DESC_TRAIN" rich="true" height="300px" limit="500">
             <![CDATA[
                 <h2>Training Potential</h2>
-                <p>A summary of the project’s training plan.</p>
-                <ul>
-                    <li>Provide information on the number and type (i.e., undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project.</li>
-                    <li>List the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</li>
-                </ul>
+                <p>A summary of training potential. This should include information on the number and type (i.e. undergraduate, graduate student, PDF, etc.) of expected Highly Qualified Personnel trained each year of the project, as well as the desired type of professional development training that GlycoNet could provide to HQP, for example, lab rotations, communication and writing skills improvement, etc.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -239,8 +234,8 @@
 
                 Budget Guidelines:
                 <ul>
-                    <li>Projects can request up to $150,000 for 12 months.</li>
-                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds should be cash. Partner funding must be NCE eligible; other Canadian Federal funding is ineligible for matching.</li>
+                    <li>Projects can request up to $150,000 for 12-18 months but must be completed by March 31, 2024.</li>
+                    <li>Projects require a 1:1 match with Partner funding; at least 50% of the matching funds should be cash. Partner funding must be NCE eligible; other Canadian Federal funding is ineligible for matching. Projects with a higher level of matching funds (e.g. 2:1, Partners:GlycoNet) will be viewed more favorably.</li>
                     <li>The maximum salary for Graduate Students is $25,000/year and for Postdoctoral Fellows is $45,000/year.</li>
                     <li>Undergraduate student support should be limited to co-op students and should be listed in the technician line item.</li>
                     <li>Equipment is capped at $2,000/year/project.</li>
@@ -266,7 +261,7 @@
         </Static>
         <ReportItem id="upload" type="Upload" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" fileSize="2">
             <![CDATA[
-                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template.xlsx"><b>Budget Template</b></a></p>
+                <p style="font-size:1.25em;margin-top:0.75em;"><a href="{$wgServer}{$wgScriptPath}/data/GlycoNet Budget Template2.xlsx"><b>Budget Template</b></a></p>
                 {$item}
             ]]>
         </ReportItem>
@@ -285,7 +280,7 @@
         <ReportItem id="upload" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_MILESTONES" fileSize="5">
             <![CDATA[
                 <ul>
-                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template.xls'><b>Milestones Template</b></a></li>
+                    <li>Download the <a href='{$wgServer}{$wgScriptPath}/data/GlycoNet Milestones Template2.xlsx'><b>Milestones Template</b></a></li>
                     <li>Quarterly milestones should be provided and should contain sufficient detail that progress toward them can be clearly monitored. Progress toward stated milestones will be a significant component of evaluation for continued project funding.</li>
                     <li>Add an “X” to the shaded boxes.</li>
                     <li>Names should be added in the format: First Name Last Name.</li>
@@ -298,23 +293,14 @@
     <ReportSection id="letters" name="Partner Involvement" blobSection="CAT_SUPPORT" tooltip="Partner Involvement" type="EditableReportSection">
         <ReportItem id="upload1" type="UploadReportItem" blobType="BLOB_RAW" blobItem="CAT_SUP_UPLOAD1" mimeType="application/pdf" fileSize="5">
             <![CDATA[
-                <p>Letters from partners indicating the nature of their involvement in the project and their anticipated contribution (cash and/or in-kind) are required. Partnerships and potential for leveraged funding (in-kind and/or cash) will increase suitability of the project for the GlycoNet renewal application. <b>Projects for which there is not a written commitment of a 1:1 match (including 50% cash) to the GlycoNet request will be disqualified.</b></p>
-
-                Partner letters must use the following format:
+                <p>A letter must be provided supporting all Partner contributions listed in the budget.</p>
+                Letters must:
                 <ul>
-                    <li>Name of the Partner (e.g. company, foundation, institution, etc.) on letterhead.</li>
-                    <li>Contact name and contact information.</li>
-                    <li><b>Amount, nature, and area of anticipated support.</b></li>
-                    <li>Letters must:
-                        <ul>
-                            <li>Come from a senior executive with signing authority for the contributions being committed.</li>
-                            <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
-                            <li>Be on partner letterhead, be dated and signed.</li>
-                        </ul>
-                    </li>
-                    <li>Please take into account University overhead for sponsored research when discussing funding with partners. This amount cannot be counted as matching.</li>
-                    <li>Eligible partner funding must be for the period of July 1, 2020 to July 1, 2021.</li>
+                    <li>Come from a senior executive with signing authority for the contributions being committed.</li>
+                    <li>Indicate the amount, duration, and nature (cash and/or in-kind) of support for the project.</li>
+                    <li>Be on partner letterhead, be dated and signed within the past two months.</li>
                 </ul>
+                <br />
                 {$item}
             ]]>
         </ReportItem>

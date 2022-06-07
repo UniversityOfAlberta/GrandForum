@@ -177,63 +177,47 @@
                     <td class="label">Zip/Postal Code:</td>
                     <td class="value">{$item}</td>
                 </tr>
+                </table>
             ]]>
         </ReportItem>
         
         <!-- Academic Background -->
         <Static>
             <![CDATA[
-                <tr>
-                    <td colspan="4"><h2>Academic Background</h2></td>
-                </tr>
+                <h2>Academic Background</h2>
             ]]>
         </Static>
         <ReportItem id="academic" type="MultiText" blobItem="ACADEMIC" blobType="BLOB_ARRAY" indices="degree|discipline|department|started|awarded" labels="Degree|Name of Discipline|Department, Institution, Country|Month and Year Started|Month and Year awarded/expected" types="Select(Bachelor's,Master's,Doctorate)|Text|Text|Text|Text" multiple="true" class="wikitable" encrypt="true">
             <![CDATA[
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
+                {$item}
             ]]>
         </ReportItem>
         
         <!-- Scholarships and Other Awards Offered -->
         <Static>
             <![CDATA[
-                <tr>
-                    <td colspan="4"><h2>Scholarships and Other Awards Offered</h2></td>
-                </tr>
+                <h2>Scholarships and Other Awards Offered</h2>
             ]]>
         </Static>
         <ReportItem id="scholarships" type="MultiText" blobItem="SCHOLARSHIPS" blobType="BLOB_ARRAY" indices="name|value|level|type|location|period" labels="Name of Award|Value ($CAD)|Level|Type|Location of Tenure|Period Held" types="Text|Integer|Select(Institutional,Provincial/State,National,International)|Select(Academic,Research,Service,Leadership,Communication)|Text|Text" multiple="true" optional="true" class="wikitable" encrypt="true">
             <![CDATA[
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
+                {$item}
             ]]>
         </ReportItem>
         
         <!-- Academic, Research and Other Relevant Work Experience -->
         <Static>
             <![CDATA[
-                <tr>
-                    <td colspan="4"><h2>Academic, Research and Other Relevant Work Experience</h2></td>
-                </tr>
+                <h2>Academic, Research and Other Relevant Work Experience</h2>
             ]]>
         </Static>
         <ReportItem id="experience" type="MultiText" blobItem="EXPERIENCE" blobType="BLOB_ARRAY" indices="positions|organization|supervisor|period" labels="Position Held and Nature of Work Full Time/Part Time|Organization and Department|Supervisor Name|Period" types="Textarea|Textarea|Text|Text" multiple="true" optional="true" class="wikitable" encrypt="true">
             <![CDATA[
-                <tr>
-                    <td class="value" colspan="4">{$item}</td>
-                </tr>
+                {$item}
             ]]>
         </ReportItem>
         
         <!-- Attachments -->
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
         <ReportItem id="summary" type="UploadPDF" blobItem="SUMMARY" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="statement" type="UploadPDF" blobItem="STATEMENT" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="transcripts1" type="UploadPDF" blobItem="TRANSCRIPTS1" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
@@ -244,17 +228,17 @@
         <ReportItem id="letter2" type="UploadPDF" blobItem="LETTER2" mimeType="application/pdf" fileSize="5" blobType="BLOB_RAW" encrypt="true" />
         <ReportItem id="letter_other" type="EliteLetters" blobItem="LETTER_OTHER" blobType="BLOB_ARRAY" labels="Name|Email|Id" types="Text|Text|Random" multiple="true" max="2" />
         
-        <ReportItem id="acknowledgment" type="Radio" blobItem="ACKNOWLEDGMENT" options="Yes|No" encrypt="true">
+        <ReportItem id="acknowledgment1" type="Radio" blobItem="ACKNOWLEDGMENT1" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2>Acknowledgment and Agreement</h2>
-                <p>If accepted to the ELITE Program for Black Youth, I will prepare two oral or poster presentations and deliver them at Program workshops.</p>
-                {$item}
+                <h2 class="required">Acknowledgment and Agreement</h2>
+                <h3>If accepted to the Fellowship Program, I will apply for admission to the PhD program with a Faculty of Engineering department at the University of Alberta by the departmental deadline.</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="comments" type="Textarea" blobItem="COMMENTS" optional="true" encrypt="true">
+        <ReportItem id="acknowledgment2" type="Radio" blobItem="ACKNOWLEDGMENT2" options="Yes|No" encrypt="true">
             <![CDATA[
-                <h2>Comments</h2>
-                {$item}
+                <h3>If accepted to the Fellowship Program, I will participate in the ELITE Program for Black Youth Entrepreneurship Design Series, if offered.</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="elite" type="EliteSubmit" />

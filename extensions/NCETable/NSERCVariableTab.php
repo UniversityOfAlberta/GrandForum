@@ -1378,9 +1378,13 @@ EOF;
                     break;
                 // C: Specialized Publications
                 case 'Bachelors Thesis':
+                case 'Bachelor Thesis':
                 case 'Masters Thesis':
+                case 'Master Thesis':
                 case 'Masters Dissertation':
                 case 'PHD Thesis':
+                case 'PhD Thesis':
+                case 'Doctoral Thesis/Dissertation':
                 case 'PHD Dissertation':
                 case 'Tech Report':
                 case 'Abstract':

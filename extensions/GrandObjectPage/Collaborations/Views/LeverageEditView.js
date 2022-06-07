@@ -44,12 +44,16 @@ LeverageEditView = CollaborationEditView.extend({
         this.model.set('cashFY6', roundMoney(this.model.get('cashFY6')));
         this.model.set('cashFY7', roundMoney(this.model.get('cashFY7')));
         this.model.set('cashFY8', roundMoney(this.model.get('cashFY8')));
+        this.model.set('cashFY9', roundMoney(this.model.get('cashFY9')));
+        this.model.set('cashFY10', roundMoney(this.model.get('cashFY10')));
         this.model.set('inkind', roundMoney(this.model.get('inkind')));
         this.model.set('projectedInkind', roundMoney(this.model.get('projectedInkind')));
         this.model.set('inkindFY5', roundMoney(this.model.get('inkindFY5')));
         this.model.set('inkindFY6', roundMoney(this.model.get('inkindFY6')));
         this.model.set('inkindFY7', roundMoney(this.model.get('inkindFY7')));
         this.model.set('inkindFY8', roundMoney(this.model.get('inkindFY8')));
+        this.model.set('inkindFY9', roundMoney(this.model.get('inkindFY9')));
+        this.model.set('inkindFY10', roundMoney(this.model.get('inkindFY10')));
     
         if(this.model.get('cash') == 0){
             this.model.set('cash', "");
@@ -79,12 +83,16 @@ LeverageEditView = CollaborationEditView.extend({
            !isValid(this.model.get('extra')['cashFY6']) ||
            !isValid(this.model.get('extra')['cashFY7']) ||
            !isValid(this.model.get('extra')['cashFY8']) ||
+           !isValid(this.model.get('extra')['cashFY9']) ||
+           !isValid(this.model.get('extra')['cashFY10']) ||
            !isValid(this.model.get('inkind')) ||
            !isValid(this.model.get('projectedInkind')) ||
            !isValid(this.model.get('extra')['inkindFY5']) ||
            !isValid(this.model.get('extra')['inkindFY6']) ||
            !isValid(this.model.get('extra')['inkindFY7']) ||
-           !isValid(this.model.get('extra')['inkindFY8'])){
+           !isValid(this.model.get('extra')['inkindFY8']) ||
+           !isValid(this.model.get('extra')['inkindFY9']) ||
+           !isValid(this.model.get('extra')['inkindFY10'])){
             return false;
         } 
         else {

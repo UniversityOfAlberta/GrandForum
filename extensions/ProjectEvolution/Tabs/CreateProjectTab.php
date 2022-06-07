@@ -2,8 +2,8 @@
 
 class CreateProjectTab extends ProjectTab {
 
-    function CreateProjectTab(){
-        parent::ProjectTab("Create");
+    function __construct(){
+        ProjectTab::__construct("Create");
     }
     
     static function createForm($pre){

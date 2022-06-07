@@ -1204,6 +1204,25 @@ class Project extends BackboneModel {
     }
     
     /**
+     * Returns an array containing responses for being 'Up to date'
+     */
+    function getUpToDate($year){
+        $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'UPTODATE', 0);
+        $result = $blb->load($addr);
+        return $blb->getData();
+    }
+    
+    /**
+     * Saves the array containing responses for being 'Up to date'
+     */
+    function saveUpToDate($year, $value){
+        $blb = new ReportBlob(BLOB_TEXT, $year, 0, $this->getId());
+        $addr = ReportBlob::create_address("RP_PROJECT_REPORT", "REPORT", 'UPTODATE', 0);
+        $blb->store($value, $addr);
+    }
+    
+    /**
      * Returns an array containing responses for Technology Evaluation/Adoption
      */
     function getTechnology(){

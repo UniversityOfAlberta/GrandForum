@@ -373,6 +373,9 @@ HTML.Select = function(view, attr, options){
     var foundSelected = false;
     _.each(options.options, function(opt){
         var selected = "";
+        if(val == null){
+            val = "";
+        }
         if(val.split(":")[0] == opt || val == opt || 
            (typeof opt == 'object' && val.split(":")[0] == opt.value) || (typeof opt == 'object' && val == opt.value)){
             selected = "selected='selected'";

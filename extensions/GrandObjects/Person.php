@@ -29,6 +29,7 @@ class Person extends BackboneModel {
 
     var $user = null;
     var $name;
+    var $employeeId;
     var $email;
     var $phone;
     var $nationality;
@@ -321,6 +322,7 @@ class Person extends BackboneModel {
                                               //'prev_last_name',
                                               //'honorific',
                                               //'language',
+                                              'employee_id',
                                               'user_email',
                                               'user_twitter',
                                               'user_website',
@@ -842,6 +844,21 @@ class Person extends BackboneModel {
         }
         return $people;
     }
+    
+    /**
+     * Returns whether atleast one user with the role exists
+     * @param string $role The role to check
+     */
+    static function peopleWithRoleExists($role){
+        $dbRole = DBFunctions::execSQL("SELECT role
+                                        FROM `grand_roles` r, mw_user u
+                                        WHERE r.user_id = u.user_id
+                                        AND role = '$role'
+                                        AND u.deleted = 0
+                                        AND u.candidate = 0
+                                        LIMIT 1");
+        return !empty($dbRole);
+    }
 
     // Constructor
     // Takes in a resultset containing the 'user id' and 'user name'
@@ -861,6 +878,7 @@ class Person extends BackboneModel {
             //$this->prevLastName = @$data[0]['prev_last_name'];
             //$this->honorific = @$data[0]['honorific'];
             //$this->language = @$data[0]['language'];
+            $this->employeeId = @$data[0]['employee_id'];
             $this->email = @$data[0]['user_email'];
             $this->phone = @$data[0]['phone'];
             $this->gender = @$data[0]['user_gender'];
@@ -1031,7 +1049,8 @@ class Person extends BackboneModel {
             $specialUserLogin = new LoginForm($wgRequest, 'signup');
             $specialUserLogin->execute();
             $status = DBFunctions::update('mw_user', 
-                                    array('user_twitter' => $this->getTwitter(),
+                                    array('employee_id' => $this->getEmployeeId(),
+                                          'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
                                           'user_google_scholar' => $this->getGoogleScholar(),
@@ -1101,6 +1120,7 @@ class Person extends BackboneModel {
                                           //'prev_last_name' => $this->getPrevLastName(),
                                           //'honorific' => $this->getHonorific(),
                                           //'language' => $this->getCorrespondenceLanguage(),
+                                          'employee_id' => $this->getEmployeeId(),
                                           'user_twitter' => $this->getTwitter(),
                                           'user_website' => $this->getWebsite(),
                                           'user_linkedin' => $this->getLinkedIn(),
@@ -1529,6 +1549,17 @@ class Person extends BackboneModel {
             return "{$this->email}";
         }
         return "";
+    }
+    
+    /**
+     * Returns the email address of this Person
+     * @return string The email address of this Person
+     */
+    function getEmployeeId(){
+        if($this->employeeId == 0){
+            return "";
+        }
+        return sprintf("%07d", $this->employeeId);
     }
     
     /**
@@ -1984,9 +2015,9 @@ class Person extends BackboneModel {
 
     function getNameForProduct($format=null){
         global $config;
-        if(strstr($this->getNameForForms(), "<span class='noshow'>&quot;</span>") !== false){
+        /*if(strstr($this->getNameForForms(), "<span class='noshow'>&quot;</span>") !== false){
             return $this->getNameForForms();
-        }
+        }*/
         $regex = "/\{.*?\}/";
         if($format == null){
             $format = $config->getValue("nameFormat");

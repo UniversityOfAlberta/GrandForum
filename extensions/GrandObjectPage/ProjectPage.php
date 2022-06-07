@@ -130,9 +130,25 @@ class ProjectPage {
                 }
                 if($config->getValue('networkName') == "FES"){
                     $tabbedPage->addTab(new ProjectFESProjectionsTab($project, $visibility));
+                    $tabbedPage->addTab(new ProjectEdiTab($project, $visibility));
                     $tabbedPage->addTab(new ProjectFESReportTab($project, $visibility));
                 }
                 $tabbedPage->showPage();
+                
+                if(!$edit){
+                    $allProjects = array_values(Project::getAllProjects());
+                    $prev = null;
+                    $next = null;
+                    foreach($allProjects as $key => $p){
+                        if($p->getId() == $project->getId()){
+                            $prev = (isset($allProjects[$key-1])) ? $allProjects[$key-1] : $allProjects[count($allProjects)-1];
+                            $next = (isset($allProjects[$key+1])) ? $allProjects[$key+1] : $allProjects[0];
+                        }
+                    }
+                    if($prev != null && $next != null){
+                        $wgOut->addHTML("<a href='{$prev->getUrl()}' class='button' style='width:35px;'>Prev</a>&nbsp;<a href='{$next->getUrl()}' class='button' style='width:35px;'>Next</a>");
+                    }
+                }
                 
                 $wgOut->output();
                 $wgOut->disable();

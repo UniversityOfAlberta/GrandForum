@@ -16,15 +16,15 @@ class ProjectFESReportTab extends AbstractEditableTab {
     }
     
     function canGeneratePDF(){
-        return true;
+        return false;
     }
     
     function userCanView(){
         $me = Person::newFromWgUser();
         // Check that they are leader
-        if($me->isRoleAtLeast(STAFF) ||
+        if($me->isRoleAtLeast(STAFF)){ /* ||
            $me->isRole(PL, $this->project) || 
-           $me->isRole(PA, $this->project)){
+           $me->isRole(PA, $this->project)){*/
             return true;
         }
     }
@@ -42,7 +42,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
             </script>");
         $this->html .= "<div id='reportAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
-        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        $today = date('Y');//, time() - (6 * 30 * 24 * 60 * 60));
         if(isset($_GET['generatePDF'])){
             // Only show the last year in the PDF
             $today = date('Y') - 1;
@@ -109,7 +109,7 @@ class ProjectFESReportTab extends AbstractEditableTab {
             </script>");
         $this->html .= "<div id='reportAccordion'>";
         $year = date('Y', strtotime($this->project->getCreated()) - (3 * 30 * 24 * 60 * 60));
-        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        $today = date('Y');//, time() - (6 * 30 * 24 * 60 * 60));
         $phaseDate = $config->getValue('projectPhaseDates');
         $phaseYear = substr($phaseDate[PROJECT_PHASE], 0, 10);
         for($y=$today; $y >= $year; $y--){

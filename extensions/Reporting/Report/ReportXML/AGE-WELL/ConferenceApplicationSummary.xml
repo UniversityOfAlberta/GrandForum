@@ -1,14 +1,206 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications Summary" year="2019">
+<Report name="AGE-WELL Conference Applications Summary" year="2022">
     <Permissions>
         <Role role="STAFF+">
             <SectionPermission id="summary" permissions="rw" />
         </Role>
     </Permissions>
     <ReportSection id="summary" type="ReportSection" tooltip="Summary" name="Summary">
+        <!-- Application 2 -->
+        <Static>
+            <![CDATA[
+                <h1>Innovation Talks</h1>
+                <table class="wikitable">
+                    <tr>
+                        <th>Name</th><th>Application</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
+            <For from="0" to="5">
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SUBMIT,{$extraIndex},{$user_id},0,2_submit)},)}">
+                    <![CDATA[
+                        <tr>
+                            <td>
+                                {$user_name}
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Presenter(s) Name:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PRESENTER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Project/CC:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT,{$extraIndex},{$user_id},0)}<br />
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Talk Title:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_TITLE,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Talk Abstract:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    ]]>
+                </If>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Application 1 -->
+        <Static>
+            <![CDATA[
+                <br />
+                <h1>HQP Science Slams</h1>
+                <table class="wikitable">
+                    <tr>
+                        <th>Name</th><th>Application</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
+            <For from="0" to="5">
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SUBMIT,{$extraIndex},{$user_id},0,1_submit)},)}">
+                    <![CDATA[
+                        <tr>
+                            <td>
+                                {$user_name}
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>HQP Presenter Name:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PRESENTER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Title of Poster:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_TITLE,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Poster Abstract:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    ]]>
+                </If>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
+        <!-- Application 4 -->
+        <Static>
+            <![CDATA[
+                <br />
+                <h1>Poster Session</h1>
+                <table class="wikitable">
+                    <tr>
+                        <th>Name</th><th>Application</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
+            <For from="0" to="5">
+                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SUBMIT,{$extraIndex},{$user_id},0,4_submit)},)}">
+                    <![CDATA[
+                        <tr>
+                            <td>
+                                {$user_name}
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Presenter(s) Name:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PRESENTER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Project/CC:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT,{$extraIndex},{$user_id},0)}<br />
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;">
+                                            <b>Title of Poster:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_TITLE,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" style="white-space:nowrap;" valign="top">
+                                            <b>Poster Abstract/Alley Description:</b>
+                                        </td>
+                                        <td>
+                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ABSTRACT,{$extraIndex},{$user_id},0)}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    ]]>
+                </If>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        
         <!-- Application 3-->
         <Static>
             <![CDATA[
+                <br />
                 <h1>Lunch ‘n’ Learn Sessions</h1>
                 <table class="wikitable">
                     <tr>
@@ -80,313 +272,6 @@
                                         </td>
                                         <td>
                                             {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_REQUIREMENTS,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,3_SPECIAL,{$extraIndex},{$user_id},0,3_special)}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    ]]>
-                </If>
-            </For>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Application 2 -->
-        <Static>
-            <![CDATA[
-                <br />
-                <h1>Innovation Talks</h1>
-                <table class="wikitable">
-                    <tr>
-                        <th>Name</th><th>Application</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
-            <For from="0" to="5">
-                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SUBMIT,{$extraIndex},{$user_id},0,2_submit)},)}">
-                    <![CDATA[
-                        <tr>
-                            <td>
-                                {$user_name}
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Presenter(s) Name:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PRESENTER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Project/CC:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT,{$extraIndex},{$user_id},0)}<br />
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Talk Title:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_TITLE,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Talk Abstract:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_ABSTRACT,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,2_SPECIAL,{$extraIndex},{$user_id},0,2_special)}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    ]]>
-                </If>
-            </For>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Application 1 -->
-        <Static>
-            <![CDATA[
-                <br />
-                <h1>HQP Science Slams</h1>
-                <table class="wikitable">
-                    <tr>
-                        <th>Name</th><th>Application</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
-            <For from="0" to="5">
-                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SUBMIT,{$extraIndex},{$user_id},0,1_submit)},)}">
-                    <![CDATA[
-                        <tr>
-                            <td>
-                                {$user_name}
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>HQP Presenter Name:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PRESENTER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Project:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_PROJECT,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Title of Poster:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_TITLE,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Poster Abstract:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_ABSTRACT,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,1_SPECIAL,{$extraIndex},{$user_id},0,1_special)}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    ]]>
-                </If>
-            </For>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Application 6 -->
-        <Static>
-            <![CDATA[
-                <br />
-                <h1>HQP Short Talks</h1>
-                <table class="wikitable">
-                    <tr>
-                        <th>Name</th><th>Application</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
-            <For from="0" to="5">
-                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_SUBMIT,{$extraIndex},{$user_id},0,6_submit)},)}">
-                    <![CDATA[
-                        <tr>
-                            <td>
-                                {$user_name}
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Presenter(s) Name:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PRESENTER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Project/CC:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT,{$extraIndex},{$user_id},0)}<br />
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Title of Talk:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_TITLE,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Talk Abstract:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_ABSTRACT,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,6_SPECIAL,{$extraIndex},{$user_id},0,6_special)}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    ]]>
-                </If>
-            </For>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        
-        <!-- Application 4 -->
-        <Static>
-            <![CDATA[
-                <br />
-                <h1>Poster Session</h1>
-                <table class="wikitable">
-                    <tr>
-                        <th>Name</th><th>Application</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet id="people" type="AllPeopleWithConferenceApplications">
-            <For from="0" to="5">
-                <If if="{!=({getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SUBMIT,{$extraIndex},{$user_id},0,4_submit)},)}">
-                    <![CDATA[
-                        <tr>
-                            <td>
-                                {$user_name}
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Presenter(s) Name:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PRESENTER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Project/CC:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT,{$extraIndex},{$user_id},0)}<br />
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_PROJECT_OTHER,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">
-                                            <b>Title of Poster:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_TITLE,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Poster Abstract/Alley Description:</b>
-                                        </td>
-                                        <td>
-                                            {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_ABSTRACT,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,4_SPECIAL,{$extraIndex},{$user_id},0,4_special)}
                                         </td>
                                     </tr>
                                 </table>
@@ -463,14 +348,6 @@
                                         <td>
                                             {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_REQUIREMENTS,{$extraIndex},{$user_id},0,5_requirements)}<br />
                                             {getText(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_ADDITIONAL,{$extraIndex},{$user_id},0)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;" valign="top">
-                                            <b>Special Collection:</b>
-                                        </td>
-                                        <td>
-                                            {getArray(RP_CONFERENCE_APPLICATIONS,APPLICATIONS,5_SPECIAL,{$extraIndex},{$user_id},0,5_special)}
                                         </td>
                                     </tr>
                                 </table>

@@ -2,8 +2,8 @@
 
 class InactivateProjectTab extends ProjectTab {
 
-    function InactivateProjectTab(){
-        parent::ProjectTab("Inactivate");
+    function __construct(){
+        ProjectTab::__construct("Inactivate");
     }
     
     static function createForm(){

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL AGETECH Implementation Response Program" reportType="RP_AIR" pdfType="RPTP_AIR" allowIdProjects="true" pdfFiles="AIRPDF" ajax="true" year="2022" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+" />
+        <Role role="INACTIVE-Candidate+" />
+    </Permissions>
+    <ReportSection id="description" tooltip="AGE-WELL AGETECH Implementation Response Program" name="Program Description" type="ReportSection" title="AGE-WELL AGETECH Implementation Response Program">
+        <Static>
+            <![CDATA[
+                <b>Program Launch:</b> January 24, 2022<br />
+                <b>Application Deadline:</b> March 18, 2022<br />
+                <b>Anticipated Notice of Decision:</b> April 2022<br />
+                <b>Funding Start Date:</b> April 2022<br />
+                
+                <p>Do you have an innovative evidence-based AgeTech solution that is ready for implementation or scaling up in the real world? AGE-WELL’s AgeTech Implementation Response (AIR) Program supports <b>post-discovery projects</b> focused on implementing solutions.</p>
+                
+                <p>This program focuses on implementation practice defined as using strategies to change people’s behavior and the environment in which they are working (e.g. communities, home care, long-term care and seniors living settings) by introducing innovative solutions. Implementation practice is informed by implementation science, which is defined as the best evidence available related to the successful implementation of technology-based solutions</p>
+
+                <p>The focus of this RFP is to enable implementation efforts by focusing on real-world application of AgeTech innovations in collaboration with partners.</p>
+                
+                <h3>ELIGIBLE AREAS OF ACTIVITY</h3>
+                <ul>
+                    <li>Knowledge mobilization (KM) or implementation of KM products, including evidence-based policies, practices, guidelines or tools, in real-world settings</li>
+                    <li>Commercialization or implementation of validated technologies, products, and/or services in real-world settings</li>
+                </ul>
+                
+                <h3>GENERAL REQUIREMENTS</h3>
+                To be considered for funding, proposals must:
+                <ul>
+                    <li>include a previously validated, evidence-based solution that will allow for implementation or scaling up in the real-world (solutions can come from researchers themselves or partners)</li>
+                    <li>include the appropriate practice change, partner site and/or governmental policy and service delivery considerations for the implementation or scaling up of the solution</li>
+                    <li>align to one of <a href="https://agewell-nce.ca/challenge-areas" target="_blank">AGE-WELL’s Challenge Areas</a></li>
+                    <li>be user-centred, involving end-users and stakeholders in all stages of the implementation process</li>
+                    <li>have the potential to lead to economic and social impact for older Canadians including consideration of equity-seeking groups </li>
+                </ul>
+                
+                <h3>SPECIFIC REQUIREMENTS</h3>
+                To be considered for funding, proposals must:
+                <ul>
+                    <li>include an implementation science framework, model and/or theory and describe how it will be used to meet project objectives and inform methods for implementation practice</li>
+                    <li>consider how the work will be relevant to organizational, municipal, territorial and/or federal policy priorities</li>
+                    <li>describe how change will be measured and long-term impact achieved</li>
+                    <li>use a transdisciplinary approach as part of the implementation framework and include the specific stakeholder groups to achieve this</li>
+                    <li>demonstrate prior testing/validation of the solution in a real-world setting (for technology implementation projects)</li>
+                </ul>
+                
+                <h3>Principal Knowledge User Requirement</h3>
+                <p>Proposals must be co-developed with at least one partner organization that has a site ready for testing, installation or uptake with the goal of actively supporting implementation efforts and, if appropriate, interest sustaining the solution in the long-term. The Principal Knowledge User partner organization must also provide a detailed letter of support confirming commitments outlined in the proposal.</p>
+                
+                <p>For reporting purposes, all partnership activities and contributions (cash and in-kind) should be quantified in the application including number of implementation sites. The quality and level of support will be explicitly rated and those with stronger contributions will be given priority. Cash contributions committed through letters of support will be requested from partners by either AGE-WELL or the project lead’s home institution.</p>
+                
+                <h3>FUNDS AVAILABLE</h3>
+                <p>Up to $50,000 per project over 12 months.</p>
+                
+                <h3>ADDITIONAL OPPORTUNITIES</h3>
+                AGE-WELL will also explore collaborations with Network partners to provide additional resources as part of this RFP including:
+                <ul>
+                    <li>TEMI: The TEMI personal robot is a device that provides autonomous navigation and AI technologies in hospitality, senior living and other settings. There is an opportunity for software solutions to be integrated into the TEMI platform.</li>
+                </ul>
+                <p>If you are interested in collaborating on an implementation project with this industry partner, please email <a href='mailto:partnerships@agewell-nce.ca'>partnerships@agewell-nce.ca</a> for initial discussion and subsequent introductions.</p>
+                <p>Applications must be submitted through AGE-WELL’s Forum Research Portal.</p> 
+
+                <p>If you have questions about this funding program or to request a Forum account, please e-mail <a href='mailto:applications@agewell-nce.ca'>applications@agewell-nce.ca</a>.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="cover" tooltip="PART 1 - Project Information" title="PART 1 - Project Information" name="Project Information" blobSection="COVER_SHEET" type="EditableReportSection">
+        <ReportItem id="i" type="TextReportItem" blobItem="PROJECT">
+            <![CDATA[
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
+                <ol id='list' type="i">
+                <li>
+                    <b>Investigator Name: </b>{$user_name}&nbsp;&nbsp;&nbsp;<b>Institution: </b>{$user_uni}<br />
+                    <b>Project Title:&nbsp;</b>{$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ii" type="RadioReportItem" labels="Knowledge Mobilization (KM) or implementation of KM products, including evidence-based policies, practices, guidelines, or tools|Commercialization or implementation of validated technologies, products, and/or services" options="Knowledge Mobilization|Commercialization" blobItem="TYPE">
+            <![CDATA[
+                <li>
+                    <b>Project Type</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="iii" type="TextareaReportItem" rich="true" limit="300" blobItem="SUMMARY">
+            <![CDATA[
+                <li>
+                    <b>Provide a 300-word plain language summary that includes a description of your project’s validated, evidence-based solution, the implementation science process model, framework and/or theory you plan to use, and how your solution could be implemented or scaled up to meet the real-world needs of your partner organization(s). This description will be used for future communications if the proposal is successful.</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="iv" type="TextReportItem" blobItem="PARTNERS">
+            <![CDATA[
+                <li>
+                    <b>Principal Knowledge User Partner Organization(s) name(s):</b> {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="v_cash" type="IntegerReportItem" blobItem="CASH" min="0" max="1000000" width="43px" align="left">
+            <![CDATA[
+                <li>
+                    <b>Total partner contributions: </b> Cash ${$item}&nbsp;
+            ]]>
+        </ReportItem>
+        <ReportItem id="v_inki" type="IntegerReportItem" blobItem="INKI" min="0" max="1000000" width="43px" align="left">
+            <![CDATA[
+                    In-kind ${$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vi" type="IntegerReportItem" min="0" max="50000" width="43px" align="left" blobItem="INVESTMENT">
+            <![CDATA[
+                <li>
+                    <b>Total value of AGE-WELL investment requested:</b> ${$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="vii" type="SelectReportItem" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" blobItem="WP">
+            <![CDATA[
+                <li>
+                    <b>The proposed project is best aligned with AGE-WELL’s Challenge Area:</b>
+                    {$item}
+                    (Challenge Area descriptions are available here: <a href="https://agewell-nce.ca" target="_blank">https://agewell-nce.ca</a>) 
+                </li>
+                
+            ]]>
+        </ReportItem>
+        <ReportItem id="viii" type="Radio" options="Yes|No" blobItem="PREVIOUS">
+            <![CDATA[
+                <li><b>Does this application pertain to a project currently/previously funded through an AGE-WELL Research Program? </b><br />
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra1" type="Textarea" rich="true" optional="true" blobItem="EXTRA1" limit="200">
+            <![CDATA[
+                <div id="extra" style="display:none;">
+                    <h2>APPLICATIONS FOR CONTINUED FUNDING</h2>
+                    <p>If you previously received an AGE-WELL funding award for this project, please complete the following questions related to the work already completed.</p>
+                    <h3>How are the current proposed activities different from those in the original project funded by AGE-WELL? Please explain.</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra2" type="Textarea" rich="true" optional="true" blobItem="EXTRA2" limit="200">
+            <![CDATA[
+                    <h3>What new partnerships or collaborations were created during the previous award? Will these continue? How did these partnerships/collaborations shape your project?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="extra3" type="Textarea" rich="true" optional="true" blobItem="EXTRA3" limit="100">
+            <![CDATA[
+                    <h3>Do you foresee any challenges or barriers to implementation based on previous experience with this project?</h3>
+                    {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    <h3>In the narrative application, please describe how the new project will build on the activities, findings and partnerships from the previously funded work.</h3>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $("input[name=ProjectInformation_viii]").change(function(){
+                            var val = $("input[name=ProjectInformation_viii]:checked").val();
+                            if(val == "Yes"){
+                                $("div#extra").slideDown();
+                            }
+                            else{
+                                $("div#extra").slideUp();
+                            }
+                        });
+                        $("input[name=ProjectInformation_viii]").change();
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="narrative" tooltip="PART 2 - Narrative Application" title="PART 2 - Narrative Application" name="Narrative Application" blobSection="NARRATIVE" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('#reportProgress').hide();
+                </script>
+                <style>
+                    ol#list > li {
+                        margin-bottom:15px;
+                    }
+                </style>
+                <h2>1) RATIONALE AND APPROACH</h2>
+            ]]>
+        </Static>
+        <ReportItem id="rational" type="TextareaReportItem" rich="true" blobItem="RATIONAL" limit="300">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Summarize the rationale for the project</b>
+                    <ul class='small'>
+                        <li>Why this project at this time?</li>
+                        <li>AIR Program funds only post-discovery projects focused on implementing solutions in real-world settings. Please briefly describe the development / discovery work that preceded this application.</li>
+                        <li>What is the benefit/value-added of the proposed impact(s)?</li>
+                        <li>What is the strength of the evidence forming the basis for the planned implementation activity?
+                            <ul>
+                                <li>For technology implementation projects, briefly describe the prior testing/validation of the solution in a real-world setting.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="unique" type="TextareaReportItem" rich="true" blobItem="UNIQUE" limit="200">
+            <![CDATA[
+                <li><b>What is unique or innovative about this solution or innovation?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="value" type="TextareaReportItem" rich="true" blobItem="VALUE" limit="200">
+            <![CDATA[
+                <li><b>What is the value of the project for older adults and/or caregivers?</b>
+                    <ul class='small'>
+                        <li>What problem does this project solve?</li>
+                        <li>What is the value proposition?</li>
+                        <li>How will end-users and stakeholders be involved in all stages of the implementation process?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="goals" type="TextareaReportItem" rich="true" blobItem="GOALS" limit="300">
+            <![CDATA[
+                <li><b>State the project goals and objectives</b>
+                    <ul class='small'>
+                        <li>What is the ultimate goal(s) of the proposed initiative?</li>
+                        <li>State the objectives that need to be achieved to realize the ultimate goal(s).</li>
+                        <li>How will an implementation science framework, process model and/or theory be used to meet project objectives and inform methods for implementation practice? Please include the specific stakeholder groups required for success.</li>
+                        <li>List the project milestones including timelines to track progress.</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>2) PROJECT OPPORTUNITY</h2>
+            ]]>
+        </Static>
+        <ReportItem id="implementing" type="TextareaReportItem" rich="true" blobItem="IMPLEMENTING" limit="200">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Who is implementing the solution? Who is benefiting from the solution?</b>
+                    <ul class='small'>
+                        <li>Describe who makes up the implementation team. Who will be responsible for delivering the solution at the site?</li>
+                        <li>Describe your target demographic (in Canada and beyond). E.g. number of people, number of sites. Who is your target demographic or implementation beneficiary for the solution?</li>
+                        <li>Describe how the solution applies to each stakeholder and how they might benefit. E.g. older adults, caregivers, researchers, policy makers, end-users, etc.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="policy" type="TextareaReportItem" rich="true" blobItem="POLICY" limit="200">
+            <![CDATA[
+                <li><b>How will the work inform and/or align with organizational, municipal, territorial and/or federal policy priorities?</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="change" type="TextareaReportItem" rich="true" blobItem="CHANGE" limit="200">
+            <![CDATA[
+                <li><b>What type of change are you trying to implement? (E.g., practice change - implementing a technology or KM tool into a new setting or scaling up to more sites; policy change – implementing new evidence to inform a change in government or organizational policy; service change - improving how to implement a technology or service.) Please provide concrete examples.</b>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="strategies" type="TextareaReportItem" rich="true" blobItem="STRATEGIES" limit="200">
+            <![CDATA[
+                <li><b>What implementation strategies will you use?</b>
+                    <ul>
+                        <li>Describe specific implementation strategies that will facilitate the uptake of your solution by key stakeholders (e.g. education through training workshops, internal champions to persuade and model behaviour, etc.).</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="evaluate" type="TextareaReportItem" rich="true" blobItem="EVALUATE" limit="200">
+            <![CDATA[
+                <li><b>How will you evaluate the process and outcomes of implementing your solution?</b>
+                    <ul>
+                        <li>Describe how change will be measured and long-term impact achieved.</li>
+                        <li>What metrics will you track? E.g. adaptability of solution characteristics, experience of staff at site, barriers and facilitators to implementation, number of older adults using the solution, number of participating sites, impact case study</li>
+                        <li>What is your long-term plan to ensure the sustainability of your solution?</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ip" type="TextareaReportItem" rich="true" blobItem="IP" limit="200">
+            <![CDATA[
+                <li><b>What is your strategy to protect your intellectual property, including new knowledge, information, etc.? If your intellectual property is currently protected, please briefly describe how.</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>3) PROJECT TEAM</h2>
+            ]]>
+        </Static>
+        <ReportItem id="expertise" type="TextareaReportItem" rich="true" blobItem="EXPERTISE" limit="300">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Describe how the expertise of your team will contribute to the success of the proposed initiative.</b>
+                    <ul class='small'>
+                        <li>Identify additional skills needed to fill expertise gaps on your team, if any, and how you plan to address them.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <li><b>Please submit a brief bio (2 pages maximum) for each named investigator highlighting experience and activities relevant to the application.</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ni_table" type="MultiText" blobItem="NI_TABLE" blobType="BLOB_ARRAY" types="Text|Text|Text|Textarea|Text" labels="Team Member|Role|Institution/Organization|Expertise|E-mail" multiple="true">
+            <![CDATA[
+                <p><b>Complete the Team Summary table:</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="hqp_table" type="MultiText" blobItem="HQP_TABLE" blobType="BLOB_ARRAY" types="Text|Text|Text|Textarea" labels="Team Member|Institution/Organization|E-mail|Level of Study/Position" multiple="true">
+            <![CDATA[
+                <p><b>Complete the Highly Qualified Personnel (HQP) table:</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>4) PRINCIPAL KNOWLEDGE USER(S) / PARTNERSHIPS</h2>
+            ]]>
+        </Static>
+        <ReportItem id="committed" type="TextareaReportItem" rich="true" blobItem="COMMITTED" limit="300">
+            <![CDATA[
+                <i>Detail included in this section should be supported by partner letters of support.</i>
+                <ol id='list' type="i">
+                <li><b>How is your partner organization committed to the implementation (installation, testing, uptake and/or commercialization) of the solution?</b>
+                    <ul class='small'>
+                        <li>Describe the commitment of the partner organization(s) regarding the support of implementation efforts and interest in sustaining the solution in the long-term.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="responsibilities" type="TextareaReportItem" rich="true" blobItem="RESPONSIBILITIES" limit="300">
+            <![CDATA[
+                <li><b>Outline the partnerships involved and partner roles/responsibilities (e.g. installation, testing, process and/or outcome evaluation etc.).</b>
+                    <ul class='small'>
+                        <li>Identify all partners/partnership arrangements (contributions will be itemized and justified in the budget).</li>
+                        <li>Is the partner participating as a contractor, manufacturer, stakeholder, and/or implementation site?</li>
+                    </ul>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>5) POTENTIAL IMPACT</h2>
+            ]]>
+        </Static>
+        <ReportItem id="impacts" type="TextareaReportItem" rich="true" blobItem="IMPACTS" limit="300">
+            <![CDATA[
+                <ol id='list' type="i">
+                <li><b>Describe the anticipated impacts and associated benefits and beneficiaries of this project.</b>
+                    <ul class='small'>
+                        <li>Describe how your project contributes to and/or facilitates the implementation, commercialization, mobilization and/or policy use of a solution or product to accelerate Canadian innovation, boost the economy, and to improve the lives of older adults and/or caregivers.</li>
+                        <li>Identify the anticipated impacts of this project – what will change, how many people will benefit and how?</li>
+                        <li>Describe the project’s potential to lead to economic and social impact for older Canadians including consideration of equity-deserving groups.</li>
+                    </ul>
+                    {$item}
+                </li>
+            ]]>
+        </ReportItem>
+        <ReportItem id="deliverables" type="TextareaReportItem" rich="true" blobItem="DELIVERABLES" limit="300">
+            <![CDATA[
+                <li><b>Provide a list of project deliverables (bullet points)</b>
+                    {$item}
+                </li>
+                </ol>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="budget" type="EditableReportSection" tooltip="Budget" title="PART 3 - Budget" name="Budget">
+        <ReportItem id="budget" type="UploadReportItem" blobType="BLOB_RAW" blobItem="BUDGET" mimeType=".xlsx,.xlx">
+            <![CDATA[
+                <p>Complete the <a href="{$wgServer}{$wgScriptPath}/data/AGE-WELL AIR Budget Template.xlsx">Budget Template</a> and upload a free-form budget justification. Include contributions outlined in letters of support.</p>
+                <h2>Budget</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="just" type="Upload" blobType="BLOB_RAW" blobItem="JUST" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                <h2>Budget Justification</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="letters" tooltip="PART 4 - Letters of Support" title="PART 4 - Letters of Support" name="Letters of Support" type="EditableReportSection" blobSection="LETTERS">
+        <ReportItem id="letter" type="UploadReportItem" blobItem="LETTER" mimeType="application/zip" fileSize="5">
+            <![CDATA[
+                <p>Investigators are expected to include partner organizations in their projects, including those participating in any implementation activities. Such organizations should be described in PART 2 of this application. Letters should describe the partner’s commitment to the project, involvement in implementation activities and, if appropriate, interest in sustaining the solution long-term. They can also include details on their readiness to implement. Your implementation team is welcome to use a readiness tool (<a href='{$wgServer}{$wgScriptPath}/data/Readiness_Adaptation_Tool.docx'>example</a>) to guide this conversation.</p>
+                <p>For reporting purposes, all partnership activities and contributions (cash and in-kind) should be quantified in the application.</p>
+                <b>The uploaded file must be a Zip Archive</b>.
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>

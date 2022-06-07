@@ -14,6 +14,7 @@ abstract class EliteProfile extends BackboneModel {
     var $projects = array();
     var $otherProjects = array();
     var $matches = array();
+    var $hires = array();
     
     static function newFromUserId($userId){
         $userId = DBFunctions::escape($userId);
@@ -30,7 +31,7 @@ abstract class EliteProfile extends BackboneModel {
     }
     
     static function getAllProfiles(){
-        $data = DBFunctions::execSQL("SELECT t.user_id, t.report_id
+        $data = DBFunctions::execSQL("SELECT t.user_id, MAX(t.report_id) as report_id
                                       FROM (SELECT user_id, report_id
                                             FROM grand_pdf_report
                                             WHERE type = 'RPTP_".static::$rpType."'
@@ -52,7 +53,8 @@ abstract class EliteProfile extends BackboneModel {
                                       FROM `grand_report_blobs`
                                       WHERE `rp_type` = 'RP_".static::$rpType."'
                                       AND `rp_section` = 'PROFILE'
-                                      AND `rp_item` = 'MATCHES'");
+                                      AND `rp_item` = 'MATCHES'
+                                      AND user_id IN (SELECT user_id FROM grand_pdf_report WHERE type = 'RPTP_".static::$rpType."')");
         $matchedProfiles = array();
         foreach($data as $row){
             $userId = $row['user_id'];
@@ -100,6 +102,10 @@ abstract class EliteProfile extends BackboneModel {
                     $this->matches[] = ElitePosting::newFromId($proj);
                 }
             }
+            $hires = $this->getBlobValue('HIRES', BLOB_ARRAY);
+            if($hires != null){
+                $this->hires = $hires;
+            }
         }
     }
     
@@ -108,7 +114,6 @@ abstract class EliteProfile extends BackboneModel {
         if(!$me->isLoggedIn()){
             return false;
         }
-        // TODO: Need to also add 'HOSTs'
         if($me->getId() == $this->person->getId() ||
            $me->isRoleAtLeast(STAFF)){
             return true;
@@ -125,7 +130,6 @@ abstract class EliteProfile extends BackboneModel {
     
     function isAllowedToEdit(){
         $me = Person::newFromWgUser();
-        // TODO: Need to also add 'HOSTs'
         if($me->getId() == $this->person->getId() ||
            $me->isRoleAtLeast(STAFF)){
             return true;
@@ -158,20 +162,22 @@ abstract class EliteProfile extends BackboneModel {
         }
         // Check Other reference letters uploaded by the references themselves
         $other_letters = $this->getBlobValue('LETTER_OTHER', BLOB_ARRAY);
-        foreach($other_letters['letter_other'] as $letter){
-            $email = trim($letter['email']);
-            $id = trim($letter['id']);
-            $md5 = md5("{$email}:{$id}");
-            $reference = DBFunctions::select(array('grand_report_blobs'),
-                                             array('md5'),
-                                             array('year' => 0,
-                                                   'user_id' => $this->person->getId(),
-                                                   'rp_type' => "RP_".static::$rpType,
-                                                   'rp_section' => 'PROFILE',
-                                                   'rp_item' => 'LETTER',
-                                                   'rp_subitem' => $md5));
-            if(count($reference) > 0){
-                $md5s[] = $reference[0]['md5'];
+        if(is_array($other_letters)){
+            foreach($other_letters['letter_other'] as $letter){
+                $email = trim($letter['email']);
+                $id = trim($letter['id']);
+                $md5 = md5("{$email}:{$id}");
+                $reference = DBFunctions::select(array('grand_report_blobs'),
+                                                 array('md5'),
+                                                 array('year' => 0,
+                                                       'user_id' => $this->person->getId(),
+                                                       'rp_type' => "RP_".static::$rpType,
+                                                       'rp_section' => 'PROFILE',
+                                                       'rp_item' => 'LETTER',
+                                                       'rp_subitem' => $md5));
+                if(count($reference) > 0){
+                    $md5s[] = $reference[0]['md5'];
+                }
             }
         }
         $urls = array();
@@ -182,15 +188,80 @@ abstract class EliteProfile extends BackboneModel {
         return $urls;
     }
     
+    abstract function acceptedMessage();
+    
+    abstract function shortlistMessage();
+    
+    abstract function moreInfoMessage();
+    
+    abstract function rejectedMessage();
+    
+    abstract function receivedMessage();
+    
+    abstract function sendMatchedMail($person);
+    
+    abstract function sendHiresMail($person);
+    
+    function sendMail(){
+        global $config;
+        $subject = "";
+        $message = "";
+        $to = $this->person->getEmail();
+        if($this->status == "Accepted"){
+            list($subject, $message) = $this->acceptedMessage();
+            foreach($this->hires as $key => $hire){
+                if($hire == "Accepted"){
+                    $posting = ElitePosting::newFromId($key);
+                    $host = $posting->getUser();
+                    $to .= ",{$host->getEmail()}";
+                }
+            }
+        }
+        else if($this->status == "Shortlist"){
+            list($subject, $message) = $this->shortlistMessage();
+        }
+        else if($this->status == "Requested More Info"){
+            list($subject, $message) = $this->moreInfoMessage();
+        }
+        else if($this->status == "Rejected"){
+            list($subject, $message) = $this->rejectedMessage();
+        }
+        else if($this->status == "Received"){
+            list($subject, $message) = $this->receivedMessage();
+        }
+        if($subject != "" && $message != ""){
+            $eol = "\r\n";
+            $uid = md5(uniqid(time()));
+            $msg = nl2br($message);
+            
+            // Basic headers
+            $headers = "From: {$config->getValue('siteName')} <{$config->getValue('supportEmail')}>".$eol;
+            $headers .= "MIME-Version: 1.0".$eol;
+            $headers .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"".$eol;
+            
+            // Put everything else in $message
+            $message = "--".$uid.$eol;
+            $message .= "Content-Type: text/html; charset=utf-8".$eol;
+            $message .= "Content-Transfer-Encoding: 8bit".$eol.$eol;
+            $message .= $msg.$eol.$eol;
+            
+            if(isset($_POST['file']) && $_POST['file'] != ""){
+                $eol = "\r\n";
+                $fileObj = $_POST['file'];
+                $exploded = explode(",", $fileObj->data);
+                $message .= "--".$uid.$eol;
+                $message .= "Content-Type: application/octet-stream; name=\"".$fileObj->filename."\"".$eol;
+                $message .= "Content-Transfer-Encoding: base64".$eol;
+                $message .= "Content-Disposition: attachment; filename=\"".$fileObj->filename."\"".$eol.$eol;
+                $message .= @chunk_split($exploded[1]).$eol.$eol;
+            }
+            $message .= "--".$uid."--";
+            
+            mail($to, $subject, $message, $headers);
+        }
+    }
+    
     function toArray(){
-        $projects = array();
-        foreach($this->projects as $project){
-            $projects[] = $project->toSimpleArray();
-        }
-        $matches = array();
-        foreach($this->matches as $project){
-            $matches[] = $project->toSimpleArray();
-        }
         return array('id' => $this->person->getId(),
                      'user' => $this->person->toSimpleArray(),
                      'region' => $this->region,
@@ -199,6 +270,7 @@ abstract class EliteProfile extends BackboneModel {
                      'projects' => $this->projects,
                      'otherProjects' => $this->otherProjects,
                      'matches' => $this->matches,
+                     'hires' => $this->hires,
                      'pdf' => $this->pdf->getUrl(),
                      'letters' => $this->getReferenceLetters(),
                      'created' => $this->pdf->getTimestamp());
@@ -224,15 +296,34 @@ abstract class EliteProfile extends BackboneModel {
                     $matches[] = $match;
                 }
             }
+            $oldStatus = $this->getBlobValue('STATUS');
+            $oldMatches = $this->getBlobValue('MATCHES', BLOB_ARRAY);
             $this->saveBlobValue('STATUS', $this->status);
             $this->saveBlobValue('ADMIN_COMMENTS', $this->comments);
             $this->saveBlobValue('MATCHES', $matches, BLOB_ARRAY);
+            foreach($matches as $match){
+                if(is_array($oldMatches) && !in_array($match, $oldMatches)){
+                    $posting = ElitePosting::newFromId($match);
+                    $person = $posting->getUser();
+                    $this->sendMatchedMail($person);
+                }
+            }
+            if($oldStatus != $this->status){
+                // Need to send an email
+                $this->sendMail();
+            }
         }
+    }
+    
+    function updateHires(){
+        $me = Person::newFromWgUser();
+        $this->saveBlobValue('HIRES', $this->hires, BLOB_ARRAY);
+        $this->sendHiresMail($me);
     }
     
     function delete(){
         if($this->isAllowedToEdit()){
-        
+            
         }
     }
     

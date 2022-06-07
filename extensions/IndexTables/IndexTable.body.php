@@ -113,7 +113,7 @@ class IndexTable {
         sort($roles);
         $roles = array_filter(array_unique($roles));
         foreach($roles as $role){
-            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && count(Person::getAllPeople($role, true))){
+            if(($role != HQP || $me->isLoggedIn()) && !isset($aliases[$role]) && Person::peopleWithRoleExists($role)){
                 $selected = ($lastRole === NI || $wgTitle->getText() == "ALL {$role}" || ($wgTitle->getNSText() == $role && !($me->isRole($role) && $wgTitle->getText() == $me->getName()))) ? "selected" : "";
                 $peopleSubTab['dropdown'][] = TabUtils::createSubTab(str_replace("Member", "Members", $role), "$wgServer$wgScriptPath/index.php/{$config->getValue('networkName')}:ALL_{$role}", "$selected");
             }
@@ -356,7 +356,8 @@ class IndexTable {
         }
         $wgOut->addHTML("</tbody></table>");
         $wgOut->addHTML("<script type='text/javascript'>$('.indexTable').dataTable({
-                                                                            'iDisplayLength': 100, 
+                                                                            'aLengthMenu': [[100,-1], [100,'All']], 
+                                                                            'iDisplayLength': -1, 
                                                                             'autoWidth': false,
                                                                             'dom': 'Blfrtip',
                                                                             columnDefs: [

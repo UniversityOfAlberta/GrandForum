@@ -57,6 +57,8 @@
                             <th>FY6</th>
                             <th>FY7</th>
                             <th>FY8</th>
+                            <th>FY9</th>
+                            <th>FY10</th>
                         </tr>
                         <tr>
                             <td style="white-space:nowrap;"><b>Cash:</b></td>
@@ -66,6 +68,8 @@
                             <td align="right"><% if (!isFunded(extra.cashFY6)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.cashFY6,2,'') %><% } %></td>
                             <td align="right"><% if (!isFunded(extra.cashFY7)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.cashFY7,2,'') %><% } %></td>
                             <td align="right"><% if (!isFunded(extra.cashFY8)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.cashFY8,2,'') %><% } %></td>
+                            <td align="right"><% if (!isFunded(extra.cashFY9)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.cashFY9,2,'') %><% } %></td>
+                            <td align="right"><% if (!isFunded(extra.cashFY10)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.cashFY10,2,'') %><% } %></td>
                         </tr>
                         <tr>
                             <td style="white-space:nowrap;"><b>In-kind:</b></td>
@@ -75,6 +79,8 @@
                             <td align="right"><% if (!isFunded(extra.inkindFY6)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.inkindFY6,'') %><% } %></td>
                             <td align="right"><% if (!isFunded(extra.inkindFY7)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.inkindFY7,'') %><% } %></td>
                             <td align="right"><% if (!isFunded(extra.inkindFY8)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.inkindFY8,'') %><% } %></td>
+                            <td align="right"><% if (!isFunded(extra.inkindFY9)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.inkindFY9,'') %><% } %></td>
+                            <td align="right"><% if (!isFunded(extra.inkindFY10)) { %><div style="text-align:center;">-</div><% } else { %>$<%= number_format(extra.inkindFY10,'') %><% } %></td>
                         </tr>
                     </table>
                 </tr>

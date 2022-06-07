@@ -13,15 +13,8 @@ class DiversitySurvey extends BackbonePage {
     }
     
     static function isEligible($person){
-        return ($person->isRole(NI) ||
-                $person->isRole(HQP) ||
-                $person->isRole(STAFF) ||
-                $person->isRole("BOD") ||
-                $person->isRole("CC") ||
-                $person->isRole("ETC") ||
-                $person->isRole("RMC") ||
-                $person->isRole("SAB") ||
-                $person->isRole(EDI));
+        return ($person->isRole(HQP) ||
+                $person->isRoleAtLeast(NI));
     }
     
     function userCanExecute($user){
@@ -32,12 +25,15 @@ class DiversitySurvey extends BackbonePage {
     function getTemplates(){
         return array('Backbone/*',
                      'diversity_en',
-                     'diversity_fr');
+                     'diversity_fr',
+                     'faq_en',
+                     'faq_fr');
     }
     
     function getViews(){
         return array('Backbone/*',
-                     'DiversitySurveyView');
+                     'DiversitySurveyView',
+                     'DiversityFaqView');
     }
     
     function getModels(){
@@ -55,9 +51,12 @@ class DiversitySurvey extends BackbonePage {
             $selected = @($wgTitle->getText() == "EDITraining") ? "selected" : false;
             $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Training", "$wgServer$wgScriptPath/index.php/EDITraining", $selected);
         }
-        if((new self)->userCanExecute($wgUser)){
-            $selected = @($wgTitle->getText() == "DiversitySurvey") ? "selected" : false;
-            $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Survey", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey", $selected);
+        if(self::userCanExecute($wgUser)){
+            $selected = @($wgTitle->getText() == "DiversitySurvey" && @$_GET['page'] == "survey") ? "selected" : false;
+            $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("Survey", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=survey", $selected);
+            
+            $selected = @($wgTitle->getText() == "DiversitySurvey" && @$_GET['page'] == "faq") ? "selected" : false;
+            $tabs["EDI"]['subtabs'][] = TabUtils::createSubTab("FAQ", "$wgServer$wgScriptPath/index.php/Special:DiversitySurvey?page=faq#/faq", $selected);
         }
         return true;
     }

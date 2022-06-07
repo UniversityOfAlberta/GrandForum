@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Emerging Entrepreneur Award (2021)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2021" ajax="true" disabled="true">
+<Report name="AGE-WELL Emerging Entrepreneur Award (2022)" reportType="RP_EEA" pdfType="RPTP_EEA" pdfFiles="EEAPDF" year="2022" ajax="true" disabled="true">
     <Permissions>
         <Role role="STAFF">
             <SectionPermission id="description" permissions="rw" />
@@ -23,7 +23,7 @@
             <SectionPermission id="submit" permissions="rw" />
         </Role>
     </Permissions>
-    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2021)">
+    <ReportSection id="description" tooltip="Background Information" name="Background Information" type="ReportSection" blobSection="APPLICATION" title="AGE-WELL Emerging Entrepreneur Award (2022)">
         <Static>
             <![CDATA[
                 <h3>About AGE-WELL</h3>
@@ -60,7 +60,8 @@
                 </ul>
                 
                 <h3>Review Criteria</h3>
-                All applications will be reviewed by a team of field experts using the following criteria:
+                
+                All applications will be reviewed by subject matter experts, members of the Research Management Committee, and members of the Network Management Office based on the following criteria:
                 <ul>
                     <li>rationale and approach</li>
                     <li>feasibility</li>
@@ -77,10 +78,10 @@
                 </ol>
                 
                 <h3>Important Dates</h3>
-                Applications Open: 29 March, 2021<br />
-                Completed Applications Due:  30 April, 2021<br />
-                Results Available: 31 May, 2021<br />
-                Funding Commences: June 2021
+                
+                Applications Open: 11 April, 2022<br />
+                Completed Applications Due:  16 May, 2022<br />
+                Funding Commences: June 2022
             ]]>
         </Static>
     </ReportSection>

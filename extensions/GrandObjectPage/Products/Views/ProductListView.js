@@ -12,6 +12,14 @@ ProductListView = Backbone.View.extend({
     },
     
     processData: function(start){
+        var addCol = function(row, contents){
+            if(typeof contents != 'undefined'){
+                row.push(contents);
+            }
+            else{
+                row.push("");
+            }
+        }
         // This method is purposely not using Backbone views for performance reasons
         var data = Array();
         var i = -1;
@@ -79,45 +87,9 @@ ProductListView = Backbone.View.extend({
             row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
             row.push(model.status);
             row.push(model.citation);
-            if(networkName == "FES"){
-                if(typeof model.data.collaboration != 'undefined'){
-                    row.push(model.data.collaboration);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.ucalgary != 'undefined'){
-                    row.push(model.data.ucalgary);
-                }
-                else{
-                    row.push("");
-                }   
-                if(typeof model.data.partner != 'undefined'){
-                    row.push(model.data.partner);
-                }
-                else{
-                    row.push("");
-                }   
-                if(typeof model.data.hqp != 'undefined'){
-                    row.push(model.data.hqp);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.published_in != 'undefined'){
-                    row.push(model.data.published_in);
-                }
-                else{
-                    row.push("");
-                }
-                if(typeof model.data.impact_factor != 'undefined'){
-                    row.push(model.data.impact_factor);
-                }
-                else{
-                    row.push("");
-                }
-            }
-            row.push(_.values(_.mapObject(model.data, function(val, key){ return "<b>" + key + ":</b> " + val; })).join("\r"));
+            _.each(this.getFields(), function(field, index){
+                addCol(row, model.data[index]);
+            });
             if(projectsEnabled){
                 row.push(projects.join(', '));
                 if(_.contains(allowedRoles, STAFF)){
@@ -125,6 +97,7 @@ ProductListView = Backbone.View.extend({
                     row.push(topProjects.join(', '));
                 }
             }
+            row.push(model.description);
             data.push(row);
         }, this);
         return data;
@@ -149,6 +122,18 @@ ProductListView = Backbone.View.extend({
         return this.render();
     },
     
+    getFields: function(){
+        if(typeof(productStructure.categories[this.model.category]) == 'undefined' || Object.assign == undefined){
+            return {};
+        }
+        var fields = _.reduce(productStructure.categories[this.model.category].types, function(memo, obj){ return Object.assign(memo, obj.data);}, {});
+        if(networkName == "FES" && this.model.category == "Publication"){
+            delete fields['date_accepted'];
+            delete fields['date_submitted'];
+        }
+        return fields;
+    },
+    
     render: function(){
         this.$el.empty();
         this.$el.css('display', 'none');
@@ -165,14 +150,15 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
-        var targets = [ 4, 5, 6 ];
-        if(networkName == "FES"){
-            if(this.model.category == "Publication"){
-                targets = [ 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
-            }
-            else {
-                targets = [ 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
-            }
+        var targets = [ 4, 5 ];
+        if(networkName == "FES" && this.model.category == "Publication"){
+            targets = [ 6, 7 ];
+        }
+        _.each(this.getFields(), function(field){
+            targets.push(_.last(targets) + 1);
+        });
+        if(typeof data[0] != 'undefined'){
+            targets.push(data[0].length-1);
         }
         this.table = this.$('#listTable').DataTable({'iDisplayLength': 100,
 	                                    'aaSorting': [[0,'desc'], [1,'asc']],

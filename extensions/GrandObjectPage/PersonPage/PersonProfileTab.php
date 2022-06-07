@@ -13,16 +13,23 @@ class PersonProfileTab extends AbstractEditableTab {
 
     function generateBody(){
         global $wgUser;
+        $me = Person::newFromWgUser();
         $this->person->getLastRole();
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:5px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
         $keywords = $this->person->getKeywords(", ");
         if($this->person->getProfile() != "" || $keywords != ""){
-            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
-            if($keywords != ""){
-                $this->html .= "<b>Keywords:</b> {$keywords}<br />";
+            $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>
+                            <table>";
+            if($me->isRoleAtLeast(STAFF)){
+                $this->html .= ($this->person->getFirstName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>First Name:</b></td><td>{$this->person->getFirstName()}</td></tr>" : "";
+                $this->html .= ($this->person->getMiddleName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Middle Name:</b></td><td>{$this->person->getMiddleName()}</td></tr>" : "";
+                $this->html .= ($this->person->getLastName() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Last Name:</b></td><td>{$this->person->getLastName()}</td></tr>" : "";
+                $this->html .= ($this->person->getEmployeeId() != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Employee Id:</b></td><td>{$this->person->getEmployeeId()}</td></tr>" : "";
             }
+            $this->html .= ($keywords != "") ? "<tr><td valign='top' align='right' style='white-space: nowrap;'><b>Keywords:</b></td><td>{$keywords}</td></tr>" : "";
+            $this->html .= "</table>";
             $this->showProfile($this->person, $this->visibility);
         }
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
@@ -196,6 +203,9 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->middleName = @$_POST['middle_name'];
             $this->person->lastName = @$_POST['last_name'];
             $this->person->realname = @"{$_POST['first_name']} {$_POST['last_name']}";
+            if(isset($_POST['employeeId'])){
+                $this->person->employeeId = $_POST['employeeId'];
+            }
             $this->person->gender = @$_POST['gender'];
             $this->person->twitter = @$_POST['twitter'];
             $this->person->website = @$_POST['website'];
@@ -237,8 +247,53 @@ class PersonProfileTab extends AbstractEditableTab {
      * Displays the profile for this user
      */
     function showProfile($person, $visibility){
-        global $wgUser;
-        $this->html .= "<div id='profileText' style='text-align:justify;'>".$person->getProfile($wgUser->isLoggedIn())."</div>";
+        global $wgUser, $config;
+        $this->html .= "<div id='profileText' style='text-align:justify;'>";
+        $this->html .= $person->getProfile($wgUser->isLoggedIn());
+        if($visibility['isMe'] || $visibility['isSupervisor']){
+            $crc = "";
+            $this->html .= "<ul>";
+            if($config->getValue('crcEnabled')){
+                $crcObj = $person->getCanadaResearchChair();
+                if(@strstr($crcObj['rank'], "Yes") !== false){
+                    $rank = "";                    
+                    switch($crcObj['rank']){
+                        case "Yes, I am a Tier 1 Canada Research Chair (CRC) or equivalent":
+                            $rank = "CRCT1";
+                            break;
+                        case "Yes, I am a Tier 2 Canada Research Chair (CRC) or equivalent":
+                            $rank = "CRCT2";
+                            break;
+                        case "Yes, I am a Canada Excellence Research Chair (CERC) or equivalent":
+                            $rank = "CERC";
+                            break;
+                        case "Yes, I am a Canada 150 Research Chair (C150) or equivalent";
+                            $rank = "C150";
+                            break;
+                    }
+                    $this->html .= "<li>[{$crcObj['title']}] {$rank}, {$crcObj['date']}</li>";
+                }
+            }
+
+            if($config->getValue('ecrEnabled')){
+                if($person->getEarlyCareerResearcher() == "Yes"){
+                    $this->html .= "<li>FES ECR</li>";
+                }
+            }
+            $agencies = "";
+            if($config->getValue('agenciesEnabled')){
+                $agencies = $person->getAgencies();
+                if(count($agencies) > 0){
+                    $this->html .= "<li>Applies for funding from:<ul>";
+                    foreach($agencies as $agency){
+                        $this->html .= "<li>{$agency}</li>";
+                    }
+                    $this->html .= "</ul></li>";
+                }
+            }
+            $this->html .= "</ul>";
+        }
+        $this->html .= "</div>";
     }
     
     /**
@@ -717,7 +772,9 @@ EOF;
                         </tr>";
             }
         }
-        
+        if($config->getValue("networkName") == "FES"){
+            $this->html .= "<b>Please add your name, middle name, and last name as per your employment records</b>";
+        }
         $this->html .= "<table>
                             <tr>
                                 <td class='label'>First Name:</td>
@@ -734,8 +791,15 @@ EOF;
                             <tr>
                                 <td class='label'>Aliases:<br /><small>Can be used for alternate names<br />to help match ".strtolower($config->getValue('productsTerm'))." authors</small></td>
                                 <td class='value' style='max-width: 0;'><input type='text' name='aliases' value='".str_replace("'", "&#39;", implode(";", $person->getAliases()))."' /></td>
-                            </tr>
-                            <tr>
+                            </tr>";
+                   
+        if($me->isRoleAtLeast(STAFF) && $config->getValue('networkName') == 'FES'){
+            $this->html .= "<tr>
+                                <td align='right'><b>Employee Id:</b></td>
+                                <td><input size='10' type='text' name='employeeId' value='".str_replace("'", "&#39;", $person->getEmployeeId())."'></td>
+                            </tr>";
+        }
+        $this->html .= "    <tr>
                                 <td class='label'>Email:</td>";
         if(!isExtensionEnabled("Shibboleth") || $me->isRoleAtLeast(MANAGER)){
             $this->html .= "<td class='value'><input size='30' type='text' name='email' value='".str_replace("'", "&#39;", $person->getEmail())."' /></td>";
@@ -778,7 +842,7 @@ EOF;
         $managePeople->loadHelpers();
         $managePeople->loadViews();
         $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/GrandObjectPage/ManagePeople/style.css' type='text/css' rel='stylesheet' />");
-        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input type='button' id='addUniversity' value='Add Institution' />
+        $this->html .= "</td></tr><tr><td colspan='2'><div id='editUniversities' style='border: 1px solid #CCCCCC;'></div><input style='margin-top: 3px;' type='button' id='addUniversity' value='Add Institution' />
         <script type='text/javascript'>
             $('input[name=aliases]').tagit({
                 allowSpaces: true,

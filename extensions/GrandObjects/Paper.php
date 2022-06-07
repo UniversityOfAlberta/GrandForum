@@ -603,6 +603,7 @@ class Paper extends BackboneModel{
                 $cname = "{$cattrs->category}";
                 foreach($category->children() as $type){
                     $tattrs = $type->attributes();
+                    $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";
                     $tname = str_replace('{$networkName}', $config->getValue('networkName'), $tname);
                     $ccvType = "{$tattrs->ccv_name}";
@@ -616,6 +617,7 @@ class Paper extends BackboneModel{
                     $categories['categories'][$cname]['types'][$tname] = array('data' => array(),
                                                                                'status' => $tstatus,
                                                                                'type' => $ccvType,
+                                                                               'citationFormat' => $citationFormat,
                                                                                'ccv_status' => array(),
                                                                                'authors_label' => "Author");
                     foreach($type->children() as $child){
@@ -624,6 +626,7 @@ class Paper extends BackboneModel{
                                 $fattrs = $field->attributes();
                                 $fid = "$field";
                                 $flabel = "{$fattrs->label}";
+                                $fplaceholder = "{$fattrs->placeholder}";
                                 $ftype = str_replace('{$networkName}', $config->getValue('networkName'), "{$fattrs->type}");
                                 $fccvtk = "{$fattrs->ccvtk}";
                                 $fbibtex = "{$fattrs->bibtex}";
@@ -633,6 +636,7 @@ class Paper extends BackboneModel{
                                 $categories['categories'][$cname]['types'][$tname]['data'][$fid] = array('ccvtk' => $fccvtk,
                                                                                                          'bibtex' => $fbibtex,
                                                                                                          'label' => $flabel,
+                                                                                                         'placeholder' => $fplaceholder,
                                                                                                          'type' => $ftype,
                                                                                                          'options' => $foptions,
                                                                                                          'hidden' => $fhidden);
@@ -908,7 +912,7 @@ class Paper extends BackboneModel{
                    isset(self::$illegalAuthorsCache[$person->getId()])){
                     // Ok this person is not in the db, make a fake Person object
                     $author = preg_replace('/\s+/', ' ', $author);
-                    $names = explode(" ", $author);
+                    $names = explode(" ", str_replace("<span class='noshow'>&quot;</span>", "", $author));
                     $first = @str_replace(".", "", str_replace('"', "", $names[0]));
                     $last = "";
                     $mNames = "";
@@ -1532,6 +1536,30 @@ class Paper extends BackboneModel{
             $issue = $this->getData(array('number'));
             $match1 = str_ireplace("%issue",     $issue,     $match1);
             $match2 = str_ireplace("%issue",     "",         $match2);
+        }
+        
+        if(strstr($match, "institution") !== false){
+            $institution = $this->getData(array('institution'));
+            $match1 = str_ireplace("%institution", $institution,     $match1);
+            $match2 = str_ireplace("%institution", "",               $match2);
+        }
+        
+        if(strstr($match, "frequency") !== false){
+            $frequency = $this->getData(array('frequency'));
+            $match1 = str_ireplace("%frequency", $frequency,     $match1);
+            $match2 = str_ireplace("%frequency", "",             $match2);
+        }
+        
+        if(strstr($match, "value") !== false){
+            $value = $this->getData(array('value'));
+            $match1 = str_ireplace("%value",    $value,        $match1);
+            $match2 = str_ireplace("%value",    "",            $match2);
+        }
+        
+        if(strstr($match, "url") !== false){
+            $url = $this->getData(array('url'));
+            $match1 = str_ireplace("%url",      $url,        $match1);
+            $match2 = str_ireplace("%url",    "",            $match2);
         }
 
         if($match1 == $match2){

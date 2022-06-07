@@ -23,7 +23,7 @@ class Projections extends SpecialPage{
 	    $projects = Project::getAllProjectsEver();
 	    $phaseDates = $config->getValue("projectPhaseDates");
 	    $year = date('Y', strtotime($phaseDates[PROJECT_PHASE]) - (3 * 30 * 24 * 60 * 60));
-        $today = date('Y', time() - (6 * 30 * 24 * 60 * 60));
+        $today = date('Y', time() - (4 * 30 * 24 * 60 * 60));
         
         $wgOut->addScript("<script type='text/javascript'>
                 $(document).ready(function(){

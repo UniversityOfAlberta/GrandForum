@@ -310,6 +310,7 @@ class CavendishTemplate extends QuickTemplate {
 		    productVisibility = "<?php echo $config->getValue('productVisibility'); ?>";
 		    subRolesTerm = "<?php echo $config->getValue('subRoleTerm'); ?>";
 		    deptsTerm = "<?php echo $config->getValue('deptsTerm'); ?>";
+		    splitDept = "<?php echo $config->getValue('splitDept'); ?>";
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    showSideBar = <?php var_export($config->getValue('showSideBar')) ?>;

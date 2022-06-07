@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2021)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2021">
+<Report name="The EPIC Conference (2022)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2022">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2021)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2022)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -34,21 +34,21 @@
                 </table>
             ]]>
         </Static>
+        <ReportItem id="cfn" type="Radio" blobType="BLOB_TEXT" blobItem="CFN" options="Yes|No">
+            <![CDATA[
+                <h3>Are you an HQP from CFN-NCE (Canadian Frailty Network):</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="challenge" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGE" delimiter="&lt;br />" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" limit="2">
             <![CDATA[
                 <h3>AGE-WELL Challenge area best fit (Max 2):</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="stream" type="Checkbox" blobType="BLOB_ARRAY" blobItem="STREAM" delimiter="&lt;br />" options="Oral Presentation|Twitter Presentation|French-language Research Sessions">
-            <![CDATA[
-                <h3>Abstract:</h3>
-                Please select conference presentation stream (you may select all streams):
-                <div style='margin-left:5em;'>{$item}</div><br />
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="title" type="Text" blobType="BLOB_TEXT" blobItem="TITLE" width="300px">
             <![CDATA[
+                <h3>Abstract:</h3>
                 Project Title: {$item}
                 <br /><br />
             ]]>
@@ -56,7 +56,13 @@
         <ReportItem id="abstract" type="Textarea" blobType="BLOB_TEXT" blobItem="ABSTRACT" rich="true" limit="250">
             <![CDATA[
                 <p>Abstract:</p>
-                {$item}
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="copresenting" type="Radio" blobItem="COPRESENTING" options="Yes|No">
+            <![CDATA[
+                <h3>Are you co-presenting with a stakeholder?</h3>
+                {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">

@@ -113,7 +113,7 @@ class SpecialEventRegistration extends SpecialPage{
         $webpage = ($me->isLoggedIn()) ? $me->getWebsite() : "";
         $webpageField = new TextField("webpage", "webpage", $webpage);
 
-        $roles = array("Audience", "Presenter", "Host");
+        $roles = array("Audience", "Keynote Speaker", "Host", "Presenter");
         $defaultRole = "Audience";
         $misc = "";
         if($default->title == "Energy Hackathon 2021 - APIC"){
@@ -136,9 +136,12 @@ class SpecialEventRegistration extends SpecialPage{
             $roles = array("Audience", "Presenter", "Host", "Author", "Co-author", "Scientific Committee");
         }
         else if($default->title == "Ethical Data and AI - Salon #2" ||
-                $default->title == "Ethical Data and AI - Salon #3"){
+                $default->title == "Ethical Data and AI - Salon #3" ||
+                $default->title == "Ethical Data and AI - Salon #4" ||
+                $default->title == "Ethical Data and AI - Salon #5"){
             $misc = "<h3>How do you plan to attend?</h3>
                      <select name='misc[Attend]' required>
+                        <option></option>
                         <option>Online</option>
                         <option>In person</option>
                      </select>";
@@ -146,6 +149,13 @@ class SpecialEventRegistration extends SpecialPage{
         else if($default->title == "AI in Construction - Academia and Industry, Meet and Greet Event"){
             $roles = array("Industry Partner", "Researcher");
             $defaultRole = "Industry Partner";
+        }
+        else if($default->title == "AI4Society Reverse EXPO"){
+            $roles = array("Audience");
+        }
+        else if($default->title == "Energy Hackathon 2022 - APIC"){
+            $roles = array("Participant", "Judge", "Host");
+            $defaultRole = "Participant";
         }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
