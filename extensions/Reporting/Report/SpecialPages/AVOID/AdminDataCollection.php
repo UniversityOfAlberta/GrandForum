@@ -123,7 +123,7 @@ class AdminDataCollection extends SpecialPage{
                     if(strstr($page_name, "ProgramLibrary") !== false){
                         $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
                         $page_data = json_decode($page["data"],true);
-                        $views = isset($page_data["count"]) ? $page_data["count"] : 0;
+                        $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
                         if($x_num%2==0){
                             $wgOut->addHTML("
                                 <tr style='background-color:#ececec'><td style='white-space:nowrap;'>
