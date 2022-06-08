@@ -20,7 +20,7 @@ class AdminDataCollection extends SpecialPage{
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
-                //continue;
+                continue;
             }
             $people[] = $person;
         }
@@ -137,7 +137,7 @@ class AdminDataCollection extends SpecialPage{
                                     <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
                                     <td nowrap>Views: $views</td>
                                 </tr>
-                                <tr>
+                                <tr style='background-color:#ececec'>
                                     <td nowrap>Website: $websiteClicks</td>
                                 </tr>");
                         }
@@ -167,17 +167,16 @@ class AdminDataCollection extends SpecialPage{
                     $views = isset($page_data["count"]) ? $page_data["count"] : 0;
                     if($x_num%2==0){
                         $wgOut->addHTML("
-                            <tr style='background-color:#ececec'><td>
-                                $page_name</td><td nowrap>
-                                Views: $views
-                            </td></tr>");
+                            <tr style='background-color:#ececec'>
+                                <td>$page_name</td>
+                                <td nowrap>Views: $views</td>
+                            </tr>");
                     }
                     else{
                         $wgOut->addHTML("
-                            <tr style=''><td>
-                            $page_name</td><td nowrap>
-                            Views: $views
-                            </td>
+                            <tr style=''>
+                                <td>$page_name</td>
+                                <td nowrap>Views: $views</td>
                             </tr>");
                     }
                     $x_num++;
