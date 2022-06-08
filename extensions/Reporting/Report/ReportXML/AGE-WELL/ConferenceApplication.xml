@@ -325,7 +325,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
+                <ReportItem id="4_abstract" type="Textarea" blobItem="4_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Abstract:</b></td>
@@ -517,8 +517,6 @@
                     });
                 </script>
                 <p>AGE-WELL 2022 will feature our popular Drinks & Demos reception held the evening of Tuesday, October 18.  Members from across our network including industry and community partners, Board of Directors as well as older adults and caregivers will be present at this event. While a network participant can only present one demo, individuals are welcome to submit up to 6 demos on behalf of their teams. The session is open to <u>all network participants</u> (i.e. research teams from any AGE-WELL program, trainees, startup affiliates, Innovation Hubs etc.) the only requirement is that you have something to display that will encourage interaction with attendees (e.g. technology demo, website, KM product, toolkit etc.). </p>
-                
-                <p>Note: AGE-WELL 2022 will also include Exhibits conference requiring separate application.</p>
 
                 <p>Application Deadline: Friday Aug 5, 2022</p>
                 
@@ -583,7 +581,7 @@
                         </tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="150">
+                <ReportItem id="5_abstract" type="Textarea" blobItem="5_ABSTRACT" blobSubItem="{$extraIndex}" rich="true" limit="250">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>Demo Abstract:</b></td>
