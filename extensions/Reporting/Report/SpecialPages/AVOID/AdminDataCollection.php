@@ -17,7 +17,13 @@ class AdminDataCollection extends SpecialPage{
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
         $this->getOutput()->setPageTitle("Admin Data Collection");
-        $people = Person::getAllPeople();
+        $people = array();
+        foreach(Person::getAllPeople() as $person){
+            if($person->isRoleAtLeast(STAFF)){
+                continue;
+            }
+            $people[] = $person;
+        }
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
         $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
         if(count($people) > 0){
