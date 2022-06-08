@@ -20,7 +20,7 @@ class AdminDataCollection extends SpecialPage{
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
-                continue;
+                //continue;
             }
             $people[] = $person;
         }
@@ -130,19 +130,25 @@ class AdminDataCollection extends SpecialPage{
                         $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
                         $page_data = json_decode($page["data"],true);
                         $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
+                        $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
                         if($x_num%2==0){
                             $wgOut->addHTML("
-                                <tr style='background-color:#ececec'><td style='white-space:nowrap;'>
-                                    $page_name</td><td nowrap>
-                                    Views: $views
-                                </td></tr>");
+                                <tr style='background-color:#ececec'>
+                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                                    <td nowrap>Views: $views</td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Website: $websiteClicks</td>
+                                </tr>");
                         }
                         else{
                             $wgOut->addHTML("
-                                <tr style=''><td style='white-space:nowrap;'>
-                                $page_name</td><td nowrap>
-                                Views: $views
-                                </td>
+                                <tr style=''>
+                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                                    <td nowrap>Views: $views</td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Website: $websiteClicks</td>
                                 </tr>");
                         }
                         $x_num++;

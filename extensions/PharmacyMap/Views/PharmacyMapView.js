@@ -15,6 +15,10 @@ PharmacyMapView = Backbone.View.extend({
     renderMap: false,
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
+        
+        $(document).on('click', 'a.programWebsite', function(){
+            this.clickWebsite(this.model.cat);
+        }.bind(this));
     },
 
     events: {
@@ -49,6 +53,11 @@ PharmacyMapView = Backbone.View.extend({
         else {
             map.setCenter(map.getCenter());
         }
+    },
+    
+    clickWebsite: function(cat){
+        dc.init(me.get('id'), 'ProgramLibrary-' + cat);
+        dc.increment("websiteClicks");
     },
     
     record: function(cat){
@@ -313,7 +322,7 @@ PharmacyMapView = Backbone.View.extend({
                             + "Email: "
                             + val.EmailAddressMain
                             + "<br>"
-                            + "Website: <a href='"
+                            + "Website: <a class='programWebsite' href='"
                             + val.WebsiteAddress
                             + "' target='_blank'>"
                             + val.WebsiteAddress
