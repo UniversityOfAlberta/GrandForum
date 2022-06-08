@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="HQP Award 2021" reportType="RP_HQP_REVIEW" ajax="true" disabled="false" year="2021">
+<Report name="HQP Award 2022" reportType="RP_HQP_REVIEW" ajax="true" disabled="false" year="2022">
     <Permissions>
         <Role role="Evaluator">
             <SectionPermission id="instructions" permissions="rw" />
@@ -93,7 +93,7 @@ Major: weakness that severely limits the quality of the proposal or potential of
                 </tr>
             ]]>
         </Static>
-        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2021">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2022">
             <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="HQPApplication" width="100%" project="true">
                 <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
             </ReportItem>
@@ -170,7 +170,7 @@ Information Package</a> and the <a href='http://www.agewell-nce.ca/wp-content/up
 <p>A key aspect of AGE-WELL’s training philosophy is that we have the ability to fund HQP who may not be funded through traditional funding sources (e.g. CIHR, NSERC, SSHRC). We are looking to fund individuals who are thinking “outside of the box”, and who are interested in pursuing non-traditional roles within their training program. For example we will strongly consider and encourage applicants focusing on developing new products and start-up companies, or someone who is not interested in pursuing a traditional academic position but would rather work in industry, governmental, or other community-based positions.</p>
             ]]>
         </Instructions>
-        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2021">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="HQP-2022">
             <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
                 <ReportItem id="overall" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_OVERALL_COMM" blobSubItem="{$user_id}">
                     <![CDATA[
