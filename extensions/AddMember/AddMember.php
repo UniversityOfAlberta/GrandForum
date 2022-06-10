@@ -45,10 +45,10 @@ class AddMember extends SpecialPage{
         else{
             $form = self::createForm();
             $status = $form->validate();
-            if($form->getElementById("hqp_position_field0")->value == "" &&
-               $form->getElementById("position_field0")->value == ""){
+            if($form->getElementById("hqp_position_field0")->exists() && $form->getElementById("hqp_position_field0")->value == "" &&
+               $form->getElementById("position_field0")->exists() && $form->getElementById("position_field0")->value == ""){
                 $wgMessage->addError("The field 'Position' must not be empty");
-                $status = false;   
+                $status = false;
             }
             if($status){
                 $form->getElementById('first_name_field')->setPOST('wpFirstName');
@@ -518,6 +518,24 @@ class AddMember extends SpecialPage{
             $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_row")->attr('style', 'display:none;');
             $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
+        }
+        
+        if($config->getValue("networkName") == "AVOID"){
+            $formTable->getElementById("nationality_row")->remove();
+            $formTable->getElementById("employment_row1")->remove();
+            $formTable->getElementById("employment_row2")->remove();
+            for($i = 0; $i < 3; $i++){
+                $formTable->getElementById("program_label{$i}")->remove();
+                $formTable->getElementById("university_row{$i}")->remove();
+                $formTable->getElementById("dept_row{$i}")->remove();
+                $formTable->getElementById("position_row{$i}")->remove();
+                $formTable->getElementById("hqp_position_row{$i}")->remove();
+                $formTable->getElementById("start_row$i")->remove();
+                $formTable->getElementById("end_row$i")->remove();
+                $formTable->getElementById("recruitment_row")->attr('style', 'display:none;');
+                $formTable->getElementById("rec_row")->attr('style', 'display:none;');
+                $formTable->getElementById("rec_country_row")->attr('style', 'display:none;');
+            }
         }
         
         $formContainer->append($formTable);

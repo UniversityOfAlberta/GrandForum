@@ -105,12 +105,12 @@ class UIElementArray extends UIElement {
             }
             else if($element instanceof UIElementArray){
                 $el = $element->getElementById($id);
-                if($el != null){
+                if(!($el instanceof FakeField)){
                     return $el;
                 }
             }
         }
-        return null;
+        return new FakeField($id, "", "");
     }
     
     /**
