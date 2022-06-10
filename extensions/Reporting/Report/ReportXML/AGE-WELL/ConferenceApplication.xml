@@ -403,7 +403,7 @@
                         <table>
                     ]]>
                 </Static>
-                <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="Core Facility|Crosscutting Theme|Innovation Hub|Project|Workpackage">
+                <ReportItem id="3_project" type="Select" blobItem="3_PROJECT" blobSubItem="{$extraIndex}" options="Core Facility|Crosscutting Theme|Innovation Hub|Project|Challenge Area">
                     <![CDATA[
                         <tr>
                             <td align="right" style="width:0;white-space:nowrap;"><b>AGE-WELL Role:</b></td>
