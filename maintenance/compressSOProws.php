@@ -2,7 +2,7 @@
     require_once( "commandLine.inc" );
     $wgUser=User::newFromId(1);
     
-    $year = "2017";
+    $year = "";
     $dbYear = "";
     
     if($year != "" && $year != 0){
@@ -20,16 +20,16 @@
             $inflated = gzinflate($row['pdf_contents']);
             
             file_put_contents("input.pdf", $inflated);
-            exec("../extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dColorImageResolution=120 -dCompatibilityLevel=1.4 -sOutputFile=output.pdf input.pdf &> /dev/null", $output, $ret);
+            exec("../extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dColorConversionStrategy=/LeaveColorUnchanged -dColorImageResolution=120 -dColorImageDownsampleType=/Bicubic -dGrayImageResolution=120 -dGrayImageDownsampleType=/Bicubic -dCompatibilityLevel=1.4 -sOutputFile=output.pdf input.pdf  &> /dev/null", $output, $ret);
             if(file_exists("output.pdf") && $ret === 0){
                 $contents = file_get_contents("output.pdf");
                 if(strlen($contents) > 0){
-                    $deflated = gzdeflate($contents, 9);
-                    if(strlen($inflated) > strlen($deflated)){
+                    $deflated = gzdeflate($contents);
+                    if(strlen($row['pdf_contents']) > strlen($deflated)){
                         DBFunctions::update("grand_sop$dbYear",
                                             array('pdf_contents' => $deflated),
                                             array('id' => $row['id']));
-                        echo strlen($inflated)." -> ".strlen($deflated)."\n";
+                        echo strlen($row['pdf_contents'])." -> ".strlen($deflated)."\n";
                     }
                     else{
                         echo "Skipped {$row['id']}\n";

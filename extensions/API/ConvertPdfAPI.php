@@ -226,7 +226,7 @@ class ConvertPdfAPI extends API{
         $errors = array();
         $num_file = 0;
         foreach($tmpfiles as $tmpfile){
-            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dColorImageResolution=120 -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output, $ret);
+            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dColorConversionStrategy=/LeaveColorUnchanged -dColorImageResolution=120 -dColorImageDownsampleType=/Bicubic -dGrayImageResolution=120 -dGrayImageDownsampleType=/Bicubic -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output, $ret);
             if($ret === 0){
                 // Ghostscript conversion worked
                 $contents = file_get_contents("{$tmpfile}.out");
@@ -252,7 +252,7 @@ class ConvertPdfAPI extends API{
             }
             $num_file++;
             if($userId != 0){
-                $content_parsed = DBFunctions::escape(gzdeflate($contents, 9));
+                $content_parsed = DBFunctions::escape(gzdeflate($contents));
                 unset($contents);
                 // Person Found
                 $person = Person::newFromId($userId);
