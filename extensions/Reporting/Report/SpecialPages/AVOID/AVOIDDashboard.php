@@ -151,7 +151,7 @@ class AVOIDDashboard extends SpecialPage {
         // Upcoming Events
         $events = Wiki::newFromTitle("UpcomingEvents");
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
-                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Upcoming Events</h1>
+                            <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Upcoming Events and Announcements</h1>
                             <span class='program-body' style='width: 100%;'>{$events->getText()}</span>
                          </div>");
         
