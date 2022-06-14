@@ -533,8 +533,108 @@ class ApplicationsTable extends SpecialPage{
     
     function generateEpicAt(){
         global $wgOut;
+        
+        $stat = new TextReportItem();
+        $stat->setBlobType(BLOB_TEXT);
+        $stat->setBlobItem('HQP_APPLICATION_STAT');
+        $stat->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $sup = new TextReportItem();
+        $sup->setBlobType(BLOB_TEXT);
+        $sup->setBlobItem(HQP_APPLICATION_SUP);
+        $sup->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $uni = new TextReportItem();
+        $uni->setBlobType(BLOB_TEXT);
+        $uni->setBlobItem(HQP_APPLICATION_UNI);
+        $uni->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $lvl = new CheckboxReportItem();
+        $lvl->setBlobType(BLOB_ARRAY);
+        $lvl->setBlobItem(HQP_APPLICATION_LVL);
+        $lvl->setBlobSection(HQP_APPLICATION_FORM);
+        $lvl->setId("level");
+        
+        $mem = new CheckboxReportItem();
+        $mem->setBlobType(BLOB_ARRAY);
+        $mem->setBlobItem('HQP_APPLICATION_MEMBERSHIPS');
+        $mem->setBlobSection(HQP_APPLICATION_FORM);
+        $mem->setId("memberships");
+        
+        $title = new TextReportItem();
+        $title->setBlobType(BLOB_TEXT);
+        $title->setBlobItem('PROJECT_TITLE');
+        $title->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem(HQP_APPLICATION_KEYWORDS);
+        $keywords->setBlobSection(HQP_APPLICATION_FORM);
+        $keywords->setAttr("orientation", "list");
+        $keywords->setId("keywords");
+        
+        $age = new CheckboxReportItem();
+        $age->setBlobType(BLOB_ARRAY);
+        $age->setBlobItem('AGE');
+        $age->setBlobSection(HQP_APPLICATION_FORM);
+        $age->setId("age");
+        
+        $gender = new CheckboxReportItem();
+        $gender->setBlobType(BLOB_ARRAY);
+        $gender->setBlobItem('GENDER');
+        $gender->setBlobSection(HQP_APPLICATION_FORM);
+        $gender->setId("gender");
+        
+        $gender_other = new TextReportItem();
+        $gender_other->setBlobType(BLOB_TEXT);
+        $gender_other->setBlobItem('GENDER_OTHER');
+        $gender_other->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $indigenous = new CheckboxReportItem();
+        $indigenous->setBlobType(BLOB_ARRAY);
+        $indigenous->setBlobItem('INDIGENOUS');
+        $indigenous->setBlobSection(HQP_APPLICATION_FORM);
+        $indigenous->setId("indigenous");
+        
+        $ethnicities = new CheckboxReportItem();
+        $ethnicities->setBlobType(BLOB_ARRAY);
+        $ethnicities->setBlobItem('ETHNICITIES');
+        $ethnicities->setBlobSection(HQP_APPLICATION_FORM);
+        $ethnicities->setId("ethnicities");
+        
+        $ethnicities_other = new TextReportItem();
+        $ethnicities_other->setBlobType(BLOB_TEXT);
+        $ethnicities_other->setBlobItem('ETHNICITIES_OTHER');
+        $ethnicities_other->setBlobSection(HQP_APPLICATION_FORM);
+        
+        $disability = new CheckboxReportItem();
+        $disability->setBlobType(BLOB_ARRAY);
+        $disability->setBlobItem('DISABILITY');
+        $disability->setBlobSection(HQP_APPLICATION_FORM);
+        $disability->setId("disability");
+        
+        $postsecondary = new CheckboxReportItem();
+        $postsecondary->setBlobType(BLOB_ARRAY);
+        $postsecondary->setBlobItem('POSTSECONDARY');
+        $postsecondary->setBlobSection(HQP_APPLICATION_FORM);
+        $postsecondary->setId("postsecondary");
+        
         $tabbedPage = new InnerTabbedPage("reports");
-        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2022, "2022"));
+        $tabbedPage->addTab(new ApplicationTab('RP_EPIC_AT', null, 2022, "2022", array("Academic Status" => $stat,
+                                                                                       "Supervisor" => $sup,
+                                                                                       "Institution" => $uni,
+                                                                                       "Level" => $lvl,
+                                                                                       "Memberships" => $mem,
+                                                                                       "Title" => $title,
+                                                                                       "Keywords" => $keywords,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
+                                                                                       "Indigenous" => $indigenous,
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability,
+                                                                                       "Post-Secondary" => $postsecondary)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
