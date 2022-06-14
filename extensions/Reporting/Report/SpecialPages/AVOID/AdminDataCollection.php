@@ -31,6 +31,7 @@ class AdminDataCollection extends SpecialPage{
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
                                         <th rowspan='2'>Name</th>
+                                        <th rowspan='2'>Email</th>
                                         <th rowspan='2'>Age</th>
                                         <th rowspan='2'>Postal Code</th>
                                         <th rowspan='2'>Role</th>
@@ -47,6 +48,7 @@ class AdminDataCollection extends SpecialPage{
                                 <tbody>");
             foreach($people as $person){
                 $name = $person->getRealName();
+                $email = $person->getEmail();
                 $avoid_age = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "avoid_age", $person->getId());
                 $avoid_age = str_replace("less than", "<", $avoid_age);
                 $avoid_age = str_replace("more than", ">", $avoid_age);
@@ -54,7 +56,12 @@ class AdminDataCollection extends SpecialPage{
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
-                                    <td>$name</td> <td nowrap>$avoid_age</td> <td>$postal_code</td><td>{$person->getRoleString()}</td><td nowrap>{$registration_date}</td>");
+                                    <td>$name</td>
+                                    <td>$email</td>
+                                    <td nowrap>$avoid_age</td>
+                                    <td>$postal_code</td>
+                                    <td>{$person->getRoleString()}</td>
+                                    <td nowrap>{$registration_date}</td>");
 
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');
