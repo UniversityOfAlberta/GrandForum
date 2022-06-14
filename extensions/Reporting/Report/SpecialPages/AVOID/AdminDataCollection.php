@@ -24,6 +24,20 @@ class AdminDataCollection extends SpecialPage{
             }
             $people[] = $person;
         }
+        $wgOut->addHTML("<style>
+            div#adminDataCollectionMessages {
+                position: fixed; 
+                top: 122px; 
+                right: 40px; 
+                width: 500px;
+                opacity: 0.95;
+                z-index: 1001;
+            }
+
+            div#adminDataCollectionMessages > div {
+                box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+            }
+        </style>");
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
         $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
         if(count($people) > 0){
@@ -57,7 +71,7 @@ class AdminDataCollection extends SpecialPage{
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
                                     <td>$name</td>
-                                    <td>$email</td>
+                                    <td class='emailCell'>$email</td>
                                     <td nowrap>$avoid_age</td>
                                     <td>$postal_code</td>
                                     <td>{$person->getRoleString()}</td>
@@ -192,10 +206,28 @@ class AdminDataCollection extends SpecialPage{
             }
             $wgOut->addHTML("</tbody>
                             </table>
+                            <div id='adminDataCollectionMessages'></div>
                             <script type='text/javascript'>
                                 table = $('#data').DataTable({
                                     aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                                    iDisplayLength: -1,
+                                    iDisplayLength: -1
+                                });
+                                $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
+                                $('#copyEmails').click(function(){
+                                    var emails = [];
+                                    $('.emailCell:visible').each(function(){
+                                        var email = $(this).text().trim();
+                                        if(email != ''){
+                                            emails.push(email);
+                                        }
+                                    });
+                                    navigator.clipboard.writeText(emails.join(','));
+                                    clearAllMessages('#adminDataCollectionMessages');
+                                    $('#adminDataCollectionMessages').stop();
+                                    $('#adminDataCollectionMessages').show();
+                                    $('#adminDataCollectionMessages').css('opacity', 0.95);
+                                    addSuccess('Visible email addresses copied', false, '#adminDataCollectionMessages');
+                                    $('#adminDataCollectionMessages').fadeOut(5000);
                                 });
                             </script>");
         }
