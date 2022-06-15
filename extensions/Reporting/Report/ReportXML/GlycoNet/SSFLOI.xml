@@ -239,7 +239,7 @@
                 </ul>
             ]]>
         </Static>
-        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template1.xlsx">
+        <ReportItem id="upload" type="BudgetReportItem" blobType="BLOB_EXCEL" blobItem="CAT_BUD_UPLOAD" structure="GLYCONET_BUDGET_STRUCTURE" template="GlycoNet Budget Template2.xlsx">
             <![CDATA[
                 {$item}
             ]]>
