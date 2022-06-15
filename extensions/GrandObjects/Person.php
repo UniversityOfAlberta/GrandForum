@@ -402,7 +402,9 @@ class Person extends BackboneModel {
                                               'user_id' => NOT_IN($keys)));
             foreach($data as $row){
                 Cache::store("mw_user_{$row['user_id']}", $row);
-                self::$userRows[$row['user_id']] = $row;
+                if($row['user_id'] == $id){
+                    self::$userRows[$id] = $row;
+                }
             }
         }
         return (isset(self::$userRows[$id])) ? self::$userRows[$id] : array();
