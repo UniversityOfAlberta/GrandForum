@@ -37,6 +37,10 @@ class Report extends AbstractReport{
 
         foreach($person->getProjects() as $project){
             if($person->isRole(PL, $project) || $person->isRole(PA, $project) || $person->isRole(RP, $project)){
+                if($project->getName() == "P11"){
+                    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectCompletionReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
+                    $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Completion)", "{$url}ProjectCompletionReport&project={$project->getName()}", $selected);
+                }
                 $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProgressReport") && isset($_GET['project']) && $_GET['project'] == $project->getName()) ? "selected" : false;
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Progress)", "{$url}ProjectProgressReport&project={$project->getName()}", $selected);
             }
