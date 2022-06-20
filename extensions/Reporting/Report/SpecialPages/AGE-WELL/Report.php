@@ -8,6 +8,7 @@ $wgSpecialPageGroups['Report'] = 'reporting-tools';
 require_once("CCActivitiesTable.php");
 require_once("HQPRegisterTable.php");
 require_once("HQPReviewTable.php");
+require_once("EPICATReviewTable.php");
 require_once("EEAReviewTable.php");
 require_once("CRPReviewTable.php");
 require_once("SIPReviewTable.php");
@@ -237,23 +238,27 @@ class Report extends AbstractReport {
         }*/
         if(count($person->getEvaluates("EEA-2022", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EEAReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA Review", "{$url}EEAReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EEA", "{$url}EEAReview", $selected);
         }
         if(count($person->getEvaluates("SIP-2019", 2019)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SIPAcceleratorReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("SIP Review", "{$url}SIPAcceleratorReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("SIP", "{$url}SIPAcceleratorReview", $selected);
         }
         if(count($person->getEvaluates("CRP-2018", 2018)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CRPReview")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CRP Review", "{$url}CRPReview", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("CRP", "{$url}CRPReview", $selected);
         }
         if($person->isRole(SD) || $person->isRole(RMC) || $person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectReviewFeedback")) ? "selected" : false;
-            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Project Review (Feedback)", "{$url}ProjectReviewFeedback", $selected);
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Project (Feedback)", "{$url}ProjectReviewFeedback", $selected);
         }
         if(count($person->getEvaluates("HQP-2022", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "HQPReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("HQP Award", "{$url}HQPReview", $selected);
+        }
+        if(count($person->getEvaluates("EPIC-2022", 2022)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPICATReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT", "{$url}EPICATReview", $selected);
         }
         return true;
     }

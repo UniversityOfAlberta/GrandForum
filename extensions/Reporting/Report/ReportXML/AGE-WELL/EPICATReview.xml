@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="EPIC-AT Award 2022" reportType="RP_EPIC_REVIEW" ajax="true" disabled="false" year="2022">
+    <Permissions>
+        <Role role="Evaluator">
+            <SectionPermission id="instructions" permissions="rw" />
+            <SectionPermission id="materials" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="instructions" tooltip="General Instructions" name="General Instructions" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <h3>Review Form and Instructions</h3>
+                <p>Prior to undertaking the reviews, please familiarize yourself with the EPIC-AT Application Form and Information Package provided to all applicants.</p>
+
+                <p>These Fellowships are, first and foremost, a training grant and you will see this reflected in the adjudication criteria and weighting below. Through these Fellowships we are hoping to support candidates with strong potential for future impact both within and outside of academia.</p>
+
+                Our ideal Fellows demonstrate:
+                <ul>
+                    <li>Vision for their research that goes beyond traditional disciplines and silos</li>
+                    <li>New ideas and approaches to old problems</li>
+                    <li>Keen willingness to learn new skills</li>
+                    <li>Awareness of the importance of non-traditional KT including commercial and social impact</li>
+                    <li>Strong identification with EPIC-AT vision</li>
+                </ul>
+
+                <p>Emphasis here could and should be on potential rather than solely on the technicalities of the research proposal itself – particularly for those at the Master’s or early PhD level. Consider the value the applicant will gain from being part of the EPIC-AT training environment.</p>
+
+                <p>A key aspect of EPIC-AT’s training philosophy is that we have the ability to fund Fellows who may not be funded through traditional funding sources (e.g. CIHR, NSERC, SSHRC) or may not have significant numbers of peer-reviewed publications and presentations.</p>
+
+                <p>We are looking to fund individuals who are thinking “outside of the box”, and who are interested in pursuing non-traditional roles within their training program.</p>
+
+                <p>Please use the following adjudication criteria when reviewing applications. You will note that the criteria weighs quite heavily applicant potential and desire to participate in the training program:</p>
+                <table class="wikitable">
+                    <tr>
+                        <td valign="top">Alignment with EPIC-AT Program Goals</td>
+                        <td valign="top">25%</td>
+                        <td>
+                            <ul>
+                                <li>the applicant’s research is relevant to EPIC-AT values and mission</li>
+                                <li>the applicant seeks to go beyond traditional disciplinary boundaries</li>
+                                <li>the applicant is interested in creating real-world solutions</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Personal Statement</td>
+                        <td valign="top">25%</td>
+                        <td>
+                            <ul>
+                                <li>achievements of the applicant relative to other researchers at the same career stage</li>
+                                <li>the applicant demonstrates a vested interest in their research and career development</li>
+                                <li>the applicant has clearly identified the benefits of participating in EPIC-AT</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Scholarly Merit</td>
+                        <td valign="top">25%</td>
+                        <td>
+                            <ul>
+                                <li>the applicant’s research is original or novel</li>
+                                <li>the appropriateness of the methods and theoretical approach</li>
+                                <li>probability that the objectives will be met within the timeline proposed</li>
+                                <li>involvement of partners or stakeholders in the design and conduct of proposed activities</li>
+                                <li>the applicant has or will consider EDI in research</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Potential Impact and Feasibility</td>
+                        <td valign="top">25%</td>
+                        <td>
+                            <ul>
+                                <li>the applicant’s research has potential positive impact on the lives of older adults and caregivers</li>
+                                <li>the associated benefits to older adults and caregivers feasibly described</li>
+                                <li>the applicant’s letters of reference indicate that the applicant and their work have excellent potential positive impact</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+                <h3>Numerical Scoring</h3>
+                
+                <p>EPIC-AT Fellowship applications will be assigned a score for each of the four criteria above, based on the following scoring table. The appropriate weighting is then applied to arrive at a final score. Applications must receive an average score of 6 or higher and receive at least a 5 in each of the four criteria to be recommended for funding.</p>
+                
+                <p>To make the review process as simple as possible, provide a single overall score for each criterion using the following scale:</p>
+
+                <table frame='box' rules='all'>
+                    <tr>
+                        <th>Potential Impact</th><th>Impact Score</th><th>Descriptor</th><th>Additional Guidance on Strengths/Weaknesses</th>
+                    </tr>
+                    <tr><td rowspan='3'>High</td><td>9</td><td>Exceptional</td><td>Exceptionally strong with essentially no weaknesses</td></tr>
+                    <tr><td>8</td><td>Outstanding</td><td>Extremely strong with negligible weaknesses</td></tr>
+                    <tr><td>7</td><td>Excellent</td><td>Very strong with only some minor weaknesses</td></tr>
+                    <tr><td rowspan='3'>Moderate</td><td>6</td><td>Very Good</td><td>Strong but with numerous minor weaknesses</td></tr>
+                    <tr><td>5</td><td>Good</td><td>Strong but with at least one moderate weakness</td></tr>
+                    <tr><td>4</td><td>Satisfactory</td><td>Some strengths but also some moderate weaknesses</td></tr>
+                    <tr><td rowspan='3'>Low</td><td>3</td><td>Fair</td><td>Some strengths but with at least one major weakness</td></tr>
+                    <tr><td>2</td><td>Marginal</td><td>A few strengths and a few major weaknesses</td></tr>
+                    <tr><td>1</td><td>Poor</td><td>Very few strengths and numerous major weaknesses</td></tr>
+                </table>
+                <b>Definitions</b>
+                <ul>
+                    <li>Minor: weakness that does not substantially lessen the quality of the proposal or potential of the candidate.</li>
+                    <li>Moderate: weakness that lessens the quality of the proposal or potential of the candidate</li>
+                    <li>Major: weakness that severely limits the quality of the proposal or potential of the candidate</li>
+                </ul>
+
+                <h3>Comments</h3>
+
+                <p>Please use the comment boxes to justify your score. We have provided some questions to guide scoring on each criterion. Please bear these in mind, but use your own judgment if you think other factors are relevant. There is also an overall comments box where you can highlight the key attributes of the applicant.</p>
+
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="materials" tooltip="Download HQP Application PDFs" name="Materials" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+            <table align="left">
+                <tr>
+                    <th style="min-width:110px;">HQP Name</th>
+                    <th style="min-width:125px;">Application PDF</th>
+                </tr>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2022">
+            <ReportItem id="hqp_pdf" type="PDFReportItem" reportType="EPIC-AT" width="100%" project="true">
+                <![CDATA[<tr><td>{$user_name}</td><td>{$item}</td>]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="HQP Review" name="HQP Review" blobSection="HQP_REVIEW" type="EditableReportSection">
+        <ReportItemSet id="hqp_materials" type="MaterialsReportItemSet" subType="EPIC-2022">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{$user_name}">
+                <ReportItem id="overall" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_OVERALL_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <h2>1. Overall comments</h2>
+                        <small>
+                            <ul>
+                                <li>What are key strengths of the proposal/applicant?</li>
+                                <li>What are the weaknesses?</li>
+                                <li>Is this applicant representative of AGE-WELL’s vision for a new type of HQP?</li>
+                                <li>Any other comments?</li>
+                            </ul>
+                        </small>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="goals" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_GOALS" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>2. Alignment with EPIC-AT Program Goals (25%)</h2>
+                        <small>
+                            <ul>
+                                <li>The applicant’s research is relevant to EPIC-AT values and mission</li>
+                                <li>The applicant seeks to go beyond traditional disciplinary boundaries</li>
+                                <li>The extent to which the applicant is interested in creating real-world solutions</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="goals_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_GOALS_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="statement" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_STATEMENT" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>3. Personal Statement (25%)</h2>
+                        <small>
+                            <ul>
+                                <li>Achievements of the proposed fellow relative to other researchers at the same career stage</li>
+                                <li>The applicant demonstrates a vested interest in their research and career development</li>
+                                <li>The applicant has clearly identified the benefits to participating in EPIC-AT</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="statement_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_STATEMENT_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="quality" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_QUALITY" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>4. Scholarly Merit (25%)</h2>
+                        <small>
+                            <ul>
+                                <li>The applicant’s research is original or novel</li>
+                                <li>The appropriateness of the methods and theoretical approach</li>
+                                <li>Probability that the objectives will be met within the timeline proposed</li>
+                                <li>Involvement of partners or stakeholders in the design and conduct of proposed activities</li>
+                                <li>The applicant has or will consider EDI in research</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="quality_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_QUALITY_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="impact" type="RadioReportItem" orientation="horizontal" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_IMPACT" blobSubItem="{$user_id}" options="1|2|3|4|5|6|7|8|9">
+                    <![CDATA[
+                        <h2>5. Potential Impact and Feasibility (25%)</h2>
+                        <small>
+                            <ul>
+                                <li>The applicant’s research has potential positive impact on the lives of older adults and caregivers</li>
+                                <li>The associated benefits to older adults and caregivers is feasibly described</li>
+                                <li>The applicant’s letters of reference indicate that the applicant and their work have excellent potential positive impact</li>
+                            </ul>
+                        </small>
+                        <b>Overall Score:</b>&nbsp;{$item}<br />
+                    ]]>
+                </ReportItem>
+                <ReportItem id="impact_comm" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_REVIEW_IMPACT_COMM" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments:</b>
+                        {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
