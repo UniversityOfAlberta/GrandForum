@@ -211,7 +211,7 @@ abstract class AbstractReportSection {
     
     // Sets the Instructions for this AbstractReportSection
     function setInstructions($instructions){
-        $this->instructions = $instructions;
+        $this->instructions = $this->varSubstitute($instructions);
     }
     
     // Returns the instructions for this AbstractReportSection

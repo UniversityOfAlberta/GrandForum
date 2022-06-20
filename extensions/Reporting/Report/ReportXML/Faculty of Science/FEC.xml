@@ -11,6 +11,8 @@
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -25,6 +27,8 @@
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -39,6 +43,8 @@
             <SectionPermission id="services" permissions="rw" />
             <SectionPermission id="supplementary" permissions="rw" />
             <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
             <SectionPermission id="chair" permissions="-" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -53,6 +59,8 @@
             <SectionPermission id="services" permissions="-" />
             <SectionPermission id="supplementary" permissions="-" />
             <SectionPermission id="additionalInfo" permissions="-" />
+            <SectionPermission id="pandemic" permissions="-" />
+            <SectionPermission id="sabbatical" permissions="-" />
             <SectionPermission id="chair" permissions="rw" />
             <SectionPermission id="review" permissions="-" />
             <SectionPermission id="submit" permissions="-" />
@@ -61,6 +69,12 @@
     <ReportSection id="information" tooltip="Intro" name="Intro" title="Intro" blobSection="FEC_INFORMATION" type="EditableReportSection">
         <Instructions>
             <![CDATA[
+                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Criteria for Merit Increments, Tenure, and Promotion.pdf'><b>Criteria for Merit Increments, Tenure, and Promotion</b></a></p>
+                
+                <p style='margin-bottom:1em;'><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Procedures for Annual Review of Performance.pdf'><b>Procedures for Annual Review of Performance</b></a></p>
+                
+                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Standards for Faculty Service Officers.pdf'><b>Standards for Faculty Service Officers</b></a></p>
+                
                 <h3>Responsibilities Variation</h3>
                 <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
                 
@@ -327,12 +341,97 @@ Add a new other teaching entry to create a new paragraph.<br />
         </ReportItem>
     </ReportSection>
     <ReportSection id="students" tooltip="HQP Supervision" name="HQP Supervision" title="HQP Supervision" blobSection="FEC_STUDENTS" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <h3>HQP Publications</h3>
+                <p>The publications should have your HQP listed as an author, but cannot include yourself as an author.  If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. <b>Note</b> that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
+                
+                <h3>HQP Presentations</h3>
+                <p>The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="students" type="PersonSupervisesReportItem" blobItem="HQP" splitGrad="true" showCommittees="true" awards="true" footnotes="true">
             <![CDATA[
                 <a class="button" style="position:absolute;top:4px;right:10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManagePeople">Manage HQP</a>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
+                <table class='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
+                <![CDATA[
+                    <tr><td>{$product_type}</td><td>{$item}</td>
+                ]]>
+            </ReportItem>
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <td width="30px" align="center">{$item}</td></tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
+                <small></small>
+                <table class ='wikitable' style='width:100%'>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>HQP</th>
+                        <th>Invited</th>
+                        <th>Event Title</th>
+                        <th>Organization</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Length (minutes)</th>
+                        <th>Footnote</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
+            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
+                <![CDATA[
+                    <tr><td align='center'>{$presentation_title}</td>
+                        <td align='center'>{$presentation_type}</td>
+                        <td>{$product_authors}</td>
+                        <td align='center'>{$presentation_invited}</td>
+                        <td>{getProductData(event_title)}</td>
+                        <td>{$presentation_organization}</td>
+                        <td align='center'>{$presentation_country}</td>
+                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
+                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
+                        <td align='center'>{$item}</td>
+                    </tr>
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </tbody></table><br />
+            ]]>
+        </Static>
     </ReportSection>
     <ReportSection id="publications" tooltip="Outputs" name="Outputs" title="" blobSection="FEC_PRODUCTS" type="EditableReportSection">
         <Instructions>
@@ -808,15 +907,8 @@ Add a new other teaching entry to create a new paragraph.<br />
                 <h3>Additional Info</h3>
                 <p>Type any other relevant information for your report. For example, you may add details about your publications, presentations given by your HQP responsibilities or by your collaborators (not by you). Include publications from Graduate Student research for which you are not a co-author, details of special interest on invited presentations or non-refereed publications, significant information about refereed publication venues, distinctions, projects initiated, special details about grants or contracts, unpaid consulting, letters of references for your HQPs, letters of nomination for awards for other individuals, etc.</p>
                 <p>(Include publications from Graduate Student theses (not co-authored), details of special interest on invited presentations or non-refereed publications, important information about refereed publication venues, distinctions, projects initiated, special details about grants and contracts, unpaid consulting, etc.)</p>
-                
-                <h3>Pandemic Impact Statement</h3>
-                <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
-                
-                <h3>HQP Publications</h3>
-                <p>The publications should have your HQP listed as an author, but cannot include yourself as an author.  If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are. <b>Note</b> that this will only override the formatting for this author in this report. It is advised that the author be correctly associated with the output and have correct Basic Info history.</p>
-                
-                <h3>HQP Presentations</h3>
-                <p>The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.</p>
+                <p><b>The FoS affirms its commitment to EDI and any evidence that the faculty member has pursued activities towards advancing EDI in their research and/or teaching and/or service is appreciated and recognized as meritorious.</b></p>
+                <p><b>Activities such as commercialization activities, contributions to professional and policy reports, public dissemination and knowledge translation activities may also be considered meritorious.</b></p>
             ]]>
         </Instructions>
         <ReportItem id="additionalData" type="MultiTextReportItem" blobItem="FEC_INFO_ADDITIONAL" blobType="BLOB_ARRAY" labels="Description" types="Textarea" sizes="400" addText="Add New" multiple="true" optional="true">
@@ -824,9 +916,15 @@ Add a new other teaching entry to create a new paragraph.<br />
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="pandemic" tooltip="Pandemic Impact Statement" name="Pandemic Impact" title="Pandemic Impact Statement &lt;span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).&lt;br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;&lt;/span>" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
+        <Instructions>
+            <![CDATA[
+                <p>Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.</p>
+            ]]>
+        </Instructions>
         <ReportItem id="covid" type="Textarea" blobItem="COVID" optional="true">
             <![CDATA[
-                <h2>Pandemic Impact Statement <span class='clicktooltip' title='Please provide a concise description of activities and performance that deviated, due to COVID disruptions, from what would normally have happened. For example, this could be heavier teaching or service to deal with the roll-out of a year of online delivery, or diminished research productivity due to partial lab closures, or fewer invited talks due to travel restrictions. It could also include any extraordinary impacts due to personal situations (illness of self or family member, kids having to do their schooling at home, etc.).<br />Please, keep this statement as concise as possible; the FEC will appreciate brevity.'>&#9432;</span></h2>
                 <p>You can either enter your pandemic impact statement below</p>
                 {$item}
             ]]>
@@ -845,9 +943,9 @@ Add a new other teaching entry to create a new paragraph.<br />
                 </div>
                 
                 <script type='text/javascript'>
-                    $('#AdditionalInfo_covid').on("change keyup", function(){
-                        if($('#AdditionalInfo_covid').val() == "" && 
-                           $('#fileFrameAdditionalInfo_covid_upload').contents().find("a").text().indexOf("Download") === -1){
+                    $('#PandemicImpact_covid').on("change keyup", function(){
+                        if($('#PandemicImpact_covid').val() == "" && 
+                           $('#fileFramePandemicImpact_covid_upload').contents().find("a").text().indexOf("Download") === -1){
                             $('#covid_container').slideDown();
                         }
                         else{
@@ -856,102 +954,27 @@ Add a new other teaching entry to create a new paragraph.<br />
                         }
                     });
                     
-                    $('#AdditionalInfo_covid').change();
+                    $('#PandemicImpact_covid').change();
                     
                     if(typeof covidInterval != "undefined"){
                         clearInterval(covidInterval);
                     }
                     
                     covidInterval = setInterval(function(){
-                        $('#AdditionalInfo_covid').change();
-                    }, 250);
+                        $('#PandemicImpact_covid').change();
+                    }, 100);
                     
                 </script>
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="sabbatical" tooltip="Sabbatical Report" name="Sabbatical Report" title="Sabbatical Report" blobSection="FEC_ADDITIONAL_INFO" type="EditableReportSection">
         <ReportItem id="sabbatical" type="Upload" blobType="BLOB_RAW" blobItem="SABBATICAL" mimeType=".pdf" fileSize="5" optional="true">
             <![CDATA[
-                <h2>Sabbatical Report</h2>
-                <small>Attach a <b>PDF</b> of your sabbatical report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</small>
+                <p>Attach a <b>PDF</b> of your sabbatical report here if applicable.  It will be appended at the bottom of the generated Annual Report PDF.</p>
                 {$item}
             ]]>
         </ReportItem>
-        <Static>
-            <![CDATA[
-                <h2>HQP Publications <span class='clicktooltip' title='The publications should have your HQP listed as an author, but cannot include yourself as an author.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Publication">Manage Publications</a></h2>
-                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>&nbsp;<span class='clicktooltip' style='font-size:1.3em;vertical-align:middle;' title='If the authors are not being formatted correctly, click the author you wish to change and select what type of user they are.  <b>Note</b> that this will only override the formatting for this author in this report.  It is advised that the author be correctly associated with the output and have correct Basic Info history.'>&#9432;</span>
-                <table class='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Title</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppublications" type="PersonProductsReportItemSet" category="Publication" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="annotation" type="AnnotateProductReportItem" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" showStatus="true" optional="true">
-                <![CDATA[
-                    <tr><td>{$product_type}</td><td>{$item}</td>
-                ]]>
-            </ReportItem>
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <td width="30px" align="center">{$item}</td></tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
-        <Static>
-            <![CDATA[
-                <h2>HQP Presentations <span class='clicktooltip' title='The Presentations section lists any presentations given by the user&#39;s hqp during the reporting year.  The presentations cannot include yourself as a presenter, though you can be listed as a contributor.'>&#9432;</span><a class="button" style="float:right;margin-top:-10px;" target="_blank" href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts#/Presentation">Manage Presentations</a></h2>
-                <small></small>
-                <table class ='wikitable' style='width:100%'>
-                    <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>HQP</th>
-                        <th>Invited</th>
-                        <th>Event Title</th>
-                        <th>Organization</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Length (minutes)</th>
-                        <th>Footnote</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-            ]]>
-        </Static>
-        <ReportItemSet id="hqppresentations" type="PersonProductsReportItemSet" category="Presentation" useProductYear="true" onlyHQP="true" start="CYCLE_START" end="CYCLE_END">
-            <ReportItem id="row" type="FootnotesReportItem" blobSubItem="{$product_id}">
-                <![CDATA[
-                    <tr><td align='center'>{$presentation_title}</td>
-                        <td align='center'>{$presentation_type}</td>
-                        <td>{$product_authors}</td>
-                        <td align='center'>{$presentation_invited}</td>
-                        <td>{getProductData(event_title)}</td>
-                        <td>{$presentation_organization}</td>
-                        <td align='center'>{$presentation_country}</td>
-                        <td align='center' style='white-space:nowrap;'>{$presentation_date}</td>
-                        <td align='right' style='white-space:nowrap;'>{$presentation_length}</td>
-                        <td align='center'>{$item}</td>
-                    </tr>
-                ]]>
-            </ReportItem>
-        </ReportItemSet>
-        <Static>
-            <![CDATA[
-                </tbody></table><br />
-            ]]>
-        </Static>
     </ReportSection>
     <ReportSection id="chair" tooltip="Signed &amp; Locked" name="Signed &amp; Locked" blobSection="CHAIR_REVIEW" type="ReportSection">
         <ReportItem id="pdf" type="PDFReportItem" reportType="FEC" embed="true">

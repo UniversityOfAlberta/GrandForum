@@ -496,6 +496,9 @@ class Person extends BackboneModel {
                         self::$rolesCache[$row['user_id']][$row['id']] = $row['role'];
                     }
                 }
+                foreach(self::$rolesCache as $id => $roles){
+                    self::$rolesCache[$id] = serialize($roles);
+                }
                 Cache::store("rolesCache", self::$rolesCache);
             }
         }
@@ -1141,7 +1144,7 @@ class Person extends BackboneModel {
             if($filter == null || $filter == "all" || isset(self::$rolesCache[$row])){
                 if($filter != null && $filter != "all"){
                     $found = false;
-                    foreach(self::$rolesCache[$row] as $role){
+                    foreach(unserialize(self::$rolesCache[$row]) as $role){
                         if($role == $filter){
                             $found = true;
                         }
@@ -2394,7 +2397,7 @@ class Person extends BackboneModel {
         if($this->roles == null && $this->id != null){
             $this->roles = array();
             if(isset(self::$rolesCache[$this->id])){
-                foreach(self::$rolesCache[$this->id] as $id => $row){
+                foreach(unserialize(self::$rolesCache[$this->id]) as $id => $row){
                     $this->roles[] = Role::newFromId($id);
                     //$this->roles[] = new Role(array(0 => $row));
                 }
