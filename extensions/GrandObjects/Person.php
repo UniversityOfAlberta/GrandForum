@@ -4869,59 +4869,56 @@ class Person extends BackboneModel {
      * @return json of resources
      */
     function getClipboard(){
-	if($this->clipboard == null){
+        if($this->clipboard == null){
             $data = DBFunctions::select(array('grand_clipboard'),
                                         array('*'),
                                         array('user_id' => EQ($this->id)));
             $arr = array();
             if(count($data) > 0){
-		$json_objs = json_decode($data[0]['json_objs'], TRUE);
+                $json_objs = json_decode($data[0]['json_objs'], TRUE);
                 /*foreach($json_objs as $obj){
-		    /*$newobj = array();
-		    $newobj["PublicName"] = $obj["PublicName"];
+                    /*$newobj = array();
+                    $newobj["PublicName"] = $obj["PublicName"];
                     $newobj["AgencyDescription"] = $obj["AgencyDescription"];
                     $newobj["Eligibility"] = $obj["Eligibility"];
-		    $newobj["ParentAgency"] = $obj["ParentAgency"];
-		    $newobj["PhysicalAddress1"] = $obj["PhysicalAddress1"];
+                    $newobj["ParentAgency"] = $obj["ParentAgency"];
+                    $newobj["PhysicalAddress1"] = $obj["PhysicalAddress1"];
                     $newobj["EmailAddressMain"] = $obj["EmailAddressMain"];
                     $newobj["PhoneNumber"] = $obj["PhoneNumber"];
                     $newobj["WebsiteAddress"] = $obj["WebsiteAddress"];
-		    $array[] = $newobj;
-			$newobj = array();
-			$newobj["PublicName"] = $obj["PublicName"];
-			$arr[] = $newobj;
-	        }*/
-	    }
-	    else{
-		return array();
-	    }
-
-	}
-	
-	$this->clipboard = $json_objs;
+                    $array[] = $newobj;
+                    $newobj = array();
+                    $newobj["PublicName"] = $obj["PublicName"];
+                    $arr[] = $newobj;
+                }*/
+            }
+            else {
+                return array();
+            }
+        }
+        $this->clipboard = $json_objs;
         return $this->clipboard;
     }
 
     function setClipboard($arr){
-	    $this->clipboard = $arr;
+        $this->clipboard = $arr;
     }
 
     function saveClipboard($arr){
-	$data = DBFunctions::select(array('grand_clipboard'),
+        $data = DBFunctions::select(array('grand_clipboard'),
                                     array('*'),
                                     array('user_id' => EQ($this->id)));
-	if(count($data)==0){
-                DBFunctions::insert('grand_clipboard',
-                                    array('user_id' => $this->id,
-                                          'json_objs' => json_encode($arr)));
-
-	}
-	else{
+        if(count($data)==0){
+            DBFunctions::insert('grand_clipboard',
+                                array('user_id' => $this->id,
+                                      'json_objs' => json_encode($arr)));
+        }
+        else{
             $status = DBFunctions::update('grand_clipboard',
                                           array('json_objs' => json_encode($arr)),
                                           array('user_id' => EQ($this->id)));
-	}
-	DBFunctions::commit();
+        }
+        DBFunctions::commit();
         return true;
     }
 

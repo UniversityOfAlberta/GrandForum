@@ -7,29 +7,31 @@ class PersonClipboardAPI extends RESTAPI {
    * @return mixed
    */
     function doGET(){
-	$me = Person::newFromWgUser();
-	header('Content-Type: application/json');
+        $me = Person::newFromWgUser();
+        header('Content-Type: application/json');
         $clipboard = $me->getClipboard();
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in.");
-	}
-	$clips = new Collection($clipboard);
-	return $clips->toJSON();
+        }
+        $clips = new Collection($clipboard);
+        return $clips->toJSON();
     }
     
     function doPOST(){
         $me = Person::newFromWgUser();
-	header('Content-Type: application/json');
-	$arr = $this->POST("clipboard");	
-	$status = $me->saveClipboard($arr);
-	if($status){
-		$clipboard = $me->getClipboard();
-		$clips = new Collection($clipboard);
-        	return $clips->toJSON();
-	}
-	else{
-	    $this->throwError("Error saving.");
-	}
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in.");
+        }
+        $arr = $this->POST("clipboard");
+        $status = $me->saveClipboard($arr);
+        if($status){
+            $clipboard = $me->getClipboard();
+            $clips = new Collection($clipboard);
+            return $clips->toJSON();
+        }
+        else{
+            $this->throwError("Error saving.");
+        }
     }
     
     function doPUT(){
@@ -38,7 +40,9 @@ class PersonClipboardAPI extends RESTAPI {
     
     function doDELETE(){
         $me = Person::newFromWgUser();
-        header('Content-Type: application/json');
+        if(!$me->isLoggedIn()){
+            $this->throwError("You must be logged in.");
+        }
         $status = $me->saveClipboard(array());
         if($status){
                 $clipboard = $me->getClipboard();
