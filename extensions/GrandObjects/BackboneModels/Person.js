@@ -517,3 +517,20 @@ PersonRoleString = Backbone.Model.extend({
     }
 
 });
+
+
+/**
+ * PersonRoleString Model
+ */
+PersonClipboard = Backbone.Model.extend({
+
+    initialize: function(){
+
+    },
+    idAttribute: '_id',
+    urlRoot: 'index.php?action=api.clipboard',
+
+    defaults: {
+    }
+
+});

@@ -67,7 +67,7 @@ $apiRequest->addAction('Hidden','people/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/:university/simple', 'PeopleAPI');
 $apiRequest->addAction('Hidden','people/:role/:university/:department/simple', 'PeopleAPI');
-
+$apiRequest->addAction('Hidden', 'clipboard', 'PersonClipboardAPI');
 // Role
 $apiRequest->addAction('Hidden','role', 'RoleAPI');
 $apiRequest->addAction('Hidden','role/:id', 'RoleAPI');

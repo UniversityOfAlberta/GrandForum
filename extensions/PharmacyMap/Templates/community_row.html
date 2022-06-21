@@ -1,26 +1,33 @@
-<td valign="top" style="width:40px" id="row_<%= id %>">
-    <h3 style="margin-top:0;"><%= PublicName %></h3>
-    <%= AgencyDescription %>
+<td valign="top" style="width:40px" id="row_<%= output.id %>">
+	<h3 style="margin-top:0;">
+		<% if(!bookmarked){ %>
+		<a href="#" id="bkmark" data-index="1"><img id="bkmarked_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"></a> 
+		<% }else{ %>
+			<a href="#" id="bkmark" data-index="1"><img id="bkmark_<%= output.id %>" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-star-fill.svg"></a> 
+		<% } %>
+		<%= output.PublicName %>
+	</h3>
+    <%= output.AgencyDescription %>
     <br /><br />
     <a style="cursor: pointer;" onClick="$(this).hide();$(this).siblings('div').slideDown();">Show more information</a>
     <div style="display:none;">
-        <% if(Eligibility != ""){ %>
-            <b>Eligibility:</b> <%= Eligibility %><br />
+        <% if(output.Eligibility != ""){ %>
+            <b>Eligibility:</b> <%= output.Eligibility %><br />
         <% } %>
-        <% if(ParentAgency != ""){ %>
-            <b>Organization:</b> <%= ParentAgency %><br />
+        <% if(output.ParentAgency != ""){ %>
+            <b>Organization:</b> <%= output.ParentAgency %><br />
         <% } %>
-        <% if(PhysicalAddress1 != ""){ %>
-            <b>Address:</b> <%= PhysicalAddress1 %><br />
+        <% if(output.PhysicalAddress1 != ""){ %>
+            <b>Address:</b> <%= output.PhysicalAddress1 %><br />
         <% } %>
-        <% if (EmailAddressMain != ""){ %>
-            <b>Email:</b> <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
+        <% if (output.EmailAddressMain != ""){ %>
+            <b>Email:</b> <a href='mailto:<%= output.EmailAddressMain %>'><%= output.EmailAddressMain %></a><br />
         <% } %>
-        <% if ( PhoneNumbers.length != 0){ %>
-            <b>Phone:</b> <%= PhoneNumbers[0].Phone %><br />
+        <% if ( output.PhoneNumbers.length != 0){ %>
+            <b>Phone:</b> <%= output.PhoneNumbers[0].Phone %><br />
         <% } %>
-        <% if (WebsiteAddress != ""){ %>
-            <b>Website:</b> <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a><br />
+        <% if (output.WebsiteAddress != ""){ %>
+            <b>Website:</b> <a href='<%=output.WebsiteAddress %>' target='_blank'><%=output.WebsiteAddress%></a><br />
         <% } %>
 	<a style="cursor: pointer;" onClick="$(this).parent().slideUp();$(this).parent().siblings('a').show();">Show less</a>
 

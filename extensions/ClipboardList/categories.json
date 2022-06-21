@@ -1,0 +1,652 @@
+[
+    {
+        "id": "Activity",
+        "text": "Activity",
+        "class": "testing",
+        "code": "CFN-ACT",
+        "description": "Explore ways to get physically active in your community!",
+        "tags": ["activity programs"],
+        "children": [
+            {
+                "text": "Sports",
+                "code": "CFN-ACT-SP",
+                "description": "Choose from a variety of individual and team sports",
+		"note": "This is a dangerous activity",
+                "tags": ["sports programs"],
+                "children": [
+                    {
+                        "text": "Indoor",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-IND",
+                        "description": "Pickleball, bowling, volleyball, and more"
+                    },
+                    {
+                        "text": "Winter",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-WINTER",
+                        "description": "Skating, curling, and more"
+                    },
+                    {
+                        "text": "Water",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-WATER",
+                        "description": "Canoeing, rowing, and more"
+                    },
+                    {
+                        "text": "Field",
+                        "value": 90,
+                        "code": "CFN-ACT-SP-FIELD",
+                        "description": "Tennis, lawn-bowling, soccer, and more"
+                    }
+                ]
+            },
+            {
+                "text": "Exercise",
+                "value": 113,
+                "code": "CFN-ACT-EX",
+                "description": " Improve your strength, balance, and endurance with these programs",
+                "tags": ["exercise programs"],
+                "children": [
+                    {
+                        "text": "Biking",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-BIKING",
+                        "description": "Join a group in your community for your next road or trail ride"
+                    },
+                    {
+                        "text": "Dance",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-DANCE",
+                        "description": "Try a new style of dance, whether you’re a beginner or expert"
+                    },
+                    {
+                        "text": "Movement and Mindfulness",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-MOV",
+                        "description": "Enjoy classes for all mobility levels such as Yoga and Tai-Chi",
+                        "tags": ["movement and mindfulness programs"]
+                    },
+                    {
+                        "text": "Fitness",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-FIT",
+                        "description": "Choose from a variety of programs such as Pilates and aerobics for a fun way to move",
+                        "tags": ["fitness programs"]
+                    },
+                    {
+                        "text": "Horseback Riding",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-HORSE",
+                        "description": "Find recreational and therapeutic options for all levels"
+                    },
+                    {
+                        "text": "Recreation Facilities",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-RECF",
+                        "description": "Visit a gym or community centre near you",
+                        "tags": ["recreation programs"]
+                    },
+                    {
+                        "text": "Walking/Running",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-WALK",
+                        "description": "Join a group in your community for your next walk or run"
+                    },
+                    {
+                        "text": "Swimming",
+                        "value": 90,
+                        "code": "CFN-ACT-EX-SWIM",
+                        "description": "Attend aquatic classes or enjoy a community pool"
+                    }
+                ]
+            },
+            {
+                "text": "Gardening",
+                "value": 78,
+                "code": "CFN-ACT-GARDEN",
+                "description": "Join a gardening club or find your nearest community garden",
+                "tags": ["gardening programs"]
+            },
+            {
+                "text": "Trails",
+                "value": 78,
+                "code": "CFN-ACT-TRAIL",
+                "description": "Take a walk or a hike at one of the many conservation areas or trails in KFL&A",
+                "tags": ["trails"]
+            },
+            {
+                "text": "Sleep",
+                "value": 78,
+                "code": "CFN-ACT-SLEEP",
+                "description": "Find supports to improve your sleep",
+                "tags": ["sleep services"]
+            }
+        ]
+    },
+    {
+        "text": "Interact",
+        "code": "CFN-INT",
+        "description": "Explore opportunities to meet new people in your community!",
+        "tags": ["interact programs"],
+        "children": [
+            {
+                "text": "Crafting",
+                "value": 88,
+                "code": "CFN-INT-CRAFT",
+                "description": "Join a group to learn or practice your knitting, quilting, crocheting, or other crafts",
+                "tags": ["crafting programs"]
+            },
+            {
+                "text": "Library",
+                "value": 88,
+                "code": "CFN-INT-LIB",
+                "description": "Find your local library to attend a workshop, event, or borrow a resource",
+                "tags": ["library"]
+            },
+            {
+                "text": "Recreation",
+                "value": 88,
+                "code": "CFN-INT-REC",
+                "description": "Join a club or group to meet people that share your interests ",
+                "tags": ["recreation programs"],
+                "children": [
+                    {
+                        "text": "Games",
+                        "value": 88,
+                        "code": "CFN-INT-REC-GAMES",
+                        "description": "Play board games or cards "
+                    },
+                    {
+                        "text": "Education",
+                        "value": 88,
+                        "code": "CFN-INT-REC-ED",
+                        "description": "Take a class to learn something new",
+                        "tags": ["education and employment programs"]
+                    },
+                    {
+                        "text": "Advocacy",
+                        "value": 88,
+                        "code": "CFN-INT-REC-ADV",
+                        "description": "Join to promote a good cause "
+                    },
+                    {
+                        "text": "Culture",
+                        "value": 88,
+                        "code": "CFN-INT-REC-CULTURE",
+                        "description": "Connect with cultural clubs and centres in KFL&A"
+                    },
+                    {
+                        "text": "Historical",
+                        "value": 88,
+                        "code": "CFN-INT-REC-HIST",
+                        "description": "Learn more about historical events and KFL&A heritage"
+                    },
+                    {
+                        "text": "Hobby",
+                        "value": 88,
+                        "code": "CFN-INT-REC-HOB",
+                        "description": "Gather with your peers to celebrate a specific interest"
+                    },
+                    {
+                        "text": "Social",
+                        "value": 88,
+                        "code": "CFN-INT-REC-SOC",
+                        "description": "Join a club or association focused on meeting new friends"
+                    }
+                ]
+            },
+            {
+                "text": "Religious Centres",
+                "value": 88,
+                "code": "CFN-INT-RELIGIOUS",
+                "description": "Join a local chapter of your religious affiliation",
+                "tags": ["religious centres"]
+            },
+            {
+                "text": "Support Groups/Services",
+                "value": 88,
+                "code": "CFN-INT-SUPPORT",
+                "description": "Find support in your community to meet your specific needs",
+                "tags": ["support groups/centres"]
+            },
+            {
+                "text": "Arts",
+                "value": 88,
+                "code": "CFN-INT-ART",
+                "description": "Opportunities to create through literature, music, and visual or performing arts",
+                "tags": ["arts programs"],
+                "children": [
+                    {
+                        "text": "Music",
+                        "value": 88,
+                        "code": "CFN-INT-ART-MUSIC",
+                        "description": "Join a singing group, play your favourite instrument or learn something new"
+                    },
+                    {
+                        "text": "Performing",
+                        "value": 88,
+                        "code": "CFN-INT-ART-PER",
+                        "description": "Become a part of a local theatre production or participate in acting workshops"
+                    },
+                    {
+                        "text": "Visual",
+                        "value": 88,
+                        "code": "CFN-INT-ART-VIS",
+                        "description": "Create through drawing, painting, pottery and other mediums"
+                    },
+                    {
+                        "text": "Literature",
+                        "value": 88,
+                        "code": "CFN-INT-ART-LIT",
+                        "description": "Join a writing group to develop or advance your literary skills"
+                    }
+                ]
+            },
+            {
+                "text": "Volunteering",
+                "value": 88,
+                "code": "CFN-INT-VOL",
+                "description": "Meet new people while contributing to your community",
+                "tags": ["volunteering programs"]
+            }
+        ]
+    },
+    {
+        "text": "Vaccination/Optimize Medication",
+        "value": 88,
+        "code": "CFN-VAC",
+        "description": "Find a location near you to get vaccinated or review   your medications",
+        "tags": ["vaccination programs","optimize medication programs"],
+        "children": [
+            {
+                "text": "Family Medicine",
+                "value": 22,
+                "code": "CFN-VAC-FM",
+                "description": "Find a primary care provider"
+            },
+            {
+                "text": "Clinic",
+                "value": 38,
+                "code": "CFN-VAC-CLINIC",
+                "description": "Healthcare clinics that accept walk-ins"
+            },
+            {
+                "text": "Pharmacy",
+                "value": 38,
+                "code": "CFN-VAC-PHARMA",
+                "description": "Local pharmacies that provide vaccinations and medication reviews"
+            },
+            {
+                "text": "Education",
+                "value": 38,
+                "code": "CFN-VAC-EDU",
+                "description": "Public health resources",
+                "tags": ["education and employment programs"]
+            }
+        ]
+    },
+    {
+        "text": "Diet and Nutrition",
+        "code": "CFN-DIET",
+        "description": "Local supports and services to help create or maintain a balanced diet",
+        "tags": ["diet and nutrition programs"],
+        "children": [
+            {
+                "text": "Delivery",
+                "value": 92,
+                "code": "CFN-DIET-DELIV",
+                "description": "Community-based meal programs that offer home delivery",
+                "tags": ["diet and nutrition delivery programs"]
+            },
+            {
+                "text": "Dietitian Services",
+                "value": 92,
+                "code": "CFN-DIET-DIET",
+                "description": "Find a Registered Dietitian in your area",
+                "tags": ["dietitian services"]
+            },
+            {
+                "text": "Food Banks and Stands",
+                "value": 92,
+                "code": "CFN-DIET-FOODBANKS",
+                "description": "Free or subsidized food",
+                "tags": ["food banks and stands"]
+            },
+            {
+                "text": "Fresh Food Boxes",
+                "value": 92,
+                "code": "CFN-DIET-FRESH",
+                "description": "Seasonal boxes of fruit and vegetables at reduced prices",
+                "tags": ["fresh food boxes"]
+            },
+            {
+                "text": "Meal Programs",
+                "value": 92,
+                "code": "CFN-DIET-MEAL",
+                "description": "Hot meals provided in a congregate setting or to take-home",
+                "tags": ["meal programs"]
+            },
+            {
+                "text": "Dental",
+                "value": 92,
+                "code": "CFN-DIET-DENTAL",
+                "description": "Oral health services and financial assistance programs",
+                "tags": ["dental services"]
+            },
+            {
+                "text": "Classes",
+                "value": 92,
+                "code": "CFN-DIET-CLASS",
+                "description": "Cooking and nutrition classes",
+                "tags": ["diet and nutrition classes"]
+            }
+        ]
+    },
+    {
+        "text": "Education and Employment",
+        "code": "CFN-EDU",
+        "description": "Opportunities for continued learning and assistance searching for employment",
+        "tags": ["education and employment programs"],
+        "children": [
+            {
+                "text": "Continued Education",
+                "value": 42,
+                "code": "CFN-EDU-CONT",
+                "description": "Opportunities for further education"
+            },
+            {
+                "text": "Literacy/ESL",
+                "value": 28,
+                "code": "CFN-EDU-LITESL",
+                "description": "Programs and classes to help improve literacy skills and learn the English language",
+                "tags": ["literacy/english second language programs"]
+            },
+            {
+                "text": "Employment",
+                "value": 42,
+                "code": "CFN-EDU-EMP",
+                "description": "Programs and services to assist with a job search",
+                "tags": ["education and employment programs"]
+            }
+        ]
+    },
+    {
+        "text": "Financial/Legal Assistance",
+        "code": "CFN-FINLGL",
+        "description": "Services that provide support for managing money, and assist with legal matters",
+        "tags": ["financial and legal assistance"],
+        "children": [
+            {
+                "text": "Credit Counselling",
+                "value": 121,
+                "code": "CFN-FINLGL-CREDIT",
+                "description": "Services to help manage debts"
+            },
+            {
+                "text": "Income Tax",
+                "value": 100,
+                "code": "CFN-FINLGL-INCOMETAX",
+                "description": "Volunteer services that assist individuals with income tax returns"
+            },
+            {
+                "text": "Legal Services",
+                "value": 42,
+                "code": "CFN-FINLGL-LEGAL",
+                "description": "Subsidized legal advice and education on matters such as estates, wills, and advanced care planning"
+            },
+            {
+                "text": "Social Services",
+                "value": 42,
+                "code": "CFN-FINLGL-SOCIAL",
+                "description": "Community programs providing financial support and help with financial assistance applications"
+            }
+        ]
+    },
+    {
+        "text": "Chronic Conditions",
+        "code": "CFN-CHRONIC",
+        "description": "Programs and services that help you manage living with a specific ongoing health issue",
+        "children": [
+            {
+                "text": "Cancer",
+                "value": 121,
+                "code": "CFN-CHRONIC-CANCER",
+                "description": "Services for people living with cancer and their care partners",
+                "tags": ["cancer programs"]
+            },
+            {
+                "text": "Chronic Pain",
+                "value": 100,
+                "code": "CFN-CHRONIC-PAIN",
+                "description": "Services for people living with chronic pain and their care partners",
+                "tags": ["chronic pain programs"]
+            },
+            {
+                "text": "Dementia",
+                "value": 42,
+                "code": "CFN-CHRONIC-DEMENTIA",
+                "description": "Services for people living with a type of dementia and their care partners",
+                "tags": ["dementia programs"]
+            },
+            {
+                "text": "Diabetes",
+                "value": 42,
+                "code": "CFN-CHRONIC-DIABETES",
+                "description": "Services for people living with diabetes and their care partners",
+                "tags": ["diabetes programs"]
+            },
+            {
+                "text": "Other Chronic Conditions",
+                "value": 42,
+                "code": "CFN-CHRONIC-OTHER",
+                "description": "Services for people living with other chronic conditions and their care partners",
+                "tags": ["other chronic conditions programs"]
+            }
+        ]
+    },
+    {
+        "text": "Mental Health",
+        "code": "CFN-MH",
+        "description": "Supportive services and programs for people who are living with a mental health disorder and their care partners",
+        "tags": ["mental health services"],
+        "children": [
+            {
+                "text": "Addiction",
+                "value": 121,
+                "code": "CFN-MH-ADDICT",
+                "description": "Support groups, counselling, treatment clinics and other services for individuals living with a substance use disorder"
+            },
+            {
+                "text": "Clinics",
+                "value": 100,
+                "code": "CFN-MH-CLINICS",
+                "description": "Variety of services to support individuals living with a mental health disorder"
+            },
+            {
+                "text": "Counselling",
+                "value": 42,
+                "code": "CFN-MH-COUNSELLING",
+                "description": "Individual and group counselling with options for specific populations"
+            },
+            {
+                "text": "Support Groups",
+                "value": 42,
+                "code": "CFN-MH-SUPPORT",
+                "description": "Regular meetings with peers who share a common healthcare need or lived experience"
+            }
+        ]
+    },
+    {
+        "text": "Housing",
+        "code": "CFN-HOUS",
+        "description": "Opportunities and services to assist with finding appropriate housing for your situation",
+        "tags": ["housing services"],
+        "children": [
+            {
+                "text": "Disability Support",
+                "value": 121,
+                "code": "CFN-HOUS-DIS",
+                "description": "Residences and support for people living with a disability",
+                "tags": ["disability services"]
+            },
+            {
+                "text": "Emergency Housing",
+                "value": 100,
+                "code": "CFN-HOUS-EMERG",
+                "description": "Shelter services for those in need"
+            },
+            {
+                "text": "Geared to Income",
+                "value": 200,
+                "code": "CFN-HOUS-GTI",
+                "description": "Rental units priced based on income"
+            },
+            {
+                "text": "Housing for Older Adults",
+                "value": 200,
+                "code": "CFN-HOUS-OLDERADULTS",
+                "description": "Services for people living with diabetes and their care partners",
+                "tags": ["housing services"]
+            },
+            {
+                "text": "Housing Support",
+                "value": 200,
+                "code": "CFN-HOUS-HOUSSUPP",
+                "description": "Housing related financial assistance programs and services",
+                "tags": ["housing services"]
+            },
+            {
+                "text": "Nursing Home",
+                "value": 200,
+                "code": "CFN-HOUS-NURSING",
+                "description": "Residency for those who require some care"
+            }
+        ]
+    },
+    {
+        "text": "Home and Care Partners",
+        "code": "CFN-HOMECARE",
+        "description": "Programs and services that provide assistance in the home or to care partners",
+        "tags": ["home care services"],
+        "children": [
+            {
+                "text": "Care Partners Support/Respite",
+                "value": 121,
+                "code": "CFN-HOMECARE-CAREPARTNER",
+                "description": "Relief from caregiving responsibilities and other supports for care partners"
+            },
+            {
+                "text": "Help at Home",
+                "value": 100,
+                "code": "CFN-HOMECARE-HELP",
+                "description": "Services provided in the home including housekeeping, meal preparation, basic personal care, companionship, and more",
+                "tags": ["help at home"]
+            },
+            {
+                "text": "Homecare",
+                "value": 42,
+                "code": "CFN-HOMECARE-HOMECARE",
+                "description": "Medical services delivered in the home",
+                "tags": ["home care services"]
+            },
+            {
+                "text": "Palliative Care/Hospice",
+                "value": 42,
+                "code": "CFN-HOMECARE-PALL",
+                "description": "End of life care and support for care partners",
+                "tags": ["palliative care/hospice"]
+            }
+        ]
+    },
+    {
+        "text": "Healthcare Services",
+        "code": "CFN-HEALTH",
+        "description": "Medical services from local clinics, hospitals, and public health",
+        "children": [
+            {
+                "text": "Clinics",
+                "value": 121,
+                "code": "CFN-HEALTH-CLINICS",
+                "description": "Visit specific healthcare clinics including seniors day rehabilitation, stroke rehabilitation, breast assessments, and more"
+            },
+            {
+                "text": "Hospitals",
+                "value": 100,
+                "code": "CFN-HEALTH-HOSP",
+                "description": "Locate the nearest hospital to you"
+            },
+            {
+                "text": "KFL&A Public Health",
+                "value": 42,
+                "code": "CFN-HEALTH-KFLAPH",
+                "description": "Connect with the resources and services offered through your local health unit"
+            }
+        ]
+    },
+    {
+        "text": "Disability Services",
+        "code": "CFN-DIS",
+        "description": "Community and home supports for individuals living with a disability and their care partners",
+        "tags": ["disability services"],
+        "children": [
+            {
+                "text": "Developmental Disability Services",
+                "value": 121,
+                "code": "CFN-DIS-DEVDIS",
+                "description": "Supports and services for individuals living with a developmental disability"
+            },
+            {
+                "text": "Physical Disability Services",
+                "value": 100,
+                "code": "CFN-DIS-PHYDIS",
+                "description": "Supports and services for individuals living with a physical disability"
+            },
+            {
+                "text": "Homecare",
+                "value": 42,
+                "code": "CFN-DIS-HOMECARE",
+                "description": "Services including housekeeping, respite, and nursing delivered in the home for individuals living with a disability",
+                "tags": ["home care services"]
+            },
+            {
+                "text": "Community Support",
+                "value": 42,
+                "code": "CFN-DIS-COMMUNITY",
+                "description": "Assistance with financial assistance applications, family support, employment training, and more"
+            }
+        ]
+    },
+    {
+        "text": "Transportation",
+        "code": "CFN-TRANSPORT",
+        "description": " Services to assist with transportation needs",
+        "tags": ["transportation services"],
+        "children": [
+            {
+                "text": "Driving Assessment",
+                "value": 121,
+                "code": "CFN-TRANSPORT-DRIVA",
+                "description": "Centres that offer driving lessons and continued assessments"
+            },
+            {
+                "text": "Driving Program",
+                "value": 100,
+                "code": "CFN-TRANSPORT-DRIVP",
+                "description": "Volunteer drivers available for grocery shopping, medical appointments, and other daily needs"
+            },
+            {
+                "text": "Medical Transport",
+                "value": 42,
+                "code": "CFN-TRANSPORT-MED",
+                "description": "Non-emergency patient transfer services",
+                "tags": ["transportation services"]
+            },
+            {
+                "text": "Public Transit",
+                "value": 42,
+                "code": "CFN-TRANSPORT-PUBLIC",
+                "description": "Local bus service and non-emergency medical transfers"
+            }
+        ]
+    }
+]

@@ -1,3 +1,4 @@
+<div class="alert-msg"><span id="dialog_title_span">Removed from Clipboard!</span></div>
 <p class='program-body'>
     Hover your mouse over a community resource to see a description. The + symbol means the resource category expands
     further. Click on the resource to see sub-categories.
@@ -8,6 +9,10 @@
 <p class='program-body'>Have you used a formal or informal program recently that you don’t see in the library and wish to share
     with the community?<br />
     <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a></p>
+<p class="program-body">
+    <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"> Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard. <br />
+    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">Print/View Clipboard</a></p>
+</p>
 <div id="body_accordion">
     <div class="wrap" style="display:none;">
         <h3 id="accordionHeader" style='display:none;'><a href="#">Categories</a></h3>

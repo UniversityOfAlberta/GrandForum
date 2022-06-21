@@ -1,0 +1,30 @@
+<td valign="top" style="width:40px;padding-left:40px;">
+    <h3 style="margin-top:0;"><%= PublicName %></h3>
+    <%= AgencyDescription %>
+    <br /><br />
+        <% if(Category != ""){ %>
+            <b>Category:</b> <%= Category %><br />
+        <% } %>
+        <% if(Eligibility != ""){ %>
+            <b>Eligibility:</b> <%= Eligibility %><i class="bi bi-bookmark-plus"></i><br />
+        <% } %>
+        <% if(ParentAgency != ""){ %>
+            <b>Organization:</b> <%= ParentAgency %><br />
+        <% } %>
+        <% if(PhysicalAddress1 != ""){ %>
+            <b>Address:</b> <%= PhysicalAddress1 %><br />
+        <% } %>
+        <% if (EmailAddressMain != ""){ %>
+            <b>Email:</b> <a href='mailto:<%= EmailAddressMain %>'><%= EmailAddressMain %></a><br />
+        <% } %>
+        <% if ( Phone != ""){ %>
+            <b>Phone:</b> <%= Phone %><br />
+        <% } %>
+        <% if (WebsiteAddress != ""){ %>
+            <b>Website:</b> <a href='<%=WebsiteAddress %>' target='_blank'><%=WebsiteAddress%></a><br />
+        <% } %>
+	<% if (Notes != "No notes"){ %>
+	    <b>Notes:</b> <%= Notes %>
+	<% } %>
+
+</td>

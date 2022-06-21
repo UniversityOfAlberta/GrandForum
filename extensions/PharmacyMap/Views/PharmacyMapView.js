@@ -13,6 +13,8 @@ PharmacyMapView = Backbone.View.extend({
     interval: null,
     infowindows: [],
     renderMap: false,
+    category_text: "",
+    note: null,
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
     },
@@ -67,9 +69,12 @@ PharmacyMapView = Backbone.View.extend({
                 this.drawButtons();
             }
             else {
+		var id_cat = "#"+this.buttons[cat]["code"];
+        	this.category_text = $(id_cat).text();
                 this.refresh = false;
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];
+		this.note = this.buttons[cat]["note"];
                 this.model.fetch();
                 $(".throbber", ev.currentTarget).show();
             }
@@ -229,9 +234,12 @@ PharmacyMapView = Backbone.View.extend({
         if (this.table != undefined) {
             this.table.destroy();
         }
+	if(this.note == null){
+	    this.note = "No notes";
+	}
         var fragment = document.createDocumentFragment();
         rows.forEach(function (p, i) {
-            var row = new CommunityRowView({ model: p, parent: this });
+            var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note});
             row.render();
             fragment.appendChild(row.el);
         }.bind(this));
