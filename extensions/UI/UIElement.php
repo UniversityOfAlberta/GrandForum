@@ -299,6 +299,11 @@ abstract class UIElement {
     function isValidationSet($validation){
         return (($this->validations & $validation) !== 0);
     }
+    
+    
+    function exists(){
+        return (!($this instanceof FakeField));
+    }
 }
 
 ?>

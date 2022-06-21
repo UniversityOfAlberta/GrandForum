@@ -24,6 +24,20 @@ class AdminDataCollection extends SpecialPage{
             }
             $people[] = $person;
         }
+        $wgOut->addHTML("<style>
+            div#adminDataCollectionMessages {
+                position: fixed; 
+                top: 122px; 
+                right: 40px; 
+                width: 500px;
+                opacity: 0.95;
+                z-index: 1001;
+            }
+
+            div#adminDataCollectionMessages > div {
+                box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+            }
+        </style>");
         $wgOut->addHTML("<b>Active User Count:</b> ".count($people));
         $topics = array("IngredientsForChange","Activity","Vaccination","OptimizeMedication","Interact","DietAndNutrition","Sleep","FallsPrevention");
         if(count($people) > 0){
@@ -31,6 +45,7 @@ class AdminDataCollection extends SpecialPage{
                                 <thead>
                                     <tr style='background:#EEEEEE;'>
                                         <th rowspan='2'>Name</th>
+                                        <th rowspan='2'>Email</th>
                                         <th rowspan='2'>Age</th>
                                         <th rowspan='2'>Postal Code</th>
                                         <th rowspan='2'>Role</th>
@@ -47,6 +62,7 @@ class AdminDataCollection extends SpecialPage{
                                 <tbody>");
             foreach($people as $person){
                 $name = $person->getRealName();
+                $email = $person->getEmail();
                 $avoid_age = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "avoid_age", $person->getId());
                 $avoid_age = str_replace("less than", "<", $avoid_age);
                 $avoid_age = str_replace("more than", ">", $avoid_age);
@@ -54,7 +70,12 @@ class AdminDataCollection extends SpecialPage{
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
-                                    <td>$name</td> <td nowrap>$avoid_age</td> <td>$postal_code</td><td>{$person->getRoleString()}</td><td nowrap>{$registration_date}</td>");
+                                    <td>$name</td>
+                                    <td class='emailCell'>$email</td>
+                                    <td nowrap>$avoid_age</td>
+                                    <td>$postal_code</td>
+                                    <td>{$person->getRoleString()}</td>
+                                    <td nowrap>{$registration_date}</td>");
 
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');
@@ -130,19 +151,25 @@ class AdminDataCollection extends SpecialPage{
                         $page_name = str_replace("ProgramLibrary-", "", trim($page["page"]));
                         $page_data = json_decode($page["data"],true);
                         $views = isset($page_data["pageCount"]) ? $page_data["pageCount"] : 0;
+                        $websiteClicks = isset($page_data["websiteClicks"]) ? $page_data["websiteClicks"] : 0;
                         if($x_num%2==0){
                             $wgOut->addHTML("
-                                <tr style='background-color:#ececec'><td style='white-space:nowrap;'>
-                                    $page_name</td><td nowrap>
-                                    Views: $views
-                                </td></tr>");
+                                <tr style='background-color:#ececec'>
+                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                                    <td nowrap>Views: $views</td>
+                                </tr>
+                                <tr style='background-color:#ececec'>
+                                    <td nowrap>Website: $websiteClicks</td>
+                                </tr>");
                         }
                         else{
                             $wgOut->addHTML("
-                                <tr style=''><td style='white-space:nowrap;'>
-                                $page_name</td><td nowrap>
-                                Views: $views
-                                </td>
+                                <tr style=''>
+                                    <td rowspan='2' style='white-space:nowrap;'>$page_name</td>
+                                    <td nowrap>Views: $views</td>
+                                </tr>
+                                <tr>
+                                    <td nowrap>Website: $websiteClicks</td>
                                 </tr>");
                         }
                         $x_num++;
@@ -161,17 +188,16 @@ class AdminDataCollection extends SpecialPage{
                     $views = isset($page_data["count"]) ? $page_data["count"] : 0;
                     if($x_num%2==0){
                         $wgOut->addHTML("
-                            <tr style='background-color:#ececec'><td>
-                                $page_name</td><td nowrap>
-                                Views: $views
-                            </td></tr>");
+                            <tr style='background-color:#ececec'>
+                                <td>$page_name</td>
+                                <td nowrap>Views: $views</td>
+                            </tr>");
                     }
                     else{
                         $wgOut->addHTML("
-                            <tr style=''><td>
-                            $page_name</td><td nowrap>
-                            Views: $views
-                            </td>
+                            <tr style=''>
+                                <td>$page_name</td>
+                                <td nowrap>Views: $views</td>
                             </tr>");
                     }
                     $x_num++;
@@ -180,10 +206,28 @@ class AdminDataCollection extends SpecialPage{
             }
             $wgOut->addHTML("</tbody>
                             </table>
+                            <div id='adminDataCollectionMessages'></div>
                             <script type='text/javascript'>
                                 table = $('#data').DataTable({
                                     aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                                    iDisplayLength: -1,
+                                    iDisplayLength: -1
+                                });
+                                $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
+                                $('#copyEmails').click(function(){
+                                    var emails = [];
+                                    $('.emailCell:visible').each(function(){
+                                        var email = $(this).text().trim();
+                                        if(email != ''){
+                                            emails.push(email);
+                                        }
+                                    });
+                                    navigator.clipboard.writeText(emails.join(','));
+                                    clearAllMessages('#adminDataCollectionMessages');
+                                    $('#adminDataCollectionMessages').stop();
+                                    $('#adminDataCollectionMessages').show();
+                                    $('#adminDataCollectionMessages').css('opacity', 0.95);
+                                    addSuccess('Visible email addresses copied', false, '#adminDataCollectionMessages');
+                                    $('#adminDataCollectionMessages').fadeOut(5000);
                                 });
                             </script>");
         }
