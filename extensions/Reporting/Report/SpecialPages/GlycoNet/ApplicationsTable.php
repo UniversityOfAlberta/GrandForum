@@ -56,6 +56,7 @@ class ApplicationsTable extends SpecialPage{
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=international'>Int'l Partnerships</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=clinical'>Clinical</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=cycleiiloi'>CycleIILOI</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=ssfloi'>SSFLOI</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=legacy'>Legacy</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=alberta'>Alberta</a>";
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=strat'>Strat</a>";
@@ -103,6 +104,9 @@ class ApplicationsTable extends SpecialPage{
         }
         else if($program == "cycleiiloi" && $me->isRoleAtLeast(SD)){
             $this->generateCycleIILOI();
+        }
+        else if($program == "ssfloi" && $me->isRoleAtLeast(SD)){
+            $this->generateSSFLOI();
         }
         else if($program == "legacy" && $me->isRoleAtLeast(SD)){
             $this->generateLegacy();
@@ -292,6 +296,24 @@ class ApplicationsTable extends SpecialPage{
         $reviewers->setAttr("orientation", "list");
         $reviewers->setId("reviewers");
         $tabbedPage->addTab(new ApplicationTab('RP_CYCLEII', null, 2020, "2020", array($reviewers)));
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateSSFLOI(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $reviewers = new MultiTextReportItem();
+        $reviewers->setBlobType(BLOB_ARRAY);
+        $reviewers->setBlobItem("CAT_DESC_REV");
+        $reviewers->setBlobSection(CAT_DESC);
+        $reviewers->setAttr("labels", "Name|E-Mail|Affiliation");
+        $reviewers->setAttr("types", "text|text|text");
+        $reviewers->setAttr("multiple", "true");
+        $reviewers->setAttr("showHeader", "false");
+        $reviewers->setAttr("class", "wikitable");
+        $reviewers->setAttr("orientation", "list");
+        $reviewers->setId("reviewers");
+        $tabbedPage->addTab(new ApplicationTab('RP_SSF_LOI', null, 2022, "2022", array($reviewers)));
         $wgOut->addHTML($tabbedPage->showPage());
     }
     

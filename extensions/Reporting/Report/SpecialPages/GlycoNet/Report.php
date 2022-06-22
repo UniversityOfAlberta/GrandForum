@@ -77,6 +77,10 @@ class Report extends AbstractReport{
                 $tabs["Proposals"]['subtabs'][] = TabUtils::createSubTab("Alberta", "{$url}AlbertaReport", $selected);
             }*/
         }
+        if($person->isSubRole('SSFLOI')){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SSFLOI")) ? "selected" : false;
+            $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("SSF LOI", "{$url}SSFLOI", $selected);
+        }
         if($person->isSubRole('TSF HQP')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "TechSkillsSurvey")) ? "selected" : false;
             $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("TechSkillsSurvey", "{$url}TechSkillsSurvey", $selected);
