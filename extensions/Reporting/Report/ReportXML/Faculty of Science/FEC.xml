@@ -33,6 +33,22 @@
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
         </Role>
+        <Role role="HR">
+            <SectionPermission id="information" permissions="rw" />
+            <SectionPermission id="courses" permissions="rw" />
+            <SectionPermission id="students" permissions="rw" />
+            <SectionPermission id="publications" permissions="rw" />
+            <SectionPermission id="awards" permissions="rw" />
+            <SectionPermission id="grants" permissions="rw" />
+            <SectionPermission id="services" permissions="rw" />
+            <SectionPermission id="supplementary" permissions="rw" />
+            <SectionPermission id="additionalInfo" permissions="rw" />
+            <SectionPermission id="pandemic" permissions="rw" />
+            <SectionPermission id="sabbatical" permissions="rw" />
+            <SectionPermission id="chair" permissions="" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
         <If if="{!=({getArray(RP_FEC,FEC_SUBMIT,LOCK,0,{$my_id},0,lock)},Lock)}">
             <SectionPermission id="information" permissions="rw" />
             <SectionPermission id="courses" permissions="rw" />
