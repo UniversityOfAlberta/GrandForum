@@ -58,6 +58,7 @@ class CavendishTemplate extends QuickTemplate {
 		<title><?php $this->text('pagetitle') ?></title>
 		<link type="image/x-icon" href="<?php echo $wgServer.$wgScriptPath.'/favicon.png'; ?>" rel="shortcut icon" />
 		<link rel='stylesheet' id='roboto-css'  href='//fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C500%2C500i%2C700%2C700i&#038;ver=4.9.13' type='text/css' media='all' />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 		<link type="text/css" href="<?php $this->text('stylepath') ?>/smoothness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 
 		<link rel="stylesheet" href="<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/autocomplete.css" type="text/css" />
@@ -146,8 +147,8 @@ class CavendishTemplate extends QuickTemplate {
         <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-	<script type="text/javascript"  src="//cdn.zingchart.com/zingchart.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script type="text/javascript"  src="//cdn.zingchart.com/zingchart.min.js"></script>
 
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.qtip.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo "$wgServer$wgScriptPath"; ?>/scripts/jquery.forceNumeric.js"></script>
@@ -587,6 +588,18 @@ class CavendishTemplate extends QuickTemplate {
                         $.cookie('sideToggled', 'out', {expires: 30});
                     }
 		        });
+		        
+		        $("input[type=password]").each(function(){
+		            var el = $("<i class='far fa-eye' class='togglePassword' style='margin-left: -30px; cursor: pointer; color: black;'></i>");
+		            $(this).after(el);
+		            var self = this;
+		            $(el).click(function(){
+		                var type = $(self).attr('type') === 'password' ? 'text' : 'password';
+                        $(self).attr('type', type);
+		                this.classList.toggle('fa-eye-slash');
+		            });
+		        });
+		        
 		    });
 		</script>
 		<?php if(isExtensionEnabled('Shibboleth') && isset($_SERVER['uid'])){ ?>
