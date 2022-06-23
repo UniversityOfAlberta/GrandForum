@@ -4870,38 +4870,22 @@ class Person extends BackboneModel {
      */
     function getClipboard(){
         if($this->clipboard == null){
+            $clipboard = array();
             $data = DBFunctions::select(array('grand_clipboard'),
                                         array('*'),
                                         array('user_id' => EQ($this->id)));
-            $arr = array();
             if(count($data) > 0){
-                $json_objs = json_decode($data[0]['json_objs'], TRUE);
-                /*foreach($json_objs as $obj){
-                    /*$newobj = array();
-                    $newobj["PublicName"] = $obj["PublicName"];
-                    $newobj["AgencyDescription"] = $obj["AgencyDescription"];
-                    $newobj["Eligibility"] = $obj["Eligibility"];
-                    $newobj["ParentAgency"] = $obj["ParentAgency"];
-                    $newobj["PhysicalAddress1"] = $obj["PhysicalAddress1"];
-                    $newobj["EmailAddressMain"] = $obj["EmailAddressMain"];
-                    $newobj["PhoneNumber"] = $obj["PhoneNumber"];
-                    $newobj["WebsiteAddress"] = $obj["WebsiteAddress"];
-                    $array[] = $newobj;
-                    $newobj = array();
-                    $newobj["PublicName"] = $obj["PublicName"];
-                    $arr[] = $newobj;
-                }*/
+                $clipboard['id'] = $data[0]['id'];
+                $clipboard['user_id'] = $data[0]['user_id'];
+                $clipboard['objs'] = json_decode($data[0]['json_objs'], TRUE);
+                $clipboard['date'] = $data[0]['date_created'];
             }
             else {
                 return array();
             }
         }
-        $this->clipboard = $json_objs;
+        $this->clipboard = $clipboard;
         return $this->clipboard;
-    }
-
-    function setClipboard($arr){
-        $this->clipboard = $arr;
     }
 
     function saveClipboard($arr){

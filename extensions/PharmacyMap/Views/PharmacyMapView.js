@@ -15,6 +15,7 @@ PharmacyMapView = Backbone.View.extend({
     renderMap: false,
     category_text: "",
     note: null,
+    clipboard: null,
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
         
@@ -248,7 +249,7 @@ PharmacyMapView = Backbone.View.extend({
 	}
         var fragment = document.createDocumentFragment();
         rows.forEach(function (p, i) {
-            var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note});
+            var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note, clipboard:this.clipboard});
             row.render();
             fragment.appendChild(row.el);
         }.bind(this));
@@ -391,7 +392,13 @@ PharmacyMapView = Backbone.View.extend({
             output: data,
             findCat: this.findCat.bind(this)
         }));
-        this.addRows(this.model);
+        var self = this;
+        this.clipboard = new PersonClipboard();
+        this.clipboard.fetch({
+            success: function () {
+                self.addRows(self.model);
+            }
+        });
 
         if(this.renderMap){
             this.initMap();
