@@ -212,7 +212,11 @@ class Register extends SpecialPage{
             else if($role == "Clinician"){
                 $wgOut->setPageTitle("Clinician Registration");
             }
-            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+            $wgOut->addHTML("<div class='program-body'>
+                                By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
+                                <br /><br />
+                                If completing the online registration or healthy aging assessment may present any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.
+                                <br /><br />");
         }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
@@ -225,6 +229,9 @@ class Register extends SpecialPage{
         $form = self::createForm();
         $wgOut->addHTML($form->render());
         $wgOut->addHTML("</form>");
+        if($config->getValUE("networkName") == "AVOID"){
+            $wgOut->addHTML("</div>");
+        }
         $wgOut->addHTML("<script type='text/javascript'>
             $('[name=first_name_field], [name=last_name_field]').on('input', function(){
                 var username = $('[name=first_name_field]').val() + '.' + $('[name=last_name_field]').val();

@@ -216,6 +216,9 @@
                 <p>
                     <i><b>NOTE:</b> Please answer the questions in this section to the best of your ability. This is important information to help us understand who is using the program (and consequently, who isn't) so that we can make sure we are helping everyone who needs it. As more information is gathered, we will be able to personalize the experience for you and future users!</i>
                 </p>
+                <p>
+                    <i>The Healthy Aging Assessment will take between 10 and 15 minutes to complete. You can log out at any time and your progress will be saved to complete later at your convenience.</i>
+                </p>
             ]]>
         </Static>
         <ReportItem id="socio_info1" type="SelectReportItem" options="less than 60|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99|100" blobItem="avoid_age">
