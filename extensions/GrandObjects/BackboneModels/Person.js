@@ -527,10 +527,18 @@ PersonClipboard = Backbone.Model.extend({
     initialize: function(){
 
     },
-    idAttribute: '_id',
-    urlRoot: 'index.php?action=api.clipboard',
 
-    defaults: {
+    url: function(){
+        return wgServer + wgScriptPath + '/index.php?action=api.clipboard';
+    },
+
+    defaults: function(){
+        return {
+            id: null,
+            user_id: "",
+            objs: [],
+            date: ""
+        }
     }
 
 });

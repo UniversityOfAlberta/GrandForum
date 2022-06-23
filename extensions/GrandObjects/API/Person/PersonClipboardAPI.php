@@ -13,8 +13,7 @@ class PersonClipboardAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in.");
         }
-        $clips = new Collection($clipboard);
-        return $clips->toJSON();
+        return json_encode($clipboard);
     }
     
     function doPOST(){
@@ -22,12 +21,10 @@ class PersonClipboardAPI extends RESTAPI {
         if(!$me->isLoggedIn()){
             $this->throwError("You must be logged in.");
         }
-        $arr = $this->POST("clipboard");
+        $arr = $this->POST("objs");
         $status = $me->saveClipboard($arr);
         if($status){
-            $clipboard = $me->getClipboard();
-            $clips = new Collection($clipboard);
-            return $clips->toJSON();
+            return $this->doGET();
         }
         else{
             $this->throwError("Error saving.");
@@ -35,7 +32,7 @@ class PersonClipboardAPI extends RESTAPI {
     }
     
     function doPUT(){
-        return doPOST();
+        return $this->doPOST();
     }
     
     function doDELETE(){
@@ -45,9 +42,7 @@ class PersonClipboardAPI extends RESTAPI {
         }
         $status = $me->saveClipboard(array());
         if($status){
-                $clipboard = $me->getClipboard();
-                $clips = new Collection($clipboard);
-                return $clips->toJSON();
+            return $this->doGET();
         }
         else{
             $this->throwError("Error saving.");

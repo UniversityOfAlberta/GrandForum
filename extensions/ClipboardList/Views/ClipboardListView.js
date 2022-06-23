@@ -10,17 +10,13 @@ ClipboardListView = Backbone.View.extend({
     },
 
     clearList: function(){
-	this.model.set({
-                "clipboard": [],
+        this.model.set({
+                "objs": [],
         });
-        var isNew = this.model.isNew();
         this.model.save(null, {
             success: function(){
                 this.$(".throbber").hide();
                 this.$("#saveEvent").prop('disabled', false);
-                if(isNew){
-                    location.reload();
-                }
                 clearAllMessages();
             }.bind(this),
             error: function(o, e){
@@ -76,14 +72,14 @@ ClipboardListView = Backbone.View.extend({
     render: function () {
         //this.$el.empty();
         main.set('title', 'Clipboard');
-        var data = this.model.toJSON();
+        var data = this.model.get('objs');
         this.$el.html(this.template({
             output: data,
         }));
 	
         //creating an array from the model TODO:figure out why this isnt working
 	var newModel = [];
-	var keys = this.model.keys();
+	var keys = _.keys(this.model.get('objs'));
         if(keys.length == 0){
             this.$('#empty').show();
         }
@@ -101,7 +97,6 @@ ClipboardListView = Backbone.View.extend({
 	    }
 	    newModel.push(object);
 	}
-	console.log(newJSON);
 	for (var key in newJSON) {
 	    notes = newJSON[key][0]["Notes"];
 	    category_str = newJSON[key][0]["Category"];
