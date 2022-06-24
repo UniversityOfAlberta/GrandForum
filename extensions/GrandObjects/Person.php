@@ -3236,6 +3236,59 @@ class Person extends BackboneModel {
         }
         return $relations[$type];
     }
+    
+    /**
+     * Returns an array of People who are 'similar' to this one
+     * @return array People who are 'similar' to this one
+     */
+    function getSimilarPeople(){
+        $text = $this->getKeywords(", ")."\n";
+        $text .= $this->getProfile()."\n";
+        $products = $this->getPapers("all", false, 'both', false, 'Public');
+        foreach($products as $product){
+            $text .= $product->getTitle()."\n";
+            $text .= $product->getDescription()."\n";
+        }
+        CommonWords::$commonWords[] = strtolower($this->getFirstName());
+        CommonWords::$commonWords[] = strtolower($this->getLastName());
+        $data = Wordle::createDataFromText($text);
+        $data = array_slice($data, 0, 10);
+        
+        $similarPeople = array();
+        $people = Person::getAllPeople();
+        foreach($people as $person){
+            if($person->getId() == $this->getId()){
+                continue;
+            }
+            $text = $person->getKeywords(", ")."\n";
+            $text .= $person->getProfile()."\n";
+            $products = $person->getPapers("all", false, 'both', false, 'Public');
+            foreach($products as $product){
+                $text .= $product->getTitle()."\n";
+                $text .= $product->getDescription()."\n";
+            }
+            $text = strtolower($text);
+            
+            $found = 0;
+            foreach($data as $word){
+                if(strstr($text, strtolower($word['word'])) !== false){
+                    $found += $word['freq'];
+                }
+            }
+            
+            if($found){
+                $similarPeople["{$person->getId()}"] = $found;
+            }
+        }
+        asort($similarPeople);
+        
+        $similarPeople = array_reverse($similarPeople, true);
+        $newPeople = array();
+        foreach($similarPeople as $key => $found){
+            $newPeople[] = Person::newFromId($key);
+        }
+        return $newPeople;
+    }
 
     /**
      * Returns this Person's Contributions

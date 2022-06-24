@@ -7,6 +7,7 @@ require_once("Classes/removeCommonWords/removeCommonWords.php");
 class Wordle extends Visualization {
     
     static $commonStubs = array('http', 'www');
+    static $stems = array();
     static $a = 0;
     var $url = "";
     var $width = "500";
@@ -49,10 +50,10 @@ class Wordle extends Visualization {
                 $word = trim($word);
                 $word = strtolower($word);
                 $origWord = $word;
-                if(!isset($stems[$word])){
-                    $stems[$word] = $stemmer->stem($word);
+                if(!isset(self::$stems[$word])){
+                    self::$stems[$word] = $stemmer->stem($word);
                 }
-                $word = $stems[$word];
+                $word = self::$stems[$word];
                 $skip = false;
                 foreach(self::$commonStubs as $stub){
                     if(strstr($word, $stub) !== false){

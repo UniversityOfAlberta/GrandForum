@@ -376,6 +376,7 @@ EOF;
         if($action == "getPersonCloudData"){
             $text = "";
             $person = Person::newFromId($_GET['person']);
+            $text .= $person->getKeywords(", ")."\n";
             $text .= $person->getProfile()."\n";
             
             $products = $person->getPapers("all", false, 'both', false, 'Public');
