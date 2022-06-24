@@ -3244,7 +3244,7 @@ class Person extends BackboneModel {
     function getSimilarPeople(){
         $text = $this->getKeywords(", ")."\n";
         $text .= $this->getProfile()."\n";
-        $products = $this->getPapers("all", false, 'both', false, 'Public');
+        $products = $this->getPapersAuthored("all", "1900-01-01 00:00:00", "2100-01-01 00:00:00", false);
         foreach($products as $product){
             $text .= $product->getTitle()."\n";
             $text .= $product->getDescription()."\n";
@@ -3262,7 +3262,7 @@ class Person extends BackboneModel {
             }
             $text = $person->getKeywords(", ")."\n";
             $text .= $person->getProfile()."\n";
-            $products = $person->getPapers("all", false, 'both', false, 'Public');
+            $products = $person->getPapersAuthored("all", "1900-01-01 00:00:00", "2100-01-01 00:00:00", false);
             foreach($products as $product){
                 $text .= $product->getTitle()."\n";
                 $text .= $product->getDescription()."\n";
