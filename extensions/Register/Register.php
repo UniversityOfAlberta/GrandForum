@@ -215,7 +215,7 @@ class Register extends SpecialPage{
             $wgOut->addHTML("<div class='program-body'>
                                 By registering with {$config->getValue('networkName')} you will be granted the role of {$role}.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.
                                 <br /><br />
-                                If completing the online registration or healthy aging assessment may present any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.
+                                If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.
                                 <br /><br />");
         }
         else{
