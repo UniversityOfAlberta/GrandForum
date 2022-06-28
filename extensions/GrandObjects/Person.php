@@ -402,8 +402,8 @@ class Person extends BackboneModel {
                                               'user_id' => NOT_IN($keys)));
             foreach($data as $row){
                 Cache::store("mw_user_{$row['user_id']}", $row);
-                if(php_sapi_name() ==="cli" || $row['user_id'] == $id){
-                    self::$userRows[$id] = $row;
+                if(php_sapi_name() === "cli" || $row['user_id'] == $id){
+                    self::$userRows[$row['user_id']] = $row;
                 }
             }
         }
