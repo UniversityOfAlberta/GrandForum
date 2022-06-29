@@ -432,7 +432,7 @@ class AVOIDDashboard extends SpecialPage {
         global $wgOut, $wgUser, $wgRoles, $wgServer, $wgScriptPath, $wgTitle, $wgRoleValues, $config;
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
-        if($me->isRole(ADMIN)){
+        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
             return true;
         }
         $submitted = AVOIDDashboard::hasSubmittedSurvey();
