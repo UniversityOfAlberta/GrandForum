@@ -51,6 +51,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Role</th>
                                         <th rowspan='2'>Date Registered</th>
                                         <th rowspan='2'>Extra</th>
+                                        <th rowspan='2'>In person opportunity</th>
                                         <th colspan='10'>Data Collected</th>
                                     </tr>
                                     <tr>
@@ -67,6 +68,8 @@ class AdminDataCollection extends SpecialPage{
                 $avoid_age = str_replace("less than", "<", $avoid_age);
                 $avoid_age = str_replace("more than", ">", $avoid_age);
                 $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+                $evaluation1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation1", $person->getId());
+                $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
@@ -97,6 +100,10 @@ class AdminDataCollection extends SpecialPage{
                     $wgOut->addHTML("<b>Role:</b> $rolefield<br />");
                 }
                 $wgOut->addHTML("</td>");
+                $wgOut->addHTML("<td>
+                    <b>Q1:</b> {$evaluation1}<br />
+                    <b>Q2:</b> {$evaluation2}
+                </td>");
 
                 $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
                 $resource_data = DBFunctions::execSQL($resource_data_sql);
