@@ -1512,6 +1512,34 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="OnSiteEvaluation" tooltip="In person opportunity" name="In person opportunity" blobSection="ONSITE_EVALUATION" type="NextPrevReportSection" pagebreak="false">
+        <ReportItem id="evaluation1" blobItem="evaluation1" type="RadioReportItem" orientation="vertical" options="Yes|Unsure, I need more info|Not interested">
+            <![CDATA[
+                <h3>There is an opportunity for further assessment, coaching, and subsequent follow-up with a certified Geriatrician at Providence Care. Would you be interested in participating in this?</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="evaluation2" blobItem="evaluation2" type="RadioReportItem" orientation="vertical" options="Yes|No" optional="true">
+            <![CDATA[
+                <div id='evaluation2' style="display:none;">
+                    <h3>Can we email you with further details once available?</h3>
+                    <div class="requiredField">{$item}</div>
+                </div>
+                <script type="text/javascript">
+                    $('div#evaluation2').hide();
+                    function specifyEvaluation(){
+                        if($("input:radio[name='Inpersonopportunity_evaluation1'][value='Yes']").is(':checked') || 
+                           $("input:radio[name='Inpersonopportunity_evaluation1'][value='Unsure, I need more info']").is(':checked')){
+                            $('div#evaluation2').show();
+                        }
+                        else{ $('div#evaluation2').hide(); }
+                    }
+                    _.defer(specifyEvaluation);
+                    $("input:radio[name='Inpersonopportunity_evaluation1']").change(specifyEvaluation);
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
         <If if="{and({==({getProgress(eula)},100)},
                      {==({getProgress(socio_info)},100)},
@@ -1523,7 +1551,8 @@
                      {==({getProgress(healthquestions5)},100)},
                      {==({getProgress(healthquestions6)},100)},
                      {==({getProgress(healthquestions7)},100)},
-                     {==({getProgress(clinicalfrailty)},100)}
+                     {==({getProgress(clinicalfrailty)},100)},
+                     {==({getProgress(OnSiteEvaluation)},100)}
                 )}">
             <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
                 <![CDATA[
@@ -1550,7 +1579,9 @@
             </Static>
         </If>
         <Else>
-            You must complete all of the questions in the survey.
+            <![CDATA[
+                You must complete all of the questions in the survey.
+            ]]>
         </Else>
     </ReportSection>
 </Report>

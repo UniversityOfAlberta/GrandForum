@@ -124,7 +124,9 @@ class IntakeSummary extends SpecialPage {
         'help10_avoid' => 'Health Status32',
         'help11_avoid' => 'Health Status33',
         'help12_avoid' => 'Health Status34',
-        'help13_avoid' => 'Health Status35'
+        'help13_avoid' => 'Health Status35',
+        'evaluation1' => 'In person opportunity1',
+        'evaluation2' => 'In person opportunity2'
     );
     
     function __construct() {
