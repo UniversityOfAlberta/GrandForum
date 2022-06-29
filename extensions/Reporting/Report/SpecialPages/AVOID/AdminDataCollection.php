@@ -71,7 +71,7 @@ class AdminDataCollection extends SpecialPage{
                 $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
                 $evaluation1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation1", $person->getId());
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
-                $submitted = (AVOIDDashboard::hasSubmittedSurvey($person->getId())) ? "Yes" : "No";
+                $submitted = $person->isRole("Provider") ? "" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId())) ? "Yes" : "No");
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
