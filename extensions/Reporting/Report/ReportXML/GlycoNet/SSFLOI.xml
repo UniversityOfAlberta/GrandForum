@@ -4,6 +4,9 @@
         <Role role="INACTIVE+" subRole="SSFLOI">
 
         </Role>
+        <Role role="INACTIVE-Candidate+" subRole="SSFLOI">
+
+        </Role>
     </Permissions>
     <ReportSection id="background" tooltip="Background and Description of Opportunity" name="Background" title="LOI for Strategic Science Fund" type="ReportSection" renderpdf="false">
         <Static>
