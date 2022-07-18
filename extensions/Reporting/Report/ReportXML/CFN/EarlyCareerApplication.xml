@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Springboard Grants Program – Early Career Researcher Competition" reportType="RP_EARLY_APPLICATION2" pdfType="RP_EARLY_APPLICATION2" pdfFiles="EarlyCareerApplicationPDF" year="2022" disabled="false" ajax="true">
+<Report name="Springboard Grants Program – Early Career Researcher Competition" reportType="RP_EARLY_APPLICATION2" pdfType="RP_EARLY_APPLICATION2" pdfFiles="EarlyCareerApplicationPDF" year="2022" disabled="true" ajax="true">
     <Permissions>
         <Role role="INACTIVE+" subType="ECR2022Applicant">
             
