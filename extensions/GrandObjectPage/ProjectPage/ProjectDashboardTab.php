@@ -377,7 +377,7 @@ class ProjectDashboardTab extends AbstractEditableTab {
         if($config->getValue('networkName') == "FES"){
             $year = date('Y', time() - (3 * 30 * 24 * 60 * 60));
             $upToDate = $project->getUpToDate($year);
-            $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year ($year-".($year+1).")</b>" => 1));
+            $field = new SingleCheckBox("upToDate", "Up To Date", $upToDate, array("&nbsp;<b>The information in this section is current as per the end of Fiscal Year (".($year-1)."-".($year).")</b>" => 1));
             $this->html .= "<input type='hidden' name='upToDate' value='0' />{$field->render()}";
         }
     }
