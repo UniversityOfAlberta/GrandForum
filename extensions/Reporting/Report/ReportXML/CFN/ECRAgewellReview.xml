@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="EVALUATOR" />
     </Permissions>
-    <ReportSection id="AGEWELL_REVIEW" name="AGE-WELL/CFN Funding Stream" blobSection="AGEWELL_REVIEW" tooltip="AGE-WELL/CFN Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
+    <ReportSection id="AGEWELL_REVIEW" name="AGE-WELL/CFN Review" blobSection="AGEWELL_REVIEW" tooltip="AGE-WELL/CFN Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>

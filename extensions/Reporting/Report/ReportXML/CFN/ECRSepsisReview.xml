@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="EVALUATOR" />
     </Permissions>
-    <ReportSection id="SEPSIS_REVIEW" name="Sepsis Canada/CFN Funding Stream" blobSection="SEPSIS_REVIEW" tooltip="Sepsis Canada/CFN Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
+    <ReportSection id="SEPSIS_REVIEW" name="Sepsis Canada/CFN Review" blobSection="SEPSIS_REVIEW" tooltip="Sepsis Canada/CFN Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>

@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="EVALUATOR" />
     </Permissions>
-    <ReportSection id="CFN_ALONE_REVIEW" name="CFN Alone Funding Stream" blobSection="CFN_ALONE_REVIEW" tooltip="CFN Alone Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
+    <ReportSection id="CFN_ALONE_REVIEW" name="CFN Alone Review" blobSection="CFN_ALONE_REVIEW" tooltip="CFN Alone Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
         <Instructions>
             <![CDATA[
                 <ol>
