@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="ECR Review" reportType="RP_ECR_REVIEW" ajax="true" disabled="false" year="2022">
+    <Permissions>
+        <Role role="EVALUATOR" />
+    </Permissions>
+    <ReportSection id="CFN_ALONE_REVIEW" name="CFN Alone Funding Stream" blobSection="CFN_ALONE_REVIEW" tooltip="CFN Alone Funding Stream" type="EditableReportSection" saveText="Save &amp; Submit">
+        <Instructions>
+            <![CDATA[
+                <ol>
+                    <li>Please score all sections.  You can use decimals in your scores.</li>
+                    <li>Please provide comments to justify your scores.</li>
+                    <li><b>Overall Competition Goal:</b> To fund ECR research projects that will build skills and knowledge and lead to competitive proposals for larger funding competitions in the future </li>
+                    <li><b>Important:</b> Award term is for up to 18 months and to a maximum of $100,000. Matching partner contributions are not required, but higher cash and in-kind partner funding is favourable. </li>
+                </ol>
+            ]]>
+        </Instructions>
+        <ReportItemSet id="project_materials" type="MaterialsReportItemSet" subType="ECR-ALONE" class="Person">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <ReportItem id="table" type="PDFReportItem" reportType="EarlyCareerApplication" buttonName="Download Application">
+                    <![CDATA[
+                        <div id="proj{$user_id}">
+                        <table class='wikitable'>
+                            <tr><td><b>Project Leader:</b></td><td>{getText(RP_EARLY_APPLICATION2,INFORMATION,FIRST_NAME,0,{$user_id},0)} {getText(RP_EARLY_APPLICATION2,INFORMATION,LAST_NAME,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>CFN Project ID:</b></td><td>{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)}</td></tr>
+                            <tr><td><b>Project Title:</b></td><td>{getText(RP_EARLY_APPLICATION2,INFORMATION,TITLE,0,{$user_id},0)}</td></tr>
+                        </table>
+                        {$item}
+                        <p class='info'>Please enter a score from 0 to 4 in each input box below for each criteria.  Scores can include up to two decimal places.</p>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_1" blobType="BLOB_TEXT" blobItem="CFN_ALONE_1" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>1. Scientific Excellence - Background, Knowledge Gap(s), and Rationale.</h2>
+                        <p>Is the importance and rationale of the study justified?  The applicant was asked to provide a comprehensive review of the relevant background literature and identify knowledge gaps. They were also asked to clearly state how the results of this proposal may be used to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The background information is not directly relevant to the study. There does not appear to be important knowledge gaps that should be studied.  A rationale for the project is not provided. The results will not improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There does appear to be knowledge gaps that should be studied. A rationale for the project is not provided. The results are unlikely to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied. A satisfactory rationale for the project is provided. The results are likely to improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</td>
+                                <td class='small' valign='top'>The background information is directly relevant to the study. There are important knowledge gaps that should be studied and have been priotitised in terms of urgency. A clear and concise rationale for the project is provided. The results will certainly improve the care of older Canadians living with frailty and improve the lives of their family, friends and caregivers.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_1_comments" type="Textarea" blobItem="CFN_ALONE_1_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_2" blobType="BLOB_TEXT" blobItem="CFN_ALONE_2" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>2. Scientific Excellence - Hypothesis and Research Question(s).</h2>
+                        <p>The applicant was asked to state the proposed hypothesis and research question(s) to be addressed in the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>No hypothesis or research questions are explicitly provided.</td>
+                                <td class='small' valign='top'>No hypothesis is provided.  The research questions provided are somewhat relevant and partly supported by the background information and rationale provided in previous section. </td>
+                                <td class='small' valign='top'>A hypothesis and research questions are provided and are relevant and supported by the background information and rationale provided in previous section. </td>
+                                <td class='small' valign='top'>A clear and concise hypothesis is provided. Research questions to be addressed in the study are directly relevant and supported by the background information and rationale provided in previous section. </td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_2_comments" type="Textarea" blobItem="CFN_ALONE_2_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_3" blobType="BLOB_TEXT" blobItem="CFN_ALONE_3" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>3. Scientific Excellence - Overall Goal and Objectives.</h2>
+                        <p>The applicant was asked to describe the overall goal and specific objectives of the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>No overall goal or specific objectives are provided.</td>
+                                <td class='small' valign='top'>An overall goal is provided but no specific objectives are provided. Or no overall goal is provided but specific objectives are provided.</td>
+                                <td class='small' valign='top'>Overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section. </td>
+                                <td class='small' valign='top'>Clear and concise overall goal and specific objectives are provided and are consistent with the rationale and hypothesis stated in previous section.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_3_comments" type="Textarea" blobItem="CFN_ALONE_3_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_4" blobType="BLOB_TEXT" blobItem="CFN_ALONE_4" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>4.  Scientific Excellence - Methodological Approach</h2>
+                        <p>How appropriate is the study plan?  The applicant was asked to describe the overall study design, approaches, procedures and methods used in the study and why they are appropriate to meet the goals and objectives and deliver upon the proposed outputs and outcomes. </p>
+                        <p>Note: For example, if relevant, include aspects of participant recruitment, methods and tools used to assess participants for frailty, data collection, statistical analysis, etc.</p>
+                        <p>Note: Proposal must include frailty assessment of all study participants using a published frailty assessment instrument appropriate for the care setting. For knowledge syntheses, evaluation of the impact of frailty must be included.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>Based on the approach described it is highly likely that the project will not meet the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does not include frailty assessment of study participants using a published instrument.</td>
+                                <td class='small' valign='top'>Based on the appraoch described there is concern that the project will not meet some of the goals and objectives. There is a lack of detail regarding important aspects of the study design.  The study protocol does include frailty assessment of study participants using a published instrument.</td>
+                                <td class='small' valign='top'>The study design appears appropriate to meet all the goals and objectives of the study.  Information on individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment of study participants for the care setting and provides sufficient detail of the assessment.</td>
+                                <td class='small' valign='top'>A comprehensive study design is provided and justified to meet all goals and objectives. Information on highly qualified individuals that will manage major aspects of the study are provided. The protocol includes an appropriate published frailty assessment, provides sufficient detail and includes an analysis of differential impact of the study intervention or innovation based on the degree of frailty.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_4_comments" type="Textarea" blobItem="CFN_ALONE_4_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_5" blobType="BLOB_TEXT" blobItem="CFN_ALONE_5" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>5.  Scientific Excellence - Research Outcomes, Deliverables and Milestones</h2>
+                        <p> Is the applicant likely to achieve the expected deliverables/milestones?  The applicant was asked to: a) Describe all milestones and anticipated deliverables, outputs and outcomes for the study, b) Describe how completion of the study will enhance the ECR's ability to develop future partnerships and collaborations with external organizations and stakeholders, c) Report on one or more real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes, d) Describe an end-of-grant knowledge translation plan, e) Describe the potential of the study to be recognized nationally and globally for scientific excellence and to improve the care for Canadians living with frailty and/or improving the lives of their caregivers, and f) Provide a detailed project schedule and describe how this project will be managed, and milestones and deliverables tracked.
+Note: The project schedule is mandatory and will be used by CFN to track progress of the study.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>There is a lack of description on the anticipated milestones, deliverable, outputs and/or outcomes and there is no project schedule that maps to these items and thus project management is a major concern. Absent or incomplete description about how the project will ehance ECR's ability to develop future collaborations. There are no real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes. There is no description of how the study results will be disseminated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>A description on the anticipated milestones, deliverable, outputs and/or outcomes are satisfactory, although there is no project schedule that maps to these items and thus project management is a concern. A description about how the project will ehance ECR's ability to develop future collaborations is satisfactory. The real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes are provided, but unlcear how they will lead to meaningful improvements in patient care. There is a brief description of how the study results will be integrated and translated at the end of the grant.</td>
+                                <td class='small' valign='top'>A good description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a satisfactory project schedule that maps to these items.  Project management is not a concern. A description about how the project will ehance ECR's ability to develop future collaborations is good. The real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes are provided and their relationship to improving care for older Canadians is described. KT plan describes strategies for connecting knowledge users with the knowledge gained through research. The plan includes more than one avenue to disseminate the results of the study.</td>
+                                <td class='small' valign='top'>An excellent and very detailed description on the anticipated milestones, deliverable, outputs and/or outcomes are provided, and there is a very detailed project schedule that maps to these items.  Project management is not a concern.  A description about how the project will ehance ECR's ability to develop future collaborations is well-described. The real or anticipated patient-centred outcomes, patient-centred experiences, patient/family satisfaction, or health economic outcomes are relevant and their relationship to improving care for older Canadians is well described. KT plan is clearly developed with details about the strategies that will connect knowledge users with the knowledge gained through research. The plan may include: disseminating the results of the study to appropriate audiences; plans to implement study findings into practice and/or policy; intention to spread successful findings to further locations, communities, areas of care; etc.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_5_comments" type="Textarea" blobItem="CFN_ALONE_5_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_6" blobType="BLOB_TEXT" blobItem="CFN_ALONE_6" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>6. Project Feasiibility - Barriers, Challenges & Mitigation Strategy</h2>
+                        <p>Did the applicant identify the important feasibility issues, barriers, challenges and limitations to the successful execution and completion of the study and specifically address issue related to budget constraints, time constraints, structural issues, and organizational and personnel challenges that may delay or derail timely completion of the study?  Did the applicant appropriately describe how the investigative team plans on mitigating and overcoming these barriers, challenges and limitations?</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The proposed study is not feasible within the total time requested.  The timeline and accompanying narrative does a very poor job of realistically describing the important barriers, challenges and limitations to complete the study and does not include a mitigation strategy.</td>
+                                <td class='small' valign='top'>The proposed study is unlikley to be feasible within the total time requested. The applicant does a satisfactory job of describing the important barriers, challenges and limitations to complete the study but does not include a mitigation strategy.</td>
+                                <td class='small' valign='top'>The proposed study is likley feasible within the total time requested.  The applicant does a good job of describing how the research team will address important barriers, challenges and limitations to complete the study.  A reasonable mitigation strategy is provided.</td>
+                                <td class='small' valign='top'>The proposed study is feasible within the total time requested.  The applicant does an excellent job of describing how the barriers, challenges and limitations of the study will be addresssed and appropriately mitigated.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_6_comments" type="Textarea" blobItem="CFN_ALONE_6_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_7" blobType="BLOB_TEXT" blobItem="CFN_ALONE_7" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>7.  Project Feasibility - Experience, Expertise and Resources</h2>
+                        <p>Is the Early Career Researcher capable of executing the successful completion of the study?  The applicant was asked to: a) Describe expertise and experience of the ECR and other team members to demonstrate that they can achieve the goals and objectives of the study, and b) Describe why the ECR and other team members' environment (e.g., academic institution and/or other organization) are appropriate to enable successful completion of the project. (Note: All Individuals participating as project team members will also need to be listed in the Project Team List document)</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The ECR and team members have limited experience/expertise with frailty and older adults. There is significant concern regarding the environment of the ECR and/or critical team members. The project involves investigators from only one discipline and institution.</td>
+                                <td class='small' valign='top'>The ECR and some team members have  experience/expertise in frailty and older adults. The environment of ECR and/or critical team members is appropriate for completion of the project.   The project involves investigators from a couple of different disciplines and institutions.</td>
+                                <td class='small' valign='top'>The ECR and all team members have some direct experience/expertise in frailty and older adults.  The ECR and critical team members are from  environments that will enable the success of the proposed project.  The project involves investigators from a few unique disciplines and institutions.</td>
+                                <td class='small' valign='top'>The ECR and all team members have in-depth experience/expertise in frailty and older adults.  The ECR and all team members are from environments that will enable the success of the proposed project. Project involves investigators from a diverse range of disciplines and many different institutions.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_7_comments" type="Textarea" blobItem="CFN_ALONE_7_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_8" blobType="BLOB_TEXT" blobItem="CFN_ALONE_8" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>8.  Budget Description and Justification</h2>
+                        <p>Does the ECR justify the overall budget and the need for the budget items listed, and are the costs associated with each item reasonable?  Please review section 4.3 and the Budget document (Excel document).</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>The budget was not appropriately justified and is unreasonable.</td>
+                                <td class='small' valign='top'>Parts of the budget are appropriately justified. </td>
+                                <td class='small' valign='top'>The entire budget is justified, although some components appear unreasonable. </td>
+                                <td class='small' valign='top'>The entire budget is justified and very reasonable. </td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_8_comments" type="Textarea" blobItem="CFN_ALONE_8_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_9" blobType="BLOB_TEXT" blobItem="CFN_ALONE_9" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>9. Stakeholder Engagement</h2>
+                        <p>Does the project represent an opportunity for the ECR to enhance stakeholder and older adult engagement?  The applicant was asked to describe how knowledge users (e.g., older adults with frailty and their family or friend caregivers with lived experience, decision makers, stakeholders, practitioners) are involved in the study in a meaningful and tightly integrated manner.</p>
+                        <p>Note: Meaningfully involved participation of knowledge users includes assisting in the planning and execution of the research project and/or in assisting in the interpretation and translation/mobilization of research findings.</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'> The study has a poorly designed plan to involve knowledge users. There is a lack of information about the nature of their contribution and how it integrates with the study.</td>
+                                <td class='small' valign='top'>The study has a plan to involve different types of knowledge users; however, in a less than meaningful way. Integration of stakeholders is unclear.</td>
+                                <td class='small' valign='top'>The study has a reasonable plan to involve different types of knowledge users in a meaningful way. Integration of stakeholders is described.</td>
+                                <td class='small' valign='top'>The study has a comprehensive plan to involve different types of knowledge users in a meaningful way. The integration of stakeholders is well-described and their integration throughout the project is clearly outlined.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_9_comments" type="Textarea" blobItem="CFN_ALONE_9_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+                
+                <ReportItem id="ex_10" blobType="BLOB_TEXT" blobItem="CFN_ALONE_10" blobSubItem="{$user_id}" type="IntegerReportItem" size="5" align="left" max="4" min="0" decimals="2">
+                    <![CDATA[
+                        <h2>10. Partnerships</h2>
+                        <p>Does the ECR have the appropriate partners to carry out the study and do the partners appear fully committed to, and meaningfully involved in the project?  Does the project represent an opportunity for the ECR to enhance future partnerships? Does the ECR present a feasible plan to attract new partners? The applicant was asked to describe how completion of the proposed study will enhance their ability to develop future partnerships and collaborations with external organizations and stakeholders (e.g., health care practices, service providers, care facilities)</p>
+                        <table class='wikitable' width='100%'>
+                            <tr>
+                                <th width='23%'>Unacceptable<br />
+                                    <small>(score = 0)</small>
+                                </th>
+                                <th width='23%'>Borderline<br />
+                                    <small>(score = 1)</small>
+                                </th>
+                                <th width='23%'>Good/Solid<br />
+                                    <small>(score = 3)</small>
+                                </th>
+                                <th width='23%'>Excellent<br />
+                                    <small>(score = 4)</small>
+                                </th>
+                                <th width='8%'>Your score<br />
+                                    <small>(Max 4)</small></th>
+                            </tr>
+                            <tr>
+                                <td class='small' valign='top'>ECR has no partnerships for the proposed study. The project is unlikely to enhance the ECR's ability to collaborate with external organizations in the future. The plan to attract new partners is not feasible.</td>
+                                <td class='small' valign='top'>Many of the partners do not appear to be appropriate (i.e., lack the expertise, experience etc...) for the planned study and thus are unlikely to be meaningfully involved in the study. The project may enhance the ECR's ability to collaborate with external organizations in the future, but the plan to attract new partners does not seem feasible. ECR has partners that have committed in-kind (i.e., no cash) partner contributions.</td>
+                                <td class='small' valign='top'>Most partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study.  Partnerships for the study may increase the ECR's potential to attract new partnerships. The project is likely to enhance the ECR's ability to collaborate with external organizations in the future. A feasible plan to attract new partners is described. ECR has partners that have committed partner contributions with a small percentage (<10%) of the partner contribution is cash, with the remainder being in-kind.</td>
+                                <td class='small' valign='top'>All partners appear to be appropriate (i.e., have the expertise, experience etc...) for the planned study and are meaningfully involved in the study. Partnerships for the study will increase the ECR's potential to attract new partnerships. The project will certainly enhance the ECR's ability to collaborate with external organizations in the future because the plan to do so is feasible and clearly described. ECR has partners that have committed partner contributions with a significant percentage (>10%) of the partner contribution is cash, with the remainder being in-kind.</td>
+                                <td align='center'>{$item}</td>
+                            </tr>
+                        </table>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="ex_10_comments" type="Textarea" blobItem="CFN_ALONE_10_COMMENTS" blobSubItem="{$user_id}">
+                    <![CDATA[
+                        <b>Comments: Please provide comments to justify your score:</b> {$item}
+                    ]]>
+                </ReportItem>
+
+                <Static>
+                    <![CDATA[
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total">
+                                {add({getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$user_id},{$my_id},0)},
+                                        {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$user_id},{$my_id},0)}
+
+                                )}
+                            </b> (Score out of 40)</p>
+                        <p style='font-size:125%;background: #EEEEEE;padding:2px;'>
+                            <b id="proj{$user_id}_total5">
+                                {round(
+                                    {multiply(
+                                        {divide(
+                                            {add({getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$user_id},{$my_id},0)},
+                                                    {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$user_id},{$my_id},0)}
+                                            )}
+                                        , 36)}
+                                    , 5)}
+                                ,2 )}
+                            </b> (Score out of 5)</p>
+                        <script type="text/javascript">
+                            $("#proj{$user_id} input[type=text]").change(function(){
+                                var total = 0;
+                                $("#proj{$user_id} input[type=text]").each(function(i, v){
+                                    if(!_.isNaN(parseFloat($(v).val()))){
+                                        total += parseFloat($(v).val());
+                                    }
+                                });
+                                $("#proj{$user_id}_total").html(Math.round(total*100)/100);
+                                $("#proj{$user_id}_total5").html(Math.round((total/40)*5*100)/100 );
+                            });
+                        </script>
+                        </div>
+                    ]]>
+                </Static>
+                <ReportItem id="ex_comments" type="Textarea" blobItem="CFN_ALONE_COMMENTS" blobSubItem="{$user_id}" optional="true">
+                    <![CDATA[
+                        <b>General Comments - Please provide any general comments that are not captured in above section:</b> {$item}
+                    ]]>
+                </ReportItem>
+            </ReportItemSet>
+        </ReportItemSet>
+        <ReportItem id="dialog" type="SaveDialogReportItem" message="Thank you for submitting your External Review.">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
