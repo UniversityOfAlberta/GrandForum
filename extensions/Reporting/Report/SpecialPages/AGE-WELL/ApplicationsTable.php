@@ -628,14 +628,14 @@ class ApplicationsTable extends SpecialPage{
                                                                                        "Memberships" => $mem,
                                                                                        "Title" => $title,
                                                                                        "Keywords" => $keywords,
-                                                                                       //"Age" => $age,
-                                                                                       //"Gender" => $gender,
-                                                                                       //"Gender (Other)" => $gender_other,
+                                                                                       "Age" => $age,
+                                                                                       "Gender" => $gender,
+                                                                                       "Gender (Other)" => $gender_other,
                                                                                        "Indigenous" => $indigenous,
-                                                                                       //"Ethnicities" => $ethnicities,
-                                                                                       //"Ethnicities (Other)" => $ethnicities_other,
-                                                                                       //"Disability" => $disability,
-                                                                                       //"Post-Secondary" => $postsecondary
+                                                                                       "Ethnicities" => $ethnicities,
+                                                                                       "Ethnicities (Other)" => $ethnicities_other,
+                                                                                       "Disability" => $disability,
+                                                                                       "Post-Secondary" => $postsecondary
                                                                                        )));
         $wgOut->addHTML($tabbedPage->showPage());
     }
