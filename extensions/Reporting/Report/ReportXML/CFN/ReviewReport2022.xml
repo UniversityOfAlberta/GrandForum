@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Review Report" ajax="true" disabled="false" personId="0" year="2022">
+    <Permissions>
+        <Role role="STAFF"></Role>
+    </Permissions>
+    <!-- ECR (CFN) -->
+    <ReportSection id="ecr_review" name="ECR (CFN) Review" tooltip="Review of ECR Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-ALONE">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-ALONE" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="ECR-ALONE" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q9)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q10)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="ecr_review_summary" name="ECR (CFN) Summary" tooltip="ECR Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>ECR</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-ALONE">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(q9,0)}
+                    {set(q10,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-ALONE" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,CFN_ALONE_REVIEW,CFN_ALONE_10,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q9)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q10)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)},
+                                     {get(q7)},
+                                     {get(q8)},
+                                     {get(q9)},
+                                     {get(q10)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <!-- ECR (AGE-WELL) -->
+    <ReportSection id="ecr_agewell_review" name="ECR (AGE-WELL) Review" tooltip="Review of ECR Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-AGEWELL">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-AGEWELL" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="ECR-AGEWELL" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q9)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q10)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="ecr_agewell_review_summary" name="ECR (AGE-WELL) Summary" tooltip="ECR Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>ECR</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-AGEWELL">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(q9,0)}
+                    {set(q10,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-AGEWELL" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q9)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q10)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)},
+                                     {get(q7)},
+                                     {get(q8)},
+                                     {get(q9)},
+                                     {get(q10)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <!-- ECR (Perley) -->
+    <ReportSection id="ecr_perley_review" name="ECR (Perley) Review" tooltip="Review of ECR Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-PERLEY">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-PERLEY" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="ECR-PERLEY" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q9)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q10)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="ecr_perley_review_summary" name="ECR (Perley) Summary" tooltip="ECR Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>ECR</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-PERLEY">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(q9,0)}
+                    {set(q10,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-PERLEY" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,PERLEY_REVIEW,PERLEY_EX_10,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q9)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q10)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)},
+                                     {get(q7)},
+                                     {get(q8)},
+                                     {get(q9)},
+                                     {get(q10)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <!-- ECR (Sepsis) -->
+    <ReportSection id="ecr_sepesis_review" name="ECR (Sepsis) Review" tooltip="Review of ECR Proposals" type="ReportSection">
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-SEPSIS">
+            <ReportItemSet id="toggle" type="ToggleHeaderReportItemSet" title="{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}">
+                <Static>
+                    <![CDATA[
+                        {set(q1, 0)}
+                        {set(q2, 0)}
+                        {set(q3, 0)}
+                        {set(q4, 0)}
+                        {set(q5, 0)}
+                        {set(q6, 0)}
+                        {set(q7, 0)}
+                        {set(q8, 0)}
+                        {set(q9, 0)}
+                        {set(q10, 0)}
+                        {set(q11, 0)}
+                        {set(q12, 0)}
+                        {set(nReviewers, 0)}
+                    ]]>
+                </Static>
+                <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-SEPSIS" includeSelf="true">
+                    <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)},)},
+                                             {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)},)})}">
+                        <![CDATA[
+                            {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)})})}
+                            {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)})})}
+                            {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)})})}
+                            {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)})})}
+                            {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)})})}
+                            {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)})})}
+                            {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)})})}
+                            {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)})})}
+                            {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)})})}
+                            {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)})})}
+                            {set(q11, {add({get(q11)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)})})}
+                            {set(q12, {add({get(q12)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)})})}
+                            {set(nReviewers, {add({get(nReviewers)},1)})}
+                        ]]>
+                    </If>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        <div style="margin: 10px;">
+                        <table class='wikitable' id="{$user_id}_table">
+                            <thead>
+                                <tr>
+                                    <th>Reviewer</th>
+                                    <th>Q1</th>
+                                    <th>Q2</th>
+                                    <th>Q3</th>
+                                    <th>Q4</th>
+                                    <th>Q5</th>
+                                    <th>Q6</th>
+                                    <th>Q7</th>
+                                    <th>Q8</th>
+                                    <th>Q9</th>
+                                    <th>Q10</th>
+                                    <th>Q11</th>
+                                    <th>Q12</th>
+                                    <th>Total</th>
+                                    <th width='60%'>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ]]>
+                </Static>
+                <ReportItemSet id="evaluators" type="EvaluatorReportItemSet" subType="ECR-SEPSIS" includeSelf="true">
+                    <Static>
+                        <![CDATA[
+                            <tr>
+                            <td>{$user_name}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>{getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)}</td>
+                            <td align='right'>
+                                {add({getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)},
+                                     {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)}
+                                )}
+                            </td>
+                            <td>
+                                <div style='max-height: 115px; overflow-y: auto;'>
+                                    {getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_COMMENTS,{$parent_id},{$user_id},0)}
+                                </div>
+                            </td>
+                            </tr>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style='white-space:nowrap;'>Average Scores:</th>
+                                    <th>{round({divide({get(q1)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q2)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q3)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q4)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q5)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q6)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q7)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q8)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q9)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q10)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q11)},{get(nReviewers)})},2)}</th>
+                                    <th>{round({divide({get(q12)},{get(nReviewers)})},2)}</th>
+                                    <th>
+                                        {set(total, 
+                                            {add({get(q1)}, 
+                                                 {get(q2)},
+                                                 {get(q3)},
+                                                 {get(q4)},
+                                                 {get(q5)},
+                                                 {get(q6)},
+                                                 {get(q7)},
+                                                 {get(q8)},
+                                                 {get(q9)},
+                                                 {get(q10)},
+                                                 {get(q11)},
+                                                 {get(q12)}
+                                            )}
+                                        )}
+                                        {round({divide({get(total)},{get(nReviewers)})},2)}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                        <script type='text/javascript'>
+                            $("#{$user_id}_table.wikitable").dataTable({'autoWidth': false});
+                        </script>
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="ecr_sepsis_review_summary" name="ECR (Sepsis) Summary" tooltip="ECR Summary" type="ReportSection">
+        <Static>
+            <![CDATA[
+                <table class='wikitable' id="eval_table">
+                    <thead>
+                        <tr>
+                            <th>ECR</th>
+                            <th>Avg. Q1</th>
+                            <th>Avg. Q2</th>
+                            <th>Avg. Q3</th>
+                            <th>Avg. Q4</th>
+                            <th>Avg. Q5</th>
+                            <th>Avg. Q6</th>
+                            <th>Avg. Q7</th>
+                            <th>Avg. Q8</th>
+                            <th>Avg. Q9</th>
+                            <th>Avg. Q10</th>
+                            <th>Avg. Q11</th>
+                            <th>Avg. Q12</th>
+                            <th>Avg. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="project_materials" type="AllMaterialsReportItemSet" subType="ECR-SEPSIS">
+            <Static>
+                <![CDATA[
+                    {set(q1,0)}
+                    {set(q2,0)}
+                    {set(q3,0)}
+                    {set(q4,0)}
+                    {set(q5,0)}
+                    {set(q6,0)}
+                    {set(q7,0)}
+                    {set(q8,0)}
+                    {set(q9,0)}
+                    {set(q10,0)}
+                    {set(q11,0)}
+                    {set(q12,0)}
+                    {set(nReviewers,0)}
+                ]]>
+            </Static>
+            <ReportItemSet id="evals" type="EvaluatorReportItemSet" subType="ECR-SEPSIS" includeSelf="true">
+                <If id="script" if="{and({!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)},)},
+                                         {!=({getText(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)},)})}">
+                    <![CDATA[
+                        {set(q1, {add({get(q1)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_1,{$parent_id},{$user_id},0)})})}
+                        {set(q2, {add({get(q2)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_2,{$parent_id},{$user_id},0)})})}
+                        {set(q3, {add({get(q3)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_3,{$parent_id},{$user_id},0)})})}
+                        {set(q4, {add({get(q4)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_4,{$parent_id},{$user_id},0)})})}
+                        {set(q5, {add({get(q5)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_5,{$parent_id},{$user_id},0)})})}
+                        {set(q6, {add({get(q6)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_6,{$parent_id},{$user_id},0)})})}
+                        {set(q7, {add({get(q7)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_7,{$parent_id},{$user_id},0)})})}
+                        {set(q8, {add({get(q8)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_8,{$parent_id},{$user_id},0)})})}
+                        {set(q9, {add({get(q9)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_9,{$parent_id},{$user_id},0)})})}
+                        {set(q10, {add({get(q10)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_10,{$parent_id},{$user_id},0)})})}
+                        {set(q11, {add({get(q11)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$parent_id},{$user_id},0)})})}
+                        {set(q12, {add({get(q12)},{getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$parent_id},{$user_id},0)})})}
+                        {set(nReviewers, {add({get(nReviewers)},1)})}
+                    ]]>
+                </If>
+            </ReportItemSet>
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td style='white-space:nowrap;'><b>{getText(RP_EARLY_APPLICATION2,INFORMATION,FILE_NUMBER,0,{$user_id},0)} - {$user_name}</b></td>
+                        <td align='right'>{round({divide({get(q1)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q2)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q3)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q4)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q5)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q6)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q7)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q8)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q9)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q10)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q11)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>{round({divide({get(q12)},{get(nReviewers)})},2)}</td>
+                        <td align='right'>
+                            {set(total, 
+                                {add({get(q1)}, 
+                                     {get(q2)},
+                                     {get(q3)},
+                                     {get(q4)},
+                                     {get(q5)},
+                                     {get(q6)},
+                                     {get(q7)},
+                                     {get(q8)},
+                                     {get(q9)},
+                                     {get(q10)},
+                                     {get(q11)},
+                                     {get(q12)}
+                                )}
+                            )}
+                            {round({divide({get(total)},{get(nReviewers)})},2)}
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type='text/javascript'>
+                    $("#eval_table").dataTable({'autoWidth': false,
+                                                'iDisplayLength': -1,
+                                                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']]});
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

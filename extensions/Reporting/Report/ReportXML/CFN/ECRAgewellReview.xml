@@ -467,7 +467,7 @@
                                                         {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_9,{$user_id},{$my_id},0)},
                                                         {getNumber(RP_ECR_REVIEW,AGEWELL_REVIEW,AGEWELL_REVIEW_10,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 36)}
+                                            , 40)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score out of 5)</p>

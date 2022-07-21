@@ -543,7 +543,7 @@
                                                         {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_11,{$user_id},{$my_id},0)},
                                                         {getNumber(RP_ECR_REVIEW,SEPSIS_REVIEW,SEPSIS_REVIEW_12,{$user_id},{$my_id},0)}
                                                 )}
-                                            , 36)}
+                                            , 48)}
                                         , 5)}
                                     ,2 )}
                                 </b> (Score out of 5)</p>
