@@ -6,7 +6,7 @@ class PersonCitationsTab extends AbstractTab {
     var $visibility;
 
     function PersonCitationsTab($person, $visibility){
-        parent::AbstractTab("Impact");
+        parent::AbstractTab("Bibliometrics");
         $this->person = $person;
         $this->visibility = $visibility;
         $this->tooltip = "Contains Google Scholar citation information for the faculty member.  A 'Google Scholar URL' on the Bio tab must be provided in order to import citation information.";
@@ -20,16 +20,49 @@ class PersonCitationsTab extends AbstractTab {
         $wgOut->addScript(
                 "<script type='text/javascript'>
                     $(document).ready(function(){
-                        $('.citationAccordion').accordion({autoHeight: false, collapsible: true, active:false});
-                    });
+                    var bibInterval = setInterval(function(){
+                        if($('#citationAccordion').is(':visible')){
+                            $('#citationAccordion').accordion();
+                            clearInterval(bibInterval);
+                        }
+                    }, 100);
+                });
                 </script>"
             );
-
-        $metric = $this->person->getMetric();
+        $metric = $this->person->getGsMetric();
         //$acm_stats = $this->getAcmStats($metric);
-        //$scopus_stats = $this->getScopusStats($metric);
-        $gs_stats = $this->getGsStats();
-        $this->html .= $gs_stats;
+        $this->html = "<div id='citationAccordion'>";
+        $this->html .= "
+                <h3><a href='#'>Google Scholar Statistics</a></h3>
+                <div id='gs_stats'>
+                    {$this->getGsStats($metric)}
+                </div>";
+        $this->html .= "
+            <h3><a href='#'>Scopus Statistics</a></h3>
+            <div id='scopus_stats'>
+                {$this->getScopusStats($metric)}
+            </div>";
+        $this->html .= "</div>";
+        if($metric->change_date != ""){
+            $this->html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
+        }
+        $_POST['id'] = $this->person->getId();
+        if($this->person->isMe()){
+            $this->html .= "<br /><br /><input type='button' id='GsUpdate' value='Update Bibliometrics'></input>
+                <script>
+                    $(document).ready(function(){ 
+                    $('#GsUpdate').click(function(e){
+                    e.preventDefault();
+                    $.ajax({type:'POST',
+                            url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
+                            data: {id:".$this->person->getId()."},
+                            success:function(result){
+                                document.location = '{$this->person->getUrl()}?tab=bibliometrics';
+                            }});
+                        });
+                    });
+                </script>";
+        }
         /*$this->html ="
             <div class='citationAccordion'>
                 <h3><a href='#'>ACM Statistics</a></h3>
@@ -51,7 +84,6 @@ class PersonCitationsTab extends AbstractTab {
         </div>";*/
         return $this->html;
     }
-
 
     function getAcmStats($metric){
         $html = "";
@@ -78,14 +110,13 @@ class PersonCitationsTab extends AbstractTab {
 
     function getScopusStats($metric){
         $html = "";
-        if($metric != "" && $metric->sciverse_doc_count != 0){
+        if($metric != "" && $metric->scopus_document_count != 0){
             $html .= "<ul>";
-            $html .= "<li><strong>Publication Count:</strong> {$metric->sciverse_doc_count}</li>";
-            $html .= "<li><strong>H-Index:</strong> {$metric->sciverse_hindex}</li>";
-            $html .= "<li><strong>Total Citation Count:</strong> {$metric->sciverse_citation_count}</li>";
-            $html .= "<li><strong>Cited By Count:</strong> {$metric->sciverse_cited_by_count}</li>";
-            $html .= "<li><strong>Coauthor Count:</strong> {$metric->sciverse_coauthor_count}</li>";
-            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
+            $html .= "<li><strong>Publication Count:</strong> {$metric->scopus_document_count}</li>";
+            $html .= "<li><strong>H-Index:</strong> {$metric->scopus_h_index}</li>";
+            $html .= "<li><strong>Total Citation Count:</strong> {$metric->scopus_citation_count}</li>";
+            $html .= "<li><strong>Cited By Count:</strong> {$metric->scopus_cited_by_count}</li>";
+            $html .= "<li><strong>Coauthor Count:</strong> {$metric->scopus_coauthor_count}</li>";
             $html .= "</ul>";
         }
         else{
@@ -94,9 +125,8 @@ class PersonCitationsTab extends AbstractTab {
         return $html;
     }
 
-    function getGsStats(){
+    function getGsStats($metric){
         global $wgServer, $wgScriptPath, $wgTitle;
-        $metric = $this->person->getGsMetric();
         $html = "";
         if($metric != ""){
             $array = $metric->getGsCitations();
@@ -110,27 +140,9 @@ class PersonCitationsTab extends AbstractTab {
             $html .= "</ul>";
             $bar = new Bar($array);
             $html .= $bar->show();
-            $html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
         }
         else{
             $html .= "<strong>No Google Scholar Statistics Available</strong>";
-        }
-        $_POST['id'] = $this->person->getId();
-        if($this->person->isMe()){
-            $html .= "<br /><br /><input type='button' id='GsUpdate' value='Update GS Stats'></input>
-                <script>
-                    $(document).ready(function(){ 
-                    $('#GsUpdate').click(function(e){
-                    e.preventDefault();
-                    $.ajax({type:'POST',
-                            url: wgServer+wgScriptPath+'/index.php?action=api.updateGoogleScholarCitations',
-                            data: {id:".$this->person->getId()."},
-                            success:function(result){
-                                document.location = '{$this->person->getUrl()}?tab=impact';
-                            }});
-                        });
-                    });
-                </script>";
         }
         return $html;
     }

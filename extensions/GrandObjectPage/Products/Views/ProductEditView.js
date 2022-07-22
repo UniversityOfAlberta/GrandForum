@@ -412,7 +412,7 @@ ProductEditView = Backbone.View.extend({
         this.$("input[name=data_snip]").prop('disabled', true).css('width', '94px');
         this.$("input[name=data_category_ranking_override]").css('width', '94px').attr('placeholder', 'Override...');;
         this.$("input[name=data_impact_factor_override]").css('width', '94px').attr('placeholder', 'Override...');
-        this.$("input[name=data_impact_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR - 1) + "</div>");
+        this.$("input[name=data_impact_factor]").after("<div>The IFs reported are based on the data available on July 1, " + (YEAR) + "</div>");
         this.$("input[name=data_category_ranking]").after(this.$("input[name=data_category_ranking_override]"));
         this.$("input[name=data_impact_factor]").after(this.$("input[name=data_impact_factor_override]"));
         this.$("input[name=data_category_ranking]").parents("tr").next().remove();

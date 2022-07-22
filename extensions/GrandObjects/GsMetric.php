@@ -15,6 +15,11 @@ class GsMetric {
     var $i10_index;
     var $change_date;
     var $gs_citations = array();
+    var $scopus_document_count;
+    var $scopus_cited_by_count;
+    var $scopus_citation_count;
+    var $scopus_h_index;
+    var $scopus_coauthor_count;
 
     // constructor
     function GsMetric($data){
@@ -27,6 +32,11 @@ class GsMetric {
             $this->i10_index_5_years = $data[0]['i10_index_5_years'];
             $this->hindex = $data[0]['hindex'];
             $this->i10_index = $data[0]['i10_index'];
+            $this->scopus_document_count = $data[0]['scopus_document_count'];
+            $this->scopus_cited_by_count = $data[0]['scopus_cited_by_count'];
+            $this->scopus_citation_count = $data[0]['scopus_citation_count'];
+            $this->scopus_h_index = $data[0]['scopus_h_index'];
+            $this->scopus_coauthor_count = $data[0]['scopus_coauthor_count'];
             $this->change_date = $data[0]['change_date'];
             $this->gs_citations = $this->getGsCitations();
         }
@@ -135,7 +145,12 @@ class GsMetric {
                                                 'hindex_5_years' => $this->hindex_5_years,
                                                 'i10_index_5_years' => $this->i10_index_5_years,
                                                 'hindex' => $this->hindex,
-                                                'i10_index' => $this->i10_index),
+                                                'i10_index' => $this->i10_index,
+                                                'scopus_document_count' => $this->scopus_document_count,
+                                                'scopus_cited_by_count' => $this->scopus_cited_by_count,
+                                                'scopus_citation_count' => $this->scopus_citation_count,
+                                                'scopus_h_index' => $this->scopus_h_index,
+                                                'scopus_coauthor_count' => $this->scopus_coauthor_count),
                                           true);
             if($status){
                 $status = DBFunctions::delete('grand_gs_citations',

@@ -6,7 +6,7 @@
         }
 
         function doAction($noEcho=false){
-            global $wgMessage;
+            global $wgMessage, $config;
             $person = Person::newFromId($_POST['id']);
 
             //this is where google scholar url will be set and grabbed as an html
@@ -56,6 +56,24 @@
                 //setting citation counts in array
                 $gs_metric->gs_citations = $citationArray;
                 //save to db
+                
+                if($person->getSciverseId() != "" && $config->getValue('scopusApi') != ""){
+                    $data = @json_decode(file_get_contents("https://api.elsevier.com/content/author/author_id/{$person->getSciverseId()}?apiKey={$config->getValue('scopusApi')}&view=METRICS&httpAccept=application/json"));
+                    if(isset($data->{"author-retrieval-response"}) && isset($data->{"author-retrieval-response"}[0]->coredata->{"document-count"})){
+                        $gs_metric->scopus_document_count = $data->{"author-retrieval-response"}[0]->coredata->{"document-count"};
+                        $gs_metric->scopus_cited_by_count = $data->{"author-retrieval-response"}[0]->coredata->{"cited-by-count"};
+                        $gs_metric->scopus_citation_count = $data->{"author-retrieval-response"}[0]->coredata->{"citation-count"};
+                        $gs_metric->scopus_h_index = $data->{"author-retrieval-response"}[0]->{"h-index"};
+                        $gs_metric->scopus_coauthor_count = $data->{"author-retrieval-response"}[0]->{"coauthor-count"};
+                    }
+                    else if(isset($_GET['forceUpdate'])){
+                        $wgMessage->addError("There was a problem retrieving your Scopus Information");
+                    }
+                }
+                else if(isset($_GET['forceUpdate'])){
+                    $wgMessage->addError("Please update your bio with your Sciverse id.");
+                }
+                
                 $status =$gs_metric->create();
                 $wgMessage->addSuccess("Updated Google Citations.");
                 exit;
