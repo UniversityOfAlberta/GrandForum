@@ -2253,6 +2253,49 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns all the keywords for this Person
+     * @param string $delim An optional delimiter
+     * @return array All the keywords for this Person as an array, or a string if a delimiter is specified
+     */
+    function getKeywords($delim=null){
+        $cacheId = "keywords_{$this->getId()}";
+        if(Cache::exists($cacheId)){
+            $keywords = Cache::fetch($cacheId);
+        }
+        else{
+            $data = DBFunctions::select(array('grand_person_keywords'),
+                                        array('keyword'),
+                                        array('user_id' => $this->getId()));
+            $keywords = array();
+            foreach($data as $row){
+                $keywords[] = $row['keyword'];
+            }
+            Cache::store($cacheId, $keywords);
+        }
+        if($delim != null){
+            return implode($delim, $keywords);
+        }
+        return $keywords;
+    }
+    
+    /**
+     * Updates the keywords for this Person
+     * @param array $keywords The array of keywords
+     */
+    function setKeywords($keywords){
+        $cacheId = "keywords_{$this->getId()}";
+        DBFunctions::delete('grand_person_keywords',
+                            array('user_id' => $this->getId()));
+        
+        foreach($keywords as $keyword){
+            DBFunctions::insert('grand_person_keywords',
+                                array('user_id' => $this->getId(),
+                                      'keyword' => $keyword));
+        }
+        Cache::delete($cacheId);
+    }
+    
+    /**
      * Returns the discipline of this Person
      * @return string The name of the discipline that this Person belongs to
      */

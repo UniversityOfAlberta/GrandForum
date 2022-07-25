@@ -20,8 +20,10 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "<table width='100%' cellpadding='0' cellspacing='0' style='margin-bottom:1px;'>";
         $this->html .= "</td><td id='firstLeft' width='60%' valign='top'>";
         $this->showContact($this->person, $this->visibility);
-        if($this->person->getProfile() != ""){
+        $keywords = $this->person->getKeywords(", ");
+        if($this->person->getProfile() != "" || $keywords != ""){
             $this->html .= "<h2 style='margin-top:0;padding-top:0;'>Profile</h2>";
+            $this->html .= ($keywords != "") ? "<b>Keywords:</b> {$keywords}" : "";
             $this->showProfile($this->person, $this->visibility);
         }
         $extra = array();
@@ -192,6 +194,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->person->publicProfile = @$_POST['public_profile'];
             $this->person->privateProfile = @$_POST['private_profile'];
             $this->person->update();
+            $this->person->setKeywords(explode(",", $_POST['keywords']));
             
             $api = new UserEmailAPI();
             $api->doAction(true);
@@ -234,8 +237,18 @@ EOF;
     
     function showEditProfile($person, $visibility){
         global $config;
+        $this->html .= "
+                <h3>Keywords:</h3>
+                <input class='keywords' type='text' name='keywords' value='' />";
         $this->html .= "<textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea>
                         <textarea style='display: none; width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea>";
+                        
+        $this->html .= "<script type='text/javascript'>
+            $('input.keywords').val('".addslashes($person->getKeywords(","))."');
+            $('input.keywords').tagit({
+                allowSpaces: true
+            });
+        </script>";
     }
     
     function showCloud($person, $visibility){

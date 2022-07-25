@@ -11,6 +11,7 @@ class GlobalSearchAPI extends RESTAPI {
                        'group' => $group);
         $ids = array();
         $origSearch = $search;
+        $escapedSearch = str_replace("%", "\%", DBFunctions::escape(trim($origSearch)));
         $search = "*".str_replace(" ", "*", $search)."*";
         $searchNames = array_filter(explode("*", str_replace(".", "*", unaccentChars($search))));
         switch($group){
@@ -21,6 +22,9 @@ class GlobalSearchAPI extends RESTAPI {
                                                 FROM `grand_names_cache`
                                                 WHERE MATCH(name) AGAINST ('+$fullTextSearch*' IN BOOLEAN MODE) 
                                                 LIMIT 100");
+                $peopleFullText = DBFunctions::execSQL("(SELECT user_id FROM mw_user
+                                                         WHERE user_id IN (SELECT user_id FROM grand_person_keywords WHERE keyword LIKE '%".str_replace(" ", "%", $escapedSearch)."%')
+                                                         AND deleted = 0)");
                 foreach($people as $person){
                     $data[$person['user_id']] = $person['user_id'];
                 }
@@ -85,6 +89,19 @@ class GlobalSearchAPI extends RESTAPI {
                 $results = array_reverse($results, true);
 	            foreach($results as $key => $row){
 	                $ids[] = intval($key);
+	            }
+	            foreach($peopleFullText as $person){
+	                if(array_search($person['user_id'], $ids) === false){
+	                    $p = Person::newFromId($person['user_id']);
+	                    if($p->isRoleAtLeast(ADMIN)){
+                            // Don't include Admin
+                            continue;
+                        }
+                        if(!$me->isLoggedIn() && !$p->isRoleAtLeast(NI) && !$config->getValue('hqpIsPublic')){
+                            continue;
+                        }
+	                    $ids[] = intval($person['user_id']);
+	                }
 	            }
                 break;
             case 'products':

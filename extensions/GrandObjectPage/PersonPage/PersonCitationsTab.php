@@ -43,7 +43,7 @@ class PersonCitationsTab extends AbstractTab {
                 {$this->getScopusStats($metric)}
             </div>";
         $this->html .= "</div>";
-        if($metric->change_date != ""){
+        if($metric != "" && $metric->change_date != ""){
             $this->html .= "<i>(These statistics were last updated: ".time2date($metric->change_date).")</i>";
         }
         $_POST['id'] = $this->person->getId();
