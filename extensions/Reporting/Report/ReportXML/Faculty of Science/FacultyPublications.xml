@@ -175,7 +175,7 @@
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="math" tooltip="Mathematical And Statistical Sciences" name="Math" title="Mathematical And Statistical Sciences" blobSection="BLOB_NONE" type="ReportSection">
+    <ReportSection id="math" tooltip="Mathematical And Statistical Sciences" name="MSS" title="Mathematical And Statistical Sciences" blobSection="BLOB_NONE" type="ReportSection">
         <Static>
             <![CDATA[
                 <table id='products' class='wikitable' frame='box' rules='all'>
