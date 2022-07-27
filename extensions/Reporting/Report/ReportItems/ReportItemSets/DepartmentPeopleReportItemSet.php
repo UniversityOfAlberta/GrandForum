@@ -47,7 +47,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                 // This is also a special case, but needs to be put here
                 goto create;
             }
-            if(($me->getName() == "Manveen.Maadhra" || $me->getName() == "Thomas.Chacko") && $person->getName() == "Jonathan.Dennis"){
+            if(($me->getName() == "Manveen.Maadhra" || $me->getName() == "Stephen.Johnston") && $person->getName() == "Jonathan.Dennis"){
                 // This is also a special case, but needs to be put here
                 goto create;
             }
