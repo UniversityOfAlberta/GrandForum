@@ -108,7 +108,7 @@ class Register extends SpecialPage{
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
         
-        // These next 4 fields for are for AVOID
+        // These next 5 fields for are for AVOID
         $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "or Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
         $ageOfLovedOneRow = new FormTableRow("age_of_loved_one_row");
@@ -128,6 +128,14 @@ class Register extends SpecialPage{
         $roleField = new TextField("role_field", "Role", "", VALIDATE_NOT_NULL);
         $roleRow = new FormTableRow("role_row");
         $roleRow->append($roleLabel)->append($roleField->attr('size', 20));
+        
+        $hearLabel = new Label("hear_label", "How did you hear about the AVOID Frailty program?", "How did you hear about the AVOID Frailty program?", VALIDATE_NOT_NULL);
+        $hearLabel->colspan = 2;
+        $hearRow1 = new FormTableRow("hear_row1");
+        $hearRow1->append($hearLabel);
+        $hearField = new SelectBox("hear_field", "Hear", "", array("", "Canadian Frailty Network website","Poster, flyer, or pamphlet at community venue","Newspaper","Magazine or Newsletter","Healthcare practitioner","Social media","Word of mouth","Other"), VALIDATE_NOT_NULL);
+        $hearRow2 = new FormTableRow("hear_row2");
+        $hearRow2->append(new EmptyElement())->append($hearField);
 
         $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
         $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
@@ -160,10 +168,12 @@ class Register extends SpecialPage{
             if(isset($_GET['role']) && $_GET['role'] == "Partner"){
                 $formTable->append($ageRow);
                 $formTable->append($ageOfLovedOneRow);
+                $formTable->append($hearRow1)->append($hearRow2);
             }
             if(isset($_GET['role']) && $_GET['role'] == "Clinician"){
                 $formTable->append($practiceRow);
                 $formTable->append($roleRow);
+                $formTable->append($hearRow1)->append($hearRow2);
             }
         }
         $formTable->append($captchaRow)
@@ -321,6 +331,7 @@ class Register extends SpecialPage{
                     $_POST['wpExtra']['ageField'] = @$_POST['age_field'];
                     $_POST['wpExtra']['practiceField'] = @$_POST['practice_field'];
                     $_POST['wpExtra']['roleField'] = @$_POST['role_field'];
+                    $_POST['wpExtra']['hearField'] = @$_POST['hear_field'];
                 }
                 
                 $wgGroupPermissions['*']['createaccount'] = true;
