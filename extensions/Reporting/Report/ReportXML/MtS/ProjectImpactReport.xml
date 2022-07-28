@@ -131,7 +131,9 @@
             <![CDATA[
                 <p><i>The purpose of this section is to track the project progress and identify any emerging patterns and practices respective to ‘innovation, research and knowledge mobilization’ and ‘partnerships and coalition building’.</i></p>
                 <p>As a team, reflect on your project and impact strategy implementation plan as identified in your original proposal, and describe highlights of progress in relation to achieving your project objectives, any challenges or adverse events that affected your original plan/strategy, and your response to the challenges, including any changes or adaptations to the original plan/strategy, where applicable. Where applicable, please attach pictures to illustrate your point and experiences of the project team.</p>
-                <h3>3.1 What is the intended ultimate impact of your research as described in your proposal?</h3>
+                <h3>3.1 What trainings do you plan to give to your research teams to better equip them to work on your MtS funded project?</h3>
+                <p>(Examples of trainings might include: social media, knowledge mobilization, interviewing skills, project management).<br />
+                    What timeframe do you anticipate conducting these trainings? (Please give approximate dates, example: “Project Management, March 2023”). Depending on the training, MtS may be able to help deliver it on your behalf.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -187,7 +189,7 @@
         </ReportItem>
         
         <!-- CERI -->
-        <Static>
+        <!--Static>
             <![CDATA[
                 <h4>Community Engagement in Research Index (CERI)</h4>
                 <small>Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</small>
@@ -240,7 +242,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 <h4>If relevant, provide explanatory information for the numerical answers that you chose to reflect the extent of the involvement of your community partners in the research project.</h4>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         
         <ReportItem id="resources" type="Textarea" blobItem="RESOURCES" rich="true" limit="250">
             <![CDATA[

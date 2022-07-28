@@ -334,7 +334,7 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         
-        for($y = 2021; $y >= 2020; $y--){
+        for($y = date('Y'); $y >= 2020; $y--){
             $tab = new ApplicationTab('RP_IMPACT', null, $y, "$y", array('Service Delivery Agencies' => $ceris[1],
                                                                          'Indigenous community-based agencies and/or governing bodies' => $ceris[2],
                                                                          'Persons with lived experiences of homelessness' => $ceris[3],
