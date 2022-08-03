@@ -109,6 +109,7 @@ class ImportBibTeXAPI extends API{
         }
         $me = Person::newFromWgUser();
 
+        $paper['author'] = str_replace("‐", "-", $paper['author']); // Fix special dash
         $paper['day'] = (isset($paper['day'])) ? $paper['day'] : "01";
 
         $product->getAuthors();

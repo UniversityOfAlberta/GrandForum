@@ -460,6 +460,10 @@ class Person extends BackboneModel {
             $keys[] = strtolower("$firstName $middleName $lastName");
             $keys[] = strtolower("$firstName ".substr($middleName, 0, 1)." $lastName");
             $keys[] = strtolower("$lastName ".substr($firstName, 0, 1).substr($middleName, 0, 1));
+            $explodedMiddle = explode("-", $middleName, 2);
+            if(count($explodedMiddle) > 1){
+                $keys[] = strtolower("$firstName ".substr($explodedMiddle[0], 0, 1)."-".substr($explodedMiddle[1], 0, 1)." $lastName");
+            }
         }
         DBFunctions::delete('grand_names_cache',
                             array('user_id' => $this->getId()));
