@@ -36,7 +36,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="2_if" if="{>(2022-08-18 00:00:00,{$timestamp})}">
+        <If id="2_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="2_accordion">
@@ -166,7 +166,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="1_if" if="{>(2022-08-18 00:00:00,{$timestamp})}">
+        <If id="1_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="1_accordion">
@@ -267,7 +267,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="4_if" if="{>(2022-08-18 00:00:00,{$timestamp})}">
+        <If id="4_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="4_accordion">
@@ -389,7 +389,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="3_if" if="{>(2022-08-18 00:00:00,{$timestamp})}">
+        <If id="3_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="3_accordion">
@@ -523,7 +523,7 @@
                 <p>Please contact <a href='mailto:conference@agewell-nce.ca'>conference@agewell-nce.ca</a> for any questions.</p>
             ]]>
         </Static>
-        <If id="5_if" if="{>(2022-08-18 00:00:00,{$timestamp})}">
+        <If id="5_if" if="{>(2023-08-18 00:00:00,{$timestamp})}">
             <Static>
                 <![CDATA[
                     <div id="5_accordion">
