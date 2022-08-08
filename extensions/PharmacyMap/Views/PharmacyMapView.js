@@ -22,6 +22,17 @@ PharmacyMapView = Backbone.View.extend({
         $(document).on('click', 'a.programWebsite', function(){
             this.clickWebsite(this.model.cat);
         }.bind(this));
+        
+        $(window).resize(function(){
+            if($("#questionsDialog").is(':visible')){
+                $("#questionsDialog").dialog({
+                    width: 'auto'
+                });
+                $("#questionsDialog").dialog({
+                    position: { 'my': 'center', 'at': 'center' }
+                });
+            }
+        });
     },
 
     events: {
@@ -29,7 +40,15 @@ PharmacyMapView = Backbone.View.extend({
         "click #findLocation": "findLocation",
         "click #printMap": "printMap",
         "click .category": "findCategory",
-        "click .previous_button": "previousCategory"
+        "click .previous_button": "previousCategory",
+        "click #questions": "clickQuestions"
+    },
+    
+    clickQuestions(e){
+        $("#questionsDialog").dialog({width: 'auto'});
+        $('.ui-dialog').addClass('program-body');
+        $(window).resize();
+        return false;
     },
 
     printMap: function () {
@@ -79,12 +98,12 @@ PharmacyMapView = Backbone.View.extend({
                 this.drawButtons();
             }
             else {
-		var id_cat = "#"+this.buttons[cat]["code"];
-        	this.category_text = $(id_cat).text();
+                var id_cat = "#"+this.buttons[cat]["code"];
+                this.category_text = $(id_cat).text();
                 this.refresh = false;
                 this.renderMap = true;
                 this.model.cat = this.buttons[cat]["code"];
-		this.note = this.buttons[cat]["note"];
+                this.note = this.buttons[cat]["note"];
                 this.model.fetch();
                 $(".throbber", ev.currentTarget).show();
             }
@@ -244,9 +263,9 @@ PharmacyMapView = Backbone.View.extend({
         if (this.table != undefined) {
             this.table.destroy();
         }
-	if(this.note == null){
-	    this.note = "No notes";
-	}
+        if(this.note == null || this.note == "No notes"){
+            this.note = "No notes";
+        }
         var fragment = document.createDocumentFragment();
         rows.forEach(function (p, i) {
             var row = new CommunityRowView({ model: p, parent: this, category:this.category_text, note:this.note, clipboard:this.clipboard});
@@ -342,10 +361,10 @@ PharmacyMapView = Backbone.View.extend({
                         for (var i = 0; i < this.infowindows.length; i++) {
                             this.infowindows[i].close();
                         }
-			for (var i=0; i < this.arrmarkers.length; i++){
+                        for (var i=0; i < this.arrmarkers.length; i++){
                             this.arrmarkers[i].setAnimation(null);
                         }
-			marker.setAnimation(google.maps.Animation.BOUNCE);
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
                         infowindow.open(map, marker);
                         var input = $('input[type="search"]');
                         input.val("\"" + val.PublicName + "\"" + " " + val.PhysicalAddress1);
@@ -361,19 +380,19 @@ PharmacyMapView = Backbone.View.extend({
                         for (var i = 0; i < this.infowindows.length; i++) {
                             this.infowindows[i].close();
                         }
-			for (var i=0; i < this.arrmarkers.length; i++){
- 			    this.arrmarkers[i].setAnimation(null);
-			}
+                        for (var i=0; i < this.arrmarkers.length; i++){
+                            this.arrmarkers[i].setAnimation(null);
+                        }
                         infowindow.open(map, marker);
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-			map.setZoom(10);
-			map.panTo(marker.getPosition());
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
+                        map.setZoom(10);
+                        map.panTo(marker.getPosition());
                     }.bind(this));
 
                     //closing info tab by clicking on outside of map
                     google.maps.event.addListener(map, "click", function (event) {
                         infowindow.close();
-			marker.setAnimation(null);
+                        marker.setAnimation(null);
                         var input = $('input[type="search"]');
                         input.val("");
                         var e = $.Event("keyup", { keyCode: 13 });
@@ -388,6 +407,7 @@ PharmacyMapView = Backbone.View.extend({
         //this.$el.empty();
         main.set('title', 'Using the Community Program Library');
         var data = this.model.toJSON();
+        $("#questionsDialog").remove();
         this.$el.html(this.template({
             output: data,
             findCat: this.findCat.bind(this)

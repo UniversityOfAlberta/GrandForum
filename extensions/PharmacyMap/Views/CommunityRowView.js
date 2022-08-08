@@ -10,19 +10,19 @@ CommunityRowView = Backbone.View.extend({
     template: _.template($('#community_row_template').html()),
     
     initialize: function(options){
-	    this.parent = options.parent;
-	    this.category = options.category;
-	    this.note = options.note;
-	    this.clipboard = options.clipboard;
-            this.listenTo(this.model, "sync", this.render);
+        this.parent = options.parent;
+        this.category = options.category;
+        this.note = options.note;
+        this.clipboard = options.clipboard;
+        this.listenTo(this.model, "sync", this.render);
     },
 
     events: {
-	"click #bkmark" : "clipboard_add",
+        "click #bkmark" : "clipboard_add",
     },
 
     checkBookmarked:function(){
-	return this.clipboardids.includes(this.model.toJSON().id);
+        return this.clipboardids.includes(this.model.toJSON().id);
     },
 
     clipboard_add: function(){
@@ -32,7 +32,7 @@ CommunityRowView = Backbone.View.extend({
         var self = this;
         self.newModel = [];
         self.clipboardids = [];
-	    var cliparray = self.clipboard.get("objs");
+        var cliparray = self.clipboard.get("objs");
         for(var i = 0; i < cliparray.length; i++){
             var object = cliparray[i];
             self.newModel.push(object);
@@ -78,7 +78,7 @@ CommunityRowView = Backbone.View.extend({
             self.newModel.push(newObj);
         }
 
-        //save it to by calling API?	
+        //save it to by calling API?
         self.clipboard.set({
             "objs": self.newModel,
         });

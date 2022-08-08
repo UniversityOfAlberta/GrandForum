@@ -38,7 +38,7 @@
                 )
             ));
             
-            $response = file_get_contents("https://data.211support.org/api/v2/search?key={$config->getValue('211Key')}", FALSE, $context);
+            $response = @file_get_contents("https://data.211support.org/api/v2/search?key={$config->getValue('211Key')}", FALSE, $context);
         
             if($response === FALSE){
                 die('Error');

@@ -5,8 +5,8 @@ ClipboardListView = Backbone.View.extend({
     },
 
     events: {
-	"click #printMap": "printMap",
-	"click #clearList": "clearList",
+        "click #printMap": "printMap",
+        "click #clearList": "clearList",
     },
 
     clearList: function(){
@@ -59,14 +59,13 @@ ClipboardListView = Backbone.View.extend({
 
 
     addTable: function(category, notes, category_str){
-	if(notes != "No notes"){
-            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style=\"float: left;\"><thead style=\"background-color:#c7c7c7;\"><tr><th>"+category_str+"<br />Notes: "+notes+"</th></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
-	}
-	else{
-            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style=\"float: left;\"><thead style=\"background-color:#c7c7c7;\"><tr><th>"+category_str+"</th></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
-
-	}
-	this.$("#tables").append(content)
+        if(notes != "No notes"){
+            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style='margin-bottom:2.5em;'><thead style=\"background-color:#c7c7c7;\"><tr><th><h3 style='margin-top: 0.3em;padding-top: 0.17em;'>"+category_str+"</h3></th></tr><tr><td align='center'><b style='margin-top:0.5em;display:inline-block;'>Questions to Consider</b> <div style='text-align:left;width:50%;margin-left:25%;'"+notes+"</div></td></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
+        }
+        else{
+            var content = "<table id=\"listTable\" frame=\"box\" rules=\"all\" style='margin-bottom:2.5em;'><thead style=\"background-color:#c7c7c7;\"><tr><th><h3 style='margin-top: 0.3em;padding-top: 0.17em;'>"+category_str+"</h3></th></tr></thead><tbody id=\"sopRows"+category+"\"></tbody></table>";
+        }
+        this.$("#tables").append(content)
     },
 
     render: function () {
@@ -76,34 +75,33 @@ ClipboardListView = Backbone.View.extend({
         this.$el.html(this.template({
             output: data,
         }));
-	
+
         //creating an array from the model TODO:figure out why this isnt working
-	var newModel = [];
-	var keys = _.keys(this.model.get('objs'));
+        var newModel = [];
+        var keys = _.keys(this.model.get('objs'));
         if(keys.length == 0){
             this.$('#empty').show();
         }
-	var newJSON = {};
-	for(var i = 0; i < keys.length; i++){
-	    var object = data[keys[i]];
+        var newJSON = {};
+        for(var i = 0; i < keys.length; i++){
+            var object = data[keys[i]];
             var category = object.Category;
-	    var category_key = category.replace(" ", "");
-	    if(newJSON.hasOwnProperty(category_key)){
-		newJSON[category_key].push(object);
-	    }
-	    else{
-		newJSON[category_key] = [];
-		newJSON[category_key].push(object);
-	    }
-	    newModel.push(object);
-	}
-	for (var key in newJSON) {
-	    notes = newJSON[key][0]["Notes"];
-	    category_str = newJSON[key][0]["Category"];
-	    this.addTable(key, notes, category_str);
-	    this.addRows(key, newJSON[key]);
-
-	}
+            var category_key = category.replace(" ", "");
+            if(newJSON.hasOwnProperty(category_key)){
+                newJSON[category_key].push(object);
+            }
+            else{
+                newJSON[category_key] = [];
+                newJSON[category_key].push(object);
+            }
+            newModel.push(object);
+        }
+        for (var key in newJSON) {
+            notes = newJSON[key][0]["Notes"];
+            category_str = newJSON[key][0]["Category"];
+            this.addTable(key, notes, category_str);
+            this.addRows(key, newJSON[key]);
+        }
 
         var title = $("#pageTitle").clone();
         $(title).attr('id', 'copiedTitle');

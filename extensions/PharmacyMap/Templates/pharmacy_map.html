@@ -8,10 +8,19 @@
 </p>
 <p class='program-body'>Have you used a formal or informal program recently that you don’t see in the library and wish to share
     with the community?<br />
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a></p>
+    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:Report?report=SubmitProgram" class="program-button" title="Submit a Program">Submit a Program</a>
+</p>
 <p class="program-body">
     <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"> Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard. <br />
-    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">Print/View Clipboard</a></p>
+    <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">Print/View Clipboard</a>
+    <% if(this.note != null && this.note != 'No notes'){ %>
+        <a id="questions" href="#asdf" class="program-button" title="Questions to consider asking when calling about a support">Questions to Consider</a>
+        <div id="questionsDialog" title="Questions to Consider" style="display:none; padding: 0.5em !important;">
+            Ready to contact a program or service but not sure what you need to ask? Take a look at Questions to Consider to get you started.
+            <%= this.note %>
+            If you create a clipboard, all related questions to consider will also show up there
+        </div>
+    <% } %>
 </p>
 <div id="body_accordion">
     <div class="wrap" style="display:none;">

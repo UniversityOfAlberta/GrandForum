@@ -17,25 +17,29 @@
                         "text": "Indoor",
                         "value": 90,
                         "code": "CFN-ACT-SP-IND",
-                        "description": "Pickleball, bowling, volleyball, and more"
+                        "description": "Pickleball, bowling, volleyball, and more",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Winter",
                         "value": 90,
                         "code": "CFN-ACT-SP-WINTER",
-                        "description": "Skating, curling, and more"
+                        "description": "Skating, curling, and more",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Water",
                         "value": 90,
                         "code": "CFN-ACT-SP-WATER",
-                        "description": "Canoeing, rowing, and more"
+                        "description": "Canoeing, rowing, and more",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Field",
                         "value": 90,
                         "code": "CFN-ACT-SP-FIELD",
-                        "description": "Tennis, lawn-bowling, soccer, and more"
+                        "description": "Tennis, lawn-bowling, soccer, and more",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
             },
@@ -50,52 +54,60 @@
                         "text": "Biking",
                         "value": 90,
                         "code": "CFN-ACT-EX-BIKING",
-                        "description": "Join a group in your community for your next road or trail ride"
+                        "description": "Join a group in your community for your next road or trail ride",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Dance",
                         "value": 90,
                         "code": "CFN-ACT-EX-DANCE",
-                        "description": "Try a new style of dance, whether you’re a beginner or expert"
+                        "description": "Try a new style of dance, whether you’re a beginner or expert",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Movement and Mindfulness",
                         "value": 90,
                         "code": "CFN-ACT-EX-MOV",
                         "description": "Enjoy classes for all mobility levels such as Yoga and Tai-Chi",
-                        "tags": ["movement and mindfulness programs"]
+                        "tags": ["movement and mindfulness programs"],
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Fitness",
                         "value": 90,
                         "code": "CFN-ACT-EX-FIT",
                         "description": "Choose from a variety of programs such as Pilates and aerobics for a fun way to move",
-                        "tags": ["fitness programs"]
+                        "tags": ["fitness programs"],
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Horseback Riding",
                         "value": 90,
                         "code": "CFN-ACT-EX-HORSE",
-                        "description": "Find recreational and therapeutic options for all levels"
+                        "description": "Find recreational and therapeutic options for all levels",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Recreation Facilities",
                         "value": 90,
                         "code": "CFN-ACT-EX-RECF",
                         "description": "Visit a gym or community centre near you",
-                        "tags": ["recreation programs"]
+                        "tags": ["recreation programs"],
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Walking/Running",
                         "value": 90,
                         "code": "CFN-ACT-EX-WALK",
-                        "description": "Join a group in your community for your next walk or run"
+                        "description": "Join a group in your community for your next walk or run",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Swimming",
                         "value": 90,
                         "code": "CFN-ACT-EX-SWIM",
-                        "description": "Attend aquatic classes or enjoy a community pool"
+                        "description": "Attend aquatic classes or enjoy a community pool",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
             },
@@ -104,7 +116,8 @@
                 "value": 78,
                 "code": "CFN-ACT-GARDEN",
                 "description": "Join a gardening club or find your nearest community garden",
-                "tags": ["gardening programs"]
+                "tags": ["gardening programs"],
+                "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
             },
             {
                 "text": "Trails",
@@ -133,7 +146,8 @@
                 "value": 88,
                 "code": "CFN-INT-CRAFT",
                 "description": "Join a group to learn or practice your knitting, quilting, crocheting, or other crafts",
-                "tags": ["crafting programs"]
+                "tags": ["crafting programs"],
+                "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
             },
             {
                 "text": "Library",
@@ -153,44 +167,51 @@
                         "text": "Games",
                         "value": 88,
                         "code": "CFN-INT-REC-GAMES",
-                        "description": "Play board games or cards "
+                        "description": "Play board games or cards",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Education",
                         "value": 88,
                         "code": "CFN-INT-REC-ED",
                         "description": "Take a class to learn something new",
-                        "tags": ["education and employment programs"]
+                        "tags": ["education and employment programs"],
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Advocacy",
                         "value": 88,
                         "code": "CFN-INT-REC-ADV",
-                        "description": "Join to promote a good cause "
+                        "description": "Join to promote a good cause",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Culture",
                         "value": 88,
                         "code": "CFN-INT-REC-CULTURE",
-                        "description": "Connect with cultural clubs and centres in KFL&A"
+                        "description": "Connect with cultural clubs and centres in KFL&A",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Historical",
                         "value": 88,
                         "code": "CFN-INT-REC-HIST",
-                        "description": "Learn more about historical events and KFL&A heritage"
+                        "description": "Learn more about historical events and KFL&A heritage",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Hobby",
                         "value": 88,
                         "code": "CFN-INT-REC-HOB",
-                        "description": "Gather with your peers to celebrate a specific interest"
+                        "description": "Gather with your peers to celebrate a specific interest",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Social",
                         "value": 88,
                         "code": "CFN-INT-REC-SOC",
-                        "description": "Join a club or association focused on meeting new friends"
+                        "description": "Join a club or association focused on meeting new friends",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
             },
@@ -219,25 +240,29 @@
                         "text": "Music",
                         "value": 88,
                         "code": "CFN-INT-ART-MUSIC",
-                        "description": "Join a singing group, play your favourite instrument or learn something new"
+                        "description": "Join a singing group, play your favourite instrument or learn something new",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Performing",
                         "value": 88,
                         "code": "CFN-INT-ART-PER",
-                        "description": "Become a part of a local theatre production or participate in acting workshops"
+                        "description": "Become a part of a local theatre production or participate in acting workshops",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Visual",
                         "value": 88,
                         "code": "CFN-INT-ART-VIS",
-                        "description": "Create through drawing, painting, pottery and other mediums"
+                        "description": "Create through drawing, painting, pottery and other mediums",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     },
                     {
                         "text": "Literature",
                         "value": 88,
                         "code": "CFN-INT-ART-LIT",
-                        "description": "Join a writing group to develop or advance your literary skills"
+                        "description": "Join a writing group to develop or advance your literary skills",
+                        "note": "<ul><li>What is the cost? Is it per class, membership fee, etc?</li><li>Is there a drop-in option/pay as you go?</li><li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li><li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li><li>Are the instructors able to offer modifications for physical/medical limitations?</li><li>Is pre-registration required?</li><li>Can I try a class before committing?</li><li>Is the program offered virtually or in-person?</li><li>Is there transportation assistance for getting there?</li></ul>"
                     }
                 ]
             },
@@ -261,26 +286,30 @@
                 "text": "Family Medicine",
                 "value": 22,
                 "code": "CFN-VAC-FM",
-                "description": "Find a primary care provider"
+                "description": "Find a primary care provider",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Clinic",
                 "value": 38,
                 "code": "CFN-VAC-CLINIC",
-                "description": "Healthcare clinics that accept walk-ins"
+                "description": "Healthcare clinics that accept walk-ins",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Pharmacy",
                 "value": 38,
                 "code": "CFN-VAC-PHARMA",
-                "description": "Local pharmacies that provide vaccinations and medication reviews"
+                "description": "Local pharmacies that provide vaccinations and medication reviews",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Education",
                 "value": 38,
                 "code": "CFN-VAC-EDU",
                 "description": "Public health resources",
-                "tags": ["education and employment programs"]
+                "tags": ["education and employment programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             }
         ]
     },
@@ -295,7 +324,8 @@
                 "value": 92,
                 "code": "CFN-DIET-DELIV",
                 "description": "Community-based meal programs that offer home delivery",
-                "tags": ["diet and nutrition delivery programs"]
+                "tags": ["diet and nutrition delivery programs"],
+                "note": "<ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li>"
             },
             {
                 "text": "Dietitian Services",
@@ -309,14 +339,16 @@
                 "value": 92,
                 "code": "CFN-DIET-FOODBANKS",
                 "description": "Free or subsidized food",
-                "tags": ["food banks and stands"]
+                "tags": ["food banks and stands"],
+                "note": "<ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li>"
             },
             {
                 "text": "Fresh Food Boxes",
                 "value": 92,
                 "code": "CFN-DIET-FRESH",
                 "description": "Seasonal boxes of fruit and vegetables at reduced prices",
-                "tags": ["fresh food boxes"]
+                "tags": ["fresh food boxes"],
+                "note": "<ul><li>Does the service offer hot meals or frozen meals?</li><li>What size are the meals?</li><li>How do you place an order? Online or over the phone?</li><li>When will my order arrive? Is there flexibility on timing?</li><li>Is there a delivery charge?</li><li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li><li>Should I tip the driver?</li><li>How do I request a menu?</li><li>How do I pay? Can I prepay for meals?</li><li>Can I buy meals as a gift for someone?</li><li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li><li>Can you accommodate dietary restrictions?</li>"
             },
             {
                 "text": "Meal Programs",
@@ -411,35 +443,40 @@
                 "value": 121,
                 "code": "CFN-CHRONIC-CANCER",
                 "description": "Services for people living with cancer and their care partners",
-                "tags": ["cancer programs"]
+                "tags": ["cancer programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Chronic Pain",
                 "value": 100,
                 "code": "CFN-CHRONIC-PAIN",
                 "description": "Services for people living with chronic pain and their care partners",
-                "tags": ["chronic pain programs"]
+                "tags": ["chronic pain programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Dementia",
                 "value": 42,
                 "code": "CFN-CHRONIC-DEMENTIA",
                 "description": "Services for people living with a type of dementia and their care partners",
-                "tags": ["dementia programs"]
+                "tags": ["dementia programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Diabetes",
                 "value": 42,
                 "code": "CFN-CHRONIC-DIABETES",
                 "description": "Services for people living with diabetes and their care partners",
-                "tags": ["diabetes programs"]
+                "tags": ["diabetes programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Other Chronic Conditions",
                 "value": 42,
                 "code": "CFN-CHRONIC-OTHER",
                 "description": "Services for people living with other chronic conditions and their care partners",
-                "tags": ["other chronic conditions programs"]
+                "tags": ["other chronic conditions programs"],
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             }
         ]
     },
@@ -453,25 +490,29 @@
                 "text": "Addiction",
                 "value": 121,
                 "code": "CFN-MH-ADDICT",
-                "description": "Support groups, counselling, treatment clinics and other services for individuals living with a substance use disorder"
+                "description": "Support groups, counselling, treatment clinics and other services for individuals living with a substance use disorder",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Clinics",
                 "value": 100,
                 "code": "CFN-MH-CLINICS",
-                "description": "Variety of services to support individuals living with a mental health disorder"
+                "description": "Variety of services to support individuals living with a mental health disorder",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Counselling",
                 "value": 42,
                 "code": "CFN-MH-COUNSELLING",
-                "description": "Individual and group counselling with options for specific populations"
+                "description": "Individual and group counselling with options for specific populations",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Support Groups",
                 "value": 42,
                 "code": "CFN-MH-SUPPORT",
-                "description": "Regular meetings with peers who share a common healthcare need or lived experience"
+                "description": "Regular meetings with peers who share a common healthcare need or lived experience",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             }
         ]
     },
@@ -532,28 +573,32 @@
                 "text": "Care Partners Support/Respite",
                 "value": 121,
                 "code": "CFN-HOMECARE-CAREPARTNER",
-                "description": "Relief from caregiving responsibilities and other supports for care partners"
+                "description": "Relief from caregiving responsibilities and other supports for care partners",
+                "note": "<ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul>"
             },
             {
                 "text": "Help at Home",
                 "value": 100,
                 "code": "CFN-HOMECARE-HELP",
                 "description": "Services provided in the home including housekeeping, meal preparation, basic personal care, companionship, and more",
-                "tags": ["help at home"]
+                "tags": ["help at home"],
+                "note": "<ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul>"
             },
             {
                 "text": "Homecare",
                 "value": 42,
                 "code": "CFN-HOMECARE-HOMECARE",
                 "description": "Medical services delivered in the home",
-                "tags": ["home care services"]
+                "tags": ["home care services"],
+                "note": "<ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul>"
             },
             {
                 "text": "Palliative Care/Hospice",
                 "value": 42,
                 "code": "CFN-HOMECARE-PALL",
                 "description": "End of life care and support for care partners",
-                "tags": ["palliative care/hospice"]
+                "tags": ["palliative care/hospice"],
+                "note": "<ul><li>What services does your organization provide?</li><li>How quickly can we initiate services? Is there a waitlist?</li><li>How often can I arrange care in the home?</li><li>How do you match your clients with caregivers? Is there a contract?</li><li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li><li>How does the payment process work? Hourly rate? Cancellation charges?</li><li>If I have an issue or concern, who will be my point of contact?</li><li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li><li>How do I report a no-show or late caregiver?</li><li>How do you provide last-minute coverage?</li></ul>"
             }
         ]
     },
@@ -566,19 +611,22 @@
                 "text": "Clinics",
                 "value": 121,
                 "code": "CFN-HEALTH-CLINICS",
-                "description": "Visit specific healthcare clinics including seniors day rehabilitation, stroke rehabilitation, breast assessments, and more"
+                "description": "Visit specific healthcare clinics including seniors day rehabilitation, stroke rehabilitation, breast assessments, and more",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "Hospitals",
                 "value": 100,
                 "code": "CFN-HEALTH-HOSP",
-                "description": "Locate the nearest hospital to you"
+                "description": "Locate the nearest hospital to you",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             },
             {
                 "text": "KFL&A Public Health",
                 "value": 42,
                 "code": "CFN-HEALTH-KFLAPH",
-                "description": "Connect with the resources and services offered through your local health unit"
+                "description": "Connect with the resources and services offered through your local health unit",
+                "note": "<ul><li>Which services are OHIP covered?</li><li>Is there a cost for this program/ support?</li><li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li><li>I don’t have a family doctor – how can I get a referral?</li><li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li><li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li><li>How often is it recommended to access these services?</li><li>Is the health support time limited? Ie. Is it an 8-week program?</li>Is there a psychiatrist to support?</li><li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li><li>Is there a current waitlist for programming?</li><li>What does the referral process look like? Will I be contacted? What follow up is required?</li><li>Will I be assigned a case manager? What will my care team look like?</li><li>Will victim services assist with the funding of counselling and if so/ for how long?</li></ul>"
             }
         ]
     },
@@ -631,7 +679,8 @@
                 "text": "Driving Program",
                 "value": 100,
                 "code": "CFN-TRANSPORT-DRIVP",
-                "description": "Volunteer drivers available for grocery shopping, medical appointments, and other daily needs"
+                "description": "Volunteer drivers available for grocery shopping, medical appointments, and other daily needs",
+                "note": "<ul><li>What is the cost? Per KM, set fee?</li><li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li><li><li>Do you have accessible vehicles available?</li><li>Can I bring a companion with me and is there an additional cost?</li><li>How much notice is needed to set up a drive?</li><li>Is there a referral process or criteria for accessing the services?</li><li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li></ul>"
             },
             {
                 "text": "Medical Transport",
@@ -644,7 +693,8 @@
                 "text": "Public Transit",
                 "value": 42,
                 "code": "CFN-TRANSPORT-PUBLIC",
-                "description": "Local bus service and non-emergency medical transfers"
+                "description": "Local bus service and non-emergency medical transfers",
+                "note": "<ul><li>What is the cost? Per KM, set fee?</li><li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li><li><li>Do you have accessible vehicles available?</li><li>Can I bring a companion with me and is there an additional cost?</li><li>How much notice is needed to set up a drive?</li><li>Is there a referral process or criteria for accessing the services?</li><li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li></ul>"
             }
         ]
     }
