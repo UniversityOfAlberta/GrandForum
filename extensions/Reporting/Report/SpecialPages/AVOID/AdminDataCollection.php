@@ -249,7 +249,7 @@ class AdminDataCollection extends SpecialPage{
         }
     }
 
-    function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
+    static function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
         if ($userId === null) {
           $userId = $this->user_id;
         }

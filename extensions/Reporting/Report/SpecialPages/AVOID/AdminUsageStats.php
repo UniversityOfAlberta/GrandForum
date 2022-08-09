@@ -16,8 +16,9 @@ class AdminUsageStats extends SpecialPage {
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $this->getOutput()->setPageTitle("Admin Usage Stats");
+        $this->getOutput()->setPageTitle("Admin Usage Stats (Work in Progress)");
         $this->showActionPlanStats();
+        $this->showRegistrantsStats();
     }
     
     function showActionPlanStats(){
@@ -68,6 +69,58 @@ class AdminUsageStats extends SpecialPage {
             </tr>
             <tr>
                 <td class='label'>How many action plans submitted</td>
+                <td align='right'>".count($submitted)."</td>
+            </tr>
+        </table>");
+    }
+    
+    function showRegistrantsStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>Registrants</h1>");
+        
+        $members = array();
+        $partners = array();
+        $clinicians = array();
+        $submitted = array();
+        foreach(Person::getAllPeople() as $person){
+            $postal_code = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+            if($person->isRoleAtLeast(STAFF) || $postal_code == "CFN"){
+                continue;
+            }
+            
+            if($person->isRole("Member")){ // TODO: Should be changed to role CONSTANT
+                $members[] = $person;
+            }
+            if($person->isRole("Provider")){
+                if($person->getExtra("ageOfLovedOne") != "" && 
+                   $person->getExtra("ageField") != ""){
+                    $partners[] = $person;
+                }
+                else if($person->getExtra("practiceField") != "" && 
+                        $person->getExtra("roleField") != ""){
+                    $clinicians[] = $person;
+                }
+            }
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId())){
+                $submitted[] = $person;
+            }
+        }
+        
+        $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Total number of members</td>
+                <td align='right'>".count($members)."</td>
+            </tr>
+            <tr>
+                <td class='label'>Total number of clinicians</td>
+                <td align='right'>".count($clinicians)."</td>
+            </tr>
+            <tr>
+                <td class='label'>Total number care partners/guests</td>
+                <td align='right'>".count($partners)."</td>
+            </tr>
+            <tr>
+                <td class='label'>Total number completed Assessments</td>
                 <td align='right'>".count($submitted)."</td>
             </tr>
         </table>");
