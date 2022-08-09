@@ -41,6 +41,43 @@ class ActionPlan extends BackboneModel {
         return $array;
     }
     
+    static function getAll(){
+        $me = Person::newFromWgUser();
+        if($me->isRoleAtLeast(STAFF)){
+            $data = DBFunctions::select(array('grand_action_plan'),
+                                        array('*'),
+                                        array(),
+                                        array('created' => 'DESC'));
+            $array = array();
+            foreach($data as $row){
+                $array[] = new ActionPlan(array($row));
+            }
+            return $array;
+        }
+        return array();
+    }
+    
+    static function comp2Text($comp){
+        switch($comp){
+            case "A": 
+                return "Activity";
+            case "V":
+                return "Vaccinate";
+            case "O":
+                return "Optimize Medication";
+            case "I":
+                return "Interact";
+            case "D":
+                return "Diet & Nutrition";
+            case "S":
+                return "Sleep";
+            case "F":
+                return "Falls Prevention";
+        }
+        return "Other";
+    }
+    
+    
     function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];
@@ -89,6 +126,9 @@ class ActionPlan extends BackboneModel {
     }
     
     function getComponents(){
+        if($this->components == null){
+            $this->components = array();
+        }
         return $this->components;
     }
     

@@ -247,9 +247,6 @@ class AdminDataCollection extends SpecialPage{
                                 });
                             </script>");
         }
-        else{
-            $wgOut->addHTML("You have not created any polls.");
-        }
     }
 
     function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
