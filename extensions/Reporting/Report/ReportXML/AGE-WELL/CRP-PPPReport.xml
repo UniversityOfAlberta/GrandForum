@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Core Research Program 2022-2023 Mid-Year Progress Report and Financial Update" reportType="RP_CRP_PPP_REPORT" pdfType="RPTP_CRP_PPP_REPORT" pdfFiles="CRP-PPPReportPDF" personId="0" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="SD+">
+        
+        </Role>
+        <Role role="PL">
+
+        </Role>
+        <Role role="PS">
+
+        </Role>
+        <Role role="WPL">
+
+        </Role>
+        <Role role="WPC">
+
+        </Role>
+        <Project />
+    </Permissions>
+    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="Mid-Year Progress Report 2022-23" blobSection="PROGRESS_REPORT" type="EditableReportSection">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
+            <![CDATA[
+                <h3>Project Status Summary</h3>
+                <p>Provide a brief summary of project status and progress underway approaching the mid-point of 2022-23.</p>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" rich="true" limit="500">
+            <![CDATA[
+                <p>In each section below, describe specific progress that has been made against planned objectives and activities since April 1, 2022. While you are not restricted to the content of your planning scorecard provided January 2022, you may wish to reference those plans here.</p>
+                <h4>1. Scientific Excellence</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="networking" type="TextareaReportItem" blobItem="NETWORKING" rich="true" limit="500">
+            <![CDATA[
+                <h4>2. Networking and Partnerships</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="knowledge" type="TextareaReportItem" blobItem="KNOWLEDGE" rich="true" limit="500">
+            <![CDATA[
+                <h4>3. Knowledge Mobilization & Commercialization</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="hqp" type="TextareaReportItem" blobItem="HQP" rich="true" limit="500">
+            <![CDATA[
+                <h4>4. Training of HQP</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+    </ReportSection>
+    <ReportSection id="budget" tooltip="Future Impact" name="Financial Update" title="Mid-Year Financial Update" blobSection="BUDGET" type="EditableReportSection">
+        <ReportItem id="budget" type="TextareaReportItem" blobItem="BUDGET" rich="true" limit="500">
+            <![CDATA[
+                <p>Please provide a brief update of spending against proposed activities noting any challenges or commitments that may not yet be reflected on your account balance. How confident are you that funds allocated for the current year will be spent as planned? Financial updates will be considered in the context of your budget justification submitted for 2022-23.</p>
+                <p>Note: a copy of your account balance and expense report will be requested from your grants office as part of this report.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="jennifer@agewell-nce.ca,info@agewell-nce.ca" />
+    </ReportSection>
+</Report>
