@@ -25,6 +25,7 @@ class AdminUsageStats extends SpecialPage {
         $wgOut->addHTML("<h1>My weekly action plan</h1>");
         $plans = ActionPlan::getAll();
         
+        $users = array();
         $submitted = array();
         $components = array('A' => 0, 
                             'V' => 0, 
@@ -34,6 +35,7 @@ class AdminUsageStats extends SpecialPage {
                             'S' => 0, 
                             'F' => 0);
         foreach($plans as $plan){
+            $users[$plan->getUserId()] = $plan->getPerson();
             foreach($plan->getComponents() as $comp => $val){
                 if($val == 1){
                     @$components[$comp]++;
@@ -45,6 +47,10 @@ class AdminUsageStats extends SpecialPage {
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>How many users with action plans</td>
+                <td align='right'>".count($users)."</td>
+            </tr>
             <tr>
                 <td class='label'>How many action plans created</td>
                 <td align='right'>".count($plans)."</td>
