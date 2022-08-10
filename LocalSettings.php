@@ -59,6 +59,7 @@ require_once( "$IP/config/Config.php" );
 $wgSitename         = $config->getValue("siteName");
 $wgServer           = $config->getValue("server");
 $wgScriptPath       = $config->getValue("path");
+$wgArticlePath      = "{$wgScriptPath}/index.php/$1";
 
 ## Database settings
 $wgDBtype           = $config->getValue("dbType");

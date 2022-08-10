@@ -39,6 +39,25 @@ class DataCollection extends BackboneModel {
         return new DataCollection($data);
     }
     
+    /**
+     * Returns all of the DataCollections using the given page
+     * @param int $page The 'page' of the DataCollection
+     * @return DataCollection The DataCollections that matche the page
+     */
+    static function newFromPage($page){
+        $me = Person::newFromWgUser();
+        $array = array();
+        if($me->isRoleAtLeast(STAFF)){
+            $data = DBFunctions::select(array('grand_data_collection'),
+                                        array('*'),
+                                        array('page' => $page));
+            foreach($data as $row){
+                $array[] = new DataCollection(array($row));
+            }
+        }
+        return $array;
+    }
+    
     function __construct($data){
         if(count($data) > 0){
             $this->id = $data[0]['id'];

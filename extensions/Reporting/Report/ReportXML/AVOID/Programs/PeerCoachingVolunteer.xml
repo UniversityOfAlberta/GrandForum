@@ -3,6 +3,14 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                dc.init(me.get('id'), 'Program-PeerCoachingVolunteer');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
     <ReportSection id="peer" tooltip="Peer Coaching" name="Peer Coaching" title="Peer Coaching" blobSection="PEER" type="NextPrevReportSection">
         <Static>
             <![CDATA[

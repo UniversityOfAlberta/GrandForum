@@ -19,6 +19,7 @@ class AdminUsageStats extends SpecialPage {
         $this->getOutput()->setPageTitle("Admin Usage Stats (Work in Progress)");
         $this->showActionPlanStats();
         $this->showRegistrantsStats();
+        $this->showProgramStats();
     }
     
     function showActionPlanStats(){
@@ -122,6 +123,73 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Total number completed Assessments</td>
                 <td align='right'>".count($submitted)."</td>
+            </tr>
+        </table>");
+    }
+    
+    function showProgramStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>Peer Coaching (be a coach, and get a coach)</h1>");
+        
+        $dcs = array_merge(DataCollection::newFromPage('Program-PeerCoaching'), 
+                           DataCollection::newFromPage('Program-PeerCoachingVolunteer'));
+        $count = 0;
+        foreach($dcs as $dc){
+            $count += @$dc->getField('count');
+        }
+        
+        $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of hits on page</td>
+                <td align='right'>$count</td>
+            </tr>
+        </table>");
+        
+        $wgOut->addHTML("<h1>Cyber Seniors</h1>");
+        
+        $dcs = DataCollection::newFromPage('Program-CyberSeniors');
+        $count = 0;
+        $webinars = 0;
+        $oneOnOne = 0;
+        $completeCollection = 0;
+        foreach($dcs as $dc){
+            $count += @$dc->getField('count');
+            $webinars += @$dc->getField('webinarsClicks');
+            $oneOnOne += @$dc->getField('1on1Clicks');
+            $completeCollection += @$dc->getField('completeCollectionClicks');
+        }
+        
+        $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of hits on page</td>
+                <td align='right'>$count</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of hits on \"Register for daily webinars\"</td>
+                <td align='right'>$webinars</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of hits on \"Sign up here to work one-on-one with trained tech mentors\"</td>
+                <td align='right'>$oneOnOne</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of hits on \"You can find the complete collection of webinars here\"</td>
+                <td align='right'>$completeCollection</td>
+            </tr>
+        </table>");
+        
+        $wgOut->addHTML("<h1>Community Connector</h1>");
+        
+        $dcs = DataCollection::newFromPage('Program-CommunityConnectors');
+        $count = 0;
+        foreach($dcs as $dc){
+            $count += @$dc->getField('count');
+        }
+        
+        $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of hits on page</td>
+                <td align='right'>$count</td>
             </tr>
         </table>");
     }

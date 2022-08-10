@@ -3,6 +3,26 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                dc.init(me.get('id'), 'Program-CyberSeniors');
+                dc.increment('count');
+                
+                $(document).on("click", "#webinars", function(e){
+                    dc.increment('webinarsClicks');
+                });
+                
+                $(document).on("click", "#1on1", function(e){
+                    dc.increment('1on1Clicks');
+                });
+                
+                $(document).on("click", "#completeCollection", function(e){
+                    dc.increment('completeCollectionClicks');
+                });
+            </script>
+        ]]>
+    </Script>
     <ReportSection id="consent" tooltip="Cyber Seniors" name="Cyber Seniors" title="Cyber Seniors" blobSection="CONSENT" type="ReportSection">
         <Static>
             <![CDATA[
@@ -44,7 +64,7 @@
                                         <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/video-calling/how-to-use-zoom/" target="_blank">How to use Zoom</a></li>
                                         <li><a class="program-text" href="https://cyberseniors.org/previous-webinars/search-engines/use-search-engines-to-navigate-the-internet/" target="_blank">How to Use Search Engines to Navigate the Internet</a></li>
                                     </ul>
-                                    <a class="program-button" href="https://cyberseniors.org/seniors-services/previous-webinars/" target="_blank">You can find the complete collection of webinars here.</a>
+                                    <a id='completeCollection' class="program-button" href="https://cyberseniors.org/seniors-services/previous-webinars/" target="_blank">You can find the complete collection of webinars here.</a>
                                 </div>
                                 <div style='width:50%;'>
                                     <ul>
@@ -53,9 +73,9 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a class="program-button" target="_blank" href="https://cyberseniors.org/webinars/">Register for Daily Webinars</a><br />
+                            <a id='webinars' class="program-button" target="_blank" href="https://cyberseniors.org/webinars/">Register for Daily Webinars</a><br />
                             <p class="program-text">Learn how to use your tablets, laptops, desktops, and smartphones with Cyber-Seniors!</p>
-                            <a class="program-button" style="width: 575px;" target="_blank" href="https://calendly.com/avoidfrailtywithcyberseniors">Sign up here to work one-to-one with trained tech mentors</a><br />
+                            <a id='1on1' class="program-button" style="width: 575px;" target="_blank" href="https://calendly.com/avoidfrailtywithcyberseniors">Sign up here to work one-to-one with trained tech mentors</a><br />
                             <div class="program-box" style="width: 575px;">Call 613-777-2835 (toll-free) if you are looking for quick tech help over the phone</div>
                         </div>
                     </div>

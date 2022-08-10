@@ -3,6 +3,14 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                dc.init(me.get('id'), 'Program-CommunityConnectors');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
     <ReportSection id="community" tooltip="Community Connectors" name="Community Connectors" title="Community Connectors" blobSection="COMMUNITY" type="NextPrevReportSection">
         <Static>
             <![CDATA[
