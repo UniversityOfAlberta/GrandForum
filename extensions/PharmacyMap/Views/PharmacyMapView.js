@@ -26,7 +26,8 @@ PharmacyMapView = Backbone.View.extend({
         $(window).resize(function(){
             if($("#questionsDialog").is(':visible')){
                 $("#questionsDialog").dialog({
-                    width: 'auto'
+                    width: 'auto',
+                    height: $(window).height()*0.90,
                 });
                 $("#questionsDialog").dialog({
                     position: { 'my': 'center', 'at': 'center' }
@@ -45,7 +46,11 @@ PharmacyMapView = Backbone.View.extend({
     },
     
     clickQuestions(e){
-        $("#questionsDialog").dialog({width: 'auto'});
+        $("#questionsDialog").dialog({
+            width: 'auto',
+            height: $(window).height()*0.90,
+            resizable: false
+        });
         $('.ui-dialog').addClass('program-body');
         $(window).resize();
         return false;

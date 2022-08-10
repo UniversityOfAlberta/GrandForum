@@ -13,14 +13,107 @@
 <p class="program-body">
     <img id="bkmarked" class="bkmark_img" src="<%= wgServer+wgScriptPath%>/skins/bookmark-plus.svg"> Click on this icon located next to each program name below to create a list of programs you are interested in. They will be added to your clipboard. <br />
     <a href="<%= wgServer+wgScriptPath%>/index.php/Special:ClipboardList" class="program-button" title="Print/View Clipboard">Print/View Clipboard</a>
-    <% if(this.note != null && this.note != 'No notes'){ %>
+    <!--% if(this.note != null && this.note != 'No notes'){ %-->
         <a id="questions" href="#asdf" class="program-button" title="Questions to consider asking when calling about a support">Questions to Consider</a>
         <div id="questionsDialog" title="Questions to Consider" style="display:none; padding: 0.5em !important;">
-            Ready to contact a program or service but not sure what you need to ask? Take a look at Questions to Consider to get you started.
-            <%= this.note %>
-            If you create a clipboard, all related questions to consider will also show up there
+            <p>Ready to contact a program or service but not sure what you need to ask? Take a look at Questions to Consider to get you started.</p>
+            <!--%= this.note %-->
+            <table id="questionsTable" class="wikitable" frame="box" rules="all">
+                <tr>
+                    <th style="width: 8em;">Category</th>
+                    <th>Questions to Consider:</th>
+                </tr>
+                <tr>
+                    <th valign="top">Food Services and Delivery</th>
+                    <td>
+                        <ul>
+                            <li>Does the service offer hot meals or frozen meals?</li>
+                            <li>What size are the meals?</li>
+                            <li>How do you place an order? Online or over the phone?</li>
+                            <li>When will my order arrive? Is there flexibility on timing?</li>
+                            <li>Is there a delivery charge?</li>
+                            <li>Where is the store where the food is made and am I able to collect from there instead of having it delivered?</li>
+                            <li>Should I tip the driver?</li>
+                            <li>How do I request a menu?</li>
+                            <li>How do I pay? Can I prepay for meals?</li>
+                            <li>Can I buy meals as a gift for someone?</li>
+                            <li>Is it possible to change the sides on a particular meal (rice instead of potato)?</li>
+                            <li>Can you accommodate dietary restrictions?</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">Personal Care and Help at home</th>
+                    <td>
+                        <ul>
+                            <li>What services does your organization provide?</li>
+                            <li>How quickly can we initiate services? Is there a waitlist?</li>
+                            <li>How often can I arrange care in the home?</li>
+                            <li>How do you match your clients with caregivers? Is there a contract?</li>
+                            <li>What qualifications do the caregivers have? Are they provided with training for specific conditions?</li>
+                            <li>How does the payment process work? Hourly rate? Cancellation charges?</li>
+                            <li>If I have an issue or concern, who will be my point of contact?</li>
+                            <li>How do you communicate with clients and their family members regarding any issues, concerns or recommendations?</li>
+                            <li>How do I report a no-show or late caregiver?</li>
+                            <li>How do you provide last-minute coverage?</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">Transportation</th>
+                    <td>
+                        <ul>
+                            <li>What is the cost? Per KM, set fee?</li>
+                            <li>Can the driver assist with transfers, putting mobility aids in the vehicle, etc?</li>
+                            <li>Do you have accessible vehicles available?</li>
+                            <li>Can I bring a companion with me and is there an additional cost?</li>
+                            <li>How much notice is needed to set up a drive?</li>
+                            <li>Is there a referral process or criteria for accessing the services?</li>
+                            <li>Can I set up a regular weekly scheduled (weekly) ride, or do I have to book one ride at a time?</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">Class/Membership Based</th>
+                    <td>
+                        <ul>
+                            <li>What is the cost? Is it per class, membership fee, etc?</li>
+                            <li>Is there a drop-in option/pay as you go?</li>
+                            <li>Is the schedule flexible or do I have to commit to a specific day(s) and time(s)?</li>
+                            <li>Can I put the membership on hold if needed and/or is there a cancellation fee?</li>
+                            <li>Are the instructors able to offer modifications for physical/medical limitations?</li>
+                            <li>Is pre-registration required?</li>
+                            <li>Can I try a class before committing?</li>
+                            <li>Is the program offered virtually or in-person?</li>
+                            <li>Is there transportation assistance for getting there?</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">Mental Health & Health Care Services</th>
+                    <td>
+                        <ul>
+                            <li>Which services are OHIP covered?</li>
+                            <li>Is there a cost for this program/ support?</li>
+                            <li>Do I need a doctor’s referral or prescription to be eligible for OHIP covered services?</li>
+                            <li>I don’t have a family doctor – how can I get a referral?</li>
+                            <li>Can I refer myself? Is there an eligibility component? (Ie. An established health diagnosis)</li>
+                            <li>Are there mobile services available? Bloodwork at home? Home foot care? Oxygen delivery? What is the cost?</li>
+                            <li>How often is it recommended to access these services?</li>
+                            <li>Is the health support time limited? Ie. Is it an 8-week program?</li>
+                            <li>Is there a psychiatrist to support?</li>
+                            <li>How is support managed ie. Virtually/ telephone calls/ online/ in person.</li>
+                            <li>Is there a current waitlist for programming?</li>
+                            <li>What does the referral process look like? Will I be contacted? What follow up is required?</li>
+                            <li>Will I be assigned a case manager? What will my care team look like?</li>
+                            <li>Will victim services assist with the funding of counselling and if so/ for how long?</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            <p>If you create a clipboard, all related questions to consider will also show up there</p>
         </div>
-    <% } %>
+    <!--% } %-->
 </p>
 <div id="body_accordion">
     <div class="wrap" style="display:none;">

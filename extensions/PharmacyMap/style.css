@@ -264,3 +264,15 @@ table#listTable.dataTable tbody tr:hover > .sorting_1 {
 .bkmark_img:hover{
     filter: invert(68%) sepia(39%) saturate(1460%) hue-rotate(330deg) brightness(103%) contrast(93%);
 }
+
+#questionsTable {
+    border: 1px solid black !important;
+}
+
+#questionsTable ul {
+    margin-top: 0;
+}
+
+#questionsTable ul li:first-child {
+    margin-top: 0;
+}
