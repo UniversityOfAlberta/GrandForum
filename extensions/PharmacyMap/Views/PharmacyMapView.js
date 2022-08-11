@@ -17,6 +17,9 @@ PharmacyMapView = Backbone.View.extend({
     note: null,
     clipboard: null,
     initialize: function () {
+        dc.init(me.get('id'), 'ProgramLibrary');
+        dc.increment("count");
+    
         this.model.bind('sync', this.render);//change to on
         
         $(document).on('click', 'a.programWebsite', function(){

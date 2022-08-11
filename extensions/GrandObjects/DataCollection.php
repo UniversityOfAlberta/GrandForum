@@ -48,9 +48,10 @@ class DataCollection extends BackboneModel {
         $me = Person::newFromWgUser();
         $array = array();
         if($me->isRoleAtLeast(STAFF)){
+            $page = str_replace("*", "%", $page);
             $data = DBFunctions::select(array('grand_data_collection'),
                                         array('*'),
-                                        array('page' => $page));
+                                        array('page' => LIKE($page)));
             foreach($data as $row){
                 $array[] = new DataCollection(array($row));
             }

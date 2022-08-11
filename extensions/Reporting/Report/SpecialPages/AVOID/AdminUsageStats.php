@@ -20,6 +20,7 @@ class AdminUsageStats extends SpecialPage {
         $this->showActionPlanStats();
         $this->showRegistrantsStats();
         $this->showProgramStats();
+        $this->showCommunityProgramStats();
     }
     
     function exclude($userId){
@@ -202,6 +203,59 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Number of hits on page</td>
                 <td align='right'>$count</td>
+            </tr>
+        </table>");
+    }
+    
+    function showCommunityProgramStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>Community Programs</h1>");
+        $clipboards = array();
+        foreach(Person::getAllPeople() as $person){
+            if($this->exclude($person->getId())){ continue; }
+            $clipboard = $person->getClipboard();
+            if(!empty($clipboard)){
+                $clipboards[] = $clipboard;
+            }
+        }
+        
+        $dcs = DataCollection::newFromPage('ProgramLibrary');
+        $count = 0;
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            $count += @$dc->getField('count');
+        }
+        
+        $dcs = DataCollection::newFromPage('ProgramLibrary-*');
+        $topPages = array();
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            if($dc->getPage() == "ProgramLibrary-INDEX"){ continue; }
+            @$topPages[str_replace("ProgramLibrary-", "", $dc->getPage())] += $dc->getField('pageCount');
+        }
+        
+        asort($topPages);
+        $topPages = array_reverse($topPages);
+        $topPagesKeys = array_keys($topPages);
+        
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of clipboards created</td>
+                <td align='right'>".count($clipboards)."</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of hits on page</td>
+                <td align='right'>$count</td>
+            </tr>
+            <tr>
+                <td class='label'>Top 3 main categories hit</td>
+                <td align='right'>
+                    <table>
+                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[0]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[0]]}</td></tr>
+                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[1]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[1]]}</td></tr>
+                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[2]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[2]]}</td></tr>
+                    </table>
+                </td>
             </tr>
         </table>");
     }
