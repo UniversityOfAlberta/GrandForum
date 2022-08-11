@@ -22,10 +22,23 @@ class AdminUsageStats extends SpecialPage {
         $this->showProgramStats();
     }
     
+    function exclude($userId){
+        $person = Person::newFromId($userId);
+        $postal_code = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
+        if($person->isRoleAtLeast(STAFF) || $postal_code == "CFN"){
+            return true;
+        }
+        return false;
+    }
+    
     function showActionPlanStats(){
         global $wgOut;
         $wgOut->addHTML("<h1>My weekly action plan</h1>");
-        $plans = ActionPlan::getAll();
+        $plans = array();
+        foreach(ActionPlan::getAll() as $plan){
+            if($this->exclude($plan->getUserId())){ continue; }
+            $plans[] = $plan;
+        }
         
         $users = array();
         $submitted = array();
@@ -84,11 +97,7 @@ class AdminUsageStats extends SpecialPage {
         $clinicians = array();
         $submitted = array();
         foreach(Person::getAllPeople() as $person){
-            $postal_code = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
-            if($person->isRoleAtLeast(STAFF) || $postal_code == "CFN"){
-                continue;
-            }
-            
+            if($this->exclude($person->getId())){ continue; }
             if($person->isRole("Member")){ // TODO: Should be changed to role CONSTANT
                 $members[] = $person;
             }
@@ -135,6 +144,7 @@ class AdminUsageStats extends SpecialPage {
                            DataCollection::newFromPage('Program-PeerCoachingVolunteer'));
         $count = 0;
         foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
             $count += @$dc->getField('count');
         }
         
@@ -153,6 +163,7 @@ class AdminUsageStats extends SpecialPage {
         $oneOnOne = 0;
         $completeCollection = 0;
         foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
             $count += @$dc->getField('count');
             $webinars += @$dc->getField('webinarsClicks');
             $oneOnOne += @$dc->getField('1on1Clicks');
@@ -183,6 +194,7 @@ class AdminUsageStats extends SpecialPage {
         $dcs = DataCollection::newFromPage('Program-CommunityConnectors');
         $count = 0;
         foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
             $count += @$dc->getField('count');
         }
         
