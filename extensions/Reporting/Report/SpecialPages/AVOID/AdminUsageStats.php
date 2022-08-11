@@ -21,6 +21,7 @@ class AdminUsageStats extends SpecialPage {
         $this->showRegistrantsStats();
         $this->showProgramStats();
         $this->showCommunityProgramStats();
+        $this->showEducationStats();
     }
     
     function exclude($userId){
@@ -146,7 +147,7 @@ class AdminUsageStats extends SpecialPage {
         $count = 0;
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
-            $count += @$dc->getField('count');
+            @$count += $dc->getField('count');
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
@@ -165,10 +166,10 @@ class AdminUsageStats extends SpecialPage {
         $completeCollection = 0;
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
-            $count += @$dc->getField('count');
-            $webinars += @$dc->getField('webinarsClicks');
-            $oneOnOne += @$dc->getField('1on1Clicks');
-            $completeCollection += @$dc->getField('completeCollectionClicks');
+            @$count += $dc->getField('count');
+            @$webinars += $dc->getField('webinarsClicks');
+            @$oneOnOne += $dc->getField('1on1Clicks');
+            @$completeCollection += $dc->getField('completeCollectionClicks');
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
@@ -196,7 +197,7 @@ class AdminUsageStats extends SpecialPage {
         $count = 0;
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
-            $count += @$dc->getField('count');
+            @$count += $dc->getField('count');
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
@@ -210,6 +211,7 @@ class AdminUsageStats extends SpecialPage {
     function showCommunityProgramStats(){
         global $wgOut;
         $wgOut->addHTML("<h1>Community Programs</h1>");
+        $leaves = PharmacyMap::getCategoryLeaves();
         $clipboards = array();
         foreach(Person::getAllPeople() as $person){
             if($this->exclude($person->getId())){ continue; }
@@ -223,15 +225,16 @@ class AdminUsageStats extends SpecialPage {
         $count = 0;
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
-            $count += @$dc->getField('count');
+            @$count += $dc->getField('count');
         }
-        
-        $dcs = DataCollection::newFromPage('ProgramLibrary-*');
+
         $topPages = array();
-        foreach($dcs as $dc){
-            if($this->exclude($dc->getUserId())){ continue; }
-            if($dc->getPage() == "ProgramLibrary-INDEX"){ continue; }
-            @$topPages[str_replace("ProgramLibrary-", "", $dc->getPage())] += $dc->getField('pageCount');
+        foreach($leaves as $leaf){
+            $dcs = DataCollection::newFromPage("ProgramLibrary-{$leaf->code}");
+            foreach($dcs as $dc){
+                if($this->exclude($dc->getUserId())){ continue; }
+                @$topPages[$leaf->code] += $dc->getField('pageCount');
+            }
         }
         
         asort($topPages);
@@ -251,11 +254,86 @@ class AdminUsageStats extends SpecialPage {
                 <td class='label'>Top 3 main categories hit</td>
                 <td align='right'>
                     <table>
-                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[0]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[0]]}</td></tr>
-                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[1]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[1]]}</td></tr>
-                        <tr><td align='center' style='font-weight: bold;'>{$topPagesKeys[2]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[2]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topPagesKeys[0]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[0]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topPagesKeys[1]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[1]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topPagesKeys[2]}&nbsp;</td><td align='right'>{$topPages[$topPagesKeys[2]]}</td></tr>
                     </table>
                 </td>
+            </tr>
+        </table>");
+    }
+    
+    function showEducationStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>AVOID Education</h1>");
+        
+        $dcs = DataCollection::newFromPage('Topic-*');
+        $topTopics = array();
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            @$topTopics[str_replace("Topic-", "", $dc->page)] += $dc->getField('count');
+        }
+
+        asort($topTopics);
+        $topTopics = array_reverse($topTopics);
+        $topTopicsKeys = array_keys($topTopics);
+        
+        $dcs = array_merge(DataCollection::newFromPage('*.pdf'), 
+                           DataCollection::newFromPage('*.mp4'));
+        $libraryHits = 0;
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            @$libraryHits += $dc->getField('count');
+        }
+        
+        $dcs = array_merge(DataCollection::newFromPage('IngredientsForChange'), 
+                           DataCollection::newFromPage('Activity'),
+                           DataCollection::newFromPage('Vaccination'),
+                           DataCollection::newFromPage('OptimizeMedication'),
+                           DataCollection::newFromPage('Interact'),
+                           DataCollection::newFromPage('DietAndNutrition'),
+                           DataCollection::newFromPage('Sleep'),
+                           DataCollection::newFromPage('FallsPrevention'));
+        $moduleHits = 0;
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId())){ continue; }
+            @$moduleHits += $dc->getField('video1PageCount');
+        }
+        
+        $modules = EducationResources::JSON();
+        $completed = 0;
+        foreach(Person::getAllPeople() as $person){
+            if($this->exclude($person->getId())){ continue; }
+            foreach($modules as $module){
+                $completion = EducationResources::completion($module->id, $person);
+                if($completion == 100){
+                    $completed++;
+                }
+            }
+        }
+        
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Top 3 topics</td>
+                <td align='right'>
+                    <table>
+                        <tr><td style='font-weight: bold;'>{$topTopicsKeys[0]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[0]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topTopicsKeys[1]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[1]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$topTopicsKeys[2]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[2]]}</td></tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class='label'>Hits on resource library</td>
+                <td align='right'>$libraryHits</td>
+            </tr>
+            <tr>
+                <td class='label'>Hits on modules</td>
+                <td align='right'>$moduleHits</td>
+            </tr>
+            <tr>
+                <td class='label'>Completed modules</td>
+                <td align='right'>$completed</td>
             </tr>
         </table>");
     }

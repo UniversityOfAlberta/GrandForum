@@ -27,11 +27,13 @@ class EducationResources extends SpecialPage {
         return self::$json;
     }
     
-    static function completion($page){
+    static function completion($page, $person=null){
         $json = self::JSON();
         
-        $me = Person::newFromWgUser();
-        $data = DataCollection::newFromUserId($me->getId(), $page);
+        if($person == null){
+            $person = Person::newFromWgUser();
+        }
+        $data = DataCollection::newFromUserId($person->getId(), $page);
         
         $completed = 0;
         foreach($json as $module){
@@ -124,6 +126,11 @@ class EducationResources extends SpecialPage {
             
             $('a.resource').click(function(){
                 dc.init(me.get('id'), $(this).attr('data-resource'));
+                dc.increment('count');
+            });
+            
+            $('a.category').click(function(){
+                dc.init(me.get('id'), 'Topic-' + $(this).attr('data-id'));
                 dc.increment('count');
             });
         </script>");

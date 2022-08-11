@@ -22,6 +22,29 @@ class PharmacyMap extends BackbonePage {
         return $json;
     }
     
+    static function getCategoryLeaves($categoryJSON=null){
+        $categories = array();
+        if($categoryJSON == null){
+            $categoryJSON = PharmacyMap::getCategoryJSON();
+            foreach($categoryJSON as $category){
+                $categories = array_merge($categories, PharmacyMap::getCategoryLeaves($category));
+            }
+        }
+        else {
+            if(isset($categoryJSON->children)){
+                // Category has children
+                foreach($categoryJSON->children as $category){
+                    $categories = array_merge($categories, PharmacyMap::getCategoryLeaves($category));
+                }
+            }
+            else{
+                // Leaf found
+                $categories[] = $categoryJSON;
+            }
+        }
+        return $categories;
+    }
+    
     function getTemplates(){
         global $wgOut;
         $json = self::getCategoryJSON();
