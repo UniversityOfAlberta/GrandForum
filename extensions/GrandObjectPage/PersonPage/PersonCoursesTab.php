@@ -44,8 +44,13 @@ class PersonCoursesTab extends AbstractEditableTab {
         }
         $coursesArray = array();
         foreach($courses as $course){
-            if($course->totEnrl > 0 && ($this->levels == null || in_array(substr($course->catalog, 0, 1), $this->levels))){
-                $level = substr($course->catalog, 0, 1)."00";
+            $level = substr($course->catalog, 0, 1);
+            if(count($this->levels) > 0){
+                // Exceptions
+                if($course->subject == "MED" && ($course->catalog == "521" || $course->catalog == "525")){ $level = "1"; }
+            }
+            if($course->totEnrl > 0 && ($this->levels == null || in_array($level, $this->levels))){
+                $level = "{$level}00";
                 $coursesArray[$level]["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
             }
         }
