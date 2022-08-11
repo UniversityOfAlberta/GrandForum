@@ -22,6 +22,7 @@ class AdminUsageStats extends SpecialPage {
         $this->showProgramStats();
         $this->showCommunityProgramStats();
         $this->showEducationStats();
+        $this->showIntakeStats();
     }
     
     function exclude($userId){
@@ -334,6 +335,38 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Completed modules</td>
                 <td align='right'>$completed</td>
+            </tr>
+        </table>");
+    }
+    
+    function showIntakeStats(){
+        global $wgOut;
+        $wgOut->addHTML("<h1>How did you hear about AVOID?</h1>");
+        
+        $top3 = array();
+        foreach(Person::getAllPeople() as $person){
+            if($this->exclude($person->getId())){ continue; }
+            $hear = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "program_avoid", $person->getId());
+            $hear = ($hear == "") ? $person->getExtra('hearField', '') : $hear;
+            if($hear != ""){
+                @$top3[$hear]++;
+            }
+        }
+
+        asort($top3);
+        $top3 = array_reverse($top3);
+        $top3Keys = array_keys($top3);
+        
+        @$wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Top 3</td>
+                <td align='right'>
+                    <table>
+                        <tr><td style='font-weight: bold;'>{$top3Keys[0]}&nbsp;</td><td align='right'>{$top3[$top3Keys[0]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$top3Keys[1]}&nbsp;</td><td align='right'>{$top3[$top3Keys[1]]}</td></tr>
+                        <tr><td style='font-weight: bold;'>{$top3Keys[2]}&nbsp;</td><td align='right'>{$top3[$top3Keys[2]]}</td></tr>
+                    </table>
+                </td>
             </tr>
         </table>");
     }
