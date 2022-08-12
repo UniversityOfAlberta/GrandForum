@@ -26,8 +26,8 @@ class AdminUsageStats extends SpecialPage {
     }
     
     function exclude($userId){
-        if($userId == 0){ return true; }
         $person = Person::newFromId($userId);
+        if($person->getId() == 0){ return true; }
         $postal_code = AdminDataCollection::getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
         if($person->isRoleAtLeast(STAFF) || $postal_code == "CFN"){
             return true;
