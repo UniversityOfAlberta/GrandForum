@@ -65,6 +65,22 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="upload1" type="Upload" blobItem="UPLOAD1" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="Upload" blobItem="UPLOAD2" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="Upload" blobItem="UPLOAD3" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description|Contributors" types="Text|Textarea|Text">
             <![CDATA[
                 <h2>Project Milestones</h2>

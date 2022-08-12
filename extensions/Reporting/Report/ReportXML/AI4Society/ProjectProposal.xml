@@ -81,6 +81,34 @@
             ]]>
         </ReportItem>
         
+        <ReportItem id="upload1" type="Upload" blobItem="UPLOAD1" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                <p>Add here images, photos, and alike</p>
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:1%;white-space:nowrap;" class="label">File 1:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload2" type="Upload" blobItem="UPLOAD2" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                    <tr>
+                        <td style="width:1%;white-space:nowrap;" class="label">File 2:</td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="upload3" type="Upload" blobItem="UPLOAD3" blobType="BLOB_RAW" mimeType=".pdf,.jpeg,.jpg" fileSize="5">
+            <![CDATA[
+                    <tr>
+                        <td style="width:1%;white-space:nowrap;" class="label">File 3:</td>
+                        <td>{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="milestones" type="MultiText" class="wikitable" blobType="BLOB_ARRAY" blobItem="MILESTONES" multiple="true" indices="title|description|contributors" labels="Title|Description&lt;br />&lt;small>Describe the concrete, measurable goal.  No need to repeat anything from the scientific rationale or proposal sections.&lt;/small>|Contributors&lt;br />&lt;small>List of names (students, fellows, externals, etc.; identify affiliation of external collaborators)&lt;/small>" types="Text|Textarea|Text" sizes="200|250|250">
             <![CDATA[
                 <h2>Project Milestones</h2>
