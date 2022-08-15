@@ -168,7 +168,6 @@ class AdminUsageStats extends SpecialPage {
             if($this->exclude($row['user_id'])){ continue; }
             $count++;
         }
-                                      
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
             <tr>
@@ -215,9 +214,20 @@ class AdminUsageStats extends SpecialPage {
         
         $dcs = DataCollection::newFromPage('Program-CommunityConnectors');
         $count = 0;
+        $users = array(0);
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
+        }
+        
+        // Also check report_blobs
+        $data = DBFunctions::execSQL("SELECT * FROM `grand_report_blobs` 
+                                      WHERE rp_type = 'RP_COMMUNITY_CONNECTORS'
+                                      AND user_id NOT IN (".implode(",", $users).")
+                                      GROUP BY user_id");
+        foreach($data as $row){
+            if($this->exclude($row['user_id'])){ continue; }
+            $count++;
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
