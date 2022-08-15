@@ -243,9 +243,18 @@ class AdminUsageStats extends SpecialPage {
         
         $dcs = DataCollection::newFromPage('ProgramLibrary');
         $count = 0;
+        $users = array(0);
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
+            $users[] = $dc->getUserId();
+        }
+        
+        // Also check INDEX (but only count once)
+        $dcs = DataCollection::newFromPage('ProgramLibrary-INDEX');
+        foreach($dcs as $dc){
+            if($this->exclude($dc->getUserId()) || in_array($dc->getUserId(), $users)){ continue; }
+            @$count++;
         }
 
         $topPages = array();
