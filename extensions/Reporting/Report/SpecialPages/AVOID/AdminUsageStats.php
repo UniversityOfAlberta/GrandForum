@@ -147,10 +147,28 @@ class AdminUsageStats extends SpecialPage {
         $dcs = array_merge(DataCollection::newFromPage('Program-PeerCoaching'), 
                            DataCollection::newFromPage('Program-PeerCoachingVolunteer'));
         $count = 0;
+        $users = array(0);
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
+            $users[] = $dc->getUserId();
         }
+        
+        // Also check report_blobs
+        $data = DBFunctions::execSQL("(SELECT * FROM `grand_report_blobs` 
+                                       WHERE rp_type = 'RP_PEER_COACHING'
+                                       AND user_id NOT IN (".implode(",", $users).")
+                                       GROUP BY user_id)
+                                      UNION
+                                      (SELECT * FROM `grand_report_blobs` 
+                                       WHERE rp_type = 'RP_VOLUNTEER_OPPORTUNITIES'
+                                       AND user_id NOT IN (".implode(",", $users).")
+                                       GROUP BY user_id)");
+        foreach($data as $row){
+            if($this->exclude($row['user_id'])){ continue; }
+            $count++;
+        }
+                                      
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
             <tr>
