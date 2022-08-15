@@ -54,6 +54,7 @@ $apiRequest->addAction('Hidden','person/:id/subroles', 'PersonSubRolesAPI');
 $apiRequest->addAction('Hidden','person/:id/relations', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/inverse', 'PersonRelationsAPI');
 $apiRequest->addAction('Hidden','person/:id/relations/:relId', 'PersonRelationsAPI');
+$apiRequest->addAction('Hidden','person/:id/similar', 'SimilarPeopleAPI');
 $apiRequest->addAction('Hidden','person/:id/products', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/bibtex', 'PersonProductAPI');
 $apiRequest->addAction('Hidden','person/:id/products/private', 'PersonProductAPI');

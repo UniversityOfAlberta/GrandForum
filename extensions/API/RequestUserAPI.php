@@ -161,6 +161,12 @@ class RequestUserAPI extends API{
 		               "X-Mailer: PHP/".phpversion();
 		    mail("fesadmin@ualberta.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers);
 		}
+		else if($config->getValue('networkName') == "MtS"){
+		    $headers = "From: {$config->getValue('supportEmail')}\r\n".
+		               "Reply-To: {$config->getValue('supportEmail')}\r\n".
+		               "X-Mailer: PHP/".phpversion();
+		    mail("pravinah@yorku.ca,aolaniyi@yorku.ca", "User Requested", "A new user '{$wpName}' has been requested by {$me->getNameForForms()}\n\n{$wgServer}{$wgScriptPath}/index.php/Special:AddMember?action=view.", $headers);
+		}
 		Notification::addNotification("", $me, "User Creation Pending", "User '{$wpName}' has been requested.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you", "");
 		if($doEcho){
 		    echo "User Creation Request Submitted.  Once an Admin sees this request, the user will be accepted, or if there is a problem they will email you.\n";

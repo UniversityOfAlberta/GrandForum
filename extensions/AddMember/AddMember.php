@@ -347,10 +347,11 @@ class AddMember extends SpecialPage{
         $projectsRow = new FormTableRow("project_row");
         $projectsRow->append($projectsLabel)->append($projectsField);
         
-        $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", VALIDATE_NOT_NULL);
+        $nationalityValidation = ($config->getValue("networkName") == "MtS") ? VALIDATE_NOT_NULL : VALIDATE_NOTHING;
+        $nationalityLabel = new Label("nationality_label", "Nationality", "The nationality of this user (only required for HQP)", $nationalityValidation);
         $nationalityField = new SelectBox("nationality_field", "Nationality", "", array("" => "---", 
                                                                                         "Canadian" => "Canadian/Landed Immigrant", 
-                                                                                        "Foreign"), VALIDATE_NOT_NULL);
+                                                                                        "Foreign"), $nationalityValidation);
         $nationalityField->attr("style", "width: 260px;");
         $nationalityRow = new FormTableRow("nationality_row");
         $nationalityRow->append($nationalityLabel)->append($nationalityField);

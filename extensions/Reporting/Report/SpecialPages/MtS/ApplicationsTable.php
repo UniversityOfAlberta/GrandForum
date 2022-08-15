@@ -61,6 +61,7 @@ class ApplicationsTable extends SpecialPage{
         </style>");
 
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=progress'>Progress</a>";
+        $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=completion'>Completion</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=impact'>Impact</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=datatech'>DataTech</a>";
         $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=openround2'>OpenRound2</a>";
@@ -77,6 +78,9 @@ class ApplicationsTable extends SpecialPage{
         
         if($program == "progress"){
             $this->generateProgress();
+        }
+        else if($program == "completion"){
+            $this->generateCompletion();
         }
         else if($program == "impact"){
             $this->generateImpact();
@@ -297,6 +301,17 @@ class ApplicationsTable extends SpecialPage{
         $wgOut->addHTML($tabbedPage->showPage());
     }
     
+    function generateCompletion(){
+        global $wgOut;
+        
+        $tabbedPage = new InnerTabbedPage("reports");
+        for($year=date('Y'); $year >= 2021; $year--){
+            $tab = new ApplicationTab('RP_COMPLETION', null, $year, "{$year}", array());                                           
+            $tabbedPage->addTab($tab);
+        }
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
     function generateImpact(){
         global $wgOut;
         
@@ -320,7 +335,7 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         
-        for($y = 2021; $y >= 2020; $y--){
+        for($y = date('Y'); $y >= 2020; $y--){
             $tab = new ApplicationTab('RP_IMPACT', null, $y, "$y", array('Service Delivery Agencies' => $ceris[1],
                                                                          'Indigenous community-based agencies and/or governing bodies' => $ceris[2],
                                                                          'Persons with lived experiences of homelessness' => $ceris[3],

@@ -107,6 +107,8 @@ class SpecialEventRegistration extends SpecialPage{
         $nameField = new TextField("name", "name", $name);
         $nameField->attr('required', 'required');
         
+        $affiliation = "";
+        
         $twitter = ($me->isLoggedIn()) ? $me->getTwitter() : "";
         $twitterField = new TextField("twitter", "twitter", $twitter);
         
@@ -116,6 +118,7 @@ class SpecialEventRegistration extends SpecialPage{
         $roles = array("Audience", "Keynote Speaker", "Host", "Presenter");
         $defaultRole = "Audience";
         $misc = "";
+        $roleLabel = "Participant Role";
         if($default->title == "Energy Hackathon 2021 - APIC"){
             $miscField = new TextareaField("misc[Programming]", "misc", "");
             $misc = "<h3>Which programming technologies or tools are you familiar with or would like to learn?</h3>
@@ -156,6 +159,24 @@ class SpecialEventRegistration extends SpecialPage{
         else if($default->title == "Energy Hackathon 2022 - APIC"){
             $roles = array("Participant", "Judge", "Host");
             $defaultRole = "Participant";
+        }
+        else if($default->title == "Reimagining Architecture and Urbanism in the Post-Pandemic World through Illustration"){
+            $roleLabel = "Theme/Category of the competition";
+            $roles = array("Public Space and Urban Built Environment",
+                           "Tactical urbanism and Temporality",
+                           "Smart Cities and Artificial Intelligence",
+                           "Designing Built Environments and Hybrid Remote Space",
+                           "(in)formal Public Space",
+                           "Engaging Community and Participation",
+                           "Connection with Nature for Mental Health and Wellness",
+                           "Future of Post-Pandemic Public Space and Disaster Preparedness");
+            $defaultRole = "Public Space and Urban Built Environment";
+            
+            $miscField = new TextField("misc[Affiliation]", "misc", "");
+            $affiliation = "<tr>
+                                <td class='label' style='vertical-align: middle;'>Your Affiliation</td>
+                                <td>{$miscField->render()}</td>
+                            </tr>";
         }
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
@@ -198,8 +219,9 @@ class SpecialEventRegistration extends SpecialPage{
                             <td class='label' style='vertical-align: middle;'>Your Name</td>
                             <td>{$nameField->render()}</td>
                         </tr>
+                        {$affiliation}
                         <tr>
-                            <td class='label' style='vertical-align: middle;'>Participant Role</td>
+                            <td class='label' style='vertical-align: middle;'>{$roleLabel}</td>
                             <td>{$roleField->render()}</td>
                         </tr>
                         <tr>

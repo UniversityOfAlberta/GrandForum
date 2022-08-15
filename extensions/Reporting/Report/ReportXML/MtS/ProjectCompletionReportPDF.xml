@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Completion Report" reportType="RP_COMPLETION" pdfType="RPTP_COMPLETION" personId="0" ajax="true" startDate="{$project_start}" endDate="2100-01-01"  disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static id="report_info_head">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>Completion Report: {$project_name}</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="introduction" type="EditableReportSection" blobSection="INTRODUCTION" name="SECTION 1 INFORMED CONSENT" title="SECTION 1: INTRO &amp; CONSENT" pagebreak="false">
+        <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
+            <![CDATA[
+                <h4>Informed consent and the use of images for evaluation</h4>
+                <p>{$item}</p><br />
+                <h4>Participant Consent Forms</h4>
+            ]]>
+        </ReportItem>
+        <For from="1" to="20">
+            <ReportItem id="consent{$index}" type="Upload" blobItem="CONSENT{$index}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                <![CDATA[
+                    {$item}
+                ]]>
+            </ReportItem>
+        </For>
+        <ReportItem id="pi_consent" type="Checkbox" blobItem="PI_CONSENT" blobType="BLOB_ARRAY" options="I consent to the use of photo/video recordings shared as part of this report for MtS Impact Evaluation research.">
+            <![CDATA[
+                <h4>Photo Release Form for PIs</h4>
+                <p>{$item}</p><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="2 - Project Information" title="SECTION 2: PROJECT INFORMATION">
+        <Static>
+            <![CDATA[
+                <table class="wikitable" style="width:100%;" frame="box" rules="all">
+                    <tr>
+                        <td style="width:15%;"><b>Project Name:</b></td>
+                        <td>{$project_name} - {$project_full_name}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Project Theme:</b></td>
+                        <td>{$project_theme}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Principal Investigator:</b></td>
+                        <td>{$project_leaders}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Length of Project:</b></td>
+                        <td>{$project_length}</td>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="indigenous" type="Radio" options="Yes|No" blobItem="INDIGENOUS">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Does PI identify as an Indigenous scholar?</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="homelessness" type="Radio" options="Yes|No" blobItem="HOMELESSNESS">
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Does PI identify as a person with lived experience of homelessness?</b></td>
+                    <td valign="top">{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <!-- Co-Investigators -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Co-Investigators:</b></td>
+                    <td><ul>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectPeople" role="Co-I">
+            <Static>
+                <![CDATA[
+                    <li style="margin-top:0;">{$user_reversed_name}</li>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </ul></td>
+                </tr>
+            ]]>
+        </Static>
+        <!-- Collaborators -->
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td valign="top"><b>Collaborators:</b></td>
+                    <td><ul>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectPeople" role="PARTNER">
+            <Static>
+                <![CDATA[
+                    <li style="margin-top:0;">{$user_reversed_name}</li>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </ul></td>
+                </tr>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td><b>Project Start Date:</b></td>
+                    <td>{$project_start}</td>
+                </tr>
+                <tr>
+                    <td><b>Project End Date:</b></td>
+                    <td>{$project_end}</td>
+                </tr>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                </table><br />
+                <table class="wikitable" style="width:100%;" frame="box" rules="all">
+            ]]>
+        </Static>
+        <ReportItem id="lived_experience" type="Integer" blobItem="LIVED_EXPERIENCES" size="8">
+            <![CDATA[
+                <tr>
+                    <td># of persons with lived experience involved in the project (e.g., research participants and peer advisors)</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="indigenous_agencies" type="Integer" blobItem="AGENCIES_AGENCIES" size="8">
+            <![CDATA[
+                <tr>
+                    <td># of Indigenous community-based agencies and/or governing bodies (e.g., ban councils)</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="service_agencies" type="Integer" blobItem="SERVICE_AGENCIES" size="8">
+            <![CDATA[
+                <tr>
+                    <td># of service delivery agencies involved in the project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="municipal_governments" type="Integer" blobItem="MUNICIPAL_GOVERNMENTS" size="8">
+            <![CDATA[
+                <tr>
+                    <td># of municipal governments involved in the project</td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <tr>
+                    <td># of highly-qualified personnel involved in this project (e.g., research assistants, peer advisors, postdoctoral fellows, community partners etc.)</td>
+                    <td align='right'>{$project_n_hqp}</td>
+                </tr>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="progress" type="EditableReportSection" blobSection="PROGRESS" name="3 - Project Progress" title="SECTION 3: PROJECT PROGRESS">
+        <ReportItem id="progress" type="Radio" blobItem="PROGRESS" options="Yes|No">
+            <![CDATA[
+                <h3>3.1 Is your project progressing as planned?</h3>
+                <div id='progress'>
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <If if="{==({getText(RP_PROGRESS,PROGRESS,PROGRESS,0,0,{$project_id})},No)}">
+            <ReportItem id="progress_reason" type="Textarea" blobItem="PROGRESS_REASON" limit="200" rich="true">
+                <![CDATA[
+                    <br />
+                    <p><b>Please describe the reason for the delay and the steps that are being taken to complete the project.</b></p>
+                    {$item}
+                ]]>
+            </ReportItem>
+        </If>
+        <ReportItem id="ethics" type="Textarea" blobItem="ETHICS" rich="true" limit="250">
+            <![CDATA[
+                <h3>3.2 Provide a summary of how your project is progressing, according to each of the categories listed below:</h3>
+                <table class="wikitable" width="100%" frame="box" rules="all">
+                    <tr>
+                        <th style="width:15%;">Research Project Activities</th>
+                        <th>Progress Over the Last Year</th>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Obtaining Ethics Approval</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="collecting" type="Textarea" blobItem="COLLECTING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Collecting Data</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="analyzing" type="Textarea" blobItem="ANALYZING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Analyzing Data</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="report_writing" type="Textarea" blobItem="REPORT_WRITING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Report Writing and Finding Dissemination</b></td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Training and Recruiting Highly Qualified Personnel</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="networking" type="Textarea" blobItem="NETWORKING" rich="true" limit="250">
+            <![CDATA[
+                    <tr>
+                        <td valign="top"><b>Networking and Partnerships Development</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table><br />
+            ]]>
+        </Static>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true" limit="300">
+            <![CDATA[
+                <h3>3.3 What were some of the challenges or barriers your project has encountered this year? What strategies have you used to overcome these challenges?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="300">
+            <![CDATA[
+                <h3>3.4 What were some of the successes and/or opportunities that you project has achieved over the previous year? What steps have taken to celebrate and/or take advantage of these opportunities?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="lesson" type="Textarea" blobItem="LESSON" rich="true" limit="300">
+            <![CDATA[
+                <h3>3.5 What is the biggest lesson learned over the previous year?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h2>Community Engagement in Research Index (CERI)</h2>
+                <h3>3.6 Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</h3>
+                <p><small>
+                    1 (Community partners do not participate in this activity) <br />
+                    2 (Community partners are consulted on or advise on this activity)<br />
+                    3 (Community partners are actively engaged in this activity as collaborators/co-investigators)
+                 </small></p>
+                 <table class="wikitable" frame="box" rules="all" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Research activities</th>
+                            <th>Service Delivery Agencies</th>
+                            <th>Indigenous community-based agencies and/or governing bodies</th>
+                            <th>Persons with lived experiences of homelessness</th>
+                            <th>Orders of Government</th>
+                            <th>Racialized Communities</th>
+                            <th>2SLGBTQIA+ community members</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <For array="Grant proposal writing|Background research/literature review|Choosing research methods|Developing sampling procedures|Recruiting study participants|Engaging other 
+research partners|Designing interview and/or survey questions|Collecting primary data|Analyzing collected data|Interpreting study findings|Writing reports and journal articles">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{getExtra()}</td>
+                        {set(parentExtra, {add({$extraIndex},1)})}
+                ]]>
+            </Static>
+            <For array="1|2|3|4|5|6">
+                <ReportItem id="ceri_{get(parentExtra)}_{add({$extraIndex},1)}" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
+                    <![CDATA[
+                        <td align='center'>{$item}</td>
+                    ]]>
+                </ReportItem>
+            </For>
+            <Static>
+                <![CDATA[
+                    </tr>
+                ]]>
+            </Static>
+        </For>
+        <Static>
+            <![CDATA[
+                </tbody>
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="impacts" type="EditableReportSection" blobSection="IMPACTS" name="4 - Research Impacts" title="SECTION 4: RESEARCH IMPACTS">
+        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true" limit="400">
+            <![CDATA[
+                <h3>4.1 Describe any relevant research findings that have emerged over the last year. Why are these findings relevant to the issue of youth homelessness prevention? In what way do these findings contribute to the youth homelessness prevention evidence base?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <h3>4.2 List all peer reviewed publications that were published in the previous year:</h3>
+                <table class="wikitable" width="100%" frame="box" rules="all">
+                    <tr>
+                        <th>Author(s)</th>
+                        <th>Publication Name</th>
+                        <th>Link</th>
+                        <th>DOI Number (if known)</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectProducts" category="Publication" start="{$startDate}" end="{$endDate}" peerReviewedOnly="true">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$product_authors}</td>
+                        <td>{$product_title}</td>
+                        <td><a class="externalLink" href="{getProductData(url)}">{getProductData(url)}</a></td>
+                        <td>{getProductData(doi)}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+        <ReportItem id="findings_date" type="Calendar" reportItem="FINDINGS_DATE">
+            <![CDATA[
+                <h3>4.3 Provide an estimation of when shareable project findings are next expected.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
+        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true" class="wikitable smaller"
+                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date" 
+                    indices="activity|endgroup|activities|impact|reach|date" 
+                    labels="Knowledge Mobilization Activity|End Group(s)|Knowledge Mobilization Activities|Impact|Actual Reach/Projected reach per selected End Group|Date(s) of Activity/ Projected Date of Activity"
+                    sizes="auto|auto|auto|auto|auto|1%">
+            <![CDATA[
+                <h2>Knowledge Mobilization Activities and Impact</h2>
+                <h3>5.1 Describe the knowledge mobilization activities you completed in the previous year for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="200">
+            <![CDATA[
+                <h3>5.2 What are some of the knowledge mobilization successes the project has achieved in the previous year?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true" limit="200">
+            <![CDATA[
+                <h3>5.3 What are some of the knowledge mobilization barriers or challenges that the project has encountered in the previous year?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outputs" type="Checkbox" blobItem="OUTPUTS" blobType="BLOB_ARRAY" options="Graphic design (e.g., report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
+            <![CDATA[
+                <h3>5.4 What knowledge mobilization outputs might you need MtS’s support within the next six months?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="outputs_other" type="Text" blobItem="OUTPUTS_OTHER">
+            <![CDATA[
+                <br />
+                <i>{$item}</i>
+            ]]>
+        </ReportItem>
+        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a collection of resources on a broad range of topics in the context of youth homelessness prevention research)|Other" delimiter="&lt;br />">
+            <![CDATA[
+                <h3>5.5 Ideally how would you like us to deliver our support to you?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="support_other" type="Text" blobItem="SUPPORT_OTHER">
+            <![CDATA[
+                <br />
+                <i>{$item}</i>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="engagement" type="EditableReportSection" blobSection="ENGAGEMENT" name="6 - Community Engagement" title="SECTION 6: COMMUNITY ENGAGEMENT AND PARTNERSHIP DEVELOPMENT">
+        <ReportItem id="engaged" type="Textarea" blobItem="ENGAGED" rich="true" limit="350">
+            <![CDATA[
+                <h2>Working with Persons with Lived Experience of Homelessness</h2>
+                <h3>6.1 Please indicate how you have engaged persons with lived experience of homelessness within over the last year.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="activities" type="Textarea" blobItem="ACTIVITIES" rich="true" limit="350">
+            <![CDATA[
+                <h3>6.2 What activities do you have planned in the next year, to involve persons with lived experience of homelessness?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" options="One-on-one advice for how best to engage individuals with lived experience|Downloadable toolkits for best practices|Advice for how to structure a research projects to ensure lived expertise is at the heart of the project|Webinars about best practices for hiring and training scholars with lived experience|Best practice guidance for compensating project partners with lived experience of homelessness|Other" delimiter="&lt;br />">
+            <![CDATA[
+                <h3>6.3 What kind of support or advice might you want from the Making the Shift Scholars with Lived Experience Network (LivEx) – check all that apply:</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="support_other" type="Text" blobItem="SUPPORT_OTHER">
+            <![CDATA[
+                <br />
+                <i>{$item}</i>
+            ]]>
+        </ReportItem>
+        <ReportItem id="initiatives" type="Textarea" blobItem="INITIATIVES" rich="true" limit="350">
+            <![CDATA[
+                <h2>Partnership Development</h2>
+                <h3>6.4 Describe the activities and/or initiatives you have engaged in the previous year to strengthen partnerships with other researchers, community partners, service organizations, and Indigenous partners.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="engagement" type="Textarea" blobItem="ENGAGEMENT" rich="true" limit="150">
+            <![CDATA[
+                <h3>6.5 What kind community engagement related supports do you wish Making the Shift would offer?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h3>7.1 List all cash and in-kind contributions from the previous year:</h3>
+                <table class="wikitable" width="100%" frame="box" rules="all">
+                    <tr>
+                        <th>Title</th>
+                        <th>Partners</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Cash</th>
+                        <th>In-kind</th>
+                        <th>Total</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItemSet type="ProjectContributions" start="{$startDate}" end="{$endDate}">
+            <Static>
+                <![CDATA[
+                    <tr>
+                        <td>{$contribution_title}</td>
+                        <td>{$contribution_partners}</td>
+                        <td style='white-space:nowrap;'>{$contribution_start}</td>
+                        <td style='white-space:nowrap;'>{$contribution_end}</td>
+                        <td align='right'>${number_format({$contribution_cash})}</td>
+                        <td align='right'>${number_format({$contribution_inkind})}</td>
+                        <td align='right'>${number_format({$contribution_total})}</td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="form300" type="HeaderReportSection" blobSection="FORM300" name="8 - Form 300" title="SECTION 8: FORM 300" pagebreak="false">
+        <ReportItem id="form300" type="UploadPDF" blobItem="FORM300" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

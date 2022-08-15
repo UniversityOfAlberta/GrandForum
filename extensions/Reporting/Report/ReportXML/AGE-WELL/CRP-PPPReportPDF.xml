@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="AGE-WELL Core Research Program 2022-2023 Mid-Year Progress Report and Financial Update" reportType="RP_CRP_PPP_REPORT" pdfType="RPTP_CRP_PPP_REPORT" pdfFiles="CRP-PPPReportPDF" personId="0" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
+        <Static id="report_info_head">
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>AGE-WELL Core Research Program 2022-2023<br />Mid-Year Progress Report and Financial Update</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="Mid-Year Progress Report 2022-23" blobSection="PROGRESS_REPORT" type="EditableReportSection">
+        <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
+            <![CDATA[
+                <h3>Project Status Summary</h3>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" rich="true" limit="500">
+            <![CDATA[
+                <h4>1. Scientific Excellence</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="networking" type="TextareaReportItem" blobItem="NETWORKING" rich="true" limit="500">
+            <![CDATA[
+                <h4>2. Networking and Partnerships</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="knowledge" type="TextareaReportItem" blobItem="KNOWLEDGE" rich="true" limit="500">
+            <![CDATA[
+                <h4>3. Knowledge Mobilization & Commercialization</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="hqp" type="TextareaReportItem" blobItem="HQP" rich="true" limit="500">
+            <![CDATA[
+                <h4>4. Training of HQP</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+    </ReportSection>
+    <ReportSection id="budget" tooltip="Future Impact" name="Financial Update" title="Mid-Year Financial Update" blobSection="BUDGET" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="budget" type="TextareaReportItem" blobItem="BUDGET" rich="true" limit="500">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

@@ -94,7 +94,7 @@
     <ReportSection id="activities" type="EditableReportSection" blobSection="SECTION3" name="3 - Project Activities" title="SECTION 3 KEY PROJECT ACTIVITIES" tooltip="SECTION 3 KEY PROJECT ACTIVITIES" pagebreak="false">
         <ReportItem id="impact" type="Textarea" blobItem="IMPACT" rich="true" limit="100">
             <![CDATA[
-                <h3>3.1 What is the intended ultimate impact of your research as described in your proposal?</h3>
+                <h3>3.1 What trainings do you plan to give to your research teams to better equip them to work on your MtS funded project?</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -137,7 +137,7 @@
         </ReportItem>
         
         <!-- CERI -->
-        <Static>
+        <!--Static>
             <![CDATA[
                 <h4>Community Engagement in Research Index (CERI)</h4>
                  <table class="wikitable" frame="box" rules="all" width="100%">
@@ -188,7 +188,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 <h4>If relevant, provide explanatory information for the numerical answers that you chose to reflect the extent of the involvement of your community partners in the research project.</h4>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
         
         <ReportItem id="resources" type="Textarea" blobItem="RESOURCES" rich="true" limit="250">
             <![CDATA[
@@ -269,7 +269,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 {$item}<br />
             ]]>
         </ReportItem>
-        <ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
+        <!--ReportItem id="topics" type="Checkbox" blobItem="TOPICS" blobType="BLOB_ARRAY" limit="5" options="Graphic design (e.g. report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Collaborative data analysis with stakeholders|Stakeholder/Partner engagement|Partnership building (e.g. resources and activities for enhancing action in partnership)|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other" delimiter="&lt;br />">
             <![CDATA[
                 <h3>4.6 What knowledge mobilization outputs might you need MtS’s support within the next six months?</h3>
                 {$item}
@@ -292,7 +292,7 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 <br />
                 <i>{$item}</i><br /><br />
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="learning" type="EditableReportSection" blobSection="SECTION5" name="5 - Learning" title="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)" tooltip="SECTION 5 LEARNING FROM YOUR PROJECT (Optional)" pagebreak="false">
         <Static>

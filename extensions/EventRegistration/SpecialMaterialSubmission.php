@@ -106,6 +106,7 @@ class SpecialMaterialSubmission extends SpecialPage{
         
         $instructions = "Please, upload here your material to be saved in our repository";
         $preamble = "";
+        $nFiles = 4;
         if($default->title == "Replaying Japan Conference"){
             $instructions = "Upload your conference video/slides/paper here. こちらに発表のビデオ・スライド・論文をアップロードして下さい。";
             $preamble = "<p>Presenters are expected to upload their presentation by August 2nd. You can upload any of the following:<br />
@@ -127,6 +128,9 @@ class SpecialMaterialSubmission extends SpecialPage{
             $roles = array("Grad Student" => "Yes", 
                            "Not a Grad Student" => "No");
             $roleField = new VerticalRadioBox("role", "role", "Yes", $roles);
+        }
+        if($default->title == "Reimagining Architecture and Urbanism in the Post-Pandemic World through Illustration"){
+            $nFiles = 3;
         }
         
         $linksField = new TextareaField("misc[Links]", "misc", "");
@@ -160,30 +164,17 @@ class SpecialMaterialSubmission extends SpecialPage{
                             <td class='value'>{$roleField->render()}</td>
                         </tr>
                     </table>
-                    <h3>Please upload up to 4 files with your material here.</h3>
+                    <h3>Please upload up to {$nFiles} files with your material here.</h3>
                     Please, use common formats like pdf, doc, mov, mp4, ppt, pptx, wav, mp3, etc.
-                     <table class='wikitable' frame='box' rules='all'>
-                        <tr>
-                            <td class='label' style='vertical-align: middle;'>File 1</td>
-                            <td><input id='file1' type='file' name='drive1' /></td>
-                            <td><input style='width:300px;' type='text' name='desc1' placeholder='Description...' /></td>
-                        </tr>
-                        <tr>
-                            <td class='label' style='vertical-align: middle;'>File 2</td>
-                            <td><input id='file2' type='file' name='drive2' /></td>
-                            <td><input style='width:300px;' type='text' name='desc2' placeholder='Description...' /></td>
-                        </tr>
-                        <tr>
-                            <td class='label' style='vertical-align: middle;'>File 3</td>
-                            <td><input id='file3' type='file' name='drive3' /></td>
-                            <td><input style='width:300px;' type='text' name='desc3' placeholder='Description...' /></td>
-                        </tr>
-                        <tr>
-                            <td class='label' style='vertical-align: middle;'>File 4</td>
-                            <td><input id='file4' type='file' name='drive4' /></td>
-                            <td><input style='width:300px;' type='text' name='desc4' placeholder='Description...' /></td>
-                        </tr>
-                    </table>
+                    <table class='wikitable' frame='box' rules='all'>");
+                    for($i=1;$i<=$nFiles;$i++){
+                        $wgOut->addHTML("<tr>
+                            <td class='label' style='vertical-align: middle;'>File $i</td>
+                            <td><input id='file$i' type='file' name='drive$i' /></td>
+                            <td><input style='width:300px;' type='text' name='desc$i' placeholder='Description...' /></td>
+                        </tr>");
+                    }
+                    $wgOut->addHTML("</table>
                     <b>NOTE: Total file limit is {$maxFileSize}MB, if you need more space please upload them to a server and share the link with us here:</b>
                     <h3>Link to your material (optional)</h3>
                     {$linksField->render()}<br />
