@@ -291,7 +291,6 @@ class AdminUsageStats extends SpecialPage {
             foreach($dcs as $dc){
                 if($this->exclude($dc->getUserId())){ continue; }
                 @$topPages[$leaf->code] += $dc->getField('pageCount');
-                $users[$dc->getUserId()] = $dc->getUserId();
             }
         }
         
