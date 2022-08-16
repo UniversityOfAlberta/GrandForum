@@ -16,7 +16,7 @@ class AdminUsageStats extends SpecialPage {
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $this->getOutput()->setPageTitle("Admin Usage Stats (Work in Progress)");
+        $this->getOutput()->setPageTitle("Admin Usage Stats");
         $this->showActionPlanStats();
         $this->showRegistrantsStats();
         $this->showProgramStats();
