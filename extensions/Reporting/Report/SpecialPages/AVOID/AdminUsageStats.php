@@ -151,7 +151,7 @@ class AdminUsageStats extends SpecialPage {
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
-            $users[] = $dc->getUserId();
+            $users[$dc->getUserId()] = $dc->getUserId();
         }
         
         // Also check report_blobs
@@ -167,9 +167,14 @@ class AdminUsageStats extends SpecialPage {
         foreach($data as $row){
             if($this->exclude($row['user_id'])){ continue; }
             $count++;
+            $users[$row['user_id']] = $row['user_id'];
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of unique users</td>
+                <td align='right'>".(count($users)-1)."</td>
+            </tr>
             <tr>
                 <td class='label'>Number of hits on page</td>
                 <td align='right'>$count</td>
@@ -183,15 +188,21 @@ class AdminUsageStats extends SpecialPage {
         $webinars = 0;
         $oneOnOne = 0;
         $completeCollection = 0;
+        $users = array(0);
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
             @$webinars += $dc->getField('webinarsClicks');
             @$oneOnOne += $dc->getField('1on1Clicks');
             @$completeCollection += $dc->getField('completeCollectionClicks');
+            $users[$dc->getUserId()] = $dc->getUserId();
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of unique users</td>
+                <td align='right'>".(count($users)-1)."</td>
+            </tr>
             <tr>
                 <td class='label'>Number of hits on page</td>
                 <td align='right'>$count</td>
@@ -218,6 +229,7 @@ class AdminUsageStats extends SpecialPage {
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
+            $users[$dc->getUserId()] = $dc->getUserId();
         }
         
         // Also check report_blobs
@@ -228,9 +240,14 @@ class AdminUsageStats extends SpecialPage {
         foreach($data as $row){
             if($this->exclude($row['user_id'])){ continue; }
             $count++;
+            $users[$row['user_id']] = $row['user_id'];
         }
         
         $wgOut->addHTML("<table class='wikitable' frame='box' rules='all'>
+            <tr>
+                <td class='label'>Number of unique users</td>
+                <td align='right'>".(count($users)-1)."</td>
+            </tr>
             <tr>
                 <td class='label'>Number of hits on page</td>
                 <td align='right'>$count</td>
@@ -257,13 +274,14 @@ class AdminUsageStats extends SpecialPage {
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$count += $dc->getField('count');
-            $users[] = $dc->getUserId();
+            $users[$dc->getUserId()] = $dc->getUserId();
         }
         
         // Also check INDEX (but only count once)
         $dcs = DataCollection::newFromPage('ProgramLibrary-INDEX');
         foreach($dcs as $dc){
-            if($this->exclude($dc->getUserId()) || in_array($dc->getUserId(), $users)){ continue; }
+            if($this->exclude($dc->getUserId()) || isset($users[$dc->getUserId()])){ continue; }
+            $users[$dc->getUserId()] = $dc->getUserId();
             @$count++;
         }
 
@@ -273,6 +291,7 @@ class AdminUsageStats extends SpecialPage {
             foreach($dcs as $dc){
                 if($this->exclude($dc->getUserId())){ continue; }
                 @$topPages[$leaf->code] += $dc->getField('pageCount');
+                $users[$dc->getUserId()] = $dc->getUserId();
             }
         }
         
@@ -284,6 +303,10 @@ class AdminUsageStats extends SpecialPage {
             <tr>
                 <td class='label'>Number of clipboards created</td>
                 <td align='right'>".count($clipboards)."</td>
+            </tr>
+            <tr>
+                <td class='label'>Number of unique users</td>
+                <td align='right'>".(count($users)-1)."</td>
             </tr>
             <tr>
                 <td class='label'>Number of hits on page</td>
@@ -334,9 +357,11 @@ class AdminUsageStats extends SpecialPage {
                            DataCollection::newFromPage('Sleep'),
                            DataCollection::newFromPage('FallsPrevention'));
         $moduleHits = 0;
+        $users = array(0);
         foreach($dcs as $dc){
             if($this->exclude($dc->getUserId())){ continue; }
             @$moduleHits += $dc->getField('video1PageCount');
+            $users[$dc->getUserId()] = $dc->getUserId();
         }
         
         $modules = EducationResources::JSON();
@@ -361,6 +386,10 @@ class AdminUsageStats extends SpecialPage {
                         <tr><td style='font-weight: bold;'>{$topTopicsKeys[2]}&nbsp;</td><td align='right'>{$topTopics[$topTopicsKeys[2]]}</td></tr>
                     </table>
                 </td>
+            </tr>
+            <tr>
+                <td class='label'>Number of unique users</td>
+                <td align='right'>".(count($users)-1)."</td>
             </tr>
             <tr>
                 <td class='label'>Hits on resource library</td>
