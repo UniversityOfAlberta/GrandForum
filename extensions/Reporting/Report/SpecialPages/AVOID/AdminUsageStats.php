@@ -102,7 +102,7 @@ class AdminUsageStats extends SpecialPage {
         $submitted = array();
         foreach(Person::getAllPeople() as $person){
             if($this->exclude($person->getId())){ continue; }
-            if($person->isRole("Member")){ // TODO: Should be changed to role CONSTANT
+            if($person->isRole(CI)){
                 $members[] = $person;
             }
             if($person->isRole("Provider")){

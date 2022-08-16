@@ -212,8 +212,8 @@ class Register extends SpecialPage{
                             </span><br /><br />");
         }
         else if($config->getValUE("networkName") == "AVOID"){
-            $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : "Member";
-            if($role == "Member"){
+            $role = (isset($_GET['role']) && ($_GET['role'] == "Partner" || $_GET['role'] == "Clinician")) ? $_GET['role'] : CI; // Member
+            if($role == CI){
                 $wgOut->setPageTitle("Member Registration");
             }
             else if($role == "Partner"){
