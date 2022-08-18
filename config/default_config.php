@@ -268,8 +268,6 @@
         //'CRM',
         //'RSSAlerts',
         //'EventRegistration',
-        //'CommunityMap',
-        //'ActionPlan'
     ));
     
     $config->setValue("reportingExtras", array('CreatePDF'              => false,

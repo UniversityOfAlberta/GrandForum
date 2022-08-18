@@ -13,7 +13,7 @@ function runEPICATReviewTable($par) {
 
 class EPICATReviewTable extends SpecialPage{
 
-    function EPICATReviewTable() {
+    function __construct() {
         SpecialPage::__construct("EPICATReviewTable", null, false, 'runEPICATReviewTable');
     }
     
@@ -164,7 +164,7 @@ class EPICATReviewTable extends SpecialPage{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $person = Person::newFromWgUser();
         
-        if(self::userCanExecute($wgUser)){
+        if((new self)->userCanExecute($wgUser)){
             $selected = @($wgTitle->getText() == "EPICATReviewTable") ? "selected" : false;
             $tabs["Manager"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT Review Table", "$wgServer$wgScriptPath/index.php/Special:EPICATReviewTable", $selected);
         }

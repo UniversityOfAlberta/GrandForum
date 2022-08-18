@@ -17,6 +17,10 @@ require_once("AdminUsageStats.php");
 require_once("IntakeSummary.php");
 require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
+require_once("ActionPlan/ActionPlan.php");
+require_once("PharmacyMap/PharmacyMap.php");
+require_once("ClipboardList/ClipboardList.php");
+require_once("AskAnExpert/AskAnExpert.php");
 
 class Report extends AbstractReport{
     

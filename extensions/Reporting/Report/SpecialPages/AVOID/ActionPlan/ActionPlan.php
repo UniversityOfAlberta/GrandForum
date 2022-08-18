@@ -13,7 +13,7 @@ function initActionPlan($out, $skin){
     $actionPlan->loadHelpers();
     $actionPlan->loadViews();
     $actionPlan->loadMain();
-    $wgOut->addScript("<link href='$wgServer$wgScriptPath/extensions/ActionPlan/style.css?".filemtime("extensions/ActionPlan/style.css")."' type='text/css' rel='stylesheet' />");
+    $wgOut->addScript("<link href='".dirname(__FILE__)."/style.css?".filemtime(dirname(__FILE__)."/style.css")."' type='text/css' rel='stylesheet' />");
     return true;
 }
 

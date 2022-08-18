@@ -10,7 +10,7 @@ class Bar extends Visualization {
      */
     function __construct($data){
         $this->data = $data;
-        self::Visualization();
+        parent::__construct();
     }
     
     static function init(){
@@ -72,21 +72,21 @@ class Bar extends Visualization {
     }
 
     function formatData($data){
-	$labelString = "[";
-	$dataSetString = "[";
-	$count = 0;
-	while(list($key, $val) = each($data)){
-	    $count++;
-	    $labelString .="$key";
-	    $dataSetString .= "$val";
-	    if($count != count($data)){
-	   	$labelString .= ",";
-		$dataSetString .= ",";
+	    $labelString = "[";
+	    $dataSetString = "[";
+	    $count = 0;
+	    foreach($data as $key => $val){
+	        $count++;
+	        $labelString .="$key";
+	        $dataSetString .= "$val";
+	        if($count != count($data)){
+	           	$labelString .= ",";
+		        $dataSetString .= ",";
+	        }
 	    }
-	}
-	$labelString .= "]";
-	$dataSetString .= "]";
-	return array($labelString, $dataSetString);
+	    $labelString .= "]";
+	    $dataSetString .= "]";
+	    return array($labelString, $dataSetString);
     }
 	
 }
