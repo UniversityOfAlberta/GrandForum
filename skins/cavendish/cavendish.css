@@ -2154,7 +2154,7 @@ div.program-text {
     }
 
     #topheader .smallLogo {
-        width: 131px !important;
+        min-width: 131px !important;
         height: 31px !important;
         top: 2px  !important;
     }
