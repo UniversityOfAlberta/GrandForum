@@ -106,6 +106,8 @@ class SpecialMaterialSubmission extends SpecialPage{
         $instructions = "Please, upload here your material to be saved in our repository";
         $preamble = "";
         $nFiles = 4;
+        $minFiles = 0;
+        $fileLabels = array();
         $misc = "";
         $extra = "";
         if($default->title == "Replaying Japan Conference"){
@@ -132,6 +134,10 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         if($default->title == "Reimagining Architecture and Urbanism in the Post-Pandemic World through Illustration"){
             $nFiles = 3;
+            $minFiles = 3;
+            $fileLabels = array("File 1: Submission / attachment of image file",
+                                "File 2: Submission / attachment of pdf file",
+                                "File 3: Submission / attachment of concept / summary");
             $extra = "<tr>
                         <td class='label'>Country of Residence</td>
                         <td class='value'><input type='text' name='misc[Country]' /></td>
@@ -175,8 +181,9 @@ class SpecialMaterialSubmission extends SpecialPage{
                     Please, use common formats like pdf, doc, mov, mp4, ppt, pptx, wav, mp3, etc.
                     <table class='wikitable' frame='box' rules='all'>");
                     for($i=1;$i<=$nFiles;$i++){
+                        $fileLabel = (isset($fileLables[$i-1])) ? $fileLables[$i-1] : "File $i";
                         $wgOut->addHTML("<tr>
-                            <td class='label' style='vertical-align: middle;'>File $i</td>
+                            <td class='label' style='vertical-align: middle;'>$fileLabel</td>
                             <td><input id='file$i' type='file' name='drive$i' /></td>
                             <td><input style='width:300px;' type='text' name='desc$i' placeholder='Description...' /></td>
                         </tr>");
@@ -195,6 +202,13 @@ class SpecialMaterialSubmission extends SpecialPage{
         </form>
         <script type='text/javascript'>
             function validate(){
+                for(i=1;i<={$minFiles};i++){
+                    if(document.getElementById('file' + i).files[0] == undefined){
+                        alert('{$minFiles} must be uploaded');
+                        return false;
+                    }
+                }
+            
                 var limit = 1024*1024*{$maxFileSize};
                 var file_size = 0;
                 if(document.getElementById('file1').files[0] != undefined)
@@ -205,6 +219,8 @@ class SpecialMaterialSubmission extends SpecialPage{
                     file_size += document.getElementById('file3').files[0].size;
                 if(document.getElementById('file4').files[0] != undefined)
                     file_size += document.getElementById('file4').files[0].size;
+                    
+                
                     
                 if(file_size>=limit){
                     alert('Files exceed {$maxFileSize}MB');
