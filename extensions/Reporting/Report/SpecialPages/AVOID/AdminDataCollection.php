@@ -55,6 +55,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Hear about us</th>
                                         <th rowspan='2'>In person opportunity</th>
                                         <th rowspan='2'>Submitted Intake Survey</th>
+                                        <th rowspan='2'>Action Plans</th>
                                         <th colspan='10'>Data Collected</th>
                                     </tr>
                                     <tr>
@@ -89,6 +90,31 @@ class AdminDataCollection extends SpecialPage{
                                     <td nowrap>{$registration_date}</td>
                                     <td nowrap>{$touched_date}</td>");
 
+                // Action Plans
+                $plans = array();
+                foreach(ActionPlan::newFromUserId($person->getId()) as $plan){
+                    $plans[] = $plan;
+                }
+                
+                $submittedPlans = array();
+                $components = array('A' => 0, 
+                                    'V' => 0, 
+                                    'O' => 0, 
+                                    'I' => 0, 
+                                    'D' => 0, 
+                                    'S' => 0, 
+                                    'F' => 0);
+                foreach($plans as $plan){
+                    foreach($plan->getComponents() as $comp => $val){
+                        if($val == 1){
+                            @$components[$comp]++;
+                        }
+                    }
+                    if($plan->getSubmitted()){
+                        $submittedPlans[] = $plan;
+                    }
+                }
+
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');
                 $age = $person->getExtra('ageField', '');
@@ -116,6 +142,10 @@ class AdminDataCollection extends SpecialPage{
                 </td>
                 <td>
                     {$submitted}
+                </td>
+                <td style='white-space:nowrap;'>
+                    <b>Created:</b> ".count($plans)."<br />
+                    <b>Submitted:</b> ".count($submittedPlans)."<br />
                 </td>");
 
                 $resource_data_sql = "SELECT * FROM `grand_data_collection` WHERE user_id = {$person->getId()}";
