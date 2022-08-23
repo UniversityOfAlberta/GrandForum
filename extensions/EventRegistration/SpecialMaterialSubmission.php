@@ -181,7 +181,7 @@ class SpecialMaterialSubmission extends SpecialPage{
                     Please, use common formats like pdf, doc, mov, mp4, ppt, pptx, wav, mp3, etc.
                     <table class='wikitable' frame='box' rules='all'>");
                     for($i=1;$i<=$nFiles;$i++){
-                        $fileLabel = (isset($fileLables[$i-1])) ? $fileLables[$i-1] : "File $i";
+                        $fileLabel = (isset($fileLabels[$i-1])) ? $fileLabels[$i-1] : "File $i";
                         $wgOut->addHTML("<tr>
                             <td class='label' style='vertical-align: middle;'>$fileLabel</td>
                             <td><input id='file$i' type='file' name='drive$i' /></td>
