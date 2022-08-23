@@ -183,7 +183,7 @@ class SpecialMaterialSubmission extends SpecialPage{
                     for($i=1;$i<=$nFiles;$i++){
                         $fileLabel = (isset($fileLabels[$i-1])) ? $fileLabels[$i-1] : "File $i";
                         $wgOut->addHTML("<tr>
-                            <td class='label' style='vertical-align: middle;'>$fileLabel</td>
+                            <td class='label' style='vertical-align: middle; text-align: left;'>$fileLabel</td>
                             <td><input id='file$i' type='file' name='drive$i' /></td>
                             <td><input style='width:300px;' type='text' name='desc$i' placeholder='Description...' /></td>
                         </tr>");
