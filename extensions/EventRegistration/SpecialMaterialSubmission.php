@@ -106,6 +106,8 @@ class SpecialMaterialSubmission extends SpecialPage{
         $instructions = "Please, upload here your material to be saved in our repository";
         $preamble = "";
         $nFiles = 4;
+        $misc = "";
+        $extra = "";
         if($default->title == "Replaying Japan Conference"){
             $instructions = "Upload your conference video/slides/paper here. こちらに発表のビデオ・スライド・論文をアップロードして下さい。";
             $preamble = "<p>Presenters are expected to upload their presentation by August 2nd. You can upload any of the following:<br />
@@ -130,6 +132,10 @@ class SpecialMaterialSubmission extends SpecialPage{
         }
         if($default->title == "Reimagining Architecture and Urbanism in the Post-Pandemic World through Illustration"){
             $nFiles = 3;
+            $extra = "<tr>
+                        <td class='label'>Country of Residence</td>
+                        <td class='value'><input type='text' name='misc[Country]' /></td>
+                      </tr>";
         }
         
         $linksField = new TextareaField("misc[Links]", "misc", "");
@@ -162,7 +168,9 @@ class SpecialMaterialSubmission extends SpecialPage{
                             <td class='label'>{$roleLabel}</td>
                             <td class='value'>{$roleField->render()}</td>
                         </tr>
+                        {$extra}
                     </table>
+                    {$misc}
                     <h3>Please upload up to {$nFiles} files with your material here.</h3>
                     Please, use common formats like pdf, doc, mov, mp4, ppt, pptx, wav, mp3, etc.
                     <table class='wikitable' frame='box' rules='all'>");
