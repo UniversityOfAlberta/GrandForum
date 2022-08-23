@@ -50,6 +50,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Postal Code</th>
                                         <th rowspan='2'>Role</th>
                                         <th rowspan='2'>Date Registered</th>
+                                        <th rowspan='2'>Last Logged In</th>
                                         <th rowspan='2'>Extra</th>
                                         <th rowspan='2'>Hear about us</th>
                                         <th rowspan='2'>In person opportunity</th>
@@ -77,13 +78,16 @@ class AdminDataCollection extends SpecialPage{
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId())) ? "Yes" : "No");
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
+                $touched_str = $person->getTouched();
+                $touched_date = substr($touched_str,0,4)."-".substr($touched_str,4,2)."-".substr($touched_str,6,2);
                 $wgOut->addHTML("<tr style='background:#FFFFFF;' VALIGN=TOP>
                                     <td>$name</td>
                                     <td class='emailCell'>$email</td>
                                     <td nowrap>$avoid_age</td>
                                     <td>$postal_code</td>
                                     <td>{$person->getRoleString()}</td>
-                                    <td nowrap>{$registration_date}</td>");
+                                    <td nowrap>{$registration_date}</td>
+                                    <td nowrap>{$touched_date}</td>");
 
                 //grab clinician data
                 $age_lovedone = $person->getExtra('ageOfLovedOne', '');

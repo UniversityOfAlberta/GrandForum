@@ -1309,7 +1309,13 @@ class Person extends BackboneModel {
      * @return string Returns when the User last user activity occured
      */
     function getTouched(){
-        return $this->getUser()->getTouched();
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_touched'),
+                                    array('user_id' => $this->id));
+        if($data[0]['user_touched'] == 0){
+            return $this->getRegistration();
+        }
+        return $data[0]['user_touched'];
     }
       
     /**
