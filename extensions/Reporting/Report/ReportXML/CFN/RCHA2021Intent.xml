@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_INTENT" pdfFiles="RCHA2021IntentPDF" year="2021" ajax="true" disabled="true">
+<Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_INTENT" pdfFiles="RCHA2021IntentPDF" year="2021" ajax="true" disabled="false">
     <Permissions>
-        <Role role="NI">
+        <!--Role role="NI">
             <SectionPermission id="intent" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
@@ -20,7 +20,10 @@
             <SectionPermission id="intent" permissions="rw" />
             <SectionPermission id="review" permissions="rw" />
             <SectionPermission id="submit" permissions="rw" />
-        </Person>
+        </Person-->
+        <Role role="" subType="RCHA2021Applicant">
+
+        </Role>
     </Permissions>
     <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Intent To Apply" title="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition Intent to Apply">
         <Static>
