@@ -204,7 +204,7 @@ class SpecialMaterialSubmission extends SpecialPage{
             function validate(){
                 for(i=1;i<={$minFiles};i++){
                     if(document.getElementById('file' + i).files[0] == undefined){
-                        alert('{$minFiles} must be uploaded');
+                        alert('{$minFiles} file(s) must be uploaded');
                         return false;
                     }
                 }
