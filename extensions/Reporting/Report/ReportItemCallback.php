@@ -824,7 +824,7 @@ class ReportItemCallback {
     function getPresentationCountry(){
         $product = Paper::newFromId($this->reportItem->productId);
         $product = $product->getData();
-        return @$product['location'];
+        return (@$product['location'] != "") ? @$product['location'] : @$product['city'];
     }
     
     function getPresentationLength(){
