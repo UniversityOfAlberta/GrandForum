@@ -586,6 +586,7 @@ abstract class AbstractReport extends SpecialPage {
         foreach($this->sections as $key => $sec){
             if($section->id == $sec->id){
                 unset($this->sections[$key]);
+                $this->sections = array_values($this->sections);
                 return;
             }
         }
