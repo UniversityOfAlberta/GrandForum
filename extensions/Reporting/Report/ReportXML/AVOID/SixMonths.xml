@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Six Months Form" reportType="RP_AVOID_SIXMO" pdfType="RPTP_AVOID" pdfFiles="SIXMOFORMPDF" ajax="true" disabled="false" extends="IntakeSurvey">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="eula" delete="true" />
+    <ReportSection id="socio_info" delete="true" />
+    <ReportSection id="behaviouralassess" delete="true" />
+    <ReportSection id="OnSiteEvaluation" delete="true" />
+</Report>

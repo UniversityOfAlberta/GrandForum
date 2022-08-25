@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Three Months Form" reportType="RP_AVOID_THREEMO" pdfType="RPTP_AVOID" pdfFiles="THREEMOFORMPDF" ajax="true" disabled="false" extends="IntakeSurvey">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <ReportSection id="eula" delete="true" />
+    <ReportSection id="socio_info" delete="true" />
+    <ReportSection id="healthquestions" delete="true" />
+    <ReportSection id="healthquestions2" delete="true" />
+    <ReportSection id="healthquestions3" delete="true" />
+    <ReportSection id="healthquestions4" delete="true" />
+    <ReportSection id="healthquestions5" delete="true" />
+    <ReportSection id="healthquestions6" delete="true" />
+    <ReportSection id="healthquestions7" delete="true" />
+    <ReportSection id="clinicalfrailty" delete="true" />
+    <ReportSection id="OnSiteEvaluation" delete="true" />
+    <ReportSection id="submit">
+    </ReportSection>
+</Report>
