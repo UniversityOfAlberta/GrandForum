@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Call for Expressions of Interest for the Telus 5G Living Lab" reportType="RP_TELUS" pdfType="RP_TELUS" year="2022" disabled="false" ajax="true">
+    <ReportSection id="proposal" type="HeaderReportSection" blobSection="PROPOSAL" name="Application" title="Application" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="position:static; float:right;margin-top:0;font-size:2em;text-align:right;">Telus 5G Living Lab</div>
+                <h4 style='font-size:1.20em;'>Call for Expressions of Interest<br />for the Telus 5G Living Lab</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>
+                            Title of the initiative:
+                        </td>
+                        <td class='value'>
+                            {$item}
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
+            <![CDATA[
+                <h2>Overview - Scientific Rationale and Fit with the Telus 5G Living Lab</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_faculty" type="MultiText"  class="wikitable small" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|bio|university|faculty|dept" labels="First Name|Last Name|Email|Short Bio|University|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text|Text" sizes="10%|10%|15%|20%|15%|15%|15%" multiple="true">
+            <![CDATA[
+                <h2>UofA Team</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_external" type="MultiText"  class="wikitable small" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|bio|university|faculty|dept" labels="First Name|Last Name|Email|Short Bio|University|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text|Text" sizes="10%|10%|15%|20%|15%|15%|15%" multiple="true">
+            <![CDATA[
+                <h2>Investigators outside UofA</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_trainees" type="MultiText"  class="wikitable small" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="organization|url|role|status" labels="Organization|URL|Role|Confirmed/Potential" types="Text|Text|Text|Select(Confirmed,Potential)" sizes="25%|25%|25%|25%" multiple="true">
+            <![CDATA[
+                <h3>External Partners</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1000">
+            <![CDATA[
+                <h2>Proposal and brief discussion of the suitability of the team</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="timeline" type="MultiText"  class="wikitable small" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="10%|90%" multiple="true">
+            <![CDATA[
+                <h2>Timeline and Outcomes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="150" width="2em">
+            <![CDATA[
+                <h2>Budget (between 50K and 150K)</h2>
+                {$item}&nbsp;K<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

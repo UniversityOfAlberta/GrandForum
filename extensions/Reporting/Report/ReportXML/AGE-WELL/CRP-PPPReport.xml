@@ -18,7 +18,14 @@
         </Role>
         <Project />
     </Permissions>
-    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="Mid-Year Progress Report 2022-23" blobSection="PROGRESS_REPORT" type="EditableReportSection">
+    <ReportSection id="progress" tooltip="Progress Report" name="Progress Report" title="2022-23 MID-YEAR PROGRESS REPORT AND FINANCIAL UPDATE" blobSection="PROGRESS_REPORT" type="EditableReportSection">
+        <Static>
+            <![CDATA[
+                <p>The aim of this form is to allow AGE-WELL’s Research Management Committee (RMC) to assess project progress approaching the 2022-23 mid-point as communicated in April 2022.</p>
+
+                <p>Please keep your responses brief (250-500 words per question). A more comprehensive Annual Project Progress Evaluation Report with Balanced Scorecard will be due and evaluated in early 2023 similar to the report you submitted January 2022.</p>
+            ]]>
+        </Static>
         <ReportItem id="summary" type="TextareaReportItem" blobItem="SUMMARY" rich="true" limit="500">
             <![CDATA[
                 <h3>Project Status Summary</h3>
@@ -29,9 +36,11 @@
         
         <ReportItem id="excellence" type="TextareaReportItem" blobItem="EXCELLENCE" rich="true" limit="500">
             <![CDATA[
-                <p>In each section below, describe specific progress that has been made against planned objectives and activities since April 1, 2022. While you are not restricted to the content of your planning scorecard provided January 2022, you may wish to reference those plans here.</p>
+                <p>In each section below, describe specific progress that has been made against planned objectives and activities since April 1, 2022. While you are not restricted to the content of your planning scorecard provided January 2022, you may wish to reference those plans here.<br />
+                (select "Award Number (Plan Update)" in Forum to see your report)</p>
                 <h4>1. Scientific Excellence</h4>
                 {$item}<br />
+                
             ]]>
         </ReportItem>
         
