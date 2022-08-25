@@ -797,7 +797,6 @@
         <Static>
             <![CDATA[
                 <br/>
-                <span class="vaccinateyes">
                 <div id="reportHeader" class="headers-behaviour"><b>OPTIMIZE MEDICATION</b></div><hr>
             ]]>
         </Static>
@@ -821,10 +820,10 @@
         </ReportItem>
         <ReportItem id="meds_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="meds_end" orientation="vertical" options="I was not aware that this is recommended|I do not feel comfortable and/or prepared to have this conversation with a healthcare provider|I do not know who to talk to about this|I have had my medication reviewed in the past, but find it hard to remember each year|I do not understand why this is important|Other" optional="true">
             <![CDATA[
-            <span id="meds_end">
-            <h3>Why have you not had your medication reviewed in the last year? (choose all that apply):</h3>
-            {$item}
-            </span>
+                <span id="meds_end">
+                <h3>Why have you not had your medication reviewed in the last year? (choose all that apply):</h3>
+                {$item}
+                </span>
             ]]>
         </ReportItem>
         <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea" optional="true">
@@ -832,9 +831,7 @@
                 <span id="meds_end_specify">
                         Specify: {$item}
                 </span>
-                </span>
-
-                ]]>
+            ]]>
         </ReportItem>
         <Static>
             <![CDATA[
