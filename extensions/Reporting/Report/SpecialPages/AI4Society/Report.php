@@ -39,6 +39,10 @@ class Report extends AbstractReport{
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectProposal")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Project Proposal", "{$url}ProjectProposal", $selected);
         }
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "Telus5G")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Telus 5G", "{$url}Telus5G", $selected);
+        }
         return true;
     }
     
