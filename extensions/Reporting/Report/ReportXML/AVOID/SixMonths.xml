@@ -5,6 +5,7 @@
     </Permissions>
     <ReportSection id="eula" delete="true" />
     <ReportSection id="socio_info" delete="true" />
-    <ReportSection id="behaviouralassess" delete="true" />
     <ReportSection id="OnSiteEvaluation" delete="true" />
+    
+    <ReportSection id="behaviouralassess" title="Six Month Follow Up: Behavioural Self-Assessment" />
 </Report>

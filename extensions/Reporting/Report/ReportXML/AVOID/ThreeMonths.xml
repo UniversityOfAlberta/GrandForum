@@ -14,4 +14,6 @@
     <ReportSection id="healthquestions7" delete="true" />
     <ReportSection id="clinicalfrailty" delete="true" />
     <ReportSection id="OnSiteEvaluation" delete="true" />
+    
+    <ReportSection id="behaviouralassess" title="Three Month Follow Up: Behavioural Self-Assessment" />
 </Report>
