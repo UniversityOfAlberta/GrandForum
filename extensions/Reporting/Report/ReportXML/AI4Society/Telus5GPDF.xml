@@ -102,7 +102,7 @@
         
         <ReportItem id="project_trainees" type="MultiText"  class="wikitable small" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="organization|url|role|status" labels="Organization|URL|Role|Confirmed/Potential" types="Text|Text|Text|Select(Confirmed,Potential)" sizes="25%|25%|25%|25%" multiple="true">
             <![CDATA[
-                <h3>External Partners</h3>
+                <h2>External Partners</h2>
                 {$item}
             ]]>
         </ReportItem>
