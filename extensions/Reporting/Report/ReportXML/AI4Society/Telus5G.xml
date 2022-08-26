@@ -109,7 +109,7 @@
         
         <ReportItem id="existing_funding" type="Radio" blobItem="EXISTING_FUNDING" options="Yes|No">
             <![CDATA[
-                <h3>Does this project have existing funding?</h3>
+                <h3>Indicate if you have existing Funding</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -123,7 +123,7 @@
         
         <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
             <![CDATA[
-                <h3>Does this project's research involve an existing IP?</h3>
+                <h3>Indicate if your research will make use of existing IP</h3>
                 {$item}
             ]]>
         </ReportItem>
