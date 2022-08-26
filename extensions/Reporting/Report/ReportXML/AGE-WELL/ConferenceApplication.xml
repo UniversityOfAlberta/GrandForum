@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2022">
+<Report name="AGE-WELL Conference Applications" reportType="RP_CONFERENCE_APPLICATIONS" ajax="true" year="2022" disabled="true">
     <Permissions>
         <Role role="HQP+">
             <SectionPermission id="applications" permissions="rw" />

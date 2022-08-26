@@ -1096,7 +1096,7 @@ class CavendishTemplate extends QuickTemplate {
 		    $me = Person::newFromWgUser();
 		    wfRunHooks('ToolboxHeaders', array(&$GLOBALS['toolbox']));
 	        wfRunHooks('ToolboxLinks', array(&$GLOBALS['toolbox']));
-	        if($config->getValue("showUploadFile")){
+	        if($config->getValue("showUploadFile") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][1000] = TabUtils::createToolboxLink("Upload File", "$wgServer$wgScriptPath/index.php/Special:Upload");
 	        }
 	        if($wgUser->isLoggedIn() && $config->getValue('networkName') == "AGE-WELL"){ 
@@ -1107,7 +1107,7 @@ class CavendishTemplate extends QuickTemplate {
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("E-Resource Library", "$wgServer$wgScriptPath/index.php/E-Resource_Library");
 	            $GLOBALS['toolbox']['Other']['links'][] = TabUtils::createToolboxLink("Forum Help and FAQs", "$wgServer$wgScriptPath/index.php/FAQ");
 	        }
-	        if($config->getValue("showOtherTools")){
+	        if($config->getValue("showOtherTools") && !$me->isCandidate()){
 	            $GLOBALS['toolbox']['Other']['links'][9999] = TabUtils::createToolboxLink("Other Tools", "$wgServer$wgScriptPath/index.php/Special:SpecialPages");
 	        }
 	        global $toolbox;
