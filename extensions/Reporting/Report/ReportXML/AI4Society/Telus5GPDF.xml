@@ -35,20 +35,70 @@
                 {$item}<br />
             ]]>
         </ReportItem>
-        
-        <ReportItem id="project_faculty" type="MultiText"  class="wikitable small" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|bio|university|faculty|dept" labels="First Name|Last Name|Email|Short Bio|University|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text|Text" sizes="10%|10%|15%|20%|15%|15%|15%" multiple="true">
+
+        <Static>
             <![CDATA[
                 <h2>UofA Team</h2>
-                {$item}
             ]]>
-        </ReportItem>
+        </Static>
+        <ReportItemSet type="Array" array="{getArray(RP_TELUS,PROPOSAL,PROJECT_FACULTY,0,{$user_id},{$project_id}}" index="project_faculty">
+            <Static>
+                <![CDATA[
+                    <table class="wikitable small" rules="all" frame="box" width="100%" style='margin-bottom:1em;'>
+                        <tr>
+                            <th style='width:20%;'>First Name</th>
+                            <th style='width:20%;'>Last Name</th>
+                            <th style='width:20%;'>Email</th>
+                            <th style='width:20%;'>Faculty</th>
+                            <th style='width:20%;'>Department</th>
+                        </tr>
+                        <tr>
+                            <td style='width:20%;'>{getExtra(first)}</td>
+                            <td style='width:20%;'>{getExtra(last)}</td>
+                            <td style='width:20%;'>{getExtra(email)}</td>
+                            <td style='width:20%;'>{getExtra(faculty)}</td>
+                            <td style='width:20%;'>{getExtra(dept)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan='6'>{getExtra(bio)}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
         
-        <ReportItem id="project_external" type="MultiText"  class="wikitable small" blobItem="PROJECT_EXTERNAL" blobType="BLOB_ARRAY" indices="first|last|email|bio|university|faculty|dept" labels="First Name|Last Name|Email|Short Bio|University|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text|Text" sizes="10%|10%|15%|20%|15%|15%|15%" multiple="true">
+        <Static>
             <![CDATA[
                 <h2>Investigators outside UofA</h2>
-                {$item}
             ]]>
-        </ReportItem>
+        </Static>
+        <ReportItemSet type="Array" array="{getArray(RP_TELUS,PROPOSAL,PROJECT_EXTERNAL,0,{$user_id},{$project_id}}" index="project_external">
+            <Static>
+                <![CDATA[
+                    <table class="wikitable small" rules="all" frame="box" width="100%" style='margin-bottom:1em;'>
+                        <tr>
+                            <th style='width:15%;'>First Name</th>
+                            <th style='width:15%;'>Last Name</th>
+                            <th style='width:15%;'>Email</th>
+                            <th style='width:20%;'>University</th>
+                            <th style='width:20%;'>Faculty</th>
+                            <th style='width:20%;'>Department</th>
+                        </tr>
+                        <tr>
+                            <td style='width:15%;'>{getExtra(first)}</td>
+                            <td style='width:15%;'>{getExtra(last)}</td>
+                            <td style='width:15%;'>{getExtra(email)}</td>
+                            <td style='width:20%;'>{getExtra(university)}</td>
+                            <td style='width:20%;'>{getExtra(faculty)}</td>
+                            <td style='width:20%;'>{getExtra(dept)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan='6'>{getExtra(bio)}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
         
         <ReportItem id="project_trainees" type="MultiText"  class="wikitable small" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="organization|url|role|status" labels="Organization|URL|Role|Confirmed/Potential" types="Text|Text|Text|Select(Confirmed,Potential)" sizes="25%|25%|25%|25%" multiple="true">
             <![CDATA[
@@ -64,16 +114,16 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="timeline" type="MultiText"  class="wikitable small" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="10%|90%" multiple="true">
+        <ReportItem id="timeline" type="MultiText"  class="wikitable small" blobItem="TIMELINE" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="10%|90%" multiple="true">
             <![CDATA[
                 <h2>Timeline and Outcomes</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="150" width="2em">
+        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="100" width="2em">
             <![CDATA[
-                <h2>Budget (between 50K and 150K)</h2>
+                <h2>Budget</h2>
                 {$item}&nbsp;K<br />
             ]]>
         </ReportItem>

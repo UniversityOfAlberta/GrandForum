@@ -58,7 +58,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|bio|university|faculty|dept" labels="First Name|Last Name|Email|Short Bio(300 words)|University|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text|Text" sizes="100|100|150|200|150|150|150" multiple="true">
+        <ReportItem id="project_faculty" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="first|last|email|bio|faculty|dept" labels="First Name|Last Name|Email|Short Bio(300 words)|Faculty|Department" types="Text|Text|Text|Textarea|Text|Text" sizes="100|100|150|200|150|150" multiple="true">
             <![CDATA[
                 <h2>UofA Team</h2>
                 {$item}
@@ -86,16 +86,16 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="timeline" type="MultiText"  class="wikitable" blobItem="PROJECT_FACULTY" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="100|300" multiple="true">
+        <ReportItem id="timeline" type="MultiText"  class="wikitable" blobItem="TIMELINE" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="100|300" multiple="true">
             <![CDATA[
                 <h2>Timeline and Outcomes</h2>
                 {$item}
             ]]>
         </ReportItem>
         
-        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="150" width="2em">
+        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="100" width="2em">
             <![CDATA[
-                <h2>Budget (between 50K and 150K)</h2>
+                <h2>Budget (between 50K and 100K)</h2>
                 {$item}&nbsp;K
             ]]>
         </ReportItem>
