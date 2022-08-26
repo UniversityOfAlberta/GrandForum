@@ -185,6 +185,7 @@ class ReportItemCallback {
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
+            "nl2br" => "nl2br",
             "comma" => "comma",
             "set" => "set",
             "get" => "get",
@@ -1986,6 +1987,10 @@ class ReportItemCallback {
     
     function strtoupper($str){
         return strtoupper($str);
+    }
+    
+    function nl2br($str){
+        return nl2br($str);
     }
     
     function comma(){

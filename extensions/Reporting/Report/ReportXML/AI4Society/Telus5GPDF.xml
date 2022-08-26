@@ -60,7 +60,7 @@
                             <td style='width:20%;'>{getExtra(dept)}</td>
                         </tr>
                         <tr>
-                            <td colspan='6'>{getExtra(bio)}</td>
+                            <td colspan='5'>{nl2br({getExtra(bio)})}</td>
                         </tr>
                     </table>
                 ]]>
@@ -93,7 +93,7 @@
                             <td style='width:20%;'>{getExtra(dept)}</td>
                         </tr>
                         <tr>
-                            <td colspan='6'>{getExtra(bio)}</td>
+                            <td colspan='6'>{nl2br({getExtra(bio)})}</td>
                         </tr>
                     </table>
                 ]]>
@@ -110,7 +110,7 @@
         <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1000">
             <![CDATA[
                 <h2>Proposal and brief discussion of the suitability of the team</h2>
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         
