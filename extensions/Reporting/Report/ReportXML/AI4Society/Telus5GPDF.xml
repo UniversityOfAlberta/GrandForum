@@ -131,7 +131,35 @@
         <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true">
             <![CDATA[
                 <h3>Budget Justification</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_funding" type="Radio" blobItem="EXISTING_FUNDING" options="Yes|No">
+            <![CDATA[
+                <h3>Does this project have existing funding?</h3>
                 {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_funding_explain" type="Textarea" blobItem="EXISTING_FUNDING_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
+            <![CDATA[
+                <h3>Does this project's research involve an existing IP?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip_explain" type="Textarea" blobItem="EXISTING_IP_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}<br />
             ]]>
         </ReportItem>
     </ReportSection>

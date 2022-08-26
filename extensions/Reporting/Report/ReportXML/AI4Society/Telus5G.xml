@@ -106,6 +106,34 @@
                 {$item}
             ]]>
         </ReportItem>
+        
+        <ReportItem id="existing_funding" type="Radio" blobItem="EXISTING_FUNDING" options="Yes|No">
+            <![CDATA[
+                <h3>Does this project have existing funding?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_funding_explain" type="Textarea" blobItem="EXISTING_FUNDING_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
+            <![CDATA[
+                <h3>Does this project's research involve an existing IP?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip_explain" type="Textarea" blobItem="EXISTING_IP_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
