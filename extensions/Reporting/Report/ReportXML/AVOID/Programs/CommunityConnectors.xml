@@ -50,7 +50,7 @@
                     <span class='program-text'>Register for an upcoming training date:</span><br />
             ]]>
         </Static>
-        <ReportItem id="register3" type="Checkbox" options="Wednesday, July 13, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
+        <ReportItem id="register4" type="Checkbox" options="Thursday October 20, 1:30pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <div class='program-button'>{$item}</div>&nbsp;&nbsp;
             ]]>
