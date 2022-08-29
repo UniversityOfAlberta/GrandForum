@@ -27,7 +27,7 @@
         </ReportItem>
         <ReportItem id="funding" type="Integer" width="100px" blobItem="FUNDING" min="0" max="75000">
             <![CDATA[
-                <h4>Estimated Proposal Budget:</h4>
+                <h4>Funding Requested from CFN:</h4>
                 {$item}<br /><br />
             ]]>
         </ReportItem>

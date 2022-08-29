@@ -54,7 +54,7 @@
         <ReportItem id="funding" type="Integer" width="100px" blobItem="FUNDING" min="0" max="75000">
             <![CDATA[
                 <tr>
-                    <td><b style='white-space:nowrap;'>Estimated Proposal Budget</b><br /><small>(Maximum $75,000)</small></td>
+                    <td><b style='white-space:nowrap;'>Funding Requested from CFN</b><br /><small>(Maximum $75,000)</small></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
