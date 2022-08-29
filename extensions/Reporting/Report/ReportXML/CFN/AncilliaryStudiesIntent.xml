@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Request for Proposals (RFP) - KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION" pdfFiles="AncilliaryStudiesIntentPDF" year="2022" ajax="true">
+    <Permissions>
+        <Role role="NI">
+            <SectionPermission id="intent" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="NI-Candidate">
+            <SectionPermission id="intent" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+        <Role role="INACTIVE">
+            <SectionPermission id="intent" permissions="rw" />
+            <SectionPermission id="review" permissions="rw" />
+            <SectionPermission id="submit" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="intent" type="EditableReportSection" blobSection="INTENT" name="Letter of Intent" title="Request for Proposals (RFP) - KFLA Regional Centre for Healthy Aging Ancillary Studies Competition">
+        <Static>
+            <![CDATA[
+                <ul>
+                    <li>Only applicants that have submitted an LOI are eligible to submit a Full Application</li>
+                    <li>The LOI is for administrative purposes only and will not be adjudicated.  Information in this form will be used to determine conflicts of interest when assigning reviewers.</li>
+                    <li>All sections of the LOI must be completed in English by the deadline.</li>
+                    <li>The title of the proposal and Project Leader cannot be changed.</li>
+                    <li>New team members cannot be added once LOI has been submitted.</li>
+                    <li>Visit CFN’s website for project team role definitions<br /><a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf'>https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf</a>.</li>
+                </ul>
+                <table class="wikitable" width="100%">
+                    <tr>
+                        <th width='1%'>Information Required</th>
+                        <th>Enter information in this column</th>
+                    </tr>
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Title of Proposal</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small></td>
+                    <td><div style="width:100%;box-sizing:border-box;padding-right:12px;">{$item}</div></td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="length" type="Integer" width="100px" blobItem="LENGTH" min="0" max="18">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Length of Ancillary Study</b><br /><small>(Maximum 18 months)</small></td>
+                    <td>{$item} months</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Integer" width="100px" blobItem="FUNDING" min="0" max="75000">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Estimated Proposal Budget</b><br /><small>(Maximum $75,000)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="||||400|" orientation="vertical">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center">
+                        See <a href='https://www.cfn-nce.ca/wp-content/uploads/2018/09/cfn-project-team-roles-2016-07-07.pdf' target='_blank'>Appendix</a> for project team role definitions
+                    </td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>Project Leader (PL)</b><br /><small>(i.e. Principal Investigator responsible for managing project team.  He/She will be the primary contact for CFN)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl_contact" type="MultiText" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Daytime Phone Number" types="Text|Text|Text|Text" sizes="|||" orientation="vertical" optional="true">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Secondary Contact for PL</b><br /><small>(i.e., Project Manager, Assistant etc.)</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" blobType="BLOB_ARRAY" blobItem="PI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add PI" optional="true">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Principal Investigators</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" blobType="BLOB_ARRAY" blobItem="CI" widths="100%|200|auto" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="|||400|" orientation="vertical" multiple="true" addText="Add CI" optional="true">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Co-Investigators</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="MultiText" blobType="BLOB_ARRAY" blobItem="PARTNERS" widths="100%|200|auto" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" types="Text|Text|Text|Text|Text" orientation="vertical" multiple="true" addText="Add Partner" optional="true">
+            <![CDATA[
+                <tr>
+                    <td><b style='white-space:nowrap;'>Partners</b><br /><small>Please list currently identified and potential partners. Additional partners can be added in the full application.</small></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="evidence" type="Textarea" blobItem="SUMMARY" rich="true" limit="500" height="175px">
+            <![CDATA[
+                <tr>
+                    <td><b>Non-Confidential Project Summary</b></td>
+                    <td>
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="national" type="MultiText" blobType="BLOB_ARRAY" blobItem="NATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>NATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>National Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="international" type="MultiText" blobType="BLOB_ARRAY" blobItem="INTERNATIONAL" widths="100%|200|auto" labels="First Name|Last Name|Institution|Email Address|Phone Number" orientation="vertical" multiple="true" min="3" addText="Add Reviewer">
+            <![CDATA[
+                <tr>
+                    <td colspan="2" align="center"><b><u>INTERNATIONAL</u> Scientific Reviewers - Please provide details for a minimum of 3 non-conflicted reviewers that we may contact to review your proposal.</b></td>
+                </tr>
+                <tr>
+                    <td><b style='white-space:nowrap;'>International Reviewers</b></td>
+                    <td>{$item}</td>
+                </tr>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </table>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <If if="{or({&lt;({getArrayCount(RP_ANCILLARY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0, national)}, 3)},
+                                       {&lt;({getArrayCount(RP_ANCILLARY_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0, international)}, 3)})}">
+            <![CDATA[
+                <div class="error">You must provide 3 national and international reviewers</div>
+            ]]>
+        </If>
+        <ElseIf id="c1" if="{!=({getProgress(intent)}, 100)}">
+            <![CDATA[
+                <div class="error">You must complete all fields in the Letter of Intent</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c2" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, PL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Project Leader (PL)</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c3" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, PL_CONTACT, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Secondary Contact for PL</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c4" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, PI, 0, {$user_id}, 0, pi)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Principal Investigators</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c5" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, CI, 0, {$user_id}, 0, ci)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Co-Investigators</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c6" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, PARTNERS, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Partners</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c7" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, MENTOR, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for Mentor</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c8" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for National Scientific Reviewers</div>
+            ]]>
+        </ElseIf>
+        <ElseIf id="c9" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, INTERNATIONAL, 0, {$user_id}, 0)})}">
+            <![CDATA[
+                <div class="error">You must complete all fields for International Scientific Reviewers</div>
+            ]]>
+        </ElseIf>
+        <Else>
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+        </Else>
+    </ReportSection>
+</Report>

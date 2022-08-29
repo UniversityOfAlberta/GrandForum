@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Request for Proposals (RFP) - KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION" pdfFiles="EarlyCareerIntentPDF" year="2022" ajax="true" disabled="false">
+    <ReportSection id="intent" type="HeaderReportSection" blobSection="INTENT" name="Letter of Intent" title="Request for Proposals (RFP) - KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <h4 style='font-size:1.20em;'>Request for Proposals (RFP) - KFLA Regional Centre for<br />Healthy Aging Ancillary Studies Competition</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" width="100%" blobItem="TITLE">
+            <![CDATA[
+                <h4>Title of Proposal</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="length" type="Integer" width="100px" blobItem="LENGTH" min="0" max="18">
+            <![CDATA[
+                <h4>Length of Ancillary Study:</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="funding" type="Integer" width="100px" blobItem="FUNDING" min="0" max="75000">
+            <![CDATA[
+                <h4>Estimated Proposal Budget:</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="PL" labels="First Name|Last Name|Email Address|Daytime Phone Number|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" sizes="10%|10%|15%|10%|auto|15%">
+            <![CDATA[
+                <h4>Project Leader (PL)</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="pl_contact" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="PL_CONTACT" labels="First Name|Last Name|Email Address|Daytime Phone Number" types="Text|Text|Text|Text" sizes="25%|25%|25%|25%">
+            <![CDATA[
+                <h4>Secondary Contact for PL</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="pi" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="PI" labels="First Name|Last Name|Email Address|Institution that will receive/administer funds|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" multiple="true" sizes="10%|10%|15%|auto|15%">
+            <![CDATA[
+                <h4>Principal Investigators</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ci" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="CI" labels="First Name|Last Name|Email Address|Institution/Organization|Title at Institution/Organization" types="Text|Text|Text|ComboBox(,Centre Hospitalier de l'Université de Montréal (CHUM),Conestoga College Institute of Technology and Advanced Learning,Dalhousie University,Fraser Health Authority,Hôpital Sacre-Coeur De Montréal,Institute for Clinical Evaluative Sciences (ICES),Jewish General Hospital,Lakehead University,Laval University,London Health Sciences Centre Research Inc.,McGill University,McMaster University,Memorial University,Mount Sinai Hospital,North York General Hospital,Nova Scotia Health Authority (NSHA),Ottawa Hospital Research Institute (OHRI),Queen's University,Research Institute of the McGill University Health Centre (MUHC),Ryerson University,Saskatchewan Polytechnic,Simon Fraser University,St. Michael's Hospital,Sunnybrook Research Institute,Trillium Health Partners,Trinity Western University (TWU),Université de Sherbrooke,Université du Québec à Montréal (UQAM),University Health Network (UHN),University of Alberta,University of British Columbia,University of Calgary,University of Guelph,University of Manitoba,University of Moncton,University of New Brunswick (UNB),University of Ontario Institute for Technology (UOIT),University of Ottawa,University of Saskatchewan,University of Toronto,University of Victoria,University of Waterloo,University of Windsor,University of Winnipeg,Western University,York University)|Text" multiple="true" sizes="10%|10%|15%|auto|15%">
+            <![CDATA[
+                <h4>Co-Investigators</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="partners" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="PARTNERS" labels="Company/Institution Name|Contact - First Name|Contact - Last Name|Title|Email Address" types="Text|Text|Text|Text|Text" multiple="true" sizes="auto|10%|10%|15%|15%">
+            <![CDATA[
+                <h4>Partners</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="evidence" type="Textarea" blobItem="SUMMARY" rich="true" limit="500" height="175px">
+            <![CDATA[
+                <h4>Non-Confidential Project Summary</h4>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="national" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="NATIONAL" labels="First Name|Last Name|Institution|Email Address|Phone Number" multiple="true" min="3" sizes="15%|15%|auto|15%|15%">
+            <![CDATA[
+                <h4><u>NATIONAL</u> Scientific Reviewers</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="international" type="MultiText" class="wikitable small" blobType="BLOB_ARRAY" blobItem="INTERNATIONAL" labels="First Name|Last Name|Institution|Email Address|Phone Number" multiple="true" min="3" sizes="15%|15%|auto|15%|15%">
+            <![CDATA[
+                <h4><u>INTERNATIONAL</u> Scientific Reviewers</h4>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>
