@@ -129,7 +129,7 @@ class Report extends AbstractReport{
                 }
             }
         }
-        if(count($person->getEvaluates("SAB-International", 2021)) > 0){
+        if(count($person->getEvaluates("SAB-International", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "SABInternationalReview")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("International Review", "{$url}SABInternationalReview", $selected);
         }
