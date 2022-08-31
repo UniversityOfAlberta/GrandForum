@@ -5,7 +5,7 @@ class PromotionReportItem extends SelectReportItem {
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
 	    $options = array("n/a");
-        switch($person->getFECType($this->getReport()->year.CYCLE_END_MONTH)){
+        switch($person->getFECType($this->getReport()->year."-07-01")){
             case "A1":
             case "B1":
             case "B2":

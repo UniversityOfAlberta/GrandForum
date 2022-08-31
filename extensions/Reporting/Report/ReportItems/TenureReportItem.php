@@ -4,10 +4,10 @@ class TenureReportItem extends SelectReportItem {
 	
 	function parseOptions(){
 	    $person = Person::newFromId($this->blobSubItem);
-	    if($person->hasTenure($this->getReport()->year.CYCLE_END_MONTH)){
+	    if($person->hasTenure($this->getReport()->year."-07-01")){
 	        return array("already has tenure");
 	    }
-	    switch($person->getFECType($this->getReport()->year.CYCLE_END_MONTH)){
+	    switch($person->getFECType($this->getReport()->year."-07-01")){
 	        case "A1":
 	        case "B1":
 	            // Faculty eligible for tenure: not tenured AND not a professor. The second condition is superfluous, because all professors have tenure.
