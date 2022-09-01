@@ -84,8 +84,8 @@ class PersonGradStudentsTab extends AbstractTab {
     function supervisesHTML($position='other', $startDate=null, $endDate=null){
         $html = "<table class='wikitable relations_table' width='100%' cellspacing='1' cellpadding='2' rules='all' frame='box'>
                     <thead><tr>
-                            <th width='30%'>Name</th>
-                            <th width='25%'>Position</th>
+                            <th width='28%'>Name</th>
+                            <th width='22%'>Position</th>
                             <th width='' style='white-space: nowrap;'>Start Date</th>
                             <th width='' style='white-space: nowrap;'>End Date</th>
                             <th width='' style='white-space: nowrap;'>Status</th>

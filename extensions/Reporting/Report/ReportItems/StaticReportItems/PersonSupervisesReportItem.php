@@ -90,6 +90,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
         }
         
         $item = str_replace("-Committee", "-Cmte", $item);
+        $item = str_replace("Graduate Student -", "Grad Student -", $item);
         
         $this->footnotes = array();
         $this->awards = array();
