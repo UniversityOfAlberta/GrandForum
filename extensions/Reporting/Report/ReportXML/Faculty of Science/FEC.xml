@@ -91,6 +91,8 @@
                 
                 <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Standards for Faculty Service Officers.pdf'><b>Standards for Faculty Service Officers</b></a></p>
                 
+                <p><a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Guidelines for Supplementary Professional Activity and University Industry Relationships.pdf'><b>Guidelines for SPA and University Industry Relationships</b></a></p>
+                
                 <h3>Responsibilities Variation</h3>
                 <p>Select "Yes" and include details if you have a written Variation of Responsibilities agreement in place during the reporting year with, for example, non-standard percentage weights for research, teaching and service.</p>
                 
