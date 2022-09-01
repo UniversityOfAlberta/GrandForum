@@ -89,7 +89,7 @@ class PersonSupervisesReportItem extends StaticReportItem {
                                           $this->getReport()->year."-06-30");
         }
         
-        $item = str_replace("-Committee", "", $item);
+        $item = str_replace("-Committee", "-Cmte", $item);
         
         $this->footnotes = array();
         $this->awards = array();
