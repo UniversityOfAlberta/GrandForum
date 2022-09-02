@@ -428,6 +428,10 @@ class AVOIDDashboard extends SpecialPage {
     }
     
     static function checkAllSubmissions($userId){
+        $me = Person::newFromId($userId);
+        if($me->isRole(ADMIN) || $me->isRole(STAFF)){
+            return true;
+        }
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_THREEMO");
         $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_SIXMO");
