@@ -389,7 +389,7 @@ class AVOIDDashboard extends SpecialPage {
         return "";
     }
     
-    static function hasSubmittedSurvey($userId=null){
+    static function hasSubmittedSurvey($userId=null, $report="RP_AVOID"){
         if($userId != null){
             $me = Person::newFromId($userId);
         }
@@ -400,18 +400,55 @@ class AVOIDDashboard extends SpecialPage {
             return true;
         }
         $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
-        $blob_address = ReportBlob::create_address("RP_AVOID", "SUBMIT", "SUBMITTED", 0);
+        $blob_address = ReportBlob::create_address($report, "SUBMIT", "SUBMITTED", 0);
         $blob->load($blob_address);
         $blob_data = $blob->getData();
         $submitted = ($blob_data == "Submitted");
         return $submitted;
+    }
+    
+    static function submissionDate($userId=null, $report="RP_AVOID"){
+        if($userId != null){
+            $me = Person::newFromId($userId);
+        }
+        else{
+            $me = Person::newFromWgUser();
+        }
+        if($me->isRole("Provider")){
+            return date('Y-m-d');
+        }
+        $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
+        $blob_address = ReportBlob::create_address($report, "SUBMIT", "SUBMITTED", 0);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        if($blob_data == "Submitted"){
+            return $blob->getLastChanged();
+        }
+        return date('Y-m-d');
+    }
+    
+    static function checkAllSubmissions($userId){
+        $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID");
+        $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_THREEMO");
+        $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($userId, "RP_AVOID_SIXMO");
+        
+        $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID")))/86400;
+        $threeMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_THREEMO")))/86400;
+        $sixMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($userId, "RP_AVOID_SIXMO")))/86400;
+        
+        if(!$baseLineSubmitted || 
+           ($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3) ||
+           ($threeMonthSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6)){
+            return false;
+        }
+        return true;
     }
 
     static function createTab(&$tabs){
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle;
         $me = Person::newFromWgUser();
         if($me->isLoggedIn()){
-            if(AVOIDDashboard::hasSubmittedSurvey()){
+            if(AVOIDDashboard::checkAllSubmissions($me->getId())){
                 $selected = @($wgTitle->getText() == "AVOIDDashboard") ? "selected" : false;
                 $GLOBALS['tabs']['Profile'] = TabUtils::createTab("My Profile", "{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard", $selected);
             }
@@ -435,23 +472,35 @@ class AVOIDDashboard extends SpecialPage {
         if($me->isRole(ADMIN) || $me->isRole(STAFF)){
             return true;
         }
-        $submitted = AVOIDDashboard::hasSubmittedSurvey();
+        $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");
+        $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO");
+        $sixMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO");
+        
+        $baseDiff = (time() - strtotime(AVOIDDashboard::submissionDate($me->getId(), "RP_AVOID")))/86400;
+        $threeMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($me->getId(), "RP_AVOID_THREEMO")))/86400;
+        $sixMonthDiff = (time() - strtotime(AVOIDDashboard::submissionDate($me->getId(), "RP_AVOID_SIXMO")))/86400;
+        
         $section = AVOIDDashboard::getNextIncompleteSection();
-        if(isset($wgRoleValues[$nsText]) ||
-           ($me->isLoggedIn() && $nsText == "" && $wgTitle->getText() == "Main Page")){
-            if($submitted){
-                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
-            }
-            else{
+        if($me->isLoggedIn()){
+            if(!$baseLineSubmitted && ($wgTitle->getText() != "Report" || @$_GET['report'] != "IntakeSurvey")){
                 redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
             }
+            else if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "ThreeMonths")){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ThreeMonths");
+            }
+            else if($threeMonthSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && ($wgTitle->getText() != "Report" || @$_GET['report'] != "SixMonths")){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=SixMonths");
+            }
+            else if($nsText == "Special" && $wgTitle->getText() == "Report" && ((@$_GET['report'] == "IntakeSurvey" && $baseLineSubmitted) || 
+                                                                                (@$_GET['report'] == "ThreeMonths" && $threeMonthSubmitted) ||
+                                                                                (@$_GET['report'] == "SixMonths" && $sixMonthSubmitted))){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            }
+            else if(isset($wgRoleValues[$nsText]) || ($nsText == "" && $wgTitle->getText() == "Main Page")){
+                redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
+            }
         }
-        if($nsText == "Special" && $wgTitle->getText() == "AVOIDDashboard" && !$submitted){
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=IntakeSurvey&section={$section}");
-        }
-        if($nsText == "Special" && $wgTitle->getText() == "Report" && @$_GET['report'] == "IntakeSurvey" && $submitted){
-            redirect("{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard");
-        }
+
         return true;
     }
     

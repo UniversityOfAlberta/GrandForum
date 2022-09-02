@@ -69,7 +69,7 @@ class Programs extends SpecialPage {
         $person = Person::newFromWgUser();
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
-            if(AVOIDDashboard::hasSubmittedSurvey()){
+            if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
                 $dir = dirname(__FILE__) . '/';
                 $json = file_get_contents("{$dir}programs.json");
                 $programs = json_decode($json);
