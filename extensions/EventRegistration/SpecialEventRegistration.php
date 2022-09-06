@@ -73,8 +73,8 @@ class SpecialEventRegistration extends SpecialPage{
             if($event->getArticleLink() != ""){
                 $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: <a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a></p>";
             }
-            $message .= "<p>Please save this email for future reference, we look forward to see you</p>";
-            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions</p>";
+            $message .= "<p>Please save this email for future reference, we look forward to see you.</p>";
+            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
             if($event->getImageUrl(1) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
             }
