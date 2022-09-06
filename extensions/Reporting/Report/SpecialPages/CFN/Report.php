@@ -82,6 +82,10 @@ class Report extends AbstractReport{
             /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Application", "{$url}RCHA2021Application", $selected);*/
         }
+        if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AncilliaryStudiesIntent")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Ancillary LOI", "{$url}AncilliaryStudiesIntent", $selected);
+        }
         /*if($person->isRole(NI) || $person->isRole(NI."-Candidate") || $person->isRole(INACTIVE) || $person->isRole(INACTIVE."-Candidate")){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EarlyCareerIntent")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("Early Career LOI", "{$url}EarlyCareerIntent", $selected);

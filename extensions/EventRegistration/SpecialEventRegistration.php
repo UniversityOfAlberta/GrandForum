@@ -17,7 +17,7 @@ class SpecialEventRegistration extends SpecialPage{
     }
     
     function handleEdit(){
-        global $wgServer, $wgScriptPath, $wgMessage;
+        global $wgServer, $wgScriptPath, $wgMessage, $config;
         if(!isset($_POST['event']) || trim($_POST['event']) == ""){
             $wgMessage->addError("You must select and Event");
         }
@@ -60,6 +60,29 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
             $event = EventPosting::newFromId($_POST['event']);
+            // Now send email
+            $to = $_POST['email'];
+            $subject = "Registration Confirmed - ".substr($event->getTitle(), 0, 85);
+            $from = $config->getValue('supportEmail');
+            $message = "";
+            if($event->getImageUrl(4) != ""){
+                $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}'></div>";
+            }
+            $message .= "<p>Dear {$_POST['name']},</p>
+                        <p>Your registration has been confirmed to the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
+            if($event->getArticleLink() != ""){
+                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: <a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a></p>";
+            }
+            $message .= "<p>Please save this email for future reference, we look forward to see you</p>";
+            if($event->getImageUrl(1) != ""){
+                $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
+            }
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+            $headers .= 'From: '.$from."\r\n".
+                        'Reply-To: '.$from."\r\n" .
+                        'X-Mailer: PHP/' . phpversion();
+            mail($to, $subject, $message, $headers);
             if($event != null && $event->title != ""){
                 redirect($event->getUrl());
             }
