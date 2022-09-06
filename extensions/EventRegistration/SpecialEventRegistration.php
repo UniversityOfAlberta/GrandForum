@@ -206,7 +206,7 @@ class SpecialEventRegistration extends SpecialPage{
         
         $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
-        if($default->title == "Replaying Japan Conference"){
+        if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
                            Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
                         <p>Registration is FREE. Register so we can send you online participation information. You won’t get the links if you don’t register.<br />
@@ -219,7 +219,7 @@ class SpecialEventRegistration extends SpecialPage{
                         <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
                            その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
         }
-        else if($default->title == "3rd AI4IA Conference"){
+        else if(trim($default->title) == "3rd AI4IA Conference"){
             $prepreamble = "<p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2021. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI for Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
 
                         <p>AI can be very beneficial to society but if abused it can also be very harmful. The AI4IA Conference, therefore, raises a range of issues, including the relationship between Artificial Intelligence (AI) and Law, AI and Ethics, media and our right to know, creativity and innovation. It is necessary to understand how AI can be made inclusive, thereby enabling the widest cross-section of society.</p>
