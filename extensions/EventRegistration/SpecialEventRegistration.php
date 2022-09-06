@@ -74,6 +74,7 @@ class SpecialEventRegistration extends SpecialPage{
                 $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: <a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a></p>";
             }
             $message .= "<p>Please save this email for future reference, we look forward to see you</p>";
+            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions</p>";
             if($event->getImageUrl(1) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
             }
@@ -203,6 +204,7 @@ class SpecialEventRegistration extends SpecialPage{
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
+        $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
         if($default->title == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
@@ -217,12 +219,32 @@ class SpecialEventRegistration extends SpecialPage{
                         <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
                            その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
         }
+        else if($default->title == "3rd AI4IA Conference"){
+            $prepreamble = "<p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2021. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI for Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
+
+                        <p>AI can be very beneficial to society but if abused it can also be very harmful. The AI4IA Conference, therefore, raises a range of issues, including the relationship between Artificial Intelligence (AI) and Law, AI and Ethics, media and our right to know, creativity and innovation. It is necessary to understand how AI can be made inclusive, thereby enabling the widest cross-section of society.</p>
+                         
+                        <p>This event provides a platform for open discourse involving participants from academia, civil society, private sector and government.</p>
+                        
+                        <p><b>Organizing Committee</b><br />
+                            Cordel Green, Samridhi Arora Kalra, Geoffrey Rockwell, Nicolás Arnáez, Erica Simmons, Soniya Mukhedkar, Trisha Ray, Maria Dolores Souza, Andrea Millwood Hargrave , Andrew J Haire, David Soutar.</p>
+
+                        <p><b>Program</b><br />
+                            The AI4IA conference is an on-demand conference with live sessions on 28 September 2022.</p>
+
+                        <p>On-demand viewing of the conference line-up will be available from 00:00 GMT (+0) from 26 September until 28 September 2022.</p>
+                        
+                        <p>A live opening session will be held on 28 September 2022 from 13:00 GMT/08:00 EST on ZOOM.<br />
+                           There will also be Live interactive sessions with the speakers on 28 September 2022 during the hours from 08:00 -10:00 (GMT) and 16:00-18:00 (GMT).<br />
+                           If you have never used the Gather.town platform before, please review the user guide here. We look forward to seeing everyone!
+                        </p>";
+        }
         
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post' enctype='multipart/form-data'>
-            <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
+            {$prepreamble}
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
                     <div style='text-align:center;width:100%;'>{$banner1}</div>
