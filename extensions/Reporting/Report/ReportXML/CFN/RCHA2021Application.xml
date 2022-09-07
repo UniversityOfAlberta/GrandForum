@@ -287,6 +287,51 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Additional Documents" title="Section 7 - Additional Documents" showProgress="true">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <p><b>Be sure to click on the Upload button to ensure that your chosen document is uploaded successfully</b></p>
+                <h3>Project Team Information</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Project_Team_Information.xlsx'>project team information Excel document</a> and upload a <b>single Excel file named ECR2022-##_Surname_TeamList.xlsx</b>. (Note: Unless otherwise noted, when naming documents, “ECR2022-##” refers to the CFN File #. The Surname refers to the Project Leader’s surname.).</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Budget.xlsx'>project budget Excel document</a> and upload a <b>single Excel file named ECR2022-##_Surname_Budget.xlsx</b>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents. <b>For AGE-WELL/CFN co-funding stream only</b> - AGE-WELL and CFN will separately administer $25,000 each for the AGE-WELL-CFN ECR Award. Applicants are asked to minimally submit two $25,000 budget excel documents.”</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>PI/Co-I CVs</h3>
+                <p>Principal and Co-Investigators’ CIHR biosketch CVs. Upload a <b>single PDF file named ECR2022-##_Surname_PI_CVs.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Other Member CV(s)</h3>
+                <p>CVs/Resumes for other project team member(s). Submit a <b>single PDF file named ECR2022-##_Surname_TeamCVs.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Required Signatures.docx'>signature document</a> and upload <b>a single PDF containing signature documents for each Principal Investigator. Name the PDF document ECR2022-##_Surname_Signatures.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Ethics</h3>
+                <p>Proof of study submission to Research Ethics Board. Submit a <b>single PDF containing proof of ethics submission for each investigator.  Name the PDF document ECR2022-##_Surname_REB.pdf</b>.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
             <![CDATA[{$item}]]>
@@ -298,7 +343,8 @@
                     {!=({getProgress(proposal)},100)},
                     {!=({getProgress(supporting)},100)},
                     {!=({getProgress(partnerships)},100)},
-                    {!=({getProgress(other_funding)},100)}
+                    {!=({getProgress(other_funding)},100)},
+                    {!=({getProgress(documents)},100)}
                 )}">
             <![CDATA[
                 You have not completed the application.

@@ -225,6 +225,44 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Additional Documents" title="Section 7 - Additional Documents" showProgress="true" pagebreak="false">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <h3>Project Team Information</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>PI/Co-I CVs</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Other Member CV(s)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Ethics</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="docs" type="HeaderReportSection" pagebreak="false">
         <ReportItem id="proposal" blobSection="PROPOSAL" blobItem="PROPOSAL" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
         <ReportItem id="supporting" blobSection="SUPPORTING" blobItem="SUPPORTING" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
