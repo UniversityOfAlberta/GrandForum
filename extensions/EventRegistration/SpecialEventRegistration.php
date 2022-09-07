@@ -248,7 +248,7 @@ class SpecialEventRegistration extends SpecialPage{
 	                        $('#bodyContent').css('left', '-3px');
 	                        sideToggled = 'in';
                             $(document).ready(function(){
-                                $('#banner2 img').css('width', '275px');
+                                $('#banner2 img').css('max-width', '275px');
                             });
                         </script>";
         }
