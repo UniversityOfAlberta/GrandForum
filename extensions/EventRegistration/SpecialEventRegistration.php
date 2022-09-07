@@ -93,7 +93,7 @@ class SpecialEventRegistration extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $config, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if(isset($_POST['submit'])){
             $this->handleEdit();
@@ -107,6 +107,7 @@ class SpecialEventRegistration extends SpecialPage{
         }
         $default = $event;
         if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
+            $wgOut->setPageTitle("Event Registration: {$event->title}");
             $eventOptions[$event->id] = $event->title;
             $defaultEvent = $event->id;
         }
@@ -206,6 +207,7 @@ class SpecialEventRegistration extends SpecialPage{
         
         $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
+        $showOther = "style='display:block;'";
         if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
                            Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
@@ -220,7 +222,8 @@ class SpecialEventRegistration extends SpecialPage{
                            その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
         }
         else if(trim($default->title) == "3rd AI4IA Conference"){
-            $prepreamble = "<p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2021. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI for Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
+            $showOther = "style='display:none;'";
+            $prepreamble = "<div style='font-size: 16px;'><p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2021. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI for Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
 
                         <p>AI can be very beneficial to society but if abused it can also be very harmful. The AI4IA Conference, therefore, raises a range of issues, including the relationship between Artificial Intelligence (AI) and Law, AI and Ethics, media and our right to know, creativity and innovation. It is necessary to understand how AI can be made inclusive, thereby enabling the widest cross-section of society.</p>
                          
@@ -237,9 +240,19 @@ class SpecialEventRegistration extends SpecialPage{
                         <p>A live opening session will be held on 28 September 2022 from 13:00 GMT/08:00 EST on ZOOM.<br />
                            There will also be Live interactive sessions with the speakers on 28 September 2022 during the hours from 08:00 -10:00 (GMT) and 16:00-18:00 (GMT).<br />
                            If you have never used the Gather.town platform before, please review the user guide here. We look forward to seeing everyone!
-                        </p>";
+                        </p></div>
+                        <script type='text/javascript'>
+                            $('#sideToggle').html('&gt;');
+                            $('#side').css('left', '-200px');
+	                        $('#outerHeader').css('left', '-3px');
+	                        $('#bodyContent').css('left', '-3px');
+	                        sideToggled = 'in';
+                            $(document).ready(function(){
+                                $('#banner2 img').css('width', '275px');
+                            });
+                        </script>";
         }
-        
+        $eventShow = ($defaultEvent != 0) ? "style='display:none;'" : "";
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
@@ -247,11 +260,11 @@ class SpecialEventRegistration extends SpecialPage{
             {$prepreamble}
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
-                    <div style='text-align:center;width:100%;'>{$banner1}</div>
+                    <div id='banner1' style='text-align:center;width:100%;'>{$banner1}</div>
                     {$preamble}
                     <h3>Participant information</h3>
                     <table class='wikitable' frame='box' rules='all'>
-                        <tr>
+                        <tr {$eventShow}>
                             <td class='label' style='vertical-align: middle;'>Event</td>
                             <td>{$eventField->render()}</td>
                         </tr>
@@ -278,28 +291,30 @@ class SpecialEventRegistration extends SpecialPage{
                         </tr>
                     </table>
                     {$misc}
-                    <h3>Other information</h3>
-                    <table class='wikitable' frame='box' rules='all'>
-                        <tr>
-                            <td><input type='checkbox' name='receive_information' value='1' checked /></td>
-                            <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='join_newsletter' value='1' /></td>
-                            <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='create_profile' value='1' /></td>
-                            <td>Become an AI4Society Member</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='similar_events' value='1' /></td>
-                            <td>Inform me about similar events</td>
-                        </tr>
-                    </table>
-                    <input type='submit' name='submit' value='Submit' />
+                    <div><div {$showOther}>
+                        <h3>Other information</h3>
+                        <table class='wikitable' frame='box' rules='all'>
+                            <tr>
+                                <td><input type='checkbox' name='receive_information' value='1' checked /></td>
+                                <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='join_newsletter' value='1' /></td>
+                                <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='create_profile' value='1' /></td>
+                                <td>Become an AI4Society Member</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='similar_events' value='1' /></td>
+                                <td>Inform me about similar events</td>
+                            </tr>
+                        </table>
+                    </div></div>
+                    <input type='submit' name='submit' value='Submit' style='margin-top: 1em;' />
                 </div>
-                <div>
+                <div id='banner2'>
                     {$banner2}
                 </div>
             </div>
