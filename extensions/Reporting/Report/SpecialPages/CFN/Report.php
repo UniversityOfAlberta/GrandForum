@@ -76,8 +76,8 @@ class Report extends AbstractReport{
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ECR Application", "{$url}EarlyCareerApplication", $selected);
         }*/
         if($person->isSubRole("RCHA2021Applicant")){
-            /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
-            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);*/
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Intent")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Intent", "{$url}RCHA2021Intent", $selected);
         
             /*$selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Application")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("RCHA Application", "{$url}RCHA2021Application", $selected);*/
