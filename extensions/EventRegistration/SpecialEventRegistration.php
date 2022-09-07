@@ -250,6 +250,8 @@ class SpecialEventRegistration extends SpecialPage{
 	                        sideToggled = 'in';
                             $(document).ready(function(){
                                 $('#banner2 img').css('max-width', '275px');
+                                $('#webpage').hide();
+                                $('#twitter').hide();
                             });
                         </script>";
         }
@@ -282,11 +284,11 @@ class SpecialEventRegistration extends SpecialPage{
                             <td class='label' style='vertical-align: middle;'>{$roleLabel}</td>
                             <td>{$roleField->render()}</td>
                         </tr>
-                        <tr>
+                        <tr id='webpage'>
                             <td class='label' style='vertical-align: middle;'>Webpage</td>
                             <td>{$webpageField->render()}</td>
                         </tr>
-                        <tr>
+                        <tr id='twitter'>
                             <td class='label' style='vertical-align: middle;'>Twitter</td>
                             <td>{$twitterField->render()}</td>
                         </tr>
