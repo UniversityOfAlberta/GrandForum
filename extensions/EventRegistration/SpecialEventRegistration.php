@@ -71,7 +71,8 @@ class SpecialEventRegistration extends SpecialPage{
             $message .= "<p>Dear {$_POST['name']},</p>
                         <p>Your registration has been confirmed to the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
             if($event->getArticleLink() != ""){
-                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: <a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a></p>";
+                $link = (substr($event->getArticleLink(), 0, 4) == "http") ? "<a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a>" : $event->getArticleLink();
+                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: {$link}</p>";
             }
             $message .= "<p>Please save this email for future reference, we look forward to see you.</p>";
             $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
