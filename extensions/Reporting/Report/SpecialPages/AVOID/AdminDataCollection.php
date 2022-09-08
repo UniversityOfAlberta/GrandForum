@@ -55,6 +55,8 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Hear about us</th>
                                         <th rowspan='2'>In person opportunity</th>
                                         <th rowspan='2'>Submitted Intake Survey</th>
+                                        <th rowspan='2'>Submitted 3Month Survey</th>
+                                        <th rowspan='2'>Submitted 6Month Survey</th>
                                         <th rowspan='2'>Action Plans</th>
                                         <th colspan='10'>Data Collected</th>
                                     </tr>
@@ -76,7 +78,9 @@ class AdminDataCollection extends SpecialPage{
                 $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
                 $evaluation1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation1", $person->getId());
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
-                $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId())) ? "Yes" : "No");
+                $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
+                $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
+                $submitted6 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : "No");
                 $registration_str = $person->getRegistration();
                 $registration_date = substr($registration_str,0,4)."-".substr($registration_str,4,2)."-".substr($registration_str,6,2);
                 $touched_str = $person->getTouched();
@@ -140,9 +144,9 @@ class AdminDataCollection extends SpecialPage{
                     <b>Q1:</b> {$evaluation1}<br />
                     <b>Q2:</b> {$evaluation2}
                 </td>
-                <td>
-                    {$submitted}
-                </td>
+                <td>{$submitted}</td>
+                <td>{$submitted3}</td>
+                <td>{$submitted6}</td>
                 <td style='white-space:nowrap;'>
                     <b>Created:</b> ".count($plans)."<br />
                     <b>Submitted:</b> ".count($submittedPlans)."<br />
