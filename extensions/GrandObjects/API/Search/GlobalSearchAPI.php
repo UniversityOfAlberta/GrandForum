@@ -244,6 +244,7 @@ class GlobalSearchAPI extends RESTAPI {
                 $bibs = DBFunctions::select(array('grand_bibliography'),
                                             array('title', 'description', 'id'));
                 Product::generateProductTagsCache();
+                $data = array();
                 foreach($bibs as $bibliography){
                     $bTitle = unaccentChars($bibliography['title']);
                     $bDescription = unaccentChars($bibliography['description']);
