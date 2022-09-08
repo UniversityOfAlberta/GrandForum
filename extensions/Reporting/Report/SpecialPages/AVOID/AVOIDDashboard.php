@@ -474,7 +474,7 @@ class AVOIDDashboard extends SpecialPage {
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if($me->isRole(ADMIN) || $me->isRole(STAFF)){
-            //return true;
+            return true;
         }
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO");
