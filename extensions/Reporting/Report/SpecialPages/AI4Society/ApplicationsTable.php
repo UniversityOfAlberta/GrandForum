@@ -51,6 +51,7 @@ class ApplicationsTable extends SpecialPage{
         
         if($me->isRoleAtLeast(SD)){
             $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=proposals'>Project Proposals</a>";
+            $links[] = "<a href='$wgServer$wgScriptPath/index.php/Special:ApplicationsTable?program=telus5g'>Telus 5G</a>";
         }
         
         $wgOut->addHTML("<h1>Report Tables:&nbsp;".implode("&nbsp;|&nbsp;", $links)."</h1><br />");
@@ -64,6 +65,9 @@ class ApplicationsTable extends SpecialPage{
         if($program == "proposals" && $me->isRoleAtLeast(SD)){
             $this->generateProjectProposals();
         }
+        else if($program == "telus5g" && $me->isRoleAtLeast(SD)){
+            $this->generateTelus5G();
+        }
         return;
     }
     
@@ -74,6 +78,15 @@ class ApplicationsTable extends SpecialPage{
         $tab->showAllWithPDFs = true;
         $tabbedPage->addTab($tab);
         $tab = new ApplicationTab(RP_PROJECT_PROPOSAL, null, 2021, "2021");
+        $tab->showAllWithPDFs = true;
+        $tabbedPage->addTab($tab);
+        $wgOut->addHTML($tabbedPage->showPage());
+    }
+    
+    function generateTelus5G(){
+        global $wgOut;
+        $tabbedPage = new InnerTabbedPage("reports");
+        $tab = new ApplicationTab("RP_TELUS", null, 2022, "2022");
         $tab->showAllWithPDFs = true;
         $tabbedPage->addTab($tab);
         $wgOut->addHTML($tabbedPage->showPage());

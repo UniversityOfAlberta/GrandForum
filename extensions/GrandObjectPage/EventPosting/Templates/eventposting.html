@@ -6,12 +6,6 @@
                 <td class="label">Visibility:</td>
                 <td><%= visibility.replace("Publish", "Published (public)").replace("Draft", "Draft (private)") %></td>
             </tr>
-            <% if(articleLink != ""){ %>
-                <tr>
-                    <td class="label">Online Event Address:</td>
-                    <td><a href="<%= articleLink %>" target="_blank"><%= articleLink %></a></td>
-                </tr>
-            <% } %>
             <% if(website != ""){ %>
                 <tr>
                     <td class="label">Video URL:</td>

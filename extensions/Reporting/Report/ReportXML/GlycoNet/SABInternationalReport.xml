@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="International Partnerships Report" reportType="RP_INTERNATIONAL_REPORT" personId="0" ajax="true" disabled="false" year="2021">
+<Report name="International Partnerships Report" reportType="RP_INTERNATIONAL_REPORT" personId="0" ajax="true" disabled="false" year="2022">
     <Permissions>
         <Role role="SD">
             <SectionPermission id="materials" permissions="rw" />

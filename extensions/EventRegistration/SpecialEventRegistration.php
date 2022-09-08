@@ -17,7 +17,7 @@ class SpecialEventRegistration extends SpecialPage{
     }
     
     function handleEdit(){
-        global $wgServer, $wgScriptPath, $wgMessage;
+        global $wgServer, $wgScriptPath, $wgMessage, $config;
         if(!isset($_POST['event']) || trim($_POST['event']) == ""){
             $wgMessage->addError("You must select and Event");
         }
@@ -60,6 +60,31 @@ class SpecialEventRegistration extends SpecialPage{
             $eventRegistration->create();
             $wgMessage->addSuccess("Thank you for registering");
             $event = EventPosting::newFromId($_POST['event']);
+            // Now send email
+            $to = $_POST['email'];
+            $subject = "Registration Confirmed - ".substr($event->getTitle(), 0, 85);
+            $from = $config->getValue('supportEmail');
+            $message = "";
+            if($event->getImageUrl(4) != ""){
+                $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}'></div>";
+            }
+            $message .= "<p>Dear {$_POST['name']},</p>
+                        <p>Your registration has been confirmed to the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
+            if($event->getArticleLink() != ""){
+                $link = (substr($event->getArticleLink(), 0, 4) == "http") ? "<a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a>" : $event->getArticleLink();
+                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: {$link}</p>";
+            }
+            $message .= "<p>Please save this email for future reference, we look forward to see you.</p>";
+            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            if($event->getImageUrl(1) != ""){
+                $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
+            }
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+            $headers .= 'From: '.$from."\r\n".
+                        'Reply-To: '.$from."\r\n" .
+                        'X-Mailer: PHP/' . phpversion();
+            mail($to, $subject, $message, $headers);
             if($event != null && $event->title != ""){
                 redirect($event->getUrl());
             }
@@ -69,7 +94,7 @@ class SpecialEventRegistration extends SpecialPage{
     }
 
     function execute($par){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgTitle, $wgUser, $config, $wgServer, $wgScriptPath;
         $this->getOutput()->setPageTitle("Event Registration");
         $me = Person::newFromWgUser();
         if(isset($_POST['submit'])){
@@ -84,6 +109,7 @@ class SpecialEventRegistration extends SpecialPage{
         }
         $default = $event;
         if($event != null && $event->title != "" && $event->getVisibility() == "Publish"){
+            $this->getOutput()->setPageTitle("Event Registration: {$event->title}");
             $eventOptions[$event->id] = $event->title;
             $defaultEvent = $event->id;
         }
@@ -181,8 +207,10 @@ class SpecialEventRegistration extends SpecialPage{
         
         $roleField = new SelectBox("role", "role", $defaultRole, $roles);
         
+        $prepreamble = "<p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>";
         $preamble = "";
-        if($default->title == "Replaying Japan Conference"){
+        $showOther = "style='display:block;'";
+        if(trim($default->title) == "Replaying Japan Conference"){
             $preamble = "<p>Register for Replaying Japan 2021 Here!<br />
                            Replaying Japan 2021の参加登録はこちらから行って下さい。</p>
                         <p>Registration is FREE. Register so we can send you online participation information. You won’t get the links if you don’t register.<br />
@@ -195,19 +223,57 @@ class SpecialEventRegistration extends SpecialPage{
                         <p>Questions? Send an email to <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a><br />
                            その他質問事項がありましたら、 <a href='mailto:ai4society@ualberta.ca'>ai4society@ualberta.ca</a>迄メールして下さい。</p>";
         }
-        
+        else if(trim($default->title) == "3rd AI4IA Conference"){
+            $showOther = "style='display:none;'";
+            $prepreamble = "<div style='font-size: 16px;'><p>The UNESCO Information For All Programme (IFAP) Working Group on Information Accessibility (WGIA), is hosting it's second online one-day conference on 28 September 2022. This event will be hosted in collaboration with the Kule Institute for Advanced Studies (KIAS) and AI4Society (AI4S), both at University of Alberta, Canada, the Centre for New Economic Diplomacy (CNED) in ORF, India and the Broadcasting Commission of Jamaica. It is being organised under the auspices of the UNESCO Cluster Office for the Caribbean, Kingston, Jamaica and the UNESCO Regional Office for Southern Africa, Harare, Zimbabwe.</p>
+
+                        <p>AI can be very beneficial to society but if abused it can also be very harmful. The AI4IA Conference, therefore, raises a range of issues, including the relationship between Artificial Intelligence (AI) and Law, AI and Ethics, media and our right to know, creativity and innovation. It is necessary to understand how AI can be made inclusive, thereby enabling the widest cross-section of society.</p>
+                         
+                        <p>This event provides a platform for open discourse involving participants from academia, civil society, private sector and government.</p>
+                        
+                        <p><b>Organizing Committee</b><br />
+                            Cordel Green, Samridhi Arora Kalra, Geoffrey Rockwell, Nicolás Arnáez, Erica Simmons, Soniya Mukhedkar, Trisha Ray, Maria Dolores Souza, Andrea Millwood Hargrave , Andrew J Haire, David Soutar.</p>
+
+                        <p><b>Program</b><br />
+                            The AI4IA conference is an on-demand conference with live sessions on 28 September 2022.</p>
+
+                        <p>On-demand viewing of the conference line-up will be available from 00:00 GMT (+0) from 26 September until 28 September 2022.</p>
+                        
+                        <p>A live opening session will be held on 28 September 2022 from 13:00 (GMT) on ZOOM.<br />
+                           There will also be Live interactive sessions with the speakers on 28 September 2022 during the hours from 08:00 -10:00 (GMT) and 16:00-18:00 (GMT).<br />
+                           If you have never used the Gather.town platform before, please review the user guide <a target='_blank' href='https://www.youtube.com/watch?v=89at5EvCEvk'>here</a>. We look forward to seeing everyone!
+                        </p>
+                        
+                        <p>Learn more about the conference here: <a target='_blank' href='https://www.ai4iaconference.com/'>www.AI4IAconference.com</a></p>
+
+                        <p>Register by filling the information below to receive the links to join the different sessions.</p>
+                        </div>
+                        <script type='text/javascript'>
+                            $('#sideToggle').html('&gt;');
+                            $('#side').css('left', '-200px');
+	                        $('#outerHeader').css('left', '-3px');
+	                        $('#bodyContent').css('left', '-3px');
+	                        sideToggled = 'in';
+                            $(document).ready(function(){
+                                $('#banner2 img').css('max-width', '275px');
+                                $('#webpage').hide();
+                                $('#twitter').hide();
+                            });
+                        </script>";
+        }
+        $eventShow = ($defaultEvent != 0) ? "style='display:none;'" : "";
         $getStr = isset($_GET['event']) ? "?event={$_GET['event']}" : "";
         $banner1 = ($default->getImageUrl(4) != "") ? "<img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$default->getImageUrl(4)}' />" : "";
         $banner2 = ($default->getImageUrl(5) != "") ? "<img style='max-width: 200px;height: 100%;object-fit: contain;object-position: top;' src='{$default->getImageUrl(5)}' />" : "";
         $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php/Special:SpecialEventRegistration{$getStr}' method='post' enctype='multipart/form-data'>
-            <p>AI4Society holds a variety of events such as dialogues, workshops, symposia, etc. Please select the upcoming event you want to attend, and fill out the information required. You will receive the login information via email.</p>
+            {$prepreamble}
             <div style='display:flex;'>
                 <div style='width:800px;margin-right:15px;'>
-                    <div style='text-align:center;width:100%;'>{$banner1}</div>
+                    <div id='banner1' style='text-align:center;width:100%;'>{$banner1}</div>
                     {$preamble}
                     <h3>Participant information</h3>
                     <table class='wikitable' frame='box' rules='all'>
-                        <tr>
+                        <tr {$eventShow}>
                             <td class='label' style='vertical-align: middle;'>Event</td>
                             <td>{$eventField->render()}</td>
                         </tr>
@@ -224,38 +290,40 @@ class SpecialEventRegistration extends SpecialPage{
                             <td class='label' style='vertical-align: middle;'>{$roleLabel}</td>
                             <td>{$roleField->render()}</td>
                         </tr>
-                        <tr>
+                        <tr id='webpage'>
                             <td class='label' style='vertical-align: middle;'>Webpage</td>
                             <td>{$webpageField->render()}</td>
                         </tr>
-                        <tr>
+                        <tr id='twitter'>
                             <td class='label' style='vertical-align: middle;'>Twitter</td>
                             <td>{$twitterField->render()}</td>
                         </tr>
                     </table>
                     {$misc}
-                    <h3>Other information</h3>
-                    <table class='wikitable' frame='box' rules='all'>
-                        <tr>
-                            <td><input type='checkbox' name='receive_information' value='1' checked /></td>
-                            <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='join_newsletter' value='1' /></td>
-                            <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='create_profile' value='1' /></td>
-                            <td>Become an AI4Society Member</td>
-                        </tr>
-                        <tr>
-                            <td><input type='checkbox' name='similar_events' value='1' /></td>
-                            <td>Inform me about similar events</td>
-                        </tr>
-                    </table>
-                    <input type='submit' name='submit' value='Submit' />
+                    <div><div {$showOther}>
+                        <h3>Other information</h3>
+                        <table class='wikitable' frame='box' rules='all'>
+                            <tr>
+                                <td><input type='checkbox' name='receive_information' value='1' checked /></td>
+                                <td style='max-width:600px;'>Receive post-event information: for some events we release video recordings, text documents, and similar documentation. If this box is checked you will receive links to them when ready.</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='join_newsletter' value='1' /></td>
+                                <td>Join AI4Society mailing list to receive our by-weekly newsletter</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='create_profile' value='1' /></td>
+                                <td>Become an AI4Society Member</td>
+                            </tr>
+                            <tr>
+                                <td><input type='checkbox' name='similar_events' value='1' /></td>
+                                <td>Inform me about similar events</td>
+                            </tr>
+                        </table>
+                    </div></div>
+                    <input type='submit' name='submit' value='Submit' style='margin-top: 1em;' />
                 </div>
-                <div>
+                <div id='banner2'>
                     {$banner2}
                 </div>
             </div>

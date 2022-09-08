@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_APPLICATION" pdfFiles="RCHA2021ApplicationPDF" year="2021">
-    <ReportSection id="information" type="HeaderReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information">
+    <ReportSection id="information" type="HeaderReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" pagebreak="false">
         <Static>
             <![CDATA[
                 <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
-                <h4 style='font-size:1.20em;'>AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition</h4>
+                <h4 style='font-size:1.20em;'>AVOID Frailty Regional Centres for Healthy Aging<br />(RCHA) Grants Competition</h4>
                 <br />
                 <br />
                 <br />
@@ -16,21 +16,11 @@
                 <br />
             ]]>
         </Static>
-        <ReportItem id="bookmark" type="Bookmark" title="Section 1 - Administrative Information">
-        </ReportItem>
-        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text" optional="true">
-            <![CDATA[
-                <table class="wikitable" frame="box" rules="all" style="width:100%;">
-                    <tr>
-                        <td>
-                            <b>CFN File Number:</b>
-                        </td>
-                        <td>{$value}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
+    </ReportSection>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" pagebreak="false">
         <ReportItem id="title" blobItem="TITLE" type="Text">
             <![CDATA[
+                <table class="wikitable" frame="box" rules="all" style="width:100%;">
                     <tr>
                         <td>
                             <b>Title of RCHA Proposal:</b>
@@ -63,11 +53,11 @@
             <![CDATA[
                     <tr>
                         <td>
-                            <b>Total Partnership Funds Secured:</b>
+                            <b>Total Partnership Contribution:</b>
                         </td>
                         <td>{$item}</td>
                     </tr>
-                </table>
+                </table><br />
             ]]>
         </ReportItem>
         <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
@@ -184,45 +174,91 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="region" type="Radio" blobItem="REGION" options="BC|AB|SK|YT &amp; NWT|NVT|MB|ON &amp; QC|NB|NS|PEI &amp; NFLD/LAB">
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" blobType="BLOB_TEXT" options="Yes, I expect that this study will require an ethics review.|No, I do not expect that this study will require an ethics review.">
             <![CDATA[
-                <table class="wikitable" frame="box" rules="all"  style="width:100%;">
-                    <tr>
-                        <td valign="top"><b>Geographic Region of RCHA (Select only one):</b>{$item}</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="community" type="Checkbox" blobItem="COMMUNITY" blobType="BLOB_ARRAY" options="Rural|Suburban|Urban">
-            <![CDATA[
-                        <td valign="top"><b>Type of Community (Select all that apply):</b>{$item}</td>
-                    </tr>
-                </table>
+                <h3>Research Ethics/Environmental Assessment</h3>
+                {$item}<br /><br />
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary" showProgress="true" pagebreak="false">
         <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
             <![CDATA[
-                {$item}
+                <h4>2.1: <u>Lay</u> Project Summary</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h4>2.2: <u>Scientific</u> Project Summary</h4>
+                {$item}<br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships" title="Section 5 - Partnerships &amp; Support Letters" showProgress="true"  pagebreak="false">
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Project Description" title="Section 3 - Project Description" showProgress="true" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <p>Project Description is appended at the end of the document.</p><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information" showProgress="true" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <p>Supporting Information is appended at the end of the document.</p><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships Letters" title="Section 5 - Partnerships Letters" showProgress="true"  pagebreak="false">
         <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" multiple="true" class="wikitable">
             <![CDATA[
                 {$item}
+                <br />
+                <p>Partnership Letters are appended at the end of the document.</p><br />
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="funding" type="EditableReportSection" blobSection="FUNDING" name="6 - Budget Document" title="Section 6 - Budget Document" showProgress="true"  pagebreak="false">
-        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding" showProgress="true" pagebreak="false">
+        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" multiple="true" class="wikitable">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
-    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Project Team" title="Section 7 - Project Team Information" showProgress="true"  pagebreak="false">
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Additional Documents" title="Section 7 - Additional Documents" showProgress="true" pagebreak="false">
         <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             <![CDATA[
+                <h3>Project Team Information</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>PI/Co-I CVs</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Other Member CV(s)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Ethics</h3>
                 {$item}
             ]]>
         </ReportItem>
@@ -231,8 +267,5 @@
         <ReportItem id="proposal" blobSection="PROPOSAL" blobItem="PROPOSAL" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
         <ReportItem id="supporting" blobSection="SUPPORTING" blobItem="SUPPORTING" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
         <ReportItem id="letters" blobSection="PARTNERSHIPS" blobItem="LETTERS" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
-        <ReportItem id="cv" blobSection="CV" blobItem="CV" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
-        <ReportItem id="signatures" blobSection="SIGNATURES" blobItem="SIGNATURES" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
-        <ReportItem id="ethics" blobSection="ETHICS" blobItem="ETHICS" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
     </ReportSection>
 </Report>

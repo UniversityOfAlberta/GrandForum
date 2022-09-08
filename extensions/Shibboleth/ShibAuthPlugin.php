@@ -466,14 +466,22 @@ function ShibUserLoadFromSession($user, &$result)
                         array('user_id' => EQ($user->getId())));
     Cache::delete("mw_user_{$user->getId()}");
 	if($config->getValue('shibDefaultRole') != ""){
+	    $role = $config->getValue('shibDefaultRole');
+	    if(strstr($role, "-Candidate") !== false){
+	        $role = str_replace("-Candidate", "", $role);
+	        DBFunctions::update('mw_user',
+                        array('candidate' => 1),
+                        array('user_id' => EQ($user->getId())));
+	    }
 	    DBFunctions::insert('grand_roles',
 	                        array('user_id'    => $user->getId(),
-	                              'role'       => $config->getValue('shibDefaultRole'),
+	                              'role'       => $role,
 	                              'start_date' => EQ(COL('CURRENT_TIMESTAMP'))));
 	}
 	$person = Person::newFromId($user->getId());
 	return true;
 }
+
 function ShibAddGroups($user) {
 	global $shib_groups;
 	global $shib_group_prefix;

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Call for Expressions of Interest for the Telus 5G Living Lab" reportType="RP_TELUS" pdfType="RP_TELUS" year="2022" disabled="false" ajax="true">
+    <ReportSection id="proposal" type="HeaderReportSection" blobSection="PROPOSAL" name="Application" title="Application" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="position:static; float:right;margin-top:0;font-size:2em;text-align:right;">Telus 5G Living Lab</div>
+                <h4 style='font-size:1.20em;'>Call for Expressions of Interest<br />for the Telus 5G Living Lab</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="400px">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td class='label'>
+                            Title of the initiative:
+                        </td>
+                        <td class='value'>
+                            {$item}
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="scientific_rational" type="Textarea" blobItem="SCIENTIFIC_RATIONAL" rich="true" limit="500">
+            <![CDATA[
+                <h2>Overview - Scientific Rationale and Fit with the Telus 5G Living Lab</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+
+        <Static>
+            <![CDATA[
+                <h2>UofA Team</h2>
+            ]]>
+        </Static>
+        <ReportItemSet type="Array" array="{getArray(RP_TELUS,PROPOSAL,PROJECT_FACULTY,0,{$user_id},{$project_id}}" index="project_faculty">
+            <Static>
+                <![CDATA[
+                    <table class="wikitable small" rules="all" frame="box" width="100%" style='margin-bottom:1em;'>
+                        <tr>
+                            <th style='width:20%;'>First Name</th>
+                            <th style='width:20%;'>Last Name</th>
+                            <th style='width:20%;'>Email</th>
+                            <th style='width:20%;'>Faculty</th>
+                            <th style='width:20%;'>Department</th>
+                        </tr>
+                        <tr>
+                            <td style='width:20%;'>{getExtra(first)}</td>
+                            <td style='width:20%;'>{getExtra(last)}</td>
+                            <td style='width:20%;'>{getExtra(email)}</td>
+                            <td style='width:20%;'>{getExtra(faculty)}</td>
+                            <td style='width:20%;'>{getExtra(dept)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan='5'>{nl2br({getExtra(bio)})}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <Static>
+            <![CDATA[
+                <h2>Investigators outside UofA</h2>
+            ]]>
+        </Static>
+        <ReportItemSet type="Array" array="{getArray(RP_TELUS,PROPOSAL,PROJECT_EXTERNAL,0,{$user_id},{$project_id}}" index="project_external">
+            <Static>
+                <![CDATA[
+                    <table class="wikitable small" rules="all" frame="box" width="100%" style='margin-bottom:1em;'>
+                        <tr>
+                            <th style='width:15%;'>First Name</th>
+                            <th style='width:15%;'>Last Name</th>
+                            <th style='width:15%;'>Email</th>
+                            <th style='width:20%;'>University</th>
+                            <th style='width:20%;'>Faculty</th>
+                            <th style='width:20%;'>Department</th>
+                        </tr>
+                        <tr>
+                            <td style='width:15%;'>{getExtra(first)}</td>
+                            <td style='width:15%;'>{getExtra(last)}</td>
+                            <td style='width:15%;'>{getExtra(email)}</td>
+                            <td style='width:20%;'>{getExtra(university)}</td>
+                            <td style='width:20%;'>{getExtra(faculty)}</td>
+                            <td style='width:20%;'>{getExtra(dept)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan='6'>{nl2br({getExtra(bio)})}</td>
+                        </tr>
+                    </table>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        
+        <ReportItem id="project_trainees" type="MultiText"  class="wikitable small" blobItem="PROJECT_TRAINEES" blobType="BLOB_ARRAY" indices="organization|url|role|status" labels="Organization|URL|Role|Confirmed/Potential" types="Text|Text|Text|Select(Confirmed,Potential)" sizes="25%|25%|25%|25%" multiple="true">
+            <![CDATA[
+                <h2>External Partners</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="proposal" type="Textarea" blobItem="PROPOSAL" rich="true" limit="1000">
+            <![CDATA[
+                <h2>Proposal and brief discussion of the suitability of the team</h2>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="timeline" type="MultiText"  class="wikitable small" blobItem="TIMELINE" blobType="BLOB_ARRAY" indices="date|description" labels="Date|Description" types="Date|Textarea" sizes="10%|90%" multiple="true">
+            <![CDATA[
+                <h2>Timeline and Outcomes</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget" type="Integer" blobItem="BUDGET" min="50" max="100" width="2em">
+            <![CDATA[
+                <h2>Budget</h2>
+                {$item}&nbsp;K<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true">
+            <![CDATA[
+                <h3>Budget Justification</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_funding" type="Radio" blobItem="EXISTING_FUNDING" options="Yes|No">
+            <![CDATA[
+                <h3>Indicate if you have existing Funding</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_funding_explain" type="Textarea" blobItem="EXISTING_FUNDING_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip" type="Radio" blobItem="EXISTING_IP" options="Yes|No">
+            <![CDATA[
+                <h3>Indicate if your research will make use of existing IP</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="existing_ip_explain" type="Textarea" blobItem="EXISTING_IP_EXPLAIN" rich="true" limit="200" height="150px">
+            <![CDATA[
+                <p><b>Explanation</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

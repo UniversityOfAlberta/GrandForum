@@ -1653,7 +1653,7 @@ class Paper extends BackboneModel{
 
     function create(){
         $me = Person::newFromWGUser();
-        if($me->isLoggedIn() && trim($this->title) != ""){
+        if($me->isLoggedIn() && !$me->isCandidate() && trim($this->title) != ""){
             // Begin Transaction
             DBFunctions::begin();
             $authors = array();
@@ -1746,7 +1746,7 @@ class Paper extends BackboneModel{
     
     function update(){
         $me = Person::newFromWGUser();
-        if($me->isLoggedIn() && trim($this->title) != ""){
+        if($me->isLoggedIn() && !$me->isCandidate() && trim($this->title) != ""){
             // Begin Transaction
             DBFunctions::begin();
             $authors = array();
@@ -1857,7 +1857,7 @@ class Paper extends BackboneModel{
     
     function delete(){
         $me = Person::newFromWGUser();
-        if($me->isLoggedIn()){
+        if($me->isLoggedIn() && !$me->isCandidate()){
             if($this->getAccessId() > 0){
                 // Delete Permanently
                 $status = DBFunctions::delete('grand_products',
