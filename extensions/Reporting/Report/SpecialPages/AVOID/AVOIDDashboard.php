@@ -419,7 +419,7 @@ class AVOIDDashboard extends SpecialPage {
         }
         $blob = new ReportBlob(BLOB_TEXT, YEAR, $me->getId(), 0);
         $blob_address = ReportBlob::create_address($report, "SUBMIT", "SUBMITTED", 0);
-        $blob->load($blob_address);
+        $blob->load($blob_address, true);
         $blob_data = $blob->getData();
         if($blob_data == "Submitted"){
             return $blob->getLastChanged();
@@ -474,7 +474,7 @@ class AVOIDDashboard extends SpecialPage {
         $me = Person::newFromId($wgUser->getId());
         $nsText = ($article != null) ? str_replace("_", " ", $article->getTitle()->getNsText()) : "";
         if($me->isRole(ADMIN) || $me->isRole(STAFF)){
-            return true;
+            //return true;
         }
         $baseLineSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID");
         $threeMonthSubmitted = AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO");
