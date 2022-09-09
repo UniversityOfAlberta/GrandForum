@@ -69,13 +69,18 @@ class SpecialEventRegistration extends SpecialPage{
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(4)}'></div>";
             }
             $message .= "<p>Dear {$_POST['name']},</p>
-                        <p>Your registration has been confirmed to the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
+                        <p>Your registration has been confirmed for the following event: <a href='{$event->getUrl()}'>{$event->getTitle()}</a></p>";
             if($event->getArticleLink() != ""){
                 $link = (substr($event->getArticleLink(), 0, 4) == "http") ? "<a href='{$event->getArticleLink()}'>{$event->getArticleLink()}</a>" : $event->getArticleLink();
-                $message .= "<p>Please join us following dates and time shown on the aforementioned event using this link: {$link}</p>";
+                $message .= "<p>Please join us on the following dates and times using the respective links: {$link}</p>";
             }
-            $message .= "<p>Please save this email for future reference, we look forward to see you.</p>";
-            $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            $message .= "<p>Please save this email for future reference, we look forward to seeing you.</p>";
+            if($event != null && trim($event->title) == "3rd AI4IA Conference"){
+                $message .= "<p>Contact <a href='mailto:ai4ia2022@gmail.com'>ai4ia2022@gmail.com</a> or <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            }
+            else{
+                $message .= "<p>Contact <a href='mailto:ai4s@ualberta.ca'>ai4s@ualberta.ca</a> if you have any questions.</p>";
+            }
             if($event->getImageUrl(1) != ""){
                 $message .= "<div style='text-align:center;width:100%;'><img style='max-height: 200px;width: 100%;object-fit: contain;object-position: left;' src='{$event->getImageUrl(1)}'></div>";
             }
