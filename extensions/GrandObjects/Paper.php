@@ -1906,6 +1906,7 @@ class Paper extends BackboneModel{
             foreach($this->getAuthors(true, false) as $author){
                 $authors[] = array('id' => $author->getId(),
                                    'name' => $author->getNameForProduct(),
+                                   'email' => $author->getEmail(),
                                    'fullname' => $author->getNameForForms(),
                                    'url' => $author->getUrl());
             }

@@ -29,6 +29,7 @@ ProductListView = Backbone.View.extend({
                 return;
             }
             var authors = Array();
+            var authorEmails = Array();
             var projects = Array();
             var topProjects = Array();
             _.each(model.authors, function(author, aId){
@@ -37,6 +38,14 @@ ProductListView = Backbone.View.extend({
                 }
                 else{
                     authors.push(author.name);
+                }
+            });
+            _.each(model.authors, function(author, aId){
+                if(author.url != ''){
+                    authorEmails.push(author.email);
+                }
+                else{
+                    authorEmails.push('" "');
                 }
             });
             _.each(model.projects, function(project, aId){
@@ -85,6 +94,7 @@ ProductListView = Backbone.View.extend({
             row.push("<span style='white-space: nowrap;'>" + model.type + "</span>");
             row.push("<span class='productTitle' data-id='" + model.id + "' data-href='" + model.url + "'>" + model.title + "</span>");
             row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authors.join(', ') + "</div>");
+            row.push("<div style='display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;'>" + authorEmails.join(', ') + "</div>");
             row.push(model.status);
             row.push(model.citation);
             _.each(this.getFields(), function(field, index){
@@ -150,9 +160,9 @@ ProductListView = Backbone.View.extend({
         var showButton = this.$("#showButton").detach();
         var throbber = this.$(".throbber").detach();
         var data = this.processData(0);
-        var targets = [ 4, 5 ];
+        var targets = [ 4, 5, 6 ];
         if(networkName == "FES" && this.model.category == "Publication"){
-            targets = [ 6, 7 ];
+            targets = [ 6, 7, 8 ];
         }
         _.each(this.getFields(), function(field){
             targets.push(_.last(targets) + 1);
