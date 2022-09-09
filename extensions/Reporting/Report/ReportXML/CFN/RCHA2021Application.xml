@@ -299,7 +299,7 @@
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
             <![CDATA[
                 <h3>Project Budget</h3>
-                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Budget.xlsx'>project budget Excel document</a>. Complete the document and upload a <b>single Excel file named RCHA-Surname_Budget.xlsx</b>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents.</p>
+                <p>Download the <a href='{$wgServer}{$wgScriptPath}/data/Budget Template_CFN 2022 RCHA Competition.xlsx'>project budget Excel document</a>. Complete the document and upload a <b>single Excel file named RCHA-Surname_Budget.xlsx</b>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents.</p>
                 {$item}
             ]]>
         </ReportItem>
