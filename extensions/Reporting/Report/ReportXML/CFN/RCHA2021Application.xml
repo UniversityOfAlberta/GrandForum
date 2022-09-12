@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="AVOID Frailty Regional Centres for Healthy Aging (RCHA) Grants Competition" reportType="RP_RCHA_APPLICATION" pdfType="RP_RCHA_APPLICATION" pdfFiles="RCHA2021ApplicationPDF" year="2021" disabled="false" ajax="true">
     <Permissions>
-        <Role role="INACTIVE+" subType="RCHA2021Applicant">
+        <Role role="" subType="RCHA2021Applicant">
 
         </Role>
     </Permissions>
