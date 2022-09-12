@@ -39,6 +39,9 @@ class AnnualReportTable extends SpecialPage{
         }
         $wgOut->addHTML("</ul>");
         $people = Person::getAllPeople();
+        
+        $decisionHeader = ($me->isRole(DEAN)) ? "<th>Dean's Decision</th>" : "";
+        
         for($y=YEAR; $y >= 2018; $y--){
             $wgOut->addHTML("<div id='tabs-$y'>
                 <table id='table-$y' class='wikitable'>
@@ -48,6 +51,7 @@ class AnnualReportTable extends SpecialPage{
                         <th class='deptCol'>Department</th>
                         <th>Report</th>
                         <th>Recommendation</th>
+                        {$decisionHeader}
                     </thead>
                     <tbody>");
             $ar = new DummyReport("FEC", $me, null, $y);
@@ -75,14 +79,23 @@ class AnnualReportTable extends SpecialPage{
                     $rec->person = $person;
                     $pdf = $ar->getPDF();
                     $recPdf = $rec->getPDF(false, "Recommendations");
+                    
                     $pdfButton = (count($pdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$pdf[0]['token']}' target='_blank'>Download</a>" : "";
                     $recButton = (count($recPdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$recPdf[0]['token']}' target='_blank'>Download</a>" : "";
+                    $decisionRow = "";
+                    if($me->isRole(DEAN)){
+                        $decisionPdf = $rec->getPDF(false, "Dean Decision");
+                        $decisionButton = (count($decisionPdf) > 0) ? "<a class='button' href='$wgServer$wgScriptPath/index.php/Special:ReportArchive?getpdf={$decisionPdf[0]['token']}' target='_blank'>Download</a>" : "";
+                        $decisionRow = "<td align='middle'>{$decisionButton}</td>";
+                    }
+                    
                     $wgOut->addHTML("<tr>
                         <td>{$case}</td>
                         <td><a href='{$person->getUrl()}'>{$person->getReversedName()}</a></td>
                         <td class='deptCol'>{$person->getDepartment()}</td>
                         <td align='middle'>{$pdfButton}</td>
                         <td align='middle'>{$recButton}</td>
+                        {$decisionRow}
                     </tr>");
                 }
             }
