@@ -53,10 +53,10 @@
                 </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="12">
+        <ReportItem id="term" type="Integer" width="20px" blobItem="TERM" min="0" max="18">
             <![CDATA[
                 <tr>
-                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 12 months)</small></td>
+                    <td><b style='white-space:nowrap;'>Term of RCHA Proposal</b><br /><small>(Maximum 18 months)</small></td>
                     <td>{$item}</td>
                 </tr>
             ]]>
