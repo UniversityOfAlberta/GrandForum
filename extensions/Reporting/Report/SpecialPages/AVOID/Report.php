@@ -12,9 +12,12 @@ $wgHooks['BeforePageDisplay'][] = 'Report::disableSubTabs';
 
 require_once("AVOIDDashboard.php");
 require_once("FrailtyReport.php");
+require_once("ProgressReport.php");
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
 require_once("IntakeSummary.php");
+require_once("ThreeMonthSummary.php");
+require_once("SixMonthSummary.php");
 require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 require_once("ActionPlan/ActionPlan.php");

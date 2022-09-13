@@ -13,6 +13,10 @@ function runIntakeSummary($par) {
 
 class IntakeSummary extends SpecialPage {
     
+    static $pageTitle = "Intake Summary";
+    static $reportName = "IntakeSurvey";
+    static $rpType = "RP_AVOID";
+    
     static $map = array(
         'avoid_age' => 'Age',
         'avoid_gender' => 'Gender',
@@ -141,10 +145,10 @@ class IntakeSummary extends SpecialPage {
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut;
         $me = Person::newFromWgUser();
-        $wgOut->setPageTitle("Intake Summary");
+        $wgOut->setPageTitle(static::$pageTitle);
         $people = Person::getAllPeople(CI);
         
-        $report = new DummyReport("IntakeSurvey", $me, null, YEAR);
+        $report = new DummyReport(static::$reportName, $me, null, YEAR);
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
@@ -212,7 +216,7 @@ class IntakeSummary extends SpecialPage {
     
     function getBlobData($blobSection, $blobItem, $person, $year){
         $blb = new ReportBlob(BLOB_TEXT, $year, $person->getId(), 0);
-        $addr = ReportBlob::create_address("RP_AVOID", $blobSection, $blobItem, 0);
+        $addr = ReportBlob::create_address(static::$rpType, $blobSection, $blobItem, 0);
         $result = $blb->load($addr);
         return $blb->getData();
     }

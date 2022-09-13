@@ -16,7 +16,7 @@ class AdminDataCollection extends SpecialPage{
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $this->getOutput()->setPageTitle("Admin Data Collection");
+        $this->getOutput()->setPageTitle("Usage Stats");
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
@@ -304,7 +304,7 @@ class AdminDataCollection extends SpecialPage{
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "AdminDataCollection") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Data Collection", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection", $selected);
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Usage Stats", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminDataCollection", $selected);
         }
         return true;
     }

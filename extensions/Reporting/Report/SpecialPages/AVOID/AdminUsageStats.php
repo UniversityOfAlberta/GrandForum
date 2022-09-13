@@ -16,7 +16,7 @@ class AdminUsageStats extends SpecialPage {
 
     function execute($par){
         global $wgUser, $wgOut, $wgServer, $wgScriptPath, $wgTitle;
-        $this->getOutput()->setPageTitle("Admin Usage Stats");
+        $this->getOutput()->setPageTitle("Admin");
         $this->showActionPlanStats();
         $this->showRegistrantsStats();
         $this->showProgramStats();
@@ -442,7 +442,7 @@ class AdminUsageStats extends SpecialPage {
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "AdminUsageStats") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Usage Stats", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminUsageStats", $selected);
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Admin", "{$wgServer}{$wgScriptPath}/index.php/Special:AdminUsageStats", $selected);
         }
         return true;
     }
