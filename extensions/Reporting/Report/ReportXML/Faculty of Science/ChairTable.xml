@@ -405,7 +405,7 @@
                             if($($("td", tr)[1]).text() == "Stroulia, Eleni"){
                                 return;
                             }
-                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)"){
+                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)" && $(el).val() != "0A"){
                                 if($(tr).attr('data-fecid').includes("A") ||
                                    $(tr).attr('data-fecid').includes("B") ||
                                    $(tr).attr('data-fecid').includes("C") ||
@@ -448,7 +448,7 @@
                         $(increment).each(function(j, el){
                             var table = $(el).closest("table");
                             var val = $(el).text();
-                            if(val != "N/A" && val != "" && val != "0.00 (PTC)"){
+                            if(val != "N/A" && val != "" && val != "0.00 (PTC)" && $(el).val() != "0A"){
                                 if($(table).attr('data-fecid').includes("A") ||
                                    $(table).attr('data-fecid').includes("B") ||
                                    $(table).attr('data-fecid').includes("C") ||
@@ -973,7 +973,7 @@
                         var fso_count = 0;
                         $(".increment select").each(function(i, el){
                             var tr = $(el).closest("tr");
-                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)"){
+                            if($(el).val() != "" && $(el).val() != "0.00 (PTC)" && $(el).val() != "0A"){
                                 if($(tr).attr('data-fecid').includes("A") ||
                                    $(tr).attr('data-fecid').includes("B") ||
                                    $(tr).attr('data-fecid').includes("C") ||
@@ -1016,7 +1016,7 @@
                         $(increment).each(function(j, el){
                             var table = $(el).closest("table");
                             var val = $(el).text();
-                            if(val != "N/A" && val != "" && val != "0.00 (PTC)"){
+                            if(val != "N/A" && val != "" && val != "0.00 (PTC)" && $(el).val() != "0A"){
                                 if($(table).attr('data-fecid').includes("A") ||
                                    $(table).attr('data-fecid').includes("B") ||
                                    $(table).attr('data-fecid').includes("C") ||

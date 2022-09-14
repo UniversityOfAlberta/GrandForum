@@ -98,6 +98,7 @@
                 <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
                     <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
@@ -116,6 +117,7 @@
                 <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
                     <![CDATA[
@@ -258,6 +260,7 @@
             <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                          {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                          {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                         {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
                          {!contains({$my_roles},Chair)}
                     )}">
                 <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
