@@ -43,10 +43,6 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                           $person->isSubRole("DR"));
             }
             // SPECIAL CASES FOR PEOPLE FROM OTHER DEPARTMENTS BELOW
-            if(($me->getName() == "Manveen.Maadhra" || $me->getName() == "Stephen.Johnston") && $person->getName() == "Jonathan.Dennis"){
-                // This is also a special case, but needs to be put here
-                goto create;
-            }
             if(($me->getName() == "Linda.Christensen" || $me->getName() == "Declan.Ali") && $person->getName() == "Deanna.Singhal"){
                 // This is also a special case, but needs to be put here
                 goto create;
@@ -79,8 +75,7 @@ class DepartmentPeopleReportItemSet extends ReportItemSet {
                     continue;
                 }
                 // SPECIAL CASES BELOW
-                if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis" || 
-                                                                                                   $person->getName() == "Jonathan.Dennis")){
+                if(($me->getName() == "Linda.Christensen" || $me->getName() == "Tracy.Raivio") && ($person->getName() == "Mark.Lewis")){
                     // Not reviewed by BioSci, only Math
                     continue;
                 }
