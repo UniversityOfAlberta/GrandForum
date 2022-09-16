@@ -87,7 +87,7 @@ class ProgressReport extends SpecialPage {
                                                           padding-right: {$margins['right']}cm;
                                                           padding-bottom: {$margins['bottom']}cm;
                                                           padding-left: {$margins['left']}cm;";
-
+        
         $html = "<html>
                     <head>
                         <script language='javascript' type='text/javascript' src='{$wgServer}{$wgScriptPath}/scripts/jquery.min.js?version=3.4.1'></script>
@@ -236,6 +236,21 @@ class ProgressReport extends SpecialPage {
                         <div class='container'>
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Activity</div>
+                                {$this->drawChart('Sitting during the day', 
+                                                  array('Some of the day', 'Most of the day', 'All day'), 
+                                                  array($this->getBlobData('behaviouralassess', 'behave1_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave1_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave1_avoid', YEAR, 'RP_AVOID_SIXMO')))}
+                                {$this->drawChart('Walking at last 10 minutes at a time', 
+                                                  array('Most days (5-7 days)', 'Some days(2-4 days)', 'Rarely or not at all'), 
+                                                  array($this->getBlobData('behaviouralassess', 'behave0_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave0_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave0_avoid', YEAR, 'RP_AVOID_SIXMO')))}
+                                {$this->drawChart('Moderate physical activity', 
+                                                  array('Most days (5-7 days)', 'Some days(2-4 days)', 'Rarely or not at all'), 
+                                                  array($this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID_SIXMO')))}
                                 <table class='summary'>
                                     <thead>
                                         <tr>
@@ -314,6 +329,21 @@ class ProgressReport extends SpecialPage {
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Interact</div>
+                                {$this->drawChart('Lack Companionship', 
+                                                  array('Hardly ever', 'Some of the time', 'Often'),
+                                                  array($this->getBlobData('behaviouralassess', 'interact7_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact7_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact7_avoid', YEAR, 'RP_AVOID_SIXMO')))}
+                                {$this->drawChart('Feeling left out', 
+                                                  array('Hardly ever', 'Some of the time', 'Often'),
+                                                  array($this->getBlobData('behaviouralassess', 'interact8_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact8_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact8_avoid', YEAR, 'RP_AVOID_SIXMO')))}
+                                {$this->drawChart('Isolated from others', 
+                                                  array('Hardly ever', 'Some of the time', 'Often'),
+                                                  array($this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID_THREEMO'), 
+                                                        $this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID_SIXMO')))}
                                 <table class='summary'>
                                     <thead>
                                         <tr>
@@ -406,6 +436,59 @@ class ProgressReport extends SpecialPage {
         }
         
         return $html;
+    }
+    
+    function drawChart($title, $labels, $values){
+        global $wgServer, $wgScriptPath;
+        $height = 8;
+        
+        $i1 = array_search($values[0], $labels);
+        $i2 = array_search($values[1], $labels);
+        $i3 = array_search($values[2], $labels);
+        
+        $v1 = (1-$i1/4)*$height;
+        $v2 = (1-$i2/4)*$height;
+        $v3 = (1-$i3/4)*$height;
+        
+        $c1 = ($i1 == 2) ? "#ff1616" : (($i1 == 1) ? "#f79233" : "#008037");
+              
+        $c2 = ($i2 == 2) ? "#ff1616" : (($i2 == 1) ? "#f79233" : "#008037");
+              
+        $c3 = ($i3 == 2) ? "#ff1616" : (($i3 == 1) ? "#f79233" : "#008037");
+        
+        $html = "<table style='width:100%; margin-top: 0.5em;'>
+                    <tr><td style='width:50%;'>
+                         <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 100%;'>
+                            <tr>
+                                <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                                <th style='font-weight: 800;color: #06619b;'>3 months</th>
+                                <th align='right' style='font-weight: 800;color: #06619b;'>6 months</th>
+                            </tr>
+                            <tr>
+                                <td colspan='3'>{$title}</td>
+                            </tr>
+                            <tr style='height: {$height}em; image-rendering: pixelated; background: url({$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/chartbg.png); background-size: {$height}em 100%;'>
+                                <td valign='bottom'><div style='margin-right:30%; height: {$v1}em; background: $c1; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom'><div style='margin-left:15%; margin-right:15%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom'><div style='margin-left:30%; height: {$v3}em; background: $c3; border-radius:100em 100em 0 0;'></div></td>
+                            </tr>
+                         </table>
+                     </td>
+                     <td style='width:50%; padding-top:4em; padding-left: 1em;' valign='center'>
+                        <span style='color:#008037;'>{$labels[0]}</span><br /><br />
+                        <span style='color:#f79233;'>{$labels[1]}</span><br /><br />
+                        <span style='color:#ff1616;'>{$labels[2]}</span>
+                     </td></tr>
+                 </table>";
+        return $html;
+    }
+    
+    function getBlobData($blobSection, $blobItem, $year, $rpType){
+        $me = Person::newFromWgUser();
+        $blb = new ReportBlob(BLOB_TEXT, $year, $me->getId(), 0);
+        $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
+        $result = $blb->load($addr);
+        return $blb->getData();
     }
     
     function execute($par){
