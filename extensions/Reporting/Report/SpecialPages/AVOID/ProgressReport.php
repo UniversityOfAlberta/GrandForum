@@ -158,10 +158,6 @@ class ProgressReport extends SpecialPage {
                                 margin-top: 4em;
                             }
                             
-                            div.category {
-                                page-break-inside: avoid;
-                            }
-                            
                             table.summary {
                                 page-break-inside: avoid;
                                 margin-top: 1em;
@@ -235,7 +231,7 @@ class ProgressReport extends SpecialPage {
                         <br />
                         <div class='container'>
                             <div class='category'>
-                                <div class='title' style='text-decoration: underline;'>Activity</div>
+                                <div class='title' style='text-decoration: underline;'>Activity <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Activity.png' /></div>
                                 {$this->drawChart('Sitting during the day', 
                                                   array('Some of the day', 'Most of the day', 'All day'), 
                                                   array($this->getBlobData('behaviouralassess', 'behave1_avoid', YEAR, 'RP_AVOID'), 
@@ -276,7 +272,7 @@ class ProgressReport extends SpecialPage {
                             </div>
                             
                             <div class='category'>
-                                <div class='title' style='text-decoration: underline;'>Vaccinate</div>
+                                <div class='title' style='text-decoration: underline;'>Vaccinate <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Vaccination.png' /></div>
                                 <table class='summary'>
                                     <thead>
                                         <tr>
@@ -302,7 +298,7 @@ class ProgressReport extends SpecialPage {
                             </div>
                             
                             <div class='category'>
-                                <div class='title' style='text-decoration: underline;'>Optimize Medications</div>
+                                <div class='title' style='text-decoration: underline;'>Optimize Medications <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/OptimizeMedication.png' /></div>
                                 <table class='summary'>
                                     <thead>
                                         <tr>
@@ -328,7 +324,7 @@ class ProgressReport extends SpecialPage {
                             </div>
                             
                             <div class='category'>
-                                <div class='title' style='text-decoration: underline;'>Interact</div>
+                                <div class='title' style='text-decoration: underline;'>Interact <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Interact.png' /></div>
                                 {$this->drawChart('Lack Companionship', 
                                                   array('Hardly ever', 'Some of the time', 'Often'),
                                                   array($this->getBlobData('behaviouralassess', 'interact7_avoid', YEAR, 'RP_AVOID'), 
@@ -369,7 +365,7 @@ class ProgressReport extends SpecialPage {
                             </div>
                             
                             <div class='category'>
-                                <div class='title' style='text-decoration: underline;'>Diet & Nutrition</div>
+                                <div class='title' style='text-decoration: underline;'>Diet & Nutrition <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/DietAndNutrition.png' /></div>
                                 <table class='summary'>
                                     <thead>
                                         <tr>
@@ -451,9 +447,7 @@ class ProgressReport extends SpecialPage {
         $v3 = (1-$i3/4)*$height;
         
         $c1 = ($i1 == 2) ? "#ff1616" : (($i1 == 1) ? "#f79233" : "#008037");
-              
         $c2 = ($i2 == 2) ? "#ff1616" : (($i2 == 1) ? "#f79233" : "#008037");
-              
         $c3 = ($i3 == 2) ? "#ff1616" : (($i3 == 1) ? "#f79233" : "#008037");
         
         $html = "<table style='width:100%; margin-top: 0.5em;'>
@@ -468,9 +462,9 @@ class ProgressReport extends SpecialPage {
                                 <td colspan='3'>{$title}</td>
                             </tr>
                             <tr style='height: {$height}em; image-rendering: pixelated; background: url({$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/chartbg.png); background-size: {$height}em 100%;'>
-                                <td valign='bottom'><div style='margin-right:30%; height: {$v1}em; background: $c1; border-radius:100em 100em 0 0;'></div></td>
-                                <td valign='bottom'><div style='margin-left:15%; margin-right:15%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>
-                                <td valign='bottom'><div style='margin-left:30%; height: {$v3}em; background: $c3; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom' style='height: {$height}em;'><div style='margin-right:30%; height: {$v1}em; background: $c1; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom' style='height: {$height}em;'><div style='margin-left:15%; margin-right:15%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom' style='height: {$height}em;'><div style='margin-left:30%; height: {$v3}em; background: $c3; border-radius:100em 100em 0 0;'></div></td>
                             </tr>
                          </table>
                      </td>
