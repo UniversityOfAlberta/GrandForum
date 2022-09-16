@@ -172,7 +172,7 @@ class IntakeSummary extends SpecialPage {
                 $api = new UserFrailtyIndexAPI();
                 $scores = $api->getFrailtyScore($person->getId());
                 $wgOut->addHTML("<tr>
-                                    <td>{$scores["Total"]}</td>");
+                                    <td>".number_format($scores["Total"]/36, 3)."</td>");
                 foreach($report->sections as $section){
                     foreach($section->items as $item){
                         if($item->blobItem != "" && $item->blobItem !== 0){
