@@ -599,6 +599,7 @@ abstract class AbstractReportItem {
                 $this->variables[$key] = $value;
                 return true;
             }
+            return $found;
         }
         return false;
     }
