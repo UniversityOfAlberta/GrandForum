@@ -264,7 +264,11 @@ class AdminDataCollection extends SpecialPage{
                             <script type='text/javascript'>
                                 table = $('#data').DataTable({
                                     aLengthMenu: [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                                    iDisplayLength: -1
+                                    iDisplayLength: -1,
+                                    'dom': 'Blfrtip',
+                                    'buttons': [
+                                        'excel'
+                                    ]
                                 });
                                 $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
                                 $('#copyEmails').click(function(){
