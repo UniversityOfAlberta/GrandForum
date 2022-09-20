@@ -572,14 +572,14 @@
             <![CDATA[
             <span id="active_specify_end">
                 <h3>What challenges have you faced when it comes to staying active? (choose all that apply):</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
             </span>
             ]]>
         </ReportItem>
         <ReportItem id="active_text_specify" type="Text" blobItem="ACTIVESPECIFY" width="400px" optional="true">
             <![CDATA[
                 <span id="activespecify">
-                        Specify: {$item}
+                        <div class="requiredField">Specify: {$item}</div>
                 </span>
                 ]]>
         </ReportItem>
@@ -822,14 +822,14 @@
             <![CDATA[
                 <span id="meds_end">
                 <h3>Why have you not had your medication reviewed in the last year? (choose all that apply):</h3>
-                {$item}
+                <div class="requiredField">{$item}</div>
                 </span>
             ]]>
         </ReportItem>
         <ReportItem id="meds_end_text_specify" blobItem="MEDSENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="meds_end_specify">
-                        Specify: {$item}
+                        <div class="requiredField">Specify: {$item}</div>
                 </span>
             ]]>
         </ReportItem>
@@ -937,16 +937,16 @@
         </ReportItem>
         <ReportItem id="interact_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="interact_end" orientation="vertical" options="I have been restricted due to COVID-19 public health measures|I find it physically/mentally difficult to participate in social interactions|I am not aware of opportunities for social interaction in my community|I have trouble maintaining social connections over time|I do not feel that I need more interaction than I already have|Other" optional="true">
             <![CDATA[
-		<span id="interact_end">
-			<h3>What challenges have you faced when it comes to social interaction? (choose all that apply):</h3>
-            {$item}
+		    <span id="interact_end">
+			    <h3>What challenges have you faced when it comes to social interaction? (choose all that apply):</h3>
+                <div class="requiredField">{$item}</div>
             </span>
             ]]>
         </ReportItem>
         <ReportItem id="interact_end_text_specify" blobItem="INTERACTENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="interact_end_specify">
-                        Specify: {$item}
+                        <div class="requiredField">Specify: {$item}</div>
                 </span>
                 ]]>
         </ReportItem>
@@ -1044,15 +1044,15 @@
         <ReportItem id="diet_end" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="diet_end" orientation="vertical" options="I find it physically/mentally difficult to do this|I was not aware of one or more of the recommendations in the questions above|It's difficult for me to access nutritious and/or culturally appropriate food because of where I live|I can't afford the type of food that I would like to eat|I have trouble maintaining a healthy eating routine|Other" optional="true">
             <![CDATA[
             <span id="diet_end">
-            <h3>What challenges have you faced when it comes to maintaining a balanced diet? (choose all that apply):</h3>
-            {$item}
+                <h3>What challenges have you faced when it comes to maintaining a balanced diet? (choose all that apply):</h3>
+                <div class="requiredField">{$item}</div>
             </span>
             ]]>
         </ReportItem>
         <ReportItem id="diet_end_text_specify" blobItem="DIETENDTEXTSPECIFY" type="Textarea" optional="true">
             <![CDATA[
                 <span id="diet_end_specify">
-                        Specify: {$item}
+                        <div class="requiredField">Specify: {$item}</div>
                 </span>
                 ]]>
         </ReportItem>
