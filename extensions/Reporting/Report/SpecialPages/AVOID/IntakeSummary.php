@@ -153,6 +153,7 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<table id='summary' class='wikitable'>
                             <thead>
                             <tr>
+                                <th>User Id</th>
                                 <th>Frailty Score</th>");
         foreach($report->sections as $section){
             foreach($section->items as $item){
@@ -172,6 +173,7 @@ class IntakeSummary extends SpecialPage {
                 $api = new UserFrailtyIndexAPI();
                 $scores = $api->getFrailtyScore($person->getId());
                 $wgOut->addHTML("<tr>
+                                    <td>{$person->getId()}</td>
                                     <td>".number_format($scores["Total"]/36, 3)."</td>");
                 foreach($report->sections as $section){
                     foreach($section->items as $item){
