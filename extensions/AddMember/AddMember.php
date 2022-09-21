@@ -55,7 +55,7 @@ class AddMember extends SpecialPage{
                 $form->getElementById('middle_name_field')->setPOST('wpMiddleName');
                 $form->getElementById('last_name_field')->setPOST('wpLastName');
                 $form->getElementById('email_field')->setPOST('wpEmail');
-                $_POST['wpSendEmail'] = (count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
+                $_POST['wpSendEmail'] = (is_array(@$_POST['sendEmail_field']) && count(@$_POST['sendEmail_field']) > 0) ? implode("", $_POST['sendEmail_field']) : "false";
                 $form->getElementById('role_field')->setPOST('wpUserType');
                 if($user->isRoleAtLeast(STAFF) || $config->getValue('networkName') == "FES"){
                     $form->getElementById('subrole_field')->setPOST('wpUserSubType');
