@@ -45,17 +45,6 @@
 
                 <p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
 
-                <h3>Eligibility</h3>
-                <p>In order to be considered for AGE-WELL Awards, funding applicants must:</p>
-                <ol>
-                    <li>Receive at least some financial support from additional sources: home department, supervisor research grants, and/or through government and agency scholarships or awards.</li>
-                    <li>Participate full‐time in their respective program at a Canadian post-secondary institution.</li>
-                    <li>Be engaged in academic study/research aligned with the mission and vision of AGE-WELL.</li>
-                    <li>Applicants for doctoral awards are restricted to those entering the first, second, or third year of their program with the exception of the AGE-WELL-NBHRF Awards and the AGE-WELL-UW Faculty of Health Awards.</li>
-                </ol>
-
-                <p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact, Catalyst or AIR programs would be ineligible.</p>
-
                 <h3>AGE-WELL Indigenous Graduate Student and Postdoctoral Awards</h3>
                 <p>AGE-WELL is pleased to once again offer the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified Indigenous trainees researching in AgeTech-related fields.</p>
 
@@ -67,6 +56,17 @@
                 </ul>
 
                 <p>If successful, trainee funding will be held and disbursed by the trainee’s supervisor in a new account that must be established at the supervisor’s home institution. Awards are not renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+                
+                <h3>Eligibility</h3>
+                <p>In order to be considered for AGE-WELL Awards, funding applicants must:</p>
+                <ol>
+                    <li>Receive at least some financial support from additional sources: home department, supervisor research grants, and/or through government and agency scholarships or awards.</li>
+                    <li>Participate full‐time in their respective program at a Canadian post-secondary institution.</li>
+                    <li>Be engaged in academic study/research aligned with the mission and vision of AGE-WELL.</li>
+                    <li>Applicants for doctoral awards are restricted to those entering the first, second, or third year of their program with the exception of the AGE-WELL-NBHRF Awards and the AGE-WELL-UW Faculty of Health Awards.</li>
+                </ol>
+
+                <p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact, Catalyst or AIR programs would be ineligible.</p>
 
                 <!--h3>The Awards</h3>
                 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees must demonstrate that they receive funding from a source other than AGE-WELL.</p>
@@ -109,7 +109,7 @@
                     <li>Online Application Form;</li>
                     <li>Two Confidential Letters of Support (one must be from your proposed supervisor)</li>
                     <li>Formal evidence of enrolment in a Master’s or Doctoral program or Post‐Doctoral position;</li>
-                    <li>Formal evidence of awarded funding for 2022-2023;</li>
+                    <li>Formal evidence of funding in 2023;</li>
                     <li>Curriculum Vitae.</li>
                 </ol>
 
@@ -621,14 +621,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="michael" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2" optional="true">
+        <!--ReportItem id="michael" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2" optional="true">
             <![CDATA[
                 <h2>Michael F. Harcourt Policy Fellowship - Personal Statement (maximum 1/2 page, for Harcourt applicants only)</h2>
                 <p>Please outline your interest in policy and the potential policy implications of your work.<br />
                 Please prepare the document and submit as a PDF.</p>
                 {$item}
             ]]>
-        </ReportItem>
+        </ReportItem-->
     </ReportSection>
     <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
         <ReportItem id="report_review" type="ReviewReportItem">
