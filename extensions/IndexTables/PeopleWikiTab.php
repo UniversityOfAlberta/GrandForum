@@ -58,11 +58,7 @@ class PeopleWikiTab extends AbstractTab {
         
         $table = $this->table;
         $me = Person::newFromWgUser();
-        $edit = $this->visibility['edit'];
-        
-        if(!$this->visibility['isMember'] && false){
-            return $this->html;
-        }
+
         $this->html .= "Below are all the $this->table Wikipages and Files in {$config->getValue('networkName')}.  To search for a file or page in particular, use the search boxes below.  You can search by name, date last edited, and last editor.<br /><br />"; 
         $this->html .= "<script type='text/javascript'>
             function clickButton(){
