@@ -32,6 +32,7 @@ class ProjectEvolution extends SpecialPage {
         </script>");
         $wgOut->output();
         $wgOut->disable();
+        exit;
         return true;
     }
     

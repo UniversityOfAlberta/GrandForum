@@ -57,6 +57,7 @@ class MaterialPage {
                 $wgOut->addHTML("There is no Material with the id '{$wgTitle->getText()}'");
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
             if(!$create){
                 $wgOut->setPageTitle(str_replace("&#39;", "'", $material->getTitle()));
@@ -296,7 +297,7 @@ class MaterialPage {
             }
             $wgOut->output();
             $wgOut->disable();
-            return true;
+            exit;
         }
         return true;
     }

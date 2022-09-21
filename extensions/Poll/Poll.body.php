@@ -54,6 +54,7 @@ class PollView {
                     $wgOut->loginToUse();
                     $wgOut->output();
                     $wgOut->disable();
+                    exit;
                 }
                 return false;
             }

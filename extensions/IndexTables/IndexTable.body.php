@@ -192,6 +192,7 @@ class IndexTable {
                 $wgOut->loginToUse();
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
                 return true;
             }
             $wgOut->addScript("<script type='text/javascript'>

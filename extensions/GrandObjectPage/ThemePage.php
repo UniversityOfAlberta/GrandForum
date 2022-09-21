@@ -90,6 +90,7 @@ class ThemePage {
                 
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
         }
         return true;

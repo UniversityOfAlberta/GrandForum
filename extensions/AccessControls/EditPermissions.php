@@ -13,6 +13,7 @@ class EditPermissions{
 			$wgOut->addHTML("You must be a sysop to edit this page");
 			$wgOut->output();
 			$wgOut->disable();
+			exit;
 		}
 		return true;
 	}

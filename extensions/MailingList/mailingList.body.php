@@ -238,7 +238,7 @@ class MailList{
             $wgOut->setPageTitle("Mailing List Archives");
             $wgOut->output();
             $wgOut->disable();
-            return false;
+            exit;
         }
         return false;
     }
@@ -282,6 +282,7 @@ class MailList{
         }
         $wgOut->output();
         $wgOut->disable();
+        exit;
     }
 }
 

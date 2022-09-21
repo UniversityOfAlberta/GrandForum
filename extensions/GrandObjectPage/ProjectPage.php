@@ -149,9 +149,9 @@ class ProjectPage {
                         $wgOut->addHTML("<a href='{$prev->getUrl()}' class='button' style='width:35px;'>Prev</a>&nbsp;<a href='{$next->getUrl()}' class='button' style='width:35px;'>Next</a>");
                     }
                 }
-                
                 $wgOut->output();
                 $wgOut->disable();
+                exit;
             }
         }
         return true;
