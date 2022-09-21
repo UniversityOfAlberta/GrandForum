@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION_FULL" pdfFiles="AncilliaryStudiesApplicationPDF" year="2022">
+    <ReportSection id="information" type="HeaderReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <img class='logo' style="position:static; float:right;margin-top:0;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <h4 style='font-size:1.20em;'>KFLA Regional Centre for Healthy Aging<br />Ancillary Studies Competition</h4>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" pagebreak="false">
+        <ReportItem id="title" blobItem="TITLE" type="Text">
+            <![CDATA[
+                <table class="wikitable" frame="box" rules="all" style="width:100%;">
+                    <tr>
+                        <td>
+                            <b>Title of Proposal:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="term" blobItem="TERM" type="Integer" min="0" max="12">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Term of Proposal:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" type="Integer">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Funding Requested from CFN:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="funds" blobItem="FUNDS" type="Integer">
+            <![CDATA[
+                    <tr>
+                        <td>
+                            <b>Total Partnership Contribution:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="first_name" blobItem="FIRST_NAME" type="Text">
+            <![CDATA[
+                <h2>Please provide information on the Principal Investigator who will act as Project Leader for proposal</h2>
+                <table class="wikitable" frame="box" rules="all" style="width:100%;">
+                    <tr>
+                        <td align="right">
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="last_name" blobItem="LAST_NAME" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="designations" blobItem="DESIGNATIONS" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Designations:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" blobItem="EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="day_phone" blobItem="DAY_PHONE" type="Text">
+            <![CDATA[
+                        <td align="right">
+                            <b>Daytime Phone:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="other_phone" blobItem="OTHER_PHONE" type="Text" optional="true">
+            <![CDATA[
+                        <td align="right">
+                            <b>Other Phone (optional):</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" blobItem="INSTITUTION" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan='3' align="right">
+                            <b>Host Institution that will receive and administer funds:</b>
+                        </td>
+                        <td colspan='3'>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_name" blobItem="CONTACT_NAME" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td align="right">
+                            <b>Secondary Contact Name:</b>
+                        </td>
+                        <td colspan="2">
+                            {$item}
+                        </td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_phone" blobItem="CONTACT_PHONE" type="Text">
+            <![CDATA[
+                        <td colspan="2" align="right">
+                            <b>Secondary Telephone Number:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="contact_email" blobItem="CONTACT_EMAIL" type="Text">
+            <![CDATA[
+                    <tr>
+                        <td colspan="3"></td>
+                        <td colspan="2" align="right">
+                            <b>Secondary Email:</b>
+                        </td>
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" type="Radio" blobItem="ETHICS" blobType="BLOB_TEXT" options="Yes, I expect that this study will require an ethics review.|No, I do not expect that this study will require an ethics review.">
+            <![CDATA[
+                <h3>Research Ethics/Environmental Assessment</h3>
+                {$item}<br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="summary" type="EditableReportSection" blobSection="SUMMARY" name="2 - Proposal Summary" title="Section 2 - Proposal Summary" showProgress="true" pagebreak="false">
+        <ReportItem id="lay_summary" blobItem="LAY_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h4>2.1: <u>Lay</u> Project Summary</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="sci_summary" blobItem="SCI_SUMMARY" type="Textarea" limit="250" rich="true">
+            <![CDATA[
+                <h4>2.2: <u>Scientific</u> Project Summary</h4>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="proposal" type="EditableReportSection" blobSection="PROPOSAL" name="3 - Project Description" title="Section 3 - Project Description" showProgress="true" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <p>Project Description is appended at the end of the document.</p><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="supporting" type="EditableReportSection" blobSection="SUPPORTING" name="4 - Supporting Information" title="Section 4 - Supporting Information" showProgress="true" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <p>Supporting Information is appended at the end of the document.</p><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships Letters" title="Section 5 - Partnerships Letters" showProgress="true"  pagebreak="false">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" multiple="true" class="wikitable">
+            <![CDATA[
+                {$item}
+                <br />
+                <p>Partnership Letters are appended at the end of the document.</p><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding" showProgress="true" pagebreak="false">
+        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" multiple="true" class="wikitable">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="documents" type="EditableReportSection" blobSection="DOCUMENTS" name="7 - Additional Documents" title="Section 7 - Additional Documents" showProgress="true" pagebreak="false">
+        <ReportItem id="team" blobItem="TEAM" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+            <![CDATA[
+                <h3>Project Team Information</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
+            <![CDATA[
+                <h3>Project Budget</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv1" blobItem="CV1" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Principal & Co-Investigator Biosketch CVs</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv2" blobItem="CV2" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>CV(s)/Resume(s) for Other Project Team Member(s)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Required Signatures</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+            <![CDATA[
+                <h3>Proof of Study Submission to Research Ethics Board</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="docs" type="HeaderReportSection" pagebreak="false">
+        <ReportItem id="proposal" blobSection="PROPOSAL" blobItem="PROPOSAL" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
+        <ReportItem id="supporting" blobSection="SUPPORTING" blobItem="SUPPORTING" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
+        <ReportItem id="letters" blobSection="PARTNERSHIPS" blobItem="LETTERS" blobType="BLOB_RAW" type="UploadPDF" fileSize="20" mimeType="application/pdf" />
+    </ReportSection>
+</Report>
