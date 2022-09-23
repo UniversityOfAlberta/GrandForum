@@ -73,7 +73,9 @@ class PersonProfileTab extends AbstractEditableTab {
                 }
             }, 33);
             $(document).ready(function(){
-                $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+                if($('#person_products').length > 0 || $('#funded_projects') > 0){
+                    $('div#bio [name=submit]').clone().appendTo($('#profileText'));
+                }
             });
         </script>";
         $this->showCCV($this->person, $this->visibility);
@@ -469,12 +471,12 @@ EOF;
         $html = "";
         $projects = $person->getProjects(true);
         if(count($projects) > 0){
-            $html .= "<h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
+            $html .= "<div id='funded_projects'><h2>{$config->getValue('networkName')} Funded Projects</h2><ul>";
             foreach($projects as $project){
                 $completed = ($project->getStatus() == "Ended") ? " (completed)" : "";
                 $html .= "<li><a class='projectUrl' data-projectId='{$project->getId()}' href='{$project->getUrl()}'>{$project->getFullName()} ({$project->getName()})</a>{$completed}</li>";
             }
-            $html .= "</ul>";
+            $html .= "</ul></div>";
         }
         return $html;
     }
@@ -489,7 +491,7 @@ EOF;
         $products = $person->getPapers("all", false, 'both', true, "Public");
         $string = "";
         if(count($products) > 0){
-            $string = "<h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
+            $string = "<div id='person_products'><h2>".Inflect::pluralize($config->getValue('productsTerm'))."</h2>";
             $string .= "<table id='personProducts' rules='all' frame='box'>
                 <thead>
                     <tr>
@@ -525,7 +527,7 @@ EOF;
                 $string .= "</tr>";
             }
             $string .= "</tbody>
-                </table>
+                </table></div>
                 <script type='text/javascript'>
                     var personProducts = $('#personProducts').dataTable({
                         order: [[ 2, 'desc' ]],
