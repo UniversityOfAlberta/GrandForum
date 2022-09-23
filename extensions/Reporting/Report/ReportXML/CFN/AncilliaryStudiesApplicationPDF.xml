@@ -18,9 +18,19 @@
         </Static>
     </ReportSection>
     <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" pagebreak="false">
-        <ReportItem id="title" blobItem="TITLE" type="Text">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
             <![CDATA[
                 <table class="wikitable" frame="box" rules="all" style="width:100%;">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text">
+            <![CDATA[
                     <tr>
                         <td>
                             <b>Title of Proposal:</b>

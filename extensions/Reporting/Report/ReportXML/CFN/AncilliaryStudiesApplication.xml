@@ -6,15 +6,24 @@
         </Role>
     </Permissions>
     <ReportSection id="information" type="EditableReportSection" blobSection="INFORMATION" name="1 - Admin Information" title="Section 1 - Administrative Information" showProgress="true">
-        <ReportItem id="title" blobItem="TITLE" type="Text" width="250px">
+        <ReportItem id="file_number" blobItem="FILE_NUMBER" type="Text">
             <![CDATA[
                 <div style="text-align: center; width:100%;border: 1px solid black;">
                     <p><b>Please review the Application Instructions and Program Guidelines.</b></p>
                     <p><b>The application process requires submission of a LOI prior to submitting a Full Application.</b></p>
                     <p><b>All information must be provided in English.</b></p>
                 </div><br />
-                    
                 <table class="wikitable" frame="box" rules="all">
+                    <tr>
+                        <td>
+                            <b>CFN File Number:</b><br /><small>File number was provided via email<br />right after LOI submission.</small>
+                        </td>
+                        <td>{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" blobItem="TITLE" type="Text" width="250px">
+            <![CDATA[
                     <tr>
                         <td>
                             <b>Title of Proposal:</b><br /><small>(Maximum 15 words; appropriate for lay audience)</small>
@@ -28,7 +37,7 @@
                     <tr>
                         <td>
                             <b>Term of Proposal:</b><br />
-                            <small>(Maximum 18 months;<br />funding will not proceed beyond June 30, 2024)</small>
+                            <small>(Maximum 18 months)</small>
                         </td>
                         <td>{$item}</td>
                     </tr>
@@ -249,7 +258,8 @@
                 
                 <h3>3.8 Highly Qualified Personnel (HQP)</h3>
                 <ul>
-                    <li>Describe the role of each HQP trainee who will be directly involved in a meaningful way in the study HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
+                    <li>Describe the role of each HQP trainee who will be directly involved in a meaningful way in the study.</li>
+                    <li>HQP can be part-time or full-time graduate/doctoral/post-doctoral or undergraduate students, residents, fellows or working professionals.</li>
                 </ul>
                 
                 <h3>3.9 Citizen Engagement</h3>
@@ -265,10 +275,10 @@
         <ReportItem id="supporting" blobItem="SUPPORTING" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <p>The Supporting Information document does not contribute to the 5-page limit of the Project Description.</p>
-                Upload a <b>single document named Ancillary2022-##-Surname_SupportingInformation.pdf</b>containing the following information (The Surname refers to the Project Leader’s surname):
+                Upload a <b>single document named Ancillary2022-##-Surname_SupportingInformation.pdf</b> containing the following information (The Surname refers to the Project Leader’s surname):
                 <ul>
                     <li>budget justification to support the budget Excel document (mandatory)</li>
-                    <li>references to support the project description (mandatory</li>
+                    <li>references to support the project description (mandatory)</li>
                     <li>figure and/or tables (optional)</li>
                 </ul>
                 {$item}
@@ -276,7 +286,7 @@
         </ReportItem>
     </ReportSection>
     <ReportSection id="partnerships" type="EditableReportSection" blobSection="PARTNERSHIPS" name="5 - Partnerships Letters" title="Section 5 - Partnerships Letters" showProgress="true">
-        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true">
+        <ReportItem id="partners" blobItem="PARTNERS" blobType="BLOB_ARRAY" type="MultiText" indices="partner|coi|role|nature|amount" labels="Partner Organization/ Receptor Company|Potential Conflict of Interest|Role in Project and Specific Use of Contribution in Project|Nature of Contribution|Contribution Amount (CDN$)" types="Text|Radio(Yes,No)|Text|Radio(Cash,In-Kind)|Integer" sizes="150|100|200|100|100" multiple="true" optional="true">
             <![CDATA[
                 <ul>
                     <li>If you have partners, please complete the table below.</li>
@@ -287,16 +297,16 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
+        <ReportItem id="letters" blobItem="LETTERS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf" optional="true">
             <![CDATA[
                 <h3>Letters of Support</h3>
-                <p>Upload a single document named Ancillary2022-##-Surname_PartnershipsLetters.pdf containing the partnership letters of support in the order they appear in the table. The Surname refers to the Project Leader’s surname).</p>
+                <p>Upload a single document named <b>Ancillary2022-##-Surname_PartnershipsLetters.pdf</b> containing the partnership letters of support in the order they appear in the table. The Surname refers to the Project Leader’s surname.</p>
                 {$item}
             ]]>
         </ReportItem>
     </ReportSection>
     <ReportSection id="other_funding" type="EditableReportSection" blobSection="OTHER_FUNDING" name="6 - Other Funding" title="Section 6 - Other Funding" showProgress="true">
-        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" sizes="100|150|100|150|200|75|75" multiple="true">
+        <ReportItem id="funding" blobItem="FUNDING" blobType="BLOB_ARRAY" type="MultiText" indices="status|source|budget|pi|title|overlap1|overlap2" labels="Status of Grant|Funding Source|Budget Amount of Grant|Principal Investigator|Title of Grant|% Overlap with this application (Scientific)|% Overlap with this application (Financial)" types="Text|Text|Text|Text|Text|Text|Text" sizes="100|150|100|150|200|75|75" multiple="true" optional="true">
             <![CDATA[
                 <p>For all Principal Investigators please provide details on grants currently planned, being applied for, pending and awarded, for the entire period covered by this application.</p>
                 {$item}
@@ -336,7 +346,7 @@
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h3>Required Signatures</h3>
-                <p>Submit a single PDF containing signature documents for each Principal Investigator.  Name the PDF document <b>Ancillary2022-##-Surname_Signatures.pdf</b>. (The Surname refers to the Project Leader’s surname).
+                <p>Please download and complete the Required Signature PDF document. Upload a single PDF containing signature documents for all Principal Investigators. Name the PDF document <b>Ancillary2022-##-Surname_Signatures.pdf</b>. The Surname refers to the Project Leader’s surname.
 
 </p>
                 {$item}
@@ -345,7 +355,7 @@
         <ReportItem id="ethics" blobItem="ETHICS" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h3>Proof of Study Submission to Research Ethics Board</h3>
-                <p>Submit a single PDF containing proof of ethics submission for each investigator.  Name the PDF document <b>Ancillary2022-##-Surname_REB.pdf</b>.  The Surname refers to the Project Leader’s surname.</p>
+                <p>Submit a single PDF containing proof of ethics submission for all investigators. If ethics submission is not permitted prior to funding approval or final funder review, please provide a letter from your REB stating that reviews will only take place after funding is confirmed. Name the PDF document <b>Ancillary2022-##-Surname_REB.pdf</b>.  The Surname refers to the Project Leader’s surname.</p>
                 {$item}
             ]]>
         </ReportItem>
