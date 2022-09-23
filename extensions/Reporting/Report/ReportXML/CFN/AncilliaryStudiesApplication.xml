@@ -318,14 +318,14 @@
             <![CDATA[
                 <p><b>Be sure to click on the Upload button to ensure that your chosen document is uploaded successfully</b></p>
                 <h3>Project Team Information</h3>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Springboard ECR Grant Project_Team_Information.xlsx'>template Excel team document</a>. Upload a single Excel file named <b>Ancillary2022-##-Surname_TeamList.xlsx</b>. Note: Unless otherwise noted, when naming documents, “Ancillary2022-##” refers to the CFN File # you will receive from CFN after submission of the LOI.  The Surname refers to the Project Leader’s surname.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Project_Team_Information.xlsx'>template Excel team document</a>. Upload a single Excel file named <b>Ancillary2022-##-Surname_TeamList.xlsx</b>. Note: Unless otherwise noted, when naming documents, “Ancillary2022-##” refers to the CFN File # you will receive from CFN after submission of the LOI.  The Surname refers to the Project Leader’s surname.</p>
                 {$item}
             ]]>
         </ReportItem>
         <ReportItem id="budget" blobItem="BUDGET" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/zip">
             <![CDATA[
                 <h3>Project Budget</h3>
-                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Budget Template_CFN 2022 RCHA Competition.xlsx'>template Excel budget document</a>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents. Name the file <b>Ancillary2022-##-Surname_Budget.xlsx</b>. The Surname refers to the Project Leader’s surname.</p>
+                <p>Please download the <a href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Budget.xlsx'>template Excel budget document</a>. If there are more than one Principal Investigators receiving funds, please upload a single ZIP file containing all completed Excel budget documents. Name the file <b>Ancillary2022-##-Surname_Budget.xlsx</b>. The Surname refers to the Project Leader’s surname.</p>
                 {$item}
             ]]>
         </ReportItem>
@@ -346,7 +346,7 @@
         <ReportItem id="signatures" blobItem="SIGNATURES" blobType="BLOB_RAW" type="Upload" fileSize="20" mimeType="application/pdf">
             <![CDATA[
                 <h3>Required Signatures</h3>
-                <p>Please download and complete the Required Signature PDF document. Upload a single PDF containing signature documents for all Principal Investigators. Name the PDF document <b>Ancillary2022-##-Surname_Signatures.pdf</b>. The Surname refers to the Project Leader’s surname.
+                <p>Please download and complete the <a target='_blank' href='{$wgServer}{$wgScriptPath}/data/Ancillary RFP Required Signatures.pdf'>Required Signature PDF document</a>. Upload a single PDF containing signature documents for all Principal Investigators. Name the PDF document <b>Ancillary2022-##-Surname_Signatures.pdf</b>. The Surname refers to the Project Leader’s surname.
 
 </p>
                 {$item}
