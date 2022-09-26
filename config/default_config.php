@@ -130,6 +130,9 @@
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
     
+    // The terminology to use for "Stakeholder Category"
+    $config->setValue('stakeholderCategoryTerm', "Stakeholder Category");
+    
     // Whether to split the dept (Faculty / Dept)
     $config->setValue("splitDept", false);
 

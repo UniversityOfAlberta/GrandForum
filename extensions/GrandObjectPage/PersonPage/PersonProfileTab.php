@@ -681,7 +681,7 @@ EOF;
                 $stakeholderCategories = array_merge(array("" => "---"), $stakeholderCategories);
                 $stakeholderField = new SelectBox("stakeholder", "Stakeholder", $person->getStakeholder(), $stakeholderCategories);
                 $stakeholder = "<tr>
-                    <td class='label'>Stakeholder Category:</td>
+                    <td class='label'>{$config->getValue('stakeholderCategoryTerm')}:</td>
                     <td class='value'>{$stakeholderField->render()}</td>
                 </tr>";
             }
