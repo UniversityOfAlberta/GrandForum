@@ -195,6 +195,10 @@ class ProgressReport extends SpecialPage {
                                 background: #c6db56;
                             }
                             
+                            th {
+                                white-space: nowrap;
+                            }
+                            
                             a, a:visited {
                                 color: #005f9d;
                                 text-decoration: none;
@@ -247,80 +251,17 @@ class ProgressReport extends SpecialPage {
                                                   array($this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID'), 
                                                         $this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID_THREEMO'), 
                                                         $this->getBlobData('behaviouralassess', 'behave2_avoid', YEAR, 'RP_AVOID_SIXMO')))}
-                                <table class='summary'>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BASELINE</th>
-                                            <th>3 MONTHS</th>
-                                            <th>6 MONTHS</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <th>MY BARRIERS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>MY SUPPORTS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                {$this->drawTable('active_specify_end')}
                             </div>
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Vaccinate <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Vaccination.png' /></div>
-                                <table class='summary'>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BASELINE</th>
-                                            <th>3 MONTHS</th>
-                                            <th>6 MONTHS</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <th>MY BARRIERS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>MY SUPPORTS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                {$this->drawTable('vax_end')}
                             </div>
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Optimize Medications <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/OptimizeMedication.png' /></div>
-                                <table class='summary'>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BASELINE</th>
-                                            <th>3 MONTHS</th>
-                                            <th>6 MONTHS</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <th>MY BARRIERS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>MY SUPPORTS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                {$this->drawTable('meds_end')}
                             </div>
                             
                             <div class='category'>
@@ -340,54 +281,12 @@ class ProgressReport extends SpecialPage {
                                                   array($this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID'), 
                                                         $this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID_THREEMO'), 
                                                         $this->getBlobData('behaviouralassess', 'interact9_avoid', YEAR, 'RP_AVOID_SIXMO')))}
-                                <table class='summary'>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BASELINE</th>
-                                            <th>3 MONTHS</th>
-                                            <th>6 MONTHS</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <th>MY BARRIERS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>MY SUPPORTS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                {$this->drawTable('interact_end')}
                             </div>
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Diet & Nutrition <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/DietAndNutrition.png' /></div>
-                                <table class='summary'>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>BASELINE</th>
-                                            <th>3 MONTHS</th>
-                                            <th>6 MONTHS</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <th>MY BARRIERS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>MY SUPPORTS</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                {$this->drawTable('diet_end')}
                             </div>
                         </div>
                         
@@ -477,9 +376,38 @@ class ProgressReport extends SpecialPage {
         return $html;
     }
     
-    function getBlobData($blobSection, $blobItem, $year, $rpType){
+    function drawTable($barrierItem){
+        $barriers1 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID', BLOB_ARRAY)[$barrierItem]);
+        $barriers2 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_THREEMO', BLOB_ARRAY)[$barrierItem]);
+        $barriers3 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_SIXMO', BLOB_ARRAY)[$barrierItem]);
+        $html = "<table class='summary'>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th style='width: 8em; max-width: 8em;'>BASELINE</th>
+                            <th style='width: 8em; max-width: 8em;'>3 MONTHS</th>
+                            <th style='width: 8em; max-width: 8em;'>6 MONTHS</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <th>MY BARRIERS</th>
+                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers1)."</td>
+                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers2)."</td>
+                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers3)."</td>
+                    </tr>
+                    <tr>
+                        <th>MY SUPPORTS</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>";
+        return $html;
+    }
+    
+    function getBlobData($blobSection, $blobItem, $year, $rpType, $blobType=BLOB_TEXT){
         $me = Person::newFromWgUser();
-        $blb = new ReportBlob(BLOB_TEXT, $year, $me->getId(), 0);
+        $blb = new ReportBlob($blobType, $year, $me->getId(), 0);
         $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
         $result = $blb->load($addr);
         return $blb->getData();
