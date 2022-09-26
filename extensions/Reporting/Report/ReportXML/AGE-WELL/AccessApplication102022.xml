@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="AGE-WELL Access Award" reportType="RP_ACCESS_10_2022" pdfType="RPTP_ACCESS_10_2022" pdfFiles="AccessApplication102022PDF" year="2022" ajax="true" disabled="true">
+<Report name="AGE-WELL Access Award" reportType="RP_ACCESS_10_2022" pdfType="RPTP_ACCESS_10_2022" pdfFiles="AccessApplication102022PDF" year="2022" ajax="true" disabled="false">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="description" permissions="rw" />
