@@ -184,11 +184,6 @@
                 <div class="error">You must complete all fields for Partners</div>
             ]]>
         </ElseIf>
-        <ElseIf id="c7" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, MENTOR, 0, {$user_id}, 0)})}">
-            <![CDATA[
-                <div class="error">You must complete all fields for Mentor</div>
-            ]]>
-        </ElseIf>
         <ElseIf id="c8" if="{!({isArrayComplete(RP_ANCILLARY_APPLICATION, INTENT, NATIONAL, 0, {$user_id}, 0)})}">
             <![CDATA[
                 <div class="error">You must complete all fields for National Scientific Reviewers</div>
