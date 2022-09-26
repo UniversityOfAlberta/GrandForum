@@ -142,53 +142,114 @@ class IntakeSummary extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
+    function getHeader($report, $type=false){
+        $html = "<thead>
+                    <tr>
+                        <th>User Id</th>";
+        if($type != false){
+            $html .= "<th>Type</th>";
+        }
+        $html .= "<th>Frailty Score</th>";
+        foreach($report->sections as $section){
+            foreach($section->items as $item){
+                if($item->blobItem != "" && $item->blobItem !== 0){
+                    $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
+                    $html .= "<th>{$label}</th>";
+                }
+            }
+        }                       
+        $html .= "  </tr>
+                  </thead>";
+        return $html;
+    }
+    
+    function getRow($person, $report, $type=false){
+        global $wgServer, $wgScriptPath;
+        $api = new UserFrailtyIndexAPI();
+        $scores = $api->getFrailtyScore($person->getId());
+        $userLink = "{$person->getId()}";
+        if($type == false){
+            $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
+        }
+        $html = "<tr>
+                    <td>{$userLink}</td>";
+        if($type != false){
+            $html .= "<td>{$type}</td>";
+        }
+        $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+        foreach($report->sections as $section){
+            foreach($section->items as $item){
+                if($item->blobItem != "" && $item->blobItem !== 0){
+                    $value = $item->getBlobValue();
+                    if(is_array($value)){
+                        $html .= "<td>".implode(", ", $value)."</td>";
+                    }
+                    else{
+                        $html .= "<td>{$value}</td>";
+                    }
+                }
+            }
+        }
+        $html .= "</tr>";
+        return $html;
+    }
+    
+    function userTable(){
+        global $wgOut;
+        $me = Person::newFromWgUser();
+        $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
+        
+        $wgOut->addHTML("<table id='summary' class='wikitable'>");
+        $wgOut->addHTML($this->getHeader($report, true, true));
+        $wgOut->addHTML("<tbody>");
+        
+        $people = array();
+        foreach(explode(",", $_GET['users']) as $id){
+            $people[] = Person::newFromId($id);
+        }
+        
+        foreach($people as $person){
+            $report->person = $person;
+            $report->reportType = "RP_AVOID";
+            $wgOut->addHTML($this->getRow($report->person, $report, "Intake"));
+            $report->reportType = "RP_AVOID_THREEMO";
+            $wgOut->addHTML($this->getRow($report->person, $report, "3 Month"));
+            $report->reportType = "RP_AVOID_SIXMO";
+            $wgOut->addHTML($this->getRow($report->person, $report, "6 Month"));
+        }
+        $wgOut->addHTML("</tbody>
+                        </table>
+        <script type='text/javascript'>
+            $('#summary').DataTable({
+                'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
+                'scrollX': true,
+                'iDisplayLength': -1,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel'
+                ]
+            });
+        </script>");
+    }
+    
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut;
+        if(isset($_GET['users'])){
+            $this->userTable();
+            return;
+        }
         $me = Person::newFromWgUser();
         $wgOut->setPageTitle(static::$pageTitle);
         $people = Person::getAllPeople(CI);
         
         $report = new DummyReport(static::$reportName, $me, null, YEAR);
-        
-        $wgOut->addHTML("<table id='summary' class='wikitable'>
-                            <thead>
-                            <tr>
-                                <th>User Id</th>
-                                <th>Frailty Score</th>");
-        foreach($report->sections as $section){
-            foreach($section->items as $item){
-                if($item->blobItem != "" && $item->blobItem !== 0){
-                    $label = (isset(self::$map[$item->blobItem])) ? self::$map[$item->blobItem] : str_replace("_", " ", $item->blobItem);
-                    $wgOut->addHTML("<th>{$label}</th>");
-                }
-            }
-        }                       
-        $wgOut->addHTML("       </tr>
-                            </thead>
-                            <tbody>");
-        
+        $wgOut->addHTML("<table id='summary' class='wikitable'>");
+        $wgOut->addHTML($this->getHeader($report));
+        $wgOut->addHTML("<tbody>");
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
-                $api = new UserFrailtyIndexAPI();
-                $scores = $api->getFrailtyScore($person->getId());
-                $wgOut->addHTML("<tr>
-                                    <td>{$person->getId()}</td>
-                                    <td>".number_format($scores["Total"]/36, 3)."</td>");
-                foreach($report->sections as $section){
-                    foreach($section->items as $item){
-                        if($item->blobItem != "" && $item->blobItem !== 0){
-                            $value = $item->getBlobValue();
-                            if(is_array($value)){
-                                $wgOut->addHTML("<td>".implode(", ", $value)."</td>");
-                            }
-                            else{
-                                $wgOut->addHTML("<td>{$value}</td>");
-                            }
-                        }
-                    }
-                }
-                $wgOut->addHTML("</tr>");
+                $wgOut->addHTML($this->getRow($person, $report));
             }
         }
         $wgOut->addHTML("</tbody>
@@ -216,9 +277,10 @@ class IntakeSummary extends SpecialPage {
         return true;
     }
     
-    function getBlobData($blobSection, $blobItem, $person, $year){
+    function getBlobData($blobSection, $blobItem, $person, $year, $rpType=null){
+        $rpType = ($rpType == null) ? static::$rpType : $rpType;
         $blb = new ReportBlob(BLOB_TEXT, $year, $person->getId(), 0);
-        $addr = ReportBlob::create_address(static::$rpType, $blobSection, $blobItem, 0);
+        $addr = ReportBlob::create_address($rpType, $blobSection, $blobItem, 0);
         $result = $blb->load($addr);
         return $blb->getData();
     }
