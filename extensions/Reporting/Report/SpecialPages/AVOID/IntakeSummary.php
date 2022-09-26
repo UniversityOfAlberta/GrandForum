@@ -263,7 +263,9 @@ class IntakeSummary extends SpecialPage {
                 'dom': 'Blfrtip',
                 'buttons': [
                     'excel'
-                ]
+                ],
+                scrollX: true,
+                scrollY: $('#bodyContent').height() - 400
             });
         </script>");
     }
