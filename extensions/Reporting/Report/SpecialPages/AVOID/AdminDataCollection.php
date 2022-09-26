@@ -268,7 +268,9 @@ class AdminDataCollection extends SpecialPage{
                                     'dom': 'Blfrtip',
                                     'buttons': [
                                         'excel'
-                                    ]
+                                    ],
+                                    scrollX: true,
+                                    scrollY: $('#bodyContent').height() - 400
                                 });
                                 $('#data_length').append('<button id=\"copyEmails\" style=\"margin-left: 15px;\">Copy Visible Email Addresses</button>');
                                 $('#copyEmails').click(function(){
@@ -286,6 +288,9 @@ class AdminDataCollection extends SpecialPage{
                                     $('#adminDataCollectionMessages').css('opacity', 0.95);
                                     addSuccess('Visible email addresses copied', false, '#adminDataCollectionMessages');
                                     $('#adminDataCollectionMessages').fadeOut(5000);
+                                });
+                                _.defer(function(){
+                                    table.draw();
                                 });
                             </script>");
         }

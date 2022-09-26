@@ -222,12 +222,13 @@ class IntakeSummary extends SpecialPage {
         <script type='text/javascript'>
             $('#summary').DataTable({
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
-                'scrollX': true,
                 'iDisplayLength': -1,
                 'dom': 'Blfrtip',
                 'buttons': [
                     'excel'
-                ]
+                ],
+                scrollX: true,
+                scrollY: $('#bodyContent').height() - 400
             });
         </script>");
     }
