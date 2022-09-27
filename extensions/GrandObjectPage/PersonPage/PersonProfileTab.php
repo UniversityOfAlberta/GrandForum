@@ -645,20 +645,32 @@ EOF;
     }
     
     function showEditContact($person, $visibility){
-        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
+        global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath, $countries;
         $university = $person->getUniversity();
         $nationality = "";
         $me = Person::newFromWgUser();
         if($visibility['isMe'] || $visibility['isSupervisor']){
             $nationality = "";
             if($config->getValue("nationalityEnabled")){
-                $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array("" => "---", 
-                                                                                                                 "Canadian" => "Canadian/Landed Immigrant", 
-                                                                                                                 "Foreign"));
-                $nationality = "<tr>
-                    <td class='label'>Nationality:</td>
-                    <td class='value'>{$nationalityField->render()}</td>
-                </tr>";
+                if($config->getValue("nationalityAll")){
+                    $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array_merge(array(""), array_values($countries)));
+                    $nationality = "<tr>
+                        <td class='label'>Nationality:</td>
+                        <td class='value'>
+                            {$nationalityField->render()}
+                            <script type='text/javascript'>$(document).ready(function(){ $('#nationality').chosen(); });</script>
+                        </td>
+                    </tr>";
+                }
+                else{
+                    $nationalityField = new SelectBox("nationality", "Nationality", $person->getNationality(), array("" => "---", 
+                                                                                                                     "Canadian" => "Canadian/Landed Immigrant", 
+                                                                                                                     "Foreign"));
+                    $nationality = "<tr>
+                        <td class='label'>Nationality:</td>
+                        <td class='value'>{$nationalityField->render()}</td>
+                    </tr>";
+                }
             }
             $gender = "";
             if($config->getValue("genderEnabled") && ($person->isMe() || $me->isRoleAtLeast(STAFF))){

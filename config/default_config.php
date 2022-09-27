@@ -160,6 +160,9 @@
     // Whether or not the Nationality field is enabled
     $config->setValue("nationalityEnabled", true);
     
+    // Whether or not to show all countries, or only 'Canadian'
+    $config->setValue("nationalityAll", false);
+    
     // Whether or not Early Career Research is enabled
     $config->setValue("ecrEnabled", false);
     
