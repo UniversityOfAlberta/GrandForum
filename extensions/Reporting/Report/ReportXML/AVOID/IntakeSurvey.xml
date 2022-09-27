@@ -104,10 +104,12 @@
                         if($(".requiredFieldIncomplete:visible").length > 0){
                             $("input[type=submit]").hide();
                             $("#reportWarning").show();
+                            $(".reportTab:not(.selectedReportTab)").addClass("disabled_lnk");
                         }
                         else{
                             $("input[type=submit]").show();
                             $("#reportWarning").hide();
+                            $(".reportTab:not(.selectedReportTab)").removeClass("disabled_lnk");
                         }
                     }
                 }, 250);
@@ -589,34 +591,33 @@
                 $('span#active_specify_end').hide();
                     function specifyActiveEnd(){
                         if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "No"){$('span#active_specify_end').show();}
-                                            else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
-                                            else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
-                                            else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
-                                            else{$('span#active_specify_end').hide();}
-                                   }
-                             _.defer(specifyActiveEnd);
-                                $("input:radio[name='SelfAssessment_behave1_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='SelfAssessment_behave2_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='SelfAssessment_behave0_avoid']").change(specifyActiveEnd);
-                                $("input:radio[name='SelfAssessment_behave4_avoid']").change(specifyActiveEnd);
-                $("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
-
-                                $('span#activespecify').hide();
+                        else if($("input:radio[name='SelfAssessment_behave1_avoid']:checked").val() == "All day"){$('span#active_specify_end').show();}
+                        else if($("input:radio[name='SelfAssessment_behave2_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                        else if($("input:radio[name='SelfAssessment_behave0_avoid']:checked").val() == "Rarely or not at all"){$('span#active_specify_end').show();}
+                        else{$('span#active_specify_end').hide();}
+                    }
+                    _.defer(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave1_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave2_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave0_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave4_avoid']").change(specifyActiveEnd);
+                    $("input:radio[name='SelfAssessment_behave5_avoid']").change(specifyActiveEnd);
+                    $('span#activespecify').hide();
+                    
                     function specifyActiveOther(){
-                    var flag = false;
-                    $('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
-                        if(this.value == "Other"){
-                            flag = true;
+                        var flag = false;
+                        $('input[name="SelfAssessment_active_specify_end[]"]:checked').each(function() {
+                            if(this.value == "Other"){
+                                flag = true;
+                            }
+                        });
+                        if(flag){
+                            $('span#activespecify').show();
                         }
-                    });
-                                        if(flag){
-                                                $('span#activespecify').show();
-                                        }
-                                        else{ $('span#activespecify').hide();}
-                                }
-                                _.defer(specifyActiveOther);
-                                $("input:checkbox[name='SelfAssessment_active_specify_end[]']").change(specifyActiveOther);
-
+                        else{ $('span#activespecify').hide();}
+                    }
+                    _.defer(specifyActiveOther);
+                    $("input:checkbox[name='SelfAssessment_active_specify_end[]']").change(specifyActiveOther);
             </script>
         ]]>
         </Static>
