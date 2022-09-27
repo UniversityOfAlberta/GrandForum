@@ -12,6 +12,9 @@
 <div id="rejectDialog" title="Reject Project Proposal" style="display:none;">
     Are you sure you want to reject this proposal?
 </div>
+<div id="notAvailableDialog" title="Not Available Proposal" style="display:none;">
+    Are you sure you want to mark this proposal as not available?
+</div>
 <table id="postings" frame="box" rules="all">
     <thead>
         <tr>
@@ -51,6 +54,7 @@
                     <button class="more" data-id="<%= posting.get('id') %>">More Info</button>
                     <button class="notmatched" data-id="<%= posting.get('id') %>">Not Matched</button>
                     <button class="reject" data-id="<%= posting.get('id') %>">Reject</button>
+                    <button class="notavailable" data-id="<%= posting.get('id') %>">Not Available</button>
                 </td>
             </tr>
         <% }.bind(this)) %>
