@@ -43,6 +43,9 @@ class Register extends SpecialPage{
                 else if($config->getValue('networkName') == "AVOID"){
                     // Do Nothing
                 }
+                else if($config->getValue('networkName') == "IDeaS"){
+                    $parseroutput->mText .= "<h2>Forum Registration</h2><p>If you would like to apply to become a member in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
+                }
                 else{
                     $parseroutput->mText .= "<h2>HQP Registration</h2><p>If you would like to apply to become an HQP in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>";
                 }
@@ -228,6 +231,10 @@ class Register extends SpecialPage{
                                 If completing the online registration or healthy aging assessment presents any challenges for you (such as vision problems, or an unsteady hand), program administration can complete it on your behalf over the phone. Please call 613-549-6666. Ex. 2834 to organize this.
                                 <br /><br />");
         }
+        else if($config->getValue('networkName') == 'IDeaS'){
+            $wgOut->setPageTitle("Forum Registration");
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Member.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        }
         else{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
@@ -297,6 +304,10 @@ class Register extends SpecialPage{
                 else{
                     $_POST['wpUserType'] = CI;
                 }
+                $_POST['candidate'] = "0";
+            }
+            else if($config->getValue('networkName') == "IDeaS"){
+                $_POST['wpUserType'] = CI;
                 $_POST['candidate'] = "0";
             }
             else{
