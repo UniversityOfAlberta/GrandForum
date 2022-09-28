@@ -1713,7 +1713,7 @@ class Paper extends BackboneModel{
                                                   true);
                 }
             }
-            if(count($this->tags) > 0){
+            if(is_array($this->tags) && count($this->tags) > 0){
                 foreach($this->tags as $tag){
                     DBFunctions::insert('grand_product_tags',
                                         array('tag' => $tag,
@@ -1805,7 +1805,7 @@ class Paper extends BackboneModel{
             }
             DBFunctions::delete('grand_product_tags',
                                 array('product_id' => EQ($this->id)));
-            if(count($this->tags) > 0){
+            if(is_array($this->tags) && count($this->tags) > 0){
                 foreach($this->tags as $tag){
                     DBFunctions::insert('grand_product_tags',
                                         array('tag' => $tag,
