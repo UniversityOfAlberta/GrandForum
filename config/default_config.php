@@ -127,6 +127,9 @@
     // The terminology to use for "Sub-Role"
     $config->setValue("subRoleTerm", "Sub-Role");
     
+    // Enable Role titles
+    $config->setValue("roleTitlesEnabled", true);
+    
     // The terminology to use for "Department"
     $config->setValue("deptsTerm", "Department");
     

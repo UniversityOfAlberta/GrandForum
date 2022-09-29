@@ -832,7 +832,7 @@ EOF;
                             {$mitacs}";
         
         $roles = $person->getRoles();
-        if($me->isRoleAtLeast(STAFF)){
+        if($me->isRoleAtLeast(STAFF) && $config->getValue("roleTitlesEnabled")){
             $this->html .= "<tr>
                                 <td><b>Role Titles:</b></td>
                                 <td><table>";
