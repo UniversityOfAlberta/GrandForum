@@ -226,9 +226,9 @@ ManageProductsView = Backbone.View.extend({
 	    this.$('#listTable_wrapper').prepend("<div id='listTable_length' class='dataTables_length'></div>");
 	    this.$("#listTable_length").empty();
 	    if(!publicationsFrozen){
-	        this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>');
-	        this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>');
-            this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>');
+	        this.$("#listTable_length").append('<button id="saveProducts">Save All <span id="saveN">(0)</span></button>&nbsp;');
+	        this.$("#listTable_length").append('<button id="deletePrivate">Delete All Private <span id="privateN">(0)</span></button>&nbsp;');
+            this.$("#listTable_length").append('<button id="releasePrivate">Release All Private <span id="releaseN">(0)</span></button>&nbsp;');
 	        this.$("#listTable_length").append('<span style="display:none;" class="throbber"></span>');
 	    }
     },

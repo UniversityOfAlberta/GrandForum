@@ -45,7 +45,7 @@ class MailList{
         return true;
     }
     
-    function removeNextPart($body){
+    static function removeNextPart($body){
         $exploded = explode("-------------- next part --------------", $body);
         $lines = explode("\n", $exploded[0]);
         $body = "";
@@ -55,7 +55,7 @@ class MailList{
         return $body;
     }
     
-    function removeQuotedText($body) {
+    static function removeQuotedText($body) {
         $bodyLines = explode("\n", $body);
         $bodyLines = array_reverse($bodyLines);
         $hasQuotesAtEnd = false;
@@ -272,7 +272,7 @@ class MailList{
                     </table>");
                     $body = self::removeQuotedText(self::removeNextPart($row['body']));
                     $wgOut->addHTML("<div class='inner-message'>");
-                    $wgOut->addWikiText($body);
+                    $wgOut->addWikiTextAsContent($body);
                 $wgOut->addHTML("</div></div>");
             }
         }

@@ -17,7 +17,6 @@ $existing = getExistingMIDs();
 
 foreach ($mailmanArchivesPaths as $proj_id => $mailmanArchivesPath) {
 	$allMessages = array();
-	
 	foreach (glob("$mailmanArchivesPath/*.txt") as $filename) { //TODO is that specific enough?
 		$messages = parseMailArchive($filename, $proj_id);
 		if (count($messages) > 0) {
@@ -42,14 +41,13 @@ foreach ($mailmanArchivesPaths as $proj_id => $mailmanArchivesPath) {
 
 function getExistingMIDs() {
 	$dbr = wfGetDB(DB_REPLICA);
-	$result = $dbr->select(' wikidev_messages', 'mid_header');
+	$data = DBFunctions::select(array('wikidev_messages'),
+	                            array('mid_header'));
 	
 	$existing = array();
-	
-	while ($row = $dbr->fetchObject($result)) {
-		$existing[$row->mid_header] = true;
+	foreach($data as $row){
+        $existing[$row['mid_header']] = true;
 	}
-	
 	return $existing;
 }
 
