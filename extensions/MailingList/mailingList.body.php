@@ -243,7 +243,7 @@ class MailList{
         return false;
     }
     
-    function createMailListThread($project_name, $thread){
+    static function createMailListThread($project_name, $thread){
         global $wgOut;
         $sql = "SELECT m.subject, m.body, m.date, m.author, m.user_name, m.address
                 FROM wikidev_projects p, wikidev_messages m
