@@ -61,6 +61,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                       '`default`' => 0));
             
         }
+        DBFunctions::commit();
        
         $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
@@ -128,6 +129,7 @@ class PersonUniversitiesAPI extends RESTAPI {
                                       '`default`' => 0));
             
         }
+        DBFunctions::commit();
         
         $universities = University::getAllUniversities();
         $positions = Person::getAllPositions();
