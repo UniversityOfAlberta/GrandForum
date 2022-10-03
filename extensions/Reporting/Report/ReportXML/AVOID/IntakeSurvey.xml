@@ -926,7 +926,7 @@
         </ReportItem>
         <ReportItem id="interact8_avoid" blobItem="interact8_avoid" type="RadioReportItem" orientation="horizontal" options="Hardly ever|Some of the time|Often">
             <![CDATA[
-		    <h3>How often do you feel left out?</h3>
+                    <h3>How often do you feel left out?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>

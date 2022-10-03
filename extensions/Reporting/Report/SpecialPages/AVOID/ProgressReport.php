@@ -256,16 +256,19 @@ class ProgressReport extends SpecialPage {
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Vaccinate <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Vaccination.png' /></div>
+                                {$this->vaccineTable()}
                                 {$this->drawTable('vax_end')}
                             </div>
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Optimize Medications <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/OptimizeMedication.png' /></div>
+                                {$this->medicationsTable()}
                                 {$this->drawTable('meds_end')}
                             </div>
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Interact <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/Interact.png' /></div>
+                                {$this->interactTable()}
                                 {$this->drawChart('Lack Companionship', 
                                                   array('Hardly ever', 'Some of the time', 'Often'),
                                                   array($this->getBlobData('behaviouralassess', 'interact7_avoid', YEAR, 'RP_AVOID'), 
@@ -286,6 +289,7 @@ class ProgressReport extends SpecialPage {
                             
                             <div class='category'>
                                 <div class='title' style='text-decoration: underline;'>Diet & Nutrition <img style='margin-left: 0.25em; height: 1.25em; vertical-align: middle;' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/DietAndNutrition.png' /></div>
+                                {$this->dietTable()}
                                 {$this->drawTable('diet_end')}
                             </div>
                         </div>
@@ -349,8 +353,8 @@ class ProgressReport extends SpecialPage {
         $c2 = ($i2 == 2) ? "#ff1616" : (($i2 == 1) ? "#f79233" : "#008037");
         $c3 = ($i3 == 2) ? "#ff1616" : (($i3 == 1) ? "#f79233" : "#008037");
         
-        $html = "<table style='width:100%; margin-top: 0.5em;'>
-                    <tr><td style='width:50%;'>
+        $html = "<table style='width:100%; margin-top: 0.5em; border-spacing: 0; border-collapse: separate;'>
+                    <tr><td style='width:50%; padding: 0;'>
                          <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 100%;'>
                             <tr>
                                 <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
@@ -367,7 +371,7 @@ class ProgressReport extends SpecialPage {
                             </tr>
                          </table>
                      </td>
-                     <td style='width:50%; padding-top:4em; padding-left: 1em;' valign='center'>
+                     <td style='width:50%; padding: 0; padding-top:4em; padding-left: 1em;' valign='center'>
                         <span style='color:#008037;'>{$labels[0]}</span><br /><br />
                         <span style='color:#f79233;'>{$labels[1]}</span><br /><br />
                         <span style='color:#ff1616;'>{$labels[2]}</span>
@@ -400,6 +404,150 @@ class ProgressReport extends SpecialPage {
                         <td></td>
                         <td></td>
                         <td></td>
+                    </tr>
+                </table>";
+        return $html;
+    }
+    
+    function vaccineTable(){
+        $values = array(
+            'vaccinate2_avoid' => "Flu Vaccine",
+            'vaccinate3_avoid' => "Shingles Vaccine",
+            'vaccinate4_avoid' => "Pneumonia Vaccine",
+            'vaccinate5_avoid' => "Booster Vaccines",
+            'vaccinate6_avoid' => "COVID-19 Vaccine",
+            'vaccinate7_avoid' => "COVID-19 Booster"
+        );
+        
+        $baseline = array();
+        $threeMonth = array();
+        $sixMonth = array();
+        
+        foreach($values as $key => $value){
+            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
+            $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "";
+            $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "";
+        }
+        
+        $html = "<p style='margin-bottom:0;'>What vaccines (if any) am I missing?</p>
+                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                    <tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
+                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
+                    </tr>
+                </table>";
+        return $html;
+    }
+    
+    function medicationsTable(){
+        $values = array(
+            'meds3_avoid' => "No"
+        );
+        
+        $baseline = array();
+        $threeMonth = array();
+        $sixMonth = array();
+        
+        foreach($values as $key => $value){
+            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "Yes";
+            $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "Yes";
+            $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "Yes";
+        }
+        
+        $html = "<p style='margin-bottom:0;'>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</p>
+                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                    <tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
+                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
+                    </tr>
+                </table>";
+        return $html;
+    }
+    
+    function interactTable(){
+        $values = array(
+            'interact1_avoid',
+            'interact2_avoid',
+            'interact3_avoid',
+            'interact4_avoid',
+            'interact5_avoid',
+            'interact6_avoid'
+        );
+        
+        $baseline = 0;
+        $threeMonth = 0;
+        $sixMonth = 0;
+        
+        foreach($values as $value){
+            $baseline += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
+            $threeMonth += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
+            $sixMonth += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
+        }
+        
+        $baseline = ($baseline >= 12) ? "No" : "Yes";
+        $threeMonth = ($threeMonth >= 12) ? "No" : "Yes";
+        $sixMonth = ($sixMonth >= 12) ? "No" : "Yes";
+        
+        $html = "<p style='margin-bottom:0;'>Having friends and/or family with whom you can talk to, feel at ease with and call on for help is important for your overall health.<br />
+                    <br />
+                    Do you have a risk in this area:
+                 </p>
+                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                    <tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$baseline}</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$threeMonth}</td>
+                        <td valign='top' style='white-space:nowrap;'>{$sixMonth}</td>
+                    </tr>
+                </table>";
+        return $html;
+    }
+    
+    function dietTable(){
+        $values = array(
+            'diet1_avoid' => "Protein",
+            'diet2_avoid' => "Fruits & Vegetables",
+            'diet3_avoid' => "High Calcium",
+            'diet4_avoid' => "Vitamin D"
+        );
+        
+        $baseline = array();
+        $threeMonth = array();
+        $sixMonth = array();
+        
+        foreach($values as $key => $value){
+            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
+            $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "";
+            $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "";
+        }
+        
+        $html = "<p style='margin-bottom:0;'>Diet deficiencies</p>
+                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                    <tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
+                    </tr>
+                    <tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
+                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
                     </tr>
                 </table>";
         return $html;

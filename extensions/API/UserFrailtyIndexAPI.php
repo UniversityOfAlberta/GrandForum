@@ -279,6 +279,19 @@ class UserFrailtyIndexAPI extends API{
     function processParams($params){
 
     }
+    
+    static function interactScore($answer){
+        $score = 0;
+        switch($answer){
+            case "None": $score += 0; break;
+            case "1": $score += 1; break;
+            case "2": $score += 2; break;
+            case "3-4": $score += 3; break;
+            case "5-8": $score += 4; break;
+            case "9+": $score += 5; break;
+        }
+        return $score;
+    }
 
     function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
         if ($userId === null) {
@@ -355,16 +368,9 @@ class UserFrailtyIndexAPI extends API{
                          $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact6_avoid", $user_id));
         $score = 0;
         foreach($answers as $answer){
-            switch($answer){
-                case "None": $score += 0; break;
-                case "1": $score += 1; break;
-                case "2": $score += 2; break;
-                case "3-4": $score += 3; break;
-                case "5-8": $score += 4; break;
-                case "9+": $score += 5; break;
-            }
+            $score += self::interactScore($answer);
         }
-        $scores["Interact"] = ($score > 12) ? 1 : 0;
+        $scores["Interact"] = ($score >= 12) ? 1 : 0;
         
         // Diet and Nutrition
         $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet1_avoid", $user_id),
