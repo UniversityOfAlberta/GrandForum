@@ -195,7 +195,7 @@
             ]]>
         </ElseIf>
         <Else>
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email},research@cfn-nce.ca" />
         </Else>
     </ReportSection>
 </Report>
