@@ -26,66 +26,6 @@
             <description ccv_id="959146d3ae8d4e4f9747bc0697adb5f5" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <!-- Not certain we're going to have this type -->
-        <Publication type="BibTex Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
-            <statuses ccv_id="3b56e4362d6a495aa5d22a1de5914741" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <data>
-                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Published In" type="String">published_in</field>
-                <field ccv_id="5c04ea4dae464499807d0b40b4cad049" ccv_name="Journal" label="Journal Title" type="String" hidden="true">journal_title</field>
-                <field ccv_id="0a826c656ff34e579dfcbfb373771260" ccv_name="Volume" label="Volume" type="String">volume</field>
-                <field ccv_id="cc1d9e14945b4e8496641dbe22b3448a" ccv_name="Issue" label="Number" type="String">number</field>
-                <field ccv_id="00ba1799ece344dc8d0779a3f05a4df8" ccv_name="Page Range" label="Pages" type="String">pages</field>
-                <field ccv_id="4ad593960aba4a21bf154fa8daf37f9f" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
-                <field label="Address" type="String">address</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="DOI">doi</field>
-                <field ccv_id="478545acac5340c0a73b7e0d2a4bee06" ccv_name="URL" label="URL" type="URL">url</field>
-                <field ccv_id="2089ff1a86844b6c9a10fc63469f9a9d" ccv_name="Refereed?" label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <date ccv_id="6fafe258e19e49a7884428cb49d75424" ccv_name="Date"></date>
-            <authors ccv_id="bc3b428d99384b04bb749311bb804e1d" ccv_name="Authors"></authors>
-            <description ccv_id="1167905d079c4400ae7a4a76a203a445" ccv_name="Description / Contribution Value"></description>
-        </Publication>
-
-        <!-- Not certain we're going to have this type -->
-        <Publication type="BibTex Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
-            <statuses ccv_id="92114e550d1c40028e44dbebbc97d05e" ccv_name="Publishing Status">
-                <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
-                <status lov_id="00000000000000000000000100001701" lov_name="Revision Requested">Revision Requested</status>
-                <status lov_id="00000000000000000000000100001702" lov_name="Accepted">Accepted</status>
-                <status lov_id="00000000000000000000000100001703" lov_name="In Press">In Press</status>
-                <status lov_id="00000000000000000000000100001704" lov_name="Published">Published</status>
-                <status>Rejected</status>
-            </statuses>
-            <data>
-                <field ccv_id="9caab9a65f6a4fe6a9d3c9b9dd9568c9" ccv_name="Editors" label="Editors" type="String">editors</field>
-                <field ccv_id="c1c428527abf441eade5de08575af4f8" ccv_name="Number of Pages" label="Number of Pages" type="String">pages</field>
-                <field ccv_id="a097e5436cf04e4c8737f7871561c67c" ccv_name="Volume" label="Volume" type="String">volume</field>
-                <field ccv_id="adb6baaa90c84529b4bc2736f56c605d" ccv_name="Edition" label="Edition" type="String">number</field>
-                <field ccv_id="5dbf3f3754c74f96bbf056939513eb8c" ccv_name="Publisher" label="Publisher" type="String">publisher</field>
-                <field label="Book Title" type="String">book_title</field>
-                <field label="Address" type="String">address</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="DOI">doi</field>
-                <field ccv_id="6cb3f8ab7d7a435bb0b12847756a635d" ccv_name="URL" label="URL" type="URL">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <date ccv_id="b9156e483a5a42a3b49d5ee599c73aee" ccv_name="Date"></date>
-            <authors ccv_id="e555fb44aaf14740b880693b01603a35" ccv_name="Authors"></authors>
-            <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
-        </Publication>
-
         <Publication type="Book" ccv_id="4ef4df71a505469788b587f1a509eadf" ccv_name="Books" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <title ccv_id="ef406ccb1fcc45d1b096380119649200" ccv_name="Book Title"></title>
             <statuses ccv_id="92114e550d1c40028e44dbebbc97d05e" ccv_name="Publishing Status">
