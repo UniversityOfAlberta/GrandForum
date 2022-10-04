@@ -23,7 +23,7 @@ class Newsletter extends SpecialPage{
 
     function execute($par){
         global $wgOut, $wgUser, $wgServer, $wgScriptPath, $wgTitle, $wgMessage;
-        exec('grep -r -e "No.*images?" -e "You.*are.*receiving.*this.*email.*because.*you.*are.*subscribed.*to.*the.*mailing.*list" /var/lib/mailman/archives/private/director/attachments/ | grep "attachment.html" | grep -v "5eaf95e9" | grep -v "3399ada1"', $output);
+        exec('grep -r -e "No.*images?" -e "You.*are.*receiving.*this.*email.*because.*you.*are.*subscribed.*to.*the.*mailing.*list" /var/lib/mailman/archives/private/director/attachments/ | grep "attachment.html" | grep -v "5eaf95e9" | grep -v "3399ada1" | grep -v "d77a4937"', $output);
         //exec('grep -r "HQP.*Monthly.*Newsletter" /var/lib/mailman/archives/private/hqp/attachments/ | grep "attachment.html"', $output);
         $wgOut->addHTML("<div id='accordion'>");
         sort($output);
