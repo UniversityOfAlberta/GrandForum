@@ -357,7 +357,7 @@ class ProgressReport extends SpecialPage {
                     <tr><td style='width:50%; padding: 0;'>
                          <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 100%;'>
                             <tr>
-                                <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                                <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                                 <th style='font-weight: 800;color: #06619b;'>3 months</th>
                                 <th align='right' style='font-weight: 800;color: #06619b;'>6 months</th>
                             </tr>
@@ -388,7 +388,7 @@ class ProgressReport extends SpecialPage {
                     <thead>
                         <tr>
                             <th></th>
-                            <th style='width: 8em; max-width: 8em;'>BASELINE</th>
+                            <th style='width: 8em; max-width: 8em;'>INITIAL</th>
                             <th style='width: 8em; max-width: 8em;'>3 MONTHS</th>
                             <th style='width: 8em; max-width: 8em;'>6 MONTHS</th>
                         </tr>
@@ -419,12 +419,12 @@ class ProgressReport extends SpecialPage {
             'vaccinate7_avoid' => "COVID-19 Booster"
         );
         
-        $baseline = array();
+        $initial = array();
         $threeMonth = array();
         $sixMonth = array();
         
         foreach($values as $key => $value){
-            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
+            $initial[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
             $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "";
             $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "";
         }
@@ -432,12 +432,12 @@ class ProgressReport extends SpecialPage {
         $html = "<p style='margin-bottom:0;'>What vaccines (if any) am I missing?</p>
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
                     </tr>
                     <tr>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
                         <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
                     </tr>
@@ -450,12 +450,12 @@ class ProgressReport extends SpecialPage {
             'meds3_avoid' => "No"
         );
         
-        $baseline = array();
+        $initial = array();
         $threeMonth = array();
         $sixMonth = array();
         
         foreach($values as $key => $value){
-            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "Yes";
+            $initial[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "Yes";
             $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "Yes";
             $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "Yes";
         }
@@ -463,12 +463,12 @@ class ProgressReport extends SpecialPage {
         $html = "<p style='margin-bottom:0;'>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</p>
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
                     </tr>
                     <tr>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
                         <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
                     </tr>
@@ -486,17 +486,17 @@ class ProgressReport extends SpecialPage {
             'interact6_avoid'
         );
         
-        $baseline = 0;
+        $initial = 0;
         $threeMonth = 0;
         $sixMonth = 0;
         
         foreach($values as $value){
-            $baseline += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
+            $initial += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
             $threeMonth += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
             $sixMonth += UserFrailtyIndexAPI::interactScore($this->getBlobData('behaviouralassess', $value, YEAR, 'RP_AVOID'));
         }
         
-        $baseline = ($baseline >= 12) ? "No" : "Yes";
+        $initial = ($initial >= 12) ? "No" : "Yes";
         $threeMonth = ($threeMonth >= 12) ? "No" : "Yes";
         $sixMonth = ($sixMonth >= 12) ? "No" : "Yes";
         
@@ -506,12 +506,12 @@ class ProgressReport extends SpecialPage {
                  </p>
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
                     </tr>
                     <tr>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$baseline}</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$initial}</td>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$threeMonth}</td>
                         <td valign='top' style='white-space:nowrap;'>{$sixMonth}</td>
                     </tr>
@@ -527,12 +527,12 @@ class ProgressReport extends SpecialPage {
             'diet4_avoid' => "Vitamin D"
         );
         
-        $baseline = array();
+        $initial = array();
         $threeMonth = array();
         $sixMonth = array();
         
         foreach($values as $key => $value){
-            $baseline[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
+            $initial[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID') == "No") ? $value : "";
             $threeMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_THREEMO') == "No") ? $value : "";
             $sixMonth[] = ($this->getBlobData('behaviouralassess', $key, YEAR, 'RP_AVOID_SIXMO') == "No") ? $value : "";
         }
@@ -540,12 +540,12 @@ class ProgressReport extends SpecialPage {
         $html = "<p style='margin-bottom:0;'>Diet deficiencies</p>
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>Baseline</th>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
                     </tr>
                     <tr>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($baseline))."</td>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
                         <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
                     </tr>
