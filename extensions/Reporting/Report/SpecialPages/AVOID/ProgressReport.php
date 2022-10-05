@@ -409,7 +409,7 @@ class ProgressReport extends SpecialPage {
                     <tr>
                         <th>MY BARRIERS</th>";
         foreach($barriers as $key => $barrier){
-            if(count($barrier) > 0 && $submit[$key] == "Submitted"){
+            if(is_array($barrier) && count($barrier) > 0 && $submit[$key] == "Submitted"){
                 $html .= "<td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barrier)."</td>";
             } else {
                 $html .= "<td rowspan='2'>You're meeting recommendations, keep up the great work!</td>";
@@ -419,7 +419,7 @@ class ProgressReport extends SpecialPage {
                     <tr>
                         <th>MY SUPPORTS</th>";
         foreach($barriers as $key => $barrier){
-            if(count($barrier) > 0 && $submit[$key] == "Submitted"){
+            if(is_array($barrier) && count($barrier) > 0 && $submit[$key] == "Submitted"){
                 $html .= "<td style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>{$this->recommendations($barrier)}</td>";
             }
             else{
