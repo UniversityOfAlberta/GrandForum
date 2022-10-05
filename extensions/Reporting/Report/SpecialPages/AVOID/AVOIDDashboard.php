@@ -132,12 +132,15 @@ class AVOIDDashboard extends SpecialPage {
         else if($label == "high risk"){
             $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
         }
+
+        $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
+                           AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? " | <a id='viewProgressReport' href='#'>Progress Report</a>" : "";
         
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
                                 <p>{$frailty}</p>
-                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a><br />
+                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$progressReport}<br />
                                 <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
                                 <b>Where do I go from here?</b>
                                 <ul>
@@ -197,6 +200,9 @@ class AVOIDDashboard extends SpecialPage {
         <div title='Frailty Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='reportDialog'>
             <iframe id='frailtyFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?preview'></iframe>
         </div>
+        <div title='Progress Report' style='display:none; overflow: hidden; padding:0 !important; background: white;' id='progressReportDialog'>
+            <iframe id='progressFrame' style='transform-origin: top left; width:216mm; height: 100%; border: none;' src='{$wgServer}{$wgScriptPath}/index.php/Special:ProgressReport?preview'></iframe>
+        </div>
         <script type='text/javascript'>
             $('#bodyContent h1:not(.program-header)').hide();
             
@@ -237,6 +243,34 @@ class AVOIDDashboard extends SpecialPage {
                 }
                 else{
                     $('#reportDialog').dialog('open');
+                }
+                $(window).resize();
+            });
+            
+            $('#viewProgressReport').click(function(){
+                $('#bodyContent').css('overflow-y', 'hidden');
+                if($('#progressReportDialog', $('.ui-dialog')).length == 0){
+                    $('#progressReportDialog').dialog({
+                        modal: true,
+                        draggable: false,
+                        resizable: false,
+                        width: 'auto',
+                        height: $(window).height()*0.90,
+                        position: { 'my': 'center', 'at': 'center' },
+                        close: function(){
+                            $('#bodyContent').css('overflow-y', 'auto');
+                            viewProgressFullScreen = false;
+                        }
+                    });
+                    $('.ui-dialog').addClass('program-body').css('margin-bottom', 0);
+                    $('.ui-dialog-titlebar:visible').append(\"<a id='viewProgressFullScreen' href='#' style='color: white; position: absolute; top:9px; right: 35px;'>View as Full Screen</a>\");
+                    $('#viewProgressFullScreen', $('.ui-dialog')).click(function(){
+                        viewProgressFullScreen = !viewProgressFullScreen;
+                        $(window).resize();
+                    });
+                }
+                else{
+                    $('#progressReportDialog').dialog('open');
                 }
                 $(window).resize();
             });
@@ -311,21 +345,24 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             var viewFullScreen = false;
+            var viewProgressFullScreen = false;
             var initialFrameWidth = $('#reportDialog').width();
+            var initialProgressWidth = $('#progressReportDialog').width();
             $('#frailtyFrame').width('100%');
+            $('#progressFrame').width('100%');
             
             $(window).resize(function(){
                 if(viewFullScreen){
                     $('#viewFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
-                        $('.ui-dialog').css('padding', 0)
-                                       .css('border-width', 0);
-                        $('#reportDialog').dialog({
-                            height: $(window).height(),
-                            width: $(window).width()
-                        });
-                        $('#reportDialog').dialog({
-                            position: { 'my': 'center', 'at': 'center' }
-                        });
+                    $('.ui-dialog').css('padding', 0)
+                                   .css('border-width', 0);
+                    $('#reportDialog').dialog({
+                        height: $(window).height(),
+                        width: $(window).width()
+                    });
+                    $('#reportDialog').dialog({
+                        position: { 'my': 'center', 'at': 'center' }
+                    });
                 }
                 else{
                     $('.ui-dialog').css('padding', 2)
@@ -352,10 +389,49 @@ class AVOIDDashboard extends SpecialPage {
                         });
                     }
                 }
+                
+                if(viewProgressFullScreen){
+                    $('#viewProgressFullScreen', $('.ui-dialog')).text('Exit Full Screen').blur();
+                        $('.ui-dialog').css('padding', 0)
+                                       .css('border-width', 0);
+                        $('#progressReportDialog').dialog({
+                            height: $(window).height(),
+                            width: $(window).width()
+                        });
+                        $('#progressReportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                }
+                else{
+                    $('.ui-dialog').css('padding', 2)
+                                   .css('border-width', 1);
+                                   
+                    $('#viewProgressFullScreen', $('.ui-dialog')).text('View as Full Screen').blur();
+                    
+                    var desiredWidth = $(window).width()*0.75;
+                    if(window.matchMedia('(max-width: 767px)').matches){
+                        desiredWidth = $(window).width()*0.99;
+                    }
+                    else if(window.matchMedia('(max-width: 1024px)').matches){
+                        desiredWidth = $(window).width()*0.80;
+                    }
+                    
+                    var scaleFactor = desiredWidth/initialProgressWidth;
+                    if($('#progressReportDialog').is(':visible')){
+                        $('#progressReportDialog').dialog({
+                            height: $(window).height()*0.90,
+                            width: initialProgressWidth*scaleFactor
+                        });
+                        $('#progressReportDialog').dialog({
+                            position: { 'my': 'center', 'at': 'center' }
+                        });
+                    }
+                }
+                
                 if($('#actionPlanOverview').is(':visible')){
                     $('#actionPlanOverview').dialog({
                         height: $(window).height()*0.90,
-                        width: initialFrameWidth*scaleFactor
+                        width: initialProgressWidth*scaleFactor
                     });
                     $('#actionPlanOverview').dialog({
                         position: { 'my': 'center', 'at': 'center' }
