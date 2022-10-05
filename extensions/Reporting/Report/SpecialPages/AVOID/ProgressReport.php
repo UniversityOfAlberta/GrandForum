@@ -611,6 +611,7 @@ class ProgressReport extends SpecialPage {
                     break;
                 case "I do not feel comfortable and / or prepared to have this conversation with a healthcare provider":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/EducationModules/OptimizeMedication/Resources/Medication%20Tracker%20Sheet%20Planner.pdf' target='_blank'>Medication Tracker</a>";
                     break;
                 case "I do not know who to talk to about this":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-VAC' target='_blank'>Optimize Medication Programs</a>";
@@ -632,6 +633,7 @@ class ProgressReport extends SpecialPage {
                     break;
                 case "I am not aware of opportunities for social interaction in my community":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-INT' target='_blank'>Interact Programs</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/CommunityConnectors' target='_blank'>Community Connectors</a>";
                     break;
                 case "I have trouble maintaining social connections over time":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-INT' target='_blank'>Interact Programs</a>";
