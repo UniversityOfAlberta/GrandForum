@@ -381,9 +381,13 @@ class ProgressReport extends SpecialPage {
     }
     
     function drawTable($barrierItem){
-        $barriers1 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID', BLOB_ARRAY)[$barrierItem]);
-        $barriers2 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_THREEMO', BLOB_ARRAY)[$barrierItem]);
-        $barriers3 = @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_SIXMO', BLOB_ARRAY)[$barrierItem]);
+        $submit = array($this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID', BLOB_TEXT),
+                        $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_THREEMO', BLOB_TEXT),
+                        $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_SIXMO', BLOB_TEXT));
+        
+        $barriers = array(@str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID', BLOB_ARRAY)[$barrierItem]),
+                          @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_THREEMO', BLOB_ARRAY)[$barrierItem]),
+                          @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_SIXMO', BLOB_ARRAY)[$barrierItem]));
         $html = "<table class='summary'>
                     <thead>
                         <tr>
@@ -394,17 +398,26 @@ class ProgressReport extends SpecialPage {
                         </tr>
                     </thead>
                     <tr>
-                        <th>MY BARRIERS</th>
-                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers1)."</td>
-                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers2)."</td>
-                        <td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barriers3)."</td>
-                    </tr>
+                        <th>MY BARRIERS</th>";
+        foreach($barriers as $key => $barrier){
+            if(count($barrier) > 0 && $submit[$key] == "Submitted"){
+                $html .= "<td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barrier)."</td>";
+            } else {
+                $html .= "<td rowspan='2'>You’re meeting recommendations, keep up the great work!</td>";
+            }
+        }
+        $html .= "  </tr>
                     <tr>
-                        <th>MY SUPPORTS</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                        <th>MY SUPPORTS</th>";
+        foreach($barriers as $key => $barrier){
+            if(count($barrier) > 0 && $submit[$key] == "Submitted"){
+                $html .= "<td></td>";
+            }
+            else{
+                $html .= "<td style='display:none;'></td>";
+            }
+        }
+        $html .= "  </tr>
                 </table>";
         return $html;
     }
