@@ -195,6 +195,14 @@ class ProgressReport extends SpecialPage {
                                 background: #c6db56;
                             }
                             
+                            table.summary td a {
+                                color: #00407a;
+                            }
+                            
+                            table.summary td a:hover {
+                                color: black;
+                            }
+                            
                             th {
                                 white-space: nowrap;
                             }
@@ -388,6 +396,7 @@ class ProgressReport extends SpecialPage {
         $barriers = array(@str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID', BLOB_ARRAY)[$barrierItem]),
                           @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_THREEMO', BLOB_ARRAY)[$barrierItem]),
                           @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_SIXMO', BLOB_ARRAY)[$barrierItem]));
+        
         $html = "<table class='summary'>
                     <thead>
                         <tr>
@@ -403,7 +412,7 @@ class ProgressReport extends SpecialPage {
             if(count($barrier) > 0 && $submit[$key] == "Submitted"){
                 $html .= "<td valign='top' style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>".implode("<div style='margin-bottom:0.5em;'></div>", $barrier)."</td>";
             } else {
-                $html .= "<td rowspan='2'>You’re meeting recommendations, keep up the great work!</td>";
+                $html .= "<td rowspan='2'>You're meeting recommendations, keep up the great work!</td>";
             }
         }
         $html .= "  </tr>
@@ -411,7 +420,7 @@ class ProgressReport extends SpecialPage {
                         <th>MY SUPPORTS</th>";
         foreach($barriers as $key => $barrier){
             if(count($barrier) > 0 && $submit[$key] == "Submitted"){
-                $html .= "<td></td>";
+                $html .= "<td style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>{$this->recommendations($barrier)}</td>";
             }
             else{
                 $html .= "<td style='display:none;'></td>";
@@ -564,6 +573,96 @@ class ProgressReport extends SpecialPage {
                     </tr>
                 </table>";
         return $html;
+    }
+    
+    function recommendations($barriers){
+        global $wgServer, $wgScriptPath;
+        $recommendations = array();
+        foreach($barriers as $barrier){
+            switch($barrier){
+                // Activity
+                case "I am physically and / or mentally unable to be active":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    //$recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/Otego' target='_blank'>Otego</a>";
+                    break;
+                case "I don't know where / how to get help in my community":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-ACT' target='_blank'>Activity Programs</a>";
+                    break;
+                case "I have trouble maintaining a routine when it comes to activity":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/Activity' target='_blank'>Activity Module</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange' target='_blank'>Ingredients for Change Module</a>";
+                    break;
+                
+                // Vaccinate
+                case "I was not aware of the recommended vaccines":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/Vaccination' target='_blank'>Vaccination Module</a>";
+                    break;
+                case "I don't know where or how to get vaccinated":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-VAC' target='_blank'>Vaccination Programs</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    break;
+                case "I don't see the point of getting vaccinated":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/Vaccination' target='_blank'>Vaccination Module</a>";
+                    break;
+                
+                // Optimize Medication
+                case "I was not aware that this is recommended":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/OptimizeMedication' target='_blank'>Optimize Medication Module</a>";
+                    break;
+                case "I do not feel comfortable and / or prepared to have this conversation with a healthcare provider":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    break;
+                case "I do not know who to talk to about this":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-VAC' target='_blank'>Optimize Medication Programs</a>";
+                    break;
+                case "I have had my medication reviewed in the past, but find it hard to remember each year":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    break;
+                case "I do not understand why this is important":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/OptimizeMedication' target='_blank'>Optimize Medication Module</a>";
+                    break;
+                    
+                // Interact
+                case "I have been restricted due to COVID-19 public health measures":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/CyberSeniors' target='_blank'>Cyber Seniors</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    break;
+                case "I find it physically / mentally difficult to participate in social interactions":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    break;
+                case "I am not aware of opportunities for social interaction in my community":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-INT' target='_blank'>Interact Programs</a>";
+                    break;
+                case "I have trouble maintaining social connections over time":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-INT' target='_blank'>Interact Programs</a>";
+                    break;
+                case "I do not feel that I need more interaction than I already have":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/Interact' target='_blank'>Interact Module</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/EducationModules/Interact/Resources/Interact%20Vid.mp4' target='_blank'>Interact Video</a>";
+                    break;
+                    
+                // Diet & Nutrition
+                case "I find it physically / mentally difficult to do this":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-DIET-DIET' target='_blank'>Dietitian Services</a>";
+                    break;
+                case "I was not aware of one or more of the recommendations in the questions above":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/DietAndNutrition' target='_blank'>Diet & Nutrition Module</a>";
+                    break;
+                case "It's difficult for me to access nutritious and / or culturally appropriate food because of where I live":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-DIET' target='_blank'>Diet & Nutrition Programs</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-TRANSPORT-DRIVP' target='_blank'>Driving Programs</a>";
+                    break;
+                case "I can't afford the type of food that I would like to eat":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-DIET-FOODBANKS' target='_blank'>Food Banks and Stands</a>";
+                    break;
+                case "I have trouble maintaining a healthy eating routine":
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-DIET-DIET' target='_blank'>Dietitian Services</a>";
+                    break;
+            }
+        }
+        return implode("<div style='margin-bottom:0.5em;'></div>", array_unique($recommendations));
     }
     
     function getBlobData($blobSection, $blobItem, $year, $rpType, $blobType=BLOB_TEXT){
