@@ -20,6 +20,8 @@ class ProgressReport extends SpecialPage {
         return $person->isLoggedIn();
     }
     
+    var $submit = array();
+    
     function drawRow($key, $row, $scores){
         global $wgServer, $wgScriptPath;
         $need = "N";
@@ -87,6 +89,10 @@ class ProgressReport extends SpecialPage {
                                                           padding-right: {$margins['right']}cm;
                                                           padding-bottom: {$margins['bottom']}cm;
                                                           padding-left: {$margins['left']}cm;";
+        
+        $this->submit = array($this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID', BLOB_TEXT),
+                              $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_THREEMO', BLOB_TEXT),
+                              $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_SIXMO', BLOB_TEXT));
         
         $html = "<html>
                     <head>
@@ -361,22 +367,39 @@ class ProgressReport extends SpecialPage {
         $c2 = ($i2 == 2) ? "#ff1616" : (($i2 == 1) ? "#f79233" : "#008037");
         $c3 = ($i3 == 2) ? "#ff1616" : (($i3 == 1) ? "#f79233" : "#008037");
         
-        $html = "<table style='width:100%; margin-top: 0.5em; border-spacing: 0; border-collapse: separate;'>
+        $width = "75%";
+        $colspan = "2";
+        if($this->submit[2] == "Submitted"){
+            $width = "100%";
+            $colspan = "2";
+        }
+        
+        $html = "<table style='width:{$width}; margin-top: 0.5em; border-spacing: 0; border-collapse: separate;'>
                     <tr><td style='width:50%; padding: 0;'>
                          <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 100%;'>
                             <tr>
-                                <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
-                                <th style='font-weight: 800;color: #06619b;'>3 months</th>
-                                <th align='right' style='font-weight: 800;color: #06619b;'>6 months</th>
-                            </tr>
+                                <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "          <th style='font-weight: 800;color: #06619b;'>3 months</th>
+                                <th align='right' style='font-weight: 800;color: #06619b;'>6 months</th>";
+        }
+        else{
+            $html .= "          <th align='right' style='font-weight: 800;color: #06619b;'>3 months</th>";
+        }
+        $html .= "          </tr>
                             <tr>
-                                <td colspan='3'>{$title}</td>
+                                <td colspan='{$colspan}'>{$title}</td>
                             </tr>
                             <tr style='height: {$height}em; image-rendering: pixelated; background: url({$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/chartbg.png); background-size: {$height}em 100%;'>
-                                <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-right:30%; height: {$v1}em; background: $c1; border-radius:100em 100em 0 0;'></div></td>
-                                <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-left:15%; margin-right:15%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>
-                                <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-left:30%; height: {$v3}em; background: $c3; border-radius:100em 100em 0 0;'></div></td>
-                            </tr>
+                                <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-right:30%; height: {$v1}em; background: $c1; border-radius:100em 100em 0 0;'></div></td>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "          <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-left:15%; margin-right:15%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>
+                                <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-left:30%; height: {$v3}em; background: $c3; border-radius:100em 100em 0 0;'></div></td>";
+        }
+        else{
+            $html .= "          <td valign='bottom' style='width:33.333%; height: {$height}em;'><div style='margin-left:30%; height: {$v2}em; background: $c2; border-radius:100em 100em 0 0;'></div></td>";
+        }
+        $html .= "           </tr>
                          </table>
                      </td>
                      <td style='width:50%; padding: 0; padding-top:4em; padding-left: 1em;' valign='center'>
@@ -407,9 +430,6 @@ class ProgressReport extends SpecialPage {
                 $specify = "DIETENDTEXTSPECIFY";
                 break;
         }
-        $submit = array($this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID', BLOB_TEXT),
-                        $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_THREEMO', BLOB_TEXT),
-                        $this->getBlobData('SUBMIT', 'SUBMITTED', YEAR, 'RP_AVOID_SIXMO', BLOB_TEXT));
         
         $barriers = array(@str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID', BLOB_ARRAY)[$barrierItem]),
                           @str_replace("/", " / ", $this->getBlobData('behaviouralassess', $barrierItem, YEAR, 'RP_AVOID_THREEMO', BLOB_ARRAY)[$barrierItem]),
@@ -424,14 +444,17 @@ class ProgressReport extends SpecialPage {
                         <tr>
                             <th></th>
                             <th style='width: 8em; max-width: 8em;'>INITIAL</th>
-                            <th style='width: 8em; max-width: 8em;'>3 MONTHS</th>
-                            <th style='width: 8em; max-width: 8em;'>6 MONTHS</th>
-                        </tr>
+                            <th style='width: 8em; max-width: 8em;'>3 MONTHS</th>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "      <th style='width: 8em; max-width: 8em;'>6 MONTHS</th>";
+        }
+        $html .= "      </tr>
                     </thead>
                     <tr>
                         <th>MY BARRIERS</th>";
         foreach($barriers as $key => $barrier){
-            if(is_array($barrier) && count($barrier) > 0 && $submit[$key] == "Submitted"){
+            if($this->submit[$key] != "Submitted"){ continue; }
+            if(is_array($barrier) && count($barrier) > 0 && $this->submit[$key] == "Submitted"){
                 if(trim($specify[$key]) != ""){
                     $barrier = str_replace("Other", $specify[$key], $barrier);
                 }
@@ -444,7 +467,7 @@ class ProgressReport extends SpecialPage {
                     <tr>
                         <th>MY SUPPORTS</th>";
         foreach($barriers as $key => $barrier){
-            if(is_array($barrier) && count($barrier) > 0 && $submit[$key] == "Submitted"){
+            if(is_array($barrier) && count($barrier) > 0 && $this->submit[$key] == "Submitted"){
                 $html .= "<td style='font-size: 0.7em; line-height: 1.1em; width: 8em; max-width: 8em;'>{$this->recommendations($barrier)}</td>";
             }
             else{
@@ -480,14 +503,18 @@ class ProgressReport extends SpecialPage {
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
-                    </tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>";
+        }
+        $html .= "  </tr>
                     <tr>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
-                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
-                    </tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>";
+        }
+        $html .= "  </tr>
                 </table>";
         return $html;
     }
@@ -511,14 +538,18 @@ class ProgressReport extends SpecialPage {
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
-                    </tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
+        if($this->submit[2] == "Submitted"){ 
+            $html .= "<th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>";
+        }
+        $html .= "  </tr>
                     <tr>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
-                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
-                    </tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>";
+        }
+        $html .= "  </tr>
                 </table>";
         return $html;
     }
@@ -554,14 +585,18 @@ class ProgressReport extends SpecialPage {
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
-                    </tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>";
+        }
+        $html .= "  </tr>
                     <tr>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$initial}</td>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$threeMonth}</td>
-                        <td valign='top' style='white-space:nowrap;'>{$sixMonth}</td>
-                    </tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>{$threeMonth}</td>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<td valign='top' style='white-space:nowrap;'>{$sixMonth}</td>";
+        }
+        $html .= "  </tr>
                 </table>";
         return $html;
     }
@@ -588,14 +623,18 @@ class ProgressReport extends SpecialPage {
                  <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>
-                        <th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>
-                    </tr>
+                        <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<th align='left' style='font-weight: 800;color: #06619b;'>6 months</th>";
+        }
+        $html .= "  </tr>
                     <tr>
                         <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($initial))."</td>
-                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>
-                        <td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>
-                    </tr>
+                        <td valign='top' style='white-space:nowrap;padding-right: 0.5em;'>".implode("<br />", array_filter($threeMonth))."</td>";
+        if($this->submit[2] == "Submitted"){
+            $html .= "<td valign='top' style='white-space:nowrap;'>".implode("<br />", array_filter($sixMonth))."</td>";
+        }
+        $html .= "  </tr>
                 </table>";
         return $html;
     }
