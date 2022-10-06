@@ -20,7 +20,7 @@ class AdminDataCollection extends SpecialPage{
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
-                continue;
+                //continue;
             }
             $people[] = $person;
         }
@@ -63,7 +63,7 @@ class AdminDataCollection extends SpecialPage{
                                     <tr>
                                         <th>".implode("</th><th>", $topics)."</th>
                                         <th>Program Library</th>
-                                        <th>Resource Links</th>
+                                        <th>Links</th>
                                     </tr>
                                 </thead>
                                 <tbody>");
@@ -233,29 +233,37 @@ class AdminDataCollection extends SpecialPage{
                     }
                 }
                 
-                // Resource Links
+                // Links
                 $wgOut->addHTML("</table></td><td style='padding:0;'><table style='border-collapse: collapse; table-layout: auto; width: 100%;'>");
                 $x_num = 0;
                 foreach($links as $link){
                     $page_name = trim($link["page"]);
                     $page_data = json_decode($link["data"],true);
-                    $views = isset($page_data["count"]) ? $page_data["count"] : 0;
+                    $views = isset($page_data["count"]) ? $page_data["count"] : (isset($page_data["hits"]) ? $page_data["hits"] : 0);
+                    $time = @$page_data["time"];
                     if($x_num%2==0){
                         $wgOut->addHTML("
                             <tr style='background-color:#ececec'>
-                                <td>$page_name</td>
+                                <td rowspan='2'>$page_name</td>
                                 <td nowrap>Views: $views</td>
+                            </tr>
+                            <tr style='background-color:#ececec'>
+                                <td nowrap>Time: $time</td>
                             </tr>");
                     }
                     else{
                         $wgOut->addHTML("
                             <tr style=''>
-                                <td>$page_name</td>
+                                <td rowspan='2'>$page_name</td>
                                 <td nowrap>Views: $views</td>
+                            </tr>
+                            <tr style=''>
+                                <td nowrap>Time: $time</td>
                             </tr>");
                     }
                     $x_num++;
                 }
+
                 $wgOut->addHTML("</table></td>");
             }
             $wgOut->addHTML("</tbody>
