@@ -11,8 +11,9 @@ class DataCollectionAPI extends RESTAPI {
             return $data->toJSON();
         }
         else if($this->getParam('personId') != "" && $this->getParam('page') != ""){
+            $page = base64_decode(str_replace("-slash-", "/", $this->getParam('page')));
             $data = DataCollection::newFromUserId($this->getParam('personId'), 
-                                                  $this->getParam('page'));
+                                                  $page);
             if($data->getId() == 0){
                 $this->throwError("Data Collection not found");
             }
@@ -40,7 +41,13 @@ class DataCollectionAPI extends RESTAPI {
     function doPUT(){
         $data = DataCollection::newFromId($this->getParam('id'));
         if($data->canUserRead()){
-            $data->data = $this->POST('data');
+            $postData = $this->POST('data');
+            foreach($postData as $key => $value){
+                if(is_numeric($value) && isset($data->data[$key]) && is_numeric($data->data[$key])){
+                    $postData->$key = max($value, $data->data[$key]);
+                }
+            }
+            $data->data = $postData;
             $data->update();
             return $data->toJSON();
         }

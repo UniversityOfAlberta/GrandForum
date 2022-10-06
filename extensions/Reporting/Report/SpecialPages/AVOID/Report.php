@@ -55,6 +55,7 @@ class Report extends AbstractReport{
     
     static function addFooter($wgOut, $skin){
         global $wgServer, $wgScriptPath;
+        $me = Person::newFromWgUser();
         $wgOut->addScript("<style>
             #avoidButtons {
                 margin-top: 15px;
@@ -79,6 +80,16 @@ class Report extends AbstractReport{
                             </ul>
                             <a id='becomeMember' class='program-button' href='#'>Yes, I want to be a member</a>
                         </div>");
+        if($me->isLoggedIn()){
+            $wgOut->addScript("<script type='text/javascript'>
+                $(document).ready(function(){
+                    var pageDC = new DataCollection();
+                    pageDC.init(me.get('id'), document.URL.replace(wgServer, '').replace(wgScriptPath, '').replace('/index.php/', ''));
+                    pageDC.timer('time');
+                    pageDC.increment('hits');
+                });
+            </script>");
+        }
     }
     
     static function disableSubTabs($wgOut, $skin){
