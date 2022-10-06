@@ -120,6 +120,17 @@ foreach($people as $person){
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";*/
     }
+    
+    // Three/Six Month 5-day reminders
+    if($baseLineSubmitted && !$threeMonthSubmitted && $baseDiff >= 30*3 && 
+       time() - getReminder("3MonthReminder", $person)['time'] > 5*86400 && 
+       getReminder("3MonthReminder2", $person)['count'] < 1){
+        //addReminder("3MonthReminder2", $person);
+        $subject = "In case you missed it...";
+        $message = "<p>Keeping up with healthy habits can be hard, but we’re here to help. Complete a small section of the healthy aging assessment to help inform our program and make improvements. Thank you! <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        //sendMail($subject, $message, $person);
+        echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
+    }
 }
 
 file_put_contents("{$dir}/reminders.json", json_encode($reminders));
