@@ -20,7 +20,7 @@ class AdminDataCollection extends SpecialPage{
         $people = array();
         foreach(Person::getAllPeople() as $person){
             if($person->isRoleAtLeast(STAFF)){
-                //continue;
+                continue;
             }
             $people[] = $person;
         }
