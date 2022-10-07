@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Otago Exercise Program" reportType="RP_OTEGA" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+    <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                dc.init(me.get('id'), 'Program-Otega');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="otega" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="OTEGA" type="NextPrevReportSection">
+        <ReportItem id="register1" type="Checkbox" options="Thursday January 19, ends March 23 1:00 to 200pm, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                </script>
+                <div style='overflow: auto;'>
+                    <div style='display:flex;'>
+                        <div style='width: 100%;'>
+                            <div class='program-header' style='text-align:center; line-height: inherit; height: auto;'>
+                                Otago Exercise Program<br />
+                                <span style='font-size: 0.5em;'>An in-person falls prevention program</span>
+                            </div>
+                            <img src="{$wgServer}{$wgScriptPath}/skins/woman1.png" style='margin-top: 0.5em; height: 10em; padding: 0 1em; float: right;' />
+                            <p>The idea behind the evidence-based Otago Exercise Program is that muscle strength, flexibility, balance, and reaction time can all be improved to <b>reduce your risk of falling</b>.</p>
+                            <p>
+                                <b>We</b> provide in-person instruction with a trained Otago fitness leader once per week.<br />
+                                <b>You</b> do the prescribed exercises 2 additional times each week on your own.
+                            </p><br /><br />
+                            <div class='program-box' style='width: 21em; margin-right: -14em; margin-top: 1em; float: right;'>
+                                <b>Best suited for:</b>
+                                <ul>
+                                    <li>Persons who have fallen in the past year.</li>
+                                    <li>Persons who have muscle weakness and balance difficulties.</li>
+                                    <li>Persons who can walk in their own home with or without a walking aid</li>
+                                </ul>
+                            </div>
+                            <span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
+                            <div class='program-button' style='width: 20em;'>{$item}</div><br />
+                            <span class='program-text'>You will be contacted with further details</span>
+                        </div>
+                        
+                        <div style='width: 16em; margin-left: 1em;'>
+                            <div class='program-box' style='width: 12em; margin-top: 0;'>Improve balance</div><br />
+                            <div class='program-box' style='width: 12em;'>Increase muscle strength</div><br />
+                            <div class='program-box' style='width: 12em;'>Improve general fitness and wellbeing</div><br />
+                            <div class='program-box' style='width: 12em;'>Reduce risk of falling</div><br />
+                        </div>
+                    </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </div>
+                <script type='text/javascript'>
+                    $(".program-button").click(function(e){
+                        var checkbox = $('input[type=checkbox]', this);
+                        if($(e.target).not("input").length == 1){
+                            $(checkbox).click();
+                        }
+                    });
+                </script>
+            ]]>
+        </Static>
+        <ReportItem id="submit" type="SubmitEmail">
+                <![CDATA[
+                    <table>
+                        <tr>
+                            <td><b>Program:</b></td>
+                            <td>Otago Exercise Program</td>
+                        </tr>
+                        <tr>
+                            <td><b>User:</b></td>
+                            <td>{$user_name} &lt;{$user_email}&gt;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date Submitted:</b></td>
+                            <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td valign='top'><b>Training Date:</b></td>
+                            <td>
+                                <div>{getArray(RP_OTEGA,OTEGA,REGISTER,0,{$user_id},0,register1}</div>
+                            </td>
+                        </tr>
+                    </table>
+                ]]>
+            </ReportItem>
+    </ReportSection>
+</Report>

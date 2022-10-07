@@ -88,7 +88,7 @@
                         <tr>
                             <td valign='top'><b>Training Date:</b></td>
                             <td>
-                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register3}</div>
+                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register4}</div>
                             </td>
                         </tr>
                     </table>
