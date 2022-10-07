@@ -11,7 +11,7 @@
             </script>
         ]]>
     </Script>
-    <ReportSection id="otago" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="RP_OTAGO" type="NextPrevReportSection">
+    <ReportSection id="otago" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="OTAGO" type="NextPrevReportSection">
         <ReportItem id="register1" type="Checkbox" options="Thursday January 19, ends March 23 1:00 to 200pm, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <script type="text/javascript">
