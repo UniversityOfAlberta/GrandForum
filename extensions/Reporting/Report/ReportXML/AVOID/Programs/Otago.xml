@@ -51,6 +51,11 @@
                             <div class='program-box' style='width: 12em;'>Reduce risk of falling</div><br />
                         </div>
                     </div>
+                    <div style='width: 100%; text-align: center;'>
+                        In Partnership with: <img src='{$wgServer}{$wgScriptPath}/skins/KFLA.png' style='height: 6em;' />
+                                             <img src='{$wgServer}{$wgScriptPath}/skins/YMCA.png' style='height: 6em; margin-right: 2em;' />
+                    </div>
+
             ]]>
         </ReportItem>
         <Static>
