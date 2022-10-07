@@ -127,7 +127,7 @@ foreach($people as $person){
        getReminder("3MonthReminder2", $person)['count'] < 1){
         addReminder("3MonthReminder2", $person);
         $subject = "In case you missed it...";
-        $message = "<p>Keeping up with healthy habits can be hard, but we’re here to help. Complete a small section of the healthy aging assessment to help inform our program and make improvements. Thank you! <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        $message = "<p>Keeping up with healthy habits can be hard, but we’re here to help. It’s already time to re-do a small section of the healthy aging assessment to see if you have made any behavioural changes since joining AVOID Frailty. It will also help inform our program and make improvements as well. Thank you! <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
         sendMail($subject, $message, $person);
         echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
