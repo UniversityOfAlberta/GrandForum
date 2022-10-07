@@ -374,7 +374,7 @@ class ProgressReport extends SpecialPage {
             $colspan = "2";
         }
         
-        $html = "<table style='width:{$width}; margin-top: 0.5em; border-spacing: 0; border-collapse: separate;'>
+        $html = "<table style='width:{$width}; margin-top: 0.5em; margin-bottom: 1.5em; border-spacing: 0; border-collapse: separate;'>
                     <tr><td style='width:50%; padding: 0;'>
                          <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 100%;'>
                             <tr>
@@ -439,7 +439,7 @@ class ProgressReport extends SpecialPage {
                          $this->getBlobData('behaviouralassess', $specify, YEAR, 'RP_AVOID_THREEMO', BLOB_TEXT),
                          $this->getBlobData('behaviouralassess', $specify, YEAR, 'RP_AVOID_SIXMO', BLOB_TEXT));
         
-        $html = "<table class='summary'>
+        $html = "<table class='summary' style='margin-bottom: 1.5em;'>
                     <thead>
                         <tr>
                             <th></th>
@@ -500,7 +500,7 @@ class ProgressReport extends SpecialPage {
         }
         
         $html = "<p style='margin-bottom:0;'>What vaccines (if any) am I missing?</p>
-                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                 <table style='page-break-inside: avoid; margin-bottom: 1.5em; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
@@ -535,7 +535,7 @@ class ProgressReport extends SpecialPage {
         }
         
         $html = "<p style='margin-bottom:0;'>Have you had your medications (including prescriptions, over the counter, and supplements) reviewed by a pharmacist or healthcare provider in the last year?</p>
-                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                 <table style='page-break-inside: avoid; margin-bottom: 1.5em; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
@@ -582,7 +582,7 @@ class ProgressReport extends SpecialPage {
                     <br />
                     Do you have a risk in this area:
                  </p>
-                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                 <table style='page-break-inside: avoid; margin-bottom: 1.5em; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
@@ -620,7 +620,7 @@ class ProgressReport extends SpecialPage {
         }
         
         $html = "<p style='margin-bottom:0;'>Diet deficiencies</p>
-                 <table style='page-break-inside: avoid; border-spacing: 0; border-collapse: separate; width: 50%;'>
+                 <table style='page-break-inside: avoid; margin-bottom: 1.5em; border-spacing: 0; border-collapse: separate; width: 50%;'>
                     <tr>
                         <th align='left' style='font-weight: 800;color: #06619b;'>Initial</th>
                         <th align='left' style='font-weight: 800;color: #06619b;'>3 months</th>";
