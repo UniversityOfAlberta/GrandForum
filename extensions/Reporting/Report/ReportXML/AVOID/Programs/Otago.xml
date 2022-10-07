@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Otago Exercise Program" reportType="RP_OTEGO" ajax="true" disabled="false">
+<Report name="Otago Exercise Program" reportType="RP_OTAGO" ajax="true" disabled="false">
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
     <Script>
         <![CDATA[
             <script type="text/javascript">
-                dc.init(me.get('id'), 'Program-Otego');
+                dc.init(me.get('id'), 'Program-Otago');
                 dc.increment('count');
             </script>
         ]]>
     </Script>
-    <ReportSection id="otego" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="OTEGO" type="NextPrevReportSection">
+    <ReportSection id="otago" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="RP_OTAGO" type="NextPrevReportSection">
         <ReportItem id="register1" type="Checkbox" options="Thursday January 19, ends March 23 1:00 to 200pm, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <script type="text/javascript">
@@ -84,7 +84,7 @@
                         <tr>
                             <td valign='top'><b>Training Date:</b></td>
                             <td>
-                                <div>{getArray(RP_OTEGO,OTEGO,REGISTER,0,{$user_id},0,register1}</div>
+                                <div>{getArray(RP_OTAGO,OTAGO,REGISTER,0,{$user_id},0,register1}</div>
                             </td>
                         </tr>
                     </table>
