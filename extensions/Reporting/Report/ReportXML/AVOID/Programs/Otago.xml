@@ -12,7 +12,7 @@
         ]]>
     </Script>
     <ReportSection id="otago" tooltip="Otago Exercise Program" name="Otago Exercise Program" title="Otago Exercise Program" blobSection="OTAGO" type="NextPrevReportSection">
-        <ReportItem id="register1" type="Checkbox" options="Thursday January 19, ends March 23 1:00 to 200pm, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
+        <ReportItem id="register1" type="Checkbox" options="Thursdays, 1:00 to 2:00pm&lt;br />January 19 to March 23, YMCA 100 Wright Cres" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <script type="text/javascript">
                     $("#reportHeader").hide();
@@ -40,7 +40,7 @@
                                 </ul>
                             </div>
                             <span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
-                            <div class='program-button' style='width: 20em;'>{$item}</div><br />
+                            <div class='program-button' style='width: 14em;'>{$item}</div><br />
                             <span class='program-text'>You will be contacted with further details</span>
                         
             ]]>
