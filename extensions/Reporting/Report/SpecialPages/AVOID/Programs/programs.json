@@ -12,6 +12,12 @@
         "tags": ["cyber seniors"]
     },
     {
+        "id": "Otago",
+        "title": "Otago Exercise Program",
+        "category": "Get Support",
+        "tags": ["otago"]
+    },
+    {
         "id": "CommunityConnectors",
         "title": "Community Connector",
         "category": "Give Support",

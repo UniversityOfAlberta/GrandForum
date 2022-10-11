@@ -647,7 +647,7 @@ class ProgressReport extends SpecialPage {
                 // Activity
                 case "I am physically and / or mentally unable to be active":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/PeerCoaching' target='_blank'>Peer Coaching</a>";
-                    //$recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/Otego' target='_blank'>Otego</a>";
+                    $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=Programs/Otago' target='_blank'>Otago</a>";
                     break;
                 case "I don't know where / how to get help in my community":
                     $recommendations[] = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:PharmacyMap#/CFN-ACT' target='_blank'>Activity Programs</a>";
