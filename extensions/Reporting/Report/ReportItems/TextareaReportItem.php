@@ -138,6 +138,7 @@ class TextareaReportItem extends AbstractReportItem {
         $width = $this->getAttr('width', '100%');
         $limit = $this->getLimit();
         $height = $this->calculateHeight($limit);
+        $placeholder = $this->getAttr('placeholder', '');
         $rich = strtolower($this->getAttr('rich', 'false'));
         $item = "";
         if($limit > 0){
@@ -200,7 +201,7 @@ EOF;
         $item .= <<<EOF
             <div style='display:inline-block;width:{$width};{$divHeight}padding:2px;box-sizing:border-box;'>
                 <textarea id="{$this->getPostId()}" rows='$rows' style="width:100%;height:{$height};resize: vertical;margin:0;" 
-                        name="{$this->getPostId()}">$value</textarea>
+                        name="{$this->getPostId()}" placeholder='$placeholder'>$value</textarea>
             </div>
 EOF;
         return $item;
