@@ -18,6 +18,11 @@ class AskAnExpertEvent extends BackboneModel {
     var $currently_on;
     var $zoomlink;
     var $date_for_questions;
+    var $host;
+    var $event;
+    var $theme;
+    var $desc;
+    var $details;
 
     static function newFromId($id){
         if(isset($cache[$id])){
@@ -68,6 +73,11 @@ class AskAnExpertEvent extends BackboneModel {
             $this->currently_on = $row['currently_on'];
 	    $this->zoomlink = $row['zoomlink'];
 	    $this->date_for_questions = $row["date_for_questions"];
+	    $this->host = $row["host"];
+	    $this->theme = $row["theme"];
+	    $this->desc = $row["description"];
+	    $this->event = $row["event"];
+	    $this->details = $row["details"];
         }
     }
     
@@ -83,6 +93,11 @@ class AskAnExpertEvent extends BackboneModel {
                     'currently_on' => $this->currently_on,
 		    'zoomlink' => $this->zoomlink,
 		    'date_for_questions' => $this->date_for_questions,
+		    'event' => $this->event,
+		    'theme' => $this->theme,
+		    'description' => $this->desc,
+		    'host' => $this->host,
+		    'details' => $this->details,
                 );
         return $json;
     }
@@ -100,6 +115,11 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'currently_on' => $this->currently_on,
 						'zoomlink' => $this->zoomlink,
 						'date_for_questions' => $this->date_for_questions,
+						'event' => $this->event,
+						'theme' => $this->theme,
+						'description' => $this->desc,
+						'host' => $this->host,
+						'details' => $this->details,
                                           ), true);
             if($status){
                 DBFunctions::commit();
@@ -122,6 +142,11 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'currently_on' => $this->currently_on,
 						'zoomlink' => $this->zoomlink,
 						'date_for_questions' => $this->date_for_questions,
+						'event' => $this->event,
+                                                'theme' => $this->theme,
+                                                'description' => $this->desc,
+						'host' => $this->host,
+                                                'details' => $this->details,
 					  ),
                                           array('id' => EQ($this->id)),
                                           array(),

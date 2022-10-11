@@ -1,6 +1,7 @@
 ExpertDashboardView = Backbone.View.extend({
     editDialog: null,
     registerDialog:null,
+    detailsDialog:null,
     template: _.template($('#expert_dashboard_template').html()),
     initialize: function () {
         this.model.bind('sync', this.render);//change to on
@@ -9,14 +10,15 @@ ExpertDashboardView = Backbone.View.extend({
     events: {
         "click #editeventbtn": "openEdit",
 	"click .registerbtn": "openRegister",
+	"click #detailsbtn": "openDetails",
     },
 
     openEdit: function () {
         var view = new ExpertEditView({ el: this.editDialog, model: this.model, isDialog: true , parent_location: location});
         this.editDialog.view = view;
         this.editDialog.dialog({
-            height: $(window).height() * 0.55,
-            width: 350,
+            height: $(window).height() * 0.60,
+            width: 500,
             title: "Edit Event",
         });
         this.editDialog.dialog('open');
@@ -27,22 +29,42 @@ ExpertDashboardView = Backbone.View.extend({
     openRegister: function(ev){
 	var cat = $(ev.currentTarget).data('cat');
 	var question = false;
-	var heightmultiplier = 0.35;
+	var heightmultiplier = 0.60;
+	var title = "Registration";
 	if(cat == "question"){
 	    question = true;
-            heightmultiplier = 0.50;
+            heightmultiplier = 0.60;
+	    title = "Ask a Question";
+            $('.my-dialog .ui-button-text:contains(Submit)').text('Ask Question');
+            $('.my-dialog .ui-button-text:contains(Register)').text('Ask Question');
+
         }
+	if(cat== "register"){
+            $('.my-dialog .ui-button-text:contains(Ask Question)').text('Register');
+	    $('.my-dialog .ui-button-text:contains(Submit)').text('Register');
+	}
         var view = new EventRegisterView({ el: this.registerDialog, model: this.model, isDialog: true, isQuestion: question});
         this.registerDialog.view = view;
         this.registerDialog.dialog({
             height: $(window).height() * heightmultiplier,
-            width: 350,
-            title: "Ask a Question",
+            width: 550,
+            title: title,
         });
         this.registerDialog.dialog('open');
         view.render();
     },
 
+    openDetails: function () {
+        var view = new ExpertDetailsView({ el: this.detailsDialog, model: this.model, isDialog: true , parent_location: location});
+        this.detailsDialog.view = view;
+        this.detailsDialog.dialog({
+            height: $(window).height() * 0.60,
+            width: 500,
+            title: "Details of Event",
+        });
+        this.detailsDialog.dialog('open');
+        view.render();
+    },
 
     render: function () {
         this.$el.empty();
@@ -127,10 +149,26 @@ ExpertDashboardView = Backbone.View.extend({
                     this.registerDialog.dialog('close');
 		    this.window.scrollTo(0, 0);
                 }.bind(this)
-            }
+            },
+	    dialogClass: 'my-dialog'
         });
 
-
+        this.detailsDialog = this.$("#detailsDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            show: 'fade',
+            resizable: false,
+            draggable: false,
+            open: function () {
+                $("html").css("overflow", "hidden");
+            },
+            beforeClose: function () {
+                this.detailsDialog.view.stopListening();
+                this.detailsDialog.view.undelegateEvents();
+                this.detailsDialog.view.$el.empty();
+                $("html").css("overflow", "auto");
+            }.bind(this),
+        });
 
         return this.$el;
     }

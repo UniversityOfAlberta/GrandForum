@@ -32,7 +32,8 @@ class AskAnExpert extends BackbonePage {
         return array('Backbone/*',
                      'expert_dashboard',
                      'expert_row',
-                     'expert_edit',
+		     'expert_edit',
+		     'expert_details',
                      'event_register');
     }
     
@@ -40,7 +41,8 @@ class AskAnExpert extends BackbonePage {
         return array('Backbone/*',
                      'ExpertDashboardView',
                      'ExpertRowView',
-                     'ExpertEditView',
+		     'ExpertEditView',
+		     'ExpertDetailsView',
                      'EventRegisterView');
     }
     

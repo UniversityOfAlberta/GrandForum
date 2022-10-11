@@ -44,6 +44,11 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->date_of_event = $this->POST('date_of_event');
 	$askanexpertevent->zoomlink = $this->POST('zoomlink');
 	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
+	$askanexpertevent->event = $this->POST('event');
+        $askanexpertevent->desc = $this->POST('description');
+        $askanexpertevent->host = $this->POST('host');
+	$askanexpertevent->theme = $this->POST('theme');
+	$askanexpertevent->details = $this->POST('details');
         $askanexpertevent->active = 1;
         $askanexpertevent->currently_on = 1;
         $status =$askanexpertevent->create();
@@ -70,6 +75,11 @@ class AskAnExpertEventAPI extends RESTAPI {
         $askanexpertevent->date_of_event = $this->POST('date_of_event');
 	$askanexpertevent->zoomlink = $this->POST('zoomlink');
 	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
+        $askanexpertevent->event = $this->POST('event');
+        $askanexpertevent->desc = $this->POST('description');
+        $askanexpertevent->host = $this->POST('host');
+	$askanexpertevent->theme = $this->POST('theme');
+	$askanexpertevent->details = $this->POST('details');
         $askanexpertevent->active = 1;
         $status = $askanexpertevent->update();
         if(!$status){

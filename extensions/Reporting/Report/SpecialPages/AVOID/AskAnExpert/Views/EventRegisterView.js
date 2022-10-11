@@ -72,7 +72,21 @@ EventRegisterView = Backbone.View.extend({
 
     
     render: function(){
-        this.$el.html(this.template(this.model.toJSON()));
+	var data = this.model.toJSON();
+        var date = "";
+        var time = "";
+        data["date"] = "";
+        data["time"] = "";
+        //format date
+        if(data["date_of_event"] != null){
+                var split = data["date_of_event"].split(" ");
+                date = split[0];
+                time = split[1];
+                data["date"] = date;
+                data["time"] = time;
+        }
+
+        this.$el.html(this.template(data));
         return this.$el;
     }
 

@@ -44,14 +44,20 @@ ExpertEditView = Backbone.View.extend({
 	var time = form.find('#time_of_event').val();
 	var datetimestr = date+" "+time+":00";
 	//grab question date
+	console.log(form.find('textarea#description').val());
         var datequestion = form.find('#date_for_questions').val();
         var datetimestrquestion = datequestion+" "+"00:00:00";
 	this.model.set({
 		"name_of_expert": form.find('#name_of_expert').val(),
 		"expert_field": form.find('#expert_field').val(),
 		"zoomlink": form.find('#zoomlink').val(),
+		"theme": form.find('#theme').val(),
+		"host": form.find('#host').val(),
+		"event": form.find('#event').val(),
+		"description":form.find('textarea#description').val(),
 		"date_of_event": datetimestr,
 		"date_for_questions": datetimestrquestion,
+		"details":form.find('textarea#details').val(),
 	});
 	var isNew = this.model.isNew();
         this.model.save(null, {

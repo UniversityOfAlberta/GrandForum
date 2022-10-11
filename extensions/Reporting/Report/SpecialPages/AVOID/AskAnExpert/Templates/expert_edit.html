@@ -18,12 +18,28 @@
         <td><input type="time" id="time_of_event" name="time_of_event" value="<%= time %>"></td>
     </tr>
     <tr>
-        <td class="label">Question Date:</td>
-        <td class="field"><input type="date" id="date_for_questions" name="date_for_questions" value="<%= date_for_questionsstr %>"></td>
-    </tr>
-    <tr>
         <td class="label">Zoom Link:</td>
         <td class="field"><input type="text" id="zoomlink" name="zoomlink" value="<%= zoomlink%>"></td>
+    </tr>
+    <tr>
+        <td class="label">Current Theme:</td>
+        <td class="field"><input type="text" id="theme" name="theme" value="<%= theme%>"></td>
+    </tr>
+    <tr>
+        <td class="label">Host:</td>
+        <td class="field"><input type="text" style="width:300px" id="host" name="host" value="<%= host%>"></td>
+    </tr>
+    <tr>
+        <td class="label">Event:</td>
+        <td class="field"><input style="width:300px" type="text" id="event" name="event" value="<%= event%>"></td>
+    </tr>
+    <tr>
+        <td class="label">Description:</td>
+	<td class="field"><textarea id="description" cols="20" rows="3" name="description"><%= description%></textarea></td>
+    </tr>
+    <tr>
+        <td class="label">Details:</td>
+        <td class="field"><textarea id="details" cols="20" rows="3" name="details"><%= details%></textarea></td>
     </tr>
 </table>
 <br />

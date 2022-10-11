@@ -1,10 +1,12 @@
 <div class='program-body' style='overflow: auto;'>
     <div style='display:flex;'>
-        <div class='program-header' style="text-align:center; width:800px;">
-		Ask an AVOID Frailty Expert
-                        </div>
+        <div class='program-header' style="text-align:center; width:800px;line-height:0.8em;">
+		ASK AN AVOID EXPERT
+		<br />
+		<span style="font-size:0.4em;">A series of KFL&A community events to support a healthy lifestyle</span>
+		     </div>
         <div class='' style='min-width: 200px;'>
-		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 180px;' />
+		<img src="<%= wgServer + wgScriptPath %>/skins/AaE.png" style='float: right; height: 140px;' />
         </div>
 	<div style="position:absolute;top:0px;right:10px;">
 		<% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
@@ -15,31 +17,28 @@
     </div>
     <div id="editDialog" style="display:none;"></div>
     <div id="registerDialog" style="display:none;"></div>
-    <div class="expert_announce">
-	    Coming soon we welcome <%= output.name_of_expert %>, an expert in <%= output.expert_field  %>. 
+    <div id="detailsDialog" style="display:none;"></div>
+    <div class="expert_announce"><b>
+	<span style="color:#005f9d;">Current Theme:</span> <%= output.theme  %><br />
+	<span style="color:#005f9d;">Host:</span> <%= output.host  %><br />
+	<span style="color:#005f9d;">Event:</span> <%= output.event  %><br />
+	<span style="color:#005f9d;">Description:</span></b> <%= output.description %> <br />
     </div>
     <div style='display:flex; clear: both;'>
         <div style='width:40%; padding-right:1em;'>
-            <img src="<%= wgServer + wgScriptPath %>/skins/meetingevent.jpeg" style='float: left; height: 300px;' />
+		<div style='margin-top:2em;margin-left:2em;'>
+			<span style="color:#005f9d;"><%= output.date  %></span>
+		<br />
+		<a id="registerevent" class="registerbtn" data-cat="register" href="#">Details and Registration</a>
+		</div>
         </div>
         <div style='width:60%; padding-left:1em;'>
             <div class='program-box' style='display:flex;'>
-		        Do you have questions about the what, why and how of <%= output.expert_field  %> and healthy aging?<br /><br />
-		        We will share your most frequently asked questions with our expert and they will answer them in a LIVE webinar on  <%= output.date  %> at  <%= output.time  %>.<br />
-		        Can’t make the webinar? The Q&A will be in the resource section after the live event.
+		    <ul>
+			<li>Can’t make the event? <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to ask a question. </li>
+			<li>All past event recordings or frequently asked questions are in the AVOID Education tab </li>
+		    </ul>
             </div>
-            <br />
-            <p>
-	    <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to Submit a Question by  <%= output.date_for_questions  %>.
-	    </p>
-	    <p>
-	    <a id="registerevent" class="registerbtn" data-cat="register" href="#">Register</a> for the webinar. You will be emailed the webinar link prior to the event.
-	    </p>
-	    <p>
-	    <% if (output.zoomlink != ""){ %>
-            <a href='<%=output.zoomlink %>' target='_blank'>Webinar Link</a><br />
-	    <% } %>
-            </p>
         </div>
     </div>
 </div>
