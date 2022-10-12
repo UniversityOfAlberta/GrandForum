@@ -117,20 +117,20 @@ class AVOIDDashboard extends SpecialPage {
         $score = $scores["Total"];
         $label = $scores["Label"];
         $frailty = "";
-        if($label == "very low risk"){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
+        if($label == "very low risk"){ 
+            $frailty = "Based on your answers in the assessment, you have a <span style='color: white; background: green; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
 ";
         }
         else if($label == "low risk"){
-            $frailty = "Based on the answers in the assessment, you are classified as <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> to becoming frail.
+            $frailty = "Based on your answers in the assessment, you have a <span style='color: black; background: #F6BE00; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
 ";
         }
         else if($label == "medium risk"){
-            $frailty = "Based on the answers in the assessment, you are at <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.
+            $frailty = "Based on your answers in the assessment, you have a <span style='color: black; background: orange; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.
 ";
         }
         else if($label == "high risk"){
-            $frailty = "Based on your answers in the assessment, you are at <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> of being frail.";
+            $frailty = "Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.";
         }
 
         $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
@@ -139,15 +139,22 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
                             <div class='program-body {$membersOnly}' style='width: 100%;'>
-                                <p>{$frailty}</p>
-                                <p><a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$progressReport}<br />
-                                <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a></p>
-                                <b>Where do I go from here?</b>
-                                <ul>
-                                    <li>Review your personal report and the education recommended, or of interest to you</li>
-                                    <li>Use the action plan template below to develop a goal around the topic(s) identified - come back to track your progress and log your accomplishments</li>
-                                    <li>Use the Community Programs and AVOID Programs to support you in accomplishing your action plan</li>
-                                </ul>
+                                <p>
+                                    {$frailty}<br />
+                                    <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a><br />
+                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$progressReport}
+                                </p>
+                                <p>
+                                    <b>How do I use this program?</b><br />
+                                    Step 1. Review your personal report above to learn about your risks and recommendations<br />
+                                    Step 2. Use the action plan template below to create and track a healthy change <b>this week</b><br />
+                                    Step 3. Use the education, programs and resources to support your healthy aging goals
+                                </p>
+
+                                <p style='margin-bottom:0;'>
+                                    Still need help? Whether it’s navigating the site or something else, we are here to help you. Please click the button below for 1-on-1 assistance.<br />
+                                    <button id='helpButton' type='button'>Help</button>
+                                </p>
                             </div>
                          </div>");
         

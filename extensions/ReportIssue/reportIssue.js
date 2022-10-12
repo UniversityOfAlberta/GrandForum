@@ -51,7 +51,7 @@ $(document).ready(function(){
     
     $("div#reportIssueDialog").dialog({
         autoOpen: false,
-        width: 400,
+        width: '35em',
         buttons: {
             "Submit": function(){   
                 dataToSend.first_name = $("div#reportIssueDialog input[name=first_name]").val();
@@ -72,7 +72,7 @@ $(document).ready(function(){
     
     $("div#contactUsDialog").dialog({
         autoOpen: false,
-        width: 400,
+        width: '30em',
         buttons: {
             "Submit": function(){
                 dataToSend.topic = $("div#contactUsDialog #topic").val();
@@ -86,6 +86,28 @@ $(document).ready(function(){
                 dataToSend.last_name = $("div#contactUsDialog input[name=last_name]").val();
                 dataToSend.email = $("div#contactUsDialog input[name=email]").val();
                 dataToSend.comments = $("div#contactUsDialog textarea").val();
+                $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
+                    $(this).dialog('close');
+                    clearSuccess();
+                    addSuccess('Your message has been sent to support.');
+                }.bind(this));
+            },
+            "Cancel": function(){
+                $(this).dialog('close');
+            }
+        }
+    });
+    
+    $("div#helpDialog").dialog({
+        autoOpen: false,
+        width: '30em',
+        buttons: {
+            "Submit": function(){
+                dataToSend.first_name = $("div#helpDialog input[name=first_name]").val();
+                dataToSend.last_name = $("div#helpDialog input[name=last_name]").val();
+                dataToSend.email = $("div#helpDialog input[name=email]").val();
+                dataToSend.phone = $("div#helpDialog input[name=phone]").val();
+                dataToSend.comments = $("div#helpDialog textarea").val();
                 $.post(wgServer + wgScriptPath + '/index.php?action=reportIssue', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
@@ -122,6 +144,15 @@ $(document).ready(function(){
         };
         $("div#contactUsDialog").dialog('open');
         $("div#contactUsDialog input[type=file]").change();
+    });
+    
+    $("button#helpButton").click(function(){
+        dataToSend = {
+            phone: '',
+            comments: '',
+            email: ''
+        };
+        $("div#helpDialog").dialog('open');
     });
     
     $("div#contactUsDialog #topic").change(function(){

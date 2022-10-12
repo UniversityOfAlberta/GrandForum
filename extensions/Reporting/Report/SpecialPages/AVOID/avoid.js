@@ -54,6 +54,12 @@ $(document).ready(function(){
         });
     });
     
+    _.defer(function(){
+        $("div#reportIssueDialog").closest(".ui-dialog").addClass("program-body");
+        $("div#contactUsDialog").closest(".ui-dialog").addClass("program-body");
+        $("div#helpDialog").closest(".ui-dialog").addClass("program-body");
+    });
+    
     $(window).resize(function(){
         if($('#becomeMemberDialog').is(':visible')){
             $('#becomeMemberDialog').dialog({

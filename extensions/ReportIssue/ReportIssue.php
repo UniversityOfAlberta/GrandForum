@@ -67,6 +67,18 @@
                 <b>Attachment:</b><br /><input type='file' /> (5MB max)
             </div>
         </div>");
+        
+        $wgOut->addHTML("<div title='Help' id='helpDialog' style='display:none; width: 112px;'>
+            <table>
+                {$loggedIn}
+                <tr>
+                    <td class='label'>Phone Number:</td>
+                    <td class='value'><input type='text' name='phone' value='' /></td>
+                 </tr>
+            </table>
+            <b>Message:</b><br />
+            <textarea style='width:100%;height:100px;' id='additional_comments'></textarea>
+        </div>");
         return true;
     }
     
@@ -85,17 +97,18 @@
             $email = $_POST['email'];
             $msg = "";
             $subj = "";
+            $phone = (isset($_POST['phone'])) ? "({$_POST['phone']})" : "";
             if(isset($_POST['img'])){
                 $subj = "Report Issue";
                 $msg = "<p>{$comments}</p><br />
-                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email})<br />
+                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}<br />
                         <b>Browser:</b> {$_POST['browser']}<br />
                         <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
             }
             else{
                 $subj = "Contact Us - {$_POST['topic']}";
                 $msg = "<p>{$comments}</p><br />
-                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email})";
+                        <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}";
             }
             
             $eol = "\r\n";

@@ -625,6 +625,13 @@ class CavendishTemplate extends QuickTemplate {
             </script>
 	        <iframe id="logoutFrame" style="display:none;" src=""></iframe>
 		<?php } ?>
+		<?php if($config->getValue('networkName') == "AVOID"){ ?>
+		    <style>
+	            .top-nav-mid {
+	                font-size: 1.25em;
+	            }
+		    </style>
+		<?php } ?>
 		<?php if(!(!TESTING && $wgScriptPath != "" && !DEMO)){ ?>
 		    <style>
 		        .mce-path-item {
@@ -1064,6 +1071,7 @@ class CavendishTemplate extends QuickTemplate {
             }
             $.cookie('fontSize', fontSize, {expires: 180});
             $("#bodyContent").css("font-size", fontSize);
+            $(".top-nav .top-nav-element").css("font-size", fontSize);
         });
         if(fontSize == "13px"){
             $(".fontSizeSmall").click();
