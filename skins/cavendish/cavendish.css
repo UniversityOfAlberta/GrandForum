@@ -2153,6 +2153,7 @@ div.program-text {
     html, body {
         min-width: 100% !important;
         width: 100% !important;
+        overflow-x: hidden;
     }
 
     #topheader .smallLogo {
