@@ -106,7 +106,12 @@
                         <b>Url:</b> <a href='{$_POST['url']}'>{$_POST['url']}</a>";
             }
             else{
-                $subj = "Contact Us - {$_POST['topic']}";
+                if(isset($_POST['topic'])){
+                    $subj = "Contact Us - {$_POST['topic']}";
+                }
+                else{
+                    $subj = "Help";
+                }
                 $msg = "<p>{$comments}</p><br />
                         <b>User:</b> {$_POST['first_name']} {$_POST['last_name']} ({$email}) {$phone}";
             }
