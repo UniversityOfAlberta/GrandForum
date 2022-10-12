@@ -1929,6 +1929,8 @@ table.milestones, table.milestones tr, table.milestones tr td, table.milestones 
     padding: 1em;
     white-space: nowrap;
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 h1.program-header {
