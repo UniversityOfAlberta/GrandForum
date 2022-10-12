@@ -132,6 +132,7 @@ $(document).ready(function(){
             };
             $("div#reportIssueDialog").dialog('open');
             $("div#reportIssue .throbber").hide();
+            $(window).resize();
         });
     });
     
@@ -144,6 +145,7 @@ $(document).ready(function(){
         };
         $("div#contactUsDialog").dialog('open');
         $("div#contactUsDialog input[type=file]").change();
+        $(window).resize();
     });
     
     $("#helpButton").click(function(){
@@ -153,6 +155,7 @@ $(document).ready(function(){
             email: ''
         };
         $("div#helpDialog").dialog('open');
+        $(window).resize();
     });
     
     $("div#contactUsDialog #topic").change(function(){

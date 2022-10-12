@@ -72,7 +72,7 @@
             <table>
                 {$loggedIn}
                 <tr>
-                    <td class='label'>Phone Number:</td>
+                    <td class='label'>Phone #:</td>
                     <td class='value'><input type='text' name='phone' value='' /></td>
                  </tr>
             </table>
