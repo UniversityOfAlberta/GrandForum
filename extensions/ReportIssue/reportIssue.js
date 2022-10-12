@@ -146,7 +146,7 @@ $(document).ready(function(){
         $("div#contactUsDialog input[type=file]").change();
     });
     
-    $("button#helpButton").click(function(){
+    $("#helpButton").click(function(){
         dataToSend = {
             phone: '',
             comments: '',

@@ -54,6 +54,8 @@ $(document).ready(function(){
         });
     });
     
+    $("#wgMessages").addClass("program-body");
+    
     _.defer(function(){
         $("div#reportIssueDialog").closest(".ui-dialog").addClass("program-body");
         $("div#contactUsDialog").closest(".ui-dialog").addClass("program-body");

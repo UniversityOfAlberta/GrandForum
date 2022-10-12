@@ -153,7 +153,7 @@ class AVOIDDashboard extends SpecialPage {
 
                                 <p style='margin-bottom:0;'>
                                     Still need help? Whether it’s navigating the site or something else, we are here to help you. Please click the button below for 1-on-1 assistance.<br />
-                                    <button id='helpButton' type='button'>Help</button>
+                                    <a id='helpButton' class='program-button' style='width: 4em; text-align: center;'>Help</a>
                                 </p>
                             </div>
                          </div>");
