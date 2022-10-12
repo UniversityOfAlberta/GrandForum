@@ -54,7 +54,8 @@ $(document).ready(function(){
         });
     });
     
-    $("#wgMessages").addClass("program-body");
+    $("#wgMessages").css("font-size", "1.5em")
+                    .css("line-height", "1.5em");
     
     _.defer(function(){
         $("div#reportIssueDialog").closest(".ui-dialog").addClass("program-body");
