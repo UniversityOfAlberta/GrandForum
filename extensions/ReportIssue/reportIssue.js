@@ -72,7 +72,7 @@ $(document).ready(function(){
     
     $("div#contactUsDialog").dialog({
         autoOpen: false,
-        width: '30em',
+        width: '35em',
         buttons: {
             "Submit": function(){
                 dataToSend.topic = $("div#contactUsDialog #topic").val();
@@ -100,7 +100,7 @@ $(document).ready(function(){
     
     $("div#helpDialog").dialog({
         autoOpen: false,
-        width: '30em',
+        width: '35em',
         buttons: {
             "Submit": function(){
                 dataToSend.first_name = $("div#helpDialog input[name=first_name]").val();
@@ -163,5 +163,24 @@ $(document).ready(function(){
             $("#topic_other").hide();
         }
     }).change();
+    
+    $(window).resize(function(){
+        var desiredWidth = "35em";
+        if(window.matchMedia('(max-width: 767px)').matches){
+            desiredWidth = $(window).width()*0.99;
+        }
+        else if(window.matchMedia('(max-width: 1024px)').matches){
+            desiredWidth = "35em";
+        }
+        
+        if($('#helpDialog, #contactUsDialog, #reportIssueDialog').is(':visible')){
+            $('#helpDialog, #contactUsDialog, #reportIssueDialog').dialog({
+                width: desiredWidth
+            });
+            $('#helpDialog, #contactUsDialog, #reportIssueDialog').dialog({
+                position: { 'my': 'center', 'at': 'center' }
+            });
+        }
+    }).resize();
     
 });
