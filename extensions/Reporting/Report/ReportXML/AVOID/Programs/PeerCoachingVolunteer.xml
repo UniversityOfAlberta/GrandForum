@@ -21,7 +21,7 @@
                 <div style='overflow: auto;'>
                     <img src="{$wgServer}{$wgScriptPath}/skins/man3.png" style='float: right; height: 175px; transform: scaleX(-1);' />
                     <div style='display:flex; align-items: center;'>
-                        <div class='program-header'>
+                        <div class='program-header' style='width: 8em; text-align: center;'>
                             PEER COACHING
                         </div>
                         <div class='program-text' style='min-width: 200px;'>

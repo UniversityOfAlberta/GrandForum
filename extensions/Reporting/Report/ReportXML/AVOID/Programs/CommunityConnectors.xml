@@ -21,7 +21,7 @@
                 <div style='overflow: auto;'>
                     
                     <div style='display:flex; align-items: center;'>
-                        <div class='program-header'>
+                        <div class='program-header' style='width: 24em; text-align: center;'>
                             COMMUNITY CONNECTORS
                         </div>
                         <div style='width: 100%; text-align: center;'>
