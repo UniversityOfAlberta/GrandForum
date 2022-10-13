@@ -115,8 +115,10 @@ class AdminUsageStats extends SpecialPage {
                     $clinicians[] = $person;
                 }
             }
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId())){
-                $submitted[] = $person;
+            if($person->isRole(CI)){
+                if(AVOIDDashboard::hasSubmittedSurvey($person->getId())){
+                    $submitted[] = $person;
+                }
             }
         }
         
