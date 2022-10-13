@@ -18,8 +18,8 @@ class PersonDashboardTab extends AbstractEditableTab {
     function tabSelect(){
         return "_.defer(function(){
             $('select.chosen').chosen();
-            $('button[value=\"Edit Dashboard\"]').css('display', 'none');
-            $('button[value=\"Save Dashboard\"]').css('display', 'none');
+            $('button[value=\"Edit Dashboard\"]:not(#realEdit)').css('display', 'none');
+            $('button[value=\"Save Dashboard\"]:not(#realSave)').css('display', 'none');
         });";
     }
     
@@ -61,7 +61,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                 $('#ajax_dashboard').html(response);
             });
             _.defer(function(){
-                $('button[value=\"Edit Dashboard\"]').css('display', 'none');
+                $('button[value=\"Edit Dashboard\"]:not(#realEdit)').css('display', 'none');
             });</script>";
         }
         return $this->html;
@@ -98,7 +98,7 @@ class PersonDashboardTab extends AbstractEditableTab {
                         prevVal = id;
                     });
                 });
-                $('button[value=\"Save Dashboard\"]').css('display', 'none');
+                $('button[value=\"Save Dashboard\"]:not(#realSave)').css('display', 'none');
             });
         </script>";
     }
@@ -174,7 +174,7 @@ class PersonDashboardTab extends AbstractEditableTab {
         for($i; $i < $max; $i++){
             $this->html .= $this->selectList($person, "");
         }
-        $this->html .= "<br /><button type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
+        $this->html .= "<br /><button id='realSave' type='submit' value='Save Dashboard' name='submit'>Save Top Research Outcomes</button>
                         <input type='submit' value='Cancel' name='submit' />";
     }
     
@@ -228,7 +228,7 @@ class PersonDashboardTab extends AbstractEditableTab {
             $this->html .= "You have not entered any <i>Top Research Outcomes</i> yet<br />";
         }
         if($this->canEdit()){
-            $this->html .= "<button type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
+            $this->html .= "<button id='realEdit' type='submit' value='Edit Dashboard' name='submit'>Edit Top Research Outcomes</button>";
         }
     }
     
