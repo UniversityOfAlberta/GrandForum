@@ -31,62 +31,70 @@ class PersonSupervisesReportItem extends StaticReportItem {
         
         $item = "";
         if($splitGrad != "true"){
-            $item .= "<h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
+            $item .= "<div style='page-break-inside: avoid;'><h4>Graduate Students (Supervised or Co-supervised): {$gradCount}</h4>";
             if($gradCount > 0){
                 $item .= $tab->supervisesHTML('grad', 
                                               $this->getReport()->startYear."-07-01", 
                                               $this->getReport()->year."-06-30");
             }
+            $item .= "</div>";
         }
         else{
-            $item .= "<h4>Doctoral Students (Supervised or Co-supervised): {$phdCount}</h4>";
+            $item .= "<div style='page-break-inside: avoid;'><h4>Doctoral Students (Supervised or Co-supervised): {$phdCount}</h4>";
             if($phdCount > 0){
                 $item .= $tab->supervisesHTML('phd', 
                                               $this->getReport()->startYear."-07-01", 
                                               $this->getReport()->year."-06-30");
             }
+            $item .= "</div>";
             
-            $item .= "<br /><h4>Master's Students (Supervised or Co-supervised): {$mscCount}</h4>";
+            $item .= "<br /><div style='page-break-inside: avoid;'><h4>Master's Students (Supervised or Co-supervised): {$mscCount}</h4>";
             if($mscCount > 0){
                 $item .= $tab->supervisesHTML('msc', 
                                               $this->getReport()->startYear."-07-01", 
                                               $this->getReport()->year."-06-30");
             }
+            $item .= "</div>";
         }
         
-        $item .= "<br /><h4>Undergraduates: {$ugradCount}</h4>";
+        $item .= "<br /><div style='page-break-inside: avoid;'><h4>Undergraduates: {$ugradCount}</h4>";
         if($ugradCount > 0){
             $item .= $tab->supervisesHTML('ugrad', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }
+        $item .= "</div>";
         
-        $item .= "<br /><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$pdfCount}</h4>";
+        $item .= "<br /><div style='page-break-inside: avoid;'><h4>Post-doctoral Fellows and Research Associates (Supervised or Co-supervised): {$pdfCount}</h4>";
         if($pdfCount > 0){
             $item .= $tab->supervisesHTML('pdf', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }
+        $item .= "</div>";
         
-        $item .= "<br /><h4>Research/Technical Assistants: {$techCount}</h4>";
+        $item .= "<br /><div style='page-break-inside: avoid;'><h4>Research/Technical Assistants: {$techCount}</h4>";
         if($techCount > 0){
             $item .= $tab->supervisesHTML('tech', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
         }
+        $item .= "</div>";
         
         if($showOther && $otherCount > 0){
-            $item .= "<br /><h4>Other: {$otherCount}</h4>";
+            $item .= "<br /><div style='page-break-inside: avoid;'><h4>Other: {$otherCount}</h4>";
             $item .= $tab->supervisesHTML('other', 
                                           $this->getReport()->startYear."-07-01", 
                                           $this->getReport()->year."-06-30");
+            $item .= "</div>";
         }
         
         if($showCommittees && $committeeCount > 0){
-            $item .= "<br /><h4>Student Committee Responsibilities: {$committeeCount}</h4>";
+            $item .= "<br /><div style='page-break-inside: avoid;'><h4>Student Committee Responsibilities: {$committeeCount}</h4>";
             $item .= $tab->supervisesHTML('committee',
                                           $this->getReport()->startYear."-07-01",
                                           $this->getReport()->year."-06-30");
+            $item .= "</div>";
         }
         
         $item = str_replace("-Committee", "-Cmte", $item);
