@@ -10,6 +10,9 @@ class EliteProfileAPI extends RESTAPI {
             else if($this->getParam('phd') != ""){
                 $profile = PhDEliteProfile::newFromUserId($this->getParam('id'));
             }
+            else if($this->getParam('sciphd') != ""){
+                $profile = PhDScienceEliteProfile::newFromUserId($this->getParam('id'));
+            }
             return $profile->toJSON();
         }
         else if($this->getParam('matched') != ""){
@@ -19,6 +22,9 @@ class EliteProfileAPI extends RESTAPI {
             else if($this->getParam('phd') != ""){
                 $profiles = new Collection(PhDEliteProfile::getAllMatchedProfiles());
             }
+            else if($this->getParam('sciphd') != ""){
+                $profiles = new Collection(PhDScienceEliteProfile::getAllProfiles());
+            }
             return $profiles->toJSON();
         }
         else{
@@ -27,6 +33,9 @@ class EliteProfileAPI extends RESTAPI {
             }
             else if($this->getParam('phd') != ""){
                 $profiles = new Collection(PhDEliteProfile::getAllProfiles());
+            }
+            else if($this->getParam('sciphd') != ""){
+                $profiles = new Collection(PhDScienceEliteProfile::getAllProfiles());
             }
             return $profiles->toJSON();
         }
@@ -42,6 +51,9 @@ class EliteProfileAPI extends RESTAPI {
         }
         else if($this->getParam('phd') != ""){
             $profile = PhDEliteProfile::newFromUserId($this->getParam('id'));
+        }
+        else if($this->getParam('sciphd') != ""){
+            $profile = PhDScienceEliteProfile::newFromUserId($this->getParam('id'));
         }
         if(!$profile->exists()){
             $this->throwError("This profile does not exist");
@@ -69,6 +81,9 @@ class EliteProfileAPI extends RESTAPI {
         }
         else if($this->getParam('phd') != ""){
             $profile = PhDEliteProfile::newFromUserId($this->getParam('id'));
+        }
+        else if($this->getParam('sciphd') != ""){
+            $profile = PhDScienceEliteProfile::newFromUserId($this->getParam('id'));
         }
         return $profile->toJSON();
     }

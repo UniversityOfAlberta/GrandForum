@@ -24,7 +24,12 @@ class EliteLettersReportItem extends MultiTextReportItem {
 	            
 	            // Continue if not yet uploaded
                 $tok = urlencode(encrypt(urldecode($sto->metadata('token')), true));
-                $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ReferenceLetter&candidate={$tok}&id={$id}";
+                if($report->reportType == "RP_PHD_ELITE"){
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ReferenceLetter&candidate={$tok}&id={$id}";
+                }
+                else if($report->reportType == "RP_SCI_PHD_ELITE"){
+                    $url = "{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=ScienceReferenceLetter&candidate={$tok}&id={$id}";
+                }
                 $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Content-type:text/html;charset=UTF-8\r\n" .

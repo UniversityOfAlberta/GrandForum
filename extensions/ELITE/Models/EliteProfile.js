@@ -74,3 +74,25 @@ PhDEliteProfiles = EliteProfiles.extend({
     }
     
 });
+
+// PhD Science Classes
+PhDScienceEliteProfile = EliteProfile.extend({
+
+    urlRoot: 'index.php?action=api.eliteprofile/sciphd',
+    
+});
+
+PhDScienceEliteProfiles = EliteProfiles.extend({
+    
+    model: PhDScienceEliteProfile,
+    
+    url: function(){
+        if(this.matched){
+            return 'index.php?action=api.eliteprofile/phd/matched';
+        }
+        else{
+            return 'index.php?action=api.eliteprofile/sciphd';
+        }
+    }
+    
+});

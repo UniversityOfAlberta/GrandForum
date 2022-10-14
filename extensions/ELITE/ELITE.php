@@ -4,6 +4,7 @@ require_once("ElitePosting.php");
 require_once("EliteProfile.php");
 require_once("InternEliteProfile.php");
 require_once("PhDEliteProfile.php");
+require_once("PhDScienceEliteProfile.php");
 require_once("API/ElitePostingAPI.php");
 require_once("API/EliteProfileAPI.php");
 require_once("ElitePostingPage.php");
@@ -48,5 +49,9 @@ $apiRequest->addAction('Hidden','eliteprofile/intern/:id', 'EliteProfileAPI');
 $apiRequest->addAction('Hidden','eliteprofile/phd', 'EliteProfileAPI');
 $apiRequest->addAction('Hidden','eliteprofile/phd/matched', 'EliteProfileAPI');
 $apiRequest->addAction('Hidden','eliteprofile/phd/:id', 'EliteProfileAPI');
+
+$apiRequest->addAction('Hidden','eliteprofile/sciphd', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/sciphd/matched', 'EliteProfileAPI');
+$apiRequest->addAction('Hidden','eliteprofile/sciphd/:id', 'EliteProfileAPI');
 
 ?>
