@@ -9,17 +9,17 @@ class PhDScienceEliteProfile extends EliteProfile {
     static $rpType = "SCI_PHD_ELITE";
     
     function acceptedMessage(){
-        $subject = "Engineering-IBET-ELITE PhD Fellowship - Decision";
+        $subject = "Science Black PhD Fellowship - Decision";
         $message = "Dear PhD Fellowship Candidate,
-Thank you for your submission to the Engineering-IBET-ELITE PhD Fellowship program. After a review and adjudication process, we are pleased to advise that you have been selected to receive a PhD Fellowship. Congratulations!
+Thank you for your submission to the Science Black PhD Fellowship program. After a review and adjudication process, we are pleased to advise that you have been selected to receive a PhD Fellowship. Congratulations!
 
 Please see attached a detailed memorandum with additional information and instructions. Please address the action items in the document that were directed to you and respond by the date indicated in the memorandum.
 
-Thank you for your interest and continued support of the Engineering-IBET-ELITE PhD Fellowship initiative. We look forward to working with you.
+Thank you for your interest and continued support of the Science Black PhD Fellowship initiative. We look forward to working with you.
  
 With kind regards,
 
-André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+André G. McDonald, PhD, BS Law, PEng, CEng, PE, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -49,17 +49,17 @@ Programme ELITE pour la Jeunesse Noire
     }
     
     function rejectedMessage(){
-        $subject = "Engineering-IBET-ELITE PhD Fellowship - Decision";
+        $subject = "Science Black PhD Fellowship - Decision";
         $message = "Dear PhD Fellowship Candidate,
-Thank you for your submission to the Engineering-IBET-ELITE PhD Fellowship program.
+Thank you for your submission to the Science Black PhD Fellowship program.
 
-We received many applications for only three positions in this year's cohort. After a thorough review and adjudication process, we regret to inform you that your application was not selected to move forward for a fellowship. While this news is unfortunate, we hope that you will not be discouraged, and will apply directly to professors working in your area of research interest and expertise.
+We received many applications for only two positions in this year's cohort. After a thorough review and adjudication process, we regret to inform you that your application was not selected to move forward for a fellowship. While this news is unfortunate, we hope that you will not be discouraged, and will apply directly to professors working in your area of research interest and expertise.
 
-Thank you for your interest and continued support of the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you for your interest and continued support of the Science Black PhD Fellowship initiative.
  
 With kind regards,
 
-André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+André G. McDonald, PhD, BS Law, PEng, CEng, PE, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -77,9 +77,9 @@ Programme ELITE pour la Jeunesse Noire
     }
     
     function receivedMessage(){
-        $subject = "Engineering-IBET-ELITE PhD Fellowship - Confirmation of Receipt of Submission";
+        $subject = "Science Black PhD Fellowship - Confirmation of Receipt of Submission";
         $message = "Dear PhD Fellowship Candidate,
-Thank you for your submission to the Engineering-IBET-ELITE PhD Fellowship program. This message confirms that we received an application from you.
+Thank you for your submission to the Science Black PhD Fellowship program. This message confirms that we received an application from you.
 
 We will begin to review applications shortly. We hope to have the process completed within the next 3 to 8 weeks.
 
@@ -87,11 +87,11 @@ Please note that we have received more applications than fellowship positions av
 
 In the interim, please do not hesitate to contact us should you have any questions.
 
-Thank you for your interest and continued support of the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you for your interest and continued support of the Science Black PhD Fellowship initiative.
 
 With kind regards,
 
-André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+André G. McDonald, PhD, BS Law, PEng, CEng, PE, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -110,9 +110,9 @@ Programme ELITE pour la Jeunesse Noire
     
     function sendMatchedMail($person){
         global $config;
-        $subject = "Engineering-IBET-ELITE PhD Fellowship – Confirmation and Decision";
+        $subject = "Science Black PhD Fellowship – Confirmation and Decision";
         $message = "Dear PhD Fellowship Supervisor,
-Thank you, again, for participating in the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you, again, for participating in the Science Black PhD Fellowship initiative.
  
 I am writing to advise you that we have selected a candidate for the PhD position that you are offering. Please log in to the ELITE Program platform to review the application package received from the shortlisted candidate that was matched to your project. We kindly ask that you complete the following steps:
 
@@ -126,11 +126,11 @@ Please provide your decision within two (2) weeks after you receive this message
  
 Please do not hesitate to contact us should you have any questions.
  
-Thank you for your interest and continued support of the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you for your interest and continued support of the Science Black PhD Fellowship initiative.
 
 With kind regards,
 
-André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+André G. McDonald, PhD, BS Law, PEng, CEng, PE, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -152,19 +152,19 @@ Programme ELITE pour la Jeunesse Noire
     
     function sendHiresMail($person){
         global $config;
-        $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Received";
+        $subject = "Science Black PhD Fellowship – Feedback Received";
         $message = "Dear PhD Fellowship Supervisor,
-Thank you, again, for participating in the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you, again, for participating in the Science Black PhD Fellowship Fellowship initiative.
  
 I am writing to advise you that we have received your feedback in good order.
  
 Please do not hesitate to contact us should you have any questions.
  
-Thank you for your interest and continued support of the Engineering-IBET-ELITE PhD Fellowship initiative.
+Thank you for your interest and continued support of the Science Black PhD Fellowship Fellowship initiative.
 
 With kind regards,
 
-André G. McDonald, PhD, BS Law, PEng, CEng, FASM, FIMMM, FIMechE
+André G. McDonald, PhD, BS Law, PEng, CEng, PE, FASM, FIMMM, FIMechE
 Professor
 Lead Editor, <i>Journal of Thermal Spray Technology</i>
 Director, ELITE Program for Black Youth (www.eliteprogram.ca)
@@ -184,7 +184,7 @@ Programme ELITE pour la Jeunesse Noire
         mail($person->getEmail(), $subject, $message, $headers);
         
         // Now send email to coordinator
-        $subject = "Engineering-IBET-ELITE PhD Fellowship – Feedback Submitted";
+        $subject = "Science Black PhD Fellowship – Feedback Submitted";
         if(@$_POST['hire']->action == "Accepted"){
             $message = "Dear Program Coordinator,
                         A PhD supervisor has accepted a candidate. Please proceed to review and finalize the position.

@@ -22,6 +22,7 @@ class Report extends AbstractReport{
         global $wgServer, $wgScriptPath, $wgUser, $wgTitle, $special_evals;
         $tabs["Intern"] = TabUtils::createTab("<span class='en'>ELITE Intern Application</span><span class='fr'>Formulaire de demande pour les stagiaires ELITE</span>");
         $tabs["PhD"] = TabUtils::createTab("<span class='en'>Engineering PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>");
+        $tabs["SciPhD"] = TabUtils::createTab("<span class='en'>Science PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>");
         return true;
     }
     
@@ -35,6 +36,9 @@ class Report extends AbstractReport{
             
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PhDApplication")) ? "selected" : false;
             $tabs["PhD"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>Engineering PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>", "{$url}PhDApplication", $selected);
+            
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "PhDScienceApplication")) ? "selected" : false;
+            $tabs["SciPhD"]['subtabs'][] = TabUtils::createSubTab("<span class='en'>Science PhD Fellowship Application</span><span class='fr'>Formulaire de demande pour les candidat-e-s de bourse doctorale</span>", "{$url}PhDScienceApplication", $selected);
         }
         return true;
     }
