@@ -438,7 +438,7 @@
                 <h2>Employment History</h2>
             ]]>
         </ReportItem>
-        <ReportItem id="employment" type="PersonEmploymentReportItem">
+        <ReportItem id="employment" type="PersonEmployment2ReportItem">
             <![CDATA[
                 {$item}
             ]]>

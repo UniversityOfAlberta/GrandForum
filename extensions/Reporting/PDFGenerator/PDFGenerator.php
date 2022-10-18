@@ -429,6 +429,10 @@ EOF;
 		        white-space: normal !important;
 		    }
 		    
+		    .previewnodisplay {
+		        display: none;
+		    }
+		    
 		    #pdfBody {
 		        margin-top: ".PDFGenerator::cmToPixels($margins['top'])."px;
                 margin-right: ".PDFGenerator::cmToPixels($margins['right'])."px;
@@ -462,6 +466,10 @@ EOF;
 		    
 		    #pdfBody sub {
 		        font-size: 0.8em;
+		    }
+		    
+		    .generatenodisplay {
+		        display: none;
 		    }
 		    ";
         }

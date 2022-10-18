@@ -81,10 +81,14 @@ class ReportItemCallback {
             "user_url" => "getUserUrl",
             "user_email" => "getUserEmail",
             "user_phone" => "getUserPhone",
+            "user_profile" => "getUserProfile",
             "user_reversed_name" => "getUserReversedName",
             "user_last_name" => "getUserLastName",
             "user_first_name" => "getUserFirstName",
             "user_id" => "getUserId",
+            "user_photo" => "getUserPhoto",
+            "user_website" => "getUserWebsite",
+            "user_ldap" => "getUserLdap",
             "user_roles" => "getUserRoles",
             "user_full_roles" => "getUserFullRoles",
             "user_sub_roles" => "getUserSubRoles",
@@ -95,6 +99,7 @@ class ReportItemCallback {
             "user_research_area" => "getUserResearchArea",
             "user_fec" => "getUserFEC",
             "user_case_number" => "getUserCaseNumber",
+            "user_keywords" => "getUserKeywords",
             "user_supervisors" => "getUserSupervisors",
             "user_grad_count" => "getUserGradCount",
             "user_msc_count" => "getUserMscCount",
@@ -110,6 +115,7 @@ class ReportItemCallback {
             "user_grant_total" => "getUserGrantTotal",
             "user_phd_year" => "getUserPhdYear",
             "user_phd_date" => "getUserPhDDate",
+            "user_phd_uni" => "getUserPhDUni",
             "user_appointment_year" => "getUserAppointmentYear",
             "user_appointment_date" => "getUserAppointmentDate",
             "getUserPublicationCount" => "getUserPublicationCount",
@@ -164,6 +170,10 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "replace" => "replace",
+            "strtolower" => "strtolower",
+            "strtoupper" => "strtoupper",
+            "nl2br" => "nl2br",
             "strip_html" => "strip_html",
             "occurrences" => "occurrences",
             "count" => "count",
@@ -484,6 +494,11 @@ class ReportItemCallback {
         return $person->getPhoneNumber();
     }
     
+    function getUserProfile(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getProfile();
+    }
+    
     function getParentId(){
         return $this->reportItem->getParent()->personId;
     }
@@ -520,6 +535,21 @@ class ReportItemCallback {
     
     function getUserId(){
         return $this->reportItem->personId;
+    }
+    
+    function getUserPhoto(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getPhoto();
+    }
+    
+    function getUserWebsite(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getWebsite();
+    }
+    
+    function getUserLdap(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getLdap();
     }
     
     function getUserRoles(){
@@ -588,6 +618,11 @@ class ReportItemCallback {
     function getUserCaseNumber(){
         $person = Person::newFromId($this->reportItem->personId);
         return $person->getCaseNumber($this->reportItem->getReport()->year);
+    }
+    
+    function getUserKeywords(){
+        $person = Person::newFromId($this->reportItem->personId);
+        return $person->getKeywords(", ");
     }
     
     function getUserSupervisors(){
@@ -1142,6 +1177,22 @@ class ReportItemCallback {
         return $concat;
     }
     
+    function replace($pattern, $replacement, $string){
+        return str_replace($pattern, $replacement, $string);
+    }
+    
+    function strtolower($str){
+        return strtolower($str);
+    }
+    
+    function strtoupper($str){
+        return strtoupper($str);
+    }
+    
+    function nl2br($str){
+        return nl2br($str);
+    }
+    
     function add(){
         $args = func_get_args();
         $sum = 0;
@@ -1469,6 +1520,17 @@ class ReportItemCallback {
         $person = Person::newFromId($this->reportItem->personId);
         $fecInfo = $person->getFecPersonalInfo();
         return substr($fecInfo->dateOfAppointment, 0, 10);
+    }
+    
+    function getUserPhDUni(){
+        $person = Person::newFromId($this->reportItem->personId);
+        $unis = $person->getUniversities();
+        foreach($unis as $uni){
+            if(in_array(strtolower($uni['position']), Person::$studentPositions['phd'])){
+                return $uni['university'];
+            } 
+        }
+        return "";
     }
 }
 

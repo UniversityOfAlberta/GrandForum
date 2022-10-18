@@ -140,11 +140,11 @@ class PersonProfileTab extends AbstractEditableTab {
                         imagesavealpha($src_image, true);
                         $src_width = imagesx($src_image);
                         $src_height = imagesy($src_image);
-                        $dst_width = 100;
-                        $dst_height = ($src_height*100)/$src_width;
-                        if($dst_height > 132){
-                            $dst_height = 132;
-                            $dst_width = ($src_width*132)/$src_height;
+                        $dst_width = 300;
+                        $dst_height = ($src_height*300)/$src_width;
+                        if($dst_height > 396){
+                            $dst_height = 396;
+                            $dst_width = ($src_width*396)/$src_height;
                         }
                         $dst_image = imagecreatetruecolor($dst_width, $dst_height);
                         imagealphablending($dst_image, true);
@@ -385,7 +385,7 @@ EOF;
     function showEditPhoto($person, $visibility){
         global $config;
         $this->html .= "<tr><td style='padding-right:25px;' valign='top' colspan='2'>";
-        $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' />";
+        $this->html .= "<img src='{$person->getPhoto()}' alt='{$person->getName()}' style='max-width:100px;max-height:132px;' />";
         $this->html .= "<div id='special_links'></div>";
         $this->html .= "</td></tr>";
         $this->html .= "<tr><td style='padding-right:25px;' valign='top'><table>
@@ -394,7 +394,7 @@ EOF;
                                 <td><input type='file' name='photo' /></td>
                             </tr>
                             <tr>
-                                <td></td><td><small><li>For best results, the image should be 100x132</li>
+                                <td></td><td><small><li>For best results, the image should be 300x396</li>
                                                     <li>Max file size is 5MB</li>
                                                     <li>File type must be <i>gif</i>, <i>png</i> or <i>jpeg</i></li></small></td>
                             </tr>

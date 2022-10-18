@@ -8,6 +8,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $productType = explode("|", $this->getAttr("productType", ""));
         $peerReviewed = $this->getAttr("peerReviewed", "");
         $status = $this->getAttr("status", "");
+        $limit = $this->getAttr("limit", "");
         $submitProductYear = (strtolower($this->getAttr("submitProductYear", "false")) == "true");
         $useProductYear = (strtolower($this->getAttr("useProductYear", "false")) == "true");
         $onlyUseStartDate = (strtolower($this->getAttr("onlyUseStartDate", "false")) == "true");
@@ -16,6 +17,7 @@ class PersonProductsReportItemSet extends ReportItemSet {
         $includeHQP = (strtolower($this->getAttr("includeHQP", "true")) == "true");
         $onlyHQP = (strtolower($this->getAttr("onlyHQP", "false")) == "true");
         $me = Person::newFromWgUser();
+        $sort = strtolower($this->getAttr("sort", "normal")); // Can also be 'adaptive'
         $person = Person::newFromId($this->personId);
         $categories = explode("|", $category);
         $products = array();
@@ -64,10 +66,19 @@ class PersonProductsReportItemSet extends ReportItemSet {
             }
         }
         
-        usort($products, function($a, $b){
-            return (str_replace("0000-00-00", "9999-99-99", $a->getDate()).str_replace("0000-00-00", "9999-99-99", $a->getAcceptanceDate()) < 
-                    str_replace("0000-00-00", "9999-99-99", $b->getDate()).str_replace("0000-00-00", "9999-99-99", $b->getAcceptanceDate())) ? 1 : -1;
-        });
+        if($sort == "normal"){
+            usort($products, function($a, $b){
+                return (str_replace("0000-00-00", "9999-99-99", $a->getDate()).str_replace("0000-00-00", "9999-99-99", $a->getAcceptanceDate()) < 
+                        str_replace("0000-00-00", "9999-99-99", $b->getDate()).str_replace("0000-00-00", "9999-99-99", $b->getAcceptanceDate())) ? 1 : -1;
+            });
+        }
+        else if($sort == "adaptive"){
+            usort($products, function($a, $b){
+                $aDate = ($a->getDate() == "0000-00-00") ? $a->getAcceptanceDate() : $a->getDate();
+                $bDate = ($b->getDate() == "0000-00-00") ? $b->getAcceptanceDate() : $b->getDate();
+                return ($aDate < $bDate) ? 1 : -1;
+            });
+        }
         
         if(is_array($products)){
             foreach($products as $prod){
@@ -90,6 +101,9 @@ class PersonProductsReportItemSet extends ReportItemSet {
                     }
                 }
             }
+        }
+        if($limit > 0){
+            $data = array_slice($data,0,$limit);
         }
         return $data;
     }
