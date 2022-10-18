@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name=" " title=" " headerName=" " reportType="RP_PROFILE" pdfFiles="Profile" ajax="true" personId="{GET(userId, {$my_id})}">
     <Permissions>
-        <Role role="STAFF+">
+        <Role role="DEAN">
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+        </Role>
+        <Role role="VDEAN">
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+        </Role>
+        <Role role="HR">
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
+        </Role>
+        <Role role="MANAGER+">
             <SectionPermission id="table" permissions="rw" />
             <SectionPermission id="profile" permissions="rw" />
         </Role>
