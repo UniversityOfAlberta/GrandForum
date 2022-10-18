@@ -14,6 +14,7 @@ $si = $config->getValue("sideInverted");
 $th = $config->getValue("topHeaderColor");
 $sc = $config->getValue("sideColor");
 $hl = $config->getValue("highlightColor");
+$shl = ($config->getValue("sideHighlightColor") != "") ? $config->getValue("sideHighlightColor") : $hl;
 $hlFontColor = $config->getValue("highlightFontColor");
 $hlc = $config->getValue("hyperlinkColor");
 $bc = $config->getValue("mainBorderColor");
@@ -41,6 +42,24 @@ echo <<<EOF
 
 .highlights-background-hover:hover {
     background: $hl !important;
+    color: $hlFontColor !important;
+}
+
+#side .highlights-text {
+    color: $shl !important;
+}
+
+#side .highlights-text-hover:hover {
+    color: $shl !important;
+}
+
+#side .highlights-background {
+    background: $shl !important;
+    color: $hlFontColor !important;
+}
+
+#side .highlights-background-hover:hover {
+    background: $shl !important;
     color: $hlFontColor !important;
 }
 
@@ -91,7 +110,7 @@ h1 {
 }
 
 #sideToggle:hover, #allTabs:hover {
-    color: $hl;
+    color: $shl;
     background: $sc;
     border-top: 3px solid $hl;
 }
@@ -357,7 +376,7 @@ EOF;
 if($config->getValue("sideInverted")){
     echo <<<EOF
     #submenu ul a, #header ul a {
-        color: {$hl};
+        color: {$shl};
     }
     
     #side, #nav, #sideFooter {
@@ -365,11 +384,11 @@ if($config->getValue("sideInverted")){
     }
     
     #sideToggle, #allTabs {
-        color: {$hl};
+        color: {$shl};
     }
     
     #nav li a {
-        color: {$hl};
+        color: {$shl};
     }
     
     #nav li > span {
