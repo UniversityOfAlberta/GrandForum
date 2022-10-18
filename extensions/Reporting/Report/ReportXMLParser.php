@@ -299,7 +299,7 @@ class ReportXMLParser {
                 $this->report->setDisabled(true);
             }
             if(isset($attributes->personId)){
-                $id = "{$attributes->personId}";
+                $id = $this->report->varSubstitute("{$attributes->personId}");
                 $this->report->person = Person::newFromId($id);
                 $this->report->person->id = $id;
             }

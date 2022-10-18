@@ -976,11 +976,11 @@ class ReportItemCallback {
         return $wgScriptPath;
     }
 
-    function getGet($var1){
+    function getGet($var1, $default=""){
         if(isset($_GET[$var1])){
             return $_GET[$var1];
         }
-        return "";
+        return $default;
     }
     
     function getNetworkName(){

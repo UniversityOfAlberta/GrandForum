@@ -1,16 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name=" " title=" " headerName=" " reportType="RP_PROFILE" pdfFiles="Profile" ajax="true">
+<Report name=" " title=" " headerName=" " reportType="RP_PROFILE" pdfFiles="Profile" ajax="true" personId="{GET(userId, {$my_id})}">
     <Permissions>
-        <Role role="NI">
-            <SectionPermission id="form" permissions="rw" />
-        </Role>
-        <Role role="ATS">
-            <SectionPermission id="form" permissions="rw" />
+        <Role role="STAFF+">
+            <SectionPermission id="table" permissions="rw" />
+            <SectionPermission id="profile" permissions="rw" />
         </Role>
     </Permissions>
+    <ReportSection id="table" name="Profiles Table" title="Profiles Table" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                <iframe id='downloadFrame' name='downloadFrame' src="" style="display:none;"></iframe>
+                <div style='float:right; margin-top: -45px;display:flex;'>
+                    <div><button id='generateAll' type='button'>Generate All Profiles</button></div>
+                    <div><button id='downloadAll' class='noDisable' type='button'>Download All Profiles</button></div>
+                </div>
+                <script type='text/javascript'>
+                    function postToIframe(data,url,target){
+                        $('body').append('<form action="'+url+'" method="post" target="'+target+'" id="postToIframe"></form>');
+                        $.each(data,function(n,v){
+                            $('#postToIframe').append('<input type="hidden" name="'+n+'" value="'+v+'" />');
+                        });
+                        $('#postToIframe').submit().remove();
+                    }
+                    $('#generateAll').click(function(){
+                        $('.generateButton').click();
+                    });
+                    $('#downloadAll').click(function(){
+                        var pdfs = $.makeArray($(".profilePDF:visible").map(function(i, pdf){ return $(pdf).attr('href');})).join(',').replaceAll(wgServer + wgScriptPath + '/index.php/Special:ReportArchive?getpdf=', '');
+                        postToIframe({pdfs: pdfs}, wgServer + wgScriptPath + '/index.php?action=downloadReportZip', 'downloadFrame');
+                    });
+                </script>
+                <table id='profileTable' class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>Case#</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Rank</th>
+                            <th>PDF</th>
+                            <th style='width: 12em;'>Generate</th>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+            <Static>
+                <![CDATA[
+                    <tr data-fecid="{getExtra()}">
+                        <td>{getExtra()}</td>
+                        <td><a href="{$user_url}" target="_blank">{$user_name}</a></td>
+                        <td>{$user_dept}</td>
+                        <td>{$user_level}</td>
+                ]]>
+            </Static>
+            <ReportItem id="profile" type="PDFReportItem" class="profilePDF downloadButton{$user_id}" reportType="Profile" buttonName="&lt;img src='{$wgServer}{$wgScriptPath}/skins/pdf.gif' />">
+                <![CDATA[
+                        <td align='center'>
+                            {$item}
+                        </td>
+                        <td style='white-space:nowrap;' align='center'>
+                ]]>
+            </ReportItem>
+            <ReportItem id="submit" type="SimpleReviewSubmit" userId="{$user_id}" onlyGenerate="true" specialDownload=".downloadButton{$user_id}" />
+            <Static>
+                <![CDATA[
+                        </td>
+                    </tr>
+                ]]>
+            </Static>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    $('#profileTable').dataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "iDisplayLength": -1
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
     <ReportSection id="profile" tooltip="Profile" name="Faculty Profile" title="Faculty Profile" blobSection="PROFILE" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[
+                {$user_id}
                 <div id='profile' style='font-size: 1.25em;'>
                 <table cellpadding='0' cellspacing='0' style='margin-top: -1em;'>
                     <tr>
