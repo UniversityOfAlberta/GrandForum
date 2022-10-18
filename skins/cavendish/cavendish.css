@@ -2246,6 +2246,10 @@ div.program-text {
         padding: 10px 0 0 0 !important;
     }
     
+    .search {
+        display: none;
+    }
+    
     .modules {
         gap: 6px;
     }
