@@ -381,18 +381,35 @@ class CavendishTemplate extends QuickTemplate {
 		            $("#submenu").css("margin-top", "-45px");
 		            $("#sideToggle").css("line-height", ($("#submenu").height() - 6) + "px");
 		        }
-		        if($("#submenu").is(":visible")){
-		            
-		            $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
-		        }
-		        else {
-		            if(window.matchMedia('(max-width: 1024px)').matches){
-                        $("#bodyContent").css("top", $("#side:visible").outerHeight() + 90);
+	            if(window.matchMedia('(max-width: 1024px)').matches){
+	                if(me.isLoggedIn()){
+		                $("#side").hide();
+		            }
+	                var sideOuterHeight = $("#side:visible").outerHeight();
+	                if(sideOuterHeight == undefined){
+	                    sideOuterHeight = 0;
+	                }
+	                if($("#submenu").is(":visible")){
+	                    $("#side").css("top", $("#submenu").offset().top + $("#submenu").outerHeight());
+                        $("#bodyContent").css("top", sideOuterHeight + $("#submenu").offset().top + $("#submenu").outerHeight());
                     }
                     else{
-                        $("#bodyContent").css("top", 90);
+                        $("#side").css("top", 90);
+                        $("#bodyContent").css("top", sideOuterHeight + 90);
                     }
-		        }
+                }
+                else{
+                    if($("#submenu").is(":visible")){
+                        $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
+                    }
+                    else{
+                        $("#bodyContent").css('top', 90);
+                    }
+                    if(me.isLoggedIn() && showSideBar){
+                        $("#side").show();
+                    }
+                    $("#side").css("top", 0);
+                }
 		        $("#sideToggle").height($("ul.top-nav").innerHeight() + $("div#submenu").height() - 3);
 		    }
 	        
