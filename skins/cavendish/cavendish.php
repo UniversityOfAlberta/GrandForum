@@ -385,6 +385,9 @@ class CavendishTemplate extends QuickTemplate {
 	                if(me.isLoggedIn()){
 		                $("#side").hide();
 		            }
+		            else{
+		                $("#submenu").css('border-width', "0 0 1px 1px");
+		            }
 	                var sideOuterHeight = $("#side:visible").outerHeight();
 	                if(sideOuterHeight == undefined){
 	                    sideOuterHeight = 0;
@@ -399,6 +402,7 @@ class CavendishTemplate extends QuickTemplate {
                     }
                 }
                 else{
+                    $("#submenu").css('border-width', "0 0 0 1px");
                     if($("#submenu").is(":visible")){
                         $("#bodyContent").css('top', $("#submenu").offset().top + $("#submenu").height());
                     }
