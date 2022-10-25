@@ -18,6 +18,29 @@ EventRegisterView = Backbone.View.extend({
     events: {
         "click #registerEvent": "registerEvent",
         "click #cancel": "cancel",
+	"blur #details" : "save",
+    },
+
+    save: function(){
+        var form = $('form#eventform');
+        this.model.set({
+                "details":form.find('textarea#details').val(),
+        });
+        this.model.save(null, {
+	    success: function(){
+		addMessage("Saved.",true);
+                clearAllMessages();
+            }.bind(this),
+            error: function(o, e){
+                clearAllMessages();
+                if(e.responseText != ""){
+                    addError(e.responseText, true);
+                }
+                else{
+                    addError("There was a problem saving the Details", true);
+                }
+            }.bind(this)
+        });
     },
 
     validate: function(){
