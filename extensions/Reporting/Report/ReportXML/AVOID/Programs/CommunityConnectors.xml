@@ -21,7 +21,7 @@
                 <div style='overflow: auto;'>
                     
                     <div style='display:flex; align-items: center;'>
-                        <div class='program-header'>
+                        <div class='program-header' style='min-width: 14em; text-align: center;'>
                             COMMUNITY CONNECTORS
                         </div>
                         <div style='width: 100%; text-align: center;'>
@@ -52,13 +52,19 @@
         </Static>
         <ReportItem id="register4" type="Checkbox" options="Thursday October 20, 1:30pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
-                <div class='program-button'>{$item}</div>&nbsp;&nbsp;
+                There are currently no scheduled training dates.
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('#programSubmit').hide();
+                    });
+                </script>
+                <!--div class='program-button'>{$item}</div-->&nbsp;&nbsp;
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[ 
                     <br />
-                    <span class='program-text'>You will be contacted with further details</span>               
+                    <!--span class='program-text'>You will be contacted with further details</span-->               
                 </div>
                 <script type='text/javascript'>
                     $(".program-button").click(function(e){

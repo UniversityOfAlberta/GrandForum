@@ -19,6 +19,10 @@ EliteAdminView = PostingsView.extend({
         "phd_profiles": function(){
             var profiles = new PhDEliteProfiles();
             return new EliteAdminProfilesView({model: profiles});
+        },
+        "science_phd_profiles": function(){
+            var profiles = new PhDScienceEliteProfiles();
+            return new EliteAdminProfilesView({model: profiles});
         }
     },
     
