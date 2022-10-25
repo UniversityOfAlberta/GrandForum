@@ -277,6 +277,11 @@ class Report extends AbstractReport{
                 $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("IFP Final", "{$url}IFPFinalReport", $selected);
             }
         }
+        // RCHA
+        if(count($person->getEvaluates("RCHA", 2021)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Review")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("RCHA Review", "{$url}RCHA2021Review", $selected);
+        }
         // ECR
         if(count($person->getEvaluates("ECR-ALONE", 2022)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ECRAloneReview")) ? "selected" : false;
