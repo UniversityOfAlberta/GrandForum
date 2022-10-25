@@ -31,9 +31,11 @@ ExpertDashboardView = Backbone.View.extend({
 	var question = false;
 	var heightmultiplier = 0.60;
 	var title = "Registration";
+	var width = 550;
 	if(cat == "question"){
 	    question = true;
-            heightmultiplier = 0.60;
+            heightmultiplier = 0.38;
+	    width= 360;
 	    title = "Ask a Question";
             $('.my-dialog .ui-button-text:contains(Submit)').text('Ask Question');
             $('.my-dialog .ui-button-text:contains(Register)').text('Ask Question');
@@ -47,7 +49,7 @@ ExpertDashboardView = Backbone.View.extend({
         this.registerDialog.view = view;
         this.registerDialog.dialog({
             height: $(window).height() * heightmultiplier,
-            width: 550,
+            width: width,
             title: title,
         });
         this.registerDialog.dialog('open');

@@ -1,13 +1,15 @@
 <div id="dialogMessages"></div>
+<% if(!this.isQuestion){ %>
 <% if(_.intersection(_.pluck(me.get('roles'), 'role'), [STAFF,MANAGER,ADMIN]).length > 0){%>
 <form id="eventform" class="navbar-form">
-<textarea id="details" style="height:100px" cols="20" rows="3" name="details"><%= details%></textarea>
+<textarea id="details" style="height:200px" cols="20" rows="3" name="details"><%= details%></textarea>
 </form>
 <%} else{%>
 <p style="white-space: pre-line">
 <%= details %>
 </p>
 <%} %>
+<%}%>
 <form id="eventregisterform" class="navbar-form">
 <table id="userData">
 	    <% if(!this.isQuestion){ %>
