@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="FEC Table" title="FEC Table" reportType="RP_FEC_TABLE" ajax="true" disabled="false">
     <Permissions>
-        <!--Role role="INACTIVE+" subRole="FEC">
+        <Role role="INACTIVE+" subRole="FEC">
             <SectionPermission id="fec" permissions="rw" />
             <SectionPermission id="atsec" permissions="" />
         </Role>
-        <Role role="INACTIVE+" subRole="ATSEC">
+        <!--Role role="INACTIVE+" subRole="ATSEC">
             <SectionPermission id="fec" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
         </Role -->
@@ -195,7 +195,7 @@
             ]]>
         </If>
     </ReportSection>
-    <ReportSection id="atsec" tooltip="ATSEC Table" name="ATSEC Table" title="ATSEC Table" blobSection="TABLE" type="EditableReportSection">
+    <ReportSection id="atsec" tooltip="ATSEC Table" name="ATSEC Table" title="ATSEC Table" blobSection="TABLE" type="EditableReportSection" disabled="true">
         <Static>
             <![CDATA[
                 {set(sumFaculty, 0)}
