@@ -183,7 +183,7 @@ $(document).ready(function(){
                                                  }, animationTime, animationEasingIn);
                         _.defer(initResizeEvent);
                     }
-                    timeout = setTimeout(function(){findAutosaves(updateProgress);}, 2500); // Make sure that there was enough time to complete the animation, then find the new autosaves
+                    timeout = setTimeout(function(){findAutosaves(updateProgress);}, animationTime); // Make sure that there was enough time to complete the animation, then find the new autosaves
                     setUpFormSubmit();
                     lastSaveString = $("form[name=report]").serialize();
                 });
