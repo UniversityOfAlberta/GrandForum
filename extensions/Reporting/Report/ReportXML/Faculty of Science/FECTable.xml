@@ -322,7 +322,7 @@
                     {set(p_abstain, 0)}
                 ]]>
             </Static>
-            <ReportItemSet id="fec_t_vote" type="FECReportItemSet">
+            <ReportItemSet type="FECReportItemSet">
                 <Static>
                     <![CDATA[
                         {set(vote, {getText(RP_FEC_TABLE, TABLE, VOTE, {$parent_id}, {$user_id}, 0)})}
