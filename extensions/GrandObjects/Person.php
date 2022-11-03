@@ -943,7 +943,7 @@ class Person extends BackboneModel {
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            Cache::store("increment_{$this->id}_{$year}", @$increment[0]);
+            Cache::store("increment_{$this->id}_{$year}", @$increment[0]['increment']);
         }
         $increment = Cache::fetch("increment_{$this->id}_{$year}");
         if($increment == ""){
