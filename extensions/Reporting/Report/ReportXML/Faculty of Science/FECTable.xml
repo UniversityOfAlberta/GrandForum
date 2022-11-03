@@ -148,14 +148,41 @@
                 ]]>
             </Static>
             <If if="{contains({$my_roles},ViceDean)}">
-                <Static>
+                <!-- Increment Vote -->
+                <ReportItem id="vote" type="Select" blobType="BLOB_TEXT" blobItem="VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
                     <![CDATA[
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{$value}</td>
+                    ]]>
+                </ReportItem>
+                <!-- Tenure Vote -->
+                <If if="{!=({getText(RP_FEC_TABLE, TABLE, T_FREEZE, {$parent_id}, *, 0)},Frozen)}">
+                    <ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
+                        <![CDATA[
+                            <td>
+                                <span id='t_vote_{$user_id}'>{$item}</span>
+                                <script type='text/javascript'>
+                                    var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, *, 0)}";
+                                    if(tenure != "i recommend that an appointment with tenure be offered" &&
+                                       tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+                                        $("#t_vote_{$user_id}").remove();
+                                    }
+                                </script>
+                            </td>
+                        ]]>
+                    </ReportItem>
+                </If>
+                <Else>
+                    <![CDATA[
+                        <td>{getText(RP_FEC_TABLE, TABLE, T_VOTE, {$user_id}, {$my_id}, 0)}</td>
+                    ]]>
+                </Else>
+                <!-- Promotion Vote -->
+                <ReportItem id="p_vote" type="Select" blobType="BLOB_TEXT" blobItem="P_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
+                    <![CDATA[
+                        <td>{$value}</td>
                         <td>
                     ]]>
-                </Static>
+                </ReportItem>
                 <ReportItemSet id="fec_comments" type="FECReportItemSet">
                     <Static>
                         <![CDATA[
@@ -400,10 +427,19 @@
             <ReportItem id="t_freeze" type="Select" blobItem="T_FREEZE" blobSubItem="{$user_id}" options="Unfrozen|Frozen" width="80px">
                 <![CDATA[
                         <td>
-                            <b>Yes:</b> {get(t_yes)}<br />
-                            <b>No:</b> {get(t_no)}<br />
-                            <b>Abstain:</b> {get(t_abstain)}<br />
-                            {$item}
+                            <div id='t_vote_{$user_id}'>
+                                <b>Yes:</b> {get(t_yes)}<br />
+                                <b>No:</b> {get(t_no)}<br />
+                                <b>Abstain:</b> {get(t_abstain)}<br />
+                                {$item}
+                            </div>
+                            <script type='text/javascript'>
+                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, *, 0)}";
+                                if(tenure != "i recommend that an appointment with tenure be offered" &&
+                                   tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
+                                    $("#t_vote_{$user_id}").remove();
+                                }
+                            </script>
                         </td>
                 ]]>
             </ReportItem>
