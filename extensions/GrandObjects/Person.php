@@ -927,25 +927,25 @@ class Person extends BackboneModel {
     }
     
     function getSalary($year){
-        if(!Cache::exists("salary_{$this->id}_{$year}")){
+        if(!isset(self::$personSalaryCache[$this->id][$year])){
             $salary = DBFunctions::select(array('grand_user_salaries'),
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            Cache::store("salary_{$this->id}_{$year}", @$salary[0]);
+            self::$personSalaryCache[$this->id][$year] = @$salary[0];
         }
-        return Cache::fetch("salary_{$this->id}_{$year}");
+        return @self::$personSalaryCache[$this->id][$year]['salary'];
     }
     
     function getIncrement($year){
-        if(!Cache::exists("increment_{$this->id}_{$year}")){
+        if(!isset(self::$personSalaryCache[$this->id][$year])){
             $increment = DBFunctions::select(array('grand_user_salaries'),
                                           array('salary', 'increment'),
                                           array('user_id' => $this->getId(),
                                                 'year' => $year));
-            Cache::store("increment_{$this->id}_{$year}", @$increment[0]);
+            self::$personSalaryCache[$this->id][$year] = @$increment[0];
         }
-        $increment = Cache::fetch("increment_{$this->id}_{$year}");
+        $increment = @self::$personSalaryCache[$this->id][$year]['increment'];
         if($increment == ""){
             return "N/A";
         }
@@ -953,14 +953,11 @@ class Person extends BackboneModel {
     }
     
     function getCNA($year){
-        if(!Cache::exists("cna_{$this->id}_{$year}")){
-            $increment = DBFunctions::select(array('grand_cna'),
-                                             array('increment'),
-                                             array('user_id' => $this->getId(),
-                                                    'year' => $year));
-            Cache::store("cna_{$this->id}_{$year}", @$increment[0]['increment']);
-        }
-        return Cache::fetch("cna_{$this->id}_{$year}");
+        $increment = DBFunctions::select(array('grand_cna'),
+                                         array('increment'),
+                                         array('user_id' => $this->getId(),
+                                                'year' => $year));
+        return @$increment[0]['increment'];
     }
     
     static function getSalaryIncrement($year, $type){
@@ -984,13 +981,13 @@ class Person extends BackboneModel {
     }
     
     static function getMaxSalary($year, $type){
-        if(!isset(Person::$salaryCache["max_salary_{$type}_{$year}"])){
+        if(!isset(self::$salaryCache["max_salary_{$type}_{$year}"])){
             $increment = DBFunctions::select(array('grand_salary_scales'),
                                              array("max_salary_$type"),
                                              array('year' => $year));
-            Person::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
+            self::$salaryCache["max_salary_{$type}_{$year}"] = @$increment[0]["max_salary_$type"];
         }
-        return Person::$salaryCache["max_salary_{$type}_{$year}"];
+        return self::$salaryCache["max_salary_{$type}_{$year}"];
     }
     
     function isTAEligible($date=null){
