@@ -278,6 +278,11 @@ class Report extends AbstractReport{
             }
         }
         // RCHA
+        if(count($person->getEvaluates("ANCILLARY", 2022)) > 0){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "AncillaryReview")) ? "selected" : false;
+            $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("Ancillary Review", "{$url}AncillaryReview", $selected);
+        }
+        // RCHA
         if(count($person->getEvaluates("RCHA", 2021)) > 0){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "RCHA2021Review")) ? "selected" : false;
             $tabs["Reviews"]['subtabs'][] = TabUtils::createSubTab("RCHA Review", "{$url}RCHA2021Review", $selected);
