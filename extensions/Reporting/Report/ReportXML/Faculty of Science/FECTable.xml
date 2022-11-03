@@ -216,14 +216,14 @@
                     ]]>
                 </ReportItem>
             </ElseIf>
-            <ElseIf if="{and({!contains({$my_roles},ViceDean)},{!contains({$my_sub_roles},Faculty Evaluation Committee)})}">
+            <Else if="{and({!contains({$my_roles},ViceDean)},{!contains({$my_sub_roles},Faculty Evaluation Committee)})}">
                 <![CDATA[
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 ]]>
-            </ElseIf>
+            </Else>
             <Static>
                 <![CDATA[
                     </tr>
