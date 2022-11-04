@@ -73,7 +73,7 @@ ExpertDashboardView = Backbone.View.extend({
         var data = this.model.toJSON();
 	if(data["date_of_event"] != null){
         //split time and date TODO: do this in class function instead
-            var origDate = new Date(data["date_of_event"]);
+            var origDate = new Date(data["date_of_event"].replace(/-/g, "/"));
         	var split = data["date_of_event"].split(" ");
         	var parts = split[0].split('-');
         	var date = new Date(parts[0], parts[1] - 1, parts[2]);
