@@ -13,7 +13,7 @@
         </Role -->
         <Role role="DEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="" />
+            <SectionPermission id="fec_votes" permissions="rw" />
             <SectionPermission id="atsec" permissions="rw" />
         </Role>
         <Role role="VDEAN" start="{$this_year}-07-01" end="{$next_year}-07-01">
@@ -23,7 +23,7 @@
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="rw" />
+            <SectionPermission id="fec_votes" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
@@ -105,15 +105,15 @@
                         {contains({getExtra()}, C)},
                         {contains({getExtra()}, N)}
                     )}">
-                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
                     <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
                         <![CDATA[
-                            {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                            {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})})}
                             {set(nFaculty, {add({get(nFaculty)}, 1)})}
                         ]]>
                     </Static>
@@ -124,14 +124,14 @@
                         {contains({getExtra()}, F)},
                         {contains({getExtra()}, M)}
                     )}">
-                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+                <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                             {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
                     <![CDATA[
-                        {set(sumFSO, {add({get(sumFSO)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                        {set(sumFSO, {add({get(sumFSO)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})})}
                         {set(nFSO, {add({get(nFSO)}, 1)})}
                     ]]>
                 </If>
@@ -140,10 +140,10 @@
                 <![CDATA[
                         </td>
                         <td>
-                            {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)}
+                            {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}
                         </td>
                         <td>
-                            {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, *, 0)}
+                            {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}
                         </td>
                 ]]>
             </Static>
@@ -155,13 +155,13 @@
                     ]]>
                 </ReportItem>
                 <!-- Tenure Vote -->
-                <If if="{!=({getText(RP_FEC_TABLE, TABLE, T_FREEZE, {$parent_id}, *, 0)},Frozen)}">
+                <If if="{!=({getText(RP_FEC_TABLE, TABLE, T_FREEZE, {$parent_id}, 1, 0)},Frozen)}">
                     <ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
                         <![CDATA[
                             <td>
                                 <span id='t_vote_{$user_id}'>{$item}</span>
                                 <script type='text/javascript'>
-                                    var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, *, 0)}";
+                                    var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
                                     if(tenure != "i recommend that an appointment with tenure be offered" &&
                                        tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
                                         $("#t_vote_{$user_id}").remove();
@@ -216,7 +216,7 @@
                             <td>
                                 <span id='t_vote_{$user_id}'>{$item}</span>
                                 <script type='text/javascript'>
-                                    var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, *, 0)}";
+                                    var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
                                     if(tenure != "i recommend that an appointment with tenure be offered" &&
                                        tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
                                         $("#t_vote_{$user_id}").remove();
@@ -326,7 +326,7 @@
                         <td>{$user_dept}</td>
                 ]]>
             </Static>
-            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" width="80px" history="false" default="{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)}">
+            <ReportItem id="increment" type="Increment" blobItem="INCREMENT" blobSubItem="{$user_id}" personId="1" width="80px" history="false" default="{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}">
                 <![CDATA[
                     <td>
                         {$item}
@@ -434,7 +434,7 @@
                                 {$item}
                             </div>
                             <script type='text/javascript'>
-                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, *, 0)}";
+                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
                                 if(tenure != "i recommend that an appointment with tenure be offered" &&
                                    tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
                                     $("#t_vote_{$user_id}").remove();
@@ -545,15 +545,15 @@
                     ]]>
                 </ReportItem>
             </If>
-            <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                         {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                         {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
-                         {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})},
+            <If if="{and({!=(,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                         {!=(N/A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                         {!=(0.00,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
+                         {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
                          {!contains({$my_roles},Chair)}
                     )}">
                 <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
                     <![CDATA[
-                        {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)})})}
+                        {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})})}
                         {set(nFaculty, {add({get(nFaculty)}, 1)})}
                     ]]>
                 </Static>
@@ -562,7 +562,7 @@
                 <![CDATA[
                         </td>
                         <td>
-                            {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, *, 0)}
+                            {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)}
                         </td>
                         <td>
                 ]]>
