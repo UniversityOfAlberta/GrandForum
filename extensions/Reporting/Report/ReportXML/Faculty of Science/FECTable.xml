@@ -111,12 +111,10 @@
                              {!=(0A,{getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})},
                              {!contains({$my_roles},Chair)}
                         )}">
-                    <Static id="increment" blobSection="FEC_REVIEW" blobItem="INCREMENT" blobSubItem="{$user_id}" width="100%">
-                        <![CDATA[
-                            {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})})}
-                            {set(nFaculty, {add({get(nFaculty)}, 1)})}
-                        ]]>
-                    </Static>
+                    <![CDATA[
+                        {set(sumFaculty, {add({get(sumFaculty)}, {getNumber(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)})})}
+                        {set(nFaculty, {add({get(nFaculty)}, 1)})}
+                    ]]>
                 </If>
             </If>
             <If if="{or({contains({getExtra()}, D)},
@@ -394,6 +392,7 @@
                     });
                     $("#refresh").click(function(){
                         $("#refresh").prop("disabled", true);
+                        $("#chairTable select, #chairTable input, #chairTable textarea").prop("disabled", true);
                         dbWritable = false;
                         $("#FECVotes").click();
                         dbWritable = true;
