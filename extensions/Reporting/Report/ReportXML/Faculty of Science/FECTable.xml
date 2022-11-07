@@ -334,103 +334,22 @@
                 ]]>
             </ReportItem>
             
-            <Static>
-                <![CDATA[
-                    {set(yes, 0)}
-                    {set(no, 0)}
-                    {set(abstain, 0)}
-                    
-                    {set(t_yes, 0)}
-                    {set(t_no, 0)}
-                    {set(t_abstain, 0)}
-                    
-                    {set(p_yes, 0)}
-                    {set(p_no, 0)}
-                    {set(p_abstain, 0)}
-                ]]>
-            </Static>
-            <ReportItemSet type="FECReportItemSet" includeVDean="true">
-                <Static>
-                    <![CDATA[
-                        {set(vote, {getText(RP_FEC_TABLE, TABLE, VOTE, {$parent_id}, {$user_id}, 0)})}
-                        {set(t_vote, {getText(RP_FEC_TABLE, TABLE, T_VOTE, {$parent_id}, {$user_id}, 0)})}
-                        {set(p_vote, {getText(RP_FEC_TABLE, TABLE, P_VOTE, {$parent_id}, {$user_id}, 0)})}
-                    ]]>
-                </Static>
-                <If if="{!=({get(vote)},)}">
-                    <If if="{==({get(vote)},Yes)}">
-                        <![CDATA[
-                            {set(yes, {add({get(yes)}, 1)})}
-                        ]]>
-                     </If>
-                     <ElseIf if="{==({get(vote)},No)}">
-                         <![CDATA[
-                             {set(no, {add({get(no)}, 1)})}
-                         ]]>
-                     </ElseIf>
-                     <ElseIf if="{==({get(vote)},Abstain)}">
-                        <![CDATA[
-                            {set(abstain, {add({get(abstain)}, 1)})}
-                        ]]>
-                     </ElseIf>
-                 </If>
-                 
-                 <If if="{!=({get(t_vote)},)}">
-                     <If if="{==({get(t_vote)},Yes)}">
-                        <![CDATA[
-                            {set(t_yes, {add({get(t_yes)}, 1)})}
-                        ]]>
-                     </If>
-                     <ElseIf if="{==({get(t_vote)},No)}">
-                         <![CDATA[
-                             {set(t_no, {add({get(t_no)}, 1)})}
-                         ]]>
-                     </ElseIf>
-                     <ElseIf if="{==({get(t_vote)},Abstain)}">
-                        <![CDATA[
-                            {set(t_abstain, {add({get(t_abstain)}, 1)})}
-                        ]]>
-                     </ElseIf>
-                 </If>
-                 
-                 <If if="{!=({get(p_vote)},)}">
-                     <If if="{==({get(p_vote)},Yes)}">
-                        <![CDATA[
-                            {set(p_yes, {add({get(p_yes)}, 1)})}
-                        ]]>
-                     </If>
-                     <ElseIf if="{==({get(p_vote)},No)}">
-                         <![CDATA[
-                             {set(p_no, {add({get(p_no)}, 1)})}
-                         ]]>
-                     </ElseIf>
-                     <ElseIf if="{==({get(p_vote)},Abstain)}">
-                        <![CDATA[
-                            {set(p_abstain, {add({get(p_abstain)}, 1)})}
-                        ]]>
-                     </ElseIf>
-                 </If>
-            </ReportItemSet>
-            
             <!-- Increment Votes -->
-            <Static>
+            <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="80px">
                 <![CDATA[
                         <td>
-                            <b>Yes:</b> {get(yes)}<br />
-                            <b>No:</b> {get(no)}<br />
-                            <b>Abstain:</b> {get(abstain)}<br />
+                            <div>
+                                {$item}
+                            </div>
                         </td>
                 ]]>
-            </Static>
+            </ReportItem>
             
             <!-- Tenure Votes -->
-            <ReportItem id="t_freeze" type="Select" blobItem="T_FREEZE" blobSubItem="{$user_id}" personId="1" options="Unfrozen|Frozen" width="80px">
+            <ReportItem id="t_freeze" type="VoteResultsReportItem" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="80px">
                 <![CDATA[
                         <td>
                             <div id='t_vote_{$user_id}'>
-                                <b>Yes:</b> {get(t_yes)}<br />
-                                <b>No:</b> {get(t_no)}<br />
-                                <b>Abstain:</b> {get(t_abstain)}<br />
                                 {$item}
                             </div>
                             <script type='text/javascript'>
@@ -445,15 +364,15 @@
             </ReportItem>
             
             <!-- Promotion Votes -->
-            <Static>
+            <ReportItem id="p_freeze" type="VoteResultsReportItem" blobItem="P_FREEZE" blobSubItem="{$user_id}" voteBlobItem="P_VOTE" personId="1" width="80px">
                 <![CDATA[
                         <td>
-                            <b>Yes:</b> {get(p_yes)}<br />
-                            <b>No:</b> {get(p_no)}<br />
-                            <b>Abstain:</b> {get(p_abstain)}<br />
+                            <div>
+                                {$item}
+                            </div>
                         </td>
                 ]]>
-            </Static>
+            </ReportItem>
             
             <Static>
                 <![CDATA[
