@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION_FULL" pdfFiles="AncilliaryStudiesApplicationPDF" year="2022" disabled="false" ajax="true">
+<Report name="KFLA Regional Centre for Healthy Aging Ancillary Studies Competition" reportType="RP_ANCILLARY_APPLICATION" pdfType="RP_ANCILLARY_APPLICATION_FULL" pdfFiles="AncilliaryStudiesApplicationPDF" year="2022" disabled="true" ajax="true">
     <Permissions>
         <Role role="" subType="AncillaryApplicant">
 
