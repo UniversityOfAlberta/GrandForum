@@ -63,7 +63,7 @@ if(isset($_SERVER['uid'])){
     // something that will not violate MW's usual restrictions on characters
     // Map Username to what Shibboleth variable?
     $shib_UN = ucfirst($_SERVER['uid']);
-    $shib_UN = str_replace(" ", "", ucfirst($_SERVER['givenName']).".".ucfirst($_SERVER['sn']));
+    $shib_UN = @str_replace(" ", "", ucfirst($_SERVER['givenName']).".".ucfirst($_SERVER['sn']));
      
     // Shibboleth doesn't really support logging out very well.  To take care of
     // this we simply get rid of the logout link when a user is logged in through

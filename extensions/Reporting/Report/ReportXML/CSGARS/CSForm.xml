@@ -21,7 +21,7 @@
                     <li>If you have any questions about the appliation process (FGSR/GSMS) please contact <a href='mailto:csapplygrad@ualberta.ca'>csapplygrad@ualberta.ca</a></li></ul>
                 <br />
                 <p><b>CS/GARS Application Deadline:</b><br />
-                Computing Science graduate programs that require BOTH a GARS and GSMS application are: M.Sc Thesis-Based, Ph.D, and M.Sc/Ph.D Statistical Machine Learning. Applicants for these M.Sc and Ph.D programs must submit both GARS and GSMS applications by <b>Jan 31, 2022, 11:59pm MST</b>.</p>
+                Computing Science graduate programs that require BOTH a GARS and GSMS application are: M.Sc Thesis-Based, Ph.D, and M.Sc/Ph.D Statistical Machine Learning. Applicants for these M.Sc and Ph.D programs must submit both GARS and GSMS applications by <b>January 31st, 2023 at 11:59pm MST</b>.</p>
             ]]>
         </ReportItem>
     </ReportSection>
@@ -66,7 +66,7 @@
     </ReportSection>
 
     <ReportSection id="personal" tooltip="CS Application Details" title="CS Application Details" name="CS Application Details" blobSection="CS_QUESTIONS_tab1" type="EditableReportSection" pagebreak="false">
-        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
+        <ReportItem id="q13" idLabel="Research Area" type="MultipleSelectReportItem" blobType="BLOB_ARRAY" useArray="true" blobItem="Q13" options="Algorithmics/Theory|Artificial Intelligence|Bioinformatics|Communication Networks|Computer Architecture|Computer Games|Computer Graphics|Computer Vision|Database Systems|HCI|Multimedia Communication|Machine Learning|Numerical Analysis|Operating Systems|Reinforcement Learning|Robotics|Security|Software Engineering|Software Systems|Statistical Machine Learning" max="3">
             <![CDATA[
             <style>
                     .flex-container {
@@ -232,9 +232,21 @@
                     <h1 style="margin-top: 16px">GRE</h1>
                     <p>The GRE is not required, however, for applicants who have received their degree outside of Canada, we highly recommend taking the GRE (General).</p>
                     <p><b>Please upload your GRE score report here.</b></p>
-                    <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
-                    {$item}
+                    <div class="flex-container">
+                        <div class="flex-item" style="width:25%;">
+                            <h3>GRE Date<span title="Your most recent GRE attempt. (yyyy-mm-dd)" style="margin-left: 5px; cursor: default;" class="tooltip">&#9432;</span></h3>
+                            {$item}
+                        </div>
 
+            ]]>
+        </ReportItem>
+        <ReportItem id="qGREType" idLabel="GRE Type" type="Select" blobType="BLOB_TEXT" blobItem="QGREType" width="130px" options="|At-Home|Test-Centre" optional="false">
+            <![CDATA[
+                        <div class="flex-item" style="width:75%;">
+                            <h3>GRE Type</h3>
+                            {$item}
+                        </div>
+                    </div>
             ]]>
         </ReportItem>
         <ReportItem id="q24" idLabel="Verbal" type="Integer" decimals="3" max="170" blobType="BLOB_TEXT" blobItem="Q24" limit="100" width="100px" optional="true">

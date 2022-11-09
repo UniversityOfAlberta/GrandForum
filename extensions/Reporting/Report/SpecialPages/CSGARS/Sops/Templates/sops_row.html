@@ -86,6 +86,10 @@
     <% } %>
 </td>
 
+<td>
+    <%= additional.edi %>
+</td>
+
 <!--  department specific -->
 <td class="scrollableCell">
     <% _.each(_.filter(additional.referees, function(referee){ return (referee.email != null && referee.email.indexOf("@ualberta.ca") !== -1); }), function(referee){ %>

@@ -61,7 +61,7 @@
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q5" type="RadioReportItem" blobItem="Q5" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <ReportItem id="q5" type="RadioReportItem" blobItem="Q5" blobType="BLOB_TEXT" options="Yes|No|N/A" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span style='font:size 14px;'><h3>Student explained extenuating or unusual circumstances regarding academic history?:</h3></span><br />
                         {$item}</td></tr>
@@ -78,7 +78,7 @@
                         {$item}</td></tr>
                     ]]>
                 </ReportItem>
-                <ReportItem id="q7" type="RadioReportItem" blobItem="Q7" blobType="BLOB_TEXT" options="Yes|No" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+                <ReportItem id="q7" type="RadioReportItem" blobItem="Q7" blobType="BLOB_TEXT" options="Yes|No|One did, one didn't" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                     <![CDATA[
                     <tr><td colspan=2><span style='font:size 14px;'><h3>References were detailed, specific, gave relevant and positive examples?:</h3></span><br />
                         {$item}</td></tr>

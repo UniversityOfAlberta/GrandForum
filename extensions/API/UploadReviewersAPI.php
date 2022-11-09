@@ -80,6 +80,9 @@ class UploadReviewersAPI extends API{
 		}
 	    }
 	    foreach($data as $student => $reviewers){
+	        if(trim($student) == ""){
+	            continue;
+	        }
 	        $gsmsMatches = array();
 	        preg_match("/[0-9]+/", $student, $gsmsMatches);
 	        $student = preg_replace("/[0-9]+/", "", $student);
@@ -100,8 +103,11 @@ class UploadReviewersAPI extends API{
 			$error_count=0;
 			 //check if reviewer exists
 			foreach($reviewers as $reviewer){
-                	    $reviewer_obj = Person::newFromNameLike($reviewer);  
-                	    $reviewer_id = $reviewer_obj->getId();
+			    if(trim($reviewer) == ""){
+	                continue;
+	            }
+                $reviewer_obj = Person::newFromNameLike($reviewer);  
+                $reviewer_id = $reviewer_obj->getId();
 			    if($reviewer_id != 0){
         			$status = DBFunctions::insert('grand_eval',
                                 		        array('user_id' => $reviewer_id,

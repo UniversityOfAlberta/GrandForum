@@ -226,7 +226,7 @@ class ConvertPdfAPI extends API{
         $errors = array();
         $num_file = 0;
         foreach($tmpfiles as $tmpfile){
-            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output, $ret);
+            exec("extensions/Reporting/PDFGenerator/gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -dColorConversionStrategy=/LeaveColorUnchanged -dColorImageResolution=120 -dColorImageDownsampleType=/Bicubic -dGrayImageResolution=120 -dGrayImageDownsampleType=/Bicubic -dCompatibilityLevel=1.4 -sOutputFile=\"{$tmpfile}.out\" \"{$tmpfile}\" &> /dev/null", $output, $ret);
             if($ret === 0){
                 // Ghostscript conversion worked
                 $contents = file_get_contents("{$tmpfile}.out");
@@ -299,18 +299,19 @@ class ConvertPdfAPI extends API{
         
         $success = (count($success) > 0) ? "<ul><li>".implode("</li><li>", $success)."</li></ul>" : "";
         $errors = (count($errors) > 0) ? "<ul><li>".implode("</li><li>", $errors)."</li></ul>" : "";
-        
-        DBFunctions::commit();
-                echo <<<EOF
-                <html>
-                    <head>
-                        <script type='text/javascript'>
-                            parent.ccvUploaded("$success", "$errors");
-                        </script>
-                    </head>
-                </html>
+        if(!$noEcho){
+            DBFunctions::commit();
+                    echo <<<EOF
+                    <html>
+                        <head>
+                            <script type='text/javascript'>
+                                parent.ccvUploaded("$success", "$errors");
+                            </script>
+                        </head>
+                    </html>
 EOF;
-        exit;
+            exit;
+        }
     }
 
    function isLoginRequired(){

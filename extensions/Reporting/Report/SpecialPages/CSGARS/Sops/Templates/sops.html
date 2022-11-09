@@ -5,6 +5,7 @@
     <a href="#/admitted<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Admit&#10;Evaluator X&#10;Coder X&#10;Offer Accepted&#10;Waiting for Response&#10;Ready for Decision&#10;Incoming" class="button" <% if(this.model.folder == "Admit"){ %> style="text-decoration:underline;" <% } %>>Admitted</a>&nbsp;
     <a href="#/rejected<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" title="Rejected Apps" class="button" <% if(this.model.folder == "Rejected Apps"){ %> style="text-decoration:underline;" <% } %>>Rejected</a>&nbsp;
     <div style="position: absolute; right: 30px; display: inline-block;">
+        <a href="#/all<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.model.folder == "all" && this.favorites == false){ %> style="text-decoration:underline;" <% } %>>All</a>&nbsp;
         <a href="#/favorites<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.favorites == true){ %> style="text-decoration:underline;" <% } %>>Favorites</a>&nbsp;
         <a href="#/hidden<% if(this.model.year != ''){ %>//<%= this.model.year %><% } %>" class="button" <% if(this.hidden == true){ %> style="text-decoration:underline;" <% } %>>Hidden By Me</a>&nbsp;
     </div>
@@ -14,7 +15,8 @@
 <div style="float: right; margin-top:4px;">
     <b>Year:</b>
     <select id="year" style="vertical-align: middle;">
-        <option value="" <% if(this.model.year == '') { %>selected<% } %>>2021</option>
+        <option value="" <% if(this.model.year == '') { %>selected<% } %>>2022</option>
+        <option value="2021" <% if(this.model.year == '2021') { %>selected<% } %>>2021</option>
         <option value="2020" <% if(this.model.year == '2020') { %>selected<% } %>>2020</option>
         <option value="2019" <% if(this.model.year == '2019') { %>selected<% } %>>2019</option>
         <option value="2018" <% if(this.model.year == '2018') { %>selected<% } %>>2018</option>
@@ -509,6 +511,7 @@
       <th>Degrees(GSMS)</th>
       <th>Program Name</th>
       <th><span style="white-space: nowrap;">ELP Test,</span><br /><span style="white-space: nowrap;">ELP Score,</span><br /><span style="white-space: nowrap;">(L,W,R,S)</span></th>
+      <th>EDI</th>
       <!--Department Specific-->
       <th>UofA References</th>
       <th>Areas</th>

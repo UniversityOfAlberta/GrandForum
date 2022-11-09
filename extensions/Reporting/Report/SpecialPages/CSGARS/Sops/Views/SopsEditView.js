@@ -188,6 +188,7 @@ SopsEditView = Backbone.View.extend({
     set_link_to_table: function() {
         var suffix = "#";
         switch(this.gsmsdata.get('folder')) {
+          case "Review Complete":
           case "Review in Progress":
             suffix = "#/reviewInProgress";
             break;

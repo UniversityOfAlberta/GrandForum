@@ -58,6 +58,7 @@ SopsView = Backbone.View.extend({
         COL_COUNTRIES = counter++;
         COL_PROGRAM = counter++;
         COL_ELP = counter++;
+        COL_EDI = counter++;
         COL_REFERENCES = counter++;
         COL_AREAS = counter++;
         COL_SUPERVISORS = counter++;
@@ -198,6 +199,7 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '140px' }, // Country of Degrees
                                                         { 'width': '70px' },  // Program Name
                                                         { 'width': '70px' },  // ELP
+                                                        { 'width': '70px' },  // EDI
                                                         { 'width': '100px' }, // UofA References
                                                         { 'width': '110px' }, // Areas
                                                         { 'width': '85px' },  // Supervisors
@@ -750,7 +752,7 @@ SopsView = Backbone.View.extend({
     filterMineOnly: function(settings,data,dataIndex){
         var input = me.get('fullName').toUpperCase();
         if(this.filterMeOnly.is(':checked')){
-            var name = data[COL_SUPERVISORS];
+            var name = data[COL_REVIEWERS];
             if(name.toUpperCase().indexOf(input) > -1){
                 return true;
             }
