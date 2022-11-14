@@ -11,6 +11,7 @@ AskAnExpertEvent = Backbone.Model.extend({
         name_of_expert: "",
         expert_field:"",
         date_of_event:"",
+	end_of_event: "",
 	active:false,
 	date_created:"",
 	currently_on:false,

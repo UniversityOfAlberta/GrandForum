@@ -43,6 +43,8 @@ ExpertEditView = Backbone.View.extend({
 	var date = form.find('#date_of_event').val();
 	var time = form.find('#time_of_event').val();
 	var datetimestr = date+" "+time+":00";
+	var endtime = form.find('#time_of_event_end').val();
+	var datetimeendstr = date+" "+endtime+":00";
 	//grab question date
 	console.log(form.find('textarea#description').val());
         var datequestion = form.find('#date_for_questions').val();
@@ -56,6 +58,7 @@ ExpertEditView = Backbone.View.extend({
 		"event": form.find('#event').val(),
 		"description":form.find('textarea#description').val(),
 		"date_of_event": datetimestr,
+		"end_of_event": datetimeendstr,
 		"date_for_questions": datetimestrquestion,
 		"details":form.find('textarea#details').val(),
 	});
@@ -91,8 +94,12 @@ ExpertEditView = Backbone.View.extend({
 	var data = this.model.toJSON();
 	var date = "";
 	var time = "";
+        var end_date = "";
+        var end_time = "";
 	data["date"] = "";
 	data["time"] = "";
+        data["end_date"] = "";
+        data["end_time"] = "";
 	//format date
 	if(data["date_of_event"] != null){
 		var split = data["date_of_event"].split(" ");
@@ -101,6 +108,13 @@ ExpertEditView = Backbone.View.extend({
         	data["date"] = date;
         	data["time"] = time;
 	}
+	if(data["end_of_event"] != null){
+                var split = data["end_of_event"].split(" ");
+                end_date = split[0];
+                end_time = split[1];
+                data["end_date"] = end_date;
+                data["end_time"] = end_time;
+        }
 	//format questiondate
 	data["date_for_questionsstr"] = "";
 	if(data["date_for_questions"] != null){
