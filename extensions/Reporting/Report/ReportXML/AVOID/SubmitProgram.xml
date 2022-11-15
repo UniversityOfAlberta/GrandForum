@@ -8,7 +8,21 @@
                 <Static>
 			<![CDATA[
 				<p>Have you used a formal or informal program recently that you don’t see in the library and wish to share with the community?</p>
-                <p>Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library.</p>
+				<p>Please fill in the form to the best of your knowledge and ability to submit a new program to the library. Once submitted, we will make sure that it is ongoing and suitable for the community before adding it to the library.</p>
+
+				<a id="clear" href="#">Clear Form</a>
+			]]>
+		</Static>
+		<Static>
+			<![CDATA[
+
+				<script type="text/javascript">
+					$('#clear').click(function(){
+                                                $(':input').not(':button, :submit, :reset, :hidden, :checkbox, :radio').val('');
+                                                $(':checkbox, :radio').prop('checked', false);
+                            		});
+
+				</script>
 			]]>
 		</Static>
         	<ReportItem id="publicname" type="Text" blobItem="PUBLICNAME" width="400px">

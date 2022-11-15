@@ -21,6 +21,8 @@ ExpertDetailsView = Backbone.View.extend({
 	var time = "";
 	data["date"] = "";
 	data["time"] = "";
+	data["end_date"]="";
+	data["end_time"] = "";
 	//format date
 	if(data["date_of_event"] != null){
 		var split = data["date_of_event"].split(" ");
@@ -29,6 +31,13 @@ ExpertDetailsView = Backbone.View.extend({
         	data["date"] = date;
         	data["time"] = time;
 	}
+        if(data["end_of_event"] != null){
+                var split = data["end_of_event"].split(" ");
+                date = split[0];
+                time = split[1];
+                data["end_date"] = date;
+                data["end_time"] = time;
+        }
 	//format questiondate
 	data["date_for_questionsstr"] = "";
 	if(data["date_for_questions"] != null){

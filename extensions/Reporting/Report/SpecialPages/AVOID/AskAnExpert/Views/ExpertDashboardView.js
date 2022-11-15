@@ -31,9 +31,11 @@ ExpertDashboardView = Backbone.View.extend({
 	var question = false;
 	var heightmultiplier = 0.60;
 	var title = "Registration";
+	var width = 550;
 	if(cat == "question"){
 	    question = true;
-            heightmultiplier = 0.60;
+            heightmultiplier = 0.38;
+	    width= 360;
 	    title = "Ask a Question";
             $('.my-dialog .ui-button-text:contains(Submit)').text('Ask Question');
             $('.my-dialog .ui-button-text:contains(Register)').text('Ask Question');
@@ -47,7 +49,7 @@ ExpertDashboardView = Backbone.View.extend({
         this.registerDialog.view = view;
         this.registerDialog.dialog({
             height: $(window).height() * heightmultiplier,
-            width: 550,
+            width: width,
             title: title,
         });
         this.registerDialog.dialog('open');
@@ -71,7 +73,7 @@ ExpertDashboardView = Backbone.View.extend({
         var data = this.model.toJSON();
 	if(data["date_of_event"] != null){
         //split time and date TODO: do this in class function instead
-            var origDate = new Date(data["date_of_event"]);
+            var origDate = new Date(data["date_of_event"].replace(/-/g, "/"));
         	var split = data["date_of_event"].split(" ");
         	var parts = split[0].split('-');
         	var date = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -90,6 +92,18 @@ ExpertDashboardView = Backbone.View.extend({
                 var time = timesplit[0] + ":" + timesplit[1];
                 var datestring = date.toDateString();
                 data["date_for_questions"] = datestring;
+        }
+        if(data["end_of_event"] != null){
+        //split time and date TODO: do this in class function instead
+		var origDate = new Date(data["end_of_event"].replace(/-/g, "/"));
+                var split = data["end_of_event"].split(" ");
+                var parts = split[0].split('-');
+                var date = new Date(parts[0], parts[1] - 1, parts[2]);
+                var timesplit = split[1].split(":");
+                var time = timesplit[0] + ":" + timesplit[1];
+                var datestring = date.toDateString();
+                data["end_date"] = datestring;
+		data["end_time"] = origDate.toLocaleString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
         }
         this.$el.html(this.template({
             output: data,

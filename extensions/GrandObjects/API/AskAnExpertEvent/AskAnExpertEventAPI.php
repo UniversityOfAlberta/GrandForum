@@ -41,7 +41,8 @@ class AskAnExpertEventAPI extends RESTAPI {
         header('Content-Type: application/json');
         $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
-        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+	$askanexpertevent->date_of_event = $this->POST('date_of_event');
+	$askanexpertevent->end_of_event = $this->POST('end_of_event');
 	$askanexpertevent->zoomlink = $this->POST('zoomlink');
 	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
 	$askanexpertevent->event = $this->POST('event');
@@ -72,7 +73,8 @@ class AskAnExpertEventAPI extends RESTAPI {
         header('Content-Type: application/json');
         $askanexpertevent->name_of_expert = $this->POST('name_of_expert');
         $askanexpertevent->expert_field = $this->POST('expert_field');
-        $askanexpertevent->date_of_event = $this->POST('date_of_event');
+	$askanexpertevent->date_of_event = $this->POST('date_of_event');
+	$askanexpertevent->end_of_event = $this->POST('end_of_event');
 	$askanexpertevent->zoomlink = $this->POST('zoomlink');
 	$askanexpertevent->date_for_questions = $this->POST('date_for_questions');
         $askanexpertevent->event = $this->POST('event');

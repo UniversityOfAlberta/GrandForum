@@ -13,6 +13,7 @@ class AskAnExpertEvent extends BackboneModel {
     var $name_of_expert;
     var $expert_field;
     var $date_of_event;
+    var $end_of_event;
     var $active;
     var $date_created;
     var $currently_on;
@@ -67,7 +68,8 @@ class AskAnExpertEvent extends BackboneModel {
             $this->id = $row['id'];
             $this->name_of_expert = $row['name_of_expert'];
             $this->expert_field = $row["expert_field"];
-            $this->date_of_event = $row["date_of_event"];
+	    $this->date_of_event = $row["date_of_event"];
+	    $this->end_of_event = $row["end_of_event"];
             $this->active = $row['active'];
             $this->date_created = $row['date_created'];
             $this->currently_on = $row['currently_on'];
@@ -89,7 +91,8 @@ class AskAnExpertEvent extends BackboneModel {
                     'expert_field' => $this->expert_field,
                     'date_of_event' => $this->date_of_event,
                     'active' => $this->active,
-                    'date_created' => $this->date_created,
+		    'date_created' => $this->date_created,
+		    'end_of_event' => $this->end_of_event,
                     'currently_on' => $this->currently_on,
 		    'zoomlink' => $this->zoomlink,
 		    'date_for_questions' => $this->date_for_questions,
@@ -111,7 +114,8 @@ class AskAnExpertEvent extends BackboneModel {
                                                 'expert_field' => $this->expert_field,
                                                 'date_of_event' => $this->date_of_event,
                                                 'active' => $this->active,
-                                                'date_created' => $this->date_created,
+						'date_created' => $this->date_created,
+						'end_of_event' => $this->end_of_event,
                                                 'currently_on' => $this->currently_on,
 						'zoomlink' => $this->zoomlink,
 						'date_for_questions' => $this->date_for_questions,
@@ -136,7 +140,8 @@ class AskAnExpertEvent extends BackboneModel {
             $status = DBFunctions::update('grand_avoid_expert_event',
                                           array('name_of_expert' => $this->name_of_expert,
                                                 'expert_field' => $this->expert_field,
-                                                'date_of_event' => $this->date_of_event,
+						'date_of_event' => $this->date_of_event,
+						'end_of_event' => $this->end_of_event,
                                                 'active' => $this->active,
                                                 'date_created' => $this->date_created,
                                                 'currently_on' => $this->currently_on,
