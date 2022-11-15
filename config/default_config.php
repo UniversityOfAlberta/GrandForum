@@ -43,6 +43,9 @@
     // ORCID Secret Key
     $config->setValue("orcidSecret", "");
     
+    // Fitbit Client ID
+    $config->setValue("fitbitId", "");
+    
     // Scopus Api Id
     $config->setValue("scopusApi", "");
     

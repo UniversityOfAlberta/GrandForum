@@ -22,11 +22,81 @@ ActionPlanCreateView = Backbone.View.extend({
         }
     },
 
-    events: {
-
+    changeType: function(){
+        this.$("[name=components_A]," +
+               "[name=components_V]," +
+               "[name=components_O]," + 
+               "[name=components_I]," + 
+               "[name=components_D]," + 
+               "[name=components_S]," + 
+               "[name=components_F]").prop("checked", false).change();
+        _.defer(function(){
+            if(this.model.get('type') == ActionPlan.MANUAL){
+                this.$("#manual").show();
+                this.$("#fitbit").hide();
+            }
+            else if(this.model.get('type') == ActionPlan.FITBIT){
+                this.$("#manual").hide();
+                this.$("#fitbit").show();
+                this.changeFitbit();
+                if($.cookie('fitbit') == undefined){
+                    this.authorizeFitBit();
+                }
+            }
+        }.bind(this));
     },
 
-    render: function () {
+    authorizeFitBit: function(){
+        var url = "https://www.fitbit.com/oauth2/authorize?response_type=token" +
+                  "&client_id=" + fitbitId +
+                  "&redirect_uri=" + document.location.origin + document.location.pathname + "?fitbitApi" +
+                  "&scope=activity%20nutrition%20sleep%20heartrate&expires_in=31536000";
+        var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+        var popupInterval = setInterval(function(){
+            if(popup == null || popup.closed){
+                clearInterval(popupInterval);
+                clearError('#fitbitMessages');
+                if($.cookie('fitbit') == undefined){
+                    // Failed
+                    this.model.set('type', ActionPlan.MANUAL);
+                    this.render();
+                    addError('There was an error connecting to your Fitbit account.  Make sure that you checked "Allow All" when authorizing AVOID to access your Fitbit data.', false, '#fitbitMessages');
+                }
+            }
+        }.bind(this), 500);
+    },
+    
+    changeFitbit: function(){
+        _.defer(function(){
+            if(this.model.get('fitbit').steps > 0 || this.model.get('fitbit').distance > 0 || this.model.get('fitbit').activity > 0){
+                this.$("[name=components_A]").prop("checked", true).change();
+            }
+            else{
+                this.$("[name=components_A]").prop("checked", false).change();
+            }
+            
+            if(this.model.get('fitbit').sleep > 0){
+                this.$("[name=components_S]").prop("checked", true).change();
+            }
+            else{
+                this.$("[name=components_S]").prop("checked", false).change();
+            }
+            
+            if(this.model.get('fitbit').water > 0 || this.model.get('fitbit').protein > 0 || this.model.get('fitbit').fibre > 0){
+                this.$("[name=components_D]").prop("checked", true).change();
+            }
+            else{
+                this.$("[name=components_D]").prop("checked", false).change();
+            }
+        }.bind(this));
+    },
+    
+    events: {
+        "change [name=type]": "changeType",
+        "change .fitbitFields input": "changeFitbit",
+    },
+
+    render: function (){
         this.$el.html(this.template(this.model.toJSON()));
         if(this.dialog == undefined){
             this.dialog = this.$el.dialog({
@@ -84,7 +154,13 @@ ActionPlanCreateView = Backbone.View.extend({
                                                                  .css('font-size', '1em')
                                                                  .css('float', 'left')
                                                                  .css('padding-right', '15px')
+            this.$("[name=fitbit_steps]").forceNumeric({min: 0, max: 100000, decimals: 0});
+            this.$("[name=fitbit_distance]").forceNumeric({min: 0, max: 1000, decimals: 2});
+            this.$("[name=fitbit_sleep]").forceNumeric({min: 0, max: 24, decimals: 0});
+            this.$("[name=fitbit_water]").forceNumeric({min: 0, max: 10000, decimals: 0});
+            this.$("[name=fitbit_protein]").forceNumeric({min: 0, max: 10000, decimals: 0});
         }
+        this.changeType();
         this.validations();
         return this.$el;
     }

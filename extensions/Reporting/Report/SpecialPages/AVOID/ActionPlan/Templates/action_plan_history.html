@@ -3,8 +3,8 @@
     <div class="modules" style="gap:0;">
         <% _.each(new ActionPlans(this.model.where({submitted: true})).getComponents(), function(comp){ %>
             <div style="width: 250px;margin-bottom:0.5em;flex: 1 1 auto;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;">
-                <span class="AVOID <%= comp %>"><%= comp %></span><span style="vertical-align: text-bottom;"><%= ActionPlan.comp2Text(comp).substring(1) %></span>
-                <div style="max-height: 9em; overflow-y: auto;">
+                <a onClick="$('#actionPlanHistory<%= comp %>').slideToggle();" style="cursor: pointer; display:block;"><span class="AVOID <%= comp %>"><%= comp %></span><span style="vertical-align: text-bottom;"><%= ActionPlan.comp2Text(comp).substring(1) %></span></a>
+                <div id="actionPlanHistory<%= comp %>" style="display:none;">
                     <ul>
                         <% this.model.each(function(action){ %>
                             <% if(action.get('submitted') && action.getComponents().indexOf(comp) != -1){ %>

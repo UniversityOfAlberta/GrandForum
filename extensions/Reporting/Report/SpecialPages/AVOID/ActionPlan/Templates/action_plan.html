@@ -47,13 +47,13 @@
 <h4>Action Plan Daily Tracker - Accomplished your plan today?</h4>
 <table class='wikitable' style='width: 100%;'>
     <tr>
-        <th style='width: 14.2%;'>Mon</th>
-        <th style='width: 14.2%;'>Tue</th>
-        <th style='width: 14.2%;'>Wed</th>
-        <th style='width: 14.2%;'>Thu</th>
-        <th style='width: 14.2%;'>Fri</th>
-        <th style='width: 14.2%;'>Sat</th>
-        <th style='width: 14.2%;'>Sun</th>
+        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
      </tr>
      <tr>
         <td align='center'><% if(tracker.Mon == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>

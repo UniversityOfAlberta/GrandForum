@@ -23,6 +23,8 @@ class ActionPlanAPI extends RESTAPI {
             $this->throwError("You must be logged in to create an Action Plan");
         }
         $plan = new ActionPlan(array());
+        $plan->type = $this->POST('type');
+        $plan->fitbit = $this->POST('fitbit');
         $plan->goals = $this->POST('goals');
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
@@ -38,6 +40,8 @@ class ActionPlanAPI extends RESTAPI {
         if(!$plan->canUserRead()){
             $this->throwError("You are not allowed to edit this Action Plan");
         }
+        $plan->type = $this->POST('type');
+        $plan->fitbit = $this->POST('fitbit');
         $plan->goals = $this->POST('goals');
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
