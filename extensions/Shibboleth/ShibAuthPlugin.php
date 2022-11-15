@@ -382,7 +382,6 @@ function ShibUserLoadFromSession($user, &$result)
 		$user->setCookies();
 		ShibAddGroups($user);
 		$wgUser = $user;
-		GrandAccess::setupGrandAccess($user, $user->getRights());
 		impersonate();
 		return true;
 	}
@@ -491,6 +490,7 @@ function ShibAddGroups($user) {
 			}
 		}
 	}
+	GrandAccess::setupGrandAccess($user, $user->getRights());
 }
 function ShibKillAA()
 {
