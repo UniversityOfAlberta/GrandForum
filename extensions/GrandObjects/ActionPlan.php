@@ -233,6 +233,7 @@ class ActionPlan extends BackboneModel {
                                       'created' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
+            setcookie('lastfitbit', time(), time()-3600); // Expire this cookie
         }
     }
     

@@ -139,7 +139,7 @@ class AVOIDDashboard extends SpecialPage {
                                     $actionPlan->getSat() => 0,
                                     $actionPlan->getSun() => 0);
                     foreach($data['sleep'] as $value){
-                        $date = $value['date'];
+                        $date = $value['dateOfSleep'];
                         $duration = $value['duration'];
                         $sleeps[$date] += $value['duration']/1000/60/60;
                     }
@@ -187,7 +187,7 @@ class AVOIDDashboard extends SpecialPage {
                 }
                 $actionPlan->tracker = $tracker;
                 $actionPlan->update();
-                setcookie('lastfitbit', time(), time()+60*10);
+                setcookie('lastfitbit', time(), time()+60*10); // Don't fetch again for another 10min
             } catch (Exception $e) {
                 $wgMessage->addError($e->getMessage());
                 return;
