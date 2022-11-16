@@ -20,7 +20,27 @@
 <h3>My Action Plan This Week</h3>
 <div class="textarea">
     <b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
-    <%= nl2br(plan) %>
+    <% if(type == ActionPlan.FITBIT){ %>
+        <table>
+        <% if(fitbit.steps > 0){ %>
+            <tr><td><b>Steps:</b></td><td><%= fitbit.steps %></td></tr>
+        <% } if(fitbit.distance > 0){ %>
+            <tr><td><b>Distance:</b></td><td><%= fitbit.distance %> km</td></tr>
+        <% } if(fitbit.activity > 0){ %>
+            <tr><td><b>Activity:</b></td><td><%= fitbit.activity %> mins</td></tr>
+        <% } if(fitbit.water > 0){ %>
+            <tr><td><b>Water:</b></td><td><%= fitbit.water %> mL</td></tr>
+        <% } if(fitbit.protein > 0){ %>
+            <tr><td><b>Protein:</b></td><td><%= fitbit.protein %> g</td></tr>
+        <% } if(fitbit.fibre > 0){ %>
+            <tr><td><b>Fibre:</b></td><td><%= fitbit.fibre %> g</td></tr>
+        <% } if(fitbit.sleep > 0){ %>
+            <tr><td><b>Sleep:</b></td><td><%= fitbit.sleep %> hrs</td></tr>
+        <% } %>
+        </table>
+    <% } else { %>
+        <%= nl2br(plan) %>
+    <% } %>
 </div>
 
 <h4>What AVOID component(s) does your action plan address?</h4>
