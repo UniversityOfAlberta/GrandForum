@@ -145,6 +145,7 @@ class Role extends BackboneModel {
 	                                  'project_id' => $p->getId()));
             Cache::delete("project{$p->getId()}_people*", true);
 	    }
+	    DBFunctions::commit();
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    Person::$leaderCache = array();
