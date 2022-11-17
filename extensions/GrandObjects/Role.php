@@ -104,6 +104,7 @@ class Role extends BackboneModel {
                     DBFunctions::insert('grand_role_projects',
                                         array('role_id' => $this->getId(),
                                               'project_id' => $p->getId()));
+                    DBFunctions::commit();
                     Cache::delete("project{$p->getId()}_people*", true);
                 }
             }
@@ -143,9 +144,9 @@ class Role extends BackboneModel {
 	        DBFunctions::insert('grand_role_projects',
 	                            array('role_id' => $this->getId(),
 	                                  'project_id' => $p->getId()));
+	        DBFunctions::commit();
             Cache::delete("project{$p->getId()}_people*", true);
 	    }
-	    DBFunctions::commit();
 	    Role::$cache = array();
 	    Person::$rolesCache = array();
 	    Person::$leaderCache = array();
