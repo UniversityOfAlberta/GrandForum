@@ -377,6 +377,12 @@ class ApplicationsTable extends SpecialPage{
         $ind->setBlobItem("HQP_APPLICATION_INDIGENOUS");
         $ind->setBlobSection(HQP_APPLICATION_FORM);
         $ind->setId("INDIGENOUS");
+        
+        $kob = new CheckboxReportItem();
+        $kob->setBlobType(BLOB_ARRAY);
+        $kob->setBlobItem("HQP_APPLICATION_KOBAYASHI");
+        $kob->setBlobSection(HQP_APPLICATION_FORM);
+        $kob->setId("KOBAYASHI");
              
         $bme = new CheckboxReportItem();
         $bme->setBlobType(BLOB_ARRAY);
@@ -447,6 +453,7 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage->addTab(new ApplicationTab(RP_HQP_APPLICATION, null, 2022, "2022", array("Level" => $level,
                                                                                              "Michael F. Harcourt" => $michael,
                                                                                              "Indigenous" => $ind,
+                                                                                             "Kobayashi" => $kob,
                                                                                              "MIRA" => $mira,
                                                                                              "UofT" => $uoft,
                                                                                              "UBC" => $ubc,
