@@ -45,7 +45,35 @@
 
                 <p>AGE-WELL is a pan-Canadian network of industry, non-profit organizations, government, care providers, caregivers, end-users, and academic partners working together to drive innovation and create technologies and services that benefit older adults and caregivers. Our vision is to harness and build upon the potential of emerging and advanced technologies in areas such as artificial intelligence (AI), e-health, information communication technologies (ICTs), and mobile technologies to stimulate technological, social, and policy innovation.</p>
 
-                <h3>AGE-WELL Indigenous Graduate Student and Postdoctoral Awards</h3>
+                <h3>Karen Kobayashi Memorial Award in Technology and Aging</h3>
+                <p>Dr. Karen Kobayashi (1967-2022) was a professor in the University of Victoria’s Department of Sociology and Associate Dean (Research and Graduate Studies, Faculty of Social Sciences). A long-time leader and investigator in AGE-WELL, Dr. Kobayashi served on our Research Management Committee, co-lead the knowledge mobilization crosscutting activity, and was a network and training advisor in implementation. An eminent social gerontologist, Dr. Kobayashi used a life course perspective to explore the intersections of structural, cultural and individual factors and experiences affecting health and aging in the Canadian population.</p>
+
+                <p>Dr. Kobayashi's dedication to, and enthusiasm for, supporting trainees – the next generation of researchers, government and industry professionals – was unmatched. She was a fierce advocate for all of her trainees, an insightful mentor who sought to build strengths and capacity. She made her students and colleagues feel safe and supported and encouraged them to always strive to make a positive and meaningful difference in the lives of stakeholders.</p>
+
+                <p>The Karen Kobayashi Memorial Award in Technology and Aging is intended to pay tribute to Dr. Kobayashi's belief that our research should make positive, real-world impact.</p>
+
+                <p>Eligible applicants to this $20,000 award are full-time graduate students and postdoctoral fellows enrolled at Canadian institutions.</p>
+
+                <p>Applications must have a knowledge mobilization or implementation focus and applicants will be asked to submit a 1 page, free-form knowledge mobilization or implementation plan.</p>
+
+                <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees must demonstrate that they receive funding from a source other than AGE-WELL.</p>
+
+                <p>If successful, trainee funding will be held and disbursed by the trainee’s supervisor in a new account that must be established at the supervisor’s home institution. Awards are not renewable. This award is subject to the training and reporting requirements of the AGE-WELL Awards.</p>
+
+                <p>The recipient may be profiled at AGE-WELL’s Annual Conference and/or in the network’s Annual Report. Award term: 1 March 2023 – 28 February 2024.</p>
+
+                <h3>Eligibility</h3>
+                In order to be considered for AGE-WELL Awards, funding applicants must:
+                <ol>
+                    <li>Receive at least some financial support from additional sources: home department, supervisor research grants, and/or through government and agency scholarships or awards.</li>
+                    <li>Participate full‐time in their respective program at a Canadian post-secondary institution.</li>
+                    <li>Be engaged in academic study/research aligned with the mission and vision of AGE-WELL.</li>
+                    <li>Applicants for doctoral awards are restricted to those entering the first, second, or third year of their program.</li>
+                </ol>
+
+                <p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact, Catalyst or AIR programs would be ineligible.</p>
+
+                <!--h3>AGE-WELL Indigenous Graduate Student and Postdoctoral Awards</h3>
                 <p>AGE-WELL is pleased to once again offer the Indigenous Graduate Student and Postdoctoral Awards to provide salary support to self-identified Indigenous trainees researching in AgeTech-related fields.</p>
 
                 <p>We expect to offer the following awards in this 2022 call:</p>
@@ -66,7 +94,7 @@
                     <li>Applicants for doctoral awards are restricted to those entering the first, second, or third year of their program with the exception of the AGE-WELL-NBHRF Awards and the AGE-WELL-UW Faculty of Health Awards.</li>
                 </ol>
 
-                <p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact, Catalyst or AIR programs would be ineligible.</p>
+                <p>Applicants who will receive AGE-WELL project funds concurrently with this award period are ineligible to apply to this competition.  For example, a trainee who will be funded through AGE-WELL Core Research Projects, Platform Projects, Cross-Cutting themes, or the Strategic Investment, Collaborative Impact, Catalyst or AIR programs would be ineligible.</p-->
 
                 <!--h3>The Awards</h3>
                 <p>Awards are intended to enhance existing funding support awarded to promising new scholars. Trainees must demonstrate that they receive funding from a source other than AGE-WELL.</p>
@@ -114,11 +142,11 @@
                 </ol>
 
                 <h3>Important Dates</h3>
-                Applications Open: 26 September, 2022<br />
-                Completed Applications Due: 4 November, 2022<br />
-                Results Available: December, 2022<br />
-                Funding Commences: 1 January 2023<br />
-                Award Term: 1 January 2023-31 December 2023<br />
+                Applications Open: 1 December, 2022<br />
+                Completed Applications Due: 15 January, 2023<br />
+                Results Available: February, 2023<br />
+                Funding Commences: 1 March 2023<br />
+                Award Term: 1 March 2023-28 February 2024<br />
 
                 <!--h3>1. Michael F. Harcourt Policy Fellowship</h3> 
                 <p><b>Michael F. Harcourt O.C., LL.B.</b> is the Founding Chair of the Board for the AGE-WELL Network of Centres of Excellence (NCE). Previously he served as the 30th Premier of British Columbia from 1991-96 and Mayor of Vancouver 1980-1986. He is a passionate believer in the power of communities to improve the human condition and has played a significant role in promoting quality of life for those in Canada and abroad. A devastating spinal cord injury in 2002 only strengthened his resolve to contribute to the transformation of communities, particularly in relation to social inclusion. Since 2011, he has demonstrated his commitment to capacity building in the public sector as the lead faculty of the United Way's Public Policy Institute. As Chair of AGE-WELL, Mr. Harcourt has championed the next generation of leaders in the field of technology and aging and believes passionately in their ability to create real-world impact. The <b>Michael F. Harcourt Policy Fellowship</b> recognizes his long service and dedication to public policy as a means to effect social change, and his commitment to supporting emerging leaders across disciplines.</p>
@@ -298,7 +326,26 @@
             ]]>
         </ReportItem-->
         
-        <ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master’s ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
+        <ReportItem id="KOBAYASHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KOBAYASHI" orientation="vertical" options="Master’s ($20,000)|PhD ($20,000)|Postdoctoral ($20,000)" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Karen Kobayashi Memorial Award in Technology and Aging</b><br /><i>Please indicate your eligibility and desire to be considered for this award.</i></td><td id='kobayashi' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="KOBAYASHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_KOBAYASHI_DESC" rich="true" limit="750" optional="true">
+            <![CDATA[
+                <tr id='kobayashi_desc'>
+                    <td></td>
+                    <td align='left' valign='top'>
+                        <div style='display:none;'>
+                            {$item}
+                        </div>
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <!--ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master’s ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
             <![CDATA[
                 <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Indigenous Graduate Student and Postdoctoral Awards</b><br /><i>Please indicate your eligibility and desire to be considered for these awards and confirm that you self-identify as an Indigenous trainee.</i></td><td id='indigenous' style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
             ]]>
@@ -315,7 +362,7 @@
                     </td>
                 </tr>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         
         <!--Static>
             <![CDATA[
@@ -391,6 +438,7 @@
                         }
                     });
                     $('#micheal input').change();
+                    
                     $('#indigenous input').change(function(){
                         var value = $('#indigenous input').is(":checked");
                         if(value){
@@ -401,6 +449,17 @@
                         }
                     });
                     $('#indigenous input').change();
+                    
+                    $('#kobayashi input').change(function(){
+                        var value = $('#kobayashi input').is(":checked");
+                        if(value){
+                            $('#kobayashi_desc td > div').slideDown();
+                        }
+                        else{
+                            $('#kobayashi_desc td > div').slideUp();
+                        }
+                    });
+                    $('#kobayashi input').change();
                 </script>
                 <p>N.B.: If successful, funding will be disbursed to the named primary supervisor at the institution listed.</p>
                 <h3>SCHOLARLY MERIT AND QUALITY OF PROPOSED RESEARCH</h3>
@@ -618,6 +677,13 @@
             <![CDATA[
                 <h2>Curriculum Vitae</h2>
                 <p>Please prepare the document and submit as a PDF.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="kt" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_KT" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                <h2>Knowledge Mobilization or Implementation Plan</h2>
+                <p>Applicants to the Karen Kobayashi Memorial Award in Technology and Aging are required to submit a 1 page, single-spaced (Times New Roman and 12 point font OR Arial and 11 point font) knowledge mobilization or implementation plan that communicates how they intend to maximize the results of their research. Please submit as a PDF.</p>
                 {$item}
             ]]>
         </ReportItem>

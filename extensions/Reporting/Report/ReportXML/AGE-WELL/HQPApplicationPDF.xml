@@ -62,6 +62,25 @@
             </ReportItem>
         </If>
         
+        <ReportItem id="KOBAYASHI" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_KOBAYASHI" orientation="vertical" options="Master's ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
+            <![CDATA[
+                <h4>Karen Kobayashi Memorial Award in Technology and Aging</h4>
+                <p>{$item}</p><br />
+                
+            ]]>
+        </ReportItem>
+        
+        <If id="if_kobayashi" if="{!=({getArray(RP_HQP_APPLICATION, HQP_APPLICATION_FORM, HQP_APPLICATION_KOBAYASHI, 0, {$user_id}, 0, KOBAYASHI)},)}">
+            <ReportItem id="KOBAYASHI_DESC" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_KOBAYASHI_DESC" optional="true" rich="true" limit="750">
+                <![CDATA[
+                    <div style='margin-left:4em;'>
+                        <b>Description</b>
+                        <p>{$item}</p><br />
+                    </div>
+                ]]>
+            </ReportItem>
+        </If>
+        
         <ReportItem id="INDIGENOUS" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="HQP_APPLICATION_INDIGENOUS" orientation="vertical" options="Master's ($15,000)|PhD ($25,000)|Postdoctoral ($30,000)" optional="true">
             <![CDATA[
                 <h4>Indigenous Graduate Student or Postdoctoral Award</h4>
@@ -233,6 +252,8 @@
         <ReportItem id="evidence" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_EVIDENCE" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="cv" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
+        </ReportItem>
+        <ReportItem id="kt" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_KT" mimeType="application/pdf" fileSize="2">
         </ReportItem>
         <ReportItem id="michael" type="UploadPDFReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_MICHAEL" mimeType="application/pdf" fileSize="2">
         </ReportItem>
