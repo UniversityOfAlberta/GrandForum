@@ -278,7 +278,7 @@
     </ReportSection>
     <!-- End page2 -->
 
-    <ReportSection id="edi" tooltip="Equity, Diversity &amp; Inclusion" name="EDI" title="Equity, Diversity &amp; Inclusion" blobSection="EDI" type="EditableReportSection">
+    <ReportSection id="edi" tooltip="Equity, Diversity &amp; Inclusion" name="EDI" title="Equity, Diversity &amp; Inclusion" blobSection="EDI" type="EditableReportSection" pagebreak="false">
         <ReportItem id="edi" type="Radio" blobItem="EDI" blobType="BLOB_TEXT" options="Yes|No" optional="true">
             <![CDATA[
                 <h3>I identify as</h3>
@@ -301,13 +301,13 @@
     </ReportSection>
 
     <!-- Page4: SoP -->
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+    <!--ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" reportLimits="true" limit="4500" height="1000px">
             <![CDATA[
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
     <!-- End page3 -->
 
 </Report>

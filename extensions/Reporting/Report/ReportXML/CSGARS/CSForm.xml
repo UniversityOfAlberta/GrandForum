@@ -329,7 +329,7 @@
         </ReportItem>
     </ReportSection>
 
-    <ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
+    <!--ReportSection id="sop" tooltip="Statement of Purpose" name="SoP" title="Statement of Purpose" blobSection="CS_QUESTIONS_tab2" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qSOP" idLabel="Statement of Purpose" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="QSOP" limit="4500" height="1000px">
             <![CDATA[
                 <h3>All MSc, PhD and SML applicants must complete this</h3>
@@ -337,7 +337,7 @@
                 {$item}
             ]]>
         </ReportItem>
-    </ReportSection>
+    </ReportSection-->
 
     <ReportSection id="research_experience" tooltip="Research Experience" name="Research Experience" blobSection="CS_QUESTIONS_tab3" type="EditableReportSection" pagebreak="false">
         <ReportItem id="qResExp1" idLabel="Research Experience" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="qResExp" limit="2000" >
