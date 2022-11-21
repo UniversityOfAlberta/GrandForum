@@ -52,12 +52,12 @@
         </Static>
         <ReportItem id="register5" type="Checkbox" options="Thursday January 19, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
-                There are currently no scheduled training dates.
+                <!--There are currently no scheduled training dates.
                 <script type='text/javascript'>
                     $(document).ready(function(){
                         $('#programSubmit').hide();
                     });
-                </script>
+                </script-->
                 <div class='program-button'>{$item}</div>&nbsp;&nbsp;
             ]]>
         </ReportItem>
