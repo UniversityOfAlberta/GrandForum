@@ -305,6 +305,9 @@ class ReportXMLParser {
             }
             if(!$quick){
                 $children = $this->parser->children();
+                if(isset($children->Script)){
+                    $this->parseScripts($children->Script);
+                }
                 if(isset($children->Permissions)){
                     $this->parsePermissions($children->Permissions);
                 }
@@ -312,6 +315,12 @@ class ReportXMLParser {
                     $this->parseReportSection($children->ReportSection);
                 }
             }
+        }
+    }
+    
+    function parseScripts($node){
+        foreach($node as $key => $n){
+            $this->report->addScript("{$n}");
         }
     }
     

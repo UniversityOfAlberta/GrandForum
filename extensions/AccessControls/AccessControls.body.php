@@ -139,7 +139,7 @@ function onUserCan(&$title, &$user, $action, &$result) {
     $ret = onUserCan2($title, $user, $action, $result);
     return $ret;
 }
- 
+
 function onUserCan2(&$title, &$user, $action, &$result) {
   global $wgExtraNamespaces, $egAnProtectUploads, $egNamespaceAllowPagesInMainNS, $egAlwaysAllow, $wgWhitelistRead, $wgRoles, $wgGroupPermissions;
   $person = Person::newFromId($user->getId());

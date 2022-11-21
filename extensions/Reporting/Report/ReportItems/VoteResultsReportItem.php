@@ -4,18 +4,9 @@ class VoteResultsReportItem extends SelectReportItem {
 
     function render(){
         global $wgOut;
-        $report = $this->getReport();
-        $section = $this->getSection();
-        $year = $report->year;
-
-        $voteBlobItem = $this->getAttr("voteBlobItem");
-        $votes = DBFunctions::select(array('grand_report_blobs'),
-                                     array('data'),
-                                     array('year' => $year,
-                                           'rp_type' => $report->reportType,
-                                           'rp_section' => $section->sec,
-                                           'rp_item' => $voteBlobItem,
-                                           'rp_subitem' => $this->blobSubItem));
+        $freezeId = $this->getAttr("freezeId", "");
+        
+        $votes = $this->getVotes();
                                            
         $yes = 0;
         $no = 0;
@@ -48,14 +39,49 @@ class VoteResultsReportItem extends SelectReportItem {
             $option = str_replace("'", "&#39;", $option);
             $items[] = "<option value='{$option}' $selected >{$option}</option>";
         }
-        
-        $output = "<b>Yes:</b> $yes<br />
-                   <b>No:</b> $no<br />
-                   <b>Abstain:</b> $abstain<br />";
-        $output .= "<select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";
+        $output = "<td class='{$freezeId}'>$yes</td>
+                   <td class='{$freezeId}'>$no</td>
+                   <td class='{$freezeId}'>$abstain</td>";
+        $output .= "<td class='{$freezeId}'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></td>";
 
-        $output = $this->processCData("<div style='display:inline-block;'>{$output}</div>");
+        $output = $this->processCData("{$output}");
         $wgOut->addHTML($output);
+    }
+    
+    function getVotes(){
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $year = $report->year;
+
+        $voteBlobItem = $this->getAttr("voteBlobItem");
+        $votes = DBFunctions::select(array('grand_report_blobs'),
+                                     array('user_id', 'data'),
+                                     array('year' => $year,
+                                           'rp_type' => $report->reportType,
+                                           'rp_section' => $section->sec,
+                                           'rp_item' => $voteBlobItem,
+                                           'rp_subitem' => $this->blobSubItem));
+        return $votes;
+    }
+    
+    function setBlobValue($value){
+        $prev = $this->getBlobValue();
+        if($prev == "Frozen" && $value == "Unfrozen"){
+            // Reset all votes
+            $votes = $this->getVotes();
+            
+            $report = $this->getReport();
+            $section = $this->getSection();
+            $year = $report->year;
+            
+            $voteBlobItem = $this->getAttr("voteBlobItem");
+            foreach($votes as $vote){
+                $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
+	            $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $voteBlobItem, $this->blobSubItem);
+                $blob->delete($blob_address);
+	        }
+        }
+        parent::setBlobValue($value);
     }
 
     function parseOptions(){

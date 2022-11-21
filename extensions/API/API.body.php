@@ -129,6 +129,7 @@ class APIRequest{
         $this->addAction('User Accounts', 'updateUserEmail', 'UserEmailAPI');
         $this->addAction('User Accounts', 'updateGoogleScholarCitations', 'UpdateGoogleScholarCitationsAPI');
 
+        $this->addAction('Hidden', 'voteFreeze', 'VoteFreezeAPI');
     }
 }
 

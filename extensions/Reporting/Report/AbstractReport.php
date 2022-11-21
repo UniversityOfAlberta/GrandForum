@@ -43,6 +43,7 @@ abstract class AbstractReport extends SpecialPage {
     var $currentSection;
     var $permissions;
     var $sectionPermissions;
+    var $scripts = array();
     var $person;
     var $project;
     var $readOnly = false;
@@ -282,6 +283,10 @@ abstract class AbstractReport extends SpecialPage {
             $wgOut->setPageTitle("Report not Found");
             $wgOut->addHTML("The report specified does not exist");
         }
+    }
+    
+    function addScript($script){
+        $this->scripts[] = $script;
     }
     
     function notifySupervisors($tok){
@@ -840,6 +845,7 @@ abstract class AbstractReport extends SpecialPage {
         }
         else{
             $wgOut->addScript("<script type='text/javascript' src='$wgServer$wgScriptPath/extensions/Reporting/Report/scripts/noAjax.js?".filemtime(dirname(__FILE__)."/scripts/noAjax.js")."'></script>");
+            
         }
         $wgOut->addHTML("<div id='outerReport'>
                             <div class='displayTableCell'><div id='aboveTabs'></div>
@@ -853,7 +859,9 @@ abstract class AbstractReport extends SpecialPage {
         }
         $wgOut->addHTML("</div></div>
                             </div>");
-        
+        foreach($this->scripts as $script){
+            $wgOut->addHTML($this->varSubstitute($script));
+        }
         $wgOut->addHTML("   <div id='reportMain' class='displayTableCell'><div>");
         if(!$this->topProjectOnly || ($this->topProjectOnly && !$this->currentSection->private)){
             $this->currentSection->render();

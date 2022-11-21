@@ -16,6 +16,7 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
             $allPeople = Person::getAllPeopleDuring(NI, $start, $end);
         }
         $includeDean = (strtolower($this->getAttr("includeDean", "false")) == "true");
+        $includeDD = (strtolower($this->getAttr("includeDD", "true")) == "true");
         $me = Person::newFromWgUser();
         
         $data = array();
@@ -30,6 +31,9 @@ class FacultyPeopleReportItemSet extends ReportItemSet {
                 continue;
             }
             */
+            if(!$includeDD && $person->isSubRole('DD')){
+                continue;
+            }
             $caseNumber = $person->getCaseNumber($this->getReport()->year);
             if($caseNumber == ""){
                 continue;

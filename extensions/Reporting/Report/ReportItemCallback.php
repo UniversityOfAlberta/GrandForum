@@ -469,14 +469,14 @@ class ReportItemCallback {
         return implode(", ", $roleNames);
     }
     
-    function getMySubRoles(){
+    function getMySubRoles($delimiter=", "){
         global $config;
         $person = Person::newFromWgUser();
         $roles = array();
         foreach(@$person->getSubRoles() as $subRole){
             $roles[] = $config->getValue('subRoles', $subRole);
         }
-        return implode(", ", $roles);
+        return implode($delimiter, $roles);
     }
     
     function getUserUrl(){
@@ -569,14 +569,14 @@ class ReportItemCallback {
         return $roles;
     }
     
-    function getUserSubRoles(){
+    function getUserSubRoles($delimiter=", "){
         global $config;
         $person = Person::newFromId($this->reportItem->personId);
         $roles = array();
         foreach(@$person->getSubRoles() as $subRole){
             $roles[] = $config->getValue('subRoles', $subRole);
         }
-        return implode(", ", $roles);
+        return implode($delimiter, $roles);
     }
     
     function getUserUniStart(){
