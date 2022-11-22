@@ -235,6 +235,7 @@ abstract class AbstractReport extends SpecialPage {
                 header("Cache-Control: no-cache, must-revalidate");// HTTP/1.1 
                 header("Pragma: nocache");// HTTP/1.0
                 session_write_close();
+                ob_start("ob_gzhandler");
                 $this->currentSection->render();
                 echo $wgOut->getHTML();
                 exit;
