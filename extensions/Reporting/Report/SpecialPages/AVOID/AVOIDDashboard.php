@@ -47,11 +47,177 @@ class AVOIDDashboard extends SpecialPage {
         exit;
     }
     
+    static function executeFitBitAPI($url){
+        global $wgMessage;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer {$_COOKIE['fitbit']}"
+        ));
+        
+        //execute post
+        $result = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+        if($info['http_code'] != 200){
+            throw new Exception("There was an error fetching your fitbit data.  Make sure that you have authorized AVOID to access your fitbit account.");
+        }
+        return json_decode($result, true);
+    }
+    
+    static function importFitBit(){
+	    global $wgMessage, $config, $wgServer, $wgScriptPath, $wgUser;
+	    $actionPlans = ActionPlan::newFromUserId($wgUser->getId());
+	    $actionPlan = $actionPlans[0];
+        if($actionPlan != null && 
+           $actionPlan->getType() == "Fitbit Monitoring" &&
+           !$actionPlan->getSubmitted() && 
+           isset($_COOKIE['fitbit']) &&
+           !isset($_COOKIE['lastfitbit'])){
+            // Steps
+            $startDate = $actionPlan->getStartDate();
+            $endDate = $actionPlan->getEndDate();
+            $fitbit = $actionPlan->getFitbit();
+            try {
+                $days = array(
+                    $actionPlan->getMon() => "Mon",
+                    $actionPlan->getTue() => "Tue",
+                    $actionPlan->getWed() => "Wed",
+                    $actionPlan->getThu() => "Thu",
+                    $actionPlan->getFri() => "Fri",
+                    $actionPlan->getSat() => "Sat",
+                    $actionPlan->getSun() => "Sun"
+                );
+                $tracker = array(
+                    "Mon" => true,
+                    "Tue" => true,
+                    "Wed" => true,
+                    "Thu" => true,
+                    "Fri" => true,
+                    "Sat" => true,
+                    "Sun" => true);
+                if(isset($fitbit->steps)){
+                    // Steps
+                    $data = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/activities/steps/date/{$startDate}/{$endDate}.json");
+                    foreach($data['activities-steps'] as $value){
+                        $tracker[$days[$value['dateTime']]] = $tracker[$days[$value['dateTime']]] && (intval($value['value']) >= $fitbit->steps);
+                    }
+                }
+                if(isset($fitbit->distance)){
+                    // Distance
+                    $data = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/activities/distance/date/{$startDate}/{$endDate}.json");
+                    foreach($data['activities-distance'] as $value){
+                        $tracker[$days[$value['dateTime']]] = $tracker[$days[$value['dateTime']]] && (intval($value['value']) >= $fitbit->distance);
+                    }
+                }
+                if(isset($fitbit->activity)){
+                    // Minutes Active
+                    $data1 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/activities/minutesLightlyActive/date/{$startDate}/{$endDate}.json");
+                    $data2 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/activities/minutesFairlyActive/date/{$startDate}/{$endDate}.json");
+                    $data3 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/activities/minutesVeryActive/date/{$startDate}/{$endDate}.json");
+                    
+                    $activity = array();
+                    foreach(array_merge($data1['activities-minutesLightlyActive'], 
+                                        $data2['activities-minutesFairlyActive'],
+                                        $data3['activities-minutesVeryActive']) as $value){
+                        @$activity[$value['dateTime']] += intval($value['value']);
+                    }
+                    
+                    foreach($activity as $date => $active){
+                        $tracker[$days[$date]] = $tracker[$days[$date]] && ($active >= $fitbit->activity);
+                    }
+                }
+                if(isset($fitbit->sleep)){
+                    // Sleep
+                    $data = self::executeFitBitAPI("https://api.fitbit.com/1.2/user/-/sleep/date/{$startDate}/{$endDate}.json");
+                    $sleeps = array($actionPlan->getMon() => 0,
+                                    $actionPlan->getTue() => 0,
+                                    $actionPlan->getWed() => 0,
+                                    $actionPlan->getThu() => 0,
+                                    $actionPlan->getFri() => 0,
+                                    $actionPlan->getSat() => 0,
+                                    $actionPlan->getSun() => 0);
+                    foreach($data['sleep'] as $value){
+                        $date = $value['dateOfSleep'];
+                        $duration = $value['duration'];
+                        $sleeps[$date] += $value['duration']/1000/60/60;
+                    }
+                    foreach($sleeps as $date => $duration){
+                        $tracker[$days[$date]] = $tracker[$days[$date]] && ($duration >= $fitbit->sleep);
+                    }
+                }
+                if(isset($fitbit->water)){
+                    // Water
+                    $data = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/water/date/{$startDate}/{$endDate}.json");
+                    foreach($data['foods-log-water'] as $value){
+                        $tracker[$days[$value['dateTime']]] = $tracker[$days[$value['dateTime']]] && (intval($value['value']) >= $fitbit->water);
+                    }
+                }
+                if(isset($fitbit->fibre) || isset($fitbit->protein)){
+                    // Fibre & Protein
+                    $data1 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getMon()}.json");
+                    $data2 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getTue()}.json");
+                    $data3 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getWed()}.json");
+                    $data4 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getThu()}.json");
+                    $data5 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getFri()}.json");
+                    $data6 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getSat()}.json");
+                    $data7 = self::executeFitBitAPI("https://api.fitbit.com/1/user/-/foods/log/date/{$actionPlan->getSun()}.json");
+                    
+                    if(isset($fitbit->fibre)){
+                        // Fibre
+                        $tracker["Mon"] = $tracker["Mon"] && (floatval($data1['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Tue"] = $tracker["Tue"] && (floatval($data2['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Wed"] = $tracker["Wed"] && (floatval($data3['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Thu"] = $tracker["Thu"] && (floatval($data4['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Fri"] = $tracker["Fri"] && (floatval($data5['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Sat"] = $tracker["Sat"] && (floatval($data6['summary']['fiber']) >= $fitbit->fibre);
+                        $tracker["Sun"] = $tracker["Sun"] && (floatval($data7['summary']['fiber']) >= $fitbit->fibre);
+                    }
+                    if(isset($fitbit->protein)){
+                        // Protein
+                        $tracker["Mon"] = $tracker["Mon"] && (floatval($data1['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Tue"] = $tracker["Tue"] && (floatval($data2['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Wed"] = $tracker["Wed"] && (floatval($data3['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Thu"] = $tracker["Thu"] && (floatval($data4['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Fri"] = $tracker["Fri"] && (floatval($data5['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Sat"] = $tracker["Sat"] && (floatval($data6['summary']['protein']) >= $fitbit->protein);
+                        $tracker["Sun"] = $tracker["Sun"] && (floatval($data7['summary']['protein']) >= $fitbit->protein);
+                    }
+                }
+                $actionPlan->tracker = $tracker;
+                $actionPlan->update();
+                setcookie('lastfitbit', time(), time()+60*10); // Don't fetch again for another 10min
+            } catch (Exception $e) {
+                $wgMessage->addError($e->getMessage());
+                return;
+            }
+        }
+	}
+    
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
+        if(isset($_GET['fitbitApi'])){
+            $wgOut->addHTML("<script type='text/javascript'>
+                var search = new URLSearchParams(document.location.hash.replace('#', ''));
+                var scope = search.get('scope');
+                if(typeof scope == 'undefined'){
+                    scope = '';
+                }
+                if(search.get('access_token') != null && scope.indexOf('heartrate') !== -1 &&
+                                                         scope.indexOf('nutrition') !== -1 &&
+                                                         scope.indexOf('sleep') !== -1 &&
+                                                         scope.indexOf('activity') !== -1){
+                    $.cookie('fitbit', search.get('access_token'), { expires: 365 });
+                }
+                window.close();
+            </script>");
+            return;
+        }
         if(isset($_GET['generateReport'])){
             $this->generateReport();
         }
+        self::importFitBit();
         $dir = dirname(__FILE__) . '/';
         $me = Person::newFromWgUser();
         $_GET['id'] = $me->getId();

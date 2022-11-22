@@ -50,21 +50,21 @@
                     <span class='program-text'>Register for an upcoming training date:</span><br />
             ]]>
         </Static>
-        <ReportItem id="register4" type="Checkbox" options="Thursday October 20, 1:30pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
+        <ReportItem id="register5" type="Checkbox" options="Thursday January 19, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
-                There are currently no scheduled training dates.
+                <!--There are currently no scheduled training dates.
                 <script type='text/javascript'>
                     $(document).ready(function(){
                         $('#programSubmit').hide();
                     });
-                </script>
-                <!--div class='program-button'>{$item}</div-->&nbsp;&nbsp;
+                </script-->
+                <div class='program-button'>{$item}</div>&nbsp;&nbsp;
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[ 
                     <br />
-                    <!--span class='program-text'>You will be contacted with further details</span-->               
+                    <span class='program-text'>You will be contacted with further details</span>               
                 </div>
                 <script type='text/javascript'>
                     $(".program-button").click(function(e){
@@ -94,7 +94,7 @@
                         <tr>
                             <td valign='top'><b>Training Date:</b></td>
                             <td>
-                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register4}</div>
+                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register5}</div>
                             </td>
                         </tr>
                     </table>

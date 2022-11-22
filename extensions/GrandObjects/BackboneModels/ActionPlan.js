@@ -1,6 +1,7 @@
 ActionPlan = Backbone.Model.extend({
 
     initialize: function(){
+    
     },
 
     urlRoot: 'index.php?action=api.actionplan',
@@ -20,6 +21,10 @@ ActionPlan = Backbone.Model.extend({
             id: null,
             userId: "",
             date: "",
+            type: ActionPlan.MANUAL,
+            fitbit: {
+                
+            },
             goals: "",
             barriers: "",
             plan: "",
@@ -47,6 +52,9 @@ ActionPlan = Backbone.Model.extend({
     }
 
 });
+
+ActionPlan.FITBIT = "Fitbit Monitoring";
+ActionPlan.MANUAL = "Manual-Monitoring";
 
 ActionPlan.comp2Text = function(comp){
     switch(comp){

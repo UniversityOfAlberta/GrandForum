@@ -9,6 +9,8 @@ class ActionPlan extends BackboneModel {
     var $id;
     var $userId;
     var $date;
+    var $type;
+    var $fitbit;
     var $goals;
     var $barriers;
     var $plan;
@@ -83,6 +85,8 @@ class ActionPlan extends BackboneModel {
             $this->id = $data[0]['id'];
             $this->userId = $data[0]['user_id'];
             $this->date = $data[0]['date'];
+            $this->type = $data[0]['type'];
+            $this->fitbit = json_decode($data[0]['fitbit']);
             $this->goals = $data[0]['goals'];
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
@@ -106,7 +110,56 @@ class ActionPlan extends BackboneModel {
     }
     
     function getDate(){
-        return $this->date;
+        return substr($this->date, 0, 10);
+    }
+    
+    // Alias for getDate()
+    function getStartDate(){
+        return $this->getDate();
+    }
+    
+    private function getDateAdjust($adjust){
+        return substr(date('Y-m-d', strtotime($this->getStartDate()) + $adjust*24*3600), 0, 10);
+    }
+    
+    function getEndDate(){
+        return $this->getDateAdjust(6);
+    }
+    
+    function getMon(){
+        return $this->getDateAdjust(0);
+    }
+    
+    function getTue(){
+        return $this->getDateAdjust(1);
+    }
+    
+    function getWed(){
+        return $this->getDateAdjust(2);
+    }
+    
+    function getThu(){
+        return $this->getDateAdjust(3);
+    }
+    
+    function getFri(){
+        return $this->getDateAdjust(4);
+    }
+    
+    function getSat(){
+        return $this->getDateAdjust(5);
+    }
+    
+    function getSun(){
+        return $this->getDateAdjust(6);
+    }
+    
+    function getType(){
+        return $this->type;
+    }
+    
+    function getFitbit(){
+        return $this->fitbit;
     }
     
     function getGoals(){
@@ -165,10 +218,12 @@ class ActionPlan extends BackboneModel {
         if($this->canUserRead()){
             $me = Person::newFromWgUser();
             $this->userId = $me->getId();
-            $date = date('Y-m-d', time() + 86400);
+            $date = date('Y-m-d', strtotime('last thursday +4 days'));
             DBFunctions::insert('grand_action_plan',
                                 array('user_id' => $this->userId,
                                       'date' => $date,
+                                      'type' => $this->type,
+                                      'fitbit' => json_encode($this->fitbit),
                                       'goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
@@ -178,13 +233,16 @@ class ActionPlan extends BackboneModel {
                                       'created' => EQ(COL('CURRENT_TIMESTAMP'))));
             $this->id = DBFunctions::insertId();
             DBFunctions::commit();
+            setcookie('lastfitbit', time(), time()-3600); // Expire this cookie
         }
     }
     
     function update(){
         if($this->canUserRead()){
             DBFunctions::update('grand_action_plan',
-                                array('goals' => $this->goals,
+                                array('type' => $this->type,
+                                      'fitbit' => json_encode($this->fitbit),
+                                      'goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
                                       'tracker' => json_encode($this->tracker),
@@ -208,6 +266,8 @@ class ActionPlan extends BackboneModel {
             return array('id' => $this->id,
                          'userId' => $this->getUserId(),
                          'date' => $this->getDate(),
+                         'type' => $this->getType(),
+                         'fitbit' => $this->getFitbit(),
                          'goals' => $this->getGoals(),
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),

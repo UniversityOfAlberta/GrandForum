@@ -292,6 +292,7 @@ class CavendishTemplate extends QuickTemplate {
 		    
 		    skin = "<?php echo $config->getValue('skin'); ?>";
 		    orcidId = "<?php echo $config->getValue('orcidId'); ?>";
+		    fitbitId = "<?php echo $config->getValue('fitbitId'); ?>";
 		    projectPhase = <?php echo PROJECT_PHASE; ?>;
 		    projectsEnabled = <?php var_export($config->getValue('projectsEnabled')); ?>;
 		    showNonNetwork = <?php var_export($config->getValue("showNonNetwork")) ?>;

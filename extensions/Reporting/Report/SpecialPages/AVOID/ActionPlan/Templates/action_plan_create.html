@@ -29,41 +29,68 @@ Here are a few examples of action plans:
     <li>Call and catch up with 2 different friends for at least 20 minutes, 2 days this week.</li>
 </ul>
 
-<h3>My Action Plan This Week</h3>
-<%= HTML.TextArea(this, 'plan', {style: 'height: 200px;width:100%;'}) %>
+<h4>Type of Plan</h4>
+<div id="fitbitMessages"></div>
+<%= HTML.Select(this, 'type', {options: [ActionPlan.MANUAL, ActionPlan.FITBIT]}) %>
 
-<p>As you learned from the Ingredients for Change module, feeling confident is an important part of change. On a scale of 0-10, with 0 being not at all sure and 10 being absolutely sure, how sure are you that you can complete this plan?  If you answer 7 or above, your action plan is probably reasonable.  <b>If you answer below 7, you should revisit your plan.</b>  Why are you unsure? What problems do you expect to encounter? Change your action plan before saving it to make yourself more successful.</p>
+<div id="manual">
+    <h3>My Action Plan This Week</h3>
+    <%= HTML.TextArea(this, 'plan', {style: 'height: 200px;width:100%;'}) %>
 
-<h4>What AVOID component(s) does your action plan address? Choose all that apply.</h4>
-<table>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
-    </tr>
-    <tr>
-        <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
-        <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
-    </tr>
-</table>
+    <p>As you learned from the Ingredients for Change module, feeling confident is an important part of change. On a scale of 0-10, with 0 being not at all sure and 10 being absolutely sure, how sure are you that you can complete this plan?  If you answer 7 or above, your action plan is probably reasonable.  <b>If you answer below 7, you should revisit your plan.</b>  Why are you unsure? What problems do you expect to encounter? Change your action plan before saving it to make yourself more successful.</p>
 
+    <h4>What AVOID component(s) does your action plan address? Choose all that apply.</h4>
+    <table>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
+        </tr>
+        <tr>
+            <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
+            <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
+        </tr>
+    </table>
+</div>
+<div id="fitbit">
+    <h4>My Action Plan This Week</h4>
+    <p>Enter your <b><i>daily</i></b> amount in the relevant field(s) below.</p>
+    <div class="modules fitbitFields" style="width: 100%;">
+        <div style="width: 300px;">
+            <span class="AVOID A">A</span><span style="vertical-align: text-bottom;">ctivity</span>
+            <p><%= HTML.TextBox(this, 'fitbit.steps', {style: 'width: 4em;'}) %> steps</p>
+            <p><%= HTML.TextBox(this, 'fitbit.distance', {style: 'width: 4em;'}) %> distance (km)</p>
+            <p><%= HTML.TextBox(this, 'fitbit.activity', {style: 'width: 4em;'}) %> mins of activity <span style="vertical-align: top; font-size: 0.75em;" title="Activity is considered to be any time when your heart rate is above sedentary.">&#9432;</span></p>
+        </div>
+        <div style="width: 300px;">
+            <span class="AVOID D">D</span><span style="vertical-align: text-bottom;">iet & Nutrition</span>
+            <p><%= HTML.TextBox(this, 'fitbit.water', {style: 'width: 4em;'}) %> mL of water</p>
+            <p><%= HTML.TextBox(this, 'fitbit.protein', {style: 'width: 4em;'}) %> g of protein</p>
+            <p><%= HTML.TextBox(this, 'fitbit.fibre', {style: 'width: 4em;'}) %> g of fibre</p>
+        </div>
+        <div style="width: 300px;">
+            <span class="AVOID S">S</span><span style="vertical-align: text-bottom;">leep</span>
+            <p><%= HTML.TextBox(this, 'fitbit.sleep', {style: 'width: 4em;'}) %> hrs of sleep</p>
+        </div>
+    </div>
+</div>
 <img src="<%= wgServer + wgScriptPath %>/skins/bg_bottom.png" style="z-index: -2; position: absolute; left: 0; right:0; width: 100%;" />

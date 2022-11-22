@@ -20,7 +20,27 @@
 <h3>My Action Plan This Week</h3>
 <div class="textarea">
     <b>Date:</b> <%= dateTimeHelpers.formatDate(date, 'yyyy-MM-dd', 'd MMMM, yyyy') %><br /><br />
-    <%= nl2br(plan) %>
+    <% if(type == ActionPlan.FITBIT){ %>
+        <table cellpadding="0" cellspacing="0">
+        <% if(fitbit.steps > 0){ %>
+            <tr><td class="label">Steps:</td><td><%= fitbit.steps %></td></tr>
+        <% } if(fitbit.distance > 0){ %>
+            <tr><td class="label">Distance:</td><td><%= fitbit.distance %> km</td></tr>
+        <% } if(fitbit.activity > 0){ %>
+            <tr><td class="label">Activity:</td><td><%= fitbit.activity %> mins</td></tr>
+        <% } if(fitbit.water > 0){ %>
+            <tr><td class="label">Water:</td><td><%= fitbit.water %> mL</td></tr>
+        <% } if(fitbit.protein > 0){ %>
+            <tr><td class="label">Protein:</td><td><%= fitbit.protein %> g</td></tr>
+        <% } if(fitbit.fibre > 0){ %>
+            <tr><td class="label">Fibre:</td><td><%= fitbit.fibre %> g</td></tr>
+        <% } if(fitbit.sleep > 0){ %>
+            <tr><td class="label">Sleep:</td><td><%= fitbit.sleep %> hrs</td></tr>
+        <% } %>
+        </table>
+    <% } else { %>
+        <%= nl2br(plan) %>
+    <% } %>
 </div>
 
 <h4>What AVOID component(s) does your action plan address?</h4>
@@ -47,13 +67,13 @@
 <h4>Action Plan Daily Tracker - Accomplished your plan today?</h4>
 <table class='wikitable' style='width: 100%;'>
     <tr>
-        <th style='width: 14.2%;'>Mon</th>
-        <th style='width: 14.2%;'>Tue</th>
-        <th style='width: 14.2%;'>Wed</th>
-        <th style='width: 14.2%;'>Thu</th>
-        <th style='width: 14.2%;'>Fri</th>
-        <th style='width: 14.2%;'>Sat</th>
-        <th style='width: 14.2%;'>Sun</th>
+        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(date.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(date.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
      </tr>
      <tr>
         <td align='center'><% if(tracker.Mon == 1){ %> &#10003; <% } else { %>&nbsp;<% } %></td>
