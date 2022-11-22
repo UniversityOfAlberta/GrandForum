@@ -7,6 +7,7 @@ class VoteResultsReportItem extends SelectReportItem {
         $freezeId = $this->getAttr("freezeId", "");
         
         $votes = $this->getVotes();
+        $this->getVotes(true);
                                            
         $yes = 0;
         $no = 0;
@@ -48,12 +49,14 @@ class VoteResultsReportItem extends SelectReportItem {
         $wgOut->addHTML($output);
     }
     
-    function getVotes(){
+    function getVotes($archived=false){
         $report = $this->getReport();
         $section = $this->getSection();
         $year = $report->year;
-
-        $voteBlobItem = $this->getAttr("voteBlobItem");
+        
+        $archive = ($archived) ? "_ARCHIVED" : "";
+        $voteBlobItem = $this->getAttr("voteBlobItem").$archive;
+        
         $votes = DBFunctions::select(array('grand_report_blobs'),
                                      array('user_id', 'data'),
                                      array('year' => $year,
@@ -68,6 +71,7 @@ class VoteResultsReportItem extends SelectReportItem {
         $prev = $this->getBlobValue();
         if($prev == "Frozen" && $value == "Unfrozen"){
             // Reset all votes
+            $archived = $this->getVotes(true);
             $votes = $this->getVotes();
             
             $report = $this->getReport();
@@ -76,6 +80,13 @@ class VoteResultsReportItem extends SelectReportItem {
             
             $voteBlobItem = $this->getAttr("voteBlobItem");
             foreach($votes as $vote){
+                if(count($archived) == 0){
+                    // If not yet archived, do it
+                    $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
+	                $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $voteBlobItem."_ARCHIVED", $this->blobSubItem);
+                    $blob->store(trim($vote['data']), $blob_address);
+                }
+                // Now delete old vote
                 $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
 	            $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $voteBlobItem, $this->blobSubItem);
                 $blob->delete($blob_address);
