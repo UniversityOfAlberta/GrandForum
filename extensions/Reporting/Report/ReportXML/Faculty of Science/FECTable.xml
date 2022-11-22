@@ -23,7 +23,7 @@
         </Role>
         <Role role="HR" start="{$this_year}-07-01" end="{$next_year}-07-01">
             <SectionPermission id="fec" permissions="rw" />
-            <SectionPermission id="fec_votes" permissions="r" />
+            <SectionPermission id="fec_votes" permissions="" />
             <SectionPermission id="atsec" permissions="rw" />
         </Role>
         <Role role="MANAGER+" start="{$this_year}-07-01" end="{$next_year}-07-01">
@@ -45,6 +45,11 @@
                         var nFSO = 0;
                         var sumRevFaculty = 0;
                         var sumRevFSO = 0;
+                        var sumDDFaculty = 0;
+                        var nDDFaculty = 0;
+                        var sumDDFSO = 0;
+                        var nDDFSO = 0;
+                        
                         var needsSaving = false;
                         
                         if(lastData == null){
@@ -113,8 +118,9 @@
                                 $(".p_vote .field", el).show();
                             }
                             
-                            var increment = $(".increment", el).text();
+                            var increment = $(".increment:not(.dd)", el).text();
                             var revisedIncrement = $(".revised_increment", el).text();
+                            var ddIncrement = $(".increment.dd", el).text();
                             
                             if(increment != "" &&
                                increment != "N/A" &&
@@ -147,20 +153,47 @@
                                     nFSO++;
                                 }
                             }
+                            
+                            if(ddIncrement != "" &&
+                               ddIncrement != "N/A" &&
+                               ddIncrement != "0.00" &&
+                               ddIncrement != "0A"){
+                                if(caseN.indexOf('A') != -1 ||
+                                   caseN.indexOf('B') != -1 ||
+                                   caseN.indexOf('C') != -1 ||
+                                   caseN.indexOf('N') != -1){
+                                    sumDDFaculty += parseFloat(ddIncrement);
+                                    nDDFaculty++;
+                                }
+                                else 
+                                if(caseN.indexOf('D') != -1 ||
+                                   caseN.indexOf('E') != -1 ||
+                                   caseN.indexOf('F') != -1 ||
+                                   caseN.indexOf('M') != -1){
+                                    sumDDFSO += parseFloat(ddIncrement);
+                                    nDDFSO++;
+                                }
+                            }
                         });
+                        
                         table.rows().invalidate();
                         if(needsSaving){
                             saveAll();
                         }
-                        $("#averageFac").text(sumFaculty/Math.max(1,nFaculty));
-                        $("#averageFSO").text(sumFSO/Math.max(1,nFSO));
-                        $("#totalFac").text(sumFaculty);
-                        $("#totalFSO").text(sumFSO);
+                        $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
+                        $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
+                        $("#totalFac").text(number_format(sumFaculty));
+                        $("#totalFSO").text(number_format(sumFSO));
                         
-                        $("#runningAverageFac").text(sumRevFaculty/Math.max(1,nFaculty));
-                        $("#runningAverageFSO").text(sumRevFSO/Math.max(1,nFSO));
-                        $("#runningTotalFac").text(sumRevFaculty);
-                        $("#runningTotalFSO").text(sumRevFSO);
+                        $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nFaculty)));
+                        $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nFSO)));
+                        $("#runningTotalFac").text(number_format(sumRevFaculty));
+                        $("#runningTotalFSO").text(number_format(sumRevFSO));
+                        
+                        $("#ddAverageFac").text(number_format(sumDDFaculty/Math.max(1,nDDFaculty)));
+                        $("#ddAverageFSO").text(number_format(sumRevFSO/Math.max(1,nDDFSO)));
+                        $("#ddTotalFac").text(number_format(sumDDFaculty));
+                        $("#ddTotalFSO").text(number_format(sumDDFSO));
                         
                         lastData = response.data;
                     });
@@ -242,7 +275,7 @@
             <If if="{contains({user_sub_roles(;)},Dean's Decision)}">
                 <![CDATA[
                     <td>
-                        <span class="increment">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
+                        <span class="increment dd">{getText(RP_CHAIR, FEC_DEAN_DECISION, INCREMENT, {$user_id}, 0, 0)}</span>
                     </td>
                 ]]>
             </If>
@@ -382,7 +415,7 @@
                     {contains({$my_roles},VDEAN)},
                     {contains({$my_roles},HR)})}">
             <![CDATA[
-                <h3>Recommended Increments</h3>
+                <h3>Recommended Increment Totals <small>(Excludes DD cases)</small></h3>
                 <table class='wikitable' frame='box' rules='all'>
                     <tr>
                         <th>Average<br />Faculty Increment</th>
@@ -398,7 +431,7 @@
                     </tr>
                 </table>
                 
-                <h3>Running Increment Totals</h3>
+                <h3>Running Increment Totals <small>(Excludes DD cases)</small></h3>
                 <table id='runningIncrements' class='wikitable' frame='box' rules='all'>
                     <tr>
                         <th>Average<br />Faculty Increment</th>
@@ -411,6 +444,22 @@
                         <td id='runningAverageFSO' align='right'></td>
                         <td id='runningTotalFac' align='right'></td>
                         <td id='runningTotalFSO' align='right'></td>
+                    </tr>
+                </table>
+                
+                <h3>Dean's Decision Increment Totals</h3>
+                <table id='ddIncrements' class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Average<br />Faculty Increment</th>
+                        <th>Average<br />FSO Increment</th>
+                        <th>Total<br />Faculty Increment</th>
+                        <th>Total<br />FSO Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='ddAverageFac' align='right'></td>
+                        <td id='ddAverageFSO' align='right'></td>
+                        <td id='ddTotalFac' align='right'></td>
+                        <td id='ddTotalFSO' align='right'></td>
                     </tr>
                 </table>
             ]]>
