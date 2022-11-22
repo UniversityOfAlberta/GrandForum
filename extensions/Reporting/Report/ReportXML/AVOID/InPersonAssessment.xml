@@ -3,7 +3,7 @@
     <Permissions>
         <Role role="INACTIVE+"></Role>
     </Permissions>
-    <ReportSection id="InPersonAssessment" type="NextPrevReportSection" blobSection="InPersonAssessment" name="In-Person Assessment">
+    <ReportSection id="InPersonAssessment" type="EditableReportSection" blobSection="InPersonAssessment" name="In-Person Assessment">
         <ReportItem id="avoid_vision" blobItem="avoid_vision" type="SelectReportItem" options="1|2|3|4|5|6|7|8|9|10|11|12">
             <![CDATA[
                 <h3>1. VISION</h3>
@@ -267,6 +267,36 @@
                 </table>
             ]]>
         </ReportItem>
+        <ReportItem id="avoid_cognition_fup" blobItem="avoid_cognition_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                <br />
+                Follow up?
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="avoid_cognition_fup_txt" blobItem="avoid_cognition_fup_txt" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_cognition_fup_txt">
+                <div class="requiredField">{$item}</div>
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#avoid_cognition_fup_txt').hide();
+                    function hideCognition(){
+                        if($("input:radio[name='InPersonAssessment_avoid_cognition_fup']:checked").val() == "Yes"){
+                            $('span#avoid_cognition_fup_txt').show();
+                        }
+                        else{ $('span#avoid_cognition_fup_txt').hide();}
+                    }
+                    _.defer(hideCognition);
+                    $("input:radio[name='InPersonAssessment_avoid_cognition_fup']").change(hideCognition);
+
+                </script>
+            ]]>
+        </Static>
 
         <ReportItem id="avoid_dementia" blobItem="avoid_dementia" type="IntegerReportItem">
             <![CDATA[
@@ -671,7 +701,7 @@
         </Static>
         <ReportItem id="avoid_caregiver3" blobItem="avoid_caregiver3" type="Text" width="400px" optional="true">
             <![CDATA[
-                Frequency: {$item}
+                <br /><br />Frequency: {$item}
             ]]>
         </ReportItem>
         <ReportItem id="avoid_caregiver_fup" blobItem="avoid_caregivere_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
@@ -1045,10 +1075,33 @@
          <ReportItem id="avoid_nutrition2_2" blobItem="avoid_nutrition2_2" type="SelectReportItem" options="feet|inches|cm">
             <![CDATA[
                     <td>{$item}</td>
-                    </tr>
-                </table>
             ]]>
         </ReportItem>
+        <ReportItem id="avoid_nutrition2_2_2" blobItem="avoid_nutrition2_2_2" type="IntegerReportItem">       
+            <![CDATA[
+                <td><span id="avoid_nutrition2_2_2">{$item}inches</span></td>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </tr></table>
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    $('span#avoid_nutrition2_2_2').hide();
+                        function hideFt(){
+                            if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "feet"){
+                                    $('span#avoid_nutrition2_2_2').show();
+                            }
+                            else{ $('span#avoid_nutrition2_2_2').hide();}
+                        }
+                        _.defer(hideFt);
+                        $("select[name='InPersonAssessment_avoid_nutrition2_2']").change(hideFt);
+                </script>
+            ]]>
+        </Static>
         <ReportItem id="avoid_nutrition3" blobItem="avoid_nutrition3" type="IntegerReportItem">       
             <![CDATA[
                 <table>
@@ -1105,13 +1158,23 @@
                 </script>
             ]]>
         </Static>
-
-        <ReportItem id="avoid_osteo" blobItem="avoid_osteo" type="SelectReportItem" options="OD|I.U">       
+        <ReportItem id="avoid_osteo" blobItem="avoid_osteo" type="IntegerReportItem">       
             <![CDATA[
                 <hr />
                 <h3>17. OSTEOPOROSIS</h3>
                 How much Vitamin D do you take?
-                {$item}
+                <table>
+                    <tr>
+                        <td>{$item}</td>
+            ]]>
+        </ReportItem>
+        <ReportItem id="avoid_osteo1" blobItem="avoid_osteo1" type="SelectReportItem" options="OD|I.U">       
+            <![CDATA[
+                        <td>
+                            {$item}
+                        </td>
+                    </tr>
+                </table>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_osteo2" blobItem="avoid_osteo2" type="IntegerReportItem">       
@@ -1154,7 +1217,7 @@
         </Static>
 
 
-        <ReportItem id="avoid_pain" blobItem="avoid_pain" type="RatingRadioButtonReportItem" prefnotanswer="False" minlabel="No pain" maxlabel="Most severe pain ever experienced" width="900px">       
+        <ReportItem id="avoid_pain" blobItem="avoid_pain" type="RatingRadioButtonReportItem" prefnotanswer="False" minlabel="No pain" maxlabel="Most severe pain ever experienced">       
             <![CDATA[
                 <hr />
                 <h3>18. PAIN</h3>
@@ -1612,12 +1675,13 @@
             <![CDATA[
                 <hr />
                 <h3>22. OTHER</h3>
-                {$item}
+                    <br/>
+                    {$item}
             ]]>
         </ReportItem>
 
     </ReportSection>
-    <ReportSection id="submit" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>
