@@ -49,14 +49,12 @@ class VoteResultsReportItem extends SelectReportItem {
         $wgOut->addHTML($output);
     }
     
-    function getVotes($archived=false){
+    function getVotes(){
         $report = $this->getReport();
         $section = $this->getSection();
         $year = $report->year;
         
-        $archive = ($archived) ? "_ARCHIVED" : "";
-        $voteBlobItem = $this->getAttr("voteBlobItem").$archive;
-        
+        $voteBlobItem = $this->getAttr("voteBlobItem");
         $votes = DBFunctions::select(array('grand_report_blobs'),
                                      array('user_id', 'data'),
                                      array('year' => $year,
@@ -69,28 +67,37 @@ class VoteResultsReportItem extends SelectReportItem {
     
     function setBlobValue($value){
         $prev = $this->getBlobValue();
+        
+        $report = $this->getReport();
+        $section = $this->getSection();
+        $year = $report->year;
+        $voteBlobItem = $this->getAttr("voteBlobItem");
+        
+        $votesBlob = new ReportBlob(BLOB_TEXT, $year, 0, 0);
+        $votesAddress = ReportBlob::create_address($report->reportType, $section->sec, "{$voteBlobItem}_VOTES", $this->blobSubItem);
+        $votesBlob->load($votesAddress);
+        $nVotes = $votesBlob->getData();
+        
         if($prev == "Frozen" && $value == "Unfrozen"){
             // Reset all votes
-            $archived = $this->getVotes(true);
             $votes = $this->getVotes();
             
-            $report = $this->getReport();
-            $section = $this->getSection();
-            $year = $report->year;
-            
-            $voteBlobItem = $this->getAttr("voteBlobItem");
             foreach($votes as $vote){
-                if(count($archived) == 0){
-                    // If not yet archived, do it
-                    $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
-	                $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $voteBlobItem."_ARCHIVED", $this->blobSubItem);
-                    $blob->store(trim($vote['data']), $blob_address);
-                }
+                // If not yet archived, do it
+                $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
+                $blob_address = ReportBlob::create_address($report->reportType, $section->sec, "{$voteBlobItem}_ARCHIVED_{$nVotes}", $this->blobSubItem);
+                $blob->store(trim($vote['data']), $blob_address);
+                
                 // Now delete old vote
                 $blob = new ReportBlob(BLOB_TEXT, $year, $vote['user_id'], 0);
 	            $blob_address = ReportBlob::create_address($report->reportType, $section->sec, $voteBlobItem, $this->blobSubItem);
                 $blob->delete($blob_address);
 	        }
+        }
+        else if(($prev == "Unfrozen" || $prev == "") && $value == "Frozen"){
+            // Increment #Votes
+            $nVotes++;
+	        $votesBlob->store($nVotes, $votesAddress);
         }
         parent::setBlobValue($value);
     }
