@@ -142,12 +142,15 @@ class IntakeSummary extends SpecialPage {
         return $person->isRoleAtLeast(STAFF);
     }
     
-    function getHeader($report, $type=false){
-        $html = "<thead>
-                    <tr>
-                        <th>User Id</th>";
-        if($type != false){
-            $html .= "<th>Type</th>";
+    static function getHeader($report, $type=false, $simple=false){
+        $html = "";
+        if(!$simple){
+            $html = "<thead>
+                        <tr>
+                            <th>User Id</th>";
+            if($type != false){
+                $html .= "<th>Type</th>";
+            }
         }
         $html .= "<th>Frailty Score</th>";
         foreach($report->sections as $section){
@@ -157,13 +160,15 @@ class IntakeSummary extends SpecialPage {
                     $html .= "<th>{$label}</th>";
                 }
             }
-        }                       
-        $html .= "  </tr>
-                  </thead>";
+        }
+        if(!$simple){                      
+            $html .= "  </tr>
+                      </thead>";
+        }
         return $html;
     }
     
-    function getRow($person, $report, $type=false){
+    static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath;
         $api = new UserFrailtyIndexAPI();
         $scores = $api->getFrailtyScore($person->getId());
@@ -171,10 +176,13 @@ class IntakeSummary extends SpecialPage {
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
         }
-        $html = "<tr>
-                    <td>{$userLink}</td>";
-        if($type != false){
-            $html .= "<td>{$type}</td>";
+        $html = "";
+        if(!$simple){
+            $html = "<tr>
+                        <td>{$userLink}</td>";
+            if($type != false){
+                $html .= "<td>{$type}</td>";
+            }
         }
         $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
         foreach($report->sections as $section){
@@ -190,7 +198,9 @@ class IntakeSummary extends SpecialPage {
                 }
             }
         }
-        $html .= "</tr>";
+        if(!$simple){
+            $html .= "</tr>";
+        }
         return $html;
     }
     
@@ -200,7 +210,7 @@ class IntakeSummary extends SpecialPage {
         $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
-        $wgOut->addHTML($this->getHeader($report, true, true));
+        $wgOut->addHTML(self::getHeader($report, true, true));
         $wgOut->addHTML("<tbody>");
         
         $people = array();
@@ -211,11 +221,11 @@ class IntakeSummary extends SpecialPage {
         foreach($people as $person){
             $report->person = $person;
             $report->reportType = "RP_AVOID";
-            $wgOut->addHTML($this->getRow($report->person, $report, "Intake"));
+            $wgOut->addHTML(self::getRow($report->person, $report, "Intake"));
             $report->reportType = "RP_AVOID_THREEMO";
-            $wgOut->addHTML($this->getRow($report->person, $report, "3 Month"));
+            $wgOut->addHTML(self::getRow($report->person, $report, "3 Month"));
             $report->reportType = "RP_AVOID_SIXMO";
-            $wgOut->addHTML($this->getRow($report->person, $report, "6 Month"));
+            $wgOut->addHTML(self::getRow($report->person, $report, "6 Month"));
         }
         $wgOut->addHTML("</tbody>
                         </table>
@@ -245,12 +255,12 @@ class IntakeSummary extends SpecialPage {
         
         $report = new DummyReport(static::$reportName, $me, null, YEAR);
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
-        $wgOut->addHTML($this->getHeader($report));
+        $wgOut->addHTML(self::getHeader($report));
         $wgOut->addHTML("<tbody>");
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
-                $wgOut->addHTML($this->getRow($person, $report));
+                $wgOut->addHTML(self::getRow($person, $report));
             }
         }
         $wgOut->addHTML("</tbody>
