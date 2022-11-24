@@ -240,13 +240,35 @@ EOF;
         $this->html .= "
                 <h3>Keywords:</h3>
                 <input class='keywords' type='text' name='keywords' value='' />";
-        $this->html .= "<textarea style='width:600px; height:150px;' name='public_profile'>{$person->getProfile(false)}</textarea>
+        $this->html .= "<h3>Bio/Research Interests:</h3>
+                        <textarea style='height:300px;' name='public_profile'>{$person->getProfile(false)}</textarea>
                         <textarea style='display: none; width:600px; height:150px;' name='private_profile'>{$person->getProfile(true)}</textarea>";
                         
         $this->html .= "<script type='text/javascript'>
             $('input.keywords').val('".addslashes($person->getKeywords(","))."');
             $('input.keywords').tagit({
                 allowSpaces: true
+            });
+            $('textarea[name=public_profile]').tinymce({
+                theme: 'modern',
+                menubar: false,
+                plugins: 'link image charmap lists table paste wordcount advlist',
+                toolbar: [
+                    'undo redo | bold italic underline | link charmap | table | bullist numlist outdent indent | subscript superscript | alignleft aligncenter alignright alignjustify'
+                ],
+                paste_data_images: true,
+                invalid_elements: 'h1, h2, h3, h4, h5, h6, h7, font',
+                imagemanager_insert_template : '<img src=\"{\$url}\" width=\"{\$custom.width}\" height=\"{\$custom.height}\" />',
+                paste_postprocess: function(plugin, args) {
+                    var imgs = $('img', args.node);
+                    imgs.each(function(i, el){
+                        $(el).removeAttr('style');
+                        $(el).attr('width', el.naturalWidth);
+                        $(el).attr('height', el.naturalHeight);
+                        $(el).css('width', el.naturalWidth);
+                        $(el).css('height', el.naturalHeight);
+                    });
+                }
             });
         </script>";
     }
