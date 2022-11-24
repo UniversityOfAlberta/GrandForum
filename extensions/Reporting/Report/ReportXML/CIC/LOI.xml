@@ -101,18 +101,31 @@
                 {$item}
             ]]>
         </ReportItem>
-        <Static>
+        <ReportItem id="budget" type="Textarea" blobItem="BUDGET" rich="true">
             <![CDATA[
                 <h3>Project Budget and Cost Items</h3>
                 (Please itemize each cost in the total project budget; the CIC will provide up to a maximum of 50% of the required funding with the expectation that matching from other sources is obtained)
-                
-                <h3>Planned Sources for Matching Funds, Including Industry Funds and Other Programs (e.g., NSERC, Mitacs) (note 30% overhead on industry funds prior to matching)</h3>
-                
-                <h3>Requested Funds from CIC (note that CIC endowments can only be matched if industry partner providing endowment is involved in project) and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
-                
-                <h3>Project Duration and Milestones</h3>
+                {$item}
             ]]>
-        </Static>
+        </ReportItem>
+        <ReportItem id="matched_funds" type="Textarea" blobItem="MATCHED_FUNDS" rich="true">
+            <![CDATA[
+                <h3>Planned Sources for Matching Funds, Including Industry Funds and Other Programs (e.g., NSERC, Mitacs) (note 30% overhead on industry funds prior to matching)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="requested_funds" type="Textarea" blobItem="REQUESTED_FUNDS" rich="true">
+            <![CDATA[
+                <h3>Requested Funds from CIC (note that CIC endowments can only be matched if industry partner providing endowment is involved in project) and Ratio of Matching Funds to CIC Funds from Planned Sources</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="milestones" type="Textarea" blobItem="MILESTONES" rich="true">
+            <![CDATA[
+                <h3>Project Duration and Milestones</h3>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="area" type="Checkbox" blobItem="AREA" blobType="BLOB_ARRAY" options="Productivity and Performance|Health and Safety|Sustainability and the Environment|Off-site Construction and Modularization|Energy|Design and Planning|Other">
             <![CDATA[
                 <h2>Metrics to Evaluate Project LOI:</h2>
@@ -195,11 +208,12 @@
                 {$item}
             ]]>
         </ReportItem>
-        <Static>
+        <ReportItem id="signatures" type="Textarea" blobItem="SIGNATURES" rich="true" optional="true">
             <![CDATA[
                 <h3>Name and signature of the director of the endorsing group (if any):</h3>
+                {$item}
             ]]>
-        </Static>
+        </ReportItem>
         <ReportItem id="acknowledge" type="Checkbox" blobItem="ACKNOWLEDGE" blobType="BLOB_ARRAY" options="I have read and agree to this stipulation">
             <![CDATA[
                 <h3>By completing this form, you acknowledge that PIs of projects that are approved by the CIC are required to participate in and present at the CIC’s Innovation in Construction Forum</h3>
