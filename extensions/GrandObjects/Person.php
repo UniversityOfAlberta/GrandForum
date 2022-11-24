@@ -2290,6 +2290,9 @@ class Person extends BackboneModel {
      * @param array $keywords The array of keywords
      */
     function setKeywords($keywords){
+        if(!is_array($keywords)){
+            $keywords = explode(",", $keywords);
+        }
         $cacheId = "keywords_{$this->getId()}";
         DBFunctions::delete('grand_person_keywords',
                             array('user_id' => $this->getId()));
@@ -2297,7 +2300,7 @@ class Person extends BackboneModel {
         foreach($keywords as $keyword){
             DBFunctions::insert('grand_person_keywords',
                                 array('user_id' => $this->getId(),
-                                      'keyword' => $keyword));
+                                      'keyword' => trim($keyword)));
         }
         Cache::delete($cacheId);
     }

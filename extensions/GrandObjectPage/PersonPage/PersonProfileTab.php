@@ -212,7 +212,7 @@ class PersonProfileTab extends AbstractEditableTab {
      */
     function showProfile($person, $visibility){
         global $wgUser;
-        $this->html .= "<p style='text-align:justify;'>".nl2br($person->getProfile(false))."</p>";
+        $this->html .= "<p style='text-align:justify;'>".$person->getProfile(false)."</p>";
     }
     
     /**
