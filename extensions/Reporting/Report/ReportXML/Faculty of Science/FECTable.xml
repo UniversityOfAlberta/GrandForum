@@ -50,6 +50,10 @@
                         var sumDDFSO = 0;
                         var nDDFSO = 0;
                         
+                        // Get these numbers from sciea/scihr each year
+                        var targetFac = 306.2;
+                        var targetFSO = 13.2;
+                        
                         var needsSaving = false;
                         
                         if(lastData == null){
@@ -60,6 +64,7 @@
                             var el = $(this.nodes());
                             var index = el.attr("data-id");
                             var caseN = $(".casenumber", el).text();
+                            $(".revised_increment", el).empty();
                             if(data['increment'][index] != undefined){
                                 $(".revised_increment", el).text(data['increment'][index]);
                             }
@@ -180,6 +185,10 @@
                         if(needsSaving){
                             saveAll();
                         }
+                        
+                        var facSign = (targetFac - sumRevFaculty > 0) ? "-" : "+";
+                        var fsoSign = (targetFSO - sumRevFSO > 0) ? "-" : "+";
+                        
                         $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
                         $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
                         $("#totalFac").text(number_format(sumFaculty));
@@ -194,6 +203,11 @@
                         $("#ddAverageFSO").text(number_format(sumRevFSO/Math.max(1,nDDFSO)));
                         $("#ddTotalFac").text(number_format(sumDDFaculty));
                         $("#ddTotalFSO").text(number_format(sumDDFSO));
+                        
+                        $("#targetFac").text(number_format(targetFac));
+                        $("#deltaFac").text(facSign + number_format(targetFac - sumRevFaculty));
+                        $("#targetFSO").text(number_format(targetFSO));
+                        $("#deltaFSO").text(facSign + number_format(targetFSO - sumRevFSO));
                         
                         lastData = response.data;
                     });
@@ -460,6 +474,22 @@
                         <td id='ddAverageFSO' align='right'></td>
                         <td id='ddTotalFac' align='right'></td>
                         <td id='ddTotalFSO' align='right'></td>
+                    </tr>
+                </table>
+                
+                <h3>Target Totals</h3>
+                <table id='targetIncrements' class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <th>Target<br />Faculty Increment</th>
+                        <th>Diff<br />Faculty Increment</th>
+                        <th>Target<br />FSO Increment</th>
+                        <th>Diff<br />FSO Increment</th>
+                    </tr>
+                    <tr>
+                        <td id='targetFac' align='right'></td>
+                        <td id='deltaFac' align='right'></td>
+                        <td id='targetFSO' align='right'></td>
+                        <td id='deltaFSO' align='right'></td>
                     </tr>
                 </table>
             ]]>
