@@ -205,9 +205,9 @@
                         $("#ddTotalFSO").text(number_format(sumDDFSO));
                         
                         $("#targetFac").text(number_format(targetFac));
-                        $("#deltaFac").text(facSign + number_format(targetFac - sumRevFaculty));
+                        $("#deltaFac").text(facSign + Math.abs(number_format(targetFac - sumRevFaculty)));
                         $("#targetFSO").text(number_format(targetFSO));
-                        $("#deltaFSO").text(facSign + number_format(targetFSO - sumRevFSO));
+                        $("#deltaFSO").text(facSign + Math.abs(number_format(targetFSO - sumRevFSO)));
                         
                         lastData = response.data;
                     });
