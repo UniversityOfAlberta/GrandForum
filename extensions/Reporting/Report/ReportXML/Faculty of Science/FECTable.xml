@@ -130,6 +130,7 @@
                             if(increment != "" &&
                                increment != "N/A" &&
                                increment != "0.00" &&
+                               increment != "0.00 (PTC)" &&
                                increment != "0A"){
                                 if(caseN.indexOf('A') != -1 ||
                                    caseN.indexOf('B') != -1 ||
@@ -162,6 +163,7 @@
                             if(ddIncrement != "" &&
                                ddIncrement != "N/A" &&
                                ddIncrement != "0.00" &&
+                               ddIncrement != "0.00 (PTC)" &&
                                ddIncrement != "0A"){
                                 if(caseN.indexOf('A') != -1 ||
                                    caseN.indexOf('B') != -1 ||
@@ -200,14 +202,14 @@
                         $("#runningTotalFSO").text(number_format(sumRevFSO));
                         
                         $("#ddAverageFac").text(number_format(sumDDFaculty/Math.max(1,nDDFaculty)));
-                        $("#ddAverageFSO").text(number_format(sumRevFSO/Math.max(1,nDDFSO)));
+                        $("#ddAverageFSO").text(number_format(sumDDFSO/Math.max(1,nDDFSO)));
                         $("#ddTotalFac").text(number_format(sumDDFaculty));
                         $("#ddTotalFSO").text(number_format(sumDDFSO));
                         
                         $("#targetFac").text(number_format(targetFac));
-                        $("#deltaFac").text(facSign + Math.abs(number_format(targetFac - sumRevFaculty)));
+                        $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty)));
                         $("#targetFSO").text(number_format(targetFSO));
-                        $("#deltaFSO").text(facSign + Math.abs(number_format(targetFSO - sumRevFSO)));
+                        $("#deltaFSO").text(facSign + number_format(Math.abs(targetFSO - sumRevFSO)));
                         
                         lastData = response.data;
                     });
