@@ -69,7 +69,7 @@ class AVOIDDashboard extends SpecialPage {
     static function importFitBit(){
 	    global $wgMessage, $config, $wgServer, $wgScriptPath, $wgUser;
 	    $actionPlans = ActionPlan::newFromUserId($wgUser->getId());
-	    $actionPlan = $actionPlans[0];
+	    $actionPlan = @$actionPlans[0];
         if($actionPlan != null && 
            $actionPlan->getType() == "Fitbit Monitoring" &&
            !$actionPlan->getSubmitted() && 
