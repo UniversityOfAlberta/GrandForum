@@ -41,8 +41,10 @@
                         var data = response.data;
                         var sumFaculty = 0;
                         var nFaculty = 0;
+                        var nRevFaculty = 0;
                         var sumFSO = 0;
                         var nFSO = 0;
+                        var nRevFSO = 0;
                         var sumRevFaculty = 0;
                         var sumRevFSO = 0;
                         var sumDDFaculty = 0;
@@ -137,11 +139,8 @@
                                    caseN.indexOf('C') != -1 ||
                                    caseN.indexOf('N') != -1){
                                     sumFaculty += parseFloat(increment);
-                                    if(revisedIncrement != ""){
-                                        sumRevFaculty += parseFloat(revisedIncrement);
-                                    }
-                                    else{
-                                        sumRevFaculty += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
                                     }
                                     nFaculty++;
                                 } else 
@@ -150,13 +149,31 @@
                                    caseN.indexOf('F') != -1 ||
                                    caseN.indexOf('M') != -1){
                                     sumFSO += parseFloat(increment);
-                                    if(revisedIncrement != ""){
-                                        sumRevFSO += parseFloat(revisedIncrement);
-                                    }
-                                    else{
-                                        sumRevFSO += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
                                     }
                                     nFSO++;
+                                }
+                            }
+                            
+                            if(revisedIncrement != "" &&
+                               revisedIncrement != "N/A" &&
+                               revisedIncrement != "0.00" &&
+                               revisedIncrement != "0.00 (PTC)" &&
+                               revisedIncrement != "0A"){
+                                if(caseN.indexOf('A') != -1 ||
+                                   caseN.indexOf('B') != -1 ||
+                                   caseN.indexOf('C') != -1 ||
+                                   caseN.indexOf('N') != -1){
+                                    sumRevFaculty += parseFloat(revisedIncrement);
+                                    nRevFaculty++;
+                                } else 
+                                if(caseN.indexOf('D') != -1 ||
+                                   caseN.indexOf('E') != -1 ||
+                                   caseN.indexOf('F') != -1 ||
+                                   caseN.indexOf('M') != -1){
+                                    sumRevFSO += parseFloat(revisedIncrement);
+                                    nRevFSO++;
                                 }
                             }
                             
@@ -196,8 +213,8 @@
                         $("#totalFac").text(number_format(sumFaculty));
                         $("#totalFSO").text(number_format(sumFSO));
                         
-                        $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nFaculty)));
-                        $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nFSO)));
+                        $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nRevFaculty)));
+                        $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nRevFSO)));
                         $("#runningTotalFac").text(number_format(sumRevFaculty));
                         $("#runningTotalFSO").text(number_format(sumRevFSO));
                         
