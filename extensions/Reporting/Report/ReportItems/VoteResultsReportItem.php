@@ -43,7 +43,7 @@ class VoteResultsReportItem extends SelectReportItem {
         $output = "<td class='{$freezeId}'>$yes</td>
                    <td class='{$freezeId}'>$no</td>
                    <td class='{$freezeId}'>$abstain</td>";
-        $output .= "<td class='{$freezeId}'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></td>";
+        $output .= "<td class='{$freezeId}'><div style='display:inline-block;'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></div></td>";
 
         $output = $this->processCData("{$output}");
         $wgOut->addHTML($output);

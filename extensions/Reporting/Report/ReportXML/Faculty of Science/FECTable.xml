@@ -505,7 +505,7 @@
                         font-size:11px !important;
                     }
                 </style>
-                <button id='refresh' type='button' style='margin-bottom: 1em;'>Refresh</button>
+                <button id='refresh' class='noDisable' type='button' style='margin-bottom: 1em;'>Refresh</button>
                 Dean's Decisions are not included in this table.
                 <table id='chairTable' class='wikitable' frame='box' rules='all'>
                     <thead>
