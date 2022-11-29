@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/27" extends="Letters/Base">
+    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+        <ReportItem id="body">
+            <![CDATA[
+                <p>This is to inform you that the Faculty Evaluation Committee (FEC) has approved the award of a {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)} incrementation rather than the {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} incrementation recommended by your Department Chair. FEC was impressed by your contributions to the Faculty and wishes you continued success in the coming year.</p>
+                
+                <p>Each year, the FEC is charged with the responsibility of awarding incrementation to its faculty from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                
+                <p>I wish to thank you for your dedication and outstanding contribution to the Faculty.</p>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

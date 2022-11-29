@@ -281,6 +281,9 @@ class ReportXMLParser {
             if(isset($attributes->footer)){
                 $this->report->setFooter("{$attributes->footer}");
             }
+            if(isset($attributes->pageCount)){
+                $this->report->pageCount = (strtolower($attributes->pageCount) != 'false');
+            }
             if(isset($attributes->reportType)){
                 $type = AbstractReport::blobConstant($attributes->reportType);
                 $this->report->setReportType($type);
@@ -562,6 +565,7 @@ class ReportXMLParser {
     function parseReportItemSet(&$section, $node, $data=array(), $lazy=true, $itemset=null){
         $attributes = $node->attributes();
         $children = $node->children();
+        
         if($lazy === true || $lazy == 'both'){
             if($node->getName() == "If" ||
                $node->getName() == "ElseIf" ||
@@ -572,6 +576,9 @@ class ReportXMLParser {
             if($itemset != null){
                 $itemset->count = count($itemset->items)/max(1, count($itemset->getData()));
                 $itemset->iteration = 0;
+            }
+            if($itemset == null){
+                $itemset = $section->getReportItemById("{$attributes->id}");
             }
             if(isset($attributes->type)){
                 $type = "{$attributes->type}";

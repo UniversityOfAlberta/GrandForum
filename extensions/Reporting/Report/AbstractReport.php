@@ -1108,8 +1108,11 @@ abstract class AbstractReport extends SpecialPage {
             $zip->close();
             $contents = file_get_contents($fileName);
             unlink($fileName);
+            
+            $zipName = isset($_GET['zipName']) ? $_GET['zipName'] : "Reports.zip";
+            
             header('Content-Type: application/zip');
-            header('Content-Disposition: attachment; filename="Recommendations.zip"');
+            header('Content-Disposition: attachment; filename="'.$zipName.'"');
             header('Cache-Control: private, max-age=0, must-revalidate');
             header('Pragma: public');
             ini_set('zlib.output_compression','0');

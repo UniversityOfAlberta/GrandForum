@@ -59,7 +59,9 @@ class ReportItemCallback {
             "output_id" => "getOutputId",
             "output_title" => "getOutputTitle",
             // Reports
+            "date" => "getDate",
             "timestamp" => "getTimestamp",
+            "section_title" => "getSectionTitle",
             "post_id" => "getPostId",
             "report_name" => "getReportName",
             "report_xmlname" => "getReportXMLName",
@@ -170,6 +172,7 @@ class ReportItemCallback {
             "getHTML" => "getHTML",
             "getArray" => "getArray",
             "getExtra" => "getExtra",
+            "getIncrement" => "getIncrement",
             "replace" => "replace",
             "strtolower" => "strtolower",
             "strtoupper" => "strtoupper",
@@ -1160,6 +1163,11 @@ class ReportItemCallback {
         return (float) $this->getText($rp, $section, $blobId, $subId, $personId, $projectId, $year);
     }
     
+    function getIncrement($personId, $year){
+        $person = Person::newFromId($personId);
+        return $person->getIncrement($year);
+    }
+    
     function occurrences($val1, $val2){
         return substr_count($val1, $val2);
     }
@@ -1313,9 +1321,17 @@ class ReportItemCallback {
         return $this->reportItem->getPostId();
     }
     
+    function getDate(){
+        return date('F j, Y');
+    }
+    
     function getTimestamp(){
         $date = new DateTime("now", new DateTimeZone(date_default_timezone_get())); // USER's timezone
         return $date->format('Y-m-d H:i:s T');
+    }
+    
+    function getSectionTitle(){
+        return $this->reportItem->getSection()->title;
     }
     
     function getReportName(){

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report pdfFiles="Letters/31" extends="Letters/Base">
+    <ReportSection id="letter" title="FEC Decision Regarding Merit">
+        <ReportItemSet id="bodyset">
+            <Static>
+                <![CDATA[
+                    <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
+                    
+                    <p>As per Article A6.21.5(h) of Schedule A, I am informing you that at its reconsideration meeting on {getText(RP_LETTER, TABLE, DATE, {$user_id}, 1, 0)} FEC did not support your minimal acceptable position and the recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment made by your Department Chair and instead awarded an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}.</p>
+                    
+                    <p>Since you chose to appear before the FEC seeking reconsideration to present your case, as per Article A6.16.7 of Schedule A, you have the right to appeal this decision to the General Appeals Committee (GAC) under Article A8.03.1 of Schedule A. A request must be made to the Chair of the GAC (Provost, cc’d to Faculty Relations), in writing, within 10 working days from the receipt of the letter confirming FEC’s reconsideration decision.</p>
+                ]]>
+            </Static>
+            <If if="{==({getText(RP_LETTER, TABLE, 0D, {$user_id}, 1, 0)},Yes)}">
+                <![CDATA[
+                    <p>Since the increment award is 0d and this is the second 0d over the last three years of review, the record will be forwarded to the Provost for possible discipline under Article 7 of the Collective Agreement if the GAC does not uphold your appeal.</p>
+                ]]>
+            </If>
+            <Static>
+                <![CDATA[
+                    <p>It is advisable that you consult the Associate of Academic Staff University of Alberta (AASUA).</p>
+
+                    <p>Should you have any procedural questions, please contact the Secretary to FEC, Lori Dammann-Thomson, at 780-492-6232 or sciea@ualberta.ca.</p>
+                ]]>
+            </Static>
+        </ReportItemSet>
+    </ReportSection>
+</Report>
