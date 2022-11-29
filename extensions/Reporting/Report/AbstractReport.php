@@ -107,7 +107,7 @@ abstract class AbstractReport extends SpecialPage {
         if(isset($_GET['person'])){
             $me = Person::newFromWgUser();
             $person = Person::newFromId($_GET['person']);
-            if($me->relatedTo($person, SUPERVISES)){
+            if($me->relatedTo($person, SUPERVISES) || $me->relatedTo($person, "Assesses")){
                 // Just to be safer, only allow this functionally for supervisors
                 $personId = $_GET['person'];
             }

@@ -45,6 +45,7 @@ class InPersonAssessment extends SpecialPage {
         $rels = $me->getRelations("Assesses");
         foreach($rels as $rel){
             $person = $rel->getUser2();
+            $report->person = $person;
             $wgOut->addHTML("<tr>
                 <td>{$person->getNameForForms()}</td>
                 <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=InPersonAssessment&person={$person->getId()}'>Form</a></td>
@@ -56,7 +57,11 @@ class InPersonAssessment extends SpecialPage {
             $('#summary').DataTable({
                 'aLengthMenu': [[10, 25, 100, 250, -1], [10, 25, 100, 250, 'All']],
                 'iDisplayLength': -1,
-                scrollX: true
+                scrollX: true,
+                'dom': 'Blfrtip',
+                'buttons': [
+                    'excel'
+                ],
             });
         </script>");
     }

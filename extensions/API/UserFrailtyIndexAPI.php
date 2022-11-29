@@ -320,7 +320,7 @@ class UserFrailtyIndexAPI extends API{
     
     function getSelfPerceivedHealth($user_id){
         $ans = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
-        if($ans <= 50){
+        if($ans != null && $ans <= 50){
             return 1;
         }
         return 0;
