@@ -212,7 +212,7 @@ class IntakeSummary extends SpecialPage {
         $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
-        $wgOut->addHTML(self::getHeader($report, true, true));
+        $wgOut->addHTML(self::getHeader($report, true, false));
         $wgOut->addHTML("<tbody>");
         
         $people = array();
