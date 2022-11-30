@@ -450,7 +450,7 @@ class UserFrailtyIndexAPI extends API{
                                ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help12_avoid", $user_id) == "Yes") ? 1 : 0));
         
         $q63 = $this->getSymptomsScore($user_id);
-        $q43 = $this->getSelfPerceivedHealth($user_id);
+        $q43 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
         $q44 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "symptoms_avoid1", $user_id);
         $q17 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave2_avoid", $user_id);
         
