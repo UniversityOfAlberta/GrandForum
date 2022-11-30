@@ -167,15 +167,21 @@
                     $('#letterTable input.generatePDF').click(function(){
                         var userid = $(this).closest("tr").attr("data-userid");
                         var template = $(".template select option:selected", $(this).closest("tr")).val();
-                        if(template != ""){
-                            $(this).prop("disabled", true);
-                            $(this).siblings(".throbber").show();
-                            $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + "&userId=" + userid + "&generatePDF", function(response){
+                        $(this).prop("disabled", true);
+                        $(this).siblings(".throbber").show();
+                        saveAll(function(){
+                            if(template != ""){
+                                $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + "&userId=" + userid + "&generatePDF", function(response){
+                                    $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
+                                    $(this).prop("disabled", false);
+                                    $(this).siblings(".throbber").hide();
+                                }.bind(this));
+                            }
+                            else{
                                 $(this).prop("disabled", false);
-                                $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
                                 $(this).siblings(".throbber").hide();
-                            }.bind(this));
-                        }
+                            }
+                        }.bind(this));
                     });
                 </script>
             ]]>
@@ -202,7 +208,7 @@
                     </tr>
                 </table>
                 <hr style='border-width: 0.1em;' />
-                <div style="font-size: 1.25em;">
+                <div style="font-size: 1.25em;display:inline-block;">
                 <table style="width: 100%;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="left">
@@ -227,7 +233,7 @@
                     </tr>
                     <tr>
                         <td valign="top">To:</td>
-                        <td valign="top">{$user_first_name} {$user_last_name}<div style='height:0.25em;' /></td>
+                        <td valign="top">{$user_first_name} {$user_last_name}, {$user_dept}<div style='height:0.25em;' /></td>
                     </tr>
                     <tr>
                         <td valign="top">From:</td>
