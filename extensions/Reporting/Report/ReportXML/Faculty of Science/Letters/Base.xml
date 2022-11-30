@@ -172,7 +172,7 @@
                             $(this).siblings(".throbber").show();
                             $.get(wgServer + wgScriptPath + "/index.php/Special:Report?report=Letters/" + template + "&userId=" + userid + "&generatePDF", function(response){
                                 $(this).prop("disabled", false);
-                                $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok);
+                                $(".downloadButton" + userid).attr("href", wgServer + wgScriptPath + "/index.php/Special:ReportArchive?getpdf=" + response["Letters/" + template].tok).show();
                                 $(this).siblings(".throbber").hide();
                             }.bind(this));
                         }
@@ -227,7 +227,7 @@
                     </tr>
                     <tr>
                         <td valign="top">To:</td>
-                        <td valign="top">{$user_name}<div style='height:0.25em;' /></td>
+                        <td valign="top">{$user_first_name} {$user_last_name}<div style='height:0.25em;' /></td>
                     </tr>
                     <tr>
                         <td valign="top">From:</td>
