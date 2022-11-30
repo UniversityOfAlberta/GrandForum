@@ -461,7 +461,7 @@ class UserFrailtyIndexAPI extends API{
             return 7;
         }
         else if($q66 == 0){
-            if($q67 > 0 && $q67 <= 4){
+            if($q67 >= 1 && $q67 <= 4){
                 return 5;
             }
             else if($q67 >= 5){
@@ -471,7 +471,7 @@ class UserFrailtyIndexAPI extends API{
                 if($q63 >= 10){
                     return 4;
                 }
-                else if($q63 == 0){
+                else if($q63 >= 0 && $q63 <= 9){
                     if($q43 >= 0 && $q43 <= 50){
                         // Poor/Very Poor
                         return 4;
