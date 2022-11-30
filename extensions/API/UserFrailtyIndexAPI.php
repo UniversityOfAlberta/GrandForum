@@ -433,6 +433,90 @@ class UserFrailtyIndexAPI extends API{
         
         return $answers;
     }
+    
+    function getCFS($user_id){
+        $q66 = array_sum(array(($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help2_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help3_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help4_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help5_avoid", $user_id) == "Yes") ? 1 : 0));
+        
+        $q67 = array_sum(array(($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help6_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help7_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help8_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help9_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help10_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help11_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "help12_avoid", $user_id) == "Yes") ? 1 : 0));
+        
+        $q63 = $this->getSymptomsScore($user_id);
+        $q43 = $this->getSelfPerceivedHealth($user_id);
+        $q44 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "clinicalfrailty", "symptoms_avoid1", $user_id);
+        $q17 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave2_avoid", $user_id);
+        
+        if($q66 > 0 && $q66 <= 2){
+            return 6;
+        }
+        else if ($q66 >= 3){
+            return 7;
+        }
+        else if($q66 == 0){
+            if($q67 > 0 && $q67 <= 4){
+                return 5;
+            }
+            else if($q67 >= 5){
+                return 6;
+            }
+            else if($q67 == 0){
+                if($q63 >= 10){
+                    return 4;
+                }
+                else if($q63 == 0){
+                    if($q43 >= 0 && $q43 <= 50){
+                        // Poor/Very Poor
+                        return 4;
+                    }
+                    else if($q43 >= 51 && $q43 <= 75){
+                        // Good/Very Good
+                        if($q44 == "Rarely" || $q44 == "Occasional amount"){
+                            if($q17 == "Rarely or not at all"){
+                                return 3;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 2;
+                            }
+                        }
+                        else if($q44 == "Most of the time"){
+                            return 4;
+                        }
+                    }
+                    else if($q43 >= 76){
+                        // Excellent
+                        if($q44 == "Rarely"){
+                            if($q17 == "Rarely or not at all"){
+                                return 2;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 1;
+                            }
+                        }
+                        else if($q44 == "Occasional amount"){
+                            if($q17 == "Rarely or not at all"){
+                                return 3;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 2;
+                            }
+                        }
+                        else if($q44 == "Most of the time"){
+                            return 4;
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
 
     function getFrailtyScore($user_id){
         $scores = array();
@@ -459,6 +543,7 @@ class UserFrailtyIndexAPI extends API{
         }
         $scores["Behavioral"] = $this->getBehavioralScores($user_id);
         $scores["Health"] = $this->getHealthScores($user_id);
+        $scores["CFS"] = $this->getCFS($user_id);
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){

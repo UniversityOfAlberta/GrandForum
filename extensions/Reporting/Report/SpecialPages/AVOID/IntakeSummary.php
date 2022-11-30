@@ -154,6 +154,7 @@ class IntakeSummary extends SpecialPage {
         }
         $html .= "<th>Frailty Score</th>";
         $html .= "<th>EQ Health State</th>";
+        $html .= "<th>CFS Score</th>";
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -187,6 +188,7 @@ class IntakeSummary extends SpecialPage {
         }
         $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
         $html .= "<td>".implode("", $scores["Health"])."</td>";
+        $html .= "<td>".$scores["CFS"]."</td>";
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
