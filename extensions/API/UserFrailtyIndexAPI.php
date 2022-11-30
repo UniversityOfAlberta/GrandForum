@@ -387,6 +387,52 @@ class UserFrailtyIndexAPI extends API{
 
         return $scores;
     }
+    
+    function getHealthScores($user_id){
+        $a1s = array("I have no problems in walking about",
+                     "I have slight problems in walking about",
+                     "I have moderate problems in walking about",
+                     "I have severe problems in walking about",
+                     "I am unable to walk about");
+                     
+        $a2s = array("I have no problems washing or dressing myself",
+                     "I have slight problems washing or dressing myself",
+                     "I have moderate problems washing or dressing myself",
+                     "I have severe problems washing or dressing myself",
+                     "I am unable to wash or dress myself");
+                     
+        $a3s = array("I have no problems doing my usual activities",
+                     "I have slight problems doing my usual activities",
+                     "I have moderate problems doing my usual activities",
+                     "I have severe problems doing my usual activities",
+                     "I am unable to do my usual activities");
+                     
+        $a4s = array("I have no pain or discomfort",
+                     "I have slight pain or discomfort",
+                     "I have moderate pain or discomfort",
+                     "I have severe pain or discomfort",
+                     "I have extreme pain or discomfort");
+                     
+        $a5s = array("I am not anxious or depressed",
+                     "I am slightly anxious or depressed",
+                     "I am moderately anxious or depressed",
+                     "I am severely anxious or depressed",
+                     "I am extremely anxious or depressed");
+    
+        $a1 = trim($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid", $user_id));
+        $a2 = trim($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid2", $user_id));
+        $a3 = trim($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid3", $user_id));
+        $a4 = trim($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid4", $user_id));
+        $a5 = trim($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid5", $user_id));
+        
+        $answers = array(array_search($a1, $a1s)+1,
+                         array_search($a2, $a2s)+1,
+                         array_search($a3, $a3s)+1,
+                         array_search($a4, $a4s)+1,
+                         array_search($a5, $a5s)+1);
+        
+        return $answers;
+    }
 
     function getFrailtyScore($user_id){
         $scores = array();
@@ -412,6 +458,7 @@ class UserFrailtyIndexAPI extends API{
             }
         }
         $scores["Behavioral"] = $this->getBehavioralScores($user_id);
+        $scores["Health"] = $this->getHealthScores($user_id);
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
