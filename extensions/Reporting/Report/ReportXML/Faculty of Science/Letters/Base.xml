@@ -61,7 +61,7 @@
                     <tbody>
             ]]>
         </Static>
-        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" start="{$last_year}-07-01" end="{$this_year}-07-01">
+        <ReportItemSet id="faculty" type="FacultyPeopleReportItemSet" includeDean="true" start="{$last_year}-07-01" end="{$this_year}-07-01">
             <Static>
                 <![CDATA[
                     <tr data-fecid="{getExtra()}" data-userid="{$user_id}">
