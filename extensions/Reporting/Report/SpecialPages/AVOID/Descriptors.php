@@ -52,12 +52,15 @@ class Descriptors extends SpecialPage {
                          "low risk" => 0,
                          "medium risk" => 0,
                          "high risk" => 0);
+        $cfs = array(0,0,0,0,0,0,0,0,0,0);
+        $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
                 
                 $frailty[$fScores["Label"]]++;
+                @$cfs[$fScores["CFS"]]++;
                 
                 @$mobility[$scores[0]]++;
                 @$selfcare[$scores[1]]++;
@@ -72,6 +75,7 @@ class Descriptors extends SpecialPage {
                 $scores = $fScores["Health"];
                 
                 $frailty6[$fScores["Label"]]++;
+                @$cfs6[$fScores["CFS"]]++;
                 
                 @$mobility6[$scores[0]]++;
                 @$selfcare6[$scores[1]]++;
@@ -264,6 +268,64 @@ class Descriptors extends SpecialPage {
 	                    <td>Severely Frail (≥45%)</td>
 	                    <td>{$frailty["high risk"]} (".number_format($frailty["high risk"]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6["high risk"]} (".number_format($frailty6["high risk"]/max(1, $n6month)*100, 1).")</td>
+                    </tr>
+                </tbody>
+            </table>");
+            
+        @$wgOut->addHTML("<h2>CFS Score</h2>
+            <table class='wikitable'>
+                <thead>
+                    <tr>
+                        <th>Score</th>
+                        <th>Baseline<br />n (%)</th>
+                        <th>Follow-up<br />n (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+	                    <td>{$cfs[1]} (".number_format($cfs[1]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[1]} (".number_format($cfs6[1]/max(1, $n6Month)*100, 1).")</td>
+	                </tr>
+	                <tr>
+	                    <td>2</td>
+	                    <td>{$cfs[2]} (".number_format($cfs[2]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[2]} (".number_format($cfs6[2]/max(1, $n6Month)*100, 1).")</td>
+	                </tr>
+	                <tr>
+	                    <td>3</td>
+	                    <td>{$cfs[3]} (".number_format($cfs[3]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[3]} (".number_format($cfs6[3]/max(1, $n6Month)*100, 1).")</td>
+	                </tr>
+	                <tr>
+	                    <td>4</td>
+	                    <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[4]} (".number_format($cfs6[4]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+	                    <td>5</td>
+	                    <td>{$cfs[5]} (".number_format($cfs[5]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[5]} (".number_format($cfs6[5]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+	                    <td>6</td>
+	                    <td>{$cfs[6]} (".number_format($cfs[6]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[6]} (".number_format($cfs6[6]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+	                    <td>7</td>
+	                    <td>{$cfs[7]} (".number_format($cfs[7]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[7]} (".number_format($cfs6[7]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+	                    <td>8</td>
+	                    <td>{$cfs[8]} (".number_format($cfs[8]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[8]} (".number_format($cfs6[8]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+	                    <td>9</td>
+	                    <td>{$cfs[9]} (".number_format($cfs[9]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$cfs6[9]} (".number_format($cfs6[9]/max(1, $n6Month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>");
