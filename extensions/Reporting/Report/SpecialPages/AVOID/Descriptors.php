@@ -25,7 +25,7 @@ class Descriptors extends SpecialPage {
     function execute($par){
         global $wgServer, $wgScriptPath, $wgOut;
         $me = Person::newFromWgUser();
-        $wgOut->setPageTitle("Descriptors");
+        $wgOut->setPageTitle("Descriptives");
         $people = Person::getAllPeople(CI);
         
         $api = new UserFrailtyIndexAPI();
@@ -274,7 +274,7 @@ class Descriptors extends SpecialPage {
         $person = Person::newFromWgUser();
         if($person->isRoleAtLeast(STAFF)){
             $selected = @($wgTitle->getText() == "Descriptors") ? "selected" : false;
-            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Descriptors", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors", $selected);
+            $tabs['Manager']['subtabs'][] = TabUtils::createSubTab("Descriptives", "{$wgServer}{$wgScriptPath}/index.php/Special:Descriptors", $selected);
         }
         return true;
     }
