@@ -173,7 +173,7 @@ class IntakeSummary extends SpecialPage {
     static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath;
         $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($person->getId());
+        $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
@@ -261,6 +261,7 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
         $wgOut->addHTML(self::getHeader($report));
         $wgOut->addHTML("<tbody>");
+        
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
@@ -282,6 +283,182 @@ class IntakeSummary extends SpecialPage {
                 scrollY: $('#bodyContent').height() - 400
             });
         </script>");
+        
+        $wgOut->addHTML("<table class='wikitable'>
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Baseline<br />n (%)</th>
+                    <th>Follow-up<br />n (%)</th>
+                    <th>P Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><th colspan='4' style='text-align: left;'>Mobility</th></tr>
+                <tr>
+                    <td>No problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Slight problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderate problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Severe problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Unable to walk about</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                
+                <tr><th colspan='4' style='text-align: left;'>Self-care</th></tr>
+                <tr>
+                    <td>No problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Slight problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderate problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Severe problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Unable to wash or dress</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                
+                <tr><th colspan='4' style='text-align: left;'>Usual activities</th></tr>
+                <tr>
+                    <td>No problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Slight problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderate problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Severe problems</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Unable to do usual activities</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                
+                <tr><th colspan='4' style='text-align: left;'>Pain/discomfort</th></tr>
+                <tr>
+                    <td>No pain/discomfort</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Slight pain/discomfort</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderate pain/discomfort</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Severe pain/discomfort</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Extreme pain/discomfort</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                
+                
+                <tr><th colspan='4' style='text-align: left;'>Anxiety/depression</th></tr>
+                <tr>
+                    <td>Not anxious/depressed</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Slightly anxious/depressed</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Moderately anxious/depressed</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Severely anxious/depressed</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Extremely anxious/depressed</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>");
     }
     
     static function createSubTabs(&$tabs){

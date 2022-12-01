@@ -19,6 +19,7 @@ require_once("AdminUsageStats.php");
 require_once("IntakeSummary.php");
 require_once("ThreeMonthSummary.php");
 require_once("SixMonthSummary.php");
+require_once("Descriptors.php");
 require_once("EducationResources/EducationResources.php");
 require_once("Programs/Programs.php");
 require_once("ActionPlan/ActionPlan.php");
