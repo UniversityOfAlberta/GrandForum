@@ -297,69 +297,72 @@ class Descriptors extends SpecialPage {
             </table>");
             
         @$wgOut->addHTML("<h2>CFS Score</h2>
-            <div style='display:flex;'>
-                <div>
-                    <table class='wikitable'>
-                        <thead>
-                            <tr>
-                                <th>Score</th>
-                                <th>Baseline<br />n (%)</th>
-                                <th>Follow-up<br />n (%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-	                            <td>{$cfs[1]} (".number_format($cfs[1]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[1]} (".number_format($cfs6[1]/max(1, $n6Month)*100, 1).")</td>
-	                        </tr>
-	                        <tr>
-	                            <td>2</td>
-	                            <td>{$cfs[2]} (".number_format($cfs[2]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[2]} (".number_format($cfs6[2]/max(1, $n6Month)*100, 1).")</td>
-	                        </tr>
-	                        <tr>
-	                            <td>3</td>
-	                            <td>{$cfs[3]} (".number_format($cfs[3]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[3]} (".number_format($cfs6[3]/max(1, $n6Month)*100, 1).")</td>
-	                        </tr>
-	                        <tr>
-	                            <td>4</td>
-	                            <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[4]} (".number_format($cfs6[4]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                            <tr>
-	                            <td>5</td>
-	                            <td>{$cfs[5]} (".number_format($cfs[5]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[5]} (".number_format($cfs6[5]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                            <tr>
-	                            <td>6</td>
-	                            <td>{$cfs[6]} (".number_format($cfs[6]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[6]} (".number_format($cfs6[6]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                            <tr>
-	                            <td>7</td>
-	                            <td>{$cfs[7]} (".number_format($cfs[7]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[7]} (".number_format($cfs6[7]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                            <tr>
-	                            <td>8</td>
-	                            <td>{$cfs[8]} (".number_format($cfs[8]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[8]} (".number_format($cfs6[8]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                            <tr>
-	                            <td>9</td>
-	                            <td>{$cfs[9]} (".number_format($cfs[9]/max(1, $nIntake)*100, 1).")</td>
-	                            <td>{$cfs6[9]} (".number_format($cfs6[9]/max(1, $n6Month)*100, 1).")</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div style='margin-left:2em;'>
-                    <img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/legend.png' style='height: 24em;' />
-                </div>
-            </div>");
+            <table class='wikitable'>
+                <thead>
+                    <tr>
+                        <th colspan='2'>Score</th>
+                        <th>Baseline<br />n (%)</th>
+                        <th>Follow-up<br />n (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Very Fit</td>
+                        <td>{$cfs[1]} (".number_format($cfs[1]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[1]} (".number_format($cfs6[1]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Fit</td>
+                        <td>{$cfs[2]} (".number_format($cfs[2]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[2]} (".number_format($cfs6[2]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Managing Well</td>
+                        <td>{$cfs[3]} (".number_format($cfs[3]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[3]} (".number_format($cfs6[3]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Living with Very Mild Frailty</td>
+                        <td>{$cfs[4]} (".number_format($cfs[4]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[4]} (".number_format($cfs6[4]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Living with Mild Frailty</td>
+                        <td>{$cfs[5]} (".number_format($cfs[5]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[5]} (".number_format($cfs6[5]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Living with Moderate Frailty</td>
+                        <td>{$cfs[6]} (".number_format($cfs[6]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[6]} (".number_format($cfs6[6]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Living with Severe Frailty</td>
+                        <td>{$cfs[7]} (".number_format($cfs[7]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[7]} (".number_format($cfs6[7]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Living with Very Severe Frailty</td>
+                        <td>{$cfs[8]} (".number_format($cfs[8]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[8]} (".number_format($cfs6[8]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Terminaly Ill</td>
+                        <td>{$cfs[9]} (".number_format($cfs[9]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$cfs6[9]} (".number_format($cfs6[9]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>");
     }
     
     static function createSubTabs(&$tabs){
