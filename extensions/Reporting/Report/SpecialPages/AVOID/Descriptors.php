@@ -44,22 +44,30 @@ class Descriptors extends SpecialPage {
         $pain6 = array(0,0,0,0,0);
         $anxiety6 = array(0,0,0,0,0);
         
-        $frailty = array("very low risk" => 0,
-                         "low risk" => 0,
-                         "medium risk" => 0,
-                         "high risk" => 0);
-        $frailty6 = array("very low risk" => 0,
-                         "low risk" => 0,
-                         "medium risk" => 0,
-                         "high risk" => 0);
+        $frailty = array(0,0,0,0);
+        $frailty6 = array(0,0,0,0);
+        
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
         foreach($people as $person){
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
+                $total = $fScores["Total"]/36;
                 
-                $frailty[$fScores["Label"]]++;
+                if($total >= 0 && $total <= 0.08){
+                    $frailty[0]++;
+                }
+                else if($total >= 0.08 && $total <= 0.22){
+                    $frailty[1]++;
+                }
+                else if($total >= 0.22 && $total <= 0.44){
+                    $frailty[2]++;
+                }
+                else {
+                    $frailty[3]++;
+                }
+                
                 @$cfs[$fScores["CFS"]]++;
                 
                 @$mobility[$scores[0]]++;
@@ -73,8 +81,21 @@ class Descriptors extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO") && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
                 $scores = $fScores["Health"];
+                $total = $fScores["Total"]/36;
                 
-                $frailty6[$fScores["Label"]]++;
+                if($total >= 0 && $total <= 0.08){
+                    $frailty6[0]++;
+                }
+                else if($total >= 0.08 && $total <= 0.22){
+                    $frailty6[1]++;
+                }
+                else if($total >= 0.22 && $total < 0.45){
+                    $frailty6[2]++;
+                }
+                else {
+                    $frailty6[3]++;
+                }
+                
                 @$cfs6[$fScores["CFS"]]++;
                 
                 @$mobility6[$scores[0]]++;
@@ -238,7 +259,7 @@ class Descriptors extends SpecialPage {
             <table class='wikitable'>
                 <thead>
                     <tr>
-                        <th>Score</th>
+                        <th>Frailty Index/36</th>
                         <th>Frailty Status (%Deficits)</th>
                         <th>Baseline<br />n (%)</th>
                         <th>Follow-up<br />n (%)</th>
@@ -246,28 +267,28 @@ class Descriptors extends SpecialPage {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>0 - 3</td>
+                        <td>0 - 0.08</td>
 	                    <td>Non-Frail (0 to 10%)</td>
-	                    <td>{$frailty["very low risk"]} (".number_format($frailty["very low risk"]/max(1, $nIntake)*100, 1).")</td>
-	                    <td>{$frailty6["very low risk"]} (".number_format($frailty6["very low risk"]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty[0]} (".number_format($frailty[0]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$frailty6[0]} (".number_format($frailty6[0]/max(1, $n6Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
-	                    <td>3.25 - 8</td>
+	                    <td>0.09 - 0.22</td>
 	                    <td>Vulnerable (>10 to 21%)</td>
-	                    <td>{$frailty["low risk"]} (".number_format($frailty["low risk"]/max(1, $nIntake)*100, 1).")</td>
-	                    <td>{$frailty6["low risk"]} (".number_format($frailty6["low risk"]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty[1]} (".number_format($frailty[1]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$frailty6[1]} (".number_format($frailty6[1]/max(1, $n6Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
-	                    <td>8.25 - 16</td>
+	                    <td>0.23 - 0.44</td>
 	                    <td>Frail (>21 to <45%)</td>
-	                    <td>{$frailty["medium risk"]} (".number_format($frailty["medium risk"]/max(1, $nIntake)*100, 1).")</td>
-	                    <td>{$frailty6["medium risk"]} (".number_format($frailty6["medium risk"]/max(1, $n6Month)*100, 1).")</td>
+	                    <td>{$frailty[2]} (".number_format($frailty[2]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$frailty6[2]} (".number_format($frailty6[2]/max(1, $n6Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
-	                    <td>16+</td>
+	                    <td>0.45+</td>
 	                    <td>Severely Frail (≥45%)</td>
-	                    <td>{$frailty["high risk"]} (".number_format($frailty["high risk"]/max(1, $nIntake)*100, 1).")</td>
-	                    <td>{$frailty6["high risk"]} (".number_format($frailty6["high risk"]/max(1, $n6month)*100, 1).")</td>
+	                    <td>{$frailty[3]} (".number_format($frailty[3]/max(1, $nIntake)*100, 1).")</td>
+	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>");
