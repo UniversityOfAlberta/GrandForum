@@ -5,7 +5,7 @@
             <![CDATA[
                 <p>Each year, the Faculty Evaluation Committee (FEC) is charged with the responsibility of awarding incrementation to its faculty, from an increment pool that is currently equal to 1.2 x the number of eligible staff within the Faculty.</p>
                 
-                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of {getText(RP_LETTER, TABLE, DATE, {$user_id}, 1, 0)}, the FEC did not support your Chair’s recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Chair now supports the preliminary position of FEC. This decision was based on the following concerns with your performance:
+                As per Article A6.19.3 of Schedule A, I am informing you that at its meeting of December 8, 2022, the FEC did not support your Chair’s recommendation of a {getText(RP_CHAIR, FEC_REVIEW, INCREMENT, {$user_id}, 0, 0)} increment instead, FEC is prepared to award an increment of {getText(RP_FEC_TABLE, TABLE, INCREMENT, {$user_id}, 1, 0)}. Under Article A6.19.1 of Schedule A, this becomes the preliminary position of FEC. The Chair now supports the preliminary position of FEC. This decision was based on the following concerns with your performance:
                 <ul><li>{getText(RP_LETTER, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
                 
                 You may wish to consider the following options: 

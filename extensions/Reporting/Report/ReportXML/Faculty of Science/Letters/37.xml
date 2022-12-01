@@ -3,7 +3,7 @@
     <ReportSection id="letter" title="Merit Recommendation">
         <ReportItem id="body">
             <![CDATA[
-                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on {getText(RP_LETTER, TABLE, DATE, {$user_id}, 1, 0)}, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0D.</p>
+                <p>Based on my review of your academic activities and your annual report, and our meeting to review such on December 8, 2022, I am writing to advise you that I will be making a recommendation to the Faculty Evaluation Committee (FEC) for incrementation of 0D.</p>
                 
                 My issues of concern are as follows:
                 <ul><li>{getText(RP_LETTER, TABLE, COMMENT, {$user_id}, 1, 0)}</li></ul><br />
