@@ -5,6 +5,12 @@ class SelectReportItem extends AbstractReportItem {
 	function render(){
 		global $wgOut;
         $options = $this->parseOptions();
+        if($this->getAttr('labels', '') == ""){
+            $labels = array();
+        }
+        else {
+            $labels = explode("|", $this->getAttr('labels', ''));
+        }
         $value = $this->getBlobValue();
         $default = $this->getAttr('default', '');
 		if($value === "" && $default != ''){
@@ -12,13 +18,18 @@ class SelectReportItem extends AbstractReportItem {
 		}
         $width = $this->getAttr("width", "150px");
         $items = array();
-		foreach($options as $option){
+		foreach($options as $key => $option){
 		    $selected = "";
 		    if($value == $option){
 		        $selected = "selected";
 		    }
 		    $option = str_replace("'", "&#39;", $option);
-		    $items[] = "<option value='{$option}' $selected >{$option}</option>";
+		    if(isset($labels[$key])){
+		        $items[] = "<option value='{$option}' $selected >{$labels[$key]}</option>";
+		    }
+		    else {
+		        $items[] = "<option value='{$option}' $selected >{$option}</option>";
+		    }
 		}
 
         $output = "<select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select>";

@@ -80,7 +80,7 @@
                         </td>
                 ]]>
             </ReportItem>
-            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="4em" options="|23|24|26|27|28|30|31|32|33|34|35|36|38">
+            <ReportItem id="template" type="Select" personId="1" blobItem="TEMPLATE" blobSubItem="{$user_id}" width="3em" options="|23|24|26|27|28|30|31|32|33|34|35|36|38" labels="|23 - FEC New (Jul1-Oct1)|24 - FEC New (Oct2-Jun1)|26 - FEC Agree with Chair (above 1.0)|27 - FEC goes higher|28 - Recommend is 1.0 and FEC lowered appeared reconsideration|30 - Recommend is less than 1.0 and FEC lowered|31 - Recommend less than 1.0 and FEC lowered reconsideration|32 - FEC Agree with Chair less than 1.0 appear|33 - FEC Agree with Chair less than 1.0 no appearance|34 - Recommend 1.0 or multiple and FEC less than 1.0|35 - Recommend is 1.0 and FEC lowered appear|36 - Recommend multiple and FEC lowered but not less than 1.0|38 - Recommend no increment and FEC decides 0D">
                 <![CDATA[
                         <td align="center" class="template">
                             {$item}
