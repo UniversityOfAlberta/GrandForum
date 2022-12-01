@@ -58,13 +58,13 @@ class Descriptors extends SpecialPage {
                 $scores = $fScores["Health"];
                 $total = $fScores["Total"]/36;
                 
-                if($total >= 0 && $total <= 0.08){
+                if($total >= 0 && $total <= 0.1){
                     $frailty[0]++;
                 }
-                else if($total >= 0.08 && $total <= 0.22){
+                else if($total >= 0.1 && $total <= 0.21){
                     $frailty[1]++;
                 }
-                else if($total >= 0.22 && $total <= 0.44){
+                else if($total >= 0.21 && $total < 0.45){
                     $frailty[2]++;
                 }
                 else {
@@ -270,19 +270,19 @@ class Descriptors extends SpecialPage {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>0 - 0.08</td>
+                        <td>0 - 0.1</td>
 	                    <td>Non-Frail (0 to 10%)</td>
 	                    <td>{$frailty[0]} (".number_format($frailty[0]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[0]} (".number_format($frailty6[0]/max(1, $n6Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
-	                    <td>0.09 - 0.22</td>
+	                    <td>0.11 - 0.21</td>
 	                    <td>Vulnerable (>10 to 21%)</td>
 	                    <td>{$frailty[1]} (".number_format($frailty[1]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[1]} (".number_format($frailty6[1]/max(1, $n6Month)*100, 1).")</td>
 	                </tr>
 	                <tr>
-	                    <td>0.23 - 0.44</td>
+	                    <td>0.22 - 0.45</td>
 	                    <td>Frail (>21 to <45%)</td>
 	                    <td>{$frailty[2]} (".number_format($frailty[2]/max(1, $nIntake)*100, 1).")</td>
 	                    <td>{$frailty6[2]} (".number_format($frailty6[2]/max(1, $n6Month)*100, 1).")</td>
