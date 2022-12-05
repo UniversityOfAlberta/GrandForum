@@ -110,8 +110,9 @@ class Descriptors extends SpecialPage {
                 $n6Month++;
             }
         }
-        
-        @$wgOut->addHTML("<h2>Distribution of EQ-5D-5L dimension responses at baseline and at follow-up</h2>
+        $wgOut->addHTML("<div class='modules'>");
+        @$wgOut->addHTML("<div class='module-3cols-outer'>
+            <h2>Distribution of EQ-5D-5L</h2>
             <table class='wikitable'>
                 <thead>
                     <tr>
@@ -256,9 +257,11 @@ class Descriptors extends SpecialPage {
                         <td>{$anxiety6[5]} (".number_format($anxiety6[5]/max(1, $n6Month)*100, 1).")</td>
                     </tr>
                 </tbody>
-            </table>");
+            </table>
+            </div>");
         
-        @$wgOut->addHTML("<h2>Frailty Status</h2>
+        @$wgOut->addHTML("<div class='module-3cols-outer'>
+            <h2>Frailty Status</h2>
             <table class='wikitable'>
                 <thead>
                     <tr>
@@ -294,9 +297,11 @@ class Descriptors extends SpecialPage {
 	                    <td>{$frailty6[3]} (".number_format($frailty6[3]/max(1, $n6month)*100, 1).")</td>
                     </tr>
                 </tbody>
-            </table>");
+            </table>
+            </div>");
             
-        @$wgOut->addHTML("<h2>CFS Score</h2>
+        @$wgOut->addHTML("<div class='module-3cols-outer'>
+            <h2>CFS Score</h2>
             <table class='wikitable'>
                 <thead>
                     <tr>
@@ -362,6 +367,7 @@ class Descriptors extends SpecialPage {
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>");
     }
     
