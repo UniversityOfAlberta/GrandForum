@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="EPIC-AT Award 2023" headerName="{$user_name}: {$hqp_application_uni} / {$hqp_application_program}" reportType="RP_EPIC_AT" pdfType="RPTP_EPIC_AT" ajax="true" disabled="false" year="2023">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>EPIC-AT Early Career Researcher<br />Awards in Patient-Oriented Research</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="application" tooltip="Application Form" name="Application Form" blobSection="HQP_APPLICATION_FORM" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <h3>1. ADMINISTRATIVE INFORMATION</h3>
+                <table style='width: 100%;'>
+                    <tr><td align='right' style='width:1%;'><b>Applicant Name:</b></td><td>{$user_name}</td></tr>
+                    <tr><td align='right'><b>Email Address:</b></td><td>{$user_email}</td></tr>
+            ]]>
+        </Static>
+        <ReportItem id="status" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_STAT" placeholder="e.g., PhD Year 1, Occupational therapy or Assistant Professor, Year 3">
+            <![CDATA[
+                    <tr><td align='right' style='white-space:nowrap;'><b>Academic Status & Department:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="uni" type="TextReportItem" blobType="BLOB_TEXT" blobItem="HQP_APPLICATION_UNI" placeholder="Please list the institution where funds will be held">
+            <![CDATA[
+                    <tr><td align='right'><b>Institution/University:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_title" type="TextReportItem" blobType="BLOB_TEXT" blobItem="PROJECT_TITLE">
+            <![CDATA[
+                    <tr><td align='right'><b>Research Project Title:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_value" type="Integer" blobType="BLOB_TEXT" blobItem="PROJECT_VALUE" min="0" max="20000">
+            <![CDATA[
+                    <tr><td align='right'><b>Total Value of EPIC-AT Investment Requested:</b></td><td>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_another_source" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ANOTHER_SOURCE" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                    <tr><td align='right'><b>Is this Project/Activity Supported by Another Source of Funding?</b></td><td>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_another_source_other" type="Textarea" blobType="BLOB_TEXT" blobItem="PROJECT_ANOTHER_SOURCE_OTHER">
+            <![CDATA[
+                    {$item}
+                </td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="project_ethics" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ETHICS" options="Yes|No" orientation="horizontal">
+            <![CDATA[
+                    <tr><td align='right' valign='top'><b>Is Research Ethics Review Required For This Project?</b></td><td>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="lay_summary" type="TextareaReportItem" blobType="BLOB_TEXT" blobItem="LAY_SUMMARY" rich="true" limit="200">
+            <![CDATA[
+                <p><b>Lay Summary</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="obj1" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ1" rich="true" limit="300">
+            <![CDATA[
+                <h3>2. OBJECTIVES AND RATIONALE</h3>
+                <p><b>Please describe your proposed project or activity, its goals or objectives.  Describe the rationale for this activity. Why is this work important?</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="obj2" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ2" rich="true" limit="200">
+            <![CDATA[
+                <p><b>Who are your stakeholders?  How will you include them in your activities? Please discuss here your consideration of EDI and implementation of best practices.</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="obj3" type="Textarea" blobType="BLOB_TEXT" blobItem="OBJ3" rich="true" limit="100">
+            <![CDATA[
+                <p><b>How does your research connect to research foci of EPIC-AT?  How will you include them in your activities? Please discuss here your consideration of EDI and implementation of best practices.</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="deliv1" type="Textarea" blobType="BLOB_TEXT" blobItem="DELIV1" rich="true" limit="250">
+            <![CDATA[
+                <h3>3. DELIVERABLES AND FEASIBILITY</h3>
+                <p><b>Methodological Approach</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="deliv2" type="Textarea" blobType="BLOB_TEXT" blobItem="DELIV2" rich="true" limit="250">
+            <![CDATA[
+                <p><b>Study Milestones, Deliverables, Outputs and Outcomes</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="outcomes1" type="Textarea" blobType="BLOB_TEXT" blobItem="OUTCOMES1" rich="true" limit="250">
+            <![CDATA[
+                <h3>4. POTENTIAL OUTCOMES & IMPACT</h3>
+                <p><b>Potential Impact</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="outcomes2" type="Textarea" blobType="BLOB_TEXT" blobItem="OUTCOMES2" rich="true" limit="250">
+            <![CDATA[
+                <p><b>Impact Plan</b></p>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="budget" tooltip="Budget and Justification" name="Budget and Justification" type="EditableReportSection" title="Budget and Justification" blobSection="BUDGET" pagebreak="false">
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" fileSize="2" mimeType=".xls,.xlsx">
+            <![CDATA[
+                <h2>Budget</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="justification" type="Upload" blobItem="JUSTIFICATION" fileSize="5" mimeType=".pdf">
+            <![CDATA[
+                <h2>Justification</h2>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" type="HeaderReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
+        <ReportItem id="admission" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="cv" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>
