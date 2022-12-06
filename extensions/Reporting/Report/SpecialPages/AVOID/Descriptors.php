@@ -52,6 +52,7 @@ class Descriptors extends SpecialPage {
         
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
+        $ethnicities = array(0,0,0,0,0,0,0,0,0);
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -62,6 +63,7 @@ class Descriptors extends SpecialPage {
                 $scores = $fScores["Health"];
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
+                $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -110,6 +112,34 @@ class Descriptors extends SpecialPage {
                 }
                 else if($gender == "Prefer to self describe myself"){
                     $genders[3]++;
+                }
+                
+                if(in_array("Black", $ethnicity) !== false){
+                    $ethnicities[0]++;
+                }
+                if(in_array("East/Southeast Asian", $ethnicity) !== false){
+                    $ethnicities[1]++;
+                }
+                if(in_array("Indigenous (First Nations, Metis, Inuk/Inuit)", $ethnicity) !== false){
+                    $ethnicities[2]++;
+                }
+                if(in_array("Latino", $ethnicity) !== false){
+                    $ethnicities[3]++;
+                }
+                if(in_array("Middle Eastern", $ethnicity) !== false){
+                    $ethnicities[4]++;
+                }
+                if(in_array("South Asian", $ethnicity) !== false){
+                    $ethnicities[5]++;
+                }
+                if(in_array("White", $ethnicity) !== false){
+                    $ethnicities[6]++;
+                }
+                if(in_array("Other", $ethnicity) !== false){
+                    $ethnicities[7]++;
+                }
+                if(in_array("Prefer not to answer", $ethnicity) !== false){
+                    $ethnicities[8]++;
                 }
                 
                 @$cfs[$fScores["CFS"]]++;
@@ -469,6 +499,42 @@ class Descriptors extends SpecialPage {
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Ethnicity</th></tr>
+                <tr>
+                    <td>Black</td>
+                    <td>{$ethnicities[0]} (".number_format($ethnicities[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>East/Southeast Asian</td>
+                    <td>{$ethnicities[1]} (".number_format($ethnicities[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Indigenous</td>
+                    <td>{$ethnicities[2]} (".number_format($ethnicities[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Latino</td>
+                    <td>{$ethnicities[3]} (".number_format($ethnicities[3]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Middle Eastern</td>
+                    <td>{$ethnicities[4]} (".number_format($ethnicities[4]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>South Asian</td>
+                    <td>{$ethnicities[5]} (".number_format($ethnicities[5]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>White</td>
+                    <td>{$ethnicities[6]} (".number_format($ethnicities[6]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Other</td>
+                    <td>{$ethnicities[7]} (".number_format($ethnicities[7]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Prefer not to answer</td>
+                    <td>{$ethnicities[8]} (".number_format($ethnicities[8]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Income</th></tr>
                 
