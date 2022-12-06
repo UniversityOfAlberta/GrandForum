@@ -51,6 +51,7 @@ class Descriptors extends SpecialPage {
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
         
         $ages = array(0,0,0,0,0,0,0);
+        $genders = array(0,0,0,0);
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -60,6 +61,7 @@ class Descriptors extends SpecialPage {
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
+                $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -95,6 +97,19 @@ class Descriptors extends SpecialPage {
                 }
                 else if($age > 85){
                     $ages[6]++;
+                }
+                
+                if($gender == "Man"){
+                    $genders[0]++;
+                }
+                else if($gender == "Woman"){
+                    $genders[1]++;
+                }
+                else if($gender == "Prefer not to say"){
+                    $genders[2]++;
+                }
+                else if($gender == "Prefer to self describe myself"){
+                    $genders[3]++;
                 }
                 
                 @$cfs[$fScores["CFS"]]++;
@@ -436,6 +451,22 @@ class Descriptors extends SpecialPage {
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Gender</th></tr>
+                <tr>
+                    <td>Man</td>
+                    <td>{$genders[0]} (".number_format($genders[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Woman</td>
+                    <td>{$genders[1]} (".number_format($genders[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Prefer not to say</td>
+                    <td>{$genders[2]} (".number_format($genders[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Prefer to self describe myself</td>
+                    <td>{$genders[3]} (".number_format($genders[3]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Ethnicity</th></tr>
                 
