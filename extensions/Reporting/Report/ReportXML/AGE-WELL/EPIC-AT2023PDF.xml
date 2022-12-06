@@ -46,13 +46,13 @@
         
         <ReportItem id="project_value" type="Integer" blobType="BLOB_TEXT" blobItem="PROJECT_VALUE" min="0" max="20000">
             <![CDATA[
-                    <tr><td align='right'><b>Total Value of EPIC-AT Investment Requested:</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' style='white-space:nowrap;'><b>Total Value of EPIC-AT Investment Requested:</b></td><td>{$item}</td></tr>
             ]]>
         </ReportItem>
         
         <ReportItem id="project_another_source" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ANOTHER_SOURCE" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <tr><td align='right'><b>Is this Project/Activity Supported by Another Source of Funding?</b></td><td>{$item}
+                    <tr><td align='right' valign='top' style='white-space:nowrap;'><b>Supported by Another Source of Funding?</b></td><td>{$item}<br />
             ]]>
         </ReportItem>
         
@@ -65,7 +65,7 @@
         
         <ReportItem id="project_ethics" type="Radio" blobType="BLOB_TEXT" blobItem="PROJECT_ETHICS" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                    <tr><td align='right' valign='top'><b>Is Research Ethics Review Required For This Project?</b></td><td>{$item}</td></tr>
+                    <tr><td align='right' valign='top' style='white-space:nowrap;'><b>Ethics Review Required?</b></td><td>{$item}</td></tr>
                 </table>
             ]]>
         </ReportItem>
