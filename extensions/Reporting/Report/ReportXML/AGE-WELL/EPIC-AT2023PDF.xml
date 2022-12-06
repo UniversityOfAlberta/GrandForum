@@ -144,11 +144,6 @@
     </ReportSection>
     
     <ReportSection id="documents" type="HeaderReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS" pagebreak="false">
-        <ReportItem id="admission" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
-            <![CDATA[
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="cv" type="UploadPDF" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 {$item}

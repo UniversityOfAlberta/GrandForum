@@ -222,7 +222,6 @@
                 <tr>
                     <td colspan='2'>
                         <b>Lay Summary</b><br />
-                        <p>Please note that the lay summary of your application will be reviewed and scored by stakeholder for relevance. Please write the summary in English.</p>
 
                         The lay summary should address each of the following questions:
                         <ol>
@@ -337,89 +336,6 @@
                 </tr>
             ]]>
         </ReportItem>
-        
-        <ReportItem id="achieve" type="Textarea" blobType="BLOB_TEXT" blobItem="ACHIEVE" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>How will you achieve your project goals?</b><br />
-                        <p>In this section describe the following aspects of your research:</p>
-                        <ol>
-                            <li>Brief overview of the approach (design/methods) you will use to meet your project objectives</li>
-                            <li>Describe the type of research being undertaken e.g. technology development, review, feasibility study, pilot study, requirements analysis, prototype development, intervention study, evaluation study, etc.</li>
-                            <li>Describe the tasks and activities planned (provide detail on specific tasks to be carried out to meet the project objectives you identified above). “Activities” may include research activities, KT, innovation, commercialization, team-building and training, etc.</li>
-                            <li>Provide specific timing of the various tasks, activities and milestones, where milestones are critical points in the project (e.g., completion of a task)</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="engagement" type="Textarea" blobType="BLOB_TEXT" blobItem="ENGAGEMENT" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>Stakeholder Engagement</b><br />
-                        <p>Stakeholder engagement is a foundational aspect of EPIC-AT’s approach to research excellence. In this section, describe:</p>
-                        <ol>
-                            <li>How have, or how will, the principles of EDI be incorporated into your research plan?</li>
-                            <li>Are partners and/or stakeholders involved in the design and conduct of proposed activities? If yes, how? If no, why not?</li>
-                        </ol>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="impact" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT" rich="true" limit="200">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'><h3>5. POTENTIAL IMPACT AND FEASIBILITY</h3>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2'>
-                        <b>Potential Impact</b><br />
-                        <p>In this section, please provide a brief statement of the potential positive impact your work will have on the lives of older adults with complex health needs and their caregivers.</p>
-
-                        <p>As applicable, address the following:</p>
-
-                        <p><b>Social innovation</b><br />
-                        What are practical benefits of your research to the wider community?</p>
-
-                        <p><b>Technological innovation</b><br />
-                        What are the novel aspects and contributions of your research from a technical point of view?</p>
-
-                        <p><b>Policy and practice innovation</b><br />
-                        How might policies, services and care be transformed by your research?</p>
-
-                        <p><b>Scientific innovation</b><br />
-                        What are the key scientific outputs from this research?</p>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-        
-        <ReportItem id="impact_plan" type="Textarea" blobType="BLOB_TEXT" blobItem="IMPACT_PLAN" rich="true" limit="250">
-            <![CDATA[
-                <tr>
-                    <td colspan='2'>
-                        <b>Impact Plan</b><br />
-                        <p>EPIC-AT seeks to equip trainees and ECRs with the skills to translate their work into real-world impact.</p>
-
-                        <p>While the success ultimately depends on the rate of uptake and meaningful application of knowledge or products by end users, non-traditional academic knowledge mobilization, commercialization and effective implementation of solutions are a platform goal.</p>  
-
-                        <p>Not every Fellow is expected to be directly responsible for a commercial outcome or uptake of knowledge, but all projects should be actively contributing to these overall goals.</p>
-
-                        <p>Please address your plan to ensure your work achieves the impact described in the previous section.</p>
-                        {$item}
-                    </td>
-                </tr>
-            ]]>
-        </ReportItem>
-
         <Static>
             <![CDATA[
                 </table>
@@ -445,16 +361,6 @@
     </ReportSection>
     
     <ReportSection id="documents" type="ReportSection" tooltip="Required Documents" name="Documents" blobSection="HQP_APPLICATION_DOCS">
-        <ReportItem id="admission" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_ADMISSION" mimeType="application/pdf" fileSize="2">
-            <![CDATA[
-                <h2>Formal evidence of admission to a Master's or Doctoral program or Postdoctoral position</h2>
-                <p>Master’s and Doctoral students can submit their acceptance letters as formal evidence of admission to a graduate program. Applicants can also submit their transcripts as evidence of registration to a graduate program.</p>
-
-                <p>Postdoctoral fellows can submit a copy of their engagement letters as formal evidence of admission to a post‐doctoral position. In the event that engagement letters are not available, a letter from the applicant’s supervisor is sufficient. Please ensure to include the Award period and funding amount in the letter.</p>
-                <b>The uploaded file must be a PDF Document</b>.
-                {$item}
-            ]]>
-        </ReportItem>
         <ReportItem id="cv" type="UploadReportItem" blobType="BLOB_RAW" blobItem="HQP_APPLICATION_CV" mimeType="application/pdf" fileSize="2">
             <![CDATA[
                 <h2>Curriculum Vitae</h2>
