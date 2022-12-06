@@ -12,7 +12,9 @@ class VoteResultsReportItem extends SelectReportItem {
         $yes = 0;
         $no = 0;
         $abstain = 0;
+        $names = array();
         foreach($votes as $vote){
+            $person = Person::newFromId($vote['user_id']);
             if($vote['data'] == "Yes"){
                 $yes++;
             }
@@ -22,6 +24,9 @@ class VoteResultsReportItem extends SelectReportItem {
             else if($vote['data'] == "Abstain"){
                 $abstain++;
             }
+            if($vote['data'] != ""){
+                $names[] = $person->getLastName();
+            } 
         }
         
         $options = $this->parseOptions();
@@ -40,9 +45,9 @@ class VoteResultsReportItem extends SelectReportItem {
             $option = str_replace("'", "&#39;", $option);
             $items[] = "<option value='{$option}' $selected >{$option}</option>";
         }
-        $output = "<td class='{$freezeId}'>$yes</td>
-                   <td class='{$freezeId}'>$no</td>
-                   <td class='{$freezeId}'>$abstain</td>";
+        $output = "<td class='{$freezeId}' title=\"".implode("\n", $names)."\">$yes</td>
+                   <td class='{$freezeId}' title=\"".implode("\n", $names)."\">$no</td>
+                   <td class='{$freezeId}' title=\"".implode("\n", $names)."\">$abstain</td>";
         $output .= "<td class='{$freezeId}'><div style='display:inline-block;'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></div></td>";
 
         $output = $this->processCData("{$output}");
