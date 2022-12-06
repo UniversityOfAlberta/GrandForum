@@ -45,9 +45,9 @@ class VoteResultsReportItem extends SelectReportItem {
             $option = str_replace("'", "&#39;", $option);
             $items[] = "<option value='{$option}' $selected >{$option}</option>";
         }
-        $output = "<td class='{$freezeId}' title=\"".implode("\n", $names)."\">$yes</td>
-                   <td class='{$freezeId}' title=\"".implode("\n", $names)."\">$no</td>
-                   <td class='{$freezeId}' title=\"".implode("\n", $names)."\">$abstain</td>";
+        $output = "<td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$yes</td>
+                   <td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$no</td>
+                   <td class='{$freezeId} tooltip' title=\"".implode("&lt;br /&gt;\n", $names)."\">$abstain</td>";
         $output .= "<td class='{$freezeId}'><div style='display:inline-block;'><select style='width:{$width};' name='{$this->getPostId()}'>".implode("\n", $items)."</select></div></td>";
 
         $output = $this->processCData("{$output}");
