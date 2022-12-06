@@ -49,6 +49,9 @@ class Descriptors extends SpecialPage {
         
         $cfs = array(0,0,0,0,0,0,0,0,0,0);
         $cfs6 = array(0,0,0,0,0,0,0,0,0,0);
+        
+        $ages = array(0,0,0,0,0,0,0);
+        
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
                 continue;
@@ -56,6 +59,7 @@ class Descriptors extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
+                $age = $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -69,6 +73,28 @@ class Descriptors extends SpecialPage {
                 }
                 else {
                     $frailty[3]++;
+                }
+                
+                if($age <= 60){
+                    $ages[0]++;
+                }
+                else if($age > 60 && $age <= 65){
+                    $ages[1]++;
+                }
+                else if($age > 65 && $age <= 70){
+                    $ages[2]++;
+                }
+                else if($age > 70 && $age <= 75){
+                    $ages[3]++;
+                }
+                else if($age > 75 && $age <= 80){
+                    $ages[4]++;
+                }
+                else if($age > 80 && $age <= 85){
+                    $ages[5]++;
+                }
+                else if($age > 85){
+                    $ages[6]++;
                 }
                 
                 @$cfs[$fScores["CFS"]]++;
@@ -368,7 +394,58 @@ class Descriptors extends SpecialPage {
                 </tbody>
             </table>
             </div>
-        </div>");
+        </div>
+        
+        <h2>Member Characteristics Distribution</h2>
+        <table class='wikitable'>
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>n (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><th colspan='2' style='text-align: left;'>Age</th></tr>
+                <tr>
+                    <td>Less or equal to 60</td>
+                    <td>{$ages[0]} (".number_format($ages[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 60-65</td>
+                    <td>{$ages[1]} (".number_format($ages[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 65-70</td>
+                    <td>{$ages[2]} (".number_format($ages[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 70-75</td>
+                    <td>{$ages[3]} (".number_format($ages[3]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 75-80</td>
+                    <td>{$ages[4]} (".number_format($ages[4]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 80-85</td>
+                    <td>{$ages[5]} (".number_format($ages[5]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>over 85</td>
+                    <td>{$ages[6]} (".number_format($ages[6]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                
+                <tr><th colspan='2' style='text-align: left;'>Gender</th></tr>
+                
+                <tr><th colspan='2' style='text-align: left;'>Ethnicity</th></tr>
+                
+                <tr><th colspan='2' style='text-align: left;'>Income</th></tr>
+                
+                <tr><th colspan='2' style='text-align: left;'>Living Arrangement</th></tr>
+                
+                <tr><th colspan='2' style='text-align: left;'>Education Level</th></tr>
+            </tbody>
+        </table>");
     }
     
     static function createSubTabs(&$tabs){
