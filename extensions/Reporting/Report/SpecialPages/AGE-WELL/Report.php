@@ -112,6 +112,11 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT", "{$url}EPIC-AT", $selected);
         }*/
         
+        if($person->isLoggedIn()){
+            $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPIC-AT2023")) ? "selected" : false;
+            $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("EPIC-AT 2023", "{$url}EPIC-AT2023", $selected);
+        }
+        
         if($person->isRole(NI) || $person->isRole(NI.'-Candidate') ||
            $person->isRole(EXTERNAL) || $person->isRole(EXTERNAL.'-Candidate') ||
            $person->isRole(STAFF)){
