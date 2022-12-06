@@ -68,7 +68,7 @@ function Autosave(value){
                 }
             },
             error: function(data){
-                autoSaveSessionRenewFN = function(){
+                /*autoSaveSessionRenewFN = function(){
                     var autoSaveSessionRenew = window.open(wgServer + wgScriptPath, "myWindow", 'width=100,height=100');
                     _.delay(function(){
                         autoSaveSessionRenew.close();
@@ -77,11 +77,24 @@ function Autosave(value){
                     }.bind(this), 1000);
                     return;
                 }.bind(this);
+                */
                 obj.auto.html("<b>Error Saving</b>");
-                clearError();
-                addError('There was an error saving this page.  Please verify that you are logged in, and not impersonating anyone.  <a style="cursor:pointer;" onClick="autoSaveSessionRenewFN()">Click Here</a> to try again.');
+                obj.auto.fadeOut(2500);
+                
+                clearAllMessages("#stickyMessages");
+                $("#stickyMessages").stop();
+                $("#stickyMessages").show();
+                $("#stickyMessages").css('opacity', 0.95);
+                addError('There was an error saving this page.  Please verify that you are logged in, and not impersonating anyone.', false, "#stickyMessages");
+                _.delay(function(){
+                    $("#stickyMessages").fadeOut(10000);
+                }, 2500);
+                
                 $(button).removeAttr('disabled');
                 $('#submit_throbber').css('display', 'none');
+                if(fn != null){
+                    fn(data);
+                }
                 if(failFn != null){
                     failFn(data);
                 }

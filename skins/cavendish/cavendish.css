@@ -1250,6 +1250,19 @@ td.budgetError {
     background: #FEB8B8;
 }
 
+div#stickyMessages {
+    position: fixed; 
+    top:0; 
+    right: 40px; 
+    width: 500px;
+    opacity: 0.95;
+    z-index: 1001;
+}
+
+div#stickyMessages > div {
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
 /* jQuery dialogs */
 .ui-dialog{
     border: 1px solid #ccc;
