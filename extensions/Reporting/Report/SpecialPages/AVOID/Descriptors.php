@@ -59,7 +59,7 @@ class Descriptors extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
-                $age = $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR);
+                $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -75,7 +75,7 @@ class Descriptors extends SpecialPage {
                     $frailty[3]++;
                 }
                 
-                if($age <= 60){
+                if($age == "less than 60" || $age <= 60){
                     $ages[0]++;
                 }
                 else if($age > 60 && $age <= 65){
