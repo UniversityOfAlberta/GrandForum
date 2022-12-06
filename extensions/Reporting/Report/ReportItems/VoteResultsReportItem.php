@@ -7,7 +7,6 @@ class VoteResultsReportItem extends SelectReportItem {
         $freezeId = $this->getAttr("freezeId", "");
         
         $votes = $this->getVotes();
-        $this->getVotes(true);
                                            
         $yes = 0;
         $no = 0;
