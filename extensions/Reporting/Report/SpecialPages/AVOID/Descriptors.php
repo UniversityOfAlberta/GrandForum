@@ -37,12 +37,14 @@ class Descriptors extends SpecialPage {
         $activities = array(0,0,0,0,0);
         $pain = array(0,0,0,0,0);
         $anxiety = array(0,0,0,0,0);
+        $srh = array(0,0,0,0);
         
         $mobility6 = array(0,0,0,0,0);
         $selfcare6 = array(0,0,0,0,0);
         $activities6 = array(0,0,0,0,0);
         $pain6 = array(0,0,0,0,0);
         $anxiety6 = array(0,0,0,0,0);
+        $srh6 = array(0,0,0,0);
         
         $frailty = array(0,0,0,0);
         $frailty6 = array(0,0,0,0);
@@ -64,6 +66,7 @@ class Descriptors extends SpecialPage {
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
                 $scores = $fScores["Health"];
+                $selfHealth = $this->getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR);
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
                 $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
@@ -213,11 +216,25 @@ class Descriptors extends SpecialPage {
                 @$pain[$scores[3]]++;
                 @$anxiety[$scores[4]]++;
                 
+                if($selfHealth > 0 && $selfHealth <= 25){
+                    $srh[0]++;
+                }
+                else if($selfHealth > 25 && $selfHealth <= 50){
+                    $srh[1]++;
+                }
+                else if($selfHealth > 50 && $selfHealth <= 75){
+                    $srh[2]++;
+                }
+                else if($selfHealth > 75 && $selfHealth <= 100){
+                    $srh[3]++;
+                }
+                
                 $nIntake++;
             }
             if(AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO") && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
                 $scores = $fScores["Health"];
+                $selfHealth = $this->getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.08){
@@ -240,6 +257,19 @@ class Descriptors extends SpecialPage {
                 @$activities6[$scores[2]]++;
                 @$pain6[$scores[3]]++;
                 @$anxiety6[$scores[4]]++;
+                
+                if($selfHealth > 0 && $selfHealth <= 25){
+                    $srh6[0]++;
+                }
+                else if($selfHealth > 25 && $selfHealth <= 50){
+                    $srh6[1]++;
+                }
+                else if($selfHealth > 50 && $selfHealth <= 75){
+                    $srh6[2]++;
+                }
+                else if($selfHealth > 75 && $selfHealth <= 100){
+                    $srh6[3]++;
+                }
                 
                 $n6Month++;
             }
@@ -389,6 +419,28 @@ class Descriptors extends SpecialPage {
                         <td>Extremely anxious/depressed</td>
                         <td>{$anxiety[5]} (".number_format($anxiety[5]/max(1, $nIntake)*100, 1).")</td>
                         <td>{$anxiety6[5]} (".number_format($anxiety6[5]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    
+                    <tr><th colspan='4' style='text-align: left;'>Self Reported Health</th></tr>
+                    <tr>
+                        <td>0-25</td>
+                        <td>{$srh[0]} (".number_format($srh[0]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$srh6[0]} (".number_format($srh6[0]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>26-50</td>
+                        <td>{$srh[1]} (".number_format($srh[1]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$srh6[1]} (".number_format($srh6[1]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>51-75</td>
+                        <td>{$srh[2]} (".number_format($srh[2]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$srh6[2]} (".number_format($srh6[2]/max(1, $n6Month)*100, 1).")</td>
+                    </tr>
+                    <tr>
+                        <td>76-100</td>
+                        <td>{$srh[3]} (".number_format($srh[3]/max(1, $nIntake)*100, 1).")</td>
+                        <td>{$srh6[3]} (".number_format($srh6[3]/max(1, $n6Month)*100, 1).")</td>
                     </tr>
                 </tbody>
             </table>
