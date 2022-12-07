@@ -152,9 +152,11 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<th>Type</th>";
             }
         }
-        $html .= "<th>Frailty Score</th>";
-        $html .= "<th>EQ Health State</th>";
-        $html .= "<th>CFS Score</th>";
+        if(static::$rpType != "RP_AVOID_THREEMO"){
+            $html .= "<th>Frailty Score</th>";
+            $html .= "<th>EQ Health State</th>";
+            $html .= "<th>CFS Score</th>";
+        }
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -186,9 +188,11 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td>{$type}</td>";
             }
         }
-        $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
-        $html .= "<td>".implode("", $scores["Health"])."</td>";
-        $html .= "<td>".$scores["CFS"]."</td>";
+        if(static::$rpType != "RP_AVOID_THREEMO"){
+            $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+            $html .= "<td>".implode("", $scores["Health"])."</td>";
+            $html .= "<td>".$scores["CFS"]."</td>";
+        }
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -263,7 +267,7 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<tbody>");
         
         foreach($people as $person){
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
                 $wgOut->addHTML(self::getRow($person, $report));
             }
