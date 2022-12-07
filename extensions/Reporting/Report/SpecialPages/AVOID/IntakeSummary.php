@@ -174,8 +174,6 @@ class IntakeSummary extends SpecialPage {
     
     static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath;
-        $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
@@ -189,6 +187,13 @@ class IntakeSummary extends SpecialPage {
             }
         }
         if(static::$rpType != "RP_AVOID_THREEMO"){
+            $api = new UserFrailtyIndexAPI();
+            if($report->reportType == "RP_AVOID_THREEMO"){
+                $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
+            }
+            else{
+                $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
+            }
             $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
             $html .= "<td>".implode("", $scores["Health"])."</td>";
             $html .= "<td>".$scores["CFS"]."</td>";
@@ -267,6 +272,9 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<tbody>");
         
         foreach($people as $person){
+            if(!$person->isRoleAtMost(CI)){
+                continue;
+            }
             if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $report->person = $person;
                 $wgOut->addHTML(self::getRow($person, $report));
