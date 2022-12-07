@@ -55,6 +55,7 @@ class Descriptors extends SpecialPage {
         $ethnicities = array(0,0,0,0,0,0,0,0,0);
         $incomes = array(0,0,0,0,0,0,0);
         $livings = array(0,0,0,0);
+        $educations = array(0,0,0,0,0,0,0);
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -68,6 +69,7 @@ class Descriptors extends SpecialPage {
                 $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
                 $income = $this->getBlobData("AVOID_Questions_tab0", "income_avoid", $person, YEAR);
                 $living = $this->getBlobData("AVOID_Questions_tab0", "living_avoid", $person, YEAR);
+                $education = $this->getBlobData("AVOID_Questions_tab0", "education_avoid", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -179,6 +181,28 @@ class Descriptors extends SpecialPage {
                 }
                 else if($living == "Prefer not to say"){
                     $livings[3]++;
+                }
+                
+                if($education == "No certificate, diploma, or degree"){
+                    $educations[0]++;
+                }
+                else if($education == "Secondary (highschool) diploma or equivalency certificate"){
+                    $educations[1]++;
+                }
+                else if($education == "Apprenticeship or trades certificate or diploma"){
+                    $educations[2]++;
+                }
+                else if($education == "College, CEGEP, or non-university certificate or diploma"){
+                    $educations[3]++;
+                }
+                else if($education == "University certificate of diploma below bachelor level"){
+                    $educations[4]++;
+                }
+                else if($education == "University certificate, diploma, or degree at bachelor level or above"){
+                    $educations[5]++;
+                }
+                else if($education == "Prefer not to say"){
+                    $educations[6]++;
                 }
                 
                 @$cfs[$fScores["CFS"]]++;
@@ -624,6 +648,34 @@ class Descriptors extends SpecialPage {
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Education Level</th></tr>
+                <tr>
+                    <td>No certificate, diploma, or degree</td>
+                    <td>{$educations[0]} (".number_format($educations[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Secondary (highschool) diploma or equivalency certificate</td>
+                    <td>{$educations[1]} (".number_format($educations[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Apprenticeship or trades certificate or diploma</td>
+                    <td>{$educations[2]} (".number_format($educations[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>College, CEGEP, or non-university certificate or diploma</td>
+                    <td>{$educations[3]} (".number_format($educations[3]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>University certificate of diploma below bachelor level</td>
+                    <td>{$educations[4]} (".number_format($educations[4]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>University certificate, diploma, or degree at bachelor level or above</td>
+                    <td>{$educations[5]} (".number_format($educations[5]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>Prefer not to say</td>
+                    <td>{$educations[6]} (".number_format($educations[6]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
             </tbody>
         </table>");
     }
