@@ -585,6 +585,10 @@ class Descriptors extends SpecialPage {
                     <td>$100,000 or more</td>
                     <td>{$incomes[5]} (".number_format($incomes[5]/max(1, $nIntake)*100, 1).")</td>
                 </tr>
+                <tr>
+                    <td>Prefer not to say</td>
+                    <td>{$incomes[6]} (".number_format($incomes[6]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Living Arrangement</th></tr>
                 
