@@ -53,6 +53,7 @@ class Descriptors extends SpecialPage {
         $ages = array(0,0,0,0,0,0,0);
         $genders = array(0,0,0,0);
         $ethnicities = array(0,0,0,0,0,0,0,0,0);
+        $incomes = array(0,0,0,0,0,0,0);
         
         foreach($people as $person){
             if(!$person->isRoleAtMost(CI)){
@@ -64,6 +65,7 @@ class Descriptors extends SpecialPage {
                 $age = $this->getBlobData("AVOID_Questions_tab0", "avoid_age", $person, YEAR);
                 $gender = $this->getBlobData("AVOID_Questions_tab0", "avoid_gender", $person, YEAR);
                 $ethnicity = $this->getBlobData("AVOID_Questions_tab0", "ethnicity_avoid", $person, YEAR)["ethnicity_avoid"];
+                $income = $this->getBlobData("AVOID_Questions_tab0", "income_avoid", $person, YEAR);
                 $total = $fScores["Total"]/36;
                 
                 if($total >= 0 && $total <= 0.1){
@@ -140,6 +142,28 @@ class Descriptors extends SpecialPage {
                 }
                 if(in_array("Prefer not to answer", $ethnicity) !== false){
                     $ethnicities[8]++;
+                }
+                
+                if($income == "Under $10,000"){
+                    $incomes[0]++;
+                }
+                else if($income == "$10,000 to $24,999"){
+                    $incomes[1]++;
+                }
+                else if($income == "$25,000 to $49,999"){
+                    $incomes[2]++;
+                }
+                else if($income == "$50,000 to $74,999"){
+                    $incomes[3]++;
+                }
+                else if($income == "$75,000 to $99,999"){
+                    $incomes[4]++;
+                }
+                else if($income == "$100,000 or more"){
+                    $incomes[5]++;
+                }
+                else if($income == "Prefer not to say"){
+                    $incomes[6]++;
                 }
                 
                 @$cfs[$fScores["CFS"]]++;
@@ -537,6 +561,30 @@ class Descriptors extends SpecialPage {
                 </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Income</th></tr>
+                <tr>
+                    <td>Under $10,000</td>
+                    <td>{$incomes[0]} (".number_format($incomes[0]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>$10,000 to $24,999</td>
+                    <td>{$incomes[1]} (".number_format($incomes[1]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>$25,000 to $49,999</td>
+                    <td>{$incomes[2]} (".number_format($incomes[2]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>$50,000 to $74,999</td>
+                    <td>{$incomes[3]} (".number_format($incomes[3]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>$75,000 to $99,999</td>
+                    <td>{$incomes[4]} (".number_format($incomes[4]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
+                <tr>
+                    <td>$100,000 or more</td>
+                    <td>{$incomes[5]} (".number_format($incomes[5]/max(1, $nIntake)*100, 1).")</td>
+                </tr>
                 
                 <tr><th colspan='2' style='text-align: left;'>Living Arrangement</th></tr>
                 
