@@ -275,7 +275,7 @@ class IntakeSummary extends SpecialPage {
             if(!$person->isRoleAtMost(CI)){
                 continue;
             }
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                 $report->person = $person;
                 $wgOut->addHTML(self::getRow($person, $report));
             }
