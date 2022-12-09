@@ -191,7 +191,7 @@ class Budget extends QueryableTable{
             $sheet = $obj->getActiveSheet();
             $maxCol = $sheet->getHighestColumn();
             $maxRow = $sheet->getHighestRow();
-            $cells = $sheet->toArray(null, true, false); // Explicitely read only values not style (3rd arg)
+            $cells = @$sheet->toArray(null, true, false); // Explicitely read only values not style (3rd arg)
             
             if($this->structure == null){
                 // Create a fake structure so that it doesn't fail
