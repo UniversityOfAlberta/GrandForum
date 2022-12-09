@@ -180,7 +180,7 @@ class Report extends AbstractReport {
                         $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Mid-Year)", "{$url}CRP-PPPReport&project={$project->getName()}", $selected);
                             
                         $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ProjectPlanUpdate" && @$_GET['project'] == $project->getName())) ? "selected" : false;
-                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Plan Update)", "{$url}ProjectPlanUpdate&project={$project->getName()}", $selected);
+                        $tabs["Reports"]['subtabs'][] = TabUtils::createSubTab("{$project->getName()} (Report)", "{$url}ProjectPlanUpdate&project={$project->getName()}", $selected);
                     }
                     //else if(preg_match("/.*CAT-2019.*/", $project->getName()) != 0){
                     //    $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "CatalystReport" && @$_GET['project'] == $project->getName())) ? "selected" : false;
