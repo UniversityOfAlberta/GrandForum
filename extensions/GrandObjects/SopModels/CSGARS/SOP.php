@@ -253,7 +253,7 @@ class SOP extends AbstractSop{
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS($this->year);
         $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_SuperviseSalary", $user, $gsms->id);
-        return (count($blob["q7"]) > 0);
+        return (count(@$blob["q7"]) > 0);
     }
 
     function getReviewRanking($user) {
