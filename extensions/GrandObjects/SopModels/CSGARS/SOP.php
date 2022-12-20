@@ -229,6 +229,8 @@ class SOP extends AbstractSop{
     }
     
     function getWantToSupervise($user){
+        return $this->getAgreeToSupervise($user);
+        
         $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS($this->year);
@@ -237,11 +239,21 @@ class SOP extends AbstractSop{
     }
     
     function getWillingToSupervise($user){
+        return $this->getAgreeToSupervise($user);
+        
         $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);
         $gsms = $hqp->getGSMS($this->year);
         $blob = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Supervise", $user, $gsms->id);
         return ($blob == "Yes");
+    }
+    
+    function getAgreeToSupervise($user){
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        $blob = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_SuperviseSalary", $user, $gsms->id);
+        return (count($blob["q7"]) > 0);
     }
 
     function getReviewRanking($user) {
