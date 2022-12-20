@@ -28,7 +28,7 @@
             </script>
             ]]>
         </ReportItem>
-            <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
+            <ReportItem id="q1" personId="0" type="RadioReportItem" blobItem="Q1" blobType="BLOB_TEXT" options="Undecided|Admit|Reject|Waitlist" blobSubItem="{$project_id}" sopBlob="true" orientation = "horizontal">
                 <![CDATA[
                 <div style="height:30px;">
                     <span title="This decision is made in GSMS" class="tooltip" style="font-size:14px; border-bottom: 1px dotted #555;">

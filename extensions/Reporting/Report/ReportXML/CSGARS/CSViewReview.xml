@@ -34,71 +34,143 @@
         </ReportItem>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{or({contains({$user_full_roles}, Faculty)}, {contains({$user_full_roles}, Chair)})}">
             <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}">
-        <ReportItem id="q0" type="CheckboxReportItem" blobItem="CS_Review_Uninteresting" blobType="BLOB_ARRAY" orientation="horizontal" options="Ignore this student" user="{$userId}">
-            <![CDATA[
-                <h3>Not interesting?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q1" type="RadioReportItem" blobItem="CS_Review_SpecialCons" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No" user="{$userId}">
-            <![CDATA[
-                <h3>Special Considerations That Make This Application Compelling?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q2" type="Textarea" height="120px" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
-            <![CDATA[
-                <h3>Explain</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="vertical" labels="Admit: I would supervise|Admit|Borderline|Do not admit" options="4|3|2|1">
-            <![CDATA[
-                <h3>Rank</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q4" type="Textarea" height="120px" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
-            <![CDATA[
-                <h3>Justification for Ranking</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q6" type="RadioReportItem" blobItem="CS_Review_SuperviseWant" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <h3>Do you want to supervise this student?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="q5" type="RadioReportItem" blobItem="CS_Review_Supervise" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
-            <![CDATA[
-                <h3>Are you willing to supervise this student?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
+                <ReportItem id="q0" type="CheckboxReportItem" blobItem="CS_Review_Uninteresting" blobType="BLOB_ARRAY" orientation="horizontal" options="Ignore this student" user="{$userId}">
+                    <![CDATA[
+                        <h3>Not interesting?</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q1" type="RadioReportItem" blobItem="CS_Review_SpecialCons" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No" user="{$userId}">
+                    <![CDATA[
+                        <h3>Special Considerations That Make This Application Compelling?</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q2" type="Textarea" height="120px" blobItem="CS_Review_SpecialExplain" blobType="BLOB_TEXT">
+                    <![CDATA[
+                        <h3>Explain</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="vertical" labels="Accept, I will supervise|Strong Accept|Weak Accept|Borderline|Weak Reject|Reject" options="6|5|4|3|2|1">
+                    <![CDATA[
+                        <h3>Rank</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q3a" type="RadioReportItem" blobItem="CS_Review_Rank_Confidence" blobType="BLOB_TEXT" orientation="vertical" options="Educated guess|I'm reasonably sure my rating is correct|I'm very sure my rating is correct|Other:">
+                    <![CDATA[
+                        <h3>Confidence Score</h3>
+                        <div id='confidence'>
+                            {$item}
+                        </div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q3a_other" type="TextReportItem" blobItem="CS_Review_Rank_ConfidenceOther" blobType="BLOB_TEXT">
+                    <![CDATA[
+                        <div id='confidence_other' style='margin-top: -2em; margin-left: 5em;'>{$item}</div>
+                        <script type='text/javascript'>
+                            $("#confidence input").change(function(){
+                                var selected = $("#confidence input:checked").val();
+                                if(selected == "Other:"){
+                                    $("#confidence_other input").prop("disabled", false);
+                                }
+                                else{
+                                    $("#confidence_other input").prop("disabled", true);
+                                    $("#confidence_other input").val("");
+                                }
+                            }).trigger("change");
+                        </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q3b" type="CheckboxReportItem" blobItem="CS_Review_Rank_BasedOn" blobType="BLOB_ARRAY" orientation="vertical" options="The applicant's file|Email interaction with the applicant|Voice/video chat with the applicant|Interviewing the applicant|Other:">
+                    <![CDATA[
+                        <h3>I made my recommendation based on</h3>
+                        <div id='basedOn'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q3b_other" type="TextReportItem" blobItem="CS_Review_Rank_BasedOnOther" blobType="BLOB_TEXT">
+                    <![CDATA[
+                        <div id='basedOn_other' style='margin-top: -2em; margin-left: 5em;'>{$item}</div>
+                        <script type='text/javascript'>
+                            $("#basedOn input").change(function(){
+                                var selected = $("#basedOn input[value='Other:']:checked").val();
+                                if(selected == "Other:"){
+                                    $("#basedOn_other input").prop("disabled", false);
+                                }
+                                else{
+                                    $("#basedOn_other input").prop("disabled", true);
+                                    $("#basedOn_other input").val("");
+                                }
+                            }).trigger("change");
+                        </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q4" type="Textarea" height="120px" blobItem="CS_Review_RankExplain" blobType="BLOB_TEXT">
+                    <![CDATA[
+                        <h3>Justification for Ranking</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <!--ReportItem id="q6" type="RadioReportItem" blobItem="CS_Review_SuperviseWant" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <h3>Do you want to supervise this student?</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
+                <ReportItem id="q5" type="RadioReportItem" blobItem="CS_Review_Supervise" blobType="BLOB_TEXT" orientation="horizontal" options="Yes|No">
+                    <![CDATA[
+                        <h3>Are you willing to supervise this student?</h3>
+                        {$item}
+                    ]]>
+                </ReportItem-->
+                <ReportItem id="q7" type="CheckboxReportItem" blobItem="CS_Review_SuperviseSalary" blobType="BLOB_ARRAY" orientation="vertical" options="Please admit this student. I agree to supervise and pay their summer salary">
+                    <![CDATA[
+                        <h3>I made my recommendation based on:</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Manager)}">
-                <ReportItem id="table_header" type="StaticReportItem">
-                    <![CDATA[
-                    <br />
-                    ]]>
-                </ReportItem>
-	</ReportItemSet>
+            <ReportItem id="table_header" type="StaticReportItem">
+                <![CDATA[
+                <br />
+                ]]>
+            </ReportItem>
+        </ReportItemSet>
         <ReportItemSet id="professors" type="AllSopReviewerReportItemSet" roles="Faculty" sort_reversed="true">
             <ReportItemSet id="if_statement" type="IfReportItemSet" if="{!=({$my_id}, {$user_id})}">
                 <ReportItemSet id="header" type="ToggleHeaderReportItemSet" title="{$user_reversed_name}" sop="true">
                     <ReportItem id="feedback_unedit" type="StaticReportItem">
                         <![CDATA[
-				                        <table border="1" style="border-collapse:collapse">
-                        <tr><td><span 'style=font-size: 14px;'><h3>Special Considerations That Make This Application Compelling?:</h3></span></td>
-                        <td>{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialCons,0,{$user_id},{$project_id})}</td></tr>
-			<tr><td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialExplain,0,{$user_id},{$project_id})}</td></tr>
-                        <tr><td><span 'style=font-size: 14px;'><h3>Rank:</h3></span></td><td width="30%">
-                        {getText(RP_OTT,OT_REVIEW,CS_Review_Rank,0,{$user_id},{$project_id})}</td></tr>
-                        <tr><td colspan=2>Justification for Ranking:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_RankExplain,0,{$user_id},{$project_id})}</td></tr>
-                        <tr><td><span 'style=font-size: 14px;'><h3>Are you willing to supervise this student?:</h3></span></td><td>
-                        {getText(RP_OTT,OT_REVIEW,CS_Review_Supervise,0,{$user_id},{$project_id})}</td></tr>
+                        <table border="1" style="border-collapse:collapse">
+                            <tr>
+                                <td width="50%"><span><h3>Special Considerations That Make This Application Compelling?</h3></span></td>
+                                <td width="50%">{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialCons,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=2>Comments:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_SpecialExplain,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Rank:</h3></span></td>
+                                <td>{getText(RP_OTT,OT_REVIEW,CS_Review_Rank,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Confidence:</h3></span></td>
+                                <td>{getText(RP_OTT,OT_REVIEW,CS_Review_Rank_Confidence,0,{$user_id},{$project_id})} {getText(RP_OTT,OT_REVIEW,CS_Review_Rank_ConfidenceOther,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Based On:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_Rank_BasedOn,0,{$user_id},{$project_id},q3b,<br />)} {getText(RP_OTT,OT_REVIEW,CS_Review_Rank_BasedOnOther,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td colspan=2>Justification for Ranking:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_RankExplain,0,{$user_id},{$project_id})}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Are you willing to supervise this student?:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_SuperviseSalary,0,{$user_id},{$project_id},q7)}</td>
+                            </tr>
                         </table>
                         ]]>
                     </ReportItem>
