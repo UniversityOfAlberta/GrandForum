@@ -126,7 +126,7 @@
                 </ReportItem-->
                 <ReportItem id="q7" type="CheckboxReportItem" blobItem="CS_Review_SuperviseSalary" blobType="BLOB_ARRAY" orientation="vertical" options="Please admit this student. I agree to supervise and pay their summer salary">
                     <![CDATA[
-                        <h3>I made my recommendation based on:</h3>
+                        <h3>Supervise?</h3>
                         {$item}
                     ]]>
                 </ReportItem>
