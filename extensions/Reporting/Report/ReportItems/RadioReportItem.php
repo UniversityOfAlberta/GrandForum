@@ -25,7 +25,7 @@ class RadioReportItem extends AbstractReportItem {
 		            if($showScore){
 		                $score = "<tr><td></td><td style='font-weight:normal;font-size:smaller;'>(Score = $option)</td></tr>";
 		            }
-		            $items[] = "<table cellspacing='0' cellpadding='0'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
+		            $items[] = "<table cellspacing='0' cellpadding='0' style='padding-top:1px;padding-bottom:1px;'><tr><td><input style='vertical-align:top;' type='radio' name='{$this->getPostId()}' value='{$option}' $checked />&nbsp;</td><td>{$labels[$i]}</td></tr>{$score}</table>";
 		        }
 		        else{
 		            if($orientation == 'horizontal'){

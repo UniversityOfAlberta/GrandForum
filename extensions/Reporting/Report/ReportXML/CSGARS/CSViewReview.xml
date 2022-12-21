@@ -52,13 +52,13 @@
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="vertical" labels="Accept, I will supervise|Strong Accept|Weak Accept|Borderline|Weak Reject|Reject" options="6|5|4|3|2|1">
+                <ReportItem id="q3" type="RadioReportItem" blobItem="CS_Review_Rank" blobType="BLOB_TEXT" orientation="vertical" labels="No selection made|Accept, I will supervise|Strong Accept|Weak Accept|Borderline|Weak Reject|Reject" options="|6|5|4|3|2|1">
                     <![CDATA[
                         <h3>Rank</h3>
                         {$item}
                     ]]>
                 </ReportItem>
-                <ReportItem id="q3a" type="RadioReportItem" blobItem="CS_Review_Rank_Confidence" blobType="BLOB_TEXT" orientation="vertical" options="Educated guess|I'm reasonably sure my rating is correct|I'm very sure my rating is correct|Other:">
+                <ReportItem id="q3a" type="RadioReportItem" blobItem="CS_Review_Rank_Confidence" blobType="BLOB_TEXT" orientation="vertical" labels="No selection made|Educated guess|I'm reasonably sure my rating is correct|I'm very sure my rating is correct|Other:" options="|Educated guess|I'm reasonably sure my rating is correct|I'm very sure my rating is correct|Other:">
                     <![CDATA[
                         <h3>Confidence Score</h3>
                         <div id='confidence'>
