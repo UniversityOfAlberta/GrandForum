@@ -75,14 +75,14 @@ class Sops extends BackbonePage {
         foreach($evals as $eval){
             $sop = SOP::newFromUserId($eval->getId(), YEAR);
             $ignore = self::getBlobValue(BLOB_ARRAY, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $me->getId(), $sop->id, 0);
-            if($ignore == null || @count($ignore["q0"]) == 0){
+            //if($ignore == null || @count($ignore["q0"]) == 0){
                 $rank = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $me->getId(), $sop->id, 0);
                 $confidence = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_Confidence", $me->getId(), $sop->id, 0);
                 $explain = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_RankExplain", $me->getId(), $sop->id, 0);
                 if($rank != "" && $confidence != "" && trim($explain) != ""){
                     $completed++;
                 }
-            }
+            //}
         }
         return array('total' => count($evals), 'completed' => $completed);
     }
