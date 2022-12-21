@@ -46,6 +46,12 @@ class Sops extends BackbonePage {
     * @return array
     */
     function getViews(){
+        global $wgOut;
+        $stats = self::evalStats();
+        $wgOut->addHTML("<script type='text/javascript'>
+            evalTotal = '{$stats['total']}';
+            evalCompleted = '{$stats['completed']}';
+        </script>");
         return array('Backbone/*',
           'SopsView',
           'SopsRowView',
@@ -60,6 +66,33 @@ class Sops extends BackbonePage {
     */
     function getModels(){
         return array('Backbone/*');
+    }
+    
+    static function evalStats(){
+        $me = Person::newFromWgUser();
+        $evals = $me->getEvaluates('sop');
+        $completed = 0;
+        foreach($evals as $eval){
+            $sop = SOP::newFromUserId($eval->getId(), YEAR);
+            $ignore = self::getBlobValue(BLOB_ARRAY, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Uninteresting", $me->getId(), $sop->id, 0);
+            if($ignore == null || @count($ignore["q0"]) == 0){
+                $rank = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank", $me->getId(), $sop->id, 0);
+                $confidence = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_Confidence", $me->getId(), $sop->id, 0);
+                $explain = self::getBlobValue(BLOB_TEXT, YEAR, "RP_OTT", "OT_REVIEW", "CS_Review_RankExplain", $me->getId(), $sop->id, 0);
+                if($rank != "" && $confidence != "" && trim($explain) != ""){
+                    $completed++;
+                }
+            }
+        }
+        return array('total' => count($evals), 'completed' => $completed);
+    }
+    
+    static function getBlobValue($blobType, $year, $reportType, $reportSection, $blobItem, $userId=null, $projectId=0, $subItem=0){
+        $blb = new ReportBlob($blobType, $year, $userId, $projectId);
+        $addr = ReportBlob::create_address($reportType, $reportSection, $blobItem, $subItem);
+        $result = $blb->load($addr);
+        $data = $blb->getData();
+        return $data;
     }
     
     static function createSubTabs(&$tabs){
