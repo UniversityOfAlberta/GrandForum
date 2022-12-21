@@ -32,7 +32,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" default="{$last_year}-05-01" width="70px">
+        <ReportItem id="reportStart" type="Calendar" blobItem="REPORT_START" blobType="BLOB_TEXT" default="{$last_year}-01-01" width="70px">
             <![CDATA[
                 <h3>Reporting Period:</h3>
                 {$item}
