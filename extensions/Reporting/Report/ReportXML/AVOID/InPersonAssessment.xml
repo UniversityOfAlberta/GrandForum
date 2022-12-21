@@ -61,7 +61,7 @@
             <![CDATA[
                 <hr />
                 <h3>2. HEARING</h3>
-                Difficulties in hearing detected?
+                Difficulties in hearing reported?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -1119,7 +1119,7 @@
         <ReportItem id="avoid_fatigue" blobItem="avoid_fatigue" type="RadioReportItem" options="Yes|No" orientation="horizontal">
             <![CDATA[
                 <hr />
-                <h3>13. COMPLAINING OF FATIGUE</h3>                
+                <h3>14. COMPLAINING OF FATIGUE</h3>                
                 Do you feel exhaustion or fatigue during normal activities?<br/>
                 {$item}
                 <br />
@@ -1955,3 +1955,4 @@
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>
+
