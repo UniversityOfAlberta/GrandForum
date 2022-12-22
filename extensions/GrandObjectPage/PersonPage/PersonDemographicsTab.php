@@ -81,7 +81,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
             
                             <p>Equity, diversity, and inclusion (EDI) are important aspects of this vision for progress. FES envisions EDI being understood and reframed as a concept; not as efforts separate from our work, but as central components of effective, high-quality research.</p>
                             
-                            <p>To learn more about the FES EDI program, <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>visit the EDI pages</a> on our website, or contact FES EDI Coordinator, <a href='mailto:ctays@ualberta.ca'>Dr. Catherine Tays</a>.</p>";
+                            <p>To learn more about the FES EDI program or visit the EDI pages on our <a href='https://www.futureenergysystems.ca/about/equity-diversity-and-inclusion' target='_blank'>website</a>.</p>";
         }
         
         return $this->html;
