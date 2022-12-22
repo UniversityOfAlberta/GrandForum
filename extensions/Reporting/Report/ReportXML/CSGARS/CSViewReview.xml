@@ -130,6 +130,12 @@
                         {$item}
                     ]]>
                 </ReportItem>
+                <ReportItem id="q8" type="CheckboxReportItem" blobItem="CS_Review_Award" blobType="BLOB_ARRAY" orientation="vertical" options="This applicant should be considered for a $5K admission award">
+                    <![CDATA[
+                        <h3>Award</h3>
+                        {$item}
+                    ]]>
+                </ReportItem>
             </ReportItemSet>
         </ReportItemSet>
         <ReportItemSet id="if_statement" type="IfReportItemSet" if="{contains({$user_full_roles}, Manager)}">
@@ -168,8 +174,12 @@
                                 <td colspan=2>Justification for Ranking:<br />{getText(RP_OTT,OT_REVIEW,CS_Review_RankExplain,0,{$user_id},{$project_id})}</td>
                             </tr>
                             <tr>
-                                <td><span><h3>Are you willing to supervise this student?:</h3></span></td>
+                                <td><span><h3>Supervise?:</h3></span></td>
                                 <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_SuperviseSalary,0,{$user_id},{$project_id},q7)}</td>
+                            </tr>
+                            <tr>
+                                <td><span><h3>Award:</h3></span></td>
+                                <td>{getArray(RP_OTT,OT_REVIEW,CS_Review_Award,0,{$user_id},{$project_id},q8)}</td>
                             </tr>
                         </table>
                         ]]>
