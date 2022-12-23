@@ -106,7 +106,7 @@ SopsView = Backbone.View.extend({
         
         // Filter the Sops
         var sops = new Sops(this.sops.filter(function(sop) {
-            return (sop.get('hidden') == this.hidden);
+            return (sop.get('hidden') == this.hidden || (this.hidden == 0 && _.where(sop.get('reviewers'), {id: me.get('id')}).length != 0));
         }.bind(this)));
         if(this.favorites){
             sops = new Sops(sops.filter(function(sop) {
