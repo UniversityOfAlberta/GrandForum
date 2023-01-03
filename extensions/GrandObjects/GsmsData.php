@@ -401,6 +401,7 @@ class GsmsData extends BackboneModel{
                                  'willingToSupervise' => $sop->getWillingToSupervise($reviewer->getId()),
                                  'comments' => $sop->getReviewComments($reviewer->getId()),
                                  'rank' => $sop->getReviewRanking($reviewer->getId()),
+                                 'extra' => $sop->getReviewExtra($reviewer->getId()),
                                  'hidden' => $sop->getHiddenStatus($reviewer->getId()));
         }
         $json['reviewers'] = $reviewers;
@@ -418,6 +419,7 @@ class GsmsData extends BackboneModel{
                                       'willingToSupervise' => $sop->getWillingToSupervise($other->getId()),
                                       'comments' => $sop->getReviewComments($other->getId()),
                                       'rank' => $sop->getReviewRanking($other->getId()),
+                                      'extra' => $sop->getReviewExtra($other->getId()),
                                       'hidden' => $sop->getHiddenStatus($other->getId()));
         }
         

@@ -71,6 +71,10 @@ abstract class AbstractSop extends BackboneModel{
         return '--';
     }
     
+    function getReviewExtra(){
+        return array();
+    }
+    
     function getHiddenStatus(){
         return false;
     }

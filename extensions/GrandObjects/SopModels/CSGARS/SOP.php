@@ -271,6 +271,24 @@ class SOP extends AbstractSop{
         return $blob;
     }
     
+    function getReviewExtra($user) {
+        $year = ($this->year != "") ? $this->year : YEAR;
+        $hqp = Person::newFromId($this->user_id);
+        $gsms = $hqp->getGSMS($this->year);
+        
+        $confidence = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_Confidence", $user, $gsms->id);
+        $confidence_other = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_ConfidenceOther", $user, $gsms->id);
+        $basedOn = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_BasedOn", $user, $gsms->id);
+        $basedOnOther = $this->getBlobValue(BLOB_TEXT, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Rank_BasedOnOther", $user, $gsms->id);
+        $basedOn = @array_filter(array_merge($basedOn['q3b'], array($basedOnOther)));
+        $award = $this->getBlobValue(BLOB_ARRAY, $year, "RP_OTT", "OT_REVIEW", "CS_Review_Award", $user, $gsms->id);
+        $award = (@count($award['q8']) > 0) ? "Yes" : "No";
+        
+        return array('confidence' => trim("{$confidence} {$confidence_other}"),
+                     'basedOn' => $basedOn,
+                     'award' => $award);
+    }
+    
     function getHiddenStatus($user){
         $year = ($this->year != "") ? $this->year : YEAR;
         $hqp = Person::newFromId($this->user_id);

@@ -217,6 +217,36 @@
   <% } %>
 </td>
 
+<td id='confidence' class="scrollableCell">
+  <div class="scrollableCell" style="height:124px; max-height:124px;">
+    <% _.each(reviewers.concat(other_reviewers), function(reviewer, key) { %>
+        <% if(reviewer.extra.confidence != ""){ %>
+            <font style="font-weight:bold"><%= _.last(reviewer.name.split(" ")) %></font>: <%= reviewer.extra.confidence %><br />
+        <% } %>
+    <% }); %>
+  </div>
+</td>
+
+<td id='basedOn' class="scrollableCell">
+  <div class="scrollableCell" style="height:124px; max-height:124px;">
+    <% _.each(reviewers.concat(other_reviewers), function(reviewer, key) { %>
+        <% if(_.size(reviewer.extra.basedOn) > 0){ %>
+            <font style="font-weight:bold"><%= _.last(reviewer.name.split(" ")) %></font>: <%= reviewer.extra.basedOn.join(", ") %><br />
+        <% } %>
+    <% }); %>
+  </div>
+</td>
+
+<td id='award' class="scrollableCell">
+  <div class="scrollableCell" style="height:124px; max-height:124px;">
+    <% _.each(reviewers.concat(other_reviewers), function(reviewer, key) { %>
+        <% if(reviewer.extra.award != ""){ %>
+            <font style="font-weight:bold"><%= _.last(reviewer.name.split(" ")) %></font>: <%= reviewer.extra.award %><br />
+        <% } %>
+    <% }); %>
+  </div>
+</td>
+
 <!--td>
     <%= _.pluck(_.where(reviewers.concat(other_reviewers), {wantToSupervise: true}), 'name').join(",<br />") %>
 </td-->

@@ -75,6 +75,9 @@ SopsView = Backbone.View.extend({
         COL_FACULTY = counter++;
         COL_FACULTY_RANK = counter++;
         COL_NOTES = counter++;
+        COL_CONFIDENCE = counter++;
+        COL_BASED_ON = counter++;
+        COL_AWARD = counter++;
         COL_WANT = 0; //counter++;
         COL_WILLING = counter++;
         COL_SUPERVISOR = counter++;
@@ -216,6 +219,9 @@ SopsView = Backbone.View.extend({
                                                         { 'width': '150px' }, // Faculty
                                                         { 'width': '70px' },  // Avg Faculty Rank
                                                         { 'width': '120px' }, // Notes
+                                                        { 'width': '120px' }, // Confidence
+                                                        { 'width': '120px' }, // BasedOn
+                                                        { 'width': '70px' }, // Award
                                                         //{ 'width': '85px' },  // Want to Supervise
                                                         { 'width': '85px' },  // Willing to Supervise
                                                         { 'width': '85px' },  // Supervisor
