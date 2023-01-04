@@ -193,6 +193,7 @@ abstract class PDFGenerator {
         $str = str_replace("‐", "-", $str);
         $str = str_replace("—", "-", $str);
         $str = str_replace("–", "-", $str);
+        $str = str_replace(" ", " ", $str); // Thin-space character
         $str = str_replace(" ", " ", $str); // Half-space character
         $str = str_replace("&lang;", "&#10216;", $str);
         $str = str_replace("&rang;", "&#10217;", $str);
