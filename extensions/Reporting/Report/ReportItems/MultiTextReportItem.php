@@ -155,14 +155,14 @@ EOF;
                                 $cls = "raw";
                             }
                             else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
-                                $cls = "chosen";
+                                $cls = strstr(strtolower(@$types[$j]), "customchosen") ? "customchosen" : "chosen";
                                 $multi = "multiple";
                                 $align = "left";
                                 $mIndex = "[]";
                             }
                             $item .= @"\"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[\" + i + \"][$index]{$mIndex}' $multi>";
                             $matches = array();
-                            preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
+                            preg_match("/^(Select|ComboBox|Chosen|CustomChosen)\((.*)\)$/i", $types[$j], $matches);
                             $matches[2] = str_replace('\,', '\comma', $matches[2]);
                             $matches = @explode(",", $matches[2]);
                             if(array_search(@str_replace(',', '\comma', $value[$index]), $matches) === false && @$value[$index] != ""){
@@ -202,8 +202,14 @@ EOF;
                     }
                     $item .= <<<EOF
                     );
-                $("#table_{$this->getPostId()} tr#obj" + i + " select:not(.raw):not(.chosen)").combobox();
+                $("#table_{$this->getPostId()} tr#obj" + i + " select:not(.raw):not(.chosen):not(.customchosen)").combobox();
                 $("#table_{$this->getPostId()} tr#obj" + i + " select.chosen").chosen({width: "100%"});
+                $("#table_{$this->getPostId()} tr#obj" + i + " select.customchosen").chosen({width: "100%",
+                                                                                             create_option: true,
+                                                                                             persistent_create_option: true,
+                                                                                             skip_no_results: true,
+                                                                                             create_option_text: 'Other'
+                                                                                            });
                 $("#table_{$this->getPostId()} tr#obj" + i + " div.chosen-container").css({"box-sizing": "border-box",
                                                                                            "margin": 0,
                                                                                            "padding": 3});
@@ -245,8 +251,14 @@ EOF;
                 });
             }
             $(document).ready(function(){
-                $("#table_{$this->getPostId()} select:not(.raw):not(.chosen)").combobox();
+                $("#table_{$this->getPostId()} select:not(.raw):not(.chosen):not(.customchosen)").combobox();
                 $("#table_{$this->getPostId()} select.chosen").chosen({width: "100%"});
+                $("#table_{$this->getPostId()} select.customchosen").chosen({width: "100%", 
+                                                                             create_option: true,
+                                                                             persistent_create_option: true,
+                                                                             skip_no_results: true,
+                                                                             create_option_text: 'Other'
+                                                                            });
                 $("#table_{$this->getPostId()} div.chosen-container").css({"box-sizing": "border-box",
                                                                            "margin": 0,
                                                                            "padding": 3});
@@ -354,14 +366,14 @@ EOF;
                             $cls = "raw";
                         }
                         else if(strstr(strtolower(@$types[$j]), "chosen") !== false){
-                            $cls = "chosen";
+                            $cls = strstr(strtolower(@$types[$j]), "customchosen") ? "customchosen" : "chosen";
                             $multi = "multiple";
                             $align = "left";
                             $mIndex = "[]";
                         }
                         $item .= @"<td width='{$widths[2]}' align='$align'><select style='max-width:{$sizes[$j]}px;' class='{$cls}' name='{$this->getPostId()}[$i][$index]{$mIndex}' {$multi}>";
                         $matches = array();
-                        preg_match("/^(Select|ComboBox|Chosen)\((.*)\)$/i", $types[$j], $matches);
+                        preg_match("/^(Select|ComboBox|Chosen|CustomChosen)\((.*)\)$/i", $types[$j], $matches);
                         $matches[2] = str_replace('\,', '\comma', $matches[2]);
                         $matches = @explode(",", $matches[2]);
                         $vals = @(is_array($value[$index])) ? @$value[$index] : @array($value[$index]);

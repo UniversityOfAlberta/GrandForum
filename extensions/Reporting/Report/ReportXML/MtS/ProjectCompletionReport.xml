@@ -19,9 +19,9 @@
         <Static>
             <![CDATA[
                 <h1>SECTION 1: INTRO & CONSENT</h1>
-                <p>Network Members are required to submit a completion report by April 30, each year. This report is designed to capture emerging research findings, knowledge mobilization activities, new partnerships, successes, and opportunities for future improvement.</p>
-                <p>In addition to this completion report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift.  Form 300 can be downloaded and attached under section 8.</p>
-                <p>This report and corresponding documents are <b>due no later than April 30 @ 4 p.m. EST</b>.</p> 
+                <p><b>Network Members are required to submit a completion report within 60 days of their project end date.</b> This report is designed to capture all research findings, knowledge mobilization activities, partnerships, successes, and opportunities for future improvement.</p>
+                
+                <p>In addition to this completion report, Network Members are also required to upload a detailed listing of in-kind support from the previous year, along with a copy of the FORM 300 form, using the templates provided by Making the Shift. Form 300 can be downloaded and attached under section 8.</p>
             ]]>
         </Static>
         <ReportItem id="consent" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CONSENT" options="Research participants were informed about the potential use of their images for the purpose of evaluation and signed Photo Release Form.">
@@ -221,7 +221,7 @@
     <ReportSection id="progress" type="EditableReportSection" blobSection="PROGRESS" name="3 - Project Progress" title="SECTION 3: PROJECT PROGRESS">
         <ReportItem id="progress" type="Radio" blobItem="PROGRESS" options="Yes|No">
             <![CDATA[
-                <h3>3.1 Is your project progressing as planned?</h3>
+                <h3>3.1 Did your project progress as planned? Consider areas related ethics approval, data collection, data analysis, training HQP, knowledge mobilization and working with partners.</h3>
                 <div id='progress'>
                     {$item}
                 </div>
@@ -229,7 +229,7 @@
         </ReportItem>
         <ReportItem id="progress_reason" type="Textarea" blobItem="PROGRESS_REASON" limit="200" rich="true">
             <![CDATA[
-                <div id='progress_reason' style='display:none;'><p>Please describe the reason for the delay and the steps that are being taken to complete the project.</p>
+                <div id='progress_reason' style='display:none;'><p>Please describe the reason(s) for the delay and the steps that were taken to complete the project.</p>
                     {$item}
                 </div>
                 <script type='text/javascript'>
@@ -244,125 +244,40 @@
                 </script>
             ]]>
         </ReportItem>
-        <ReportItem id="ethics" type="Textarea" blobItem="ETHICS" rich="true" limit="250">
+        <ReportItem id="lessons" type="Textarea" blobItem="LESSONS" rich="true" limit="300">
             <![CDATA[
-                <h3>3.2 Provide a summary of how your project is progressing, according to each of the categories listed below:</h3>
-                <table class="wikitable" width="100%" frame="box" rules="all">
-                    <tr>
-                        <th style="min-width:200px;width:15%;">Research Project Activities</th>
-                        <th>Progress Over the Last Year</th>
-                    </tr>
-                    <tr>
-                        <td valign="top"><b>Obtaining Ethics Approval</b><br />
-                            <small>(E.g., preparation, submission and approval of the REB package)</small>
-                        </td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="collecting" type="Textarea" blobItem="COLLECTING" rich="true" limit="250">
-            <![CDATA[
-                    <tr>
-                        <td valign="top"><b>Collecting Data</b><br />
-                            <small>(e.g., methods, processes, and procedures used for data collection)</small>
-                        </td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="analyzing" type="Textarea" blobItem="ANALYZING" rich="true" limit="250">
-            <![CDATA[
-                    <tr>
-                        <td valign="top"><b>Analyzing Data</b><br />
-                            <small>(E.g., Software, frameworks, etc. used to code, analyze, and interpret data.)</small>
-                        </td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="report_writing" type="Textarea" blobItem="REPORT_WRITING" rich="true" limit="250">
-            <![CDATA[
-                    <tr>
-                        <td valign="top"><b>Report Writing and Finding Dissemination</b></td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="training" type="Textarea" blobItem="TRAINING" rich="true" limit="250">
-            <![CDATA[
-                    <tr>
-                        <td valign="top"><b>Training and Recruiting Highly Qualified Personnel</b><br />
-                            <small>(E.g., Recruiting and training research project staff, including research assistants, project coordinators, graduate students and post-doctoral fellows)</small>
-                        </td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="networking" type="Textarea" blobItem="NETWORKING" rich="true" limit="250">
-            <![CDATA[
-                    <tr>
-                        <td valign="top"><b>Networking and Partnerships Development</b><br />
-                            <small>(e.g., Engaging project partners, including – academic partners and non-academic partners, e.g., service-delivery agencies; government; Indigenous partners; and people with lived experiences)</small>
-                        </td>
-                        <td>{$item}</td>
-                    </tr>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                </table>
-            ]]>
-        </Static>
-        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true" limit="300">
-            <![CDATA[
-                <h3>3.3 What were some of the challenges or barriers your project has encountered this year? What strategies have you used to overcome these challenges?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="300">
-            <![CDATA[
-                <h3>3.4 What were some of the successes and/or opportunities that you project has achieved over the previous year? What steps have taken to celebrate and/or take advantage of these opportunities?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="lesson" type="Textarea" blobItem="LESSON" rich="true" limit="300">
-            <![CDATA[
-                <h3>3.5 What is the biggest lesson learned over the previous year?</h3>
+                <h3>3.2 What were some of the lessons learned from your successes, opportunities, challenges and barriers during your project?</h3>
                 {$item}
             ]]>
         </ReportItem>
         <Static>
             <![CDATA[
                 <h2>Community Engagement in Research Index (CERI)</h2>
-                <h3>3.6 Indicate the extent to which community partner listed below is involved in aspects of your work (on a scale from 1–3):</h3>
-                <p>Please fill out this section to the best of your ability. Although a number of areas may be designated ‘1’, we understand that not all categories and activities will apply across all projects. Please only leave sections blank that are not applicable to the current stage of your project, or study overall.<br /><small>
+                <h3>3.3 Indicate the extent to which the community partner listed below were involved in your work (on a scale from 1–3):</h3>
+                <p>Please fill out this section to the best of your ability. Although a number of sections may be designated ‘1’, we understand that not all communities apply across all projects.<br /><small>
                     1 (Community partners do not participate in this activity) <br />
                     2 (Community partners are consulted on or advise on this activity)<br />
                     3 (Community partners are actively engaged in this activity as collaborators/co-investigators)
                  </small></p>
                  <table class="wikitable" frame="box" rules="all">
                     <tr>
-                        <th width='100px;'>Research activities</th>
-                        <th width='100px;'>Service Delivery Agencies</th>
-                        <th width='100px;'>Indigenous community-based agencies and/or governing bodies</th>
-                        <th width='100px;'>Persons with lived experiences of homelessness</th>
-                        <th width='100px;'>Orders of Government</th>
-                        <th width='100px;'>Racialized Communities</th>
-                        <th width='100px;'>2SLGBTQIA+ community members</th>
+                        <th width='150px;'></th>
+                        <th width='150px;'>1 (Community partners do not participate in this activity)</th>
+                        <th width='150px;'>2 (Community partners are consulted on or advise on this activity)</th>
+                        <th width='250px;'>3 (Community partners are actively engaged in this activity as collaborators/co-investigators)</th>
                     </tr>
             ]]>
         </Static>
-        <For array="Grant proposal writing|Background research/literature review|Choosing research methods|Developing sampling procedures|Recruiting study participants|Engaging other 
-research partners|Designing interview and/or survey questions|Collecting primary data|Analyzing collected data|Interpreting study findings|Writing reports and journal articles">
+        <For array="Service Delivery Agencies|Indigenous community-based agencies and/or governing bodies|Persons with lived experiences of homelessness|Orders of Government|Racialized Communities|2SLGBTQIA+ community members">
             <Static>
                 <![CDATA[
                     <tr>
-                        <td>{getExtra()}</td>
+                        <td><b>{getExtra()}</b></td>
                         {set(parentExtra, {add({$extraIndex},1)})}
                 ]]>
             </Static>
-            <For array="1|2|3|4|5|6">
-                <ReportItem id="ceri_{get(parentExtra)}_{add({$extraIndex},1)}" type="Select" blobType="BLOB_ARRAY" blobItem="CERI" options="1|2|3">
+            <For array="1|2|3">
+                <ReportItem id="ceri_{get(parentExtra)}_{add({$extraIndex},1)}" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CERI" labels="" options="&#10003;">
                     <![CDATA[
                         <td align='center'>{$item}</td>
                     ]]>
@@ -379,17 +294,17 @@ research partners|Designing interview and/or survey questions|Collecting primar
                 </table>
             ]]>
         </Static>
-    </ReportSection>
-    <ReportSection id="impacts" type="EditableReportSection" blobSection="IMPACTS" name="4 - Research Impacts" title="SECTION 4: RESEARCH IMPACTS">
-        <ReportItem id="findings" type="Textarea" blobItem="FINDINGS" rich="true" limit="400">
+        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="300">
             <![CDATA[
-                <h3>4.1 Describe any relevant research findings that have emerged over the last year. Why are these findings relevant to the issue of youth homelessness prevention? In what way do these findings contribute to the youth homelessness prevention evidence base?</h3>
+                <h3>3.4 What were some of the successes, opportunities, and/or barriers that you encountered during the project related to community-engageded scholarship?</h3>
                 {$item}
             ]]>
         </ReportItem>
+    </ReportSection>
+    <ReportSection id="impacts" type="EditableReportSection" blobSection="IMPACTS" name="4 - Research Impacts" title="SECTION 4: RESEARCH IMPACTS">
         <Static>
             <![CDATA[
-                <h3>4.2 List all peer reviewed publications that were published in the previous year:</h3>
+                <h3>4.1 List all peer reviewed publications that were published in the previous year:</h3>
                 <a href="{$wgServer}{$wgScriptPath}/index.php/Special:ManageProducts" class="button" target="_blank">Manage Outputs</a>
                 <table class="wikitable" width="100%" frame="box" rules="all">
                     <tr>
@@ -415,178 +330,118 @@ research partners|Designing interview and/or survey questions|Collecting primar
         <Static>
             <![CDATA[
                 </table>
+                <h3>4.2 MtS will create a two-page plain language research summary based on your project findings (this is part of your <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0'>base Knowledge Mobilization package</a>). Fill out the following section to provide information for the research summary:</h3>
+                <table class="wikitable" frame="box" rules="all">
             ]]>
         </Static>
-        <ReportItem id="findings_date" type="Calendar" reportItem="FINDINGS_DATE">
+        <ReportItem id="42_1a" type="Textarea" blobItem="42_1a" width="500px" height="80px">
             <![CDATA[
-                <h3>4.3 Provide an estimation of when shareable project findings are next expected. This can include reports, tools, journal publications, webinars etc.</h3>
-                {$item}
+                <tr>
+                    <td rowspan='3' style='width:100px;'><span style='font-size: 1.25em;'>What is your research about?</b></td>
+                    <td style='width:250px;'>In 2-3 plain language sentences, please describe what this project is about, why it’s important and the intended outcome.</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-    </ReportSection>
-    <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
-        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true"
-                    types="Milestones|Chosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date" 
-                    indices="activity|endgroup|activities|impact|reach|date" 
-                    labels="Knowledge Mobilization Activity|End Group(s)&lt;br />&lt;small style='font-weight:normal;'>(Select the End Group(s) the Knowledge Mobilization Activity engaged)&lt;/small>|Knowledge Mobilization Activities&lt;br />&lt;small style='font-weight:normal;'>(include links to related materials)&lt;/small>|Impact&lt;br />&lt;small style='font-weight:normal;'>(i.e., what happened once the end user group engaged with your KMb materials?)&lt;/small>|Actual Reach/Projected reach per selected End Group&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Date(s) of Activity/ Projected Date of Activity" 
-                    sizes="200|200|200|200|200|75">
+        <ReportItem id="42_1b" type="Textarea" blobItem="42_1b" width="500px" height="80px">
             <![CDATA[
-                <h2>Knowledge Mobilization Activities and Impact</h2>
-                <h3>5.1 Describe the knowledge mobilization activities you completed in the previous year for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
-                {$item}
-                Please note we encourage projects to send notice of public activities to <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a> for promotion to the network and via MtS social media.
+                <tr>
+                    <td>Why was this project created?</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="successes" type="Textarea" blobItem="SUCCESSES" rich="true" limit="200">
+        <ReportItem id="42_1c" type="Textarea" blobItem="42_1c" width="500px" height="80px">
             <![CDATA[
-                <h3>5.2 What are some of the knowledge mobilization successes the project has achieved in the previous year?</h3>
-                {$item}
+                <tr>
+                    <td>Who was this project created for? Keep the audience in mind when writing.</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="challenges" type="Textarea" blobItem="CHALLENGES" rich="true" limit="200">
+        <ReportItem id="42_2a" type="Textarea" blobItem="42_2a" width="500px" height="80px">
             <![CDATA[
-                <h3>5.3 What are some of the knowledge mobilization barriers or challenges that the project has encountered in the previous year?</h3>
-                {$item}
+                <tr>
+                    <td rowspan='1'><span style='font-size: 1.25em;'>What did you do?</span></td>
+                    <td>In 2-3 plain language sentences, describe the research process.</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="outputs" type="Checkbox" blobItem="OUTPUTS" blobType="BLOB_ARRAY" options="Graphic design (e.g., report layout, infographic design, website design, etc.)|Tailoring messages to key audiences|Hosting KMb planning sessions with stakeholders|KMb focus groups with stakeholders|KMb/Research impact evaluation|Webinar/online event hosting|Blog writing|Research summary creation/design|Social media campaign design|Online facilitation|Other">
+        <ReportItem id="42_3a" type="Textarea" blobItem="42_3a" width="500px" height="80px">
             <![CDATA[
-                <h3>5.4 What knowledge mobilization outputs might you need MtS’s support within the next six months?</h3>
-                {$item}
+                <tr>
+                    <td rowspan='1'><span style='font-size: 1.25em;'>What did you find?</span></td>
+                    <td>In 2-3 plain sentences, describe the results of your study.</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="outputs_other" type="Text" width="200px" blobItem="OUTPUTS_OTHER">
+        <ReportItem id="42_4a" type="Textarea" blobItem="42_4a" width="500px" height="80px">
             <![CDATA[
-                <div id='outputs_other'>Other: {$item}</div>
-                <script type="text/javascript">
-                    $("[name='5KMbandImpactPlan_outputs[]']").change(function(){
-                        if($("[name='5KMbandImpactPlan_outputs[]'][value='Other']").is(":checked")){
-                            $("#outputs_other").show();
-                        }
-                        else{
-                            $("#outputs_other").hide();
-                        }
-                    }).change();
-                </script>
+                <tr>
+                    <td rowspan='2'><span style='font-size: 1.25em;'>How can you use this research?</span></td>
+                    <td>How should your audience use this information? Why do they care about this research? What impact could it have on their work?</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" limit="3" options="Live webinar presentations (webinars are presentations on a specific topic featuring a guest speaker and a Q&amp;A session)|Live web-workshops (web-workshops are interactive sessions on a specific topic that involve sharing of practical tools, methods or strategies and provide participants with an opportunity to apply tools and template during small group work)|Webinar and workshops recordings|Web-exchange sessions with other researchers (web-exchange sessions feature one or two presenters sharing a story illustrating a specific topic/challenge and a group dialogue involving other participants sharing their experiences and insights in relation to the featured topic)|Co-creation workshops (topic-focused sessions tailored to the needs of the project team, e.g. evaluation planning, strategic planning, consensus building, product design, etc. and facilitated by MtS/COH staff with an appropriate level of expertise)|Individual coaching sessions with MtS KMb and Communications staff (one-on-one consultations on a specific issue, e.g. online facilitation, partnership building, etc)|Curated online content (a collection of resources on a broad range of topics in the context of youth homelessness prevention research)|Other">
+        <ReportItem id="42_4b" type="Textarea" blobItem="42_4b" width="500px" height="80px">
             <![CDATA[
-                <h3>5.5 Ideally how would you like us to deliver our support to you?</h3>
-                {$item}
+                <tr>
+                    <td>What, specifically, can the audience expect to learn after reading this summary?</td>
+                    <td>{$item}</td>
+                </tr>
             ]]>
         </ReportItem>
-        <ReportItem id="support_other" type="Text" width="200px" blobItem="SUPPORT_OTHER">
-            <![CDATA[
-                <div id='support_other'>Other: {$item}</div>
-                <script type="text/javascript">
-                    $("[name='5KMbandImpactPlan_support[]']").change(function(){
-                        if($("[name='5KMbandImpactPlan_support[]'][value='Other']").is(":checked")){
-                            $("#support_other").show();
-                        }
-                        else{
-                            $("#support_other").hide();
-                        }
-                    }).change();
-                </script>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <br />
-                <p><i>Disclaimer: pending availability of MtS and AWHC/COH staff</i></p>
-                <p>Please note all projects have access to a <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0' target='_blank'>base Knowledge Mobilization package</a> to support your project.</p>
-            ]]>
-        </Static>
-    </ReportSection>
-    <ReportSection id="engagement" type="EditableReportSection" blobSection="ENGAGEMENT" name="6 - Community Engagement" title="SECTION 6: COMMUNITY ENGAGEMENT AND PARTNERSHIP DEVELOPMENT">
-        <ReportItem id="engaged" type="Textarea" blobItem="ENGAGED" rich="true" limit="350">
-            <![CDATA[
-                <h2>Working with Persons with Lived Experience of Homelessness</h2>
-                <h3>6.1 Please indicate how you have engaged persons with lived experience of homelessness within over the last year.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="activities" type="Textarea" blobItem="ACTIVITIES" rich="true" limit="350">
-            <![CDATA[
-                <h3>6.2 What activities do you have planned in the next year, to involve persons with lived experience of homelessness?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="support" type="Checkbox" blobItem="SUPPORT" blobType="BLOB_ARRAY" options="One-on-one advice for how best to engage individuals with lived experience|Downloadable toolkits for best practices|Advice for how to structure a research projects to ensure lived expertise is at the heart of the project|Webinars about best practices for hiring and training scholars with lived experience|Best practice guidance for compensating project partners with lived experience of homelessness|Other">
-            <![CDATA[
-                <h3>6.3 What kind of support or advice might you want from the Making the Shift Scholars with Lived Experience Network (LivEx) – check all that apply:</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="support_other" type="Text" width="200px" blobItem="SUPPORT_OTHER">
-            <![CDATA[
-                <div id='support_other'>Other: {$item}</div>
-                <script type="text/javascript">
-                    $("[name='6CommunityEngagement_support[]']").change(function(){
-                        if($("[name='6CommunityEngagement_support[]'][value='Other']").is(":checked")){
-                            $("#support_other").show();
-                        }
-                        else{
-                            $("#support_other").hide();
-                        }
-                    }).change();
-                </script>
-            ]]>
-        </ReportItem>
-        <ReportItem id="initiatives" type="Textarea" blobItem="INITIATIVES" rich="true" limit="350">
-            <![CDATA[
-                <h2>Partnership Development</h2>
-                <h3>6.4 Describe the activities and/or initiatives you have engaged in the previous year to strengthen partnerships with other researchers, community partners, service organizations, and Indigenous partners.</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="engagement" type="Textarea" blobItem="ENGAGEMENT" rich="true" limit="150">
-            <![CDATA[
-                <h3>6.5 What kind community engagement related supports do you wish Making the Shift would offer?</h3>
-                {$item}
-            ]]>
-        </ReportItem>
-    </ReportSection>
-    <ReportSection id="contributions" type="EditableReportSection" blobSection="CONTRIBUTIONS" name="7 - Contributions" title="SECTION 7: Contributions">
-        <Static>
-            <![CDATA[
-                <h3>7.1 List all cash and in-kind contributions from the previous year:</h3>
-                <a href="{$wgServer}{$wgScriptPath}/index.php/Special:Contributions" class="button" target="_blank">Manage Contributions</a>
-                <table class="wikitable" width="100%" frame="box" rules="all">
-                    <tr>
-                        <th>Title</th>
-                        <th>Partners</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Cash</th>
-                        <th>In-kind</th>
-                        <th>Total</th>
-                    </tr>
-            ]]>
-        </Static>
-        <ReportItemSet type="ProjectContributions" start="{$startDate}" end="{$endDate}">
-            <Static>
-                <![CDATA[
-                    <tr>
-                        <td>{$contribution_title}</td>
-                        <td>{$contribution_partners}</td>
-                        <td>{$contribution_start}</td>
-                        <td>{$contribution_end}</td>
-                        <td align='right'>${number_format({$contribution_cash})}</td>
-                        <td align='right'>${number_format({$contribution_inkind})}</td>
-                        <td align='right'>${number_format({$contribution_total})}</td>
-                    </tr>
-                ]]>
-            </Static>
-        </ReportItemSet>
         <Static>
             <![CDATA[
                 </table>
             ]]>
         </Static>
     </ReportSection>
-    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="8 - Form 300" title="SECTION 8: FORM 300">
+    <ReportSection id="kmb" type="EditableReportSection" blobSection="KMB" name="5 - KMb and Impact Plan" title="SECTION 5: KNOWLEDGE MOBILIZATION AND RESEARCH IMPACT PLAN">
+        <ReportItem id="activities" type="MultiText" blobType="BLOB_ARRAY" blobItem="ACTIVITIES" multiple="true"
+                    types="Milestones|CustomChosen(Researchers,Policymakers,Government Officials,Funders,Media,General Public,Practitioners,Allied organization - legal and justice,Allied Organization - Schools,Allied Organization - Child Welfare,Other)|Textarea|Textarea|Textarea|Date|Date" 
+                    indices="activity|endgroup|activities|impact|reach|start|end" 
+                    labels="Knowledge Mobilization Activity|End Group&lt;br />&lt;small style='font-weight:normal;'>(Select the end groups engaged with the activity)&lt;/small>|Knowledge Mobilization Activities&lt;br />&lt;small style='font-weight:normal;'>(include links to related materials)&lt;/small>|Impact&lt;br />&lt;small style='font-weight:normal;'>(i.e., what happened once the end user group(s) engaged with your KMb materials?) Differentiate between end user groups if needed.&lt;/small>|Projected reach&lt;br />&lt;small style='font-weight:normal;'>(The number of people you estimate to be engage your knowledge mobilization activity)&lt;/small>|Start Date|End Date" 
+                    sizes="200|200|200|200|200|75|75">
+            <![CDATA[
+                <h2>Knowledge Mobilization Activities and Impact</h2>
+                <h3>5.1 Describe the knowledge mobilization activities you completed over the life time of your project for each of the end user groups listed below. Also indicate the impact of these activities. Where possible, include links or attachments to these publications, events, tools, reports, training, etc.</h3>
+                {$item}
+                Please note we require projects to send notice of activities to <a href='mailto:mtsfunding@yorku.ca'>mtsfunding@yorku.ca</a> for NCE reporting and promotion to the MtS network.
+            ]]>
+        </ReportItem>
+        <ReportItem id="share" type="Textarea" blobItem="SHARE" rich="true" limit="200">
+            <![CDATA[
+                <h3>5.2 Is there anything you’d like to share about knowledge mobilization in your project?</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <br />
+                <p>Please note all projects have access to a <a href='https://www.dropbox.com/s/8r76zbjgj76ioie/MtS_KMb-pkg_NOV2021.pdf?dl=0' target='_blank'>base Knowledge Mobilization package</a> to support your project.</p>
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="engagement" type="EditableReportSection" blobSection="ENGAGEMENT" name="6 - Community Engagement" title="SECTION 6: COMMUNITY ENGAGEMENT AND PARTNERSHIP DEVELOPMENT">
+        <ReportItem id="engaged" type="Textarea" blobItem="ENGAGED" rich="true" limit="200">
+            <![CDATA[
+                <h2>Working with Persons with Lived Experience of Homelessness</h2>
+                <h3>6.1 Please indicate how you have engaged persons with lived experience of homelessness within your project.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="activities" type="Textarea" blobItem="ACTIVITIES" rich="true" limit="200">
+            <![CDATA[
+                <h3>6.2 Describe the activities and/or initiatives you have engaged in to strengthen partnerships with other researchers, community partners, service organizations, and Indigenous partners.</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="form300" type="EditableReportSection" blobSection="FORM300" name="7 - Form 300" title="SECTION 7: FORM 300">
         <ReportItem id="form300" type="Upload" blobItem="FORM300" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
             <![CDATA[
                 <a href="{$wgServer}{$wgScriptPath}/data/F300_2020-21_[PIsFirstName-LastName].pdf"><b>Form 300 Template</b></a>
