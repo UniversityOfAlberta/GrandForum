@@ -12,6 +12,7 @@ class Paper extends BackboneModel{
     static $cache = array();
     static $dataCache = array();
     static $exclusionCache = null;
+    static $topProductsCache = array();
 
     var $id;
     var $category;
@@ -451,7 +452,7 @@ class Paper extends BackboneModel{
             foreach($parser->children() as $category){
                 $cattrs = $category->attributes();
                 $cname = "{$cattrs->category}";
-                foreach($category->children() as $type){
+                foreach($category->children() as $type){static $topProductsCache = array();
                     $tattrs = $type->attributes();
                     $citationFormat = @("{$tattrs->citationFormat}" != "") ? "{$tattrs->citationFormat}" : "{$cattrs->citationFormat}";
                     $tname = "{$tattrs->type}";

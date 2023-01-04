@@ -3804,6 +3804,55 @@ class Person extends BackboneModel {
         }
         return $year;
     }
+    
+    /**
+     * Returns when this Person's top products were last updated
+     * @return string When this Person's to products were last updated
+     */
+    function getTopProductsLastUpdated(){
+        $data = DBFunctions::select(array('grand_top_products'),
+                                    array('changed'),
+                                    array('obj_id' => EQ($this->getId())),
+                                    array('changed' => 'DESC'));
+        if(count($data) > 0){
+            return $data[0]['changed'];
+        }
+    }
+    
+    /**
+     * Returns the list of this Person's top products
+     * @return array This Person's top products
+     */
+    function getTopProducts(){
+        $products = array();
+        $data = DBFunctions::select(array('grand_top_products'),
+                                    array('product_id'),
+                                    array('obj_id' => EQ($this->getId())));
+        foreach($data as $row){
+            $product = Product::newFromId($row['product_id']);
+            if($product->getTitle() == ""){
+                continue;
+            }
+            $year = substr($product->getDate(), 0, 4);
+            $authors = $product->getAuthors();
+            $name = "";
+            foreach($authors as $author){
+                $name = $author->getNameForForms();
+                break;
+            }
+            $products["{$year}"][$name][] = $product;
+            ksort($products["{$year}"]);
+        }
+        ksort($products);
+        $products = array_reverse($products);
+        $newProducts = array();
+        foreach($products as $year => $prods){
+            foreach($prods as $prod){
+                $newProducts = array_merge($newProducts, $prod);
+            }
+        }
+        return $newProducts;
+    }
        
     /**
      * Returns the CCV XML that belongs to this Person

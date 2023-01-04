@@ -26,6 +26,7 @@ class PersonProfileTab extends AbstractEditableTab {
             $this->html .= ($keywords != "") ? "<b>Keywords:</b> {$keywords}" : "";
             $this->showProfile($this->person, $this->visibility);
         }
+        $this->showTopProducts($this->person, $this->visibility, 5);
         $extra = array();
         if($this->visibility['isMe']){
             if($this->person->isRole(NI) || 
@@ -59,6 +60,7 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= "</table>";
         $this->html .= "<h2>Profile</h2>";
         $this->showEditProfile($this->person, $this->visibility);
+        $this->showEditTopProducts($this->person, $this->visibility, 5);
         $this->html .= "<script type='text/javascript'>
             $(document).ready(function(){
                 $('select.chosen:visible').chosen();
@@ -102,6 +104,22 @@ class PersonProfileTab extends AbstractEditableTab {
                 }
             }
         }
+        
+        if(isset($_POST['top_products']) && is_array($_POST['top_products'])){
+            DBFunctions::delete('grand_top_products',
+                                array('obj_id' => EQ($this->person->getId())));
+            foreach($_POST['top_products'] as $product){
+                if($product != ""){
+                    $exploded = explode("_", $product);
+                    $type = $exploded[0];
+                    $productId = $exploded[1];
+                    DBFunctions::insert('grand_top_products',
+                                        array('obj_id' => $this->person->getId(),
+                                              'product_id' => $productId));
+                }
+            }
+        }
+        
         Person::$rolesCache = array();
         Person::$cache = array();
         
@@ -507,6 +525,104 @@ EOF;
         </script>";
         
         $this->html .= "</td></tr>";
+    }
+    
+    private function optGroup($products, $category, $value){
+        $html = "";
+        $plural = Inflect::pluralize($category);
+        $html .= "<optgroup label='$plural'>";
+        $count = 0;
+        foreach($products as $product){
+            if($category == $product->getCategory()){
+                $selected = ($value == $product->getId()) ? "selected='selected'" : "";
+                $year = substr($product->getDate(), 0, 4);
+                $html .= "<option value='PRODUCT_{$product->getId()}' $selected>($year) {$product->getType()}: {$product->getTitle()}</option>";
+                $count++;
+            }
+        }
+        $html .= "</optgroup>";
+        if($count > 0){
+            return $html;
+        }
+        return "";
+    }
+    
+    private function selectList($person, $value){
+        $productStructure = Product::structure();
+        $categories = @array_keys($productStructure['categories']);
+        $allProducts = $person->getPapers('all', true, 'grand', true, 'Public');
+        $products = array();
+        foreach($allProducts as $product){
+            $date = $product->getDate();
+            $products[$date."_{$product->getId()}"] = $product;
+        }
+        ksort($products);
+        $products = array_reverse($products);
+        $html = "<select class='chosen' name='top_products[]' style='max-width:800px;'>";
+        $html .= "<option value=''>---</option>";
+        foreach($categories as $category){
+            $html .= $this->optGroup($products, $category, $value);
+        }
+        $html .= "</select><br />";
+        return $html;
+    }
+    
+    function showEditTopProducts($person, $visibility, $max=5){
+        global $config;
+        $this->html .= "<h2>Select Research Outcomes</h2>";
+        $this->html .= "<div style='margin-bottom: 0.5em; font-size: smaller;'>Select up to {$max} research outputs that you believe best showcase your research, to include in your profile. Your chosen outputs will be sorted according to their dates (most recent first).  You can choose publications, awards, start-ups, or presentations.</div>";
+        $products = $person->getTopProducts();
+        $i = 0;
+        foreach($products as $product){
+            if($i == $max){
+                break;
+            }
+            $this->html .= $this->selectList($person, $product->getId());
+            $i++;
+        }
+        for($i; $i < $max; $i++){
+            $this->html .= $this->selectList($person, "");
+        }
+    }
+    
+    function showTopProducts($person, $visibility, $max=5){
+        global $config;
+        if(!$visibility['isMe']){
+            return;
+        }
+        $products = $person->getTopProducts();
+        $this->html .= "<h2>Select Research Outcomes</h2>";
+        $date = date('M j, Y', strtotime($person->getTopProductsLastUpdated()));
+        if(count($products) > 0){
+            $this->html .= "<table class='dashboard' cellspacing='1' cellpadding='3' rules='all' frame='box' style='max-width: 800px;'>
+                                <tr>
+                                    <td align='center'><b>Year</b></td>
+                                    <td align='center'><b>Category</b></td>
+                                    <td align='center'><b>".$config->getValue('productsTerm')."</b></td>
+                                </th>";
+            $i = 0;
+            foreach($products as $product){
+                if($i == $max){
+                    break;
+                }
+                $year = substr($product->getDate(), 0, 4);
+                $category = $product->getCategory();
+                $citation = $product->getCitation();
+                if($year == "0000"){
+                    $year = "";
+                }
+                $this->html .= "<tr>
+                                    <td align='center'>{$year}</td>
+                                    <td>{$category}</td>
+                                    <td>{$citation}</td>
+                                </tr>";
+                $i++;
+            }
+            $this->html .= "</table><i>Last updated on: $date</i><br />";
+        }
+        else{
+            $this->html .= "You have not entered any <i>Select Research Outcomes</i> yet<br />";
+        }
     }
     
 }

@@ -159,11 +159,11 @@
         <Static>
             <![CDATA[
                 <br />
-                <b>Recent Key Publications</b>
+                <b>Select Research Outcomes</b>
                 <ol style='padding-left: 1.5em;'>
             ]]>
         </Static>
-        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" includeHQP="false" start="1900-01-01" end="2100-01-01" sort="adaptive" limit="4">
+        <ReportItemSet id="products" type="PersonTopProductsReportItemSet">
             <Static>
                 <![CDATA[
                     <li>{$product_citation}</li>
