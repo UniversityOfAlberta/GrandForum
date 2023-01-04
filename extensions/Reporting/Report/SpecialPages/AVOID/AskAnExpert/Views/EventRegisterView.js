@@ -70,6 +70,7 @@ EventRegisterView = Backbone.View.extend({
         this.$("#registerEvent").prop('disabled', true); //disable button
 	//grab form stuff
 	var form = $('form#eventregisterform');
+	var successmsg = "Thank you for submitting a question to our expert of the month. It is possible that our expert may not be able to answer all questions, but we will be sure to get to the most common ones.";
 	var dataToSend = {};
 
         	dataToSend.topic = "Registration";
@@ -82,11 +83,12 @@ EventRegisterView = Backbone.View.extend({
 		}
 	    	else{
 		    dataToSend.question = "No Question";
+		    successmsg = "We received your registration for Ask an Expert. We will be in contact closer to the event. If you have any questions I the meantime, please email martha@cfn-nce.ca";
 		}
                 $.post(wgServer + wgScriptPath + '/index.php?action=registerExpertEventAction', dataToSend, function(response){
                     $(this).dialog('close');
                     clearSuccess();
-                    addSuccess('Thank you for submitting a question to our expert of the month. It is possible that our expert may not be able to answer all questions, but we will be sure to get to the most common ones.', true);
+                    addSuccess(successmsg, true);
                 }.bind(this));
     },
     
