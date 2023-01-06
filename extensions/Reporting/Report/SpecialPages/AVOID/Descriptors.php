@@ -231,7 +231,7 @@ class Descriptors extends SpecialPage {
                 
                 $nIntake++;
             }
-            if(AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO") && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO") && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
                 $fScores = $api->getFrailtyScore($person->getId(), "RP_AVOID_SIXMO");
                 $scores = $fScores["Health"];
                 $selfHealth = $this->getBlobData("HEALTH_QUESTIONS", "healthstatus_avoid6", $person, YEAR, "RP_AVOID_SIXMO");
