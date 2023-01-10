@@ -21,6 +21,7 @@ class GenericBudgetReportItem extends AbstractReportItem {
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
         }
+        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -38,7 +39,7 @@ class GenericBudgetReportItem extends AbstractReportItem {
         $wgOut->addHTML("<div>");
         $wgOut->addHTML("<h2>{$title}</h2>
                          <p><b>Template:</b> <a href='$wgServer$wgScriptPath/data/{$template}'>{$template}</a></p>
-                         <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:60px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=$report&section=$section&budgetUploadForm{$projectGet}{$year}'></iframe></div>");
+                         <div id='budgetDiv'><iframe name='budget' id='budgetFrame0' frameborder='0' style='border-width:0;height:60px;width:100%;' scrolling='none' src='../index.php/Special:Report?report=$report&section=$section&budgetUploadForm{$projectGet}{$personId}{$year}'></iframe></div>");
         $wgOut->addHTML("</div>");
     }
     
@@ -55,6 +56,7 @@ class GenericBudgetReportItem extends AbstractReportItem {
         if(isset($_GET['project'])){
             $projectGet = "&project={$_GET['project']}";
         }
+        $personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
         $year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -108,13 +110,13 @@ class GenericBudgetReportItem extends AbstractReportItem {
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report}&section={$section}&budgetUploadForm{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$report}&section={$section}&budgetUploadForm{$projectGet}{$personId}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
                             <input type='submit' name='upload' value='Upload' />
                         </form>";
         $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget{$projectGet}{$year}'>Download Uploaded Budget</a>";
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report=NIReport&section=Budget&downloadBudget{$projectGet}{$personId}{$year}'>Download Uploaded Budget</a>";
 	    }
         echo "      </div>
                 </body>
