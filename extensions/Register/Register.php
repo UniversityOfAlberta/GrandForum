@@ -111,6 +111,16 @@ class Register extends SpecialPage{
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
         
+        $passwordLabel = new Label("password_label", "<span class='en'>Password</span><span class='fr'>Password</span>", "The password of the user", VALIDATE_NOT_NULL);
+        $passwordField = new PasswordField("password_field", "Password", "", VALIDATE_NOT_NULL);
+        $passwordRow = new FormTableRow("password_row");
+        $passwordRow->append($passwordLabel)->append($passwordField);
+        
+        $password2Label = new Label("password2_label", "<span class='en'>Password (confirm)</span><span class='fr'>Password (confirm)</span>", "The password of the user", VALIDATE_NOT_NULL);
+        $password2Field = new PasswordField("password2_field", "Password (confirm)", "", VALIDATE_NOT_NULL);
+        $password2Row = new FormTableRow("password2_row");
+        $password2Row->append($password2Label)->append($password2Field);
+        
         // These next 5 fields for are for AVOID
         $ageOfLovedOneLabel = new Label("age_of_loved_one_label", "or Age of loved one", "The age of the loved one", VALIDATE_NOTHING);
         $ageOfLovedOneField = new TextField("age_of_loved_one_field", "Age of loved one", "", VALIDATE_NOTHING);
@@ -163,7 +173,9 @@ class Register extends SpecialPage{
         $formTable->append($firstNameRow)
                   ->append($lastNameRow)
                   ->append($userNameRow)
-                  ->append($emailRow);
+                  ->append($emailRow)
+                  ->append($passwordRow)
+                  ->append($password2Row);
         if($config->getValue('networkName') == 'ELITE'){
             $formTable->append($typeRow);
         }
@@ -277,6 +289,8 @@ class Register extends SpecialPage{
             $form->getElementById('last_name_field')->setPOST('wpLastName');
             $form->getElementById('user_name_field')->setPOST('wpName');
             $form->getElementById('email_field')->setPOST('wpEmail');
+            $form->getElementById('password_field')->setPOST('wpPassword');
+            $form->getElementById('password2_field')->setPOST('wpPassword2');
             
             $_POST['wpFirstName'] = ucfirst($_POST['wpFirstName']);
             $_POST['wpLastName'] = ucfirst($_POST['wpLastName']);
@@ -318,6 +332,7 @@ class Register extends SpecialPage{
             $splitEmail = explode("@", $_POST['wpEmail']);
             $domain = @$splitEmail[1];
             $_POST['wpName'] = ucfirst($_POST['wpName']);
+            $emptyUser = new User();
             if(strlen($_POST['wpName']) < 5){
                 $wgMessage->addError("This User Name must be atleast 5 characters long.");
             }
@@ -334,6 +349,12 @@ class Register extends SpecialPage{
             else if(count($config->getValue('hqpRegisterEmailWhitelist')) > 0 &&
                     !preg_match("/".str_replace('.', '\.', implode("|", $config->getValue('hqpRegisterEmailWhitelist')))."/i", $domain)){
                 $wgMessage->addError("Email address must match one of the following: ".implode(", ", $config->getValue('hqpRegisterEmailWhitelist')));
+            }
+            else if(!$emptyUser->isValidPassword($_POST['wpPassword'])){
+                $wgMessage->addError("The password you entered is not valid");
+            }
+            else if($_POST['wpPassword'] != $_POST['wpPassword2']){
+                $wgMessage->addError("Both passwords do not match");
             }
             else{
                 $_POST['wpExtra'] = array();
@@ -354,7 +375,7 @@ class Register extends SpecialPage{
                 GrandAccess::$alreadyDone = array();
                 if($result){
                     $form->reset();
-                    $wgMessage->addSuccess("A randomly generated password for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
+                    $wgMessage->addSuccess("A confirmation email for <b>{$_POST['wpName']}</b> has been sent to <b>{$_POST['wpEmail']}</b>");
                     redirect("$wgServer$wgScriptPath");
                 }
             }

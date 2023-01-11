@@ -1317,6 +1317,17 @@ class Person extends BackboneModel {
         }
         return $data[0]['user_touched'];
     }
+    
+    function isAuthenticated(){
+        $data = DBFunctions::select(array('mw_user'),
+                                    array('user_email_authenticated', 'user_email_token'),
+                                    array('user_id' => $this->id));
+        if(isset($data[0])){
+            $row = $data[0];
+            return ($row['user_email_token'] == "" || $row['user_email_authenticated'] != "");
+        }
+        return false;
+    }
       
     /**
      * Returns whether this Person is a member of the given Project or not

@@ -41,6 +41,15 @@ You should log in and change your password now.';
         case "readonlytext":
             $message = '$1';
             break;
+        case "confirmemail_body":
+            $message = "<p>An account has been created for your e-mail address on {{SITENAME}} (<a href='{$wgServer}{$wgScriptPath}'>{$wgServer}{$wgScriptPath}</a>) named \"$2\"</p>
+
+                        <p>To confirm that this account really does belong to you and activate email features on {{SITENAME}}, open this link in your browser:</p>
+
+                        <p><a href='$3'>$3</a></p>
+
+                        <p><b>This confirmation code will expire at $4.</b></p>";
+            break;
         case "passwordreset-emailelement":
             $message = "<u>Username:</u> <b>$1</b><br />
                         <br />

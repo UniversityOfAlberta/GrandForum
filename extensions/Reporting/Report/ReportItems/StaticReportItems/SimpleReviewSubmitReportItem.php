@@ -23,6 +23,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                 $projectGet = "&project={$this->getReport()->project->getAcronym()}";
             }
 		}
+		$personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -42,7 +43,7 @@ class SimpleReviewSubmitReportItem extends ReviewSubmitReportItem {
                         $('#generate_error').css('display', 'none');
                         $('#generate_throbber').css('display', 'inline-block');
 	                    $.ajax({
-	                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$year}&generatePDF{$pdfFiles}&emails={$emails}&subject={$subject}', 
+	                            url : '$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}{$projectGet}{$personId}{$year}&generatePDF{$pdfFiles}&emails={$emails}&subject={$subject}', 
 	                            success : function(data){
 	                                            //var data = jQuery.parseJSON(response);
 	                                            for(index in data){

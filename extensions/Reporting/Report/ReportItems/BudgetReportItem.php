@@ -35,6 +35,7 @@ class BudgetReportItem extends AbstractReportItem {
 		if(isset($_GET['project'])){
 		    $projectGet = "&project={$_GET['project']}";
 		}
+		$personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -45,7 +46,7 @@ class BudgetReportItem extends AbstractReportItem {
                                     var lastHeight = $('frame[name={$this->getPostId()}]').height();
                                     $('#budgetFrame{$this->getPostId()}').remove();
                                     frameId++;
-                                    $('#budgetDiv{$this->getPostId()}').html(\"<iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe>\");
+                                    $('#budgetDiv{$this->getPostId()}').html(\"<iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' style='border-width:0;width:100%;' frameborder='0' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}'></iframe>\");
                                     $('#budgetFrame{$this->getPostId()}').height(lastHeight);
                                     
                                 }
@@ -60,7 +61,7 @@ class BudgetReportItem extends AbstractReportItem {
 		    $html .= "<h4>Download {$budgetText} Template</h4><ul><li><a href='$wgServer$wgScriptPath/data/{$template}'>{$budgetText} Template</a></li></ul>";
 		}
 		$html .= "<h4>{$budgetText} Upload</h4>
-		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}'></iframe></div>";
+		                 <div id='budgetDiv{$this->getPostId()}'><iframe name='{$this->getPostId()}' id='budgetFrame{$this->getPostId()}' frameborder='0' style='border-width:0;height:100px;width:100%;' scrolling='none' src='../index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}'></iframe></div>";
 		$html .= "</div>";
 		$item = $this->processCData($html);
         $wgOut->addHTML($item);
@@ -115,6 +116,7 @@ class BudgetReportItem extends AbstractReportItem {
 		if(isset($_GET['project'])){
 		    $projectGet = "&project={$_GET['project']}";
 		}
+		$personId = (isset($_GET['person'])) ? "&person=".urlencode($_GET['person']) : "";
 		$year = "";
         if(isset($_GET['reportingYear']) && isset($_GET['ticket'])){
             $year = "&reportingYear={$_GET['reportingYear']}&ticket={$_GET['ticket']}";
@@ -184,14 +186,14 @@ class BudgetReportItem extends AbstractReportItem {
         echo "</head>
               <body style='margin:0;'>
                     <div id='bodyContent'>
-                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$year}' method='post' enctype='multipart/form-data'>
+                        <form action='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&budgetUploadForm={$this->getPostId()}{$projectGet}{$personId}{$year}' method='post' enctype='multipart/form-data'>
                             <input type='file' name='budget' />
 	                        <input type='submit' name='upload' value='Upload' />
 	                    </form>";
 	            
 	    $data = $this->getBlobValue();
 	    if($data !== null){
-	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&downloadBudget={$this->getPostId()}{$projectGet}{$year}'>Download Uploaded $budgetText</a>";
+	        echo "<br /><a href='$wgServer$wgScriptPath/index.php/Special:Report?report={$this->getReport()->xmlName}&section={$this->getSection()->name}&downloadBudget={$this->getPostId()}{$projectGet}{$personId}{$year}'>Download Uploaded $budgetText</a>";
 		    $budget = new Budget("XLS", $structure, $data);
 		    $budget = $this->filterCols($budget);
 		    $budget = $budget->copy()->filterCols(V_PROJ, array(""));

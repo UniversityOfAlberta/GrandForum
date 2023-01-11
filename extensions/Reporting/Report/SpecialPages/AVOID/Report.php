@@ -14,6 +14,7 @@ require_once("AVOIDDashboard.php");
 require_once("FrailtyReport.php");
 require_once("ProgressReport.php");
 require_once("InPersonAssessment.php");
+require_once("InPersonFollowup.php");
 require_once("AdminDataCollection.php");
 require_once("AdminUsageStats.php");
 require_once("IntakeSummary.php");

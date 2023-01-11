@@ -84,16 +84,24 @@ class CreateUserAPI extends API{
                                 array('actor_name' => EQ($_POST['wpName'])));
             $creator = self::getCreator($me);
             GrandAccess::$alreadyDone = array();
-            $passwd = PasswordFactory::generateRandomPasswordString();
+            $passwd = (isset($_POST['wpPassword'])) ? $_POST['wpPassword'] : PasswordFactory::generateRandomPasswordString();
             $tmpUser = User::createNew($_POST['wpName'], array('real_name' => $_POST['wpRealName'], 
                                                                'email' => $_POST['wpEmail']));
             if($tmpUser != null){
-                DBFunctions::update('mw_user',
-                                    array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
-                                          'user_newpass_time' => date('YmdHis')),
-                                    array('user_id' => EQ($tmpUser->getId())));
-                if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
-                    $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
+                if(isset($_POST['wpPassword'])){
+                    DBFunctions::update('mw_user',
+                                        array('user_password' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString()),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                    $tmpUser->sendConfirmationMail();
+                }
+                else{
+                    DBFunctions::update('mw_user',
+                                        array('user_newpassword' => MediaWikiServices::getInstance()->getPasswordFactory()->newFromPlaintext($passwd)->toString(),
+                                              'user_newpass_time' => date('YmdHis')),
+                                        array('user_id' => EQ($tmpUser->getId())));
+                    if(isset($_POST['wpSendMail']) && $_POST['wpSendMail'] === "true"){
+                        $this->sendNewAccountEmail($tmpUser, $creator->getUser(), $passwd);
+                    }
                 }
                 UserCreate::afterCreateUser($tmpUser);
                 Person::$cache = array();
