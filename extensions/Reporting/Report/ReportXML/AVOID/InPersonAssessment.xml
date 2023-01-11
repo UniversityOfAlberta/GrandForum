@@ -840,8 +840,8 @@
             ]]>
         </ReportItem>
         <ReportItem id="avoid_caregiver4" blobItem="avoid_caregiver4" type="Textarea" rich="false">
-	    <![CDATA[
-		<br/>
+            <![CDATA[
+                <br />
                 Comments:
                 <div class="requiredField">{$item}</div>
             ]]>

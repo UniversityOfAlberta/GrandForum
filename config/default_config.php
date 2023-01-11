@@ -67,6 +67,9 @@
     // Support Email Address
     $config->setValue("supportEmail", "");
     
+    // Password Sender Email Address (if empty, it uses Support Email Address)
+    $config->setValue("passwordSender", "");
+    
     // Network Website
     $config->setValue("networkSite", "");
     

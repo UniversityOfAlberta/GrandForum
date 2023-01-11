@@ -39,13 +39,14 @@
                                     <li>Persons who can walk in their own home with or without a walking aid</li>
                                 </ul>
                             </div>
-                            <span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
+                            <!--span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
                             <div class='program-button' style='width: 14em;'>{$item}</div><br />
-                            <span class='program-text'>You will be contacted with further details</span>
+                            <span class='program-text'>You will be contacted with further details</span-->
+                            <b>This program is now full</b>
                         
             ]]>
         </ReportItem>
-        <ReportItem id="submit" type="SubmitEmail">
+        <!--ReportItem id="submit" type="SubmitEmail">
             <![CDATA[
                 <table>
                     <tr>
@@ -68,7 +69,7 @@
                     </tr>
                 </table>
             ]]>
-        </ReportItem>
+        </ReportItem-->
         <Static>
             <![CDATA[   </div>
                         <div style='width: 16em; margin-left: 1em;'>
@@ -89,6 +90,10 @@
                         if($(e.target).not("input").length == 1){
                             $(checkbox).click();
                         }
+                    });
+                    $(document).ready(function(){
+                        $("#reportFooter").hide();
+                        $("#reportFooter").prev().hide();
                     });
                 </script>
             ]]>

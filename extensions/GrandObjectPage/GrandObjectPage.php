@@ -24,8 +24,9 @@
         require_once("Products/Products.php");
         require_once("ProductSummary.php");
     }
-    
-    require_once("ManagePeopleLog.php");
+    if($config->getValue('networkName') != "AVOID"){
+        require_once("ManagePeopleLog.php");
+    }
     if($config->getValue("contributionsEnabled")){
         require_once("Contributions/Contributions.php");
     }

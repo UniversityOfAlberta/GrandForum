@@ -106,13 +106,12 @@ class AdminUsageStats extends SpecialPage {
                 $members[] = $person;
             }
             if($person->isRole("Provider")){
-                if($person->getExtra("ageOfLovedOne") != "" && 
-                   $person->getExtra("ageField") != ""){
-                    $partners[] = $person;
-                }
-                else if($person->getExtra("practiceField") != "" && 
-                        $person->getExtra("roleField") != ""){
+                if($person->getExtra("practiceField") != "" && 
+                   $person->getExtra("roleField") != ""){
                     $clinicians[] = $person;
+                }
+                else{
+                    $partners[] = $person;
                 }
             }
             if($person->isRole(CI)){

@@ -50,7 +50,7 @@
                     <span class='program-text'>Register for an upcoming training date:</span><br />
             ]]>
         </Static>
-        <ReportItem id="register5" type="Checkbox" options="Thursday January 19, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
+        <ReportItem id="register6" type="Checkbox" options="Thursday January 26, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <!--There are currently no scheduled training dates.
                 <script type='text/javascript'>
@@ -94,7 +94,7 @@
                         <tr>
                             <td valign='top'><b>Training Date:</b></td>
                             <td>
-                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register5}</div>
+                                <div>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,REGISTER,0,{$user_id},0,register6}</div>
                             </td>
                         </tr>
                     </table>

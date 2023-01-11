@@ -152,7 +152,11 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<th>Type</th>";
             }
         }
-        $html .= "<th>Frailty Score</th>";
+        if(static::$rpType != "RP_AVOID_THREEMO"){
+            $html .= "<th>Frailty Score</th>";
+            $html .= "<th>EQ Health State</th>";
+            $html .= "<th>CFS Score</th>";
+        }
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -170,8 +174,6 @@ class IntakeSummary extends SpecialPage {
     
     static function getRow($person, $report, $type=false, $simple=false){
         global $wgServer, $wgScriptPath;
-        $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($person->getId());
         $userLink = "{$person->getId()}";
         if($type == false){
             $userLink = "<a href='{$wgServer}{$wgScriptPath}/index.php/Special:IntakeSummary?users={$person->getId()}'>{$person->getId()}</a>";
@@ -184,7 +186,18 @@ class IntakeSummary extends SpecialPage {
                 $html .= "<td>{$type}</td>";
             }
         }
-        $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+        if(static::$rpType != "RP_AVOID_THREEMO"){
+            $api = new UserFrailtyIndexAPI();
+            if($report->reportType == "RP_AVOID_THREEMO"){
+                $scores = $api->getFrailtyScore($person->getId(), "RP_AVOID");
+            }
+            else{
+                $scores = $api->getFrailtyScore($person->getId(), $report->reportType);
+            }
+            $html .= "<td>".number_format($scores["Total"]/36, 3)."</td>";
+            $html .= "<td>".implode("", $scores["Health"])."</td>";
+            $html .= "<td>".$scores["CFS"]."</td>";
+        }
         foreach($report->sections as $section){
             foreach($section->items as $item){
                 if($item->blobItem != "" && $item->blobItem !== 0){
@@ -210,7 +223,7 @@ class IntakeSummary extends SpecialPage {
         $report = new DummyReport(IntakeSummary::$reportName, $me, null, YEAR);
         
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
-        $wgOut->addHTML(self::getHeader($report, true, true));
+        $wgOut->addHTML(self::getHeader($report, true, false));
         $wgOut->addHTML("<tbody>");
         
         $people = array();
@@ -257,8 +270,12 @@ class IntakeSummary extends SpecialPage {
         $wgOut->addHTML("<table id='summary' class='wikitable'>");
         $wgOut->addHTML(self::getHeader($report));
         $wgOut->addHTML("<tbody>");
+        
         foreach($people as $person){
-            if(AVOIDDashboard::hasSubmittedSurvey($person->getId()) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR) != "CFN"){
+            if(!$person->isRoleAtMost(CI)){
+                continue;
+            }
+            if(AVOIDDashboard::hasSubmittedSurvey($person->getId(), static::$rpType) && $this->getBlobData("AVOID_Questions_tab0", "POSTAL", $person, YEAR, "RP_AVOID") != "CFN"){
                 $report->person = $person;
                 $wgOut->addHTML(self::getRow($person, $report));
             }

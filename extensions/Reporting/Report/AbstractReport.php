@@ -14,7 +14,9 @@ UnknownAction::createAction('AbstractReport::tinyMCEUpload');
 
 require_once("ReportConstants.php");
 require_once("ReportDashboardTableTypes.php");
-require_once("SpecialPages/ReviewerAssignments.php");
+if($config->getValue('networkName') != "AVOID"){
+    require_once("SpecialPages/ReviewerAssignments.php");
+}
 require_once("SpecialPages/{$config->getValue('networkName')}/Report.php");
 require_once("SpecialPages/{$config->getValue('networkName')}/DummyReport.php");
 if(file_exists("SpecialPages/{$config->getValue('networkName')}/ReportPDFs.php")){

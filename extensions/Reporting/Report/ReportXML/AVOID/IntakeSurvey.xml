@@ -566,7 +566,7 @@
         </ReportItem>
         <ReportItem id="behave2_avoid" blobItem="behave2_avoid" type="RadioReportItem" orientation="horizontal"  options="Most days (5-7 days)|Some days(2-4 days)|Rarely or not at all">
             <![CDATA[
-                    <h3>During the last 7 days on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming, or other fitness activities?</h3>
+                    <h3>During the last 7 days, on how many days did you do moderate physical activities like gardening, cleaning, bicycling at a regular pace, swimming, or other fitness activities?</h3>
                     <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>

@@ -4,9 +4,8 @@ class UserFrailtyIndexAPI extends API{
 
     static $checkanswers = array(
         "Physical Activity" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: During the last 7 days, how much time did you spend sitting during the day?
-                "ReportSection"=>"behaviouralassess",
+            array( //Question: During the last 7 days, how much time did you spend sitting during the day?
+                "ReportSection"=>"behaviouralassess", 
                 "blobItem"=>"behave1_avoid",
                 "answer_scores"=> array(
                     "Some of the day"=>0,
@@ -14,8 +13,7 @@ class UserFrailtyIndexAPI extends API{
                     "All day"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: During the last 7 days, on how many days did you walk for at least 10 minutes at a time?
+            array( //Question: During the last 7 days, on how many days did you walk for at least 10 minutes at a time?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"behave0_avoid",
                 "answer_scores"=> array(
@@ -24,8 +22,7 @@ class UserFrailtyIndexAPI extends API{
                     "Rarely or not at all"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //During the last 7 days, on how many days did you do moderate physical ... or other fitness activities?
+            array( //During the last 7 days, on how many days did you do moderate physical ... or other fitness activities?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"behave2_avoid",
                 "answer_scores"=> array(
@@ -36,8 +33,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Multiple Medications" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: How many prescription medications do you take?
+            array( //Question: How many prescription medications do you take?
                 "ReportSection"=>"behaviouralassess",
                 "blobItem"=>"meds1_avoid",
                 "answer_scores"=> array(
@@ -47,8 +43,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Fatigue" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: During the past week, how often have you felt that everything was an effort or you could not get going?
+            array( //Question: During the past week, how often have you felt that everything was an effort or you could not get going?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid1",
                 "answer_scores"=> array(
@@ -57,8 +52,7 @@ class UserFrailtyIndexAPI extends API{
                     "Most of the time"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: During your waking time, how often do you feel tired or fatigued?
+            array( //Question: During your waking time, how often do you feel tired or fatigued?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid2",
                 "answer_scores"=> array(
@@ -67,8 +61,7 @@ class UserFrailtyIndexAPI extends API{
                     "Most of the time"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: During the past month how would you rate your sleep quality overall?
+            array( //Question: During the past month how would you rate your sleep quality overall?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid9",
                 "answer_scores"=> array(
@@ -78,8 +71,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Mental Health" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: Over the past two weeks have you been bothered by not being able to stop or control worrying?
+            array( //Question: Over the past two weeks have you been bothered by not being able to stop or control worrying?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid3",
                 "answer_scores"=> array(
@@ -88,8 +80,7 @@ class UserFrailtyIndexAPI extends API{
                     "More days than not"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Over the past two weeks have you been bothered by little interest or pleasure in doing things?
+            array( //Question: Over the past two weeks have you been bothered by little interest or pleasure in doing things?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid4",
                 "answer_scores"=> array(
@@ -100,8 +91,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Memory" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: How would you rate your memory overall?
+            array( //Question: How would you rate your memory overall?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid5",
                 "answer_scores"=> array(
@@ -112,8 +102,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Falls and Balance" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: How many falls (including slips, trips, and falls to the ground) did you have in the last year?
+            array( //Question: How many falls (including slips, trips, and falls to the ground) did you have in the last year?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid6",
                 "answer_scores"=> array(
@@ -122,8 +111,7 @@ class UserFrailtyIndexAPI extends API{
                     "2 or more falls"=> 1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Do you have any problems keeping your balance?
+            array( //Question: Do you have any problems keeping your balance?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid21",
                 "answer_scores"=> array(
@@ -133,8 +121,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Walking Speed" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: Which of the following best describes your walking speed?
+            array( //Question: Which of the following best describes your walking speed?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid7",
                 "answer_scores"=> array(
@@ -143,8 +130,7 @@ class UserFrailtyIndexAPI extends API{
                     "Very slow/unable to walk"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Is the distance that you are able to walk limited by your health?
+            array( //Question: Is the distance that you are able to walk limited by your health?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"SYMPTOMS8SPECIFY",
                 "answer_scores"=> array(
@@ -156,8 +142,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Nutritional Status" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?
+            array( //Question: Has your food intake decreased over the last 3 months due to loss of appetite, digestive problems, chewing or swallowing difficulties?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid10",
                 "answer_scores"=> array(
@@ -165,8 +150,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Have you lost more than 3kg in weight over the last 3 months?
+            array( //Question: Have you lost more than 3kg in weight over the last 3 months?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid11",
                 "answer_scores"=> array(
@@ -177,8 +161,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Oral Health" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: Have you had any pain in your mouth while chewing?
+            array( //Question: Have you had any pain in your mouth while chewing?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid12",
                 "answer_scores"=> array(
@@ -186,8 +169,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?
+            array( //Question: Have you had to interrupt meals because of problems with poorly fitting dentures, not enough teeth, or a dry mouth?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid13",
                 "answer_scores"=> array(
@@ -197,8 +179,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Pain" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: How much bodily pain have you had during the past four weeks?
+            array( //Question: How much bodily pain have you had during the past four weeks?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid14",
                 "answer_scores"=> array(
@@ -207,8 +188,7 @@ class UserFrailtyIndexAPI extends API{
                     "Severe"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Do you have pain in your feet:
+            array( //Question: Do you have pain in your feet:
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid15",
                 "answer_scores"=> array(
@@ -219,8 +199,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Strength" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: Do you experience problems in your daily life due to weakness in your hands?
+            array( //Question: Do you experience problems in your daily life due to weakness in your hands?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid16",
                 "answer_scores"=> array(
@@ -229,8 +208,7 @@ class UserFrailtyIndexAPI extends API{
                     "Yes"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: Do you experience problems in your daily life due to weakness in your legs or feet?
+            array( //Question: Do you experience problems in your daily life due to weakness in your legs or feet?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid17",
                 "answer_scores"=> array(
@@ -241,8 +219,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Urinary Continence" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: During the last 3 months, have you leaked urine (even a small amount)? 
+            array( //Question: During the last 3 months, have you leaked urine (even a small amount)? 
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid18",
                 "answer_scores"=> array(
@@ -252,8 +229,7 @@ class UserFrailtyIndexAPI extends API{
             )
         ),
         "Sensory: Hearing and Vision" => array(
-            array(
-                "reportType"=> "RP_AVOID", //Question: In the past month, how much has your eyesight interfered with your life in general?
+            array( //Question: In the past month, how much has your eyesight interfered with your life in general?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid19",
                 "answer_scores"=> array(
@@ -262,8 +238,7 @@ class UserFrailtyIndexAPI extends API{
                     "A fair amount"=>1,
                 )
             ),
-            array(
-                "reportType"=> "RP_AVOID", //Question: In the past month, how much has your hearing interfered with your life in general?
+            array( //Question: In the past month, how much has your hearing interfered with your life in general?
                 "ReportSection"=>"clinicalfrailty",
                 "blobItem"=>"symptoms_avoid20",
                 "answer_scores"=> array(
@@ -305,9 +280,9 @@ class UserFrailtyIndexAPI extends API{
         return $data;
     }
     
-    function getSymptomsScore($user_id){
+    function getSymptomsScore($user_id, $reportType){
         $score = 0;
-        $ans = $this->getBlobValue(BLOB_ARRAY, YEAR, "RP_AVOID", "clinicalfrailty", "symptoms_avoid", $user_id);
+        $ans = $this->getBlobValue(BLOB_ARRAY, YEAR, $reportType, "clinicalfrailty", "symptoms_avoid", $user_id);
         if($ans != null && isset($ans["symptoms_avoid"])){
             foreach($ans["symptoms_avoid"] as $symptom){
                 if($symptom != "None"){
@@ -318,21 +293,21 @@ class UserFrailtyIndexAPI extends API{
         return $score;
     }
     
-    function getSelfPerceivedHealth($user_id){
-        $ans = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
+    function getSelfPerceivedHealth($user_id, $reportType){
+        $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
         if($ans != null && $ans <= 50){
             return 1;
         }
         return 0;
     }
     
-    function getBehavioralScores($user_id){
+    function getBehavioralScores($user_id, $reportType){
         $scores = array();
         
         // Activity
-        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave1_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave0_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "behave2_avoid", $user_id));
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "behave1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "behave0_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "behave2_avoid", $user_id));
         $score = 0;
         foreach($answers as $answer){
             if($answer == "All day" || $answer == "Rarely or not at all"){
@@ -342,11 +317,11 @@ class UserFrailtyIndexAPI extends API{
         $scores["Activity"] = ($score >= 1) ? 1 : 0;
         
         // Vaccination
-        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate2_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate3_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate4_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate5_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "vaccinate6_avoid", $user_id));
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "vaccinate2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "vaccinate3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "vaccinate4_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "vaccinate5_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "vaccinate6_avoid", $user_id));
         $score = 0;
         foreach($answers as $answer){
             if($answer == "No"){
@@ -356,16 +331,16 @@ class UserFrailtyIndexAPI extends API{
         $scores["Vaccination"] = ($score >= 1) ? 1 : 0;
         
         // Optimize Medication
-        $answer = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "meds3_avoid", $user_id);
+        $answer = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "meds3_avoid", $user_id);
         $scores["Optimize Medication"] = ($answer == "No") ? 1 : 0;
         
         // Interact
-        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact1_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact2_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact3_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact4_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact5_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "interact6_avoid", $user_id));
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact4_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact5_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "interact6_avoid", $user_id));
         $score = 0;
         foreach($answers as $answer){
             $score += self::interactScore($answer);
@@ -373,10 +348,10 @@ class UserFrailtyIndexAPI extends API{
         $scores["Interact"] = ($score >= 12) ? 1 : 0;
         
         // Diet and Nutrition
-        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet1_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet2_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet3_avoid", $user_id),
-                         $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "behaviouralassess", "diet4_avoid", $user_id));
+        $answers = array($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "diet1_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "diet2_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "diet3_avoid", $user_id),
+                         $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "diet4_avoid", $user_id));
         $score = 0;
         foreach($answers as $answer){
             if($answer == "No"){
@@ -387,13 +362,143 @@ class UserFrailtyIndexAPI extends API{
 
         return $scores;
     }
+    
+    function getHealthScores($user_id, $reportType){
+        $a1s = array("I have no problems in walking about",
+                     "I have slight problems in walking about",
+                     "I have moderate problems in walking about",
+                     "I have severe problems in walking about",
+                     "I am unable to walk about");
+                     
+        $a2s = array("I have no problems washing or dressing myself",
+                     "I have slight problems washing or dressing myself",
+                     "I have moderate problems washing or dressing myself",
+                     "I have severe problems washing or dressing myself",
+                     "I am unable to wash or dress myself");
+                     
+        $a3s = array("I have no problems doing my usual activities",
+                     "I have slight problems doing my usual activities",
+                     "I have moderate problems doing my usual activities",
+                     "I have severe problems doing my usual activities",
+                     "I am unable to do my usual activities");
+                     
+        $a4s = array("I have no pain or discomfort",
+                     "I have slight pain or discomfort",
+                     "I have moderate pain or discomfort",
+                     "I have severe pain or discomfort",
+                     "I have extreme pain or discomfort");
+                     
+        $a5s = array("I am not anxious or depressed",
+                     "I am slightly anxious or depressed",
+                     "I am moderately anxious or depressed",
+                     "I am severely anxious or depressed",
+                     "I am extremely anxious or depressed");
+    
+        $a1 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid", $user_id));
+        $a2 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid2", $user_id));
+        $a3 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid3", $user_id));
+        $a4 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid4", $user_id));
+        $a5 = trim($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid5", $user_id));
+        
+        $answers = array(array_search($a1, $a1s)+1,
+                         array_search($a2, $a2s)+1,
+                         array_search($a3, $a3s)+1,
+                         array_search($a4, $a4s)+1,
+                         array_search($a5, $a5s)+1);
+        
+        return $answers;
+    }
+    
+    function getCFS($user_id, $reportType){
+        $q66 = array_sum(array(($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help2_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help3_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help4_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help5_avoid", $user_id) == "Yes") ? 1 : 0));
+        
+        $q67 = array_sum(array(($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help6_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help7_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help8_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help9_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help10_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help11_avoid", $user_id) == "Yes") ? 1 : 0,
+                               ($this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "help12_avoid", $user_id) == "Yes") ? 1 : 0));
+        
+        $q63 = $this->getSymptomsScore($user_id, $reportType);
+        $q43 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "HEALTH_QUESTIONS", "healthstatus_avoid6", $user_id);
+        $q44 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "clinicalfrailty", "symptoms_avoid1", $user_id);
+        $q17 = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, "behaviouralassess", "behave2_avoid", $user_id);
+        
+        if($q66 > 0 && $q66 <= 2){
+            return 6;
+        }
+        else if ($q66 >= 3){
+            return 7;
+        }
+        else if($q66 == 0){
+            if($q67 >= 1 && $q67 <= 4){
+                return 5;
+            }
+            else if($q67 >= 5){
+                return 6;
+            }
+            else if($q67 == 0){
+                if($q63 >= 10){
+                    return 4;
+                }
+                else if($q63 >= 0 && $q63 <= 9){
+                    if($q43 >= 0 && $q43 <= 50){
+                        // Poor/Very Poor
+                        return 4;
+                    }
+                    else if($q43 >= 51 && $q43 <= 75){
+                        // Good/Very Good
+                        if($q44 == "Rarely" || $q44 == "Occasional amount"){
+                            if($q17 == "Rarely or not at all"){
+                                return 3;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 2;
+                            }
+                        }
+                        else if($q44 == "Most of the time"){
+                            return 4;
+                        }
+                    }
+                    else if($q43 >= 76){
+                        // Excellent
+                        if($q44 == "Rarely"){
+                            if($q17 == "Rarely or not at all"){
+                                return 2;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 1;
+                            }
+                        }
+                        else if($q44 == "Occasional amount"){
+                            if($q17 == "Rarely or not at all"){
+                                return 3;
+                            }
+                            else if($q17 == "Most days (5-7 days)" || $q17 == "Some days(2-4 days)"){
+                                return 2;
+                            }
+                        }
+                        else if($q44 == "Most of the time"){
+                            return 4;
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
 
-    function getFrailtyScore($user_id){
+    function getFrailtyScore($user_id, $reportType="RP_AVOID"){
         $scores = array();
         foreach(self::$checkanswers as $category => $categories){
             $score = 0;
             foreach($categories as $answer){
-                $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $answer["reportType"], $answer["ReportSection"], $answer["blobItem"], $user_id);
+                $ans = $this->getBlobValue(BLOB_TEXT, YEAR, $reportType, $answer["ReportSection"], $answer["blobItem"], $user_id);
                 $check_answers_list = $answer["answer_scores"];
                 foreach($check_answers_list as $key=>$value){
                     if($key == $ans){
@@ -403,15 +508,17 @@ class UserFrailtyIndexAPI extends API{
             }
             $scores[$category] = $score;
         }
-        $scores["Health Conditions"] = $this->getSymptomsScore($user_id);
-        $scores["Self-Perceived Health"] = $this->getSelfPerceivedHealth($user_id);
+        $scores["Health Conditions"] = $this->getSymptomsScore($user_id, $reportType);
+        $scores["Self-Perceived Health"] = $this->getSelfPerceivedHealth($user_id, $reportType);
         $scores["Total"] = 0;
         foreach($scores as $key => $score){
             if($key != "Total"){
                 $scores["Total"] += $score;
             }
         }
-        $scores["Behavioral"] = $this->getBehavioralScores($user_id);
+        $scores["Behavioral"] = $this->getBehavioralScores($user_id, $reportType);
+        $scores["Health"] = $this->getHealthScores($user_id, $reportType);
+        $scores["CFS"] = $this->getCFS($user_id, $reportType);
         
         // Labels
         if($scores["Total"] >= 0 && $scores["Total"] <= 3){
