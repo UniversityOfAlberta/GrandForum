@@ -47,9 +47,14 @@
                     </div>
                     <p><span class='program-text'>What’s required?</span> <b>Short training!</b> Attend a 1-hour training session. Training is interactive and fun and provided at <b>no cost</b>.</p>
                     
-                    <span class='program-text'>Register for an upcoming training date:</span><br />
+                    <p><span class='program-text'>Register for an upcoming training date:</span></p>
             ]]>
         </Static>
+        <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
+            <![CDATA[
+                <b>Phone Number:</b> {$item} (optional)<br />
+            ]]>
+        </ReportItem>
         <ReportItem id="register6" type="Checkbox" options="Thursday January 26, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
             <![CDATA[
                 <!--There are currently no scheduled training dates.
@@ -90,6 +95,10 @@
                         <tr>
                             <td><b>Date Submitted:</b></td>
                             <td>{time2date({$timestamp})}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number:</b></td>
+                            <td>{getArray(RP_COMMUNITY_CONNECTORS,COMMUNITY,PHONE,0,{$user_id},0}</td>
                         </tr>
                         <tr>
                             <td valign='top'><b>Training Date:</b></td>

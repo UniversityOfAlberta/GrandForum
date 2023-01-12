@@ -40,10 +40,15 @@
                                 </ul>
                             </div>
                             <!--span class='program-text'>Register for a FREE upcoming 10-week session:</span><br />
-                            <div class='program-button' style='width: 14em;'>{$item}</div><br />
-                            <span class='program-text'>You will be contacted with further details</span-->
-                            <b>This program is now full</b>
+                            <div class='program-button' style='width: 14em;'>{$item}</div><br /-->
                         
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
+            <![CDATA[
+                <!--b>Phone Number:</b> {$item} (optional)<br />
+                <p><span class='program-text'>You will be contacted with further details</span></p-->
+                <b>This program is now full</b>
             ]]>
         </ReportItem>
         <!--ReportItem id="submit" type="SubmitEmail">
@@ -60,6 +65,10 @@
                     <tr>
                         <td><b>Date Submitted:</b></td>
                         <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone Number:</b></td>
+                        <td>{getArray(RP_OTAGO,OTAGO,PHONE,0,{$user_id},0}</td>
                     </tr>
                     <tr>
                         <td valign='top'><b>Training Date:</b></td>
