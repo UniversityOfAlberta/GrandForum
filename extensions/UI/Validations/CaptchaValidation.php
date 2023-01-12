@@ -11,7 +11,7 @@ class CaptchaValidation extends UIValidation {
         
         $post_data = array(
             'secret' => $config->getValue('reCaptchaSecretKey'),
-            'response' => $_POST['g-recaptcha-response']
+            'response' => @$_POST['g-recaptcha-response']
         );
         
         // Prepare new cURL resource
