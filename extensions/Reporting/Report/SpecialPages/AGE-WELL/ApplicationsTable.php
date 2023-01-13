@@ -282,6 +282,7 @@ class ApplicationsTable extends SpecialPage{
     function generateECR(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_ECR_FEB', null, 2023, "2023-02"));
         $tabbedPage->addTab(new ApplicationTab('RP_ECR_AUG', null, 2022, "2022-08"));
         $tabbedPage->addTab(new ApplicationTab('RP_ECR', null, 2022, "2022-04"));
         $wgOut->addHTML($tabbedPage->showPage());
