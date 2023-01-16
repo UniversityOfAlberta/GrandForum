@@ -70,7 +70,7 @@ class Report extends AbstractReport{
                 display: none;
             }
         </style>");
-        $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js'></script>");
+        $wgOut->addScript("<script src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/avoid.js?".filemtime('extensions/Reporting/Report/SpecialPages/AVOID/avoid.js')."'></script>");
         $wgOut->addHTML("<div title='Become a Member' style='display:none;' id='becomeMemberDialog'>
                             <div id='memberMessages'></div>
                             <p>After Completing a Healthy Aging Assessment, Members will Receive:</p>

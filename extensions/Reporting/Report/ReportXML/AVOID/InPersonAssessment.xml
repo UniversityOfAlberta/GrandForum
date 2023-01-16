@@ -1018,7 +1018,7 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_bowel2_2" blobItem="avoid_bowel2_2" type="Textarea" rich="false">
+        <ReportItem id="avoid_bowel3_2" blobItem="avoid_bowel3_2" type="Textarea" rich="false">
             <![CDATA[
                     Comments:
                     <br />
@@ -1267,7 +1267,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_nutrition1_2" blobItem="avoid_nutrition1_2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_nutrition1_2_2" blobItem="avoid_nutrition1_2_2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
             <![CDATA[
                 Any unplanned weight loss in the last year?
                 <div class="requiredField">{$item}</div>
@@ -1849,7 +1849,7 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_lifestyle6" blobItem="avoid_lifestyle6" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Are you aware there are resources to support you? 

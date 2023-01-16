@@ -6,6 +6,7 @@ $wgExtensionMessagesFiles['InPersonAssessment'] = $dir . 'InPersonAssessment.i18
 $wgSpecialPageGroups['InPersonAssessment'] = 'reporting-tools';
 
 $wgHooks['TopLevelTabs'][] = 'InPersonAssessment::createTab';
+$wgHooks['SubLevelTabs'][] = 'InPersonAssessment::createSubTabs';
 
 function runInPersonAssessment($par) {
     InPersonAssessment::execute($par);
@@ -72,6 +73,17 @@ class InPersonAssessment extends SpecialPage {
         if($me->isRole("Assessor")){
             $selected = @($wgTitle->getText() == "InPersonAssessment" || ($wgTitle->getText() == "Report" && @$_GET['report'] == "InPersonAssessment")) ? "selected" : false;
             $GLOBALS['tabs']['InPersonAssessment'] = TabUtils::createTab("Assessor", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonAssessment", $selected);
+        }
+        return true;
+    }
+
+
+    static function createSubTabs(&$tabs){
+        global $wgUser, $wgServer, $wgScriptPath, $wgTitle;
+            $me = Person::newFromWgUser();
+            if($me->isRole("Assessor")){
+                $selected = @($wgTitle->getText() == "InPersonAssessment") ? "selected" : false;
+            $tabs['InPersonAssessment']['subtabs'][] = TabUtils::createSubTab("In-Person Summary Table", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonAssessment", $selected);
         }
         return true;
     }
