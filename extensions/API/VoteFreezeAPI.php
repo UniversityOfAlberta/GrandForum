@@ -13,7 +13,8 @@
                $me->isRole(DEAN) || 
                $me->isRole(HR) || 
                $me->isRole(ADMIN) || 
-               $me->isSubRole("FEC")){
+               $me->isSubRole("FEC") ||
+               $me->isSubRole("ATSEC")){
                 $freeze = DBFunctions::select(array('grand_report_blobs'),
                                               array('rp_subitem', 'data'),
                                               array('year' => YEAR,
