@@ -585,23 +585,24 @@ abstract class AbstractReport extends SpecialPage {
                 switch($type){
                     case "Role":
                         if($perm['perm']['role'] == INACTIVE && !$me->isActive()){
-                            $rResult = true;
+                            $rResultTmp = true;
                         }
                         else{
                             if(strstr($perm['perm']['role'], "+") !== false){
-                                $rResult = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
+                                $rResultTmp = ($rResult || $me->isRoleAtLeastDuring(constant(str_replace("+", "", $perm['perm']['role'])), $perm['start'], $perm['end']));
                             }
                             else{
                                 $isMember = true;
                                 if($this->project != null && $this->project->getId() != 0){
                                     $isMember = $me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end'], $this->project);
                                 }
-                                $rResult = ($rResult || ($me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']) && $isMember));
+                                $rResultTmp = ($rResult || ($me->isRoleDuring($perm['perm']['role'], $perm['start'], $perm['end']) && $isMember));
                             }
                         }
                         if($perm['perm']['subType'] != ""){
-                            $rResult = ($rResult && ($me->isSubRole($perm['perm']['subType'])));
+                            $rResultTmp = ($rResultTmp && ($me->isSubRole($perm['perm']['subType'])));
                         }
+                        $rResult = ($rResult || $rResultTmp);
                         break;
                     case "Project":
                         $nProjectTags++;
