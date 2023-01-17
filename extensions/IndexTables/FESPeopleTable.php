@@ -29,6 +29,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Email</th>
                     <th>Employee ID</th>
                     <th>Roles</th>
+                    <th style='display:none;'>Role Comments</th>
                     <th>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>
                     <th>Projects</th>
                     <th>Start Date</th>
@@ -70,6 +71,10 @@ class FESPeopleTable extends SpecialPage {
         
         foreach($people as $person){
             $roles = $person->getRoles(true);
+            $roleComments = array();
+            foreach($roles as $role){
+                $roleComments[] = $role->getComment();
+            }
             $earliestDate = EOT;
             $latestDate = "0000-00-00";
             foreach($roles as $role){
@@ -108,6 +113,7 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$person->getEmail()}</td>
                              <td>{$person->getEmployeeId()}</td>
                              <td>{$person->getRoleString()}</td>
+                             <td style='display:none;'>".implode("<br />", $roleComments)."</td>
                              <td>".implode(", ", $positions)."</td>
                              <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
                              <td>{$earliestDate}</td>
