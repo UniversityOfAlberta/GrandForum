@@ -121,7 +121,7 @@ class PersonDemographicsTab extends AbstractEditableTab {
         global $wgOut, $wgUser, $config, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
         if($me->isAllowedToEditDemographics($person)){
-            $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("she/her", "he/him", "they/them"));
+            $pronounsField = new ComboBox("pronouns", "Pronouns", $person->getPronouns(), array("", "she/her", "he/him", "they/them"));
             $genderField = new SelectBox("gender", "Gender", $person->getGender(), array("Female", "Male", "Gender-Fluid", "Non-Binary", "Two-Spirit", "Other (not listed)", "I prefer not to answer"));
             $indigenousField = new SelectBox("indigenousStatus", "Indigenous", $person->getIndigenousStatus(), array("Yes", "No", "I prefer not to answer"));
             $disabilityField = new SelectBox("disabilityStatus", "Disability", $person->getDisabilityStatus(), array("Yes", "No", "I prefer not to answer"));
