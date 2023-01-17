@@ -150,7 +150,7 @@
             <description ccv_id="6480fa19889345619e778b394ad1445e" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
-        <Publication type="Scholarly Refereed Journal" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
+        <Publication type="Peer-Reviewed Journal Article" ccv_id="9a34d6b273914f18b2273e8de7c48fd6" ccv_name="Journal Articles" status="Submitted|In Preparation|Revision Requested|Under Review|Accepted|In Press|Published|e-pub, ahead of print|Rejected">
             <title ccv_id="f3fd4878d47c4e83aef6959620ba4870" ccv_name="Article Title"></title>
             <statuses ccv_id="3b56e4362d6a495aa5d22a1de5914741" ccv_name="Publishing Status">
                 <status lov_id="00000000000000000000000100001700" lov_name="Submitted">Submitted</status>
