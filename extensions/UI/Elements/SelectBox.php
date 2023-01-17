@@ -4,6 +4,7 @@ class SelectBox extends UIElement {
 
     var $options = array();
     var $forceKey = false;
+    var $emptyIfEmpty = false;
     
     function SelectBox($id, $name, $value, $options, $validations=VALIDATE_NOTHING){
         parent::UIElement($id, $name, $value, $validations);
@@ -28,7 +29,7 @@ class SelectBox extends UIElement {
             $html .= "<option value='".str_replace("'", "&#39;", $value)."' $selected>{$option}</option>";
         }
         if(!is_array($this->value)){
-            if(!$selectedFound && $this->value != "" && !in_array($this->value, $this->options)){
+            if(!$selectedFound && ($this->value != "" || $this->emptyIfEmpty) && !in_array($this->value, $this->options)){
                 $value = sanitizeInput($this->value);
                 $html .= "<option value='".str_replace("'", "&#39;", $value)."' selected>{$value}</option>";
             }
