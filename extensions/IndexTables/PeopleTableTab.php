@@ -237,7 +237,7 @@ class PeopleTableTab extends AbstractTab {
                         $projs[$project->getId()] = "<a href='{$project->getUrl()}'>{$project->getName()}</a> $subprojects";
                     }
                 }
-                $html .= "<td align='left' style='white-space: nowrap;'>".implode("<br />", $projs)."</td>";
+                $html .= "<td align='left'>".implode(", ", $projs)."</td>";
             }
             // Current University
             $university = $person->getUniversity();

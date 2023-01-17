@@ -97,7 +97,7 @@ class FESPeopleTable extends SpecialPage {
             foreach($universities as $uni){
                 $positions[$uni['position']] = $uni['position'];
             }
-            $projectsRow = implode("<br />", $projs);
+            $projectsRow = implode(", ", $projs);
             if($person->isActive()){
                 $status = "Active";
             }
@@ -115,7 +115,7 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$person->getRoleString()}</td>
                              <td style='display:none;'>".implode("<br />", $roleComments)."</td>
                              <td>".implode(", ", $positions)."</td>
-                             <td align='left' style='white-space: nowrap;'>{$projectsRow}</td>
+                             <td align='left'>{$projectsRow}</td>
                              <td>{$earliestDate}</td>
                              <td>{$latestDate}</td>
                              <td>{$alumni->recruited}</td>
