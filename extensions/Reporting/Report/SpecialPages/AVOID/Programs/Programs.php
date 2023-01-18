@@ -19,8 +19,13 @@ class Programs extends SpecialPage {
 	}
 	
 	static function getProgramsJSON(){
+        global $config;
         $dir = dirname(__FILE__) . '/';
-        $json = json_decode(file_get_contents("{$dir}programs.json"));
+        $n = "";
+        $n = ($config->getValue('dbName') == "forum2") ? "2" : $n;
+        $n = ($config->getValue('dbName') == "forum3") ? "3" : $n;
+        $n = ($config->getValue('dbName') == "forum4") ? "4" : $n;
+        $json = json_decode(file_get_contents("{$dir}programs{$n}.json"));
         return $json;
     }
 	
@@ -44,11 +49,17 @@ class Programs extends SpecialPage {
                 $membersOnly = ($me->isRole("Provider") && $program->id == "PeerCoaching") ? "members-only" : "";
                 if($program->category == $category){
                     $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-                    $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
-                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                        <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
-                    </a>");
-                    $n++;
+                    if($program->id == ""){
+                        // Placeholder text
+                        $wgOut->addHTML("<span class='program-body'>{$program->title}</span>");
+                    }
+                    else{
+                        $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
+                            <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
+                            <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
+                        </a>");
+                        $n++;
+                    }
                 }
             }
             if($n % $cols > 0){
