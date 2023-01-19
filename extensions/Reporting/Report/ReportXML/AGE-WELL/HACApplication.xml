@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application" reportType="RP_HAC" pdfType="RPTP_HAC" year="2023" allowIdProjects="true" pdfFiles="HACApplicationPDF" ajax="true" disabled="false">
+    <Permissions>
+        
+    </Permissions>
+    <ReportSection id="description" tooltip="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application" name="Program Description" type="ReportSection" title="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application">
+        <Static>
+            <![CDATA[
+                <p>The 2023 Catalyst Funding Program in Healthy Aging aims to identify and support emerging research in technology-enabled healthy aging, foster networking and collaboration, and build capacity in aging innovation research in Canada.</p>
+                
+                It is expected that small-scale projects or pilot studies funded through this call will provide a foundation for future larger research projects or funding applications. Examples of supported activities for this call include:
+                <ul>
+                    <li>Feasibility studies aiming to generate preliminary data, observations, or knowledge;</li>
+                    <li>Advancement of novel products, including technologies, with the potential for significant impact, but that may be currently unsupported by proof of concept or preliminary data;</li>
+                    <li>Development of new tools, methodologies, protocols, theoretical models or frameworks;</li>
+                    <li>Planning and/or development activities of expert teams (e.g., multi-disciplinary, trans-disciplinary, etc.) coming together to address healthy aging research priorities; and</li>
+                    <li>Secondary analyses of existing data sets to improve the evidence for decision-making and create new knowledge.</li>
+                </ul>
+                
+                <h3>PRIORITY AREAS</h3>
+                <ul>
+                    <li>Innovative solutions that empower older adults to live safe, healthy, and socially connected lives within their homes and/or communities.</li>
+                    <li>Innovative solutions focused on the role, health and well-being of care partners supporting older adults.</li>
+                    <li>Building safer, more accessible, or more connected communities.</li>
+                    <li>Development and accelerated dissemination of best practices, guidelines, or standards.</li>
+                    <li>Solutions that include and meet the needs of vulnerable and equity-deserving groups of people.</li>
+                    <li>Quality improvement studies that investigate novel and innovative ways to improve the lives of older Canadians.</li>
+                </ul>
+                
+                <h3>APPLICATION REQUIREMENTS</h3>
+                Proposals will be a maximum of 2,500 words (approx. 5 pages) in length, excluding lay summary, budget materials and bios. They <i>must</i>:
+                <ul>
+                    <li>Relate to the development of technology-enabled solutions or a novel technology to support healthy aging, which can include complementary social and healthcare innovations (e.g., new service-delivery models, policy recommendations, and prevention strategies) related to the solution.</li>
+                    <li>Outline how at least one of the priority areas listed above will be addressed by the project.</li>
+                    <li>Map to at least one of AGE-WELL’s <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>8 Challenge Areas</a>.</li>
+                    <li>Include long-term (multi-year) and short-term objectives that situate the present one-year project within a larger project plan.</li>
+                    <li>Consider equity, diversity, inclusion (EDI) and indigeneity in terms of research design, team composition, and impact of proposed solution.</li>
+                    <li>Include a plan to engage older adults and/or care partners in the research.</li>
+                    <li>Outline how sex and gender might be taken into account in their research, methods, analysis, and interpretation, or explain why sex and/or gender are not applicable to the research proposal.</li>
+                </ul>
+                
+                <p><b>Please review carefully the information and updates in the complete call for proposals: <a target='_blank' href='https://agewell-nce.ca/catalyst-funding-program-in-healthy-aging'>https://agewell-nce.ca/catalyst-funding-program-in-healthy-aging</a></b></p>
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="pl" type="Text" blobItem="PL" width="250px">
+            <![CDATA[
+                <table class="wikitable">
+                    <tr>
+                        <td class="label">*Project Lead(s):</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Institution(s):</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Project Title:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                </table>
+                <p>*Project Lead is equivalent to “Principal Investigator”. A brief bio (free-form, maximum 1,500 words) is required for any team member(s) designated this role. See Section C of this application module.</p>
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="PL" rich="true" limit="250">
+            <![CDATA[
+                <h3>Lay Summary</h3>
+                <p>Provide a lay summary that includes a problem statement, objectives, activities and anticipated impact(s) of the project. Do not include a scientific abstract: the intent of this summary is to communicate the purpose and core elements of the project to audiences who may not have scientific training. This summary may be used for future communications if the proposal is successful.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" max="6" sizes="180">
+            <![CDATA[
+                <h3>Keywords (maximum 6)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds" type="Text" blobItem="FUNDS" width="4em">
+            <![CDATA[
+                <h3>Total amount of funds requested (up to $50,000)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="challenges" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGES" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment">
+            <![CDATA[
+                <h3>The proposed project is best aligned with the following AGE-WELL Challenge Area(s) (check all that apply)</h3>
+                {$item}
+                
+                <p>(AGE-WELL Challenge Areas descriptions are available here: <a href='https://agewell-nce.ca/challenge-areas' target='_blank'>AGE-WELL | Challenge Areas (agewell-nce.ca)</a></p>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="priorities" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PRIORITIES" options="Innovative solutions that empower older adults to live safe, healthy, and socially connected lives within their homes and/or communities.|Innovative solutions focused on the role, health and well-being of care partners supporting older adults.|Building safer, more accessible, or more connected communities|Development and accelerated dissemination of best practices, guidelines, or standards|Solutions that include and meet the needs of vulnerable and equity-deserving groups of people|Quality improvement studies that investigate novel and innovative ways to improve the lives of older Canadians.">
+            <![CDATA[
+                <h3>PRIORITY AREAS (check all that apply)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="special1" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL1" options="The proposed study involves underrepresented groups, including First Nations, Inuit and Métis Peoples of Canada, persons living with disabilities, members of visible minority/racialized groups, and members of LGBTQIA2S+ communities." optional="true">
+            <![CDATA[
+                <h3>SPECIAL FUNDING STREAMS (select only if applicable)</h3>
+                <b><span id='special1'>{$item}</span></b>
+            ]]>
+        </ReportItem>
+        <ReportItem id="special1a" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL1A" options="at least one member who self-identifies as Indigenous (First Nations, Inuit or Métis)|or demonstrates a track record of meaningful and culturally safe involvement with Indigenous Peoples" optional="true">
+            <![CDATA[
+                <div id='special1div' style='margin-left: 3em; margin-top: 1em;'>
+                    For applications involving Indigenous populations (including First Nations, Inuit and Métis), the research team includes:
+                    {$item}<br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="special1b" type="Textarea" blobItem="SPECIAL1B" rich="true" limit="100">
+            <![CDATA[
+                    Provide a brief description of your project’s alignment to this funding stream.  Greater detail will be requested in the project proposal section.
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#special1 input[type=checkbox]").change(function(){
+                        if($(this).is(":checked")){
+                            $("#special1div").show();
+                        }
+                        else{
+                            $("#special1div").hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
+        
+        <ReportItem id="special2" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL2" options="The proposed study involves projects that focus on novel and innovative ways to prevent, mitigate, or reverse frailty, or studies that investigate novel ways to diagnose, treat, support and/or care for those living with frailty." optional="true">
+            <![CDATA[
+                <br />
+                <b><span id='special2'>{$item}</span></b> Studies must meaningfully integrate older Canadians and, if applicable, those living with frailty and/or their families and caregivers in planning, designing and executing the study, and interpreting study findings. Where appropriate, protocols must utilize frailty assessment of study participants using a published and validated frailty assessment instrument appropriate for the care setting(s).
+            ]]>
+        </ReportItem>
+        <ReportItem id="special2a" type="Textarea" blobItem="SPECIAL2A" rich="true" limit="100">
+            <![CDATA[
+                <div id='special2div' style='margin-left: 3em; margin-top: 1em;'>
+                    Provide a brief description of your project’s alignment to this funding stream. Greater detail will be requested in the project proposal section.
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#special2 input[type=checkbox]").change(function(){
+                        if($(this).is(":checked")){
+                            $("#special2div").show();
+                        }
+                        else{
+                            $("#special2div").hide();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
+        
+    </ReportSection>
+    
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
+            <![CDATA[
+                <table>
+                <tr>
+                    <td colspan='2'>
+                        <p><b>Please note that the information provided here will <i>not</i> be shared. It will not be used to adjudicate applications and will not affect your ranking. This information is solely collected so the platform can monitor the equity performance of programs and design new measures that achieve greater equity, diversity and inclusion in the research enterprise.</b></p>
+                        
+                        <p>All applications require you to complete a self-identification form; however, if you would prefer not to self-identify and/or provide the requested information, you may select “I prefer not to answer" for any or all of the questions.</p>
+                        
+                        <p>Any self-identification statistics shared will always be reported in aggregate form to ensure protection of the identity of any individual.</p>
+                        
+                        <p>The collection of this information is an essential part of efforts to improve EDI in science and research. For further information, please see the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI and Canada's 50-30 Challenge.</p>
+                        
+                        <p>See the Tri-Agency's policy on Self-Identification Data Collection in Support of EDI here: <a href='https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html' target='_blank'>https://science.gc.ca/eic/site/063.nsf/eng/h_97615.html</a></p>
+                    </td>
+                </tr>
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Age:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="GENDER" orientation="vertical" options="Woman|Man|Gender fluid, nonbinary and/or Two Spirit|LGBTQ2IA+|My gender identity and/or sexual orientation is not listed above.|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr>
+                    <td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Self-Identified Gender Identity and Sexual Orientation:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="gender_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="GENDER_OTHER" optional="true">
+            <![CDATA[
+                    If your gender identity or sexual orientation were not listed, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="indigenous" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="INDIGENOUS" orientation="vertical" options="First Nations (Includes status, treaty or registered Indians, as well as non-status and non-registered Indians)|Métis|Inuit/Inuk|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify as a member of any of the following Indigenous populations:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="ETHNICITIES" orientation="vertical" options="Black|Persons of mixed origin (with one parent in one of the Visible Minority communities listed)|Japanese|Filipino|Non-white West Asian, North African/Arab (includes Egyptian; Libyan; Lebanese; Iranian; etc.)|Non-white Latin American (includes Indigenous peoples from Central and South America, etc.)|Chinese|Korean|South Asian/East Indian (includes Indian from India; Bangladeshi; Pakistani; East Indian from Guyana, Trinidad, East Africa; etc.)|Southeast Asian (includes Burmese, Cambodian, Laotian; Thai; Vietnamese; etc.)|White|My ethnicity is not listed here|I prefer not to answer|Not applicable" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Do you identify with any of the following ethnicities:</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="ethnicities_other" type="Text" width="300px" blobType="BLOB_TEXT" blobItem="ETHNICITIES_OTHER" optional="true">
+            <![CDATA[
+                    If your ethnicity was not listed above, and you would like to specify, please do so here:<br />
+                    {$item}
+                    </td>
+                </tr>
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="disability" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="DISABILITY" orientation="vertical" options="Yes|No|I prefer not to answer" optional="true">
+            <![CDATA[
+                <tr><td align='right' valign='top' style='padding-top:5px;width:210px;'><b>Are you a person living with a disability?</b></td><td valign="top" style='padding-top:5px;padding-bottom:5px;'>{$item}</td></tr>
+                </table>
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
+            <![CDATA[
+                <p>The research plan should provide a framework for the operation of the project. Details of project alignment to special funding streams identified in Section A, if applicable, should be included in this section.</p>
+                
+                <p>Projects must consider equity, diversity, inclusion and indigeneity in terms of research design, team composition and impact of proposed solution.</p>
+                
+                <p>Applicants are encouraged to review the following resources when considering how to integrate EDI in their research: <a href='https://cihr-irsc.gc.ca/e/52553.html' target='_blank'>CIHR Equity, diversity and inclusion resources</a>.</p>
+                
+                <h3>1. Background and Rationale (Maximum of 500 words, approx. 1 page)</h3>
+                <p>Describe the proposed activities and the current state-of-the-art in the field with appropriate references, including gaps in knowledge, solutions, and needs that will be addressed by your research.</p>
+                <p>Eligible projects must relate to the development of technology-enabled solutions or a novel technology to support healthy aging, which can include complementary social and healthcare innovations (e.g., new service-delivery models, policy recommendations, and prevention strategies) related to the solution.</p>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="1500">
+            <![CDATA[
+                <h3>2. Objectives, Methods and Deliverables (Maximum of 1,500 words, approx. 3 pages)</h3>
+                
+                <p><b>2.1. Objectives</b></p>
+                <p>Provide an overview of research plans, including the scope of the one-year project, as well as a brief statement of longer-term objectives (multi-year) that situate the present project within a larger project plan.</p>
+                <p>Describe how the priority area identified in Section A will be addressed by this project.</p>
+                <p>Identify and describe your research questions and objectives for the proposed one-year project.</p>
+
+                <p><b>2.2. Approach and methods</b></p>
+                <p>Describe the approaches and methodologies that will be used in the project to achieve its objectives.</p>
+                <p>This section must describe how objectives identified in section 2.1 will be met by the proposed one-year program of research.</p>
+                <p>Describe how older adults and/or care partners will be involved in the research, including co-creation methods.</p>
+                <p>Describe how sex and gender will be considered in the research, methods, analysis and interpretation.</p>
+                <p>Applicants should refer to notes in the preamble to this section on addressing equity, diversity and inclusion.</p>
+
+                <p><b>2.3. Innovation and impact</b></p> 
+                <p>Describe the novelty and originality of the proposed program of research.</p>
+                <p>Describe the anticipated scientific outputs of this research. This may include the relationship of the research project to similar work conducted elsewhere in Canada and internationally.</p>
+
+                <p><b>2.4. Timelines and deliverables/milestones</b></p>
+                <p>Describe major milestones and deliverables for this one-year project.</p>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="partnerships" type="Textarea" blobItem="PARTNERSHIPS" rich="true" limit="250">
+            <![CDATA[
+                <h3>3. Project Team and Partnerships (Maximum of 250 words, plus table)</h3>
+                
+                <p>Projects are encouraged to include team members from more than one discipline. Projects must identify a Knowledge User with relevant lived experience and expertise. Applicants should consider contributing to the development of trainees or Highly Qualified Personnel (HQP) through their inclusion as team members.</p>
+                
+                <p>Applicants are encouraged to consider their processes of identifying, recruiting and selecting research team personnel based on equity, diversity and inclusion best practices as one means to enhance excellence in research, training and outreach.</p>
+                
+                <p>Applicants are encouraged to include partner organizations in their project plans, including as part of any knowledge mobilization or commercialization planning. Such organizations should be described in the application, <i>even where the partnership is at a very early stage of development</i>. For reporting purposes, all partnership activities should be described in the application.</p>
+                
+                <p>Briefly describe the expertise, role and contributions of all project personnel listed in the table below.</p>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Text|Text|Text|Text" labels="Project Role|Name|Title|Institution" sizes="150|200|150|200">
+            <![CDATA[
+                <h3>Project Personnel</h3>
+                <p>List all identified project team members, including Project Lead(s), Co-Investigators, Collaborators, Highly Qualified Personnel (HQP), Knowledge User(s) and Partners (<a href='https://cihr-irsc.gc.ca/e/34190.html#r6' target='_blank'>Glossary of Funding-Related Terms</a>).  A brief bio (free form, maximum 1,500 words) for identified Project Lead(s) must be appended in the next section.</p>
+                <p>For applications involving Indigenous populations (including First Nations, Inuit and Métis), the research team must include at least one member who self-identifies as Indigenous (First Nations, Inuit or Métis) or demonstrates a track record of meaningful and culturally safe involvement with Indigenous Peoples.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
+            <![CDATA[
+                <h3>4. Budget and Budget Justification (Budget spreadsheet plus 250 word budget justification)</h3>
+                
+                <p>AGE-WELL and CFN abide by the funding rules of the Tri-Council Agencies and the Canadian Institutes of Health Research (CIHR) in particular. Please consult the <a href='https://www.nserc-crsng.gc.ca/interagency-interorganismes/TAFA-AFTO/guide-guide_eng.asp' target="_blank">Tri-Agency Guide on Financial Administration</a> about eligibility, eligible grant expenses, partner contributions etc.</p>
+                
+                <p>Complete and upload an overall one-year project budget using the template provided below.</p>
+                
+                <p><a href='{$wgServer}{$wgScriptPath}/data/AGE-WELL - CFN Budget Template.xlsx'>Budget Template</a></p>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true" limit="250">
+            <![CDATA[
+                <p>Provide a detailed budget justification for planned project expenses.</p>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" tooltip="C. UPLOAD DOCUMENTS" title="C. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Upload Project Lead(s) Bio(s) (please combine into a single PDF if there is more than one Project Lead).</h3>
+                
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="review" tooltip="Review of on-line report content" name="Review" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="report_review" type="ReviewReportItem">
+            <![CDATA[{$item}]]>
+        </ReportItem>
+    </ReportSection>
+    <ReportSection id="submit" tooltip="PDF generation" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$user_email}" />
+    </ReportSection>
+</Report>
