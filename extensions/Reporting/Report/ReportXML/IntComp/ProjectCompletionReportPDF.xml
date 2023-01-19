@@ -122,7 +122,7 @@
     <ReportSection id="communication" tooltip="Communication between PI and Huawei Technical Lead(s)" name="Communication" title="Communication between PI and Huawei Technical Lead(s)" blobSection="FUNDS" type="EditableReportSection">
         <ReportItem id="communication" type="Radio" blobItem="COMMUNICATION" orientation="horizontal" options="1|2|3|4|5" blobType="BLOB_TEXT">
             <![CDATA[
-                <h3>Throughout the project, how effective was the communication between you and your corresponding Huawei Technical Lead(s)?</h3>
+                <h3>Throughout the project, how effective was the communication between you and your corresponding Huawei Technical Lead(s)? (rating scale from 1-Not Effective to 5-Very Effective)</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
@@ -136,7 +136,7 @@
     <ReportSection id="feedback" tooltip="Feedback (optional)" name="Feedback" title="Feedback (optional)" blobSection="FEEDBACK" type="EditableReportSection" pagebreak="false">
         <ReportItem id="rating" type="Radio" blobItem="RATING" orientation="horizontal" options="1|2|3|4|5" blobType="BLOB_TEXT">
             <![CDATA[
-                <h3>Overall rating on your UAHJIC project experience</h3>
+                <h3>Overall rating on your UAHJIC project experience (rating scale from 1-Very Dissatisfied to 5-Very Satisfied)</h3>
                 {$item}<br />
             ]]>
         </ReportItem>
