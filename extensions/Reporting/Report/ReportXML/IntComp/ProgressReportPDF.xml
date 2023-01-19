@@ -163,11 +163,17 @@
                     </tr>
             ]]> 
         </ReportItem-->
-        <ReportItem id="budget_overview4" type="Integer" blobItem="BUDGET_OVERVIEW4" blobType="BLOB_TEXT" size="10">
+        <ReportItem id="budget_total" type="Integer" blobItem="BUDGET_TOTAL" blobType="BLOB_TEXT" size="10">
             <![CDATA[
                 <h2>Budget Overview</h2>
-                <b>Total Funding received so far:</b> <br />
                 <table class='wikitable' frame='box' rules='all'>
+                    <tr>
+                        <td><b>Total Funding received so far:</b></td><td>${$item}</td>
+                    </tr>
+            ]]> 
+        </ReportItem>
+        <ReportItem id="budget_overview4" type="Integer" blobItem="BUDGET_OVERVIEW4" blobType="BLOB_TEXT" size="10">
+            <![CDATA[
                     <tr>
                         <td><b>Remaining Funds:</b></td><td>${$item}</td>
                     </tr>
