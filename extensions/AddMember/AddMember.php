@@ -392,6 +392,19 @@ class AddMember extends SpecialPage{
         $recCountryRow = new FormTableRow("rec_country_row");
         $recCountryRow->append($recCountryLabel)->append($recCountryField);
         $recCountryRow->attr('id', "rec_country_row");
+        
+        $fundLabel = new Label("fund_label", "Is this person compensated out of Is this person compensated out of {$config->getValue('networkName')} funds?", "", VALIDATE_NOTHING);
+        $fundLabel->colon = "";
+        $fundLabel->colspan = 2;
+        $fundLabel->attr('style', 'text-align:left;max-width:400px;');
+        $fundRow = new FormTableRow("fund_row");
+        $fundRow->append($fundLabel);
+        $fundRow->attr('id', "fund_row");
+        
+        $fundedLabel = new Label("funded_label", "{$config->getValue('networkName')} Funded", "Is this person compensated out of {$config->getValue('networkName')} funds?", VALIDATE_NOTHING);
+        $fundedField = new SelectBox("funded_field", "{$config->getValue('networkName')} Funded", "Yes", array('Yes', 'No'), VALIDATE_NOTHING);
+        $fundedRow = new FormTableRow("funded_row");
+        $fundedRow->append($fundedLabel)->append($fundedField);
 
         $submitCell = new EmptyElement();
         $submitField = new SubmitButton("submit", "Submit Request", "Submit Request", VALIDATE_NOTHING);
@@ -506,6 +519,10 @@ class AddMember extends SpecialPage{
         $formTable->append($recruitmentRow)
                   ->append($recRow)
                   ->append($recCountryRow);
+        if($config->getValue('networkName') == "FES"){
+            $formTable->append($fundRow);
+            $formTable->append($fundedRow);
+        }
         $formTable->append($employmentRow1)
                   ->append($employmentRow2)
                   ->append($candRow)
@@ -633,6 +650,15 @@ class AddMember extends SpecialPage{
             $('input[name=\"role_field[]\"]').change(fn);
             $('#rec_field').change(fn);
             fn();
+            $('select[name=funded_field]').change(function(){
+                console.log('hello');
+                if($('select[name=funded_field] option:selected').val() == 'No'){
+                    $('#subrole_field_ExtFunded').prop('checked', true);
+                }
+                else{
+                    $('#subrole_field_ExtFunded').prop('checked', false);
+                }
+            }).change();
         </script>");
         $wgOut->addHTML("</form>");
     }
