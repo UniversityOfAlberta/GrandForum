@@ -248,6 +248,13 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $editable = ($i == $endYear || $i == $midYear || $me->isRoleAtLeast(STAFF));
                 $this->html .= "<h3><a href='#'>".$i."/".substr($i+1,2,2)."</a></h3>";
                 $this->html .= "<div style='overflow: auto;'>";
+                
+                // Last Year's Budget
+                $blb = new ReportBlob(BLOB_EXCEL, $i-1, 0, $this->project->getId());
+                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
+                $result = $blb->load($addr, true);
+                $lastmd5 = $blb->getMD5();
+                
                 // Budget
                 $blb = new ReportBlob(BLOB_EXCEL, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, LDR_BUD_ALLOC, 0);
@@ -278,6 +285,11 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION', 0);
                 $result = $blb->load($addr);
                 $justification = $blb->getData();
+                // Last Year's Justification Upload
+                $blb = new ReportBlob(BLOB_RAW, $i-1, 0, $this->project->getId());
+                $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION_UPLOAD', 0);
+                $result = $blb->load($addr);
+                $lastjust_md5 = $blb->getMD5();
                 // Justification Upload
                 $blb = new ReportBlob(BLOB_RAW, $i, 0, $this->project->getId());
                 $addr = ReportBlob::create_address(RP_LEADER, LDR_BUDGET, 'LDR_BUD_JUSTIFICATION_UPLOAD', 0);
@@ -307,8 +319,8 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 
                 $allocationText = "Allocation Amount";
-                if($config->getValue('networkName') == "AGE-WELL" && $i == 2022){
-                    $allocationText = "Remaining Project Funding";
+                if($config->getValue('networkName') == "AGE-WELL" && $i >= 2022){
+                    $allocationText = "Remaining Project Funding Held by AGE-WELL";
                 }
                 
                 if($edit && $editable){
@@ -325,7 +337,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                                             {$alloc}<br />";
                         }
                     }
-                    if($config->getValue('networkName') != "AGE-WELL" || ($i != 2022 && $i != 2021)){
+                    if($config->getValue('networkName') != "AGE-WELL" || ($i != 2023 && $i != 2022 && $i != 2021)){
                         $this->html .= "<h3>Upload Budget</h3>
                                         <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
                     }
@@ -397,7 +409,39 @@ class ProjectBudgetTab extends AbstractEditableTab {
                 }
                 else if($i > $startYear){
                     if($config->getValue('networkName') == "AGE-WELL"){
-                        if($i == 2022){
+                        if($i == 2023){
+                            // Special year
+                            if($lastmd5 != "" || $lastjust_md5 != ""){
+                                $this->html .= "<p>";
+                                if($lastmd5 != ""){
+                                    $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastmd5}&mime=application/vnd.ms-excel&fileName={$project->getName()}_".($i-1)."_Budget.xlsx'>Last Year's Budget</a><br />";
+                                }
+                                if($lastjust_md5){
+                                    $this->html .= "<a class='externalLink' href='{$wgServer}{$wgScriptPath}/index.php?action=downloadBlob&id={$lastjust_md5}&mime=application/pdf&fileName={$project->getName()}_".($i-1)."_Budget.pdf'>Download Justification</a><br />";
+                                }
+                                $this->html .= "</p>";
+                            }
+                            $this->html .= "<p>2023-24 is AGE-WELL’s final year as NCE and the final and fourth year of funding for all CRP/PPP projects. All project funds should be spent by Mar 31, 2024. The budget update process this year provides an opportunity to update the 2023-24 portion of your project budget that was submitted last year.</p>";
+                            $this->html .= "<h3>Budget Update</h3>
+                                            <p>Please provide an overview of any <u>major</u> changes that have been made to your project budget since it was last approved by the Research Management Committee (February 2022), or project developments that impact your project budget.</p>
+                                            <textarea name='deviations[$i]' style='height:200px;resize: vertical;'>{$deviations}</textarea><br />";
+                            $this->html .= "<p><b>Anticipated Unspent Project Funds as of March 31, 2023</b> $<input id='amount$i' type='text' name='carryoveramount[$i]' value='{$carryOverAmount}' /></p>";
+                            $this->html .= "<p>Core Research Program (CRP) / Platform Projects (PPP): Projects may carry-forward 15% of 2022-23 funding to 2023-24 (calculated on the approved 2022-23 budget, including funds carried over from prior year). Funding over the 15% threshold will be deducted from new funding allocations in 2023 unless permission to carry forward the additional amount(s) is approved by the Research Management Committee.</p>
+                                            <p>In the section below, provide a justification for the projected amount of unspent funds at year end and describe how funds will be spent by March 31, 2024. The amount of detail provided should be proportional to the amount of unspent funds. Please provide detail for each sub-project or investigator holding funds as part of your award.</p>
+                                            <textarea name='carryover[$i]' style='height:200px;resize: vertical;'>{$carryOver}</textarea>";
+                            $this->html .= "<h3>Upload Budget and Budget Justification</h3>
+                                            <a href='{$wgServer}{$wgScriptPath}/data/AWCRP-PPP 2-year Budget.xlsx'>Budget Template</a><br />
+                                            <p>Please upload a revised project budget for 2023-24 and in the following excel tabs, provide a budget breakdown for each Network Investigator who will be holding funds. The budget may include both funds carried forward from 2022-23 and new funding from AGE-WELL.</p>
+                                            <p>In a separate free-form document, please provide an updated budget justification for expenditures with details in each category where a budget request has been made. Confirmed and projected partner contributions (cash and in-kind) are critical to include.</p>";
+                            $this->html .= "<h4>Upload Revised Budget</h4>
+                                            <input type='file' name='budget[$i]' accept='.xls,.xlsx' /><br />";
+                            $this->html .= "<h4>Upload Revised Budget Justification</h4>
+                                            <input type='file' name='justification_upload[$i]' accept='.pdf' /><br />";
+                            $this->html .= "<script type='text/javascript'>
+                                            $('input#amount$i').forceNumeric({min: 0, max: 100000000000,includeCommas: true});
+                                        </script>";
+                        }
+                        else if($i == 2022){
                             // Special year
                             $this->html .= "<p>Project Leads are asked to submit two-year project budgets that reflect their planned expenses for 2022-23 and 2023-24.</p>
 <p>As long as a project is approved by RMC to continue in 2022-23, investigators can expect approval to carry forward unspent funds with justification.</p>";
