@@ -393,15 +393,7 @@ class AddMember extends SpecialPage{
         $recCountryRow->append($recCountryLabel)->append($recCountryField);
         $recCountryRow->attr('id', "rec_country_row");
         
-        $fundLabel = new Label("fund_label", "Is this person compensated out of Is this person compensated out of {$config->getValue('networkName')} funds?", "", VALIDATE_NOTHING);
-        $fundLabel->colon = "";
-        $fundLabel->colspan = 2;
-        $fundLabel->attr('style', 'text-align:left;max-width:400px;');
-        $fundRow = new FormTableRow("fund_row");
-        $fundRow->append($fundLabel);
-        $fundRow->attr('id', "fund_row");
-        
-        $fundedLabel = new Label("funded_label", "{$config->getValue('networkName')} Funded", "Is this person compensated out of {$config->getValue('networkName')} funds?", VALIDATE_NOTHING);
+        $fundedLabel = new Label("funded_label", "Is this person compensated out of {$config->getValue('networkName')} funds?", "Is this person compensated out of {$config->getValue('networkName')} funds?", VALIDATE_NOTHING);
         $fundedField = new SelectBox("funded_field", "{$config->getValue('networkName')} Funded", "Yes", array('Yes', 'No'), VALIDATE_NOTHING);
         $fundedRow = new FormTableRow("funded_row");
         $fundedRow->append($fundedLabel)->append($fundedField);
@@ -520,7 +512,6 @@ class AddMember extends SpecialPage{
                   ->append($recRow)
                   ->append($recCountryRow);
         if($config->getValue('networkName') == "FES"){
-            $formTable->append($fundRow);
             $formTable->append($fundedRow);
         }
         $formTable->append($employmentRow1)
