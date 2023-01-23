@@ -90,6 +90,10 @@ class Report extends AbstractReport{
                     pageDC.init(me.get('id'), document.URL.replace(wgServer, '').replace(wgScriptPath, '').replace('/index.php/', ''));
                     pageDC.timer('time');
                     pageDC.increment('hits');
+                    
+                    var loggedInDC = new DataCollection();
+                    loggedInDC.init(me.get('id'), 'loggedin');
+                    loggedInDC.append('log', new Date().toISOString().slice(0, 10), true);
                 });
             </script>");
         }
