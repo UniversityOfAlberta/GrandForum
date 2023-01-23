@@ -161,8 +161,12 @@ class PersonPage {
                     $tabbedPage->addTab(new PersonRelationsTab($person, $visibility));
                     //$tabbedPage->addTab(new PersonProductsTab($person, $visibility));
                     $tabbedPage->addTab(new PersonDashboardTab($person, $visibility));
-                    $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
-                    $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                    if(isExtensionEnabled("Visualizations")){
+                        $tabbedPage->addTab(new PersonVisualizationsTab($person, $visibility));
+                    }
+                    if(isExtensionEnabled("Duplicates")){
+                        $tabbedPage->addTab(new PersonDataQualityTab($person, $visibility));
+                    }
                 }
                 if(isExtensionEnabled("UofANews")){
                     $tabbedPage->addTab(new PersonUofANewsTab($person, $visibility));
