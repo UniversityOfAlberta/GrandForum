@@ -715,7 +715,6 @@
                             <th>Recommended Increment</th>
                             <th>Revised Increment</th>
                             <th>Increment Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
-                            <th>Tenure Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Promotion Vote <span class='tooltip' title='Votes will be visible to the FEC Chair'>&#9432;</span></th>
                             <th>Comments <span class='tooltip' title='Comments will be visible to the FEC Chair'>&#9432;</span></th>
                         </tr>
@@ -799,26 +798,6 @@
                         </td>
                     ]]>
                 </ReportItem>
-                <!-- Tenure Vote -->
-                <ReportItem id="t_vote" type="Select" blobType="BLOB_TEXT" blobItem="T_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
-                    <![CDATA[
-                        <td class="t_vote">
-                            <div class='text' style='display:none;'>
-                                
-                            </div>
-                            <div class='field' style='display:none;'>
-                                <span id='t_vote_{$user_id}'>{$item}</span>
-                            </div>
-                            <script type='text/javascript'>
-                                var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                                if(tenure != "i recommend that an appointment with tenure be offered" &&
-                                   tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                    $("#t_vote_{$user_id}").remove();
-                                }
-                            </script>
-                        </td>
-                    ]]>
-                </ReportItem>
                 <!-- Promotion Vote -->
                 <ReportItem id="p_vote" type="Select" blobType="BLOB_TEXT" blobItem="P_VOTE" blobSubItem="{$user_id}" options="|Yes|No|Abstain" width="80px">
                     <![CDATA[
@@ -875,7 +854,6 @@
             </If>
             <Else>
                 <![CDATA[
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -977,14 +955,9 @@
                             <th rowspan='2'>Recommended Increment</th>
                             <th rowspan='2'>Revised Increment</th>
                             <th colspan='4'>Increment Votes</th>
-                            <th colspan='4'>Tenure Votes</th>
                             <th colspan='4'>Promotion Votes</th>
                         </tr>
                         <tr>
-                            <th>Y</th>
-                            <th>N</th>
-                            <th>A</th>
-                            <th>Freeze</th>
                             <th>Y</th>
                             <th>N</th>
                             <th>A</th>
@@ -1021,20 +994,6 @@
             <ReportItem id="freeze" type="VoteResultsReportItem" blobItem="FREEZE" blobSubItem="{$user_id}" voteBlobItem="VOTE" personId="1" width="75px">
                 <![CDATA[
                         {$item}
-                ]]>
-            </ReportItem>
-            
-            <!-- Tenure Votes -->
-            <ReportItem id="t_freeze" type="VoteResultsReportItem" freezeId="t_vote_{$user_id}" blobItem="T_FREEZE" blobSubItem="{$user_id}" voteBlobItem="T_VOTE" personId="1" width="75px">
-                <![CDATA[
-                        {$item}
-                        <script type='text/javascript'>
-                            var tenure = "{getText(RP_CHAIR, FEC_REVIEW, TENURE, {$user_id}, 0, 0)}";
-                            if(tenure != "i recommend that an appointment with tenure be offered" &&
-                               tenure != "i recommend tenure as per clause 12.17 (special recommendation for tenure)"){
-                                $(".t_vote_{$user_id}").empty();
-                            }
-                        </script>
                 ]]>
             </ReportItem>
             
