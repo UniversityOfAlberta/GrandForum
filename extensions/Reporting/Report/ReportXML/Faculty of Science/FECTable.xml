@@ -45,22 +45,35 @@
                 var freezeUpdate = function(){
                     $.get(wgServer + wgScriptPath + '/index.php?action=api.voteFreeze', function(response){
                         var data = response.data;
+                        
                         var sumFaculty = 0;
-                        var nFaculty = 0;
-                        var nRevFaculty = 0;
                         var sumFSO = 0;
+                        var sumATS = 0;
+                        
+                        var nFaculty = 0;
                         var nFSO = 0;
+                        var nATS = 0;
+                        
+                        var nRevFaculty = 0;
                         var nRevFSO = 0;
+                        var nRevATS = 0;
+                        
                         var sumRevFaculty = 0;
                         var sumRevFSO = 0;
+                        var sumRevATS = 0;
+                        
                         var sumDDFaculty = 0;
-                        var nDDFaculty = 0;
                         var sumDDFSO = 0;
+                        var sumDDATS = 0;
+                        
+                        var nDDFaculty = 0;
                         var nDDFSO = 0;
+                        var nDDATS = 0;
                         
                         // Get these numbers from sciea/scihr each year
                         var targetFac = 306.2;
                         var targetFSO = 13.2;
+                        var targetATS = 25.20;
                         
                         var needsSaving = false;
                         
@@ -143,8 +156,7 @@
                                 if(caseN.indexOf('A') != -1 ||
                                    caseN.indexOf('B') != -1 ||
                                    caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1 ||
-                                   caseN.indexOf('T') != -1){
+                                   caseN.indexOf('N') != -1){
                                     sumFaculty += parseFloat(increment);
                                     if(revisedIncrement == ""){
                                         revisedIncrement = increment;
@@ -160,6 +172,13 @@
                                         revisedIncrement = increment;
                                     }
                                     nFSO++;
+                                } else 
+                                if(caseN.indexOf('T') != -1){
+                                    sumATS += parseFloat(increment);
+                                    if(revisedIncrement == ""){
+                                        revisedIncrement = increment;
+                                    }
+                                    nFSO++;
                                 }
                             }
                             
@@ -171,8 +190,7 @@
                                 if(caseN.indexOf('A') != -1 ||
                                    caseN.indexOf('B') != -1 ||
                                    caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1 ||
-                                   caseN.indexOf('T') != -1){
+                                   caseN.indexOf('N') != -1){
                                     sumRevFaculty += parseFloat(revisedIncrement);
                                     nRevFaculty++;
                                 } else 
@@ -182,6 +200,10 @@
                                    caseN.indexOf('M') != -1){
                                     sumRevFSO += parseFloat(revisedIncrement);
                                     nRevFSO++;
+                                } else 
+                                if(caseN.indexOf('T') != -1){
+                                    sumRevATS += parseFloat(revisedIncrement);
+                                    nRevATS++;
                                 }
                             }
                             
@@ -193,18 +215,20 @@
                                 if(caseN.indexOf('A') != -1 ||
                                    caseN.indexOf('B') != -1 ||
                                    caseN.indexOf('C') != -1 ||
-                                   caseN.indexOf('N') != -1 ||
-                                   caseN.indexOf('T') != -1){
+                                   caseN.indexOf('N') != -1){
                                     sumDDFaculty += parseFloat(ddIncrement);
                                     nDDFaculty++;
-                                }
-                                else 
+                                } else 
                                 if(caseN.indexOf('D') != -1 ||
                                    caseN.indexOf('E') != -1 ||
                                    caseN.indexOf('F') != -1 ||
                                    caseN.indexOf('M') != -1){
                                     sumDDFSO += parseFloat(ddIncrement);
                                     nDDFSO++;
+                                } else 
+                                if(caseN.indexOf('T') != -1){
+                                    sumDDATS += parseFloat(ddIncrement);
+                                    nDDATS++;
                                 }
                             }
                         });
@@ -216,26 +240,35 @@
                         
                         var facSign = (targetFac - sumRevFaculty > 0) ? "-" : "+";
                         var fsoSign = (targetFSO - sumRevFSO > 0) ? "-" : "+";
+                        var atsSign = (targetATS - sumRevATS > 0) ? "-" : "+";
                         
                         $("#averageFac").text(number_format(sumFaculty/Math.max(1,nFaculty)));
                         $("#averageFSO").text(number_format(sumFSO/Math.max(1,nFSO)));
+                        $("#averageATS").text(number_format(sumATS/Math.max(1,nATS)));
                         $("#totalFac").text(number_format(sumFaculty));
                         $("#totalFSO").text(number_format(sumFSO));
+                        $("#totalATS").text(number_format(sumATS));
                         
                         $("#runningAverageFac").text(number_format(sumRevFaculty/Math.max(1,nRevFaculty)));
                         $("#runningAverageFSO").text(number_format(sumRevFSO/Math.max(1,nRevFSO)));
+                        $("#runningAverageATS").text(number_format(sumRevATS/Math.max(1,nRevATS)));
                         $("#runningTotalFac").text(number_format(sumRevFaculty));
                         $("#runningTotalFSO").text(number_format(sumRevFSO));
+                        $("#runningTotalATS").text(number_format(sumRevATS));
                         
                         $("#ddAverageFac").text(number_format(sumDDFaculty/Math.max(1,nDDFaculty)));
                         $("#ddAverageFSO").text(number_format(sumDDFSO/Math.max(1,nDDFSO)));
+                        $("#ddAverageATS").text(number_format(sumDDATS/Math.max(1,nDDATS)));
                         $("#ddTotalFac").text(number_format(sumDDFaculty));
                         $("#ddTotalFSO").text(number_format(sumDDFSO));
+                        $("#ddTotalATS").text(number_format(sumDDATS));
                         
                         $("#targetFac").text(number_format(targetFac));
                         $("#deltaFac").text(facSign + number_format(Math.abs(targetFac - sumRevFaculty)));
                         $("#targetFSO").text(number_format(targetFSO));
                         $("#deltaFSO").text(facSign + number_format(Math.abs(targetFSO - sumRevFSO)));
+                        $("#targetATS").text(number_format(targetATS));
+                        $("#deltaATS").text(atsSign + number_format(Math.abs(targetATS - sumRevATS)));
                         
                         lastData = response.data;
                     });
@@ -881,8 +914,8 @@
                         <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='averageFac' align='right'></td>
-                        <td id='totalFac' align='right'></td>
+                        <td id='averageATS' align='right'></td>
+                        <td id='totalATS' align='right'></td>
                     </tr>
                 </table>
                 
@@ -893,8 +926,8 @@
                         <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='runningAverageFac' align='right'></td>
-                        <td id='runningTotalFac' align='right'></td>
+                        <td id='runningAverageATS' align='right'></td>
+                        <td id='runningTotalATS' align='right'></td>
                     </tr>
                 </table>
                 
@@ -905,8 +938,8 @@
                         <th>Total<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='ddAverageFac' align='right'></td>
-                        <td id='ddTotalFac' align='right'></td>
+                        <td id='ddAverageATS' align='right'></td>
+                        <td id='ddTotalATS' align='right'></td>
                     </tr>
                 </table>
                 
@@ -917,8 +950,8 @@
                         <th>Diff<br />ATS Increment</th>
                     </tr>
                     <tr>
-                        <td id='targetFac' align='right'></td>
-                        <td id='deltaFac' align='right'></td>
+                        <td id='targetATS' align='right'></td>
+                        <td id='deltaATS' align='right'></td>
                     </tr>
                 </table>
             ]]>
