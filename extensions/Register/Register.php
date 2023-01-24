@@ -98,13 +98,7 @@ class Register extends SpecialPage{
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
 
-        $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
-        $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
-                                                                                   <span class='fr'>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</span>", 
-                                                                           EXTERNAL => "<span class='en'>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</span>
-                                                                                        <span class='fr'>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</span>"), VALIDATE_NOT_NULL);
-        $typeRow = new FormTableRow("type_row");
-        $typeRow->append($typeLabel)->append($typeField);
+        
         
         $captchaLabel = new Label("captcha_label", "<span class='en'>Enter Code</span><span class='fr'>Entrez le code</span>", "Enter the code you see in the image", VALIDATE_NOT_NULL);
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
@@ -122,6 +116,21 @@ class Register extends SpecialPage{
                   ->append($lastNameRow)
                   ->append($emailRow);
         if($config->getValue('networkName') == 'ELITE'){
+            $typeLabel = new Label("type_label", "<span class='en'>Please select your role</span><span class='fr'>Veuillez sélectionner votre rôle</span>", "The role of user", VALIDATE_NOT_NULL);
+            $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "<span class='en'>Candidate (ELITE Program Intern, PhD Fellowship Candidate)</span>
+                                                                                       <span class='fr'>Candidat-e (Stagiaire du Programme ELITE, Candidat-e de bourse doctorale)</span>", 
+                                                                               EXTERNAL => "<span class='en'>Host (ELITE Program Internship Host, PhD Fellowship Supervisor)</span>
+                                                                                            <span class='fr'>Responsable (Responsable de stage du Programme ELITE, Superviseur-e de candidat-e de bourse doctorale)</span>"), VALIDATE_NOT_NULL);
+            $typeRow = new FormTableRow("type_row");
+            $typeRow->append($typeLabel)->append($typeField);
+            $formTable->append($typeRow);
+        }
+        else if($config->getValue('networkName') == 'AGE-WELL'){
+            $typeLabel = new Label("type_label", "Please select your role", "The role of user", VALIDATE_NOT_NULL);
+            $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "HQP-Candidate</span>", 
+                                                                               EXTERNAL => "External-Candidate"), VALIDATE_NOT_NULL);
+            $typeRow = new FormTableRow("type_row");
+            $typeRow->append($typeLabel)->append($typeField);
             $formTable->append($typeRow);
         }
         $formTable->append($captchaRow)
@@ -137,6 +146,9 @@ class Register extends SpecialPage{
         if($config->getValue('networkName') == "ADA" || $config->getValue('networkName') == "CFN"){
             $wgOut->setPageTitle("Member Registration");
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+        }
+        else if($config->getValue('networkName') == "AGE-WELL"){
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate or External-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == "IntComp"){
             $wgOut->setPageTitle("Member Registration");
@@ -192,7 +204,7 @@ class Register extends SpecialPage{
             else if($config->getValue('networkName') == "IntComp"){
                 $_POST['wpUserType'] = CI;
             }
-            else if($config->getValue('networkName') == "ELITE"){
+            else if($config->getValue('networkName') == "ELITE" || $config->getValue('networkName') == "AGE-WELL"){
                 $form->getElementById('type_field')->setPOST('wpUserType');
                 if($_POST['wpUserType'] != HQP && 
                    $_POST['wpUserType'] != EXTERNAL){
