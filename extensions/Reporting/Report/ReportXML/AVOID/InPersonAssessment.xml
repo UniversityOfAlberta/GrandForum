@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="In Person Assessment" reportType="RP_AVOID_INPERSON" pdfType="RP_AVOID_INPERSON" pdfFiles="AvoidInpersonPDF" ajax="true" disabled="false">
+<Report name="In Person Assessment" reportType="RP_AVOID_INPERSON" pdfType="RP_AVOID_INPERSON" pdfFiles="InPersonAssessment" ajax="true" disabled="false">
     <Permissions>
         <Role role="Assessor"></Role>
     </Permissions>
@@ -352,7 +352,7 @@
                 <hr />
                 <h3>5. DEMENTIA QUICK SCREEN</h3>
                 <table>
-                <tr><td><b>Word Recall:</b></td></tr>
+                <tr><td><b>3 Word Recall:</b></td></tr>
                 <tr><td>How many words recalled?</td><td>{$item}</td>
             ]]>
         </ReportItem>
@@ -626,14 +626,7 @@
                 <br />
                 <table>
                 <tr>
-                <td>Time:</td><td>{$item}s</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="avoid_balance7" blobItem="avoid_balance7" type="IntegerReportItem" max="100">
-            <![CDATA[
-                <td>{$item}ms</td>
-                </tr>
-                </table>
+		<td>Time:</td><td>{$item}seconds</td></tr></table>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_balance8" blobItem="avoid_balance8" type="Textarea" rich="false">
@@ -694,14 +687,9 @@
                 <br />
                 <table>
                 <tr>
-                <td>Time:</td><td>{$item}s</td>
-            ]]>
-        </ReportItem>
-        <ReportItem id="avoid_balance10" blobItem="avoid_balance10" type="IntegerReportItem" max="100">
-            <![CDATA[
-                <td>{$item}ms</td>
-                </tr>
-                </table>
+		<td>Time:</td><td>{$item}seconds</td>
+		</tr>
+		</table>
             ]]>
         </ReportItem>
         <ReportItem id="avoid_balance11" blobItem="avoid_balance11" type="Textarea" rich="false">
@@ -848,8 +836,10 @@
         </ReportItem>
         <ReportItem id="avoid_caregiver_fup" blobItem="avoid_caregivere_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                <br />
-                Follow up?
+		<br />
+		Assistance needs not being met and follow up required
+		<br /><br />
+		Follow up?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -1295,13 +1285,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_nutrition1_3').hide();
                     function hideavoid_nutrition1_3(){
-                        if($("input:radio[name='InPersonAssessment_avoid_nutrition1_2']:checked").val() == "Yes"){
+                        if($("input:radio[name='InPersonAssessment_avoid_nutrition1_2_2']:checked").val() == "Yes"){
                             $('span#avoid_nutrition1_3').show();
                         }
                         else{ $('span#avoid_nutrition1_3').hide();}
                     }
                     _.defer(hideavoid_nutrition1_3);
-                    $("input:radio[name='InPersonAssessment_avoid_nutrition1_2']").change(hideavoid_nutrition1_3);
+                    $("input:radio[name='InPersonAssessment_avoid_nutrition1_2_2']").change(hideavoid_nutrition1_3);
 
                 </script>
             ]]>
@@ -1323,10 +1313,57 @@
             <![CDATA[
                 <td><span id="avoid_nutrition2_2_2">{$item}inches</span></td>
             ]]>
-        </ReportItem>
+	</ReportItem>
         <Static>
             <![CDATA[
-                </tr></table>
+                <script type='text/javascript'>
+			function calcBMI(){
+			    var BMI = 0;
+			    var height = 0;
+			    var weight = $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").val();
+			    if($("select[name='InPersonAssessment_avoid_nutrition1_2']").val() == "lbs"){
+				weight = weight * 0.453592;
+			    }
+			    console.log(weight);
+                            if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "feet"){
+				console.log("feet");
+				height =  $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 30.48;
+				height =  height + $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").val() * 2.54;
+
+			    }
+			    else if($("select[name='InPersonAssessment_avoid_nutrition2_2']").val() == "inches"){
+				console.log("inches");
+                                height =  $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").val() * 2.54;
+			    }
+			    else{
+				console.log("cm");
+			    }
+			    console.log(height);
+			    BMI = (weight/height/height) * 10000;
+			    BMI = Math.round(BMI * 10) / 10;
+		 	    console.log("BMI");
+			    console.log(BMI);
+			    $("input[type='text'][name='InPersonAssessment_avoid_nutrition5']").val(BMI);
+
+                        }
+			$("select[name='InPersonAssessment_avoid_nutrition2_2']").change(calcBMI);
+                        $("select[name='InPersonAssessment_avoid_nutrition1_2']").change(calcBMI);
+                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition1']").change(calcBMI);
+                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_1']").change(calcBMI);
+                        $("input[type='text'][name='InPersonAssessment_avoid_nutrition2_2_2']").change(calcBMI);
+
+                </script>
+            ]]>
+        </Static>
+
+        <Static>
+            <![CDATA[
+		</tr></table>
+		<br />
+		<b>Waist Circumference (cm)</b><br />
+		WC M ≥102cm W ≥88cm (North America)<br />
+		WC M ≥94cm W ≥80cm (Europids; Middle-Eastern; Sub-Saharan African; Mediterranean)<br />
+		WC M ≥90cm W ≥80cm (Asians; Japanese; South and Central Americans)<br /><br />
             ]]>
         </Static>
         <Static>
@@ -1360,7 +1397,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_nutrition5" blobItem="avoid_nutrition5" type="IntegerReportItem">       
+        <ReportItem id="avoid_nutrition5" blobItem="avoid_nutrition5" type="Text" width="400px" optional="true">       
             <![CDATA[
                 <table>
                     <tr>
@@ -1428,7 +1465,7 @@
         </ReportItem>
         <ReportItem id="avoid_osteo_fup" blobItem="avoid_osteo_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
             <![CDATA[
-                <br />
+		<br /><br />
                 Follow up?
                 <div class="requiredField">{$item}</div>
             ]]>
