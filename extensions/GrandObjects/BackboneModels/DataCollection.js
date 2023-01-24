@@ -69,6 +69,18 @@ DataCollection = Backbone.Model.extend({
         }.bind(this));
     },
     
+    // Appends a value to an array
+    append: function(field, value, unique){
+        this.ready().always(function(){
+            var data = this.getField(field, []);
+            data.push(value);
+            if(typeof unique != 'undefined' && unique === true){
+                data = _.uniq(data);
+            }
+            this.setField(field, data);
+        }.bind(this));
+    },
+    
     // Adds an event listener to the radio buttons specified by the selector
     radio: function(field, selector){
         $(selector).change(function(e){

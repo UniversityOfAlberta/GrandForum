@@ -18,13 +18,22 @@ class Programs extends SpecialPage {
 	    return ($user->isLoggedIn());
 	}
 	
+	static function getProgramsJSON(){
+        global $config;
+        $dir = dirname(__FILE__) . '/';
+        $n = "";
+        $n = ($config->getValue('dbName') == "forum2") ? "2" : $n;
+        $n = ($config->getValue('dbName') == "forum3") ? "3" : $n;
+        $n = ($config->getValue('dbName') == "forum4") ? "4" : $n;
+        $json = json_decode(file_get_contents("{$dir}programs{$n}.json"));
+        return $json;
+    }
+	
 	function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
         $me = Person::newFromWgUser();
-        $dir = dirname(__FILE__) . '/';
         $wgOut->setPageTitle("AVOID Programs");
-        $json = file_get_contents("{$dir}programs.json");
-        $programs = json_decode($json);
+        $programs = self::getProgramsJSON();
         $categories = array();
         foreach($programs as $program){
             $categories[$program->category] = $program->category;
@@ -40,11 +49,17 @@ class Programs extends SpecialPage {
                 $membersOnly = ($me->isRole("Provider") && $program->id == "PeerCoaching") ? "members-only" : "";
                 if($program->category == $category){
                     $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=Programs/{$program->id}";
-                    $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
-                        <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
-                        <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
-                    </a>");
-                    $n++;
+                    if($program->id == ""){
+                        // Placeholder text
+                        $wgOut->addHTML("<span class='program-body'>{$program->title}</span>");
+                    }
+                    else{
+                        $wgOut->addHTML("<a id='module{$program->id}' title='{$program->title}' class='module module-{$cols}cols $membersOnly' href='{$url}'>
+                            <img src='{$wgServer}{$wgScriptPath}/EducationModules/{$program->id}.png' alt='{$program->title}' />
+                            <div class='module-progress-text' style='border-top: 2px solid #005f9d;'>{$program->title}</div>
+                        </a>");
+                        $n++;
+                    }
                 }
             }
             if($n % $cols > 0){
@@ -70,9 +85,7 @@ class Programs extends SpecialPage {
         $url = "$wgServer$wgScriptPath/index.php/Special:Report?report=";
         if($person->isLoggedIn()){
             if(AVOIDDashboard::checkAllSubmissions($wgUser->getId())){
-                $dir = dirname(__FILE__) . '/';
-                $json = file_get_contents("{$dir}programs.json");
-                $programs = json_decode($json);
+                $programs = self::getProgramsJSON();
                 
                 $selected = @($wgTitle->getText() == "Programs") ? "selected" : false;
                 $tabs["Programs"]['subtabs'][] = TabUtils::createSubTab("All Programs", "$wgServer$wgScriptPath/index.php/Special:Programs", $selected);

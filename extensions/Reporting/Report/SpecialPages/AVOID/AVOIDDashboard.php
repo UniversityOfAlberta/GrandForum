@@ -225,19 +225,6 @@ class AVOIDDashboard extends SpecialPage {
         
         $membersOnly = ($me->isRole("Provider")) ? "members-only" : "";
         
-        $programs = json_decode(file_get_contents("{$dir}Programs/programs.json"));
-        $programs = $this->sort($programs, $tags);
-        
-        $resources = array();
-        $categories = EducationResources::JSON();
-        foreach($categories as $category){
-            foreach($category->resources as $resource){
-                $resource->category = $category->id;
-                $resources[] = $resource;
-            }
-        }
-        $resources = $this->sort($resources, $tags);
-        
         $modules = EducationResources::JSON();
         $complete = array();
         $inProgress = array();
@@ -251,28 +238,6 @@ class AVOIDDashboard extends SpecialPage {
                 $inProgress[] = $text;
             }
         }
-        
-        $communityResources = array();
-        $cat_json = PharmacyMap::getCategoryJSON();
-        foreach($cat_json as $category){ // TODO: Ideally this should be done recursively, but I'm in a rush so...
-            $communityResources[] = $category;
-            if(isset($category->children)){
-                foreach($category->children as $child1){
-                    $communityResources[] = $child1;
-                    if(isset($child1->children)){
-                        foreach($child1->children as $child2){
-                            $communityResources[] = $child2;
-                        }
-                    }
-                }
-            }
-        }
-        foreach($communityResources as $category){
-            if(!isset($category->tags)){
-                $category->tags = array();
-            }
-        }
-        $communityResources = $this->sort($communityResources, $tags);
         
         $wgOut->setPageTitle("My Profile");
         $wgOut->addHTML("<div class='modules'>");

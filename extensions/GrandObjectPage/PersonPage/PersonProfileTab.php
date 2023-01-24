@@ -35,13 +35,15 @@ class PersonProfileTab extends AbstractEditableTab {
         $this->html .= $this->showFundedProjects($this->person, $this->visibility);
         $this->html .= $this->showTable($this->person, $this->visibility);
         $extra = array();
-        if($this->person->isRole(NI) || 
-           $this->person->isRole(HQP) || 
-           $this->person->isRole(EXTERNAL)){
+        if(($this->person->isRole(NI) || 
+            $this->person->isRole(HQP) || 
+            $this->person->isRole(EXTERNAL)) && isExtensionEnabled("Visualizations")){
             // Only show the word cloud for 'researchers'
             $extra[] = $this->showCloud($this->person, $this->visibility);
         }
-        $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        if(isExtensionEnabled("Visualizations")){
+            $extra[] = $this->showDoughnut($this->person, $this->visibility);
+        }
         $extra[] = $this->showTwitter($this->person, $this->visibility);
         
         // Delete extra widgets which have no content
@@ -640,7 +642,9 @@ EOF;
                 });
             </script>
 EOF;
-        $this->html .= $this->showChord($person, $visibility);
+        if(isExtensionEnabled("Visualizations")){
+            $this->html .= $this->showChord($person, $visibility);
+        }
         $this->html .= "</div>";
     }
     
