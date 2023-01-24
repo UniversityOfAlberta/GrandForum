@@ -26,18 +26,19 @@
     </div>
     <div style='display:flex; clear: both;'>
         <div style='width:40%; padding-right:1em;'>
-		<div style='margin-top:2em;margin-left:2em;'>
-			<span style="color:#005f9d;"><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span>
-		<br />
-		<a id="registerevent" class="registerbtn" data-cat="register" href="#">Details and Registration</a>
+		<div class='program-box' style='margin-left:0.5em;    border-radius: 0em !important;'>
+			<ul><li><span style=""><%= output.date  %> @ <%= output.time %> - <%= output.end_time %></span></li>
+		<li><a id="registerevent" class="registerbtn" data-cat="register" href="#">Details and Registration</a></li>
+			</ul>
 		</div>
         </div>
         <div style='width:60%; padding-left:1em;'>
-            <div class='program-box' style='display:flex;'>
-		    <ul>
-			<li>Can’t make the event? <a id="submitquestion" data-cat="question" class="registerbtn" href="#">Click here</a> to ask a question. </li>
-			<li>All past event recordings or frequently asked questions are in the AVOID Education tab </li>
-		    </ul>
+            <div style="color:#005f9d;">
+		    <b>Past Event Resources</b><br />
+		    <ul><li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true">Transit Travel Training Jan 12, 2023</a></li>
+			    <li><a href="https://docs.google.com/presentation/d/1iYy86czxJABOxpm7gC5LZdhr025C-pwK/edit?usp=sharing&ouid=109660911800093799145&rtpof=true&sd=true">Kingston Access Bus Jan 12, 2023</a></li>
+			</ul>
+
             </div>
         </div>
     </div>

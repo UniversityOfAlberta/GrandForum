@@ -11,7 +11,7 @@ class RadioReportItem extends AbstractReportItem {
         $buttonPosition = $this->getAttr('buttonPosition', 'left');
         $value = $this->getBlobValue();
 		$default = $this->getAttr('default', '');
-		if($value === null && $default != ''){
+		if(($value === null||$value == "") && $default != ''){
 		    $value = $default;
 		}
         $items = array();

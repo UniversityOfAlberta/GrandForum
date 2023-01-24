@@ -11,7 +11,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_vision_fup" blobItem="avoid_vision_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_vision_fup" blobItem="avoid_vision_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up? <br />
@@ -46,18 +46,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_vision_fup_txt').hide();
                     function hideVision(){
-                        if($("input:radio[name='InPersonAssessment_avoid_vision_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_vision_fup']").val() == "Yes"){
                             $('span#avoid_vision_fup_txt').show();
                         }
                         else{ $('span#avoid_vision_fup_txt').hide();}
                     }
                     _.defer(hideVision);
-                    $("input:radio[name='InPersonAssessment_avoid_vision_fup']").change(hideVision);
+                    $("select[name='InPersonAssessment_avoid_vision_fup']").change(hideVision);
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_hearing" blobItem="avoid_hearing" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_hearing" blobItem="avoid_hearing" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <hr />
                 <h3>2. HEARING</h3>
@@ -86,7 +86,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_hearing_fup" blobItem="avoid_hearing_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_hearing_fup" blobItem="avoid_hearing_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -98,27 +98,32 @@
         <Static>
             <![CDATA[
                 <script type='text/javascript'>
-                    $('span#recommend_hearing').hide();
-                    function hideHearingRec(){
-                        if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper1']:checked").val() == "Fail"){
-                            $('span#recommend_hearing').show();
+		    $('span#recommend_hearing').hide();
+		    function hideHearingRec(){
+			var count = 0;
+			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper1']:checked").val() == "Fail"){
+			    count += 1;
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper2']:checked").val() == "Fail"){
-                            $('span#recommend_hearing').show();
+			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper2']:checked").val() == "Fail"){
+                            count += 1;
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper3']:checked").val() == "Fail"){
+			if($("input:radio[name='InPersonAssessment_avoid_hearing_whisper3']:checked").val() == "Fail"){
+                            count += 1;
+				
+			}
+			if($("select[name='InPersonAssessment_avoid_hearing']").val() == "Yes"){
                             $('span#recommend_hearing').show();
-                        }
-                        else if($("input:radio[name='InPersonAssessment_avoid_hearing']:checked").val() == "Yes"){
+			}
+			else if(count == 3){
                             $('span#recommend_hearing').show();
-                        }
+			}
                         else{ $('span#recommend_hearing').hide();}
                     }
                     _.defer(hideHearingRec);
                     $("input:radio[name='InPersonAssessment_avoid_hearing_whisper1']").change(hideHearingRec);
                     $("input:radio[name='InPersonAssessment_avoid_hearing_whisper2']").change(hideHearingRec);
                     $("input:radio[name='InPersonAssessment_avoid_hearing_whisper3']").change(hideHearingRec);
-                    $("input:radio[name='InPersonAssessment_avoid_hearing']").change(hideHearingRec);
+                    $("select[name='InPersonAssessment_avoid_hearing']").change(hideHearingRec);
 
                 </script>
             ]]>
@@ -135,19 +140,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_hearing_fup_txt').hide();
                     function hideHearing(){
-                        if($("input:radio[name='InPersonAssessment_avoid_hearing_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_hearing_fup']").val() == "Yes"){
                             $('span#avoid_hearing_fup_txt').show();
                         }
                         else{ $('span#avoid_hearing_fup_txt').hide();}
                     }
                     _.defer(hideHearing);
-                    $("input:radio[name='InPersonAssessment_avoid_hearing_fup']").change(hideHearing);
+                    $("select[name='InPersonAssessment_avoid_hearing_fup']").change(hideHearing);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_communication" blobItem="avoid_communication" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_communication" blobItem="avoid_communication" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <hr />
                 <h3>3. COMMUNICATION</h3>
@@ -155,24 +160,24 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_communication2" blobItem="avoid_communication2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_communication2" blobItem="avoid_communication2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you have trouble finding words?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_communication3" blobItem="avoid_communication3" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_communication3" blobItem="avoid_communication3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you have trouble recalling names?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_communication_fup" blobItem="avoid_communication_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_communication_fup" blobItem="avoid_communication_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
-                Follow up? <span id="recommend_communication" style="color:red">(Recommended)</span>
+                Follow up? <span id="recommend_communication" style="color:red">(Note: Recommended)</span>
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -181,21 +186,21 @@
                 <script type='text/javascript'>
                     $('span#recommend_communication').hide();
                     function hideCommunicationRec(){
-                        if($("input:radio[name='InPersonAssessment_avoid_communication']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_communication']").val() == "Yes"){
                             $('span#recommend_communication').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_communication2']:checked").val() == "Yes"){
+                        else if($("select[name='InPersonAssessment_avoid_communication2']").val() == "Yes"){
                             $('span#recommend_communication').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_communication3']:checked").val() == "Yes"){
+                        else if($("select[name='InPersonAssessment_avoid_communication3']").val() == "Yes"){
                             $('span#recommend_communication').show();
                         }
                         else{ $('span#recommend_communication').hide();}
                     }
                     _.defer(hideCommunicationRec);
-                    $("input:radio[name='InPersonAssessment_avoid_communication']").change(hideCommunicationRec);
-                    $("input:radio[name='InPersonAssessment_avoid_communication2']").change(hideCommunicationRec);
-                    $("input:radio[name='InPersonAssessment_avoid_communication3']").change(hideCommunicationRec);
+                    $("select[name='InPersonAssessment_avoid_communication']").change(hideCommunicationRec);
+                    $("select[name='InPersonAssessment_avoid_communication2']").change(hideCommunicationRec);
+                    $("select[name='InPersonAssessment_avoid_communication3']").change(hideCommunicationRec);
 
                 </script>
             ]]>
@@ -212,13 +217,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_communication_fup_txt').hide();
                     function hideCommunication(){
-                        if($("input:radio[name='InPersonAssessment_avoid_communication_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_communication_fup']").val() == "Yes"){
                             $('span#avoid_communication_fup_txt').show();
                         }
                         else{ $('span#avoid_communication_fup_txt').hide();}
                     }
                     _.defer(hideCommunication);
-                    $("input:radio[name='InPersonAssessment_avoid_communication_fup']").change(hideCommunication);
+                    $("select[name='InPersonAssessment_avoid_communication_fup']").change(hideCommunication);
 
                 </script>
             ]]>
@@ -339,7 +344,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_cognition5" blobItem="avoid_cognition5" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_cognition5" blobItem="avoid_cognition5" type="SelectReportItem"  options="Yes|No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Is further testing warranted?
@@ -370,11 +375,11 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_dementia3_fup" blobItem="avoid_dementia3_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_dementia3_fup" blobItem="avoid_dementia3_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
-                <br /><span id="recommend_dementia" style="color:red">Note: Any positive result calls for further screening</span>
+                <br /><span id="recommend_dementia" style="color:red">Note: Recommended, Any positive result calls for further screening</span>
 
                 <div class="requiredField">{$item}</div>
             ]]>
@@ -418,19 +423,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_dementia_fup_txt').hide();
                     function hideDementia(){
-                        if($("input:radio[name='InPersonAssessment_avoid_dementia3_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_dementia3_fup']").val() == "Yes"){
                             $('span#avoid_dementia_fup_txt').show();
                         }
                         else{ $('span#avoid_dementia_fup_txt').hide();}
                     }
                     _.defer(hideDementia);
-                    $("input:radio[name='InPersonAssessment_avoid_dementia3_fup']").change(hideDementia);
+                    $("select[name='InPersonAssessment_avoid_dementia3_fup']").change(hideDementia);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_depression" blobItem="avoid_depression" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_depression" blobItem="avoid_depression" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>6. DEPRESSION</h3>
@@ -438,38 +443,38 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_depression2" blobItem="avoid_depression2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_depression2" blobItem="avoid_depression2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you often get bored?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_depression3" blobItem="avoid_depression3" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_depression3" blobItem="avoid_depression3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you often feel helpless?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_depression4" blobItem="avoid_depression4" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_depression4" blobItem="avoid_depression4" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you prefer to stay at home rather than going out and doing new things?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_depression5" blobItem="avoid_depression5" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_depression5" blobItem="avoid_depression5" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Do you feel pretty worthless the way you are now?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_depression_fup" blobItem="avoid_depression_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_depression_fup" blobItem="avoid_depression_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
-                Follow up? <span id="recommend_depression" style="color:red">(Recommended)</span>
+                Follow up? <span id="recommend_depression" style="color:red">Note: Recommended, Any positive result calls for further screening</span>
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
@@ -479,19 +484,19 @@
                     $('span#avoid_depression_fup_txt').hide();
                     function calculateDepressionScore(){
                         var depression_score = 0;
-                        if($("input:radio[name='InPersonAssessment_avoid_depression']:checked").val() == "No"){
+                        if($("select[name='InPersonAssessment_avoid_depression']").val() == "No"){
                             depression_score++;
                         }
-                        if($("input:radio[name='InPersonAssessment_avoid_depression2']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_depression2']").val() == "Yes"){
                             depression_score++;
                         }
-                        if($("input:radio[name='InPersonAssessment_avoid_depression3']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_depression3']").val() == "Yes"){
                             depression_score++;
                         }
-                        if($("input:radio[name='InPersonAssessment_avoid_depression4']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_depression4']").val() == "Yes"){
                             depression_score++;
                         }
-                        if($("input:radio[name='InPersonAssessment_avoid_depression5']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_depression5']").val() == "Yes"){
                             depression_score++;
                         }
                         return depression_score
@@ -503,11 +508,11 @@
                         else{ $('span#recommend_depression').hide();}
                     }
                     _.defer(hideDepressionRec);
-                    $("input:radio[name='InPersonAssessment_avoid_depression']").change(hideDepressionRec);
-                    $("input:radio[name='InPersonAssessment_avoid_depression2']").change(hideDepressionRec);
-                    $("input:radio[name='InPersonAssessment_avoid_depression3']").change(hideDepressionRec);
-                    $("input:radio[name='InPersonAssessment_avoid_depression4']").change(hideDepressionRec);
-                    $("input:radio[name='InPersonAssessment_avoid_depression5']").change(hideDepressionRec);
+                    $("select[name='InPersonAssessment_avoid_depression']").change(hideDepressionRec);
+                    $("select[name='InPersonAssessment_avoid_depression2']").change(hideDepressionRec);
+                    $("select[name='InPersonAssessment_avoid_depression3']").change(hideDepressionRec);
+                    $("select[name='InPersonAssessment_avoid_depression4']").change(hideDepressionRec);
+                    $("select[name='InPersonAssessment_avoid_depression5']").change(hideDepressionRec);
 
                 </script>
             ]]>
@@ -524,46 +529,46 @@
                 <script type='text/javascript'>
                     $('span#avoid_depression_fup_txt').hide();
                     function hideDepression(){
-                        if($("input:radio[name='InPersonAssessment_avoid_depression_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_depression_fup']").val() == "Yes"){
                             $('span#avoid_depression_fup_txt').show();
                         }
                         else{ $('span#avoid_depression_fup_txt').hide();}
                     }
                     _.defer(hideDepression);
-                    $("input:radio[name='InPersonAssessment_avoid_depression_fup']").change(hideDepression);
+                    $("select[name='InPersonAssessment_avoid_depression_fup']").change(hideDepression);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_balance" blobItem="avoid_balance" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_balance" blobItem="avoid_balance" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>7. BALANCE/FALLS/MOBILITY</h3>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_balance3" blobItem="avoid_balance3" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance3" blobItem="avoid_balance3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Fall within the last 12 months?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_balance4" blobItem="avoid_balance4" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance4" blobItem="avoid_balance4" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Sought medical attention after a fall?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_balance5" blobItem="avoid_balance5" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance5" blobItem="avoid_balance5" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Fear of falling?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_balance_fup" blobItem="avoid_balance_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance_fup" blobItem="avoid_balance_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up? 
@@ -576,21 +581,21 @@
                 <script type='text/javascript'>
                     $('span#recommend_balance').hide();
                     function hideBalanceRec(){
-                        if($("input:radio[name='InPersonAssessment_avoid_balance3']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_balance3']").val() == "Yes"){
                             $('span#recommend_balance').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_balance4']:checked").val() == "Yes"){
+                        else if($("select[name='InPersonAssessment_avoid_balance4']").val() == "Yes"){
                             $('span#recommend_balance').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_balance5']:checked").val() == "Yes"){
+                        else if($("select[name='InPersonAssessment_avoid_balance5']").val() == "Yes"){
                             $('span#recommend_balance').show();
                         }
                         else{ $('span#recommend_balance').hide();}
                     }
                     _.defer(hideCommunicationRec);
-                    $("input:radio[name='InPersonAssessment_avoid_balance3']").change(hideBalanceRec);
-                    $("input:radio[name='InPersonAssessment_avoid_balance4']").change(hideBalanceRec);
-                    $("input:radio[name='InPersonAssessment_avoid_balance5']").change(hideBalanceRec);
+                    $("select[name='InPersonAssessment_avoid_balance3']").change(hideBalanceRec);
+                    $("select[name='InPersonAssessment_avoid_balance4']").change(hideBalanceRec);
+                    $("select[name='InPersonAssessment_avoid_balance5']").change(hideBalanceRec);
 
                 </script>
             ]]>
@@ -607,13 +612,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_balance_fup_txt').hide();
                     function hideBalance(){
-                        if($("input:radio[name='InPersonAssessment_avoid_balance_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_balance_fup']").val() == "Yes"){
                             $('span#avoid_balance_fup_txt').show();
                         }
                         else{ $('span#avoid_balance_fup_txt').hide();}
                     }
                     _.defer(hideBalance);
-                    $("input:radio[name='InPersonAssessment_avoid_balance_fup']").change(hideBalance);
+                    $("select[name='InPersonAssessment_avoid_balance_fup']").change(hideBalance);
 
                 </script>
             ]]>
@@ -639,7 +644,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_balance2" blobItem="avoid_balance2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance2" blobItem="avoid_balance2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
 		<br />
 		<b>In regards to Timed Get up and Go Test, any concern regarding feelings of unsteadiness in times when:</b><br />
@@ -647,7 +652,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
 	</ReportItem>
-        <ReportItem id="avoid_balance12" blobItem="avoid_balance12" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_balance12" blobItem="avoid_balance12" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Changes in direction if walking?<div class="requiredField">{$item}</div>
@@ -665,17 +670,17 @@
                 <script type='text/javascript'>
                     $('span#avoid_balance2_bpgait').hide();
                     function hideBP(){
-                        if($("input:radio[name='InPersonAssessment_avoid_balance12']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_balance12']").val() == "Yes"){
                             $('span#avoid_balance2_bpgait').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_balance2']:checked").val() == "Yes"){
+                        else if($("select[name='InPersonAssessment_avoid_balance2']").val() == "Yes"){
                             $('span#avoid_balance2_bpgait').show();
                         }
                         else{ $('span#avoid_balance2_bpgait').hide();}
                     }
                     _.defer(hideBP);
-                    $("input:radio[name='InPersonAssessment_avoid_balance12']").change(hideBP);
-                    $("input:radio[name='InPersonAssessment_avoid_balance2']").change(hideBP);
+                    $("select[name='InPersonAssessment_avoid_balance12']").change(hideBP);
+                    $("select[name='InPersonAssessment_avoid_balance2']").change(hideBP);
                 </script>
             ]]>
         </Static>
@@ -714,7 +719,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_adl_fup" blobItem="avoid_adl_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_adl_fup" blobItem="avoid_adl_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -733,13 +738,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_adl_fup_txt').hide();
                     function hideADL(){
-                        if($("input:radio[name='InPersonAssessment_avoid_adl_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_adl_fup']").val() == "Yes"){
                             $('span#avoid_adl_fup_txt').show();
                         }
                         else{ $('span#avoid_adl_fup_txt').hide();}
                     }
                     _.defer(hideADL);
-                    $("input:radio[name='InPersonAssessment_avoid_adl_fup']").change(hideADL);
+                    $("select[name='InPersonAssessment_avoid_adl_fup']").change(hideADL);
 
                 </script>
             ]]>
@@ -760,7 +765,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_iadl_fup" blobItem="avoid_iadl_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_iadl_fup" blobItem="avoid_iadl_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -779,19 +784,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_iadl_fup_txt').hide();
                     function hideIADL(){
-                        if($("input:radio[name='InPersonAssessment_avoid_iadl_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_iadl_fup']").val() == "Yes"){
                             $('span#avoid_iadl_fup_txt').show();
                         }
                         else{ $('span#avoid_iadl_fup_txt').hide();}
                     }
                     _.defer(hideIADL);
-                    $("input:radio[name='InPersonAssessment_avoid_iadl_fup']").change(hideIADL);
+                    $("select[name='InPersonAssessment_avoid_iadl_fup']").change(hideIADL);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_caregiver" blobItem="avoid_caregiver" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_caregiver" blobItem="avoid_caregiver" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>10. CAREGIVER SUPPORT</h3>
@@ -811,13 +816,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_caregiver2').hide();
                     function hideCareWhom(){
-                        if($("input:radio[name='InPersonAssessment_avoid_caregiver']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_caregiver']").val() == "Yes"){
                             $('span#avoid_caregiver2').show();
                         }
                         else{ $('span#avoid_caregiver2').hide();}
                     }
                     _.defer(hideCareWhom);
-                    $("input:radio[name='InPersonAssessment_avoid_caregiver']").change(hideCareWhom);
+                    $("select[name='InPersonAssessment_avoid_caregiver']").change(hideCareWhom);
 
                 </script>
             ]]>
@@ -834,7 +839,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_caregiver_fup" blobItem="avoid_caregivere_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_caregiver_fup" blobItem="avoid_caregivere_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
 		<br />
 		Assistance needs not being met and follow up required
@@ -856,19 +861,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_caregiver_fup_txt').hide();
                     function hideCare(){
-                        if($("input:radio[name='InPersonAssessment_avoid_caregiver_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_caregiver_fup']").val() == "Yes"){
                             $('span#avoid_caregiver_fup_txt').show();
                         }
                         else{ $('span#avoid_caregiver_fup_txt').hide();}
                     }
                     _.defer(hideCare);
-                    $("input:radio[name='InPersonAssessment_avoid_caregiver_fup']").change(hideCare);
+                    $("select[name='InPersonAssessment_avoid_caregiver_fup']").change(hideCare);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_urinary" blobItem="avoid_urinary" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_urinary" blobItem="avoid_urinary" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>11. URINARY INCONTINENCE</h3>
@@ -876,7 +881,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_urinary2" blobItem="avoid_urinary2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_urinary2" blobItem="avoid_urinary2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <span id="avoid_urinary2">
                     If yes, need for further assessment? 
@@ -889,50 +894,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_urinary2').hide();
                     function hideUrinaryAssessment(){
-                        if($("input:radio[name='InPersonAssessment_avoid_urinary']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_urinary']").val() == "Yes"){
                             $('span#avoid_urinary2').show();
                         }
                         else{ $('span#avoid_urinary2').hide();}
                     }
                     _.defer(hideUrinaryAssessment);
-                    $("input:radio[name='InPersonAssessment_avoid_urinary']").change(hideUrinaryAssessment);
+                    $("select[name='InPersonAssessment_avoid_urinary']").change(hideUrinaryAssessment);
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_urinary_fup" blobItem="avoid_urinary_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
-            <![CDATA[
-                <br />
-                Follow up?
-                <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="avoid_urinary_fup_txt" blobItem="avoid_urinary_fup_txt" type="Textarea" rich="false">
-            <![CDATA[
-                <span id="avoid_urinary_fup_txt">
-                <br />
-                <div class="requiredField">{$item}</div>
-                </span>
-            ]]>
-        </ReportItem>
-        <Static>
-            <![CDATA[
-                <script type='text/javascript'>
-                    $('span#avoid_urinary_fup_txt').hide();
-                    function hideUrinary(){
-                        if($("input:radio[name='InPersonAssessment_avoid_urinary_fup']:checked").val() == "Yes"){
-                            $('span#avoid_urinary_fup_txt').show();
-                        }
-                        else{ $('span#avoid_urinary_fup_txt').hide();}
-                    }
-                    _.defer(hideUrinary);
-                    $("input:radio[name='InPersonAssessment_avoid_urinary_fup']").change(hideUrinary);
-
-                </script>
-            ]]>
-        </Static>
-
-        <ReportItem id="avoid_bowel" blobItem="avoid_bowel" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_bowel" blobItem="avoid_bowel" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>12. BOWEL</h3>
@@ -953,13 +926,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_bowel2').hide();
                     function hideBowelManage(){
-                        if($("input:radio[name='InPersonAssessment_avoid_bowel']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_bowel']").val() == "Yes"){
                             $('span#avoid_bowel2').show();
                         }
                         else{ $('span#avoid_bowel2').hide();}
                     }
                     _.defer(hideBowelManage);
-                    $("input:radio[name='InPersonAssessment_avoid_bowel']").change(hideBowelManage);
+                    $("select[name='InPersonAssessment_avoid_bowel']").change(hideBowelManage);
 
                 </script>
             ]]>
@@ -972,13 +945,13 @@
                 </span>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_bowel3" blobItem="avoid_bowel3" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_bowel3" blobItem="avoid_bowel3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 Has there been a change in your regular bowel habit?
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_bowel4" blobItem="avoid_bowel4" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_bowel4" blobItem="avoid_bowel4" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 Has there been any change in usual stool consistency?
                 <div class="requiredField">{$item}</div>
@@ -997,13 +970,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_bowel5').hide();
                     function hideBowelChange(){
-                        if($("input:radio[name='InPersonAssessment_avoid_bowel4']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_bowel4']").val() == "Yes"){
                             $('span#avoid_bowel5').show();
                         }
                         else{ $('span#avoid_bowel5').hide();}
                     }
                     _.defer(hideBowelChange);
-                    $("input:radio[name='InPersonAssessment_avoid_bowel4']").change(hideBowelChange);
+                    $("select[name='InPersonAssessment_avoid_bowel4']").change(hideBowelChange);
 
                 </script>
             ]]>
@@ -1016,7 +989,7 @@
                 </span>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_bowel_fup" blobItem="avoid_uravoid_bowel_fupinary_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_bowel_fup" blobItem="avoid_uravoid_bowel_fupinary_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1036,13 +1009,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_bowel_fup_txt').hide();
                     function hideBowel(){
-                        if($("input:radio[name='InPersonAssessment_avoid_bowel_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_bowel_fup']").val() == "Yes"){
                             $('span#avoid_bowel_fup_txt').show();
                         }
                         else{ $('span#avoid_bowel_fup_txt').hide();}
                     }
                     _.defer(hideBowel);
-                    $("input:radio[name='InPersonAssessment_avoid_bowel_fup']").change(hideBowel);
+                    $("select[name='InPersonAssessment_avoid_bowel_fup']").change(hideBowel);
 
                 </script>
             ]]>
@@ -1063,7 +1036,7 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_meds3" blobItem="avoid_meds3" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_meds3" blobItem="avoid_meds3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" orientation="horizontal">
             <![CDATA[
                 <br />
                 Any Concerns about regular medication use (missing doses or taking twice by mistake)? 
@@ -1076,7 +1049,7 @@
                 <div class="requiredField">Concerns:{$item}</div>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_meds_fup" blobItem="avoid_meds_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_meds_fup" blobItem="avoid_meds_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1096,13 +1069,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_meds_fup_txt').hide();
                     function hideMeds(){
-                        if($("input:radio[name='InPersonAssessment_avoid_meds_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_meds_fup']").val() == "Yes"){
                             $('span#avoid_meds_fup_txt').show();
                         }
                         else{ $('span#avoid_meds_fup_txt').hide();}
                     }
                     _.defer(hideMeds);
-                    $("input:radio[name='InPersonAssessment_avoid_meds_fup']").change(hideMeds);
+                    $("select[name='InPersonAssessment_avoid_meds_fup']").change(hideMeds);
 
                 </script>
             ]]>
@@ -1115,7 +1088,7 @@
                 </span>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_fatigue" blobItem="avoid_fatigue" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_fatigue" blobItem="avoid_fatigue" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <hr />
                 <h3>14. COMPLAINING OF FATIGUE</h3>                
@@ -1138,18 +1111,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_fatigue2').hide();
                     function hideFatigue2(){
-                        if($("input:radio[name='InPersonAssessment_avoid_fatigue']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_fatigue']").val() == "Yes"){
                             $('span#avoid_fatigue2').show();
                         }
                         else{ $('span#avoid_fatigue2').hide();}
                     }
                     _.defer(hideFatigue2);
-                    $("input:radio[name='InPersonAssessment_avoid_fatigue']").change(hideFatigue2);
+                    $("select[name='InPersonAssessment_avoid_fatigue']").change(hideFatigue2);
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_fatigue_fup" blobItem="avoid_fatigue_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_fatigue_fup" blobItem="avoid_fatigue_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up? <span id="recommend_fatigue" style="color:red">(Recommended if 3-4 times per week)</span>
@@ -1185,19 +1158,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_fatigue_fup_txt').hide();
                     function hideFatigue(){
-                        if($("input:radio[name='InPersonAssessment_avoid_fatigue_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_fatigue_fup']").val() == "Yes"){
                             $('span#avoid_fatigue_fup_txt').show();
                         }
                         else{ $('span#avoid_fatigue_fup_txt').hide();}
                     }
                     _.defer(hideFatigue);
-                    $("input:radio[name='InPersonAssessment_avoid_fatigue_fup']").change(hideFatigue);
+                    $("select[name='InPersonAssessment_avoid_fatigue_fup']").change(hideFatigue);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_strength" blobItem="avoid_strength" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_strength" blobItem="avoid_strength" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>15. STRENGTH</h3>
@@ -1257,7 +1230,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_nutrition1_2_2" blobItem="avoid_nutrition1_2_2" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_nutrition1_2_2" blobItem="avoid_nutrition1_2_2" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 Any unplanned weight loss in the last year?
                 <div class="requiredField">{$item}</div>
@@ -1285,13 +1258,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_nutrition1_3').hide();
                     function hideavoid_nutrition1_3(){
-                        if($("input:radio[name='InPersonAssessment_avoid_nutrition1_2_2']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_nutrition1_2_2']").val() == "Yes"){
                             $('span#avoid_nutrition1_3').show();
                         }
                         else{ $('span#avoid_nutrition1_3').hide();}
                     }
                     _.defer(hideavoid_nutrition1_3);
-                    $("input:radio[name='InPersonAssessment_avoid_nutrition1_2_2']").change(hideavoid_nutrition1_3);
+                    $("select[name='InPersonAssessment_avoid_nutrition1_2_2']").change(hideavoid_nutrition1_3);
 
                 </script>
             ]]>
@@ -1390,7 +1363,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_nutrition4" blobItem="avoid_nutrition4" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_nutrition4" blobItem="avoid_nutrition4" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow Eating Well with Canada’s Food Guide?
@@ -1406,7 +1379,7 @@
                 </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_nutrition_fup" blobItem="avoid_nutrition_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_nutrition_fup" blobItem="avoid_nutrition_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1426,13 +1399,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_nutrition_fup_txt').hide();
                     function hideNutri(){
-                        if($("input:radio[name='InPersonAssessment_avoid_nutrition_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_nutrition_fup']").val() == "Yes"){
                             $('span#avoid_nutrition_fup_txt').show();
                         }
                         else{ $('span#avoid_nutrition_fup_txt').hide();}
                     }
                     _.defer(hideNutri);
-                    $("input:radio[name='InPersonAssessment_avoid_nutrition_fup']").change(hideNutri);
+                    $("select[name='InPersonAssessment_avoid_nutrition_fup']").change(hideNutri);
 
                 </script>
             ]]>
@@ -1463,7 +1436,7 @@
                 {$item} servings/day
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_osteo_fup" blobItem="avoid_osteo_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_osteo_fup" blobItem="avoid_osteo_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
 		<br /><br />
                 Follow up?
@@ -1483,20 +1456,20 @@
                 <script type='text/javascript'>
                     $('span#avoid_osteo_fup_txt').hide();
                     function hideOsteo(){
-                        if($("input:radio[name='InPersonAssessment_avoid_osteo_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_osteo_fup']").val() == "Yes"){
                             $('span#avoid_osteo_fup_txt').show();
                         }
                         else{ $('span#avoid_osteo_fup_txt').hide();}
                     }
                     _.defer(hideOsteo);
-                    $("input:radio[name='InPersonAssessment_avoid_osteo_fup']").change(hideOsteo);
+                    $("select[name='InPersonAssessment_avoid_osteo_fup']").change(hideOsteo);
 
                 </script>
             ]]>
         </Static>
 
 
-        <ReportItem id="avoid_pain" blobItem="avoid_pain" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_pain" blobItem="avoid_pain" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>18. PAIN</h3>
@@ -1517,19 +1490,19 @@
                 <script type='text/javascript'>
                     $('span#avoid_pain2').hide();
                     function hidePainScale(){
-                        if($("input:radio[name='InPersonAssessment_avoid_pain']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_pain']").val() == "Yes"){
                             $('span#avoid_pain2').show();
                         }
                         else{ $('span#avoid_pain2').hide();}
                     }
                     _.defer(hidePainScale);
-                    $("input:radio[name='InPersonAssessment_avoid_pain']").change(hidePainScale);
+                    $("select[name='InPersonAssessment_avoid_pain']").change(hidePainScale);
 
                 </script>
             ]]>
         </Static>
 
-        <ReportItem id="avoid_pain_fup" blobItem="avoid_pain_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_pain_fup" blobItem="avoid_pain_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1549,13 +1522,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_pain_fup_txt').hide();
                     function hidePain(){
-                        if($("input:radio[name='InPersonAssessment_avoid_pain_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_pain_fup']").val() == "Yes"){
                             $('span#avoid_pain_fup_txt').show();
                         }
                         else{ $('span#avoid_pain_fup_txt').hide();}
                     }
                     _.defer(hidePain);
-                    $("input:radio[name='InPersonAssessment_avoid_pain_fup']").change(hidePain);
+                    $("select[name='InPersonAssessment_avoid_pain_fup']").change(hidePain);
 
                 </script>
             ]]>
@@ -1732,7 +1705,7 @@
         </Static>
 
 
-        <ReportItem id="avoid_dental" blobItem="avoid_dental" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_dental" blobItem="avoid_dental" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>20. DENTAL</h3>
@@ -1740,14 +1713,14 @@
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_dental2" blobItem="avoid_dental2" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_dental2" blobItem="avoid_dental2" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Do you see a dentist yearly for regular cleaning?
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_dental3" blobItem="avoid_dental3" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_dental3" blobItem="avoid_dental3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Do your gums bleed while brushing your teeth?
@@ -1766,27 +1739,27 @@
                 <script type='text/javascript'>
                     $('span#avoid_dental4').hide();
                     function hideDentalCounsel(){
-                        if($("input:radio[name='InPersonAssessment_avoid_dental']:checked").val() == "No"){
+                        if($("select[name='InPersonAssessment_avoid_dental']").val() == "No"){
                             $('span#avoid_dental4').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_dental2']:checked").val() == "No"){
+                        else if($("select[name='InPersonAssessment_avoid_dental2']").val() == "No"){
                             $('span#avoid_dental4').show();
                         }
-                        else if($("input:radio[name='InPersonAssessment_avoid_dental3']:checked").val() == "No"){
+                        else if($("select[name='InPersonAssessment_avoid_dental3']").val() == "No"){
                             $('span#avoid_dental4').show();
                         }
                         else{ $('span#avoid_dental4').hide();}
                     }
                     _.defer(hideDentalCounsel);
-                    $("input:radio[name='InPersonAssessment_avoid_dental']").change(hideDentalCounsel);
-                    $("input:radio[name='InPersonAssessment_avoid_dental2']").change(hideDentalCounsel);
-                    $("input:radio[name='InPersonAssessment_avoid_dental3']").change(hideDentalCounsel);
+                    $("select[name='InPersonAssessment_avoid_dental']").change(hideDentalCounsel);
+                    $("select[name='InPersonAssessment_avoid_dental2']").change(hideDentalCounsel);
+                    $("select[name='InPersonAssessment_avoid_dental3']").change(hideDentalCounsel);
 
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_dental_fup" blobItem="avoid_dental_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_dental_fup" blobItem="avoid_dental_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1806,20 +1779,20 @@
                 <script type='text/javascript'>
                     $('span#avoid_dental_fup_txt').hide();
                     function hideDental(){
-                        if($("input:radio[name='InPersonAssessment_avoid_dental_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_dental_fup']").val() == "Yes"){
                             $('span#avoid_dental_fup_txt').show();
                         }
                         else{ $('span#avoid_dental_fup_txt').hide();}
                     }
                     _.defer(hideDental);
-                    $("input:radio[name='InPersonAssessment_avoid_dental_fup']").change(hideDental);
+                    $("select[name='InPersonAssessment_avoid_dental_fup']").change(hideDental);
 
                 </script>
             ]]>
         </Static>
         
 
-        <ReportItem id="avoid_lifestyle" blobItem="avoid_lifestyle" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle" blobItem="avoid_lifestyle" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
                 <h3>21. LIFESTYLE ISSUES</h3>
@@ -1844,18 +1817,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_lifestyle2').hide();
                     function hideLife1(){
-                        if($("input:radio[name='InPersonAssessment_avoid_lifestyle']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_lifestyle']").val() == "Yes"){
                             $('span#avoid_lifestyle2').show();
                         }
                         else{ $('span#avoid_lifestyle2').hide();}
                     }
                     _.defer(hideLife1);
-                    $("input:radio[name='InPersonAssessment_avoid_lifestyle']").change(hideLife1);
+                    $("select[name='InPersonAssessment_avoid_lifestyle']").change(hideLife1);
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_lifestyle3" blobItem="avoid_lifestyle3" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle3" blobItem="avoid_lifestyle3" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Do you currently smoke or have you ever smoked?
@@ -1879,14 +1852,14 @@
                     </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_lifestyle6" blobItem="avoid_lifestyle6" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle6" blobItem="avoid_lifestyle6" type="SelectReportItem"  options="Yes|No" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Are you thinking of quitting?
                 {$item}
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="SelectReportItem"  options="Yes|No"   orientation="horizontal">       
             <![CDATA[
                 <br />
                 Are you aware there are resources to support you? 
@@ -1900,18 +1873,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_lifestyle4').hide();
                     function hideLife4(){
-                        if($("input:radio[name='InPersonAssessment_avoid_lifestyle3']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_lifestyle3']").val() == "Yes"){
                             $('span#avoid_lifestyle4').show();
                         }
                         else{ $('span#avoid_lifestyle4').hide();}
                     }
                     _.defer(hideLife4);
-                    $("input:radio[name='InPersonAssessment_avoid_lifestyle3']").change(hideLife4);
+                    $("select[name='InPersonAssessment_avoid_lifestyle3']").change(hideLife4);
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_lifestyle_fup" blobItem="avoid_lifestyle_fup" type="RadioReportItem" options="Yes|No" orientation="horizontal">
+        <ReportItem id="avoid_lifestyle_fup" blobItem="avoid_lifestyle_fup" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
                 <br />
                 Follow up?
@@ -1931,18 +1904,18 @@
                 <script type='text/javascript'>
                     $('span#avoid_lifestyle_fup_txt').hide();
                     function hideLife(){
-                        if($("input:radio[name='InPersonAssessment_avoid_lifestyle_fup']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_lifestyle_fup']").val() == "Yes"){
                             $('span#avoid_lifestyle_fup_txt').show();
                         }
                         else{ $('span#avoid_lifestyle_fup_txt').hide();}
                     }
                     _.defer(hideLife);
-                    $("input:radio[name='InPersonAssessment_avoid_lifestyle_fup']").change(hideLife);
+                    $("select[name='InPersonAssessment_avoid_lifestyle_fup']").change(hideLife);
 
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="RadioReportItem" options="Yes|No" orientation="horizontal">       
+        <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <br />
                 Do you exercise regularly?
@@ -1974,13 +1947,13 @@
                 <script type='text/javascript'>
                     $('span#avoid_lifestyle8').hide();
                     function hideLife8(){
-                        if($("input:radio[name='InPersonAssessment_avoid_lifestyle7']:checked").val() == "Yes"){
+                        if($("select[name='InPersonAssessment_avoid_lifestyle7']").val() == "Yes"){
                             $('span#avoid_lifestyle8').show();
                         }
                         else{ $('span#avoid_lifestyle8').hide();}
                     }
                     _.defer(hideLife8);
-                    $("input:radio[name='InPersonAssessment_avoid_lifestyle7']").change(hideLife8);
+                    $("select[name='InPersonAssessment_avoid_lifestyle7']").change(hideLife8);
 
                 </script>
             ]]>
@@ -2001,4 +1974,3 @@
             <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
     </ReportSection>
 </Report>
-
