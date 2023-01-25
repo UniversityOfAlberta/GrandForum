@@ -139,7 +139,7 @@ class APIRequest{
 		$this->addAction('Projects', 'deleteProject', 'DeleteProjectAPI');
 		
 		$this->addAction("User Accounts", "callAvoidResourcesApi", "AvoidResourcesAPI");
-
+		$this->addAction("User Accounts", "DownloadWordHtmlApi", "DownloadWordHtmlAPI");
 	}
 }
 
