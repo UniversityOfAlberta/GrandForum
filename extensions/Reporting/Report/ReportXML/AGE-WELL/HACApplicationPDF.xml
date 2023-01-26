@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application" reportType="RP_HAC" pdfType="RPTP_HAC" year="2023" allowIdProjects="true" pdfFiles="HACApplicationPDF" ajax="true" disabled="false">
+    <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
+        <Static>
+            <![CDATA[
+                <div style="float:left;"><h4 style='font-size:1.5em;'>2023 Healthy Aging Canada (HAC)<br />Catalyst Funding Program - Application</h4></div>
+                <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            ]]>
+        </Static>
+    </ReportSection>
+    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="pl" type="Text" blobItem="PL">
+            <![CDATA[
+                <table class="wikitable">
+                    <tr>
+                        <td class="label">Project Lead(s):</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="institution" type="Text" blobItem="INSTITUTION">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Institution(s):</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="title" type="Text" blobItem="TITLE">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Project Title:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                </table><br />
+            ]]>
+        </ReportItem>
+        <ReportItem id="summary" type="Textarea" blobItem="PL" rich="true" limit="250">
+            <![CDATA[
+                <h3>Lay Summary</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="keywords" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="KEYWORDS" multiple="true" orientation="list" max="6">
+            <![CDATA[
+                <h3>Keywords</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="funds" type="Text" blobItem="FUNDS" width="4em">
+            <![CDATA[
+                <h3>Total amount of funds requested</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="challenges" type="Checkbox" blobType="BLOB_ARRAY" blobItem="CHALLENGES" options="Supportive Homes &amp; Communities|Health Care &amp; Health Service Delivery|Autonomy &amp; Independence|Cognitive Health &amp; Dementia|Mobility &amp; Transportation|Healthy Lifestyles &amp; Wellness|Staying Connected|Financial Wellness &amp; Employment" >
+            <![CDATA[
+                <h3>The proposed project is best aligned with the following AGE-WELL Challenge Area(s)</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="priorities" type="Checkbox" blobType="BLOB_ARRAY" blobItem="PRIORITIES" options="Innovative solutions that empower older adults to live safe, healthy, and socially connected lives within their homes and/or communities.|Innovative solutions focused on the role, health and well-being of care partners supporting older adults.|Building safer, more accessible, or more connected communities|Development and accelerated dissemination of best practices, guidelines, or standards|Solutions that include and meet the needs of vulnerable and equity-deserving groups of people|Quality improvement studies that investigate novel and innovative ways to improve the lives of older Canadians." delimiter="&lt;br />">
+            <![CDATA[
+                <h3>PRIORITY AREAS</h3>
+                {$item}<br />
+            ]]>
+        </ReportItem>
+        
+        <If if="{!=({getArray(RP_HAC, APPLICATION_FORM, SPECIAL1, 0, {$user_id}, 0, special1,;)},)}">
+            <ReportItem id="special1" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL1" options="The proposed study involves underrepresented groups, including First Nations, Inuit and Métis Peoples of Canada, persons living with disabilities, members of visible minority/racialized groups, and members of LGBTQIA2S+ communities." optional="true">
+                <![CDATA[
+                    <h3>SPECIAL FUNDING STREAMS</h3>
+                    <b><span id='special1'>{$item}</span></b>
+                ]]>
+            </ReportItem>
+            <ReportItem id="special1a" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL1A" options="at least one member who self-identifies as Indigenous (First Nations, Inuit or Métis)|or demonstrates a track record of meaningful and culturally safe involvement with Indigenous Peoples" optional="true">
+                <![CDATA[
+                    <div id='special1div' style='margin-left: 3em; margin-top: 1em;'>
+                        For applications involving Indigenous populations (including First Nations, Inuit and Métis), the research team includes:
+                        {$item}<br />
+                ]]>
+            </ReportItem>
+            <ReportItem id="special1b" type="Textarea" blobItem="SPECIAL1B" rich="true" limit="100">
+                <![CDATA[
+                        Provide a brief description of your project’s alignment to this funding stream.  Greater detail will be requested in the project proposal section.
+                        {$item}
+                    </div>
+                ]]>
+            </ReportItem>
+        </If>
+        
+        <If if="{!=({getArray(RP_HAC, APPLICATION_FORM, SPECIAL2, 0, {$user_id}, 0, special2,;)},)}">
+            <ReportItem id="special2" type="Checkbox" blobType="BLOB_ARRAY" blobItem="SPECIAL2" options="The proposed study involves projects that focus on novel and innovative ways to prevent, mitigate, or reverse frailty, or studies that investigate novel ways to diagnose, treat, support and/or care for those living with frailty." optional="true">
+                <![CDATA[
+                    <br />
+                    <b><span id='special2'>{$item}</span></b>
+                ]]>
+            </ReportItem>
+            <ReportItem id="special2a" type="Textarea" blobItem="SPECIAL2A" rich="true" limit="100">
+                <![CDATA[
+                    <div id='special2div' style='margin-left: 3em; margin-top: 1em;'>
+                        Provide a brief description of your project’s alignment to this funding stream. Greater detail will be requested in the project proposal section.
+                        {$item}
+                    </div>
+                ]]>
+            </ReportItem>
+        </If>
+        <Static>
+            <![CDATA[
+                <br /><br />
+            ]]>
+        </Static>
+    </ReportSection>
+    
+    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
+            <![CDATA[
+                <h3>1. Background and Rationale</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="objectives" type="Textarea" blobItem="OBJECTIVES" rich="true" limit="1500">
+            <![CDATA[
+                <h3>2. Objectives, Methods and Deliverables</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="partnerships" type="Textarea" blobItem="PARTNERSHIPS" rich="true" limit="250">
+            <![CDATA[
+                <h3>3. Project Team and Partnerships</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="team" type="MultiTextReportItem" class="wikitable" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution">
+            <![CDATA[
+                <h3>Project Personnel</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget" type="Upload" blobItem="BUDGET" blobType="BLOB_RAW" mimeType=".xlsx,.xlx" fileSize="5">
+            <![CDATA[
+                <h3>4. Budget and Budget Justification</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+        
+        <ReportItem id="budget_justification" type="Textarea" blobItem="BUDGET_JUSTIFICATION" rich="true" limit="250">
+            <![CDATA[
+                <p><b>Budget Justification</b></p>
+                {$item}
+                <br /><br />
+            ]]>
+        </ReportItem>
+    </ReportSection>
+    
+    <ReportSection id="documents" tooltip="C. UPLOAD DOCUMENTS" title="C. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection" pagebreak="false">
+        <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>Project Lead(s) Bio(s)</h3>
+                {$item}
+            ]]>
+        </ReportItem>
+    </ReportSection>
+</Report>

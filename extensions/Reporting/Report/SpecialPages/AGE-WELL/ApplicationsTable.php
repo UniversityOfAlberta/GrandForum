@@ -290,7 +290,56 @@ class ApplicationsTable extends SpecialPage{
     
     function generateCatalyst(){
         global $wgOut;
+        
+        $age = new CheckboxReportItem();
+        $age->setBlobType(BLOB_ARRAY);
+        $age->setBlobItem('AGE');
+        $age->setBlobSection('APPLICATION_FORM');
+        $age->setId("age");
+        
+        $gender = new CheckboxReportItem();
+        $gender->setBlobType(BLOB_ARRAY);
+        $gender->setBlobItem('GENDER');
+        $gender->setBlobSection('APPLICATION_FORM');
+        $gender->setId("gender");
+        
+        $gender_other = new TextReportItem();
+        $gender_other->setBlobType(BLOB_TEXT);
+        $gender_other->setBlobItem('GENDER_OTHER');
+        $gender_other->setBlobSection('APPLICATION_FORM');
+        
+        $indigenous = new CheckboxReportItem();
+        $indigenous->setBlobType(BLOB_ARRAY);
+        $indigenous->setBlobItem('INDIGENOUS');
+        $indigenous->setBlobSection('APPLICATION_FORM');
+        $indigenous->setId("indigenous");
+        
+        $ethnicities = new CheckboxReportItem();
+        $ethnicities->setBlobType(BLOB_ARRAY);
+        $ethnicities->setBlobItem('ETHNICITIES');
+        $ethnicities->setBlobSection('APPLICATION_FORM');
+        $ethnicities->setId("ethnicities");
+        
+        $ethnicities_other = new TextReportItem();
+        $ethnicities_other->setBlobType(BLOB_TEXT);
+        $ethnicities_other->setBlobItem('ETHNICITIES_OTHER');
+        $ethnicities_other->setBlobSection('APPLICATION_FORM');
+        
+        $disability = new CheckboxReportItem();
+        $disability->setBlobType(BLOB_ARRAY);
+        $disability->setBlobItem('DISABILITY');
+        $disability->setBlobSection('APPLICATION_FORM');
+        $disability->setId("disability");
+        
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab('RP_HAC', null, 2023, "HAC 2023", array("Age" => $age,
+                                                                                         "Gender" => $gender,
+                                                                                         "Gender (Other)" => $gender_other,
+                                                                                         "Indigenous" => $indigenous,
+                                                                                         "Ethnicities" => $ethnicities,
+                                                                                         "Ethnicities (Other)" => $ethnicities_other,
+                                                                                         "Disability" => $disability
+                                                                                       )));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2017, "2018"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2016, "2017"));
         $tabbedPage->addTab(new ApplicationTab('RP_CAT', null, 2015, "2016"));

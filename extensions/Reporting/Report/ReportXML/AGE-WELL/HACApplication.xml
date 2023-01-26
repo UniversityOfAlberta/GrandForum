@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Report name="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application" reportType="RP_HAC" pdfType="RPTP_HAC" year="2023" allowIdProjects="true" pdfFiles="HACApplicationPDF" ajax="true" disabled="false">
     <Permissions>
-        
+        <Role role="NI" />
+        <Role role="NI-Candidate" />
+        <Role role="External" />
+        <Role role="External-Candidate" />
     </Permissions>
     <ReportSection id="description" tooltip="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application" name="Program Description" type="ReportSection" title="2023 Healthy Aging Canada (HAC) Catalyst Funding Program - Application">
         <Static>
@@ -44,7 +47,7 @@
         </Static>
     </ReportSection>
     
-    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="information" tooltip="A. ADMINISTRATIVE INFORMATION" title="A. ADMINISTRATIVE INFORMATION" name="Administrative Information" blobSection="APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="pl" type="Text" blobItem="PL" width="250px">
             <![CDATA[
                 <table class="wikitable">
@@ -178,7 +181,7 @@
         
     </ReportSection>
     
-    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="identification" tooltip="Self-Identification Form" name="Self-Identification Form" blobSection="APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="age" type="CheckboxReportItem" blobType="BLOB_ARRAY" blobItem="AGE" orientation="vertical" options="18-24 years old|25-34 years old|35-44 years old|45-54 years old|55-64 years old|65-74 years old|75+ years old|I prefer not to answer" optional="true">
             <![CDATA[
                 <table>
@@ -244,7 +247,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="research" tooltip="B. RESEARCH PLAN" title="B. RESEARCH PLAN" name="Research Plan" blobSection="APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="background" type="Textarea" blobItem="BACKGROUND" rich="true" limit="500">
             <![CDATA[
                 <p>The research plan should provide a framework for the operation of the project. Details of project alignment to special funding streams identified in Section A, if applicable, should be included in this section.</p>
@@ -335,7 +338,7 @@
         </ReportItem>
     </ReportSection>
     
-    <ReportSection id="documents" tooltip="C. UPLOAD DOCUMENTS" title="C. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection" renderpdf="false">
+    <ReportSection id="documents" tooltip="C. UPLOAD DOCUMENTS" title="C. UPLOAD DOCUMENTS" name="Upload Documents" blobSection="APPLICATION_FORM" type="EditableReportSection">
         <ReportItem id="bios" type="Upload" blobItem="BIOS" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
             <![CDATA[
                 <h3>Upload Project Lead(s) Bio(s) (please combine into a single PDF if there is more than one Project Lead).</h3>

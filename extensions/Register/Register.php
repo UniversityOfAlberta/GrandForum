@@ -18,9 +18,9 @@ class Register extends SpecialPage{
                 if($config->getValue('networkName') == "AGE-WELL"){
                     $parseroutput->mText .= "<h2>HQP Affiliates Registration</h2><p>If you would like to apply to become an HQP (trainee) in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 
-<p>If you would like access to the Catalyst or SIP Accelerator applications, please do not use the Affiliates Application instructions. Instead, please email <a href='mailto:info@agewell-nce.ca'>info@agewell-nce.ca</a>.</p>
+                    <h2>External Registration</h2><p>If you would like to apply for a Catalyst or SIP application and do not yet have an account, you can register as an 'External-Candidate' by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External-Candidate'>registration form</a>.</p>
 
-                    <b>AGE-WELL Conference Abstracts</b><p>In order to submit a conference abstract to the AGE-WELL Conference, you must be an AGE-WELL member. Please see list below for potential membership options.</p>
+                    <h2>AGE-WELL Conference Abstracts</h2><p>In order to submit a conference abstract to the AGE-WELL Conference, you must be an AGE-WELL member. Please see list below for potential membership options.</p>
 <p><u>Student/Trainees:</u> If you would like to apply to become an HQP (trainee) in AGE-WELL then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 <p><u>Partner Organizations/Start-ups:</u> Please email <a href='mailto:partnerships@agewell-nce.ca'>partnerships@agewell-nce.ca</a> for more information on how to partner with AGE-WELL.</p>
 <p><u>Researchers:</u>  A researcher must be actively engaged in an AGE-WELL project to submit an abstract to the AGE-WELL conference. Please email <a href='mailto:info@agewell-nce.ca'>info@agewell-nce.ca</a> for information on how to apply to become a project researcher.</p>";
@@ -97,8 +97,6 @@ class Register extends SpecialPage{
         $emailField = new EmailField("email_field", "Email", "", VALIDATE_NOT_NULL);
         $emailRow = new FormTableRow("email_row");
         $emailRow->append($emailLabel)->append($emailField);
-
-        
         
         $captchaLabel = new Label("captcha_label", "<span class='en'>Enter Code</span><span class='fr'>Entrez le code</span>", "Enter the code you see in the image", VALIDATE_NOT_NULL);
         $captchaField = new Captcha("captcha_field", "Captcha", "", VALIDATE_NOT_NULL);
@@ -127,8 +125,9 @@ class Register extends SpecialPage{
         }
         else if($config->getValue('networkName') == 'AGE-WELL'){
             $typeLabel = new Label("type_label", "Please select your role", "The role of user", VALIDATE_NOT_NULL);
-            $typeField = new VerticalRadioBox("type_field", "Role", HQP, array(HQP => "HQP-Candidate</span>", 
-                                                                               EXTERNAL => "External-Candidate"), VALIDATE_NOT_NULL);
+            $role = (isset($_GET['role']) && ($_GET['role'] == HQP || $_GET['role'] == EXTERNAL)) ? $_GET['role'] : HQP;
+            $typeField = new VerticalRadioBox("type_field", "Role", $role, array(HQP => "HQP-Candidate", 
+                                                                                 EXTERNAL => "External-Candidate"), VALIDATE_NOT_NULL);
             $typeRow = new FormTableRow("type_row");
             $typeRow->append($typeLabel)->append($typeField);
             $formTable->append($typeRow);
@@ -148,7 +147,11 @@ class Register extends SpecialPage{
             $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
         }
         else if($config->getValue('networkName') == "AGE-WELL"){
-            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate or External-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br /><br />");
+            $wgOut->addHTML("By registering with {$config->getValue('networkName')} you will be granted the role of HQP-Candidate or External-Candidate.  You may need to check your spam/junk mail for the registration email if it doesn't show up after a few minutes.  If you still don't get the email, please contact <a href='mailto:{$config->getValue('supportEmail')}'>{$config->getValue('supportEmail')}</a>.<br />
+             <ul>
+                <li><b>HQP-Candidate:</b> Select this role if you would like to apply for an HQP (trainee) related application (ie. HQP Affiliate)</li>
+                <li><b>External-Candidate:</b> Select this role if you would like to apply for a funding opportunity (ie. Catalyst or SIP Accelerator)</li>
+             </ul>");
         }
         else if($config->getValue('networkName') == "IntComp"){
             $wgOut->setPageTitle("Member Registration");
