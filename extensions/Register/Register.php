@@ -18,7 +18,7 @@ class Register extends SpecialPage{
                 if($config->getValue('networkName') == "AGE-WELL"){
                     $parseroutput->mText .= "<h2>HQP Affiliates Registration</h2><p>If you would like to apply to become an HQP (trainee) in {$config->getValue('networkName')} then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
 
-                    <h2>External Registration</h2><p>If you would like to apply for a Catalyst or SIP application and do not yet have an account, you can register as an 'External-Candidate' by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External-Candidate'>registration form</a>.</p>
+                    <h2>External Registration</h2><p>If you would like to apply for a Catalyst or SIP application and do not yet have an account, you can register as an 'External-Candidate' by using this <a href='$wgServer$wgScriptPath/index.php/Special:Register?role=External'>registration form</a>.</p>
 
                     <h2>AGE-WELL Conference Abstracts</h2><p>In order to submit a conference abstract to the AGE-WELL Conference, you must be an AGE-WELL member. Please see list below for potential membership options.</p>
 <p><u>Student/Trainees:</u> If you would like to apply to become an HQP (trainee) in AGE-WELL then please fill out the <a href='$wgServer$wgScriptPath/index.php/Special:Register'>registration form</a>.</p>
