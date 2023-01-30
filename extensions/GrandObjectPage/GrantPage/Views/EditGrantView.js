@@ -25,7 +25,7 @@ EditGrantView = Backbone.View.extend({
         });
         this.allPeople = new People();
         this.allPeople.simple = true;
-        this.allPeople.roles = [NI];
+        this.allPeople.roles = [NI,"ATS"];
         var xhr1 = this.allPeople.fetch();
         this.listenTo(this.model, 'sync', function(){
             this.person = new Person({id: this.model.get('user_id')});
