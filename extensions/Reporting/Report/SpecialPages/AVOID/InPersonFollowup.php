@@ -402,7 +402,7 @@
                 $wgOut->setPageTitle("Assessor");
                 $wgOut->addHTML("<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()}</span><br /><br /><a class='program-button' href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=InPersonAssessment&person={$person->getId()}'>In-Person Assessment Form</a></div>");
                 $report->person = $person;
-                $content = "<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()} In-Person Assessment Form</div>";
+                $content = "<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()} In-Person Assessment Form</div><br />Date: ".date("Y/m/d")."<br />";
                 $content .= "<div class='assess_results'>" .
                     InPersonFollowup::getRow($person, $report, false, true) . "</div>";
                 $content = htmlspecialchars(urlencode($content));
