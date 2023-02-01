@@ -244,6 +244,11 @@
                 "file": "Vegetarian Tacos.pdf",
                 "title": "Vegetarian Tacos",
                 "tags": [ ]
+            },
+            {
+                "file": "https://healthconnectontario.health.gov.on.ca/static/guest/related-articles/hcns-nutrition-program",
+                "title": "Speak to a Registered Dietitian",
+                "tags": []
             }
         ]
     },
