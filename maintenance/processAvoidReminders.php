@@ -34,7 +34,7 @@ function sendMail($subject, $message, $person){
     global $config;
     $message = nl2br($message);
     $headers  = "Content-type: text/html\r\n"; 
-    $headers .= "From: AVOID Frailty <noreply@healthyagingcentres.ca>" . "\r\n";
+    $headers .= "From: AVOID Frailty <support@healthyagingcentres.ca>" . "\r\n";
     $hash = hash('sha256', $person->getId()."_".$person->getRegistration());
     
     $message .= "<p><a href='https://healthyagingcentres.ca/portal/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>"; 
