@@ -300,8 +300,8 @@ abstract class AbstractReport extends SpecialPage {
                         $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                                    "X-Mailer: PHP/" . phpversion();
-                        $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
-                        mail($_GET['emails'], "Report Submitted", $message, $headers);
+                        $message = "Your GARS application has been submitted by {$me->getName()}.\n\nClick here to download: $url";
+                        mail($_GET['emails'], "Application Submitted", $message, $headers);
                     }
                     break; //Temporary solution to not submitting NI Report Comments PDF (2nd PDF and only 1 2nd PDF among all reports)
                 }
@@ -1004,8 +1004,8 @@ abstract class AbstractReport extends SpecialPage {
                 $headers = "From: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "Reply-To: {$config->getValue('networkName')} Support <{$config->getValue('supportEmail')}>\r\n" .
                            "X-Mailer: PHP/" . phpversion();
-                $message = "The report '{$this->name}' has been submitted by {$me->getName()}.\n\nClick here to download: $url";
-                mail($_GET['emails'], "Report Submitted", $message, $headers);
+                $message = "Your GARS application has been submitted by {$me->getName()}.\n\nClick here to download: $url";
+                mail($_GET['emails'], "Application Submitted", $message, $headers);
             }
         }
         if($submit){
