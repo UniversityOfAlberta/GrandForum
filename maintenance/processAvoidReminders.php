@@ -34,7 +34,7 @@ function sendMail($subject, $message, $person){
     global $config;
     $message = nl2br($message);
     $headers  = "Content-type: text/html\r\n"; 
-    $headers .= "From: AVOID Frailty <support@healthyagingcentres.ca>" . "\r\n";
+    $headers .= "From: AVOID Frailty <noreply@healthyagingcentres.ca>" . "\r\n";
     $hash = hash('sha256', $person->getId()."_".$person->getRegistration());
     
     $message .= "<p><a href='https://healthyagingcentres.ca/portal/index.php?action=api.userunsub&code={$hash}'>Click here</a> to unsubscribe from AVOID notifications.</p>"; 
@@ -114,11 +114,11 @@ foreach($people as $person){
     }
     else if($threeMonthSubmitted && !$sixMonthSubmitted && $baseDiff >= 30*6 && getReminder("6MonthReminder", $person)['count'] < 1){
         // 6 Month
-        /*addReminder("6MonthReminder", $person);
+        addReminder("6MonthReminder", $person);
         $subject = "Been 6 months since healthy aging assessment was completed";
-        $message = "<p>Hello, It has been 6 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours. When you have a minute, please fill in the health-related behaviours and lifestyle section of the assessment, which should take less than 5 minutes. This will also allow us to display for you, your healthy aging progress. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
+        $message = "<p>Hello, It has been 6 months since you completed AVOID Frailty's Healthy Aging Assessment. We hope you are enjoying the program.  We would like to see if the program has supported you in uptaking healthy behaviours and if that has slowed your risk of frailty. When you have a few minutes, please fill in the portion of the healthy aging assessment linked below, which should take less than 15 minutes. This will also allow us to display for you, your healthy aging progress and refresh your frailty report. Please log into your account at your convenience.  <a href='https://www.healthyagingcentres.ca'>www.healthyagingcentres.ca</a></p>";
         sendMail($subject, $message, $person);
-        echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";*/
+        echo "{$person->getNameForForms()} <{$person->getEmail()}>: {$subject}\n";
     }
     
     // Three/Six Month 5-day reminders
