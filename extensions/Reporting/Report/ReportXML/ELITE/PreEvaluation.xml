@@ -612,22 +612,9 @@ working towards a certification, diploma or degree|University, working towards a
                 <h2>The following questions will help match your pre-survey with your post survey. They will not be used to identify you in any way.</h2>
             ]]>
         </Static>
-        <ReportItem id="section1_confidence39" blobItem="section1_confidence39" type="Text" optional="true">
-            <![CDATA[
-                <h3>28. Please indicate your initials (2 letters only)</h3>
-                <div class="subquestion" style="padding-left:50px">
-                    {$item}
-            ]]>
-        </ReportItem>
-        <ReportItem id="section1_confidence39_other" blobItem="section1_confidence39_other" type="Checkbox" blobType="BLOB_ARRAY" options="Prefer not to answer" optional="true">
-            <![CDATA[
-                    {$item}
-                </div>
-            ]]>
-        </ReportItem>
         <ReportItem id="section1_confidence40" blobItem="section1_confidence40" type="Text" optional="true">
             <![CDATA[
-                <h3>29. On what day of the month were you born? (1 – 31)</h3>
+                <h3>28. Please indicate your initials (2 letters only)</h3>
                 <div class="subquestion" style="padding-left:50px">
                     {$item}
             ]]>
@@ -640,28 +627,41 @@ working towards a certification, diploma or degree|University, working towards a
         </ReportItem>
         <ReportItem id="section1_confidence41" blobItem="section1_confidence41" type="Text" optional="true">
             <![CDATA[
+                <h3>29. On what day of the month were you born? (1 – 31)</h3>
+                <div class="subquestion" style="padding-left:50px">
+                    {$item}
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence41_other" blobItem="section1_confidence41_other" type="Checkbox" blobType="BLOB_ARRAY" options="Prefer not to answer" optional="true">
+            <![CDATA[
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="section1_confidence42" blobItem="section1_confidence42" type="Text" optional="true">
+            <![CDATA[
                 <h3>RBC, in partnership with the University of Waterloo's Youth & Innovation Project, is studying how the programs we support impact young people such as yourself, as well as Canada's economy and society, over the long term. If you would like to volunteer to participate in this important research please enter your first name, last name, email address, and the first three letters of your postal code below.</h3>
                 <div class="subquestion" style="padding-left:50px">
                     First Name:<br />{$item}<br style='margin-bottom: 1em;' />
             ]]>
         </ReportItem>
-        <ReportItem id="section1_confidence42" blobItem="section1_confidence42" type="Text" optional="true">
+        <ReportItem id="section1_confidence43" blobItem="section1_confidence43" type="Text" optional="true">
             <![CDATA[
                     Last Name:<br />{$item}<br style='margin-bottom: 1em;' />
             ]]>
         </ReportItem>
-        <ReportItem id="section1_confidence43" blobItem="section1_confidence43" type="Text" optional="true">
+        <ReportItem id="section1_confidence44" blobItem="section1_confidence44" type="Text" optional="true">
             <![CDATA[
                     Email:<br />{$item}<br style='margin-bottom: 1em;' />
             ]]>
         </ReportItem>
-        <ReportItem id="section1_confidence44" blobItem="section1_confidence44" type="Text" optional="true">
+        <ReportItem id="section1_confidence45" blobItem="section1_confidence45" type="Text" optional="true">
             <![CDATA[
                     First three letters of your postal code:<br />{$item}
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="section1_confidence45" blobItem="section1_confidence45" type="Checkbox" options="Relevant programs or opportunities offered by RBC, the RBC Foundation or its partners in
+        <ReportItem id="section1_confidence46" blobItem="section1_confidence46" type="Checkbox" options="Relevant programs or opportunities offered by RBC, the RBC Foundation or its partners in
 which you may be interested.|Opportunities to participate in research studies related to the programs we support.|Opportunities to participate in RBC or RBC Foundation marketing and communications
 activities." optional="true">
             <![CDATA[
