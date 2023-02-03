@@ -110,9 +110,12 @@ $egAnnokiExtensions['CCVExport'] = array('name' => 'CCVExport',
                                          
 $egAnnokiExtensions['CrossForumExport'] = array('name' => 'CrossForumExport', 
                                                 'path' => "$IP/extensions/CrossForumExport/CrossForumExport.php");
-                                         
+                                                                       
 $egAnnokiExtensions['QASummary'] = array('name' => 'QASummary', 
                                          'path' => "$IP/extensions/QASummary/QASummary.php");
+
+$egAnnokiExtensions['FECHistory'] = array('name' => 'FECHistory', 
+                                          'path' => "$IP/extensions/FECHistory/FECHistory.php");
                                          
 $egAnnokiExtensions['ReportIssue'] = array('name' => 'ReportIssue', 
                                            'path' => "$IP/extensions/ReportIssue/ReportIssue.php");
