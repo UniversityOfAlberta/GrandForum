@@ -596,7 +596,7 @@ working towards a certification, diploma or degree|University, working towards a
                 </div>
             ]]>
         </ReportItem>
-        <ReportItem id="section1_confidence38" blobItem="section1_confidence38" type="Radio" options="Yes|No|Questioning/Not sure|Prefer not to answer">
+        <ReportItem id="section1_confidence39" blobItem="section1_confidence39" type="Radio" options="Yes|No|Questioning/Not sure|Prefer not to answer">
             <![CDATA[
                 <h3>27. Do you consider yourself to be a member of the LGBT+ (Lesbian, Gay, Bisexual, Transgender, Queer, Two-Spirited) community?</h3>
                 <div class="subquestion" style="padding-left:50px">
