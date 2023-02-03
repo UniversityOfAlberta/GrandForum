@@ -75,7 +75,7 @@
                 <p>*Project Lead is equivalent to “Principal Investigator”. A brief bio (free-form, maximum 1,500 words) is required for any team member(s) designated this role. See Section C of this application module.</p>
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="PL" rich="true" limit="250">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
             <![CDATA[
                 <h3>Lay Summary</h3>
                 <p>Provide a lay summary that includes a problem statement, objectives, activities and anticipated impact(s) of the project. Do not include a scientific abstract: the intent of this summary is to communicate the purpose and core elements of the project to audiences who may not have scientific training. This summary may be used for future communications if the proposal is successful.</p>

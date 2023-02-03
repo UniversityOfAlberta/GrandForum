@@ -47,7 +47,7 @@
                 </table><br />
             ]]>
         </ReportItem>
-        <ReportItem id="summary" type="Textarea" blobItem="PL" rich="true" limit="250">
+        <ReportItem id="summary" type="Textarea" blobItem="SUMMARY" rich="true" limit="250">
             <![CDATA[
                 <h3>Lay Summary</h3>
                 {$item}
