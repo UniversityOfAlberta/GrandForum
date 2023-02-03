@@ -27,8 +27,8 @@ if(isset($_SERVER['uid'])){
     $shib_AssertionConsumerServiceURL = "/Shibboleth.sso";
      
     // Map Real Name to what Shibboleth variable(s)?
-    $shib_RN = ucfirst(strtolower($_SERVER['givenName'])) . ' '
-	     . ucfirst(strtolower($_SERVER['sn']));
+    $shib_RN = ucfirst(strtolower(@$_SERVER['givenName'])) . ' '
+	     . ucfirst(strtolower(@$_SERVER['sn']));
 
     // Map e-mail to what Shibboleth variable?
     $shib_email = $_SERVER['uid']."@ualberta.ca";
