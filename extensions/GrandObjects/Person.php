@@ -468,7 +468,7 @@ class Person extends BackboneModel {
      */
     static function generateUniversityCache(){
         if(empty(self::$universityCache)){
-            $sql = "SELECT user_id, university_name, department, position, end_date
+            $sql = "SELECT user_id, university_name, faculty, department, position, end_date
                     FROM grand_user_university uu, grand_universities u, grand_positions p 
                     WHERE u.university_id = uu.university_id
                     AND uu.position_id = p.position_id
@@ -478,6 +478,7 @@ class Person extends BackboneModel {
                 if(!isset(self::$universityCache[$row['user_id']])){
                     self::$universityCache[$row['user_id']] = 
                         array("university" => $row['university_name'],
+                              "faculty"    => $row['faculty'],
                               "department" => $row['department'],
                               "position"   => $row['position'],
                               "date"       => $row['end_date']);
@@ -557,13 +558,29 @@ class Person extends BackboneModel {
     }
     
     /**
+     * Returns an array of all Faculty names
+     * @return array An array of all Faculty names
+     */
+    static function getAllFaculties(){
+        //TODO: This should eventually be extracted to a new Class
+        $data = DBFunctions::select(array('grand_user_university'),
+                                    array('faculty'),
+                                    array());
+        $faculties = array();
+        foreach($data as $row){
+            $faculties[$row['faculty']] = $row['faculty'];
+        }
+        return $faculties;
+    }
+    
+    /**
      * Returns an array of all Department names
      * @return array An array of all Department names
      */
     static function getAllDepartments(){
         //TODO: This should eventually be extracted to a new Class
         $data = DBFunctions::select(array('grand_user_university'),
-                                    array('*'),
+                                    array('department'),
                                     array());
         $departments = array();
         foreach($data as $row){
@@ -2241,8 +2258,13 @@ class Person extends BackboneModel {
      * @return string The name of the faculty
      */
     function getFaculty(){
+        global $config;
+        $university = $this->getUniversity();
         $department = $this->getDepartment();
-        if(isset(Person::$facultyMap[$department])){
+        if(isset($university['faculty']) && $university['faculty'] != ""){
+            return $university['faculty'];
+        }
+        else if(isset(Person::$facultyMap[$department])){
             return Person::$facultyMap[$department];
         }
         return "";
@@ -2350,6 +2372,7 @@ class Person extends BackboneModel {
                 foreach($data as $row){
                     if($row['university_name'] != "Unknown"){
                         $universities[] = array("university" => $row['university_name'],
+                                                "faculty"    => $row['faculty'],
                                                 "department" => $row['department'],
                                                 "position"   => $row['position'],
                                                 "start" => $row['start_date'],
@@ -2394,6 +2417,7 @@ class Person extends BackboneModel {
         if(count($data) > 0){
             foreach($data as $row){
                 $array[] = array("university" => $row['university_name'],
+                                 "faculty"    => $row['faculty'],
                                  "department" => $row['department'],
                                  "position"   => $row['position'],
                                  "start" => $row['start_date'],
@@ -3000,7 +3024,7 @@ class Person extends BackboneModel {
         $data = DBFunctions::select(array('grand_user_university' => 'uu',
                                           'grand_universities' => 'u',
                                           'grand_positions' => 'p'),
-                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
+                                    array('uu.id', 'uu.user_id', 'u.university_name', 'uu.faculty', 'uu.department', 'p.position', 'uu.start_date', 'uu.end_date'),
                                     array('uu.user_id' => EQ($this->id),
                                           'u.university_id' => EQ(COL('uu.university_id')),
                                           'p.position_id' => EQ(COL('uu.position_id'))),
@@ -3010,6 +3034,7 @@ class Person extends BackboneModel {
                 'id' => $row['id'],
                 'university' => $row['university_name'],
                 'personId' => $this->getId(),
+                'faculty' => $row['faculty'],
                 'department' => $row['department'],
                 'position' => $row['position'],
                 'startDate' => $row['start_date'],

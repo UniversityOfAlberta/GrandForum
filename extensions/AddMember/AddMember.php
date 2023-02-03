@@ -68,14 +68,13 @@ class AddMember extends SpecialPage{
                     $form->getElementById("university_field{$i}")->setPOST("university{$i}");
                     if(!$config->getValue('splitDept')){
                         $form->getElementById("dept_field{$i}")->setPOST("department{$i}");
+                        $_POST["faculty{$i}"] = "";
                     }
                     else{
                         $form->getElementById("dept_fac_field{$i}")->setPOST("department_fac{$i}");
                         $form->getElementById("dept_dept_field{$i}")->setPOST("department_dept{$i}");
-                        $_POST["department{$i}"] = $_POST["department_fac{$i}"] . " / " . $_POST["department_dept{$i}"];
-                        if($_POST["department{$i}"] == " / "){
-                            $_POST["department{$i}"] = "";
-                        }
+                        $_POST["faculty{$i}"] = $_POST["department_fac{$i}"];
+                        $_POST["department{$i}"] = $_POST["department_dept{$i}"];
                     }
                     if($form->getElementById("hqp_position_field{$i}")->value != ""){
                         // For HQP Role
@@ -89,6 +88,7 @@ class AddMember extends SpecialPage{
                 }
                 
                 $_POST['university'] = "{$_POST["university0"]}\n{$_POST["university1"]}\n{$_POST["university2"]}";
+                $_POST['faculty'] = "{$_POST["faculty0"]}\n{$_POST["faculty1"]}\n{$_POST["faculty2"]}";
                 $_POST['department'] = "{$_POST["department0"]}\n{$_POST["department1"]}\n{$_POST["department2"]}";
                 $_POST['position'] = "{$_POST["position0"]}\n{$_POST["position1"]}\n{$_POST["position2"]}";
                 $_POST['end_date'] = "{$_POST["end_date0"]}\n{$_POST["end_date1"]}\n{$_POST["end_date2"]}";
@@ -203,6 +203,7 @@ class AddMember extends SpecialPage{
                              <td>{$request->getSubRoles()}</td>
                              <td align='left'>{$request->getProjects()}</td>
                              <td>".str_replace("\n", ", ", trim($request->getUniversity()))."<br />
+                                 ".str_replace("\n", ", ", trim($request->getFaculty()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getDepartment()))."<br />
                                  ".str_replace("\n", ", ", trim($request->getPosition()))."</td> ");
             if(count($config->getValue('subRoles')) > 0 && !$history){
@@ -231,6 +232,7 @@ class AddMember extends SpecialPage{
                             <input type='hidden' name='recruitment' value='".str_replace("'", "&#39;", $request->getRecruitment())."' />
                             <input type='hidden' name='recruitmentCountry' value='".str_replace("'", "&#39;", $request->getRecruitmentCountry())."' />
                             <input type='hidden' name='university' value='".str_replace("'", "&#39;", $request->getUniversity())."' />
+                            <input type='hidden' name='faculty' value='".str_replace("'", "&#39;", $request->getFaculty())."' />
                             <input type='hidden' name='department' value='".str_replace("'", "&#39;", $request->getDepartment())."' />
                             <input type='hidden' name='position' value='".str_replace("'", "&#39;", $request->getPosition())."' />
                             <input type='hidden' name='start_date' value='".str_replace("'", "&#39;", $request->getStartDate())."' />

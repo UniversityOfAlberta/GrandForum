@@ -75,6 +75,7 @@ class NITableTab extends PeopleTableTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     <th style='white-space: nowrap;'>Institution</th>
+                                    <th style='white-space: nowrap;'>Faculty</th>
                                     <th style='white-space: nowrap;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap;'>Title</th>
                                     {$statusHeader}
@@ -150,6 +151,7 @@ class NITableTab extends PeopleTableTab {
             }
             $university = $person->getUniversity();
             $this->html .= "<td align='left'>{$university['university']}</td>";
+            $this->html .= "<td align='left'>{$person->getFaculty()}</td>";
             $this->html .= "<td align='left'>{$university['department']}</td>";
             $this->html .= "<td align='left'>{$university['position']}</td>";
             if($statusHeader != ''){

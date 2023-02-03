@@ -115,6 +115,7 @@ class RequestUserAPI extends API{
 		$wpUserSubType = isset($_POST['wpUserSubType']) ? $_POST['wpUserSubType'] : "";
 		$wpNS = isset($_POST['wpNS']) ? $_POST['wpNS'] : "";
 		$university = isset($_POST['university']) ? $_POST['university'] : "";
+		$faculty = isset($_POST['faculty']) ? $_POST['faculty'] : "";
 		$department = isset($_POST['department']) ? $_POST['department'] : "";
 		$position = isset($_POST['position']) ? $_POST['position'] : "";
 		$nationality = isset($_POST['nationality']) ? $_POST['nationality'] : "";
@@ -143,6 +144,7 @@ class RequestUserAPI extends API{
 		                          'wpUserSubType' => $wpUserSubType,
 		                          'wpNS' => $wpNS,
 		                          'university' => $university,
+		                          'faculty' => $faculty,
 		                          'department' => $department,
 		                          'position' => $position,
 		                          'nationality' => $nationality,

@@ -137,6 +137,7 @@ class CreateUserAPI extends API{
                                         array('user_id' => $person->getId()));
                     
                     $universities = explode("\n", str_replace("\r", "", $_POST['university']));
+                    $faculties = explode("\n", str_replace("\r", "", $_POST['faculty']));
                     $departments = explode("\n", str_replace("\r", "", $_POST['department']));
                     $positions = explode("\n", str_replace("\r", "", $_POST['position']));
                     $startDates = explode("\n", str_replace("\r", "", $_POST['start_date']));
@@ -146,6 +147,7 @@ class CreateUserAPI extends API{
                     foreach($universities as $i => $university){
                         if(trim($universities[$i]) != "" || trim($departments[$i]) != "" || trim($positions[$i]) != ""){
                             $_POST['university'] = trim($universities[$i]);
+                            $_POST['faculty'] = trim($faculties[$i]);
                             $_POST['department'] = trim($departments[$i]);
                             $_POST['position'] = trim($positions[$i]);
                             $_POST['startDate'] = trim($startDates[$i]);

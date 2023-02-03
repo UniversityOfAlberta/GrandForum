@@ -40,6 +40,7 @@ class FESPeopleTable extends SpecialPage {
                     <th>Alumni Country</th>
                     <th>Alumni Sector</th>
                     <th>Institution</th>
+                    <th>Faculty</th>
                     <th>Department</th>
                     <th>Gender</th>");
         if($config->getValue('crcEnabled')){
@@ -124,6 +125,7 @@ class FESPeopleTable extends SpecialPage {
                              <td>{$alumni->alumni_country}</td>
                              <td>{$alumni->alumni_sector}</td>
                              <td>{$person->getUni()}</td>
+                             <td>{$person->getFaculty()}</td>
                              <td>{$person->getDepartment()}</td>
                              <td>{$person->getGender()}</td>");
             if($config->getValue('crcEnabled')){
