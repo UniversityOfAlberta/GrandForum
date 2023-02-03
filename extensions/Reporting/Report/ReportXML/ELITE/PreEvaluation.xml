@@ -318,12 +318,6 @@ working towards a certification, diploma or degree|University, working towards a
             <![CDATA[
                 <h3>Considering the pros and cons of different options and deciding which one is the best.</h3>
                 <div class="requiredField">{$item}</div>
-            ]]>
-        </ReportItem>
-        <ReportItem id="section1_confidence4" blobItem="section1_confidence4" type="RatingRadioButtonReportItem" minlabel="Not confident at all" maxlabel="Completely Confident">
-            <![CDATA[
-                <h3>Considering the pros and cons of different options and deciding which one is the best.</h3>
-                <div class="requiredField">{$item}</div>
                 </div>
             ]]>
         </ReportItem>
