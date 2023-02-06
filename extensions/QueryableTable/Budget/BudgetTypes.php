@@ -67,6 +67,7 @@ define('GLYCONET_BUDGET_STRUCTURE2', 22);
 define('GLYCONET_NI_BUDGET_STRUCTURE2', 23);
 define('AGEWELL_BUDGET_STRUCTURE2022', 24);
 define('AGEWELL_NI_BUDGET_STRUCTURE2022', 25);
+define('AGEWELL_BUDGET_STRUCTURE_IH', 26);
 
 $budgetStructures = array();
 
@@ -470,6 +471,29 @@ $budgetStructures[AGEWELL_BUDGET_STRUCTURE2022] =
           array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY,      MONEY),
           array(HEAD1_ROW,  COL_SUM,       COL_SUM,       COL_TOTAL,     COL_SUM,    COL_SUM,    COL_SUM,    COL_SUM)
+    );
+    
+$budgetStructures[AGEWELL_BUDGET_STRUCTURE_IH] =
+    array(array(NA,         NA,            NA,            NA,            NA,            NA,         NA,         NA),
+          array(NA,         NA,            NA,            NA,            NA,            NA,         NA,         NA),
+          array(NA,         NA,            NA,            NA,            NA,            NA,         NA,         NA),
+          array(NA,         NA,            NA,            NA,            NA,            NA,         NA,         NA),
+          array(NA,         NA,            NA,            NA,            NA,            NA,         NA,         NA),
+          array(HEAD_ROW,   WRAP_HEAD_ROW, NA,            NA,            WRAP_HEAD_ROW, NA,         NA,         HEAD_ROW),
+          array(HEAD_ROW,   HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD1_ROW,  HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD2_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,      HEAD_ROW,   HEAD_ROW,   HEAD_ROW),
+          array(HEAD2_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD2_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  MONEY,         MONEY,         MONEY,         MONEY,         MONEY,      MONEY,      MONEY),
+          array(HEAD1_ROW,  COL_SUM,       COL_SUM,       COL_TOTAL,     COL_SUM,       COL_SUM,    COL_SUM,    COL_SUM)
     );
     
 $budgetStructures[AGEWELL_NI_BUDGET_STRUCTURE] =
