@@ -180,5 +180,11 @@
                 {$item}
             ]]>
         </ReportItem>
+        <ReportItem id="references" type="Upload" blobItem="REFERENCES" blobType="BLOB_RAW" mimeType=".pdf" fileSize="20">
+            <![CDATA[
+                <h3>References</h3>
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>
