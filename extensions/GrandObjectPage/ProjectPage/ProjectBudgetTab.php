@@ -267,7 +267,7 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     // Account for change in structure
                     $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2');
                 }
-                if($config->getValue('networkName') == "AGE-WELL" && $i >= 2022){
+                if($config->getValue('networkName') == "AGE-WELL" && $i >= 2023){
                     if($project->getType() != "Innovation Hub"){
                         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE2022');
                         $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2022');
@@ -275,6 +275,10 @@ class ProjectBudgetTab extends AbstractEditableTab {
                     else{
                         $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE_IH');
                     }
+                }
+                else if($config->getValue('networkName') == "AGE-WELL" && $i >= 2022){
+                    $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE2022');
+                    $niStructure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_NI_BUDGET_STRUCTURE2022');
                 }
                 else if($config->getValue('networkName') == "AGE-WELL" && $i >= 2020){
                     $structure = @constant(strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $config->getValue('networkName'))).'_BUDGET_STRUCTURE2020');
