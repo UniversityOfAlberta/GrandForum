@@ -52,7 +52,7 @@
         </Static>
         <ReportItem id="phone" type="Text" width="180px" blobItem="PHONE">
             <![CDATA[
-                <b>Phone Number:</b> {$item} (optional)<br />
+                <b>Phone Number:</b> {$item}<br />
             ]]>
         </ReportItem>
         <ReportItem id="register6" type="Checkbox" options="Thursday January 26, 1:00pm" blobType="BLOB_ARRAY" blobItem="REGISTER">
@@ -77,6 +77,19 @@
                         if($(e.target).not("input").length == 1){
                             $(checkbox).click();
                         }
+                    });
+                    $(document).ready(function(){
+                        $("input[name=CommunityConnectors_phone]").on("input", function(){
+                            clearWarning("#reportMessages");
+                            if($("input[name=CommunityConnectors_phone]").val().trim() != ""){
+                                $("#programSubmit").show();
+                                $("#reportMessages").empty();
+                            }
+                            else{
+                                $("#programSubmit").hide();
+                                addWarning("You must provide your phone number before submitting", false, "#reportMessages");
+                            }
+                        }).trigger("input");
                     });
                 </script>
             ]]>
