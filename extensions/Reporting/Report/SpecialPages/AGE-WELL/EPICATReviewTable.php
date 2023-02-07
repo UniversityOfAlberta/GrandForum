@@ -62,12 +62,19 @@ class EPICATReviewTable extends SpecialPage{
         $html .= "<table style='min-width: 1000px;' class='wikitable' id='EPICATReviewTable' frame='box' rules='all'>
             <thead>
                 <tr>
-                    <th colspan='7' style='background: #FFFFFF;'></th>
-                    <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Alignment with EPIC-AT Program Goals</th>
-                    <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Personal Statement</th>
-                    <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Scholarly Merit</th>
-                    <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Potential Impact and Feasibility</th>
-                </tr>
+                    <th colspan='7' style='background: #FFFFFF;'></th>";
+        if($year == 2023){
+            $html .= "<th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Objectives & Rationale</th>
+                      <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Deliverables & Feasibility</th>
+                      <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Potential Impact</th>";
+        }
+        else{
+            $html .= "<th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Alignment with EPIC-AT Program Goals</th>
+                      <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Personal Statement</th>
+                      <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Scholarly Merit</th>
+                      <th colspan='2' style='border-left: 2px solid #AAAAAA; white-space:nowrap;'>Potential Impact and Feasibility</th>";
+        }
+        $html .= "</tr>
                 <tr>
                     <th>HQP</th>
                     <th>University</th>
@@ -75,16 +82,26 @@ class EPICATReviewTable extends SpecialPage{
                     <th>Fellowship</th>
                     <th>Application&nbsp;PDF</th>
                     <th>Reviewer</th>
-                    <th>Overall Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
-                    <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
-                    <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
-                    <th>Comments</th>
-                    <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
-                    <th>Comments</th>
-                </tr>
+                    <th>Overall Comments</th>";
+        if($year == 2023){
+            $html .= "<th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>
+                      <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>
+                      <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>";
+        }
+        else{
+            $html .= "<th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>
+                      <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>
+                      <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>
+                      <th style='border-left: 2px solid #AAAAAA;'>Ranking</th>
+                      <th>Comments</th>";
+        }
+        $html .= "</tr>
             </thead>
             <tbody>";
         foreach($candidates as $key => $candidate){
@@ -98,7 +115,12 @@ class EPICATReviewTable extends SpecialPage{
             $evaluators = $candidate->getEvaluators($year, $evalKey);
             $nEval = count($evaluators);
 
-            $report = new DummyReport("EPIC-AT", $candidate, null, $year, true);
+            if($year == 2023){
+                $report = new DummyReport("EPIC-AT2023", $candidate, null, $year, true);
+            }
+            else{
+                $report = new DummyReport("EPIC-AT", $candidate, null, $year, true);
+            }
             $check = $report->getLatestPDF();
             $button = "";
             if(isset($check[0])){
@@ -115,6 +137,10 @@ class EPICATReviewTable extends SpecialPage{
                 $overall = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_OVERALL_COMM);
                 $goals = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_GOALS);
                 $goalsComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_GOALS_COMM);
+                $deliv = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_DELIV');
+                $delivComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_DELIV_COMM');
+                $impact = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_IMPACT');
+                $impactComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_IMPACT_COMM');
                 $statement = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_STATEMENT');
                 $statementComm = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), 'HQP_REVIEW_STATEMENT_COMM');
                 $quality = $this->getBlobValue($year, $eval->getId(), $candidate->getId(), HQP_REVIEW_QUALITY);
@@ -130,14 +156,24 @@ class EPICATReviewTable extends SpecialPage{
                 $html .= "<td align='center'>{$button}</td>";
                 $html .= "<td>{$eval->getNameForForms()}</td>";
                 $html .= "<td valign='top'>{$overall}</td>";
-                $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$goals}</td>";
-                $html .= "<td valign='top'>{$goalsComm}</td>";
-                $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$statement}</td>";
-                $html .= "<td valign='top'>{$statementComm}</td>";
-                $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$quality}</td>";
-                $html .= "<td valign='top'>{$qualityComm}</td>";
-                $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$impact}</td>";
-                $html .= "<td valign='top'>{$impactComm}</td>";
+                if($year == 2023){
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$goals}</td>";
+                    $html .= "<td valign='top'>{$goalsComm}</td>";
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$deliv}</td>";
+                    $html .= "<td valign='top'>{$delivComm}</td>";
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$impact}</td>";
+                    $html .= "<td valign='top'>{$impactComm}</td>";
+                }
+                else{
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$goals}</td>";
+                    $html .= "<td valign='top'>{$goalsComm}</td>";
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$statement}</td>";
+                    $html .= "<td valign='top'>{$statementComm}</td>";
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$quality}</td>";
+                    $html .= "<td valign='top'>{$qualityComm}</td>";
+                    $html .= "<td style='border-left: 2px solid #AAAAAA;' align='center'>{$impact}</td>";
+                    $html .= "<td valign='top'>{$impactComm}</td>";
+                }
                 $html .= "</tr>";
             }
         }
