@@ -150,7 +150,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="team" type="MultiTextReportItem" class="wikitable" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution">
+        <ReportItem id="team" type="MultiTextReportItem" class="wikitable" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Collaborator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution">
             <![CDATA[
                 <h3>Project Personnel</h3>
                 {$item}

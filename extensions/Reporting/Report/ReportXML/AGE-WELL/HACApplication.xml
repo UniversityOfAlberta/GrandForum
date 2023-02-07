@@ -307,7 +307,7 @@
             ]]>
         </ReportItem>
         
-        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution" sizes="200|200|150|200">
+        <ReportItem id="team" type="MultiTextReportItem" blobType="BLOB_ARRAY" blobItem="TEAM" multiple="true" types="Select(,Project Lead,Co-Investigator,Collaborator,Highly Qualified Personnel,Knowledge User,Partner)|Text|Text|Text" labels="Project Role|Name|Title|Institution" sizes="200|200|150|200">
             <![CDATA[
                 <h3>Project Personnel</h3>
                 <p>List all identified project team members, including Project Lead(s), Co-Investigators, Collaborators, Highly Qualified Personnel (HQP), Knowledge User(s) and Partners (<a href='https://cihr-irsc.gc.ca/e/34190.html#r6' target='_blank'>Glossary of Funding-Related Terms</a>).  A brief bio (free form, maximum 1,500 words) for identified Project Lead(s) must be appended in the next section.</p>
