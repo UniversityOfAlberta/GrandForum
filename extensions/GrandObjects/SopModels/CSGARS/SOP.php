@@ -24,7 +24,7 @@ class SOP extends AbstractSop{
             foreach($sup_array as $sup){
                 $sup = explode(" ", $sup);
                 $supervisors[] = array("first" => @$sup[0], 
-                                       "last"  => @$sup[1]);
+                                       "last"  => @$sup[count($sup)-1]);
             }
           }
         }
