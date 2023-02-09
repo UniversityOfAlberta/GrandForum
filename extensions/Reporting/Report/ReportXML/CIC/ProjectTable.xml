@@ -90,7 +90,7 @@
                         <ul>
                     ]]>
                 </Static>
-                <ReportItemSet id="members" type="ProjectPeopleNoLeaders">
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
                     <Static>
                         <![CDATA[
                             <li>{$user_name}</li>
@@ -259,7 +259,7 @@
                         <td>
                     ]]>
                 </Static>
-                <ReportItemSet id="members" type="ProjectPeopleNoLeaders">
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
                     <Static>
                         <![CDATA[
                             {$user_name}<br />
