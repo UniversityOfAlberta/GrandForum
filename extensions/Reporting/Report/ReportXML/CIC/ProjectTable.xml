@@ -13,6 +13,8 @@
                 <!-- Project Lifecycle -->
                 <Static>
                     <![CDATA[
+                        <div style='display:flex;'>
+                        <div>
                         <h2>Project Lifecycle</h2>
                         <table class="wikitable">
                     ]]>
@@ -65,12 +67,14 @@
                 <Static>
                     <![CDATA[
                         </table>
+                        </div>
                     ]]>
                 </Static>
                 
                 <!-- Project Members -->
                 <Static>
                     <![CDATA[
+                        <div style='margin-left:25px;'>
                         <h2>Project Members</h2>
                         <h3>Project Lead</h3>
                         <ul>
@@ -79,7 +83,7 @@
                 <ReportItemSet id="leads" type="ProjectLeaders">
                     <Static>
                         <![CDATA[
-                            <li>{$user_name}</li>
+                            <li><a href="{$user_url}">{$user_name}</a></li>
                         ]]>
                     </Static>
                 </ReportItemSet>
@@ -93,13 +97,15 @@
                 <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
                     <Static>
                         <![CDATA[
-                            <li>{$user_name}</li>
+                            <li><a href="{$user_url}">{$user_name}</a></li>
                         ]]>
                     </Static>
                 </ReportItemSet>
                 <Static>
                     <![CDATA[
                         </ul>
+                        </div>
+                        </div>
                     ]]>
                 </Static>
                 
@@ -204,7 +210,7 @@
                 </Else>
                 <Static>
                     <![CDATA[
-                            <td>{$project_name}</td>
+                            <td><a href="{$project_url}">{$project_name}</a></td>
                             <td>{$project_full_name}</td>
                             <td>{getText(RP_PROJECT_TABLE,PROJECTS,DURATION,0,0,{$project_id})}</td>
                             <td>
@@ -249,7 +255,7 @@
                 <ReportItemSet id="leads" type="ProjectLeaders">
                     <Static>
                         <![CDATA[
-                            {$user_name}<br />
+                            <a href="{$user_url}">{$user_name}</a><br />
                         ]]>
                     </Static>
                 </ReportItemSet>
@@ -262,7 +268,7 @@
                 <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
                     <Static>
                         <![CDATA[
-                            {$user_name}<br />
+                            <a href="{$user_url}">{$user_name}</a><br />
                         ]]>
                     </Static>
                 </ReportItemSet>
