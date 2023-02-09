@@ -22,6 +22,7 @@ class FECHistory extends SpecialPage{
                                     <th>Person</th>
                                     <th>Department</th>
                                     <th>Position</th>
+                                    <th>Going to FEC?</th>
                                     <th>PhD</th>
                                     <th>Appointment</th>
                                     <th>Assistant</th>
@@ -44,24 +45,27 @@ class FECHistory extends SpecialPage{
             $person = Person::newFromId($row['user_id']);
             if($person->getId() != 0){
                 $fec = $person->getFecPersonalInfo();
+                $goingToFec = ($person->getCaseNumber() != "") ? "No" : "Yes";
+                
                 $wgOut->addHTML("<tr>
                                      <td><a href='{$person->getUrl()}'>{$person->getNameForForms()}</a></td>
                                      <td>{$person->getDepartment()}</td>
                                      <td>{$person->getPosition()}</td>
+                                     <td align='center'>{$goingToFec}</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfPhd)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfAppointment)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfAssistant)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfAssociate)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateOfProfessor)."</td>
-                                     <td>".str_replace("00:00:00", "", $fec->dateOfTenure)."</td>
-                                     <td>".str_replace("00:00:00", "", $fec->dateOfRetirement)."</td>
-                                     <td>".str_replace("00:00:00", "", $fec->dateOfLastDegree)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateFso2)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateFso3)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateFso4)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec1)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec2)."</td>
                                      <td>".str_replace("00:00:00", "", $fec->dateAtsec3)."</td>
+                                     <td>".str_replace("00:00:00", "", $fec->dateOfTenure)."</td>
+                                     <td>".str_replace("00:00:00", "", $fec->dateOfRetirement)."</td>
+                                     <td>".str_replace("00:00:00", "", $fec->dateOfLastDegree)."</td>
                                      <td>{$fec->lastDegree}</td>
                                 </tr>");
             }
