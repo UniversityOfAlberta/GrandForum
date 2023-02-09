@@ -249,7 +249,7 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td>
+                            <td style='white-space:nowrap;'>
                     ]]>
                 </Static>
                 <ReportItemSet id="leads" type="ProjectLeaders">
@@ -262,7 +262,7 @@
                 <Static>
                     <![CDATA[
                         </td>
-                        <td>
+                        <td style='white-space:nowrap;'>
                     ]]>
                 </Static>
                 <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
