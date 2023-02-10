@@ -38,6 +38,7 @@ class InPersonAssessment extends SpecialPage {
             <thead>
                 <tr>
                     <th>Person</th>
+                    <th>Frailty Report</th>
                     <th>In Person Assessment</th>
                     ".IntakeSummary::getHeader($report, false, true)."
                 </tr>
@@ -49,6 +50,7 @@ class InPersonAssessment extends SpecialPage {
             $report->person = $person;
             $wgOut->addHTML("<tr>
                 <td>{$person->getNameForForms()}</td>
+                <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport?user={$person->getId()}' target='_blank'>Download</a>
                 <td><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=InPersonAssessment&person={$person->getId()}'>Form</a></td>
                 ".IntakeSummary::getRow($person, $report, false, true)."
             </tr>");

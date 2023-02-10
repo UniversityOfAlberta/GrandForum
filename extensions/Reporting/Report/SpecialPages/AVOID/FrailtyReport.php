@@ -415,13 +415,12 @@ If you need help with managing the medications you are on, visit the following C
         return $html;
     }
     
-    function generateReport(){
+    function generateReport($person){
         global $wgServer, $wgScriptPath, $config;
         $dir = dirname(__FILE__) . '/';
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
-        $me = Person::newFromWgUser();
         $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($me->getId());
+        $scores = $api->getFrailtyScore($person->getId());
 
         $margins = array('top'     => 1,
                          'right'   => 1,
@@ -714,7 +713,7 @@ behaviour. They are not clinical recommendations, for which you should seek advi
             $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
         }
         
-        $actionPlan = ActionPlan::newFromUserId($me->getId());
+        $actionPlan = ActionPlan::newFromUserId($person->getId());
         $actionPlanMessage = "";
         if(!isset($actionPlan[0]) || $actionPlan[0]->getSubmitted()){
             $actionPlanMessage = "Are you ready to create a goal to improve your health?  <a href='#' onClick='parent.clickActionPlan();'>Create Action Plan Now</a> (closes Frailty Report)";
@@ -777,10 +776,32 @@ behaviour. They are not clinical recommendations, for which you should seek advi
     }
     
     function execute($par){
-        global $wgServer, $wgScriptPath, $dompdfOptions;
+        global $wgServer, $wgScriptPath, $dompdfOptions, $wgOut;
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../../../config/dompdf_config.inc.php');
-        $html = $this->generateReport();
+        $me = Person::newFromWgUser();
+        $person = $me;
+        if(isset($_GET['user'])){
+            $person = Person::newFromId($_GET['user']);
+        }
+        if($person->getId() == 0){
+            echo $wgOut->addHTML("This user does not exist.");
+            return;
+        }
+        $html = "";
+        if(!($me->isRoleAtLeast(STAFF) || $person->getId() == $me->getId())){
+            $found = false;
+            $rels = $me->getRelations("Assesses");
+            foreach($rels as $rel){
+                $found = ($found || ($rel->getUser2()->getId() == $person->getId()));
+            }
+            if(!$found){
+                echo $wgOut->addHTML("You do not have permission to view this user.");
+                return;
+            }
+        }
+        
+        $html = $this->generateReport($person);
         if(isset($_GET['preview'])){
             echo $html;
             exit;
