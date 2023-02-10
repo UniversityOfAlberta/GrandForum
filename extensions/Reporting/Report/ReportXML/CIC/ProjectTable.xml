@@ -272,13 +272,10 @@
                         ]]>
                     </Static>
                 </ReportItemSet>
-                <Static>
-                    <![CDATA[
-                        </td>
-                    ]]>
-                </Static>
                 <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
+                    <!-- Partner row -->
                     <![CDATA[
+                            </td>
                             <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|partner)}</td>
                             <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},2)}</td>
                             <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},2)}</td>
@@ -291,10 +288,13 @@
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},
                                                                                                   {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)})},2)}</b></td>
                             <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|comment)}</td>
+                        </tr>
                     ]]>
                 </If>
                 <Else>
+                    <!-- Totals -->
                     <![CDATA[
+                            </td>
                             <td style='background: #EEEEEE;'></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total1)},2)}</b></td>
                             <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total2)},2)}</b></td>
@@ -307,13 +307,9 @@
                                                                      {get(total4)},
                                                                      {get(total5)})},2)}</b></td>
                             <td></td>
-                    ]]>
-                </Else>
-                <Static>
-                    <![CDATA[
                         </tr>
                     ]]>
-                </Static>
+                </Else>
             </For>
         </ReportItemSet>
         <Static>
@@ -327,10 +323,17 @@
                         "autoWidth": true,
                         'iDisplayLength': -1,
                         'order': [[ 1, "asc" ]],
+                        columnDefs: [
+                           { type: 'natural', targets: [0,7,8,9,10,11,12] }
+                        ],
                         'aLengthMenu': [[-1], ['All']],
                         'scrollX': true,
                         'scrollY': ($(window).height() - $("#bodyContent").position().top - 100 - 60) + "px",
-                        'rowsGroup': [0,1,2,3,4,5]
+                        'rowsGroup': [0,1,2,3,4,5],
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel'
+                        ]
                     });
                 </script>
             ]]>
