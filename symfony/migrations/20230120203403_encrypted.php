@@ -27,6 +27,12 @@ class Encrypted extends AbstractMigration
      */
     public function change()
     {
-
+        $this->table('grand_report_blobs')
+             ->addColumn('encrypted', 'boolean', array('after' => 'md5'))
+             ->save();
+    
+        $this->table('grand_pdf_report')
+             ->addColumn('encrypted', 'boolean', array('after' => 'pdf'))
+             ->save();
     }
 }
