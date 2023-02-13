@@ -1366,7 +1366,8 @@ class ReportItemCallback {
         return count($hqps);
     }
 
-    function getUserGradCount(){
+    function getUserGradCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1374,13 +1375,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['grad'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     
-    function getUserMscCount(){
+    function getUserMscCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1388,13 +1392,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['msc'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     
-    function getUserPhDCount(){
+    function getUserPhDCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1402,13 +1409,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['phd'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
 
-    function getUserFellowCount(){
+    function getUserFellowCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1416,13 +1426,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['pdf'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     
-    function getUserTechCount(){
+    function getUserTechCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1430,13 +1443,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['tech'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     
-    function getUserUgradCount(){
+    function getUserUgradCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1444,13 +1460,16 @@ class ReportItemCallback {
         $data = $person->getStudentInfo(Person::$studentPositions['ugrad'], $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     
-    function getUserOtherCount(){
+    function getUserOtherCount($status="all"){ // Status should be 'all' or 'current' or 'completed'
+        $status = strtolower($status);
         $person = Person::newFromId($this->reportItem->personId);
         $startDate = ($this->reportItem->getReport()->startYear)."-07-01";
         $endDate = ($this->reportItem->getReport()->year)."-06-30";
@@ -1458,9 +1477,11 @@ class ReportItemCallback {
         $data = $person->getStudentInfo('other', $startDate, $endDate);
         $hqps = array();
         foreach($data as $row){
-            $hqps[$row['hqp']] = $row;
+            if($status == "all" || ($row['end_date'] == "Current" && $status == "current") || 
+                                   ($row['end_date'] != "Current" && $status == "completed")){
+                $hqps[$row['hqp']] = $row;
+            }
         }
-        
         return count($hqps);
     }
     

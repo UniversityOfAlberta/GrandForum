@@ -290,23 +290,6 @@
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
         </Publication>
-        
-        <Publication type="Masters Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
-            <data>
-                <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
-                <field label="University" type="String">department</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="DOI">doi</field>
-                <field ccv_id="980b4c7ed330401aa6525e5870b4aae0" ccv_name="URL" label="URL" type="URL">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <acceptance_date label="Acceptance Date"></acceptance_date>
-            <date ccv_id="e859d3e3458640cfae550f4435cbb9b2" ccv_name="Completion Date" label="Completion Date"></date>
-            <authors ccv_id="aa63e11228a04494b226a3a9e7e7778f" ccv_name="Supervisor"></authors>
-            <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
-        </Publication>
 
         <Publication type="Misc" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
             <data>
@@ -417,23 +400,6 @@
             <date ccv_id="cccc1d42bd3342c59b079031f0b868cb" ccv_name="Year" label="Publication Date"></date>
             <authors ccv_id="8e8d679b7579408fb0932b8f1e42973c" ccv_name="Student"></authors>
             <description ccv_id="c93cca57add34f15abd9fd72eb862757" ccv_name="Description / Contribution Value"></description>
-        </Publication>
-        
-        <Publication type="PHD Dissertation" supervised="false" ccv_id="0f31c9249f054c06adbbf99058fed943" ccv_name="Dissertations"  status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
-            <title ccv_id="50a081d7f12640d2b6c18a42eb6badf6" ccv_name="Dissertation Title"></title>
-            <data>
-                <field ccv_id="40e0f1108da54bcb891a6597a03d6c4c" ccv_name="Other Organization" label="University" type="String">university</field>
-                <field label="Department" type="String">department</field>
-                <field label="ISBN" type="String">isbn</field>
-                <field label="ISSN" type="String">issn</field>
-                <field label="DOI" type="DOI">doi</field>
-                <field ccv_id="980b4c7ed330401aa6525e5870b4aae0" ccv_name="URL" label="URL" type="URL">url</field>
-                <field label="Peer Reviewed" type="Radio" options="Yes|No">peer_reviewed</field>
-            </data>
-            <acceptance_date label="Acceptance Date"></acceptance_date>
-            <date ccv_id="e859d3e3458640cfae550f4435cbb9b2" ccv_name="Year" label="Publication Date"></date>
-            <authors ccv_id="aa63e11228a04494b226a3a9e7e7778f" ccv_name="Supervisor"></authors>
-            <description ccv_id="9cf045d544a54b31ba84fed0fd3f19f4" ccv_name="Description / Contribution Value"></description>
         </Publication>
 
         <Publication type="Proceedings Paper" ccv_id="4b9f909503cd4c8aa8d826c87d6d874d" ccv_name="Conference Publications" status="Submitted|Revision Requested|Accepted|In Press|Published|Rejected">
