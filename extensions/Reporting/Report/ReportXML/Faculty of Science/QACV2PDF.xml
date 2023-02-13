@@ -135,7 +135,7 @@
                         <td>{user_tech_count(current)}</td>
                         <td>{user_tech_count(completed)}</td>
                     </tr>
-                </table>
+                </table><br />
             ]]>
         </Static>
         
