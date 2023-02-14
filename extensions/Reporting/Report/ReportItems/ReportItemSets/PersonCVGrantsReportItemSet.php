@@ -9,12 +9,16 @@ class PersonCVGrantsReportItemSet extends ReportItemSet {
         $start = $this->getAttr('start', REPORTING_CYCLE_START);
         $end = $this->getAttr('end', REPORTING_CYCLE_END);
         $grants = $person->getGrantsBetween($start, $end, true);
+        $limit = $this->getAttr("limit", "");
         if(is_array($grants)){
             foreach($grants as $grant){
                 $tuple = self::createTuple();
                 $tuple['product_id'] = $grant->id;
                 $data[] = $tuple;
             }
+        }
+        if($limit > 0){
+            $data = array_slice($data,0,$limit);
         }
         return $data;
     }

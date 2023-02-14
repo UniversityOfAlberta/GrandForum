@@ -140,25 +140,66 @@
         </Static>
         
         <!-- Publications -->
-            <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
+        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
+            <![CDATA[
+                <h2>Publications</h2>
+                <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
+                <ul>
+            ]]>
+        </ReportItem>
+        <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper|Conference Paper|Proceedings Paper|Workshop Paper|Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30" limit="10">
+            <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
                 <![CDATA[
-                    <h2>Publications</h2>
-                    <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
-                    <ul>
+                    <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$item}</li>
                 ]]>
             </ReportItem>
-            <ReportItemSet id="products" type="PersonProductsReportItemSet" category="Publication" productType="Journal Paper|Journal Abstract|Collections Paper|Conference Paper|Proceedings Paper|Workshop Paper|Bachelors Thesis|Book|Book Chapter|Book Review|Edited Book|Magazine/Newspaper Article|Masters Thesis|Misc|Other|PHD Thesis|White Paper|Tech Report|Poster|Manual" peerReviewed="Yes" includeHQP="false" start="{$start_year}-07-01" end="{$this_year}-06-30" limit="10">
-                <ReportItem id="row" type="AnnotateProductReportItem" blobSection="PRODUCTS" blobItem="PRODUCT_ANNOTATION" blobType="BLOB_RAW" blobSubItem="{$product_id}" optional="true">
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                </ul><br />
+            ]]>
+        </Static>
+        
+        <!-- Grants -->
+        <If id="grants_if" if="{>({$user_cv_grant_count},0)}">
+            <ReportItem id="grantsbookmark" type="BookmarkReportItem" title="Research Funding">
+                <![CDATA[
+                    <h2>Research Funding</h2>
+                    <i>Total funding >= $10k awarded from external sources only and available during the reporting period</i>
+                    <table class='wikitable' frame='box' rules='all' width='100%'>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Sponsor</th>
+                                <th>Starts</th>
+                                <th>Ends</th>
+                                <th>$Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                ]]>
+            </ReportItem> 
+            <ReportItemSet id="grants" type="PersonCVGrantsReportItemSet" start="{$start_year}-07-01" end="{$this_year}-06-30" limit="3">
+                <Static>
                     <![CDATA[
-                        <li style="page-break-inside: avoid;"><b>({$product_type})</b> {$item}</li>
+                        <tr>
+                            <td align='left'>{$grant_project_id}<br />
+                                <p>{$grant_scientific_title}</p>
+                            </td>
+                            <td align='left'>{$grant_sponsor}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_start_date}</td>
+                            <td align='center' style='white-space:nowrap;'>{$grant_end_date}</td>
+                            <td align='right'>${$grant_total}</td>
+                        </tr>
                     ]]>
-                </ReportItem>
+                </Static>
             </ReportItemSet>
             <Static>
                 <![CDATA[
-                    </ul><br />
+                    </tbody></table><br />
                 ]]>
             </Static>
+        </If>
         
         <!-- Footer -->
         <Static>
