@@ -430,7 +430,7 @@
         </ReportItem>
         <ReportItem id="employment" type="PersonEmployment3ReportItem" university="University of Alberta">
             <![CDATA[
-                {$item}
+                {$item}<br />
             ]]>
         </ReportItem>
         
@@ -478,7 +478,7 @@
                     <h2>Courses Taught</h2>
                 ]]>
             </ReportItem>
-            <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30">
+            <ReportItem id="courses" type="PersonCoursesReportItem" start="{$start_year}-07-01" end="{$this_year}-06-30" noTable="true">
                 <![CDATA[
                     {$item}<br />
                 ]]>

@@ -35,7 +35,7 @@ class PersonCoursesTab extends AbstractEditableTab {
         }
     }
     
-    function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false, $editing=false){
+    function getArray($start=null, $end=null){
         if($start == null || $end == null){
             $courses = $this->person->getCourses();
         }
@@ -54,6 +54,11 @@ class PersonCoursesTab extends AbstractEditableTab {
                 $coursesArray[$level]["{$course->subject} {$course->catalog}"][$course->getTerm()][] = $course;
             }
         }
+        return $coursesArray;
+    }
+    
+    function getHTML($start=null, $end=null, $showPercentages=false, $generatePDF=false, $editing=false){
+        $coursesArray = $this->getArray($start, $end);
         $item = "";
         if($this->levels == null){
             $item .= "<small><i>Total enrolment per course across multiple LEC, SEM, or LAB given in parentheses.";
