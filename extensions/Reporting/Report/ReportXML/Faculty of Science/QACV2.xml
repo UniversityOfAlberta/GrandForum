@@ -529,9 +529,9 @@
         </Static>
         
         <!-- Publications -->
-        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="Publications">
+        <ReportItem id="publicationbookmark" type="BookmarkReportItem" title="15 Most Recent Publications">
             <![CDATA[
-                <h2>Publications</h2>
+                <h2>15 Most Recent Publications</h2>
                 <small>italic = <i>PDF</i>; bold = <b>graduate student</b>; underline = <u>undergraduate student</u></small>
                 <ul>
             ]]>
