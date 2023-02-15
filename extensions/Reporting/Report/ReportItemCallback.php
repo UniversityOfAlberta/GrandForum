@@ -1128,9 +1128,10 @@ class ReportItemCallback {
         return $blb->getMD5();
     }
     
-    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", "){
+    function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_ARRAY, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_ARRAY, $year, $personId, $projectId);
         $result = $blb->load($addr);
         if($index == null){
             return $blb->getData();
@@ -1150,9 +1151,7 @@ class ReportItemCallback {
     }
     
     function getText($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
-        if($year == null){
-            $year = $this->reportItem->getReport()->year;
-        }
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
@@ -1284,9 +1283,10 @@ class ReportItemCallback {
         return ($val1 <= $val2);
     }
     
-    function getHTML($rp, $section, $blobId, $subId, $personId, $projectId){
+    function getHTML($rp, $section, $blobId, $subId, $personId, $projectId, $year=null){
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
-        $blb = new ReportBlob(BLOB_TEXT, $this->reportItem->getReport()->year, $personId, $projectId);
+        $blb = new ReportBlob(BLOB_TEXT, $year, $personId, $projectId);
         $result = $blb->load($addr);
         $blobValue = $blb->getData();
         

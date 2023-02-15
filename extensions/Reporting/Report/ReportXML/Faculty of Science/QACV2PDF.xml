@@ -96,6 +96,27 @@
             </ReportItem>
         </If>
         
+        <!-- Teaching Development and Innovation -->
+        <If if="{contains({$user_roles},ATS)}">
+            <ReportItem id="teachingbookmark" type="BookmarkReportItem" title="Teaching Development and Innovation">
+                <![CDATA[
+                    <h2>Teaching Development and Innovation</h2>
+                ]]>
+            </ReportItem>
+            <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$this_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
+                <![CDATA[
+                    <h3>{$this_year}</h3>
+                    {$item}
+                ]]>
+            </ReportItem>
+            <ReportItem id="development" type="MultiTextReportItem" blobReport="RP_FEC" blobSection="FEC_COURSES" blobItem="FEC_INFO_DEVELOPMENT" blobYear="{$last_year}" blobType="BLOB_ARRAY" labels="Description" types="Textarea" multiple="true" orientation="list" delimiter="&lt;br />">
+                <![CDATA[
+                    <h3>{$last_year}</h3>
+                    {$item}<br />
+                ]]>
+            </ReportItem>
+        </If>
+        
         <!-- Supervision and Training Responsibilities -->
         <ReportItem id="studentsbookmark" type="BookmarkReportItem" title="Supervision and Training Responsibilities">
             <![CDATA[
