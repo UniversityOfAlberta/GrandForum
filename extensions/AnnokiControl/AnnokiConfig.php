@@ -28,6 +28,8 @@ $wgWhitelistRead[] = "File:Canadian FR Resource 1 - Pharmacist Checklist for Med
 $wgWhitelistRead[] = "File:Canadian FR Resource 2 - Pharmacist Resource Guide for Medical Abortion 2020.pdf";
 $wgWhitelistRead[] = "File:Clinical SOGC Induced Abortion- Updated Guidance during Pandemics and Periods of Social Disruption.pdf";
 $wgWhitelistRead[] = "File:Clinical SOGC Canadian Protocol for the Provision of Medical Abortion via Telemedicine.pdf";
+$wgWhitelistRead[] = "File:Medical Abortion Prescriber Checklist.pdf";
+$wgWhitelistRead[] = "File:Medical Abortion Prescriber Checklist Resource Guide.pdf";
 
 $wgGroupPermissions['*']['read']            = false;
 $wgGroupPermissions['*']['edit']            = false;
