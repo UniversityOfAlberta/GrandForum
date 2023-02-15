@@ -22,11 +22,13 @@ class AskAnExpert extends BackbonePage {
         $me = Person::newFromWgUser();
         $firstName = str_replace("'", "&#39;", $me->getFirstName());
         $lastName = str_replace("'", "&#39;", $me->getLastName());
-        $email = str_replace("'", "&#39;", $me->getEmail());
+	$email = str_replace("'", "&#39;", $me->getEmail());
+	$phone = str_replace("'", "&#39;", $me->getPhoneNumber());
         $wgOut->addHTML("<script type='text/javascript'>
                             var userFirstName = \"".$firstName."\";
                             var userLastName = \"".$lastName."\";
-                            var useremail = \"".$email."\";
+			    var useremail = \"".$email."\";
+			    var userphone = \"".$phone."\";
         </script>");
 
         return array('Backbone/*',
@@ -69,7 +71,8 @@ class AskAnExpert extends BackbonePage {
             $uid = md5(uniqid(time()));
             $firstName = $_POST['firstname'];
             $lastName = $_POST['lastname'];
-            $email = $_POST['email'];
+	    $email = $_POST['email'];
+	    $phone = $_POST['phone'];
             $question = $_POST['question'];
             if($question == "No Question"){
                 $subj = "Ask An Expert - {$_POST['topic']}";
@@ -78,7 +81,7 @@ class AskAnExpert extends BackbonePage {
                 $subj = "Ask An Expert - {$_POST['topic']}";
             }
             $msg = "<p></p><br />
-                    <b>Firstname:</b>{$_POST['firstname']}<br /><b>Lastname</b>: {$_POST['lastname']} <br /><b>Email:</b>({$email})
+                    <b>Firstname:</b>{$_POST['firstname']}<br /><b>Lastname</b>: {$_POST['lastname']} <br /><b>Email:</b>({$email})<br /><b>Phone:</b>{$_POST['phone']}
                     <br />";
             if($question != "No Question"){
                 $msg .= "<b>Question:</b>{$question}";

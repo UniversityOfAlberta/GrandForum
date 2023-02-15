@@ -55,6 +55,9 @@ EventRegisterView = Backbone.View.extend({
         if(form.find('#email').val() == ""){
             return "Please enter an email."
         }
+	if(form.find('#phone').val() == ""){
+            return "Please enter an phone number."
+        }
         return "";
     },
     
@@ -77,6 +80,7 @@ EventRegisterView = Backbone.View.extend({
                 dataToSend.firstname = form.find('#firstname').val();
                 dataToSend.lastname = form.find('#lastname').val();
                 dataToSend.email =form.find('#email').val();
+	    	dataToSend.phone = form.find('#phone').val();
 	        if(this.isQuestion){
 		    dataToSend.question = form.find('#question').val();
 		    dataToSend.topic = "Registration & Question";
