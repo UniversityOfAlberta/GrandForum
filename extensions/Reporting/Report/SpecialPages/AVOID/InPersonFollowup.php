@@ -421,7 +421,7 @@
             $me = Person::newFromWgUser();
             if ($me->isRole("Assessor")) {
                 $selected = @($wgTitle->getText() == "InPersonFollowup") ? "selected" : false;
-                $tabs['InPersonAssessment']['subtabs'][] = TabUtils::createSubTab("In-Person Followup", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonFollowup", $selected);
+                $tabs['InPersonAssessment']['subtabs'][] = TabUtils::createSubTab("Report", "{$wgServer}{$wgScriptPath}/index.php/Special:InPersonFollowup", $selected);
             }
             return true;
         }
