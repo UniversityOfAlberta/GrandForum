@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="ECR Grants" reportType="RP_ECR_FEB" pdfType="RPTP_ECR_FEB" pdfFiles="ECRPDF" year="2023" ajax="true" disabled="false">
+<Report name="ECR Grants" reportType="RP_ECR_FEB" pdfType="RPTP_ECR_FEB" pdfFiles="ECRPDF" year="2023" ajax="true" disabled="true">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false">
         <Static>
             <![CDATA[

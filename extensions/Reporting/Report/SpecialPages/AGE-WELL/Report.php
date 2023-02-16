@@ -119,10 +119,10 @@ class Report extends AbstractReport {
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("AIR", "{$url}AIR", $selected);
         }*/
         
-        if($person->isSubRole('ECR')){
+        /*if($person->isSubRole('ECR')){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "ECR")) ? "selected" : false;
             $tabs["Applications"]['subtabs'][] = TabUtils::createSubTab("ECR", "{$url}ECR", $selected);
-        }
+        }*/
         
         /*if($person->isLoggedIn()){
             $selected = @($wgTitle->getText() == "Report" && ($_GET['report'] == "EPIC-AT")) ? "selected" : false;

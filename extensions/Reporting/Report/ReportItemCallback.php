@@ -1877,9 +1877,7 @@ class ReportItemCallback {
     }
     
     function getArray($rp, $section, $blobId, $subId, $personId, $projectId, $index=null, $delim=", ", $year=null){
-        if($year == null){
-            $year = $this->reportItem->getReport()->year;
-        }
+        $year = ($year == null) ? $this->reportItem->getReport()->year : $year;
         $addr = ReportBlob::create_address($rp, $section, $blobId, $subId);
         $blb = new ReportBlob(BLOB_ARRAY, $year, $personId, $projectId);
         $result = $blb->load($addr);
