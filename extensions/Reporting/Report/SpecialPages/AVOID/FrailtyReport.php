@@ -415,13 +415,12 @@ If you need help with managing the medications you are on, visit the following C
         return $html;
     }
     
-    function generateReport(){
+    function generateReport($person){
         global $wgServer, $wgScriptPath, $config;
         $dir = dirname(__FILE__) . '/';
         require_once($dir . '/../../../../../Classes/SmartDomDocument/SmartDomDocument.php');
-        $me = Person::newFromWgUser();
         $api = new UserFrailtyIndexAPI();
-        $scores = $api->getFrailtyScore($me->getId());
+        $scores = $api->getFrailtyScore($person->getId());
 
         $margins = array('top'     => 1,
                          'right'   => 1,
@@ -672,9 +671,9 @@ If you need help with managing the medications you are on, visit the following C
                             <div class='pdfnodisplay' style='margin-top:1em;'>Your recommendations with direct links to resources are below.<br />You can also print your personal report <a href='{$wgServer}{$wgScriptPath}/index.php/Special:FrailtyReport' target='_blank'><b><u>here</u></b></a>.</div>
                         </div>
                         <div class='list'>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />Your frailty status is a calculation based on your stated health outcomes that may be improved by meeting the behavioural recommendations for each AVOID component. This report reflects your answers in the assessment for those two sections. Where a risk was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no risks were identified from your answers.</p>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start and to refer back to throughout your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.</p>
-                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' />The recommendations throughout this program are meant to support healthy behaviour.  They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist)</p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />This report shows the items that went into your frailty status. Where a need was identified from your answers, some recommended resources appear in that topic to address that specific item. If you do not see any recommendations, it means that no needs were identified from your answers.</p>
+                            <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/star.png' />The recommendations throughout this program are meant to support healthy 
+behaviour. They are not clinical recommendations, for which you should seek advice from your health care providers (example: doctor, pharmacist, dentist).</p>
                         </div>
                         <br />
                         <br />
@@ -713,8 +712,23 @@ If you need help with managing the medications you are on, visit the following C
         foreach(self::$behavioralRows as $key => $row){
             $html .= $this->drawRow($key, $row, $scores["Behavioral"]);
         }
+        
+        $actionPlan = ActionPlan::newFromUserId($person->getId());
+        $actionPlanMessage = "";
+        if(!isset($actionPlan[0]) || $actionPlan[0]->getSubmitted()){
+            $actionPlanMessage = "Are you ready to create a goal to improve your health?  <a href='#' onClick='parent.clickActionPlan();'>Create Action Plan Now</a> (closes Frailty Report)";
+        }
+        else{
+            $actionPlanMessage = "Are you ready to create a goal to improve your health?  <a href='#' onClick='parent.clickActionPlan();'>View Action Plan Now</a> (closes Frailty Report)";
+        }
+        
         $html .= "      </table>
                         <br />
+                        <p><img class='li' src='{$wgServer}{$wgScriptPath}/skins/li.png' />While the behaviours recommended for all AVOID components play a role in a healthy lifestyle, you may want to focus on one or a few at a time - this report can help you decide where to start and focus your efforts. You can use this as a place to start on your healthy aging journey to help you develop an action plan around one or more of the topics that can best help slow the onset of frailty for you personally.
+                        <br />
+                        <br />
+                        {$actionPlanMessage}
+                        </p>
                         <div style='width:100%; text-align:center;'><a href='https://HealthyAgingCentres.ca' target='_blank'>HealthyAgingCentres.ca</a></div>
                         <br /><br /><br /><br /><br />
                         <img src='{$wgServer}{$wgScriptPath}/skins/bg_bottom.png' style='z-index: -2; position: absolute; bottom:0; left: 0; right:0; width: 216mm;' />
@@ -727,7 +741,7 @@ If you need help with managing the medications you are on, visit the following C
                                 $('html').width('216mm');
                                 var scaleFactor = desiredWidth/initialWidth;
                                 $('div.body').css('transform', 'scale(' + scaleFactor + ')');
-                                $('div.stickyContainer').css('top', 643*scaleFactor);
+                                $('div.stickyContainer').css('top', 496*scaleFactor);
                                 $('table.sticky').css('transform', 'scale(' + scaleFactor + ')')
                                                  .css('margin-left', scaleFactor - 1 + 'cm');
                                 $('body').height($('div.body').outerHeight()*scaleFactor);
@@ -762,10 +776,32 @@ If you need help with managing the medications you are on, visit the following C
     }
     
     function execute($par){
-        global $wgServer, $wgScriptPath, $dompdfOptions;
+        global $wgServer, $wgScriptPath, $dompdfOptions, $wgOut;
         $dir = dirname(__FILE__);
         require_once($dir . '/../../../../../config/dompdf_config.inc.php');
-        $html = $this->generateReport();
+        $me = Person::newFromWgUser();
+        $person = $me;
+        if(isset($_GET['user'])){
+            $person = Person::newFromId($_GET['user']);
+        }
+        if($person->getId() == 0){
+            echo $wgOut->addHTML("This user does not exist.");
+            return;
+        }
+        $html = "";
+        if(!($me->isRoleAtLeast(STAFF) || $person->getId() == $me->getId())){
+            $found = false;
+            $rels = $me->getRelations("Assesses");
+            foreach($rels as $rel){
+                $found = ($found || ($rel->getUser2()->getId() == $person->getId()));
+            }
+            if(!$found){
+                echo $wgOut->addHTML("You do not have permission to view this user.");
+                return;
+            }
+        }
+        
+        $html = $this->generateReport($person);
         if(isset($_GET['preview'])){
             echo $html;
             exit;

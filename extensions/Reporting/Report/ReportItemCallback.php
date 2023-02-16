@@ -156,6 +156,7 @@ class ReportItemCallback {
             "networkName" => "getNetworkName",
             "id" => "getId",
             "name" => "getName",
+            "i" => "getI",
             "index" => "getIndex",
             "value" => "getValue",
             "pdfHTML" => "getPDFHTML",
@@ -179,6 +180,8 @@ class ReportItemCallback {
             "multiply" => "multiply",
             "divide" => "divide",
             "round" => "round",
+            "max" => "max",
+            "min" => "min",
             "number_format" => "number_format",
             "getArrayCount" => "getArrayCount",
             "isArrayComplete" => "isArrayComplete",
@@ -1791,6 +1794,10 @@ class ReportItemCallback {
         }
     }
     
+    function getI(){
+        return $this->getIndex() - 1;
+    }
+    
     function getIndex(){
         $personId = $this->reportItem->personId;
         $projectId = $this->reportItem->projectId;
@@ -1930,7 +1937,9 @@ class ReportItemCallback {
         $args = func_get_args();
         $sum = 0;
         foreach($args as $arg){
-            $sum += $arg;
+            if(is_numeric($arg)){
+                $sum += $arg;
+            }
         }
         return $sum;
     }
@@ -1952,6 +1961,14 @@ class ReportItemCallback {
             return "";
         }
         return number_format(round($val, $dec), $dec, ".", "");
+    }
+    
+    function max($val1, $val2){
+        return max($val1, $val2);
+    }
+    
+    function min($val1, $val2){
+        return min($val1, $val2);
     }
     
     function number_format($val, $decimals=0, $dec_point="." , $thousands_sep=","){

@@ -10,7 +10,7 @@ class TextReportItem extends AbstractReportItem {
 		if($value === null && $default != ''){
 		    $value = $default;
 		}
-	$max_length = $this->getAttr('max_length', 10000);
+        $max_length = $this->getAttr('max_length', 10000);
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : "150px";
         $value = str_replace("'", "&#39;", $value);
         $placeholder = str_replace("'", "&#39;", $placeholder);

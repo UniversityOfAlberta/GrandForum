@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file is also used in the BDTab of the Project Table Special Page -->
+<Report name="Projects Table" reportType="RP_PROJECT_TABLE" personId="0" year="0" ajax="true">
+    <Permissions>
+        <Role role="STAFF+">
+            <SectionPermission id="projects" permissions="rw" />
+            <SectionPermission id="table" permissions="rw" />
+        </Role>
+    </Permissions>
+    <ReportSection id="projects" tooltip="Projects" name="Projects" blobSection="PROJECTS" type="EditableReportSection" renderpdf="false">
+        <ReportItemSet id="projects" type="AllProjects">
+            <ReportItemSet id="toggle" type="ToggleHeader" title="{$project_name} - {$project_full_name}">
+                <!-- Project Lifecycle -->
+                <Static>
+                    <![CDATA[
+                        <div style='display:flex;'>
+                        <div>
+                        <h2>Project Lifecycle</h2>
+                        <table class="wikitable">
+                    ]]>
+                </Static>
+                <ReportItem id="duration" type="Select" blobItem="DURATION" labels="1 year|2 years|3 years|4 years|5 years" options="1|2|3|4|5" default="1">
+                    <![CDATA[
+                        <tr><td class="label">Duration:</td><td id='duration{$project_id}'>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="loi_submitted" type="Calendar" blobItem="LOI_SUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">LOI Submitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="committee1_approved" type="Calendar" blobItem="COMMITTEE1_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Committee 1 Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="committee2_approved" type="Calendar" blobItem="COMMITTEE2_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Committee 2 Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_submitted" type="Calendar" blobItem="NSERC_SUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Submitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_resubmitted" type="Calendar" blobItem="NSERC_RESUBMITTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Resubmitted:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_rejected" type="Calendar" blobItem="NSERC_REJECTED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Rejected:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="nserc_approved" type="Calendar" blobItem="NSERC_APPROVED" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">NSERC Alliance Approved:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="project_end" type="Calendar" blobItem="PROJECT_END" width="75px">
+                    <![CDATA[
+                        <tr><td class="label">Project End:</td><td>{$item}</td></tr>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        </table>
+                        </div>
+                    ]]>
+                </Static>
+                
+                <!-- Project Members -->
+                <Static>
+                    <![CDATA[
+                        <div style='margin-left:25px;'>
+                        <h2>Project Members</h2>
+                        <h3>Project Lead</h3>
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet id="leads" type="ProjectLeaders">
+                    <Static>
+                        <![CDATA[
+                            <li><a href="{$user_url}">{$user_name}</a></li>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                        <h3>Research Team</h3>
+                        <ul>
+                    ]]>
+                </Static>
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
+                    <Static>
+                        <![CDATA[
+                            <li><a href="{$user_url}">{$user_name}</a></li>
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </ul>
+                        </div>
+                        </div>
+                    ]]>
+                </Static>
+                
+                <!-- Budget -->
+                <Static>
+                    <![CDATA[
+                        <h2>Budget</h2>
+                    ]]>
+                </Static>
+                <ReportItem type="MultiText" blobType="BLOB_ARRAY" blobItem="BUDGET" multiple="true"
+                            indices="partner|year1|year2|year3|year4|year5|comments" 
+                            labels="Partner/Source|Year 1|Year 2|Year 3|Year 4|Year 5|Comments" 
+                            types="Text|Text|Text|Text|Text|Text|Textarea"
+                            sizes="250|50|50|50|50|50|250">
+                    <![CDATA[
+                        <div id='budget{$project_id}'>
+                            {$item}
+                        </div>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <script type="text/javascript">
+                            $('#duration{$project_id} select').on("input", function(){
+                                var n = $('#duration{$project_id} select > option:selected').val();
+                                $('#budget{$project_id} tr > *').show();
+                                for(i=5;i>n;i--){
+                                    $('#budget{$project_id} tr > *:nth-child(' + (i+1) + ')').hide();
+                                }
+                            }).trigger("input");
+                        </script>
+                        <br />
+                    ]]>
+                </Static>
+            </ReportItemSet>
+        </ReportItemSet>
+    </ReportSection>
+    <ReportSection id="table" tooltip="Projects" name="Table" blobSection="TABLE" type="ReportSection" renderpdf="false">
+        <Static>
+            <![CDATA[
+                {set(globalTotal1, 0)}
+                {set(globalTotal2, 0)}
+                {set(globalTotal3, 0)}
+                {set(globalTotal4, 0)}
+                {set(globalTotal5, 0)}
+            ]]>
+        </Static>
+        <Static>
+            <![CDATA[
+                <table id="project_table" class='wikitable' frame='box' rules='all'>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th style='min-width:250px;'>Project Title</th>
+                            <th>Duration</th>
+                            <th style='white-space:nowrap;'>Project Lifecycle</th>
+                            <th style='white-space:nowrap;'>Project Lead</th>
+                            <th style='white-space:nowrap;'>Research Team</th>
+                            <th style='white-space:nowrap; min-width:250px;'>Partners</th>
+                            <th style='white-space:nowrap;'>Year1 Budget</th>
+                            <th style='white-space:nowrap;'>Year2 Budget</th>
+                            <th style='white-space:nowrap;'>Year3 Budget</th>
+                            <th style='white-space:nowrap;'>Year4 Budget</th>
+                            <th style='white-space:nowrap;'>Year5 Budget</th>
+                            <th style='white-space:nowrap;'>Total Budget</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            ]]>
+        </Static>
+        <ReportItemSet id="projects" type="AllProjects">
+            <Static>
+                <![CDATA[
+                    {set(total1, 0)}
+                    {set(total2, 0)}
+                    {set(total3, 0)}
+                    {set(total4, 0)}
+                    {set(total5, 0)}
+                ]]>
+            </Static>
+            <For from="0" to="{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})}">
+                <Static>
+                    <![CDATA[
+                        {set(total1, {add({get(total1)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year1)})})}
+                        {set(total2, {add({get(total2)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year2)})})}
+                        {set(total3, {add({get(total3)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year3)})})}
+                        {set(total4, {add({get(total4)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year4)})})}
+                        {set(total5, {add({get(total5)},{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{$i}|year5)})})}
+                        {set(i, {$i})}
+                    ]]>
+                </Static>
+                <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
+                    <![CDATA[
+                        <tr>
+                    ]]>
+                </If>
+                <Else>
+                    <![CDATA[
+                        <tr style='border-bottom: 3px solid #CCC;'>
+                    ]]>
+                </Else>
+                <Static>
+                    <![CDATA[
+                            <td><a href="{$project_url}">{$project_name}</a></td>
+                            <td>{$project_full_name}</td>
+                            <td>{getText(RP_PROJECT_TABLE,PROJECTS,DURATION,0,0,{$project_id})}</td>
+                            <td>
+                                <table cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>LOI Submitted</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,LOI_SUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Committee 1 Approved</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE1_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Committee 2 Approved</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,COMMITTEE2_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Submitted</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_SUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Resubmitted&nbsp;</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_RESUBMITTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Rejected</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_REJECTED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>NSERC Alliance Approved</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,NSERC_APPROVED,0,0,{$project_id})}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='white-space:nowrap;border:none;'>Project End</td>
+                                        <td style='border:none;'>{getText(RP_PROJECT_TABLE,PROJECTS,PROJECT_END,0,0,{$project_id})}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style='white-space:nowrap;'>
+                    ]]>
+                </Static>
+                <ReportItemSet id="leads" type="ProjectLeaders">
+                    <Static>
+                        <![CDATA[
+                            <a href="{$user_url}">{$user_name}</a><br />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <Static>
+                    <![CDATA[
+                        </td>
+                        <td style='white-space:nowrap;'>
+                    ]]>
+                </Static>
+                <ReportItemSet id="members" type="ProjectPeopleNoLeaders" startDate="0000-00-00" endDate="9999-12-31">
+                    <Static>
+                        <![CDATA[
+                            <a href="{$user_url}">{$user_name}</a><br />
+                        ]]>
+                    </Static>
+                </ReportItemSet>
+                <If if="{&lt;({$i},{getArrayCount(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id})})}">
+                    <!-- Partner row -->
+                    <![CDATA[
+                            </td>
+                            <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|partner)}</td>
+                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},2)}</td>
+                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},2)}</td>
+                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},2)}</td>
+                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},2)}</td>
+                            <td align='right'>{number_format({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)},2)}</td>
+                            <td align='right' style='background: #EEEEEE;'><b>{number_format({add({getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year1)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year2)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year3)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year4)},
+                                                                                                  {getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|year5)})},2)}</b></td>
+                            <td>{getArray(RP_PROJECT_TABLE,PROJECTS,BUDGET,0,0,{$project_id},{get(i)}|comment)}</td>
+                        </tr>
+                    ]]>
+                </If>
+                <Else>
+                    <!-- Totals -->
+                    <![CDATA[
+                            </td>
+                            <td style='background: #EEEEEE;'></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total1)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total2)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total3)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total4)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({get(total5)},2)}</b></td>
+                            <td style='background: #EEEEEE;' align='right'><b>{number_format({add({get(total1)},
+                                                                     {get(total2)},
+                                                                     {get(total3)},
+                                                                     {get(total4)},
+                                                                     {get(total5)})},2)}</b></td>
+                            <td></td>
+                        </tr>
+                    ]]>
+                </Else>
+            </For>
+        </ReportItemSet>
+        <Static>
+            <![CDATA[
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                    $("#project_table").DataTable({
+                        "autoWidth": true,
+                        'iDisplayLength': -1,
+                        'order': [[ 1, "asc" ]],
+                        columnDefs: [
+                           { type: 'natural', targets: [0,7,8,9,10,11,12] }
+                        ],
+                        'aLengthMenu': [[-1], ['All']],
+                        'scrollX': true,
+                        'scrollY': ($(window).height() - $("#bodyContent").position().top - 100 - 60) + "px",
+                        'rowsGroup': [0,1,2,3,4,5],
+                        'dom': 'Blfrtip',
+                        'buttons': [
+                            'excel'
+                        ]
+                    });
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

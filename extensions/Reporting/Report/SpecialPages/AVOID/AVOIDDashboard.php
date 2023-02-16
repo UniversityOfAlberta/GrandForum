@@ -358,6 +358,7 @@ class AVOIDDashboard extends SpecialPage {
             });
             
             $('#viewReport').click(function(){
+                $('#frailtyFrame')[0].src = $('#frailtyFrame')[0].src; // Refresh
                 $('#bodyContent').css('overflow-y', 'hidden');
                 if($('#reportDialog', $('.ui-dialog')).length == 0){
                     $('#reportDialog').dialog({
@@ -481,6 +482,16 @@ class AVOIDDashboard extends SpecialPage {
                     }
                 });
             });
+            
+            function clickActionPlan(){
+                $('.ui-icon').click();
+                if($('#createActionPlan').is(':visible')){
+                    $('#createActionPlan').click();
+                }
+                if($('#viewActionPlan').is(':visible')){
+                    $('#viewActionPlan').click();
+                }
+            }
             
             var viewFullScreen = false;
             var viewProgressFullScreen = false;
