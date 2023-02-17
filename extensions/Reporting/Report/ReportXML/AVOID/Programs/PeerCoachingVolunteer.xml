@@ -127,14 +127,6 @@
                         <td class="label">Employment Information:<br /><small>(if applicable)</small></td>
                         <td class="value">{$item}</td>
                     </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="times" type="Checkbox" blobItem="TIMES" blobType="BLOB_ARRAY" options="Weekend|Weekdays|Evenings">
-            <![CDATA[
-                    <tr>
-                        <td class="label">Preferred Training Times:</td>
-                        <td class="value">{$item}</td>
-                    </tr>
                 </table>
             ]]>
         </ReportItem>
@@ -182,10 +174,6 @@
                     <tr>
                         <td valign="top"><b>Employment Info:</b></td>
                         <td>{getText(RP_VOLUNTEER_OPPORTUNITIES,PEER,EMPLOYMENT,0,{$user_id},0}</td>
-                    </tr>
-                    <tr>
-                        <td valign="top"><b>Times:</b></td>
-                        <td>{getArray(RP_VOLUNTEER_OPPORTUNITIES,PEER,TIMES,0,{$user_id},0,times}</td>
                     </tr>
                 </table>
             ]]>

@@ -114,22 +114,6 @@
                         </tr>
                 ]]>
             </ReportItem>
-            <ReportItem id="age" type="Text" blobItem="AGE" blobType="BLOB_TEXT" width="250px">
-                <![CDATA[
-                        <tr>
-                            <td class="label required">Age:</td>
-                            <td class="value">{$item}</td>
-                        </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="gender" type="Text" blobItem="GENDER" blobType="BLOB_TEXT" width="250px" default="{$user_gender}">
-                <![CDATA[
-                        <tr>
-                            <td class="label required">Gender:</td>
-                            <td class="value">{$item}</td>
-                        </tr>
-                ]]>
-            </ReportItem>
             <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" width="250px" default="{$user_email}">
                 <![CDATA[
                         <tr>
@@ -142,14 +126,6 @@
                 <![CDATA[
                         <tr>
                             <td class="label required">Phone Number:</td>
-                            <td class="value">{$item}</td>
-                        </tr>
-                ]]>
-            </ReportItem>
-            <ReportItem id="address" type="Text" blobItem="ADDRESS" width="250px" blobType="BLOB_TEXT">
-                <![CDATA[
-                        <tr>
-                            <td class="label required">Mailing address:</td>
                             <td class="value">{$item}</td>
                         </tr>
                     </table>
@@ -181,24 +157,12 @@
                             <td>{getText(RP_PEER_NAVIGATOR,REGISTER,NAME,0,{$user_id},0}</td>
                         </tr>
                         <tr>
-                            <td><b>Age:</b></td>
-                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,AGE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Gender:</b></td>
-                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,GENDER,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
                             <td><b>Email:</b></td>
                             <td>{getText(RP_PEER_NAVIGATOR,REGISTER,EMAIL,0,{$user_id},0}</td>
                         </tr>
                         <tr>
                             <td><b>Phone Number:</b></td>
                             <td>{getText(RP_PEER_NAVIGATOR,REGISTER,PHONE,0,{$user_id},0}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Mailing address:</b></td>
-                            <td>{getText(RP_PEER_NAVIGATOR,REGISTER,ADDRESS,0,{$user_id},0}</td>
                         </tr>
                     </table>
                 ]]>

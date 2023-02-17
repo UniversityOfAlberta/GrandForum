@@ -20,19 +20,19 @@
     {
         "id": "CommunityConnectors",
         "title": "Community Connectors",
-        "category": "Give Support",
+        "category": "Volunteer With Us",
         "tags": ["health connections"]
     },
     {
         "id": "PeerCoachingVolunteer",
         "title": "Be a Peer Coach",
-        "category": "Give Support",
+        "category": "Volunteer With Us",
         "tags": ["peer coaching volunteer"]
     },
     {
         "id": "PeerNavigatorVolunteer",
         "title": "Be a Peer Navigator",
-        "category": "Give Support",
+        "category": "Volunteer With Us",
         "tags": ["peer navigator volunteer"]
     }
 ]

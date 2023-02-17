@@ -32,7 +32,7 @@
                     <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Help members of the community register for AVOID Frailty</li></ul></div><br />
                     <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Support them through the healthy aging assessment</li></ul></div><br />
                     <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Help them read through and understand their frailty report</li></ul></div><br />
-                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Navigate through the program resources together, and choose next steps (find a community program, an AVOID program, education, etc.</li></ul></div>
+                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Navigate through the program resources together, and choose next steps (find a community program, an AVOID program, education, etc.)</li></ul></div>
                     
                     <p><b>What’s required?</b> Basic computer skills, comfortable with registration, assessment, and navigation of the AVOID Frailty program.  <b>Short training!</b> Attend a 30-minute training session. Training is interactive and fun and provided at no cost.</p>
             ]]>
@@ -72,14 +72,6 @@
                         <td class="label required">Email:</td>
                         <td class="value">{$item}</td>
                     </tr>
-            ]]>
-        </ReportItem>
-        <ReportItem id="times" type="Checkbox" blobItem="TIMES" blobType="BLOB_ARRAY" options="Weekend|Weekdays|Evenings">
-            <![CDATA[
-                    <tr>
-                        <td class="label">Preferred Training Times:</td>
-                        <td class="value">{$item}</td>
-                    </tr>
                 </table>
             ]]>
         </ReportItem>
@@ -115,10 +107,6 @@
                     <tr>
                         <td><b>Email:</b></td>
                         <td>{getText(RP_VOLUNTEER_NAVIGATOR,PEER,EMAIL,0,{$user_id},0}</td>
-                    </tr>
-                    <tr>
-                        <td valign="top"><b>Times:</b></td>
-                        <td>{getArray(RP_VOLUNTEER_NAVIGATOR,PEER,TIMES,0,{$user_id},0,times}</td>
                     </tr>
                 </table>
             ]]>
