@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Report name="Peer Navigator Volunteer" reportType="RP_VOLUNTEER_NAVIGATOR" ajax="true" disabled="false">
+    <Permissions>
+        <Role role="INACTIVE+"></Role>
+    </Permissions>
+        <Script>
+        <![CDATA[
+            <script type="text/javascript">
+                dc.init(me.get('id'), 'Program-PeerNavigatorVolunteer');
+                dc.increment('count');
+            </script>
+        ]]>
+    </Script>
+    <ReportSection id="peer" tooltip="Peer Navigator" name="Peer Navigator" title="Peer Navigator" blobSection="PEER" type="NextPrevReportSection">
+        <Static>
+            <![CDATA[
+                <script type="text/javascript">
+                    $("#reportHeader").hide();
+                    $("#reportHeader").next().hide();
+                </script>
+                <div style='overflow: auto;'>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/people6.png" style='float: right; height: 12em; transform: scaleX(-1); margin: 0 0 1em 1em;' />
+                    <div style='display:flex; align-items: center;'>
+                        <div class='program-header' style='min-width: 10em; text-align: center;'>
+                            PEER NAVIGATORS
+                        </div>
+                    </div>
+                    <p><b>Who are Peer Navigators?</b> Members of the AVOID Frailty for Healthy Aging Program who have the knowledge and skills to onboard community members to the AVOID Frailty program by helping them register and complete the Healthy Aging Assessment.</p>
+                    <img src="{$wgServer}{$wgScriptPath}/skins/people5.png" style='float: left; height: 12em; transform: scaleX(-1); margin: 0 1em 1em 0;' />
+                    
+                    <h3 style='margin-top: 0; padding-top: 0;'>Duties and Responsibilities</h3> 
+                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Help members of the community register for AVOID Frailty</li></ul></div><br />
+                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Support them through the healthy aging assessment</li></ul></div><br />
+                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Help them read through and understand their frailty report</li></ul></div><br />
+                    <div class='program-box' style='max-width: 28em;'><ul style='margin-top: 0;margin-bottom: 0;'><li style='margin-top: 0;margin-bottom: 0;'>Navigate through the program resources together, and choose next steps (find a community program, an AVOID program, education, etc.</li></ul></div>
+                    
+                    <p><b>What’s required?</b> Basic computer skills, comfortable with registration, assessment, and navigation of the AVOID Frailty program.  <b>Short training!</b> Attend a 30-minute training session. Training is interactive and fun and provided at no cost.</p>
+            ]]>
+        </Static>
+        <ReportItem id="register" type="Checkbox" labels="Register to become a Peer Navigator" options="Register" blobType="BLOB_ARRAY" blobItem="REGISTER">
+            <![CDATA[
+                <div class="program-button">
+                    {$item}
+                </div>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <div id='register' style='display: none;'>
+            ]]>
+        </Static>
+        <ReportItem id="name" type="Text" blobItem="NAME" blobType="BLOB_TEXT" width="250px" default="{$user_name}">
+            <![CDATA[
+                <table style="width:100%;">
+                    <tr>
+                        <td class="label required" style="width:1%;">Name:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="phone" type="Text" blobItem="PHONE" blobType="BLOB_TEXT" width="250px">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Phone Number:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="email" type="Text" blobItem="EMAIL" blobType="BLOB_TEXT" width="250px" default="{$user_email}">
+            <![CDATA[
+                    <tr>
+                        <td class="label required">Email:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+            ]]>
+        </ReportItem>
+        <ReportItem id="times" type="Checkbox" blobItem="TIMES" blobType="BLOB_ARRAY" options="Weekend|Weekdays|Evenings">
+            <![CDATA[
+                    <tr>
+                        <td class="label">Preferred Training Times:</td>
+                        <td class="value">{$item}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                    <h3>Communication Consent </h3>
+                    <p>By providing your contact information you are consenting to receive communications from AVOID Frailty about your program selection. A member of our team will be in touch in a few business days.</p>
+            ]]>
+        </Static>
+        <ReportItem id="submit" type="SubmitEmail">
+            <![CDATA[
+                <table>
+                    <tr>
+                        <td><b>Program:</b></td>
+                        <td>Peer Navigator (Give Support)</td>
+                    </tr>
+                    <tr>
+                        <td><b>User:</b></td>
+                        <td>{$user_name} &lt;{$user_email}&gt;</td>
+                    </tr>
+                    <tr>
+                        <td><b>Date Submitted:</b></td>
+                        <td>{time2date({$timestamp})}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{getText(RP_VOLUNTEER_NAVIGATOR,PEER,NAME,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone Number:</b></td>
+                        <td>{getText(RP_VOLUNTEER_NAVIGATOR,PEER,PHONE,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{getText(RP_VOLUNTEER_NAVIGATOR,PEER,EMAIL,0,{$user_id},0}</td>
+                    </tr>
+                    <tr>
+                        <td valign="top"><b>Times:</b></td>
+                        <td>{getArray(RP_VOLUNTEER_NAVIGATOR,PEER,TIMES,0,{$user_id},0,times}</td>
+                    </tr>
+                </table>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                </div>
+                <script type='text/javascript'>
+                    $(".program-button").click(function(e){
+                        var checkbox = $('input[type=checkbox]', this);
+                        if($(e.target).not("input").length == 1){
+                            $(checkbox).click();
+                        }
+                    });
+                    
+                    $(".program-button input").change(function(){
+                        var checked = $(this).is(":checked");
+                        if(checked){
+                            $("#register").slideDown();
+                        }
+                        else {
+                            $("#register").slideUp();
+                        }
+                    }).change();
+                </script>
+            ]]>
+        </Static>
+    </ReportSection>
+</Report>

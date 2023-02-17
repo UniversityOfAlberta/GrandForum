@@ -20,11 +20,7 @@ class FrailtyReport extends SpecialPage {
                 "Diet and Nutrition" => "DietAndNutrition"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Nutrition Apps" => "https://cyberseniors.org/previous-webinars/mobile-apps/nutrition-apps/",
-                    "How to use Mealime" => "https://cyberseniors.org/previous-webinars/online-services/how-to-use-mealime/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Diet and Nutrition" => "CFN-DIET",
@@ -53,10 +49,7 @@ class FrailtyReport extends SpecialPage {
             ),
             "programs" => array(
                 "Peer Coaching" => "PeerCoaching",
-                "Community Connectors" => "CommunityConnectors",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Apps for Better Sleep" => "https://cyberseniors.org/previous-webinars/mobile-apps/apps-for-better-sleep/"
-                )
+                "Community Connectors" => "CommunityConnectors"
             ),
             "community" => array(
                 "Activity → Exercise ↴ Movement and Mindfulness" => "CFN-ACT-EX-MOV",
@@ -157,11 +150,7 @@ class FrailtyReport extends SpecialPage {
                 "Interact" => "Interact"
             ),
             "programs" => array(
-                "Community Connectors" => "CommunityConnectors",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Cognitive Function in Seniors" => "https://cyberseniors.org/previous-webinars/non-tech/cognitive-function-in-seniors/",
-                    "Reminder Apps" => "https://cyberseniors.org/previous-webinars/mobile-apps/reminder-apps/"
-                )
+                "Community Connectors" => "CommunityConnectors"
             ),
             "community" => array(
                 "Interact" => "CFN-INT",
@@ -177,13 +166,7 @@ class FrailtyReport extends SpecialPage {
             ),
             "programs" => array(
                 "Community Connectors" => "CommunityConnectors",
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Staying Connected through technology" => "https://cyberseniors.org/stories/cyber-seniors-in-the-news/staying-connected-through-technology/",
-                    "Guided Meditation on Self Love" => "https://cyberseniors.org/previous-webinars/featured-webinars/guided-meditation-on-kindness-and-self-love/",
-                    "Craft for Mental Health" => "https://cyberseniors.org/previous-webinars/non-tech/craft-for-mental-health/",
-                    "Online Mental Health Resources (with 7 cups demo)" => "https://cyberseniors.org/previous-webinars/online-services/online-mental-health-resources-with-7-cups-demo/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Interact" => "CFN-INT",
@@ -198,11 +181,7 @@ class FrailtyReport extends SpecialPage {
                 "Optimize Medication" => "OptimizeMedication"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "How to Fill Prescriptions Online" => "https://cyberseniors.org/previous-webinars/telemedicine/how-to-refill-prescriptions-online/",
-                    "Medisafe Pill Reminder App" => "https://cyberseniors.org/previous-webinars/mobile-apps/medisafe-pill-reminder-app/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Vaccination/Optimize Medication" => "CFN-VAC",
@@ -214,14 +193,13 @@ class FrailtyReport extends SpecialPage {
             "no" => "",
             "education" => array(
                 "Diet and Nutrition" => "DietAndNutrition",
-                "Activity" => "Activity"
+                "Activity" => "Activity",
+                "Cyber Seniors Webinar(s):" => array(
+                    "Apps for Better Sleep" => "https://cyberseniors.org/previous-webinars/mobile-apps/apps-for-better-sleep/"
+                )
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Healthy Hearts" => "https://cyberseniors.org/previous-webinars/exercise-health/heart-niagara-healthy-hearts/",
-                    "Best Health Apps for Seniors" => "https://cyberseniors.org/previous-webinars/mobile-apps/best-health-apps-for-seniors-4/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Chronic Conditions" => "CFN-CHRONIC",
@@ -249,11 +227,7 @@ class FrailtyReport extends SpecialPage {
                 
             ),
             "programs" => array(
-                "Cyber Seniors Webinar(s):" => array(
-                    "Accessible Tech Projects & Services" => "https://cyberseniors.org/previous-webinars/device-basics/accessible-tech-products-services/",
-                    "Set up Live Captions on your Device with Otter.ai" => "https://cyberseniors.org/previous-webinars/online-services/set-up-live-captions-on-your-device-with-otter-ai/",
-                    "TV Ears: Audio Clarifying Device" => "https://cyberseniors.org/previous-webinars/buying-technology/tv-ears-audio-clarifying-device/"
-                )
+
             ),
             "community" => array(
                 "Disability Services" => "CFN-DIS",
@@ -271,12 +245,7 @@ class FrailtyReport extends SpecialPage {
                 "Activity" => "Activity"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Yoga for Seniors: Benefits and How to access online" => "https://cyberseniors.org/previous-webinars/mobile-apps/yoga-for-seniors-how-to-access-online/",
-                    "Exercise class with Renee" => "https://cyberseniors.org/previous-webinars/featured-webinars/exercise-class-with-renee-wed/",
-                    "Zumba Gold with Renee" => "https://cyberseniors.org/previous-webinars/exercise-health/zumba-gold-with-renee/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Activity" => "CFN-ACT",
@@ -305,11 +274,7 @@ If you need help with managing the medications you are on, visit the following C
                  "Optimize Medication" => "OptimizeMedication"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "How to Fill Prescriptions Online" => "https://cyberseniors.org/previous-webinars/telemedicine/how-to-refill-prescriptions-online/",
-                    "Medisafe Pill Reminder App" => "https://cyberseniors.org/previous-webinars/mobile-apps/medisafe-pill-reminder-app/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Vaccination/Optimize Medication" => "CFN-VAC",
@@ -326,10 +291,7 @@ If you need help with managing the medications you are on, visit the following C
             ),
             "programs" => array(
                 "Peer Coaching" => "PeerCoaching",
-                "Community Connectors" => "CommunityConnectors",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Staying Connected through technology" => "https://cyberseniors.org/stories/cyber-seniors-in-the-news/staying-connected-through-technology/"
-                )
+                "Community Connectors" => "CommunityConnectors"
             ),
             "community" => array(
                 "Interact" => "CFN-INT",
@@ -346,13 +308,7 @@ If you need help with managing the medications you are on, visit the following C
                 "Diet and Nutrition" => "DietAndNutrition"
             ),
             "programs" => array(
-                "Peer Coaching" => "PeerCoaching",
-                "Cyber Seniors Webinar(s):" => array(
-                    "Ordering Groceries Online" => "https://cyberseniors.org/previous-webinars/mobile-apps/ordering-groceries-online/",
-                    "All Recipes" => "https://cyberseniors.org/previous-webinars/mobile-apps/all-recipes/",
-                    "Nutrition Apps" => "https://cyberseniors.org/previous-webinars/mobile-apps/nutrition-apps/",
-                    "How to Use Mealime" => "https://cyberseniors.org/previous-webinars/online-services/how-to-use-mealime/"
-                )
+                "Peer Coaching" => "PeerCoaching"
             ),
             "community" => array(
                 "Diet and Nutrition" => "CFN-DIET",
@@ -379,7 +335,16 @@ If you need help with managing the medications you are on, visit the following C
         if($scores[$key] > 0){
             $need = "Y";
             foreach($row['education'] as $k => $e){
-                $education .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+                if(is_array($e)){
+                    $links = array();
+                    foreach($e as $k1 => $e1){
+                        $links[] = "<a href='{$e1}' target='_blank'>{$k1}</a>";
+                    }
+                    $education .= "<p>{$k} ".implode(", ", $links)."</p>";
+                }
+                else{
+                    $education .= "<p><a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/{$e}' target='_blank'>{$k}</a></p>";
+                }
             }
             foreach($row['programs'] as $k => $p){
                 if(is_array($p)){
@@ -404,7 +369,7 @@ If you need help with managing the medications you are on, visit the following C
                     <td align='center' style='padding-top: 1em; font-style: initial;'>{$need}</td>
                     <td align='center'><img src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/SpecialPages/AVOID/images/{$row['img']}' alt='{$key}' /><br />{$key}</td>";
         if($need == "Y"){
-            $html .= "<td align='center'>{$education}</td>
+            $html .= "<td align='center' style='font-size: 0.9em;'>{$education}</td>
                     <td align='center' style='font-size: 0.8em;'>{$programs}</td>
                     <td style='font-size: 0.9em;'>{$community}</td>";
         }
@@ -643,10 +608,10 @@ If you need help with managing the medications you are on, visit the following C
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th align='left' style='width: 5.5em;'>
+                                    <th align='left' style='width: 6.5em;'>
                                         <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
                                     </th>
-                                    <th align='left' style='width: 10em;'>
+                                    <th align='left' style='width: 9em;'>
                                         <small><i>AVOID Frailty<br />Programs<br /></i></small>
                                     </th>
                                     <th align='left' style='width: 13em;'>
@@ -693,10 +658,10 @@ behaviour. They are not clinical recommendations, for which you should seek advi
                                 </th>
                             </tr>
                             <tr>
-                                <th align='left' style='width: 5.5em;'>
+                                <th align='left' style='width: 6.5em;'>
                                     <small><i>AVOID Frailty<br />Education<br />Topic<br /></i></small>
                                 </th>
-                                <th align='left' style='width: 10em;'>
+                                <th align='left' style='width: 9em;'>
                                     <small><i>AVOID Frailty<br />Programs<br /></i></small>
                                 </th>
                                 <th align='left' style='width: 13em;'>

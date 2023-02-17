@@ -6,10 +6,10 @@
         "tags": ["peer coaching participant"]
     },
     {
-        "id": "CyberSeniors",
-        "title": "Cyber Seniors",
+        "id": "PeerNavigator",
+        "title": "Peer Navigator",
         "category": "Get Support",
-        "tags": ["cyber seniors"]
+        "tags": ["peer navigator"]
     },
     {
         "id": "Otago",
@@ -28,5 +28,11 @@
         "title": "Be a Peer Coach",
         "category": "Give Support",
         "tags": ["peer coaching volunteer"]
+    },
+    {
+        "id": "PeerNavigatorVolunteer",
+        "title": "Be a Peer Navigator",
+        "category": "Give Support",
+        "tags": ["peer navigator volunteer"]
     }
 ]
