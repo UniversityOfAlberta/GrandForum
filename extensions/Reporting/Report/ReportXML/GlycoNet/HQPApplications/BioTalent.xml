@@ -86,12 +86,6 @@
                     <li>I will answer the survey within one month of the completion of the Technical Skills Fundamentals Training Program.</li>
                     <li>I may be contacted by GlycoNet for sharing my experience in communications materials such as the website, social media, newsletter, and/or annual corporate report.</li>
                 </ol>
-                <ol>
-                    <li>I will complete the GlycoNet Diversity and Inclusion Bootcamp and upload the Certificates to my account in the Forum.</li>
-                    <li>I will complete the BioTalent Technical Skills Fundamentals courses by March 31, 2022.</li>
-                    <li>I will answer the survey within one month of the completion of the Technical Skills Fundamentals Training Program.</li>
-                    <li>I may be contacted by GlycoNet for sharing my experience in communications materials such as the website, social media, newsletter, and/or annual corporate report.</li>
-                </ol>
                 {$item}
             ]]>
         </ReportItem>
