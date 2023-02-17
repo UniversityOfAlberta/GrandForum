@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2021">
+<Report name="Technical Skills Fundamentals Training Program" reportType="RP_BIO_TALENT" pdfType="BIO_TALENT" pdfFiles="HQPApplications/BioTalentPDF" ajax="true" disabled="false" year="2023">
     <Permissions>
         <Role role="HQP">
             <SectionPermission id="background" permissions="rw" />
@@ -20,29 +20,13 @@
         <Static>
             <![CDATA[
                 <h3>Background</h3>
-                <p>GlycoNet is holding a competition for HQP to attend BioTalent Canada's bilingual "Technical Skills Fundamentals" Training Program specifically designed for careers in industry and academia. HQP will learn the introductory knowledge of key technical skills that help them stand out from the crowd when entering the workforce. The BioTalent Canada’s Technical Skills Fundamentals online series include:</p>
-
-                <ul>
-                    <li>Five 1-hour courses</li>
-                    <li>Pre- and post-assessment for the Scientific Report Writing Fundamentals, GLP, GMP, QA/QC and GCP courses</li>
-                    <li>BioReady™ certificate</li>
-                </ul>
-
-                <p>For more information about the Technical Skills Fundamentals courses and BioTalent Canada, please visit their website: <a href='https://www.biotalent.ca/applied-technical-skills-training-for-the-bio-economy/' target='_blank'>https://www.biotalent.ca/applied-technical-skills-training-for-the-bio-economy/</a>.<p>
+                <p>GlycoNet will sponsor trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to take BioTalent’s Technical Skills Fundamentals courses from April 1, 2021 to March 31, 2023.</p>
                 
-                <h3>Eligibility</h3>
-                <p>This competition is open to graduate students, postdoctoral fellows, research technicians, and research associates supervised by GlycoNet Network Investigators. Applicants do not currently need to be working on a GlycoNet-funded project.</p>
-
-                <h3>Funding Available</h3>
-                <p>GlycoNet will sponsor 25 trainees (graduate students, post-doctoral fellows, research technicians, and research associates) to take BioTalent’s Technical Skills Fundamentals courses from April 1, 2021 to March 31, 2022.</p>
-
                 <h3>Instructions</h3>
                 <ul>
-                    <li>Applicants to submit an application through the GlycoNet Forum by 11:59 pm PDT, December 31, 2021 or until all courses have been awarded.</li>
-                    <li>Application are accepted and reviewed on a rolling basis. Applications will be reviewed by GlycoNet Management every week and applicants will be notified of their application status no later than two weeks after the application is received.</li>
+                    <li>Applications are accepted and reviewed on a rolling basis. Applications will be reviewed by GlycoNet Management every week and applicants will be notified of their application status no later than two weeks after the application is received.</li>
                     <li>Award will include an access code to BioTalent Canada Technical Skills Fundamentals courses.</li>
-                    <li>Completion of the GlycoNet Diversity and Inclusion Bootcamp is required for HQP participating in this competition. The access code to the Training Program will be provided after the certificates of completion of the GlycoNet Diversity and Inclusion Bootcamp are uploaded to your profile in the Forum.</li>
-                    <li>Award recipients must complete a short survey in the <a href='https://forum.glyconet.ca/index.php/Main_Page'>GlycoNet Forum</a> within one month of the completion of the Technical Skills Fundamentals Training Program. In the survey, award recipients will be asked to reflect on what they learned and how the course may influence their studies and career goals. This survey will be used to evaluate the interest of GlycoNet HQP in the course.</li>
+                    <li>Award recipients must complete a short survey in the GlycoNet Forum within one month of the completion of the Technical Skills Fundamentals Training Program. In the survey, award recipients will be asked to reflect on what they learned and how the course may influence their studies and career goals. This survey will be used to evaluate the interest of GlycoNet HQP in the course.</li>
                 </ul>
             ]]>
         </Static>
@@ -97,6 +81,11 @@
         <ReportItem id="declaration" type="EULA" blobItem="EULA" yes="Yes, I agree to the declaration" no="No, I do not agree to the declaration">
             <![CDATA[
                 <p>By submitting this BioTalent’s Training Program Competition Application Form, I agree that:</p>
+                <ol>
+                    <li>I will complete the BioTalent Technical Skills Fundamentals courses by March 31, 2023.</li>
+                    <li>I will answer the survey within one month of the completion of the Technical Skills Fundamentals Training Program.</li>
+                    <li>I may be contacted by GlycoNet for sharing my experience in communications materials such as the website, social media, newsletter, and/or annual corporate report.</li>
+                </ol>
                 <ol>
                     <li>I will complete the GlycoNet Diversity and Inclusion Bootcamp and upload the Certificates to my account in the Forum.</li>
                     <li>I will complete the BioTalent Technical Skills Fundamentals courses by March 31, 2022.</li>

@@ -416,6 +416,7 @@ class ApplicationsTable extends SpecialPage{
     function generateBioTalent(){
         global $wgOut;
         $tabbedPage = new InnerTabbedPage("reports");
+        $tabbedPage->addTab(new ApplicationTab(array('RP_BIO_TALENT'), null, 2023, "2023", array(), true));
         $tabbedPage->addTab(new ApplicationTab(array('RP_BIO_TALENT'), null, 2021, "2021", array(), true));
         $wgOut->addHTML($tabbedPage->showPage());
     }
