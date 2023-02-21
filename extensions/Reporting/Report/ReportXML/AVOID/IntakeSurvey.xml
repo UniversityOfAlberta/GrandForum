@@ -31,6 +31,8 @@
                         $("#HealthRelatedQoL6").removeClass("disabled_lnk");
                         $("#HealthRelatedQoL7").removeClass("disabled_lnk");
                         $("#HealthStatus").show().removeClass("disabled_lnk");
+                        $("#Inpersonopportunity").show().removeClass("disabled_lnk");
+                        $("#Fitbitgivaway").show().removeClass("disabled_lnk");
                         $("#Submit").show();
                         $('input[type="submit"]').prop('disabled', false).show();
                     }
@@ -1539,6 +1541,58 @@
             ]]>
         </ReportItem>
     </ReportSection>
+    <ReportSection id="FitBit" tooltip="Fitbit givaway" name="Fitbit givaway" blobSection="FITBIT" type="NextPrevReportSection" pagebreak="false">
+        <ReportItem id="fitbit1" blobItem="fitbit1" type="RadioReportItem" orientation="vertical" options="Yes|No">
+            <![CDATA[
+                <h3>Thanks for completing the assessment. Congratulations, you are eligible for a free Fitbit! A fitbit is a smart watch that helps track your healthy behaviours like steps, flights of stairs, and minutes of moderate activity. Would you be interested in using one?</h3>
+                <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="fitbit2" blobItem="fitbit2" type="RadioReportItem" orientation="vertical" options="Yes|No" optional="true">
+            <![CDATA[
+                <div id='fitbit2' style="display:none;">
+                    <h3>Are you interested in a group training session on setting up your Fitbit and seeing how it integrates with our program?</h3>
+                    <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="fitbit3" blobItem="fitbit3" type="RadioReportItem" orientation="vertical" options="Yes|No" optional="true">
+            <![CDATA[
+                    <div id='fitbit3_yes' style="display:none;">
+                        Fantastic, we will be in touch with further details. You will receive your Fitbit during the training session.
+                    </div>
+                    <div id='fitbit3_no' style="display:none;">
+                        We will be in touch to let you know how to pick up your fitbit
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $('div#fitbit2').hide();
+                    function specifyFitbit(){
+                        if($("input:radio[name='Fitbitgivaway_fitbit1'][value='Yes']").is(':checked')){
+                            $('div#fitbit2').show();
+                        }
+                        else{ $('div#fitbit2').hide(); }
+                    }
+                    _.defer(specifyFitbit);
+                    $("input:radio[name='Fitbitgivaway_fitbit1']").change(specifyFitbit);
+                
+                    $('div#fitbit3_yes').hide();
+                    $('div#fitbit3_no').hide();
+                    function specifyFitbit2(){
+                        if($("input:radio[name='Fitbitgivaway_fitbit2'][value='Yes']").is(':checked')){
+                            $('div#fitbit3_yes').show();
+                            $('div#fitbit3_no').hide();
+                        }
+                        else if($("input:radio[name='Fitbitgivaway_fitbit2'][value='No']").is(':checked')){ 
+                            $('div#fitbit3_yes').hide();
+                            $('div#fitbit3_no').show(); 
+                        }
+                    }
+                    _.defer(specifyFitbit2);
+                    $("input:radio[name='Fitbitgivaway_fitbit2']").change(specifyFitbit2);
+                </script>
+            ]]>
+        </ReportItem>
+    </ReportSection>
     <ReportSection id="submit" type="EditableReportSection" blobSection="SUBMIT" name="Submit">
         <If if="{and({==({getProgress(eula)},100)},
                      {==({getProgress(socio_info)},100)},
@@ -1551,7 +1605,8 @@
                      {==({getProgress(healthquestions6)},100)},
                      {==({getProgress(healthquestions7)},100)},
                      {==({getProgress(clinicalfrailty)},100)},
-                     {==({getProgress(OnSiteEvaluation)},100)}
+                     {==({getProgress(OnSiteEvaluation)},100)},
+                     {==({getProgress(FitBit)},100)}
                 )}">
             <ReportItem id="submitted" type="TextReportItem" blobItem="SUBMITTED">
                 <![CDATA[
