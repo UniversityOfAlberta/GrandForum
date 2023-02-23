@@ -54,6 +54,7 @@ class AdminDataCollection extends SpecialPage{
                                         <th rowspan='2'>Extra</th>
                                         <th rowspan='2'>Hear about us</th>
                                         <th rowspan='2'>In person opportunity</th>
+                                        <th rowspan='2'>Fitbit</th>
                                         <th rowspan='2'>Submitted Intake Survey</th>
                                         <th rowspan='2'>Submitted 3Month Survey</th>
                                         <th rowspan='2'>Submitted 6Month Survey</th>
@@ -78,6 +79,8 @@ class AdminDataCollection extends SpecialPage{
                 $postal_code = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "AVOID_Questions_tab0", "POSTAL", $person->getId());
                 $evaluation1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation1", $person->getId());
                 $evaluation2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "ONSITE_EVALUATION", "evaluation2", $person->getId());
+                $fitbit1 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit1", $person->getId());
+                $fitbit2 = $this->getBlobValue(BLOB_TEXT, YEAR, "RP_AVOID", "FITBIT", "fitbit2", $person->getId());
                 $submitted = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID")) ? "Yes" : "No");
                 $submitted3 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_THREEMO")) ? "Yes" : "No");
                 $submitted6 = $person->isRole("Provider") ? "N/A" : ((AVOIDDashboard::hasSubmittedSurvey($person->getId(), "RP_AVOID_SIXMO")) ? "Yes" : "No");
@@ -143,6 +146,10 @@ class AdminDataCollection extends SpecialPage{
                 $wgOut->addHTML("<td>
                     <b>Q1:</b> {$evaluation1}<br />
                     <b>Q2:</b> {$evaluation2}
+                </td>
+                <td>
+                    <b>Q1:</b> {$fitbit1}<br />
+                    <b>Q2:</b> {$fitbit2}
                 </td>
                 <td>{$submitted}</td>
                 <td>{$submitted3}</td>
