@@ -18,17 +18,20 @@
         static $map = array(
             'avoid_vision' => 'Snellen Eye Chart Result:',
             'avoid_vision_fup_txt' => 'Follow up Comments:',
+            'avoid_vision_fup_recommended' => 'Recommendations',
 
             'avoid_hearing' => 'Difficulties in hearing detected?',
             'avoid_hearing_whisper1' => 'Whisper Test 1 Result:',
             'avoid_hearing_whisper2' => 'Whisper Test 2 Result:',
             'avoid_hearing_whisper3' => 'Whisper Test 3 Result:',
             'avoid_hearing_fup_txt' => 'Follow up Comments',
+            'avoid_hearing_fup_recommended' => 'Recommendations',
 
             'avoid_communication' => 'Patient has trouble communicating wishes to people:',
             'avoid_communication2' => 'Patient has trouble finding words:',
             'avoid_communication3' => 'Patient has trouble recalling names:',
             'avoid_communication_fup_txt' => 'Follow up Comments',
+            'avoid_communication_fup_recommended' => 'Recommendations',
 
             'avoid_cognition' => 'Paired Association Score:',
             'avoid_cognition2' => 'Paired Association Percentage:',
@@ -49,6 +52,7 @@
             'avoid_dementia2' => 'Animal Naming Result:',
             'avoid_dementia3' => 'Clock Drawing Result:',
             'avoid_dementia_fup_txt' => 'Follow up Comments',
+            'avoid_dementia_fup_recommended' => 'Recommendations',
 
             'avoid_depression' => 'Is patient basically satisfied with your life?',
             'avoid_depression2' => 'Does patient often get bored?',
@@ -56,6 +60,7 @@
             'avoid_depression4' => 'Does patient prefer to stay at home rather than going out and doing new things?',
             'avoid_depression5' => 'Does patient feel pretty worthless the way they are now?',
             'avoid_depression_fup_txt' => 'Follow up Comments',
+            'avoid_depression_fup_recommended' => 'Recommendations',
 
             'avoid_balance3' => 'Fall within the last 12 months:',
             'avoid_balance4' => 'Sought medical attention after a fall:',
@@ -70,21 +75,25 @@
             'avoid_balance9' => '4 Metre Walk Test Results:',
             'avoid_balance10' => '',
             'avoid_balance11' => '4 Metre Walk Test Comments',
+            'avoid_balance_fup_recommended' => 'Recommendations',
 
 
             'avoid_adl' => 'Difficulties or need reminding about everyday activities:',
             'avoid_adl2' => 'Comments:',
             'avoid_adl_fup_txt' => 'Follow up Comments:',
+            'avoid_adl_fup_recommended' => 'Recommendations',
 
             'avoid_iadl' => 'Difficulties or need reminding about everyday activities:',
             'avoid_iadl2' => 'Comments:',
             'avoid_iadl_fup_txt' => 'Follow up Comments',
+            'avoid_iadl_fup_recommended' => 'Recommendations',
 
             'avoid_caregiver' => 'Patient receives assistance with everyday activities:',
             'avoid_caregiver2' => 'From whom:',
             'avoid_caregiver3' => 'Frequency:',
             'avoid_caregiver4' => 'Comments:',
             'avoid_caregiver_fup_txt' => 'Follow up Comments:',
+            'avoid_caregiver_fup_recommended' => 'Recommendations',
 
 
             'avoid_urinary' => 'Problems with involuntary loss of water/urine:',
@@ -99,6 +108,7 @@
             'avoid_bowel5' => 'If yes, how has it changed?',
             'avoid_bowel3_2' => 'Comments:',
             'avoid_bowel_fup_txt' => 'Follow up Comments:',
+            'avoid_bowel_fup_recommended' => 'Recommendations',
 
             'avoid_meds' => 'Number of prescribed medications:',
             'avoid_meds2' => 'Number of over the counter medications:',
@@ -106,10 +116,12 @@
             'avoid_meds4' => 'Concerns:',
             'avoid_meds_fup_txt' => 'Follow up Comments:',
             'Comments' => 'Comments:',
+            'avoid_meds_fup_recommended' => 'Recommendations',
 
             'avoid_fatigue' => 'Patient feels exhaustion or fatigue during normal activities:',
             'avoid_fatigue2' => 'How many days in a week does this occur during normal activities:',
             'avoid_fatigue_fup_txt' => 'Follow up Comments:',
+            'avoid_fatigue_fup_recommended' => 'Recommendations',
 
             'avoid_strength' => 'Dominant hand used?',
             'avoid_strength2' => 'Trial 1 Result:',
@@ -129,6 +141,7 @@
             'avoid_nutrition4' => 'Follow Eating Well with Canada’s Food Guide:',
             'avoid_nutrition5' => 'BMI:',
             'avoid_nutrition_fup_txt' => 'Follow up Comments:',
+            'avoid_nutrition_fup_recommended' => 'Recommendations',
 
             'avoid_osteo' => 'How much Vitamin D does the patient take:',
             'avoid_osteo1' => '',
@@ -136,6 +149,7 @@
             'avoid_pain' => 'Does patient regularly suffer from pain?',
             'avoid_pain2' => 'Pain Scale Score:',
             'avoid_pain_fup_txt' => 'Follow up Comments:',
+            'avoid_pain_fup_recommended' => 'Recommendations',
 
             'avoid_immunization1_1' => 'Last Flu Shot:',
             'avoid_immunization1_2' => 'Last Flu Shot Date:',
@@ -153,6 +167,7 @@
             'avoid_dental3' => 'Does patient gums bleed while brushing your teeth?',
             'avoid_dental4' => 'Counselling given?',
             'avoid_dental_fup_txt' => 'Follow up Comments:',
+            'avoid_dental_fup_recommended' => 'Recommendations',
 
 
             'avoid_lifestyle' => 'Patient drinks alcohol?',
@@ -163,6 +178,7 @@
             'avoid_lifestyle6' => 'Are they thinking of quitting?',
             'avoid_lifestyle7' => 'Are they aware there are resources to support them? ',
             'avoid_lifestyle_fup_txt' => 'Follow up Comments:',
+            'avoid_lifestyle_fup_recommended' => 'Recommendations',
 
             'avoid_other' => 'Comments:',
         );
