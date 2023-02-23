@@ -1942,7 +1942,7 @@ h1.program-header {
     background: #005f9d;
     color: white;
     border-radius: 0.5em !important;
-    padding: 0.25em 0.5em !important;
+    padding: 0.25em 0.5em;
     display: inline-block;
     font-weight: bold !important;
     margin: 0.25em 0;
@@ -1993,6 +1993,7 @@ h1.program-header {
 .program-button[disabled] {
     background: #ccc !important;
     color: #999 !important;
+    opacity: 0.75 !important;
     border: none !important;
     cursor: default !important;
 }
