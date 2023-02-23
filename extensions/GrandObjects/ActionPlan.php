@@ -14,6 +14,10 @@ class ActionPlan extends BackboneModel {
     var $goals;
     var $barriers;
     var $plan;
+    var $time;
+    var $when;
+    var $confidence;
+    var $dates = array();
     var $tracker = array();
     var $components = array();
     var $submitted;
@@ -90,6 +94,10 @@ class ActionPlan extends BackboneModel {
             $this->goals = $data[0]['goals'];
             $this->barriers = $data[0]['barriers'];
             $this->plan = $data[0]['plan'];
+            $this->time = $data[0]['time'];
+            $this->when = $data[0]['when'];
+            $this->dates = json_decode($data[0]['dates']);
+            $this->confidence = $data[0]['confidence'];
             $this->tracker = json_decode($data[0]['tracker']);
             $this->components = json_decode($data[0]['components']);
             $this->submitted = $data[0]['submitted'];
@@ -174,6 +182,22 @@ class ActionPlan extends BackboneModel {
         return $this->plan;
     }
     
+    function getTime(){
+        return $this->time;
+    }
+    
+    function getWhen(){
+        return $this->when;
+    }
+    
+    function getDates(){
+        return $this->dates;
+    }
+    
+    function getConfidence(){
+        return $this->confidence;
+    }
+    
     function getTracker(){
         return $this->tracker;
     }
@@ -227,6 +251,10 @@ class ActionPlan extends BackboneModel {
                                       'goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
+                                      '`when`' => $this->when,
+                                      'time' => $this->time,
+                                      'confidence' => $this->confidence,
+                                      'dates' => json_encode($this->dates),
                                       'tracker' => json_encode($this->tracker),
                                       'components' => json_encode($this->components),
                                       'submitted' => $this->submitted,
@@ -245,6 +273,10 @@ class ActionPlan extends BackboneModel {
                                       'goals' => $this->goals,
                                       'barriers' => $this->barriers,
                                       'plan' => $this->plan,
+                                      '`when`' => $this->when,
+                                      'time' => $this->time,
+                                      'confidence' => $this->confidence,
+                                      'dates' => json_encode($this->dates),
                                       'tracker' => json_encode($this->tracker),
                                       'components' => json_encode($this->components),
                                       'submitted' => $this->submitted),
@@ -271,6 +303,7 @@ class ActionPlan extends BackboneModel {
                          'goals' => $this->getGoals(),
                          'barriers' => $this->getBarriers(),
                          'plan' => $this->getPlan(),
+                         'dates' => $this->getDates(),
                          'tracker' => $this->getTracker(),
                          'components' => $this->getComponents(),
                          'submitted' => $this->getSubmitted(),

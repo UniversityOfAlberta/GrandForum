@@ -43,11 +43,21 @@
 }
 
 .actionPlanDialog textarea, .actionPlanDialog .textarea {
+    resize: none;
+}
+
+.actionPlanDialog textarea:not(.defaultTextarea), .actionPlanDialog .textarea:not(.defaultTextarea) {
     background: #fae6cb;
     border: none !important;
     border-radius: 0 0 14px 14px;
     padding: 14px !important;
-    resize: none;
+}
+
+.actionPlanDialog table.wikitable > tr > th, 
+.actionPlanDialog table.wikitable > tr > td, 
+.actionPlanDialog table.wikitable > * > tr > th, 
+.actionPlanDialog table.wikitable > * > tr > td {
+    border: 1px #ccc solid;
 }
 
 .AVOID {
