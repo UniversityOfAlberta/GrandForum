@@ -117,23 +117,23 @@
             </div>
         </div>
         <h4 style="margin-top:0; margin-bottom: 0;">Confidence Level</h4>
-        <div class="slider" style="margin-bottom: 2.5em;">
-            <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "width: 16.25em; padding:0;"}) %>
-            <div style="font-size: 0.75em; padding: 0 5px 5px 5px; line-height: 1em;">
-                0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                9&nbsp;&nbsp;&nbsp;&nbsp;
-                10
+        <div class="slider" style="max-width: 20em; width: 100%; margin-bottom: 2.5em;">
+            <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
+            <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
+                <div style="width: 10%;">0</div>
+                <div style="width: 10%;">1</div>
+                <div style="width: 10%;">2</div>
+                <div style="width: 10%;">3</div>
+                <div style="width: 10%;">4</div>
+                <div style="width: 10%;">5</div>
+                <div style="width: 10%;">6</div>
+                <div style="width: 10%;">7</div>
+                <div style="width: 10%;">8</div>
+                <div style="width: 10%;">9</div>
+                <div style="width: 0; position: absolute; right: 18px;">10</div>
             </div>
-            <div style="padding: 5px 5px; line-height: 1em; width: 16.25em; position: relative;">
-                <div style="position: absolute; left: 0;">Not at<br />all sure</div>
+            <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
+                <div style="position: absolute; left: 5px;">Not at<br />all sure</div>
                 <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
             </div>
         </div>
