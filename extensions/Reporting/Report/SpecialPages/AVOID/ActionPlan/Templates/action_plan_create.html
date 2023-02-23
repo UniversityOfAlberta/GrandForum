@@ -27,64 +27,68 @@
 <div class="actionPlanSection">
     <div class="manual">
         <h3 style="margin-top:0.5em;">My Action Plan This Week</h3>
-        <table style="width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
-            <tr>
-                <td class="label" style="white-space:initial;width:1%;">This week I will:</td>
-                <td class="value"><%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: "what", style: 'height: 100px;width:100%;'}) %></td>
-            </tr>
-            <tr>
-                <td class="label" style="white-space:nowrap;width:1%;">How much:</td>
-                <td class="value"><%= HTML.TextBox(this, 'time', {placeholder: "time"}) %></td>
-            </tr>
-            <tr>
-                <td class="label" style="white-space:nowrap;width:1%;">When:</td>
-                <td class="value"><%= HTML.TextBox(this, 'when', {placeholder: "time of day"}) %></td>
-            </tr>
-            <tr>
-                <td class="label" style="white-space:nowrap;width:1%;">How often:</td>
-                <td>
-                    <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
-                        <tr>
-                            <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                            <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
-                         </tr>
-                         <tr>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Mon', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Tue', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Wed', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Thu', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Fri', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sat', {value: 1}) %></td>
-                            <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sun', {value: 1}) %></td>
-                         </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <h4 style="margin-top:0; margin-bottom: 0;">Confidence Level</h4>
-        <div class="slider">
-            <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "width: 16.25em; padding:0;"}) %>
-            <div style="font-size: 0.75em; padding: 0 5px 5px 5px; line-height: 1em;">
-                0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                9&nbsp;&nbsp;&nbsp;&nbsp;
-                10
+        <div style="box-sizing: border-box; width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
+            <div>
+                <b>This week I will:</b><br />
+                <%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: "what", style: 'height: 100px;width:100%;'}) %>
             </div>
-            <div style="padding: 5px 5px; line-height: 1em; width: 16.25em; position: relative;">
-                <div style="position: absolute; left: 0;">Not at<br />all sure</div>
-                <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>How much:</b><br />
+                <%= HTML.TextBox(this, 'time', {placeholder: "time"}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>When:</b><br />
+                <%= HTML.TextBox(this, 'when', {placeholder: "time of day"}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>How often:</b><br />
+                <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
+                    <tr>
+                        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                     </tr>
+                     <tr>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Mon', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Tue', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Wed', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Thu', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Fri', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sat', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sun', {value: 1}) %></td>
+                     </tr>
+                </table>
+            </div>
+            
+            <div style="margin-top: 0.5em; margin-bottom: 2em;">
+                <b>Confidence Level:</b><br />
+                <div class="slider">
+                    <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "width: 16.25em; padding:0;"}) %>
+                    <div style="font-size: 0.75em; padding: 0 5px 5px 5px; line-height: 1em;">
+                        0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        9&nbsp;&nbsp;&nbsp;&nbsp;
+                        10
+                    </div>
+                    <div style="padding: 5px 5px; line-height: 1em; width: 16.25em; position: relative;">
+                        <div style="position: absolute; left: 0;">Not at<br />all sure</div>
+                        <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
