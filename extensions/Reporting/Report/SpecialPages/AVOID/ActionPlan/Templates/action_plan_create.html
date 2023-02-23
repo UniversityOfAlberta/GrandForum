@@ -70,8 +70,8 @@
             <div style="margin-top: 0.5em; margin-bottom: 2em;">
                 <b>Confidence Level:</b><br />
                 <div class="slider">
-                    <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "width: 16.25em; padding:0;"}) %>
-                    <div style="font-size: 0.75em; padding: 0 5px 5px 5px; line-height: 1em;">
+                    <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "min-width: 16.25em; width: 16.25em; padding:0;"}) %>
+                    <div style="font-size: 0.75em; padding: 0 5px 5px 5px; line-height: 1em; white-space: nowrap;">
                         0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
