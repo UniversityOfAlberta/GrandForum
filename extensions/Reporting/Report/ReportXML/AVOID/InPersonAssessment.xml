@@ -4,6 +4,7 @@
         <Role role="Assessor"></Role>
     </Permissions>
     <ReportSection id="InPersonAssessment" type="EditableReportSection" blobSection="InPersonAssessment" name="In-Person Assessment" title="In-Person Assessment: {$user_name}">
+        <ReportItem id="checksubmit" type="CheckSubmittedReportItem" />
         <ReportItem id="avoid_vision" blobItem="avoid_vision" type="SelectReportItem" options="1|2|3|4|5|6|7|8|9|10|11|12">
             <![CDATA[
                 <h3>1. VISION</h3>
@@ -54,6 +55,85 @@
                     _.defer(hideVision);
                     $("select[name='InPersonAssessment_avoid_vision_fup']").change(hideVision);
                 </script>
+            ]]>
+        </Static>
+        <ReportItem id="avoid_vision_fup_recommended" blobItem="avoid_vision_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_vision_fup_recommended">
+                <b>Recommendation</b><br />
+                {$item}
+                </span>
+            ]]>
+        </ReportItem>
+        <Static>
+            <![CDATA[
+                <script type='text/javascript'>
+                    function checkSubmitted(){
+                        if(SubmittedPDF){
+                            $("#avoid_vision_fup_recommended").show();
+                            $("#avoid_hearing_fup_recommended").show();
+                            $("#avoid_communication_fup_recommended").show();
+                            $("#avoid_dementia_fup_recommended").show();
+                            $("#avoid_depression_fup_recommended").show();
+                            $("#avoid_balance_fup_recommended").show();
+                            $("#avoid_adl_fup_recommended").show();
+                            $("#avoid_iadl_fup_recommended").show();
+                            $("#avoid_caregiver_fup_recommended").show();
+                            $("#avoid_bowel_fup_recommended").show();
+                            $("#avoid_meds_fup_recommended").show();
+                            $("#avoid_fatigue_fup_recommended").show();
+                            $("#avoid_nutrition_fup_recommended").show();
+                            $("#avoid_osteo_fup_recommended").show();
+                            $("#avoid_pain_fup_recommended").show();
+                            $("#avoid_dental_fup_recommended").show();
+                            $("#avoid_lifestyle_fup_recommended").show();
+                        }
+                        else{
+                            $("#avoid_vision_fup_recommended").hide();
+                            $("#avoid_hearing_fup_recommended").hide();
+                            $("#avoid_communication_fup_recommended").hide();
+                            $("#avoid_dementia_fup_recommended").hide();
+                            $("#avoid_depression_fup_recommended").hide();
+                            $("#avoid_balance_fup_recommended").hide();
+                            $("#avoid_adl_fup_recommended").hide();
+                            $("#avoid_iadl_fup_recommended").hide();
+                            $("#avoid_caregiver_fup_recommended").hide();
+                            $("#avoid_bowel_fup_recommended").hide();
+                            $("#avoid_meds_fup_recommended").hide();
+                            $("#avoid_fatigue_fup_recommended").hide();
+                            $("#avoid_nutrition_fup_recommended").hide();
+                            $("#avoid_osteo_fup_recommended").hide();
+                            $("#avoid_pain_fup_recommended").hide();
+                            $("#avoid_dental_fup_recommended").hide();
+                            $("#avoid_lifestyle_fup_recommended").hide();
+                        }
+                    }
+                    checkSubmitted();
+                    $(document).ready(function(){
+                        $("#avoid_vision_fup_recommended").hide();
+                            $("#avoid_hearing_fup_recommended").hide();
+                            $("#avoid_communication_fup_recommended").hide();
+                            $("#avoid_dementia_fup_recommended").hide();
+                            $("#avoid_depression_fup_recommended").hide();
+                            $("#avoid_balance_fup_recommended").hide();
+                            $("#avoid_adl_fup_recommended").hide();
+                            $("#avoid_iadl_fup_recommended").hide();
+                            $("#avoid_caregiver_fup_recommended").hide();
+                            $("#avoid_bowel_fup_recommended").hide();
+                            $("#avoid_meds_fup_recommended").hide();
+                            $("#avoid_fatigue_fup_recommended").hide();
+                            $("#avoid_nutrition_fup_recommended").hide();
+                            $("#avoid_osteo_fup_recommended").hide();
+                            $("#avoid_pain_fup_recommended").hide();
+                            $("#avoid_dental_fup_recommended").hide();
+                            $("#avoid_lifestyle_fup_recommended").hide();
+                        checkSubmitted();
+                    });
+                        
+                    setInterval(function(){
+                        checkSubmitted();
+                    }, 100);
+                </script> 
             ]]>
         </Static>
 
@@ -151,6 +231,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_hearing_fup_recommended" blobItem="avoid_hearing_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_hearing_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_communication" blobItem="avoid_communication" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">
             <![CDATA[
@@ -228,6 +315,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_communication_fup_recommended" blobItem="avoid_communication_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_communication_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_cognition" blobItem="avoid_cognition" type="IntegerReportItem">
             <![CDATA[
@@ -434,6 +528,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_dementia_fup_recommended" blobItem="avoid_dementia_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_dementia_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_depression" blobItem="avoid_depression" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
@@ -540,6 +641,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_depression_fup_recommended" blobItem="avoid_depression_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_depression_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_balance" blobItem="avoid_balance" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
@@ -623,6 +731,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_balance_fup_recommended" blobItem="avoid_balance_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_balance_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_balance6" blobItem="avoid_balance6" type="IntegerReportItem">
             <![CDATA[
@@ -749,6 +864,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_adl_fup_recommended" blobItem="avoid_adl_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_adl_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_iadl" blobItem="avoid_iadl" type="CheckboxReportItem" blobType="BLOB_ARRAY" orientation="vertical" options="Managing medications|Preparing meals|Using the phone|Housework|Laundry|Using transportation|Shopping|Managing finances/banking" optional="true">
             <![CDATA[
@@ -795,6 +917,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_iadl_fup_recommended" blobItem="avoid_iadl_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_iadl_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_caregiver" blobItem="avoid_caregiver" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
@@ -872,6 +1001,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_caregiver_fup_recommended" blobItem="avoid_caregiver_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_caregiver_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_urinary" blobItem="avoid_urinary" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
@@ -1020,6 +1156,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_bowel_fup_recommended" blobItem="avoid_bowel_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_bowel_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_meds" blobItem="avoid_meds" type="IntegerReportItem">       
             <![CDATA[
@@ -1080,6 +1223,14 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_meds_fup_recommended" blobItem="avoid_meds_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_meds_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
+        
         <ReportItem id="avoid_meds5" blobItem="avoid_meds5" type="Textarea" rich="false">
             <![CDATA[
                 <br />
@@ -1169,6 +1320,14 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_fatigue_fup_recommended" blobItem="avoid_fatigue_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_fatigue_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
+        
 
         <ReportItem id="avoid_strength" blobItem="avoid_strength" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
@@ -1410,6 +1569,14 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_nutrition_fup_recommended" blobItem="avoid_nutrition_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_nutrition_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
+
         <ReportItem id="avoid_osteo" blobItem="avoid_osteo" type="IntegerReportItem">       
             <![CDATA[
                 <hr />
@@ -1467,6 +1634,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_osteo_fup_recommended" blobItem="avoid_osteo_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_osteo_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
 
         <ReportItem id="avoid_pain" blobItem="avoid_pain" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
@@ -1533,6 +1707,13 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_pain_fup_recommended" blobItem="avoid_pain_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_pain_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_immunization1_1" blobItem="avoid_immunization1_1" type="SelectReportItem" options="Choose Date|Don't know|Don't have">       
             <![CDATA[
@@ -1790,8 +1971,14 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_dental_fup_recommended" blobItem="avoid_dental_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_dental_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
         
-
         <ReportItem id="avoid_lifestyle" blobItem="avoid_lifestyle" type="SelectReportItem"  options="Yes|No" labels="Yes|--" default="No" orientation="horizontal">       
             <![CDATA[
                 <hr />
@@ -1915,6 +2102,14 @@
                 </script>
             ]]>
         </Static>
+        <ReportItem id="avoid_lifestyle_fup_recommended" blobItem="avoid_lifestyle_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_lifestyle_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
+
         <ReportItem id="avoid_lifestyle7" blobItem="avoid_lifestyle7" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
             <![CDATA[
                 <br />
