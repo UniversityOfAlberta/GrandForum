@@ -296,6 +296,11 @@ class ApplicationsTable extends SpecialPage{
         $title->setBlobItem('TITLE');
         $title->setBlobSection('APPLICATION_FORM');
         
+        $uni = new TextReportItem();
+        $uni->setBlobType(BLOB_TEXT);
+        $uni->setBlobItem('INSTITUTION');
+        $uni->setBlobSection('APPLICATION_FORM');
+        
         $underrepresented = new CheckboxReportItem();
         $underrepresented->setBlobType(BLOB_ARRAY);
         $underrepresented->setBlobItem('SPECIAL1A');
@@ -344,6 +349,7 @@ class ApplicationsTable extends SpecialPage{
         
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_HAC', null, 2023, "HAC 2023", array("Title" => $title,
+                                                                                       "Institution" => $uni,
                                                                                        "Underrepresented" => $underrepresented,
                                                                                        "Age" => $age,
                                                                                        "Gender" => $gender,
