@@ -47,6 +47,8 @@
             'avoid_cognition4_3' => 'Double trouble Ranking:',
             'avoid_cognition_comments' => 'Comments:',
             'avoid_cognition5' => 'Further Test needed?',
+            'avoid_cognition_fup_recommended' => 'Recommendations',
+
 
             'avoid_dementia' => 'Word Recall Result:',
             'avoid_dementia2' => 'Animal Naming Result:',
@@ -161,6 +163,8 @@
             'avoid_immunization4_2' => 'Shingles vaccination Date:',
             'avoid_immunization5_1' => 'Covid vaccination:',
             'avoid_immunization5_2' => 'Covid vaccination Date:',
+            'avoid_immunization_fup_recommended' => 'Recommendations',
+
 
             'avoid_dental' => 'Does patient brush your teeth and floss regularly?',
             'avoid_dental2' => 'Do patient see a dentist yearly for regular cleaning?',
@@ -180,7 +184,7 @@
             'avoid_lifestyle_fup_txt' => 'Follow up Comments:',
             'avoid_lifestyle_fup_recommended' => 'Recommendations',
 
-            'avoid_other' => 'Comments:',
+            'avoid_chronic' => 'List of Chronic Disease',
         );
 
         static $special_after_map = array(
@@ -265,7 +269,7 @@
             'avoid_immunization1_1' => '19. IMMUNIZATION',
             'avoid_dental' => '20. DENTAL',
             'avoid_lifestyle' => '21. LIFESTYLE ISSUES',
-            'avoid_other' => '22. OTHER',
+            'avoid_chronic' => '22. CHRONIC DISEASE',
         );
 
         function __construct(){

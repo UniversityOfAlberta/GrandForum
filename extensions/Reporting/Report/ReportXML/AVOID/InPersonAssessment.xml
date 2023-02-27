@@ -73,6 +73,7 @@
                             $("#avoid_vision_fup_recommended").show();
                             $("#avoid_hearing_fup_recommended").show();
                             $("#avoid_communication_fup_recommended").show();
+                            $("#avoid_cognition_fup_recommended").show();
                             $("#avoid_dementia_fup_recommended").show();
                             $("#avoid_depression_fup_recommended").show();
                             $("#avoid_balance_fup_recommended").show();
@@ -81,6 +82,7 @@
                             $("#avoid_caregiver_fup_recommended").show();
                             $("#avoid_bowel_fup_recommended").show();
                             $("#avoid_meds_fup_recommended").show();
+                            $("#avoid_immunization_fup_recommended").show();
                             $("#avoid_fatigue_fup_recommended").show();
                             $("#avoid_nutrition_fup_recommended").show();
                             $("#avoid_osteo_fup_recommended").show();
@@ -92,6 +94,7 @@
                             $("#avoid_vision_fup_recommended").hide();
                             $("#avoid_hearing_fup_recommended").hide();
                             $("#avoid_communication_fup_recommended").hide();
+                            $("#avoid_cognition_fup_recommended").hide();
                             $("#avoid_dementia_fup_recommended").hide();
                             $("#avoid_depression_fup_recommended").hide();
                             $("#avoid_balance_fup_recommended").hide();
@@ -100,6 +103,7 @@
                             $("#avoid_caregiver_fup_recommended").hide();
                             $("#avoid_bowel_fup_recommended").hide();
                             $("#avoid_meds_fup_recommended").hide();
+                            $("#avoid_immunization_fup_recommended").hide();
                             $("#avoid_fatigue_fup_recommended").hide();
                             $("#avoid_nutrition_fup_recommended").hide();
                             $("#avoid_osteo_fup_recommended").hide();
@@ -113,6 +117,7 @@
                         $("#avoid_vision_fup_recommended").hide();
                             $("#avoid_hearing_fup_recommended").hide();
                             $("#avoid_communication_fup_recommended").hide();
+                            $("#avoid_cognition_fup_recommended").hide();
                             $("#avoid_dementia_fup_recommended").hide();
                             $("#avoid_depression_fup_recommended").hide();
                             $("#avoid_balance_fup_recommended").hide();
@@ -121,6 +126,7 @@
                             $("#avoid_caregiver_fup_recommended").hide();
                             $("#avoid_bowel_fup_recommended").hide();
                             $("#avoid_meds_fup_recommended").hide();
+                             $("#avoid_immunization_fup_recommended").hide();
                             $("#avoid_fatigue_fup_recommended").hide();
                             $("#avoid_nutrition_fup_recommended").hide();
                             $("#avoid_osteo_fup_recommended").hide();
@@ -445,6 +451,13 @@
                 <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
+        <ReportItem id="avoid_cognition_fup_recommended" blobItem="avoid_cognition_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_cognition_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
         <ReportItem id="avoid_dementia" blobItem="avoid_dementia" type="IntegerReportItem">
             <![CDATA[
@@ -731,14 +744,6 @@
                 </script>
             ]]>
         </Static>
-        <ReportItem id="avoid_balance_fup_recommended" blobItem="avoid_balance_fup_recommended" type="Textarea" rich="false">
-            <![CDATA[
-                <span id="avoid_balance_fup_recommended">
-                <b>Recommendation</b><br />{$item}
-                </span>
-            ]]>
-        </ReportItem>
-
         <ReportItem id="avoid_balance6" blobItem="avoid_balance6" type="IntegerReportItem">
             <![CDATA[
                 <br />
@@ -816,6 +821,13 @@
             <![CDATA[
                 Comments:
                 <div class="requiredField">{$item}</div>
+            ]]>
+        </ReportItem>
+        <ReportItem id="avoid_balance_fup_recommended" blobItem="avoid_balance_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_balance_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
             ]]>
         </ReportItem>
 
@@ -1360,7 +1372,7 @@
                     </table>
             ]]>
         </ReportItem>
-        <ReportItem id="avoid_strength5" blobItem="avoid_strength5" type="SelectReportItem" options="1|2|3|4|5|6|7|8|9|10">
+        <ReportItem id="avoid_strength5" blobItem="avoid_strength5" type="SelectReportItem" options="1|2|3|4|5|6|7|8|9|10|11|12|13|14|15">
             <![CDATA[
                 <br />
                 <b>30 second Chair Stand</b>
@@ -1884,6 +1896,13 @@
                 </script>
             ]]>        
         </Static>
+        <ReportItem id="avoid_immunization_fup_recommended" blobItem="avoid_immunization_fup_recommended" type="Textarea" rich="false">
+            <![CDATA[
+                <span id="avoid_immunization_fup_recommended">
+                <b>Recommendation</b><br />{$item}
+                </span>
+            ]]>
+        </ReportItem>
 
 
         <ReportItem id="avoid_dental" blobItem="avoid_dental" type="SelectReportItem"  options="Yes|No" labels="--|No" default="Yes" orientation="horizontal">       
@@ -2154,13 +2173,11 @@
             ]]>
         </Static>
 
-
-        <ReportItem id="avoid_other" blobItem="avoid_other" type="Textarea" rich="false">       
+        <ReportItem id="avoid_chronic" blobItem="avoid_chronic" type="CheckboxReportItem" blobType="BLOB_ARRAY" orientation="vertical" options="CPOD|Asthma|PND or Sleep Apnea|Cancer|Diabetes Mellitus|Hypertension|Hyperlipidemia|Atrial Fibrillation|Coronary Heart Disease|Stroke|Depression|Dementia|Arthritis|Other" optional="true">
             <![CDATA[
                 <hr />
-                <h3>22. OTHER</h3>
-                    <br/>
-                    {$item}
+                <h3>22. CHRONIC DISEASE</h3>
+                <div class="requiredField">{$item}</div>
             ]]>
         </ReportItem>
 
