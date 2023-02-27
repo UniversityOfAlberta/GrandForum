@@ -301,11 +301,42 @@ class ApplicationsTable extends SpecialPage{
         $uni->setBlobItem('INSTITUTION');
         $uni->setBlobSection('APPLICATION_FORM');
         
-        $underrepresented = new CheckboxReportItem();
-        $underrepresented->setBlobType(BLOB_ARRAY);
-        $underrepresented->setBlobItem('SPECIAL1A');
-        $underrepresented->setBlobSection('APPLICATION_FORM');
-        $underrepresented->setId("special1a");
+        $keywords = new MultiTextReportItem();
+        $keywords->setBlobType(BLOB_ARRAY);
+        $keywords->setBlobItem('KEYWORDS');
+        $keywords->setBlobSection('APPLICATION_FORM');
+        $keywords->setAttr('orientation', "list");
+        $keywords->setId("keywords");
+        
+        $challenges = new CheckboxReportItem();
+        $challenges->setBlobType(BLOB_ARRAY);
+        $challenges->setBlobItem('CHALLENGES');
+        $challenges->setBlobSection('APPLICATION_FORM');
+        $challenges->setId("challenges");
+        
+        $priorities = new CheckboxReportItem();
+        $priorities->setBlobType(BLOB_ARRAY);
+        $priorities->setBlobItem('PRIORITIES');
+        $priorities->setBlobSection('APPLICATION_FORM');
+        $priorities->setId("priorities");
+        
+        $special1 = new CheckboxReportItem();
+        $special1->setBlobType(BLOB_ARRAY);
+        $special1->setBlobItem('SPECIAL1');
+        $special1->setBlobSection('APPLICATION_FORM');
+        $special1->setId("special1");
+        
+        $special1a = new CheckboxReportItem();
+        $special1a->setBlobType(BLOB_ARRAY);
+        $special1a->setBlobItem('SPECIAL1A');
+        $special1a->setBlobSection('APPLICATION_FORM');
+        $special1a->setId("special1a");
+        
+        $special2 = new CheckboxReportItem();
+        $special2->setBlobType(BLOB_ARRAY);
+        $special2->setBlobItem('SPECIAL2');
+        $special2->setBlobSection('APPLICATION_FORM');
+        $special2->setId("special2");
         
         $age = new CheckboxReportItem();
         $age->setBlobType(BLOB_ARRAY);
@@ -350,7 +381,12 @@ class ApplicationsTable extends SpecialPage{
         $tabbedPage = new InnerTabbedPage("reports");
         $tabbedPage->addTab(new ApplicationTab('RP_HAC', null, 2023, "HAC 2023", array("Title" => $title,
                                                                                        "Institution" => $uni,
-                                                                                       "Underrepresented" => $underrepresented,
+                                                                                       "Keywords" => $keywords,
+                                                                                       "Challenge Areas" => $challenges,
+                                                                                       "Priorities" => $priorities,
+                                                                                       "Special1" => $special1,
+                                                                                       "Special1A" => $special1a,
+                                                                                       "Special2" => $special2,
                                                                                        "Age" => $age,
                                                                                        "Gender" => $gender,
                                                                                        "Gender (Other)" => $gender_other,
