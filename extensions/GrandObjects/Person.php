@@ -2395,6 +2395,7 @@ class Person extends BackboneModel {
         }
         // None found, use the 'default' values
         return array("university" => $this->getUni(),
+                     "faculty"    => $this->getFaculty(),
                      "department" => $this->getDepartment(),
                      "position"   => $this->getPosition(),
                      "start" => "",

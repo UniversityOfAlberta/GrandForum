@@ -151,7 +151,9 @@ class PeopleTableTab extends AbstractTab {
         if(!isExtensionEnabled("Shibboleth")){
             $uniHeader = "<th style='white-space: nowrap; width:20%;'>Institution</th>";
         }
-        $facultyHead = (count(Person::$facultyMap) > 0) ? " / Faculty" : "";
+        $facultyHead = ($config->getValue("splitDept")) ? "<th style='white-space: nowrap; width:20%;'>Faculty</th>" : "";
+        $firstFacultyHead = ($config->getValue("splitDept")) ? "<th style='display:none;'>First Faculty</th>" : "";
+        
         $html .= "<table class='indexTable {$this->id}' frame='box' rules='all'>
                             <thead>
                                 <tr>
@@ -161,10 +163,12 @@ class PeopleTableTab extends AbstractTab {
                                     {$subRoleHeader}
                                     {$projectsHeader}
                                     {$uniHeader}
-                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    {$facultyHead}
+                                    <th style='white-space: nowrap; width:20%;'>{$config->getValue('deptsTerm')}</th>
                                     <th style='white-space: nowrap; width:20%;'>Title / Rank</th>
                                     <th style='display:none;'>First University</th>
-                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}{$facultyHead}</th>
+                                    {$firstFacultyHead}
+                                    <th style='display:none;'>First {$config->getValue('deptsTerm')}</th>
                                     <th style='display:none;'>First Title / Rank</th>
                                     {$hqpHeader}
                                     <th style='white-space: nowrap; width:40%;'>Keywords / Bio</th>
@@ -244,16 +248,17 @@ class PeopleTableTab extends AbstractTab {
             if($uniHeader != ''){
                 $html .= "<td align='left'>{$university['university']}</td>";
             }
-            if($person->getFaculty() != ""){
-                $html .= "<td align='left'>{$person->getDepartment()} / {$person->getFaculty()}</td>";
+            if($facultyHead != ""){
+                $html .= "<td align='left'>{$person->getFaculty()}</td>";
             }
-            else{
-                $html .= "<td align='left'>{$person->getDepartment()}</td>";
-            }
+            $html .= "<td align='left'>{$person->getDepartment()}</td>";
             $html .= "<td align='left'>{$university['position']}</td>";
             // First University
             $firstuniversity = $person->getFirstUniversity();
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['university']}</td>";
+            if($firstFacultyHead != ""){
+                $html .= "<td style='display:none;' align='left'>{$firstuniversity['faculty']}</td>";
+            }
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['department']}</td>";
             $html .= "<td style='display:none;' align='left'>{$firstuniversity['position']}</td>";
             if($hqpHeader != ''){
