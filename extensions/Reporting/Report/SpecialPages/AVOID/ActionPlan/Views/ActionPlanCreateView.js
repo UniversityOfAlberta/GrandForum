@@ -12,13 +12,13 @@ ActionPlanCreateView = Backbone.View.extend({
     
     validations: function(){
         if(this.model.getComponents().length > 0){
-            $("#saveActionPlanButton").button("option", "disabled", false);
-            $(".ui-dialog-buttonset .warning", this.$el.parent()).hide();
+            $("#saveActionPlanButton").prop("disabled", false);
+            $(".actionPlanWarning", this.$el.parent()).hide();
         }
         else{
-            $("#saveActionPlanButton").button("option", "disabled", true);
-            $(".ui-dialog-buttonset .warning", this.$el.parent()).show();
-            $(".ui-dialog-buttonset .warning", this.$el.parent()).text("You must select at least one AVOID component");
+            $("#saveActionPlanButton").prop("disabled", true);
+            $(".actionPlanWarning", this.$el.parent()).show();
+            $(".actionPlanWarning", this.$el.parent()).text("You must select at least one AVOID component");
         }
     },
 
@@ -32,12 +32,12 @@ ActionPlanCreateView = Backbone.View.extend({
                "[name=components_F]").prop("checked", false).change();
         _.defer(function(){
             if(this.model.get('type') == ActionPlan.MANUAL){
-                this.$("#manual").show();
-                this.$("#fitbit").hide();
+                this.$(".manual").show().parent().removeClass("skip");
+                this.$(".fitbit").hide().parent().addClass("skip");
             }
             else if(this.model.get('type') == ActionPlan.FITBIT){
-                this.$("#manual").hide();
-                this.$("#fitbit").show();
+                this.$(".manual").hide().parent().addClass("skip");
+                this.$(".fitbit").show().parent().removeClass("skip");
                 this.changeFitbit();
                 if($.cookie('fitbit') == undefined){
                     this.authorizeFitBit();
@@ -51,7 +51,7 @@ ActionPlanCreateView = Backbone.View.extend({
                   "&client_id=" + fitbitId +
                   "&redirect_uri=" + document.location.origin + document.location.pathname + "?fitbitApi" +
                   "&scope=activity%20nutrition%20sleep%20heartrate&expires_in=31536000";
-        var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+        var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
         var popupInterval = setInterval(function(){
             if(popup == null || popup.closed){
                 clearInterval(popupInterval);
@@ -107,9 +107,39 @@ ActionPlanCreateView = Backbone.View.extend({
                 height: $(window).height()*0.85,
                 position: { 'my': 'center', 'at': 'center' },
                 buttons: {
+                    'Previous': {
+                        id: "previousActionPlanSection",
+                        text: "Previous",
+                        click: function(){
+                            if(this.$(".actionPlanSection.open").prevAll(":not(.skip)").first().length > 0){
+                                this.$(".actionPlanSection.open").slideUp().removeClass("open").prevAll(":not(.skip)").first()
+                                                                 .slideDown().addClass("open");
+                                $("#nextActionPlanSection").show();
+                                $("#saveActionPlanButton").hide();
+                                if(this.$(".actionPlanSection.open").prevAll(":not(.skip)").first().length == 0){
+                                    $("#previousActionPlanSection").prop("disabled", true);
+                                }
+                            }
+                        }.bind(this)
+                    },
+                    'Next': {
+                        id: "nextActionPlanSection",
+                        text: "Next",
+                        click: function(){
+                            $("#previousActionPlanSection").prop("disabled", false);
+                            if(this.$(".actionPlanSection.open").nextAll(":not(.skip)").first().length > 0){
+                                this.$(".actionPlanSection.open").slideUp().removeClass("open").nextAll(":not(.skip)").first()
+                                                                 .slideDown().addClass("open");
+                                if(this.$(".actionPlanSection.open").nextAll(":not(.skip)").first().length == 0){
+                                    $("#nextActionPlanSection").hide();
+                                    $("#saveActionPlanButton").show();
+                                }
+                            }
+                        }.bind(this)
+                    },
                     'Save': {
                         id: "saveActionPlanButton",
-                        text: 'Create Action Plan',
+                        text: 'Create Plan',
                         click: function(){
                             this.model.save(null, {
                                 success: function(){
@@ -124,10 +154,7 @@ ActionPlanCreateView = Backbone.View.extend({
                             });
                             this.dialog.dialog('close');
                         }.bind(this)
-                    },
-                    'Cancel': function(){
-                        this.dialog.dialog('close');
-                    }.bind(this)
+                    }
                 }
             });
             $('.ui-dialog').addClass('program-body');
@@ -146,19 +173,22 @@ ActionPlanCreateView = Backbone.View.extend({
                     });
                 }
             }.bind(this)).resize();
-            $(".ui-dialog-buttonset", this.$el.parent()).prepend("<div class='warning'></div>");
-            $(".ui-dialog-buttonset .warning", this.$el.parent()).css('display', 'inline-block')
-                                                                 .css('margin', 0)
-                                                                 .css('margin-top', '0')
-                                                                 .css('margin-bottom', '5px')
-                                                                 .css('font-size', '1em')
-                                                                 .css('float', 'left')
-                                                                 .css('padding-right', '15px')
+            
+            $("#previousActionPlanSection, #nextActionPlanSection, #saveActionPlanButton").attr("class", "")
+                                                                                          .addClass("program-button")
+                                                                                          .css("font-size", "1em")
+                                                                                          .css("line-height", "1.5em")
+                                                                                          .css("width", "8em");
+            
+            $("#previousActionPlanSection").css('float', 'left').prop("disabled", true);
+            $("#saveActionPlanButton").hide();
             this.$("[name=fitbit_steps]").forceNumeric({min: 0, max: 100000, decimals: 0});
             this.$("[name=fitbit_distance]").forceNumeric({min: 0, max: 1000, decimals: 2});
             this.$("[name=fitbit_sleep]").forceNumeric({min: 0, max: 24, decimals: 0});
             this.$("[name=fitbit_water]").forceNumeric({min: 0, max: 10000, decimals: 0});
             this.$("[name=fitbit_protein]").forceNumeric({min: 0, max: 10000, decimals: 0});
+            this.$(".actionPlanSection").hide().removeClass("open").first()
+                                        .show().addClass("open");
         }
         this.changeType();
         this.validations();

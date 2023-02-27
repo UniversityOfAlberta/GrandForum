@@ -1,86 +1,179 @@
-<h3>What is one broader goal you’d like to start working on now?</h3>
-<%= HTML.TextArea(this, 'goals', {style: 'height: 200px;width:100%;'}) %>
-
-<h3>What do you think are the barriers or challenges to meeting this goal?</h3>
-<%= HTML.TextArea(this, 'barriers', {style: 'height: 200px;width:100%;'}) %>
-
-<h4>Goals to Action</h4>
-<p>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</p>
-Your action plan should:
-<ul>
-    <li>Be something you want to do</li>
-    <li>Help you solve a problem or reach a goal</li>
-    <li>Be actionable (for example not to lose weight, but rather to drink water instead of juice)</li>
-    <li>Answer the questions What? How much? When? And How often?</li>
-</ul><br />
-Here are a few examples of action plans:
-<ul>
-    <li>Walk after dinner 4 days this week for 20 minutes at a moderate pace.</li>
-    <li>Include protein in at least 2 of 3 meals every day this week.</li>
-    <li>Call and catch up with 2 different friends for at least 20 minutes, 2 days this week.</li>
-</ul>
-
-<h4>Type of Plan</h4>
-<div id="fitbitMessages"></div>
-<%= HTML.Select(this, 'type', {options: [ActionPlan.MANUAL, ActionPlan.FITBIT]}) %>
-
-<div id="manual">
-    <h3>My Action Plan This Week</h3>
-    <%= HTML.TextArea(this, 'plan', {style: 'height: 200px;width:100%;'}) %>
-
-    <p>As you learned from the Ingredients for Change module, feeling confident is an important part of change. On a scale of 0-10, with 0 being not at all sure and 10 being absolutely sure, how sure are you that you can complete this plan?  If you answer 7 or above, your action plan is probably reasonable.  <b>If you answer below 7, you should revisit your plan.</b>  Why are you unsure? What problems do you expect to encounter? Change your action plan before saving it to make yourself more successful.</p>
-
-    <h4>What AVOID component(s) does your action plan address? Choose all that apply.</h4>
-    <table>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
-        </tr>
-        <tr>
-            <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
-            <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
-        </tr>
-    </table>
+<div class="actionPlanSection">
+    <h3 style="margin-top:0.5em;">What is a broader goal that you’d like to start working on?</h3>
+    <%= HTML.TextArea(this, 'goals', {style: 'height: 200px;width:100%;'}) %>
 </div>
-<div id="fitbit">
-    <h4>My Action Plan This Week</h4>
-    <p>Enter your <b><i>daily</i></b> amount in the relevant field(s) below.</p>
-    <div class="modules fitbitFields" style="width: 100%;">
-        <div style="width: 300px;">
-            <span class="AVOID A">A</span><span style="vertical-align: text-bottom;">ctivity</span>
-            <p><%= HTML.TextBox(this, 'fitbit.steps', {style: 'width: 4em;'}) %> steps</p>
-            <p><%= HTML.TextBox(this, 'fitbit.distance', {style: 'width: 4em;'}) %> distance (km)</p>
-            <p><%= HTML.TextBox(this, 'fitbit.activity', {style: 'width: 4em;'}) %> mins of activity <span style="vertical-align: top; font-size: 0.75em;" title="Activity is considered to be any time when your heart rate is above sedentary.">&#9432;</span></p>
+
+<div class="actionPlanSection">
+    <h3 style="margin-top:0.5em;">What are the barriers or challenges to meeting that goal?</h3>
+    <%= HTML.TextArea(this, 'barriers', {style: 'height: 200px;width:100%;'}) %>
+</div>
+
+<div class="actionPlanSection">
+    <h4 style="margin-top:0;">Goals to Action</h4>
+    <p>Think about one thing you can realistically expect to accomplish within the next week related to your goal.</p>
+    It should be:
+    <ul>
+        <li>Something you want to do</li>
+        <li>Help you solve a problem or reach a goal</li>
+        <li>Be actionable</li>
+        <li>Answer what? How much? When? How often?</li>
+    </ul>
+
+    <h4>Type of Plan</h4>
+    <div id="fitbitMessages"></div>
+    <%= HTML.Select(this, 'type', {options: [ActionPlan.MANUAL, ActionPlan.FITBIT]}) %>
+</div>
+
+<div class="actionPlanSection">
+    <div class="manual">
+        <h3 style="margin-top:0.5em;">My Action Plan This Week</h3>
+        <div style="box-sizing: border-box; width: 100%; background: #fae6cb; border: none !important; border-radius: 0 0 14px 14px; padding: 14px !important;">
+            <div>
+                <b>This week I will:</b><br />
+                <%= HTML.TextArea(this, 'plan', {class: 'defaultTextarea', placeholder: "what", style: 'height: 100px;width:100%;'}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>How much:</b><br />
+                <%= HTML.TextBox(this, 'time', {placeholder: "time"}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>When:</b><br />
+                <%= HTML.TextBox(this, 'when', {placeholder: "time of day"}) %>
+            </div>
+            
+            <div style="margin-top: 0.5em;">
+                <b>How often:</b><br />
+                <table class='wikitable' style="width: 100%;margin-top:0;margin-bottom:0;">
+                    <tr>
+                        <th style='width: 14.2%;line-height:1em;'>Mon<br /><small><%= new Date(actionPlanDate.replace(/-/g, "/")).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Tue<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 1*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Wed<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 2*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Thu<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 3*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Fri<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 4*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Sat<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 5*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                        <th style='width: 14.2%;line-height:1em;'>Sun<br /><small><%= new Date(new Date(actionPlanDate.replace(/-/g, "/")).getTime() + 6*60*60*24*1000).toLocaleString('en-US', { month: 'short', day: 'numeric'}) %></small></th>
+                     </tr>
+                     <tr>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Mon', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Tue', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Wed', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Thu', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Fri', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sat', {value: 1}) %></td>
+                        <td class='checkCell' align='center'><%= HTML.CheckBox(this, 'dates.Sun', {value: 1}) %></td>
+                     </tr>
+                </table>
+            </div>
+            
+            <div style="margin-top: 0.5em; margin-bottom: 2em;">
+                <b>Confidence Level:</b><br />
+                <div class="slider" style="max-width: 20em; width: 100%;">
+                    <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
+                    <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
+                        <div style="width: 10%;">0</div>
+                        <div style="width: 10%;">1</div>
+                        <div style="width: 10%;">2</div>
+                        <div style="width: 10%;">3</div>
+                        <div style="width: 10%;">4</div>
+                        <div style="width: 10%;">5</div>
+                        <div style="width: 10%;">6</div>
+                        <div style="width: 10%;">7</div>
+                        <div style="width: 10%;">8</div>
+                        <div style="width: 10%;">9</div>
+                        <div style="width: 0; position: absolute; right: 18px;">10</div>
+                    </div>
+                    <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
+                        <div style="position: absolute; left: 5px;">Not at<br />all sure</div>
+                        <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div style="width: 300px;">
-            <span class="AVOID D">D</span><span style="vertical-align: text-bottom;">iet & Nutrition</span>
-            <p><%= HTML.TextBox(this, 'fitbit.water', {style: 'width: 4em;'}) %> mL of water</p>
-            <p><%= HTML.TextBox(this, 'fitbit.protein', {style: 'width: 4em;'}) %> g of protein</p>
-            <p><%= HTML.TextBox(this, 'fitbit.fibre', {style: 'width: 4em;'}) %> g of fibre</p>
+    </div>
+</div>
+
+<div class="actionPlanSection">
+    <div class="fitbit">
+        <h4 style="margin-top:0;">My Action Plan This Week</h4>
+        <p>Enter your <b><i>daily</i></b> amount in the relevant field(s) below.</p>
+        <div class="modules fitbitFields" style="width: 100%;">
+            <div style="width: 300px;">
+                <span class="AVOID A">A</span><span style="vertical-align: text-bottom;">ctivity</span>
+                <p><%= HTML.TextBox(this, 'fitbit.steps', {style: 'width: 4em;'}) %> steps</p>
+                <p><%= HTML.TextBox(this, 'fitbit.distance', {style: 'width: 4em;'}) %> distance (km)</p>
+                <p><%= HTML.TextBox(this, 'fitbit.activity', {style: 'width: 4em;'}) %> mins of activity <span style="vertical-align: top; font-size: 0.75em;" title="Activity is considered to be any time when your heart rate is above sedentary.">&#9432;</span></p>
+            </div>
+            <div style="width: 300px;">
+                <span class="AVOID D">D</span><span style="vertical-align: text-bottom;">iet & Nutrition</span>
+                <p><%= HTML.TextBox(this, 'fitbit.water', {style: 'width: 4em;'}) %> mL of water</p>
+                <p><%= HTML.TextBox(this, 'fitbit.protein', {style: 'width: 4em;'}) %> g of protein</p>
+                <p><%= HTML.TextBox(this, 'fitbit.fibre', {style: 'width: 4em;'}) %> g of fibre</p>
+            </div>
+            <div style="width: 300px;">
+                <span class="AVOID S">S</span><span style="vertical-align: text-bottom;">leep</span>
+                <p><%= HTML.TextBox(this, 'fitbit.sleep', {style: 'width: 4em;'}) %> hrs of sleep</p>
+            </div>
         </div>
-        <div style="width: 300px;">
-            <span class="AVOID S">S</span><span style="vertical-align: text-bottom;">leep</span>
-            <p><%= HTML.TextBox(this, 'fitbit.sleep', {style: 'width: 4em;'}) %> hrs of sleep</p>
+        <h4 style="margin-top:0; margin-bottom: 0;">Confidence Level</h4>
+        <div class="slider" style="max-width: 20em; width: 100%; margin-bottom: 2.5em;">
+            <%= HTML.Range(this, 'confidence', {min: 0, max: 10, step: 1, list: "confidenceList", style: "max-width: 20em; width: 100%; padding:0;"}) %>
+            <div style="display: flex; position: relative; font-size: 0.75em; padding: 0 14px 5px 5px; line-height: 1em; white-space: nowrap;">
+                <div style="width: 10%;">0</div>
+                <div style="width: 10%;">1</div>
+                <div style="width: 10%;">2</div>
+                <div style="width: 10%;">3</div>
+                <div style="width: 10%;">4</div>
+                <div style="width: 10%;">5</div>
+                <div style="width: 10%;">6</div>
+                <div style="width: 10%;">7</div>
+                <div style="width: 10%;">8</div>
+                <div style="width: 10%;">9</div>
+                <div style="width: 0; position: absolute; right: 18px;">10</div>
+            </div>
+            <div style="padding: 5px 5px; font-size: 0.85em; line-height: 1em; 100%; position: relative;">
+                <div style="position: absolute; left: 5px;">Not at<br />all sure</div>
+                <div style="position: absolute; right: 0; text-align: right;">Absolutely<br />sure</div>
+            </div>
         </div>
+        <div class="actionPlanWarning warning"></div>
+    </div>
+</div>
+
+<div class="actionPlanSection">
+    <div class="manual">
+        <h4 style="margin-top:0;">What AVOID component(s) does your action plan address? Choose all that apply.</h4>
+        <table>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.A', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Activity</b> - something that involves moving your body, including walking</td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.V', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Vaccinate</b></td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.O', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Optimize Medication</b></td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.I', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Interact</b> - this could be meeting new people, trying something new, reducing isolation or loneliness.</td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.D', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Diet & Nutrition</b> - anything related to the food and drink you consume, or your oral health.</td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.S', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Sleep</b> - something you are doing specifically to improve your sleep</td>
+            </tr>
+            <tr>
+                <td><%= HTML.CheckBox(this, 'components.F', {value: 1}) %></td>
+                <td style="padding-top: 5px; padding-left:5px;"><b>Falls Prevention</b> - something you are doing specifically to reduce your risk of falling</td>
+            </tr>
+        </table>
+        <div class="actionPlanWarning warning"></div>
     </div>
 </div>

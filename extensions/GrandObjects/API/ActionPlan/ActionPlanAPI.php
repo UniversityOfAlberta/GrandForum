@@ -28,6 +28,10 @@ class ActionPlanAPI extends RESTAPI {
         $plan->goals = $this->POST('goals');
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
+        $plan->when = $this->POST('when');
+        $plan->time = $this->POST('time');
+        $plan->dates = $this->POST('dates');
+        $plan->confidence = $this->POST('confidence');
         $plan->tracker = $this->POST('tracker');
         $plan->components = $this->POST('components');
         $plan->submitted = $this->POST('submitted');
@@ -45,6 +49,10 @@ class ActionPlanAPI extends RESTAPI {
         $plan->goals = $this->POST('goals');
         $plan->barriers = $this->POST('barriers');
         $plan->plan = $this->POST('plan');
+        $plan->when = $this->POST('when');
+        $plan->time = $this->POST('time');
+        $plan->dates = $this->POST('dates');
+        $plan->confidence = $this->POST('confidence');
         $plan->tracker = $this->POST('tracker');
         $plan->components = $this->POST('components');
         $plan->submitted = $this->POST('submitted');

@@ -25,9 +25,21 @@ ActionPlan = Backbone.Model.extend({
             fitbit: {
                 
             },
+            time: "",
+            when: "",
             goals: "",
             barriers: "",
             plan: "",
+            dates: {
+                "Mon": "0",
+                "Tue": "0",
+                "Wed": "0",
+                "Thu": "0",
+                "Fri": "0",
+                "Sat": "0",
+                "Sun": "0"
+            },
+            confidence: 0,
             tracker: {
                 "Mon": "0",
                 "Tue": "0",

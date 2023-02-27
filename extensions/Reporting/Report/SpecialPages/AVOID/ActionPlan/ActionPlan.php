@@ -30,6 +30,9 @@ class ActionPlanPage extends BackbonePage {
     
     function getTemplates(){
         global $wgOut;
+        $wgOut->addHTML("<script type='text/javascript'>
+            var actionPlanDate = \"".date('Y-m-d', strtotime('last thursday +4 days'))."\";
+        </script>");
         return array('Backbone/*',
                      'action_plan',
                      'action_plan_create',

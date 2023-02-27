@@ -158,17 +158,17 @@ input:focus, textarea:focus {
     border: none !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]) {
     color:#606060 !important;
     fill:#606060 !important;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover,  .dt-button:hover, .ui-button:not([disabled]):hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):hover {
     color: $hlc !important;
     fill: $hlc !important;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button, .ui-button:not([disabled]):active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):active {
     color: $hlc !important;
     fill: $hlc !important;
 }

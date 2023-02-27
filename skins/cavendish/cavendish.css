@@ -590,7 +590,7 @@ a.button span {
     text-decoration: none !important;
 }
 
-input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]) {
+input[type=button], input[type=submit], .button, .button:visited, .dt-button, .ui-button, .button:link , :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]) {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) ) !important;
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% ) !important;
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8) !important;
@@ -629,7 +629,7 @@ input[type=button].dark:focus, input[type=submit].dark:focus, button.dark:focus 
     border:1px solid #CCC !important;
 }
 
-:not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose) {
+:not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button) {
     font-family: "Roboto", Arial, Verdana, sans-serif !important;
     font-size:1em !important;
     white-space:nowrap;
@@ -642,7 +642,7 @@ input[type=button].dark:focus, input[type=submit].dark:focus, button.dark:focus 
     user-select: none;
 }
 
-input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):hover {
+input[type=button]:hover, input[type=submit]:hover, .button:hover, .dt-button:hover, .ui-button:hover, :not(.mce-btn):not(.mce-window-head) > button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f8f8f8), color-stop(1, #E8E8E8) );
     background:-moz-linear-gradient( center top, #f8f8f8 5%, #E8E8E8 100% );
     background: -o-linear-gradient(top, #f8f8f8, #E8E8E8);
@@ -672,7 +672,7 @@ input[type=button]:active, input[type=submit]:active, button:active, a.button:ac
     top: 1px;
 }
 
-input[type=button]:active, input[type=submit]:active, .button:active, .dt-button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not([disabled]):active {
+input[type=button]:active, input[type=submit]:active, .button:active, .dt-button:active, .ui-button:active, .ui-state button:not(#cboxPrevious):not(#cboxNext):not(#cboxSlideshow):not(#cboxClose):not(.program-button):not([disabled]):active {
     position:relative;
     text-decoration:none;
     border-color:#888888;
@@ -1175,7 +1175,7 @@ li.ui-menu-item:hover > a, li.ui-menu-item > a#ui-active-menuitem, li.ui-menu-it
 }
 
 .ui-dialog .ui-dialog-buttonpane {
-    padding: 0.3em 1em 0.5em;
+    padding: 0.3em 1em 0.3em;
 }
 
 /*.ui-state-focus {
@@ -1941,16 +1941,18 @@ h1.program-header {
 .program-box, .program-button {
     background: #005f9d;
     color: white;
-    border-radius: 0.5em;
+    border-radius: 0.5em !important;
     padding: 0.25em 0.5em;
     display: inline-block;
-    font-weight: bold;
+    font-weight: bold !important;
     margin: 0.25em 0;
+    border: none !important;
 }
 
 .program-box a, .program-box a:hover, .program-box a:visited {
     color: white;
     text-decoration: underline;
+    font-weight: bold !important;
 }
 
 .program-button {
@@ -1965,11 +1967,11 @@ h1.program-header {
 .program-button, .program-button:visited {
     color: white !important;
     text-decoration: none;
-    background: #e97936;
+    background: #e97936 !important;
 }
 
 .program-button:hover, .program-button:focus {
-    background: #f69443;
+    background: #f69443 !important;
     color: white !important;
     text-decoration: none !important;
     cursor: pointer;
@@ -1986,6 +1988,14 @@ h1.program-header {
 .program-button input, .program-box input {
     vertical-align: baseline !important;
     height: 1.5em;
+}
+
+.program-button[disabled] {
+    background: #ccc !important;
+    color: #999 !important;
+    opacity: 0.75 !important;
+    border: none !important;
+    cursor: default !important;
 }
 
 div.program-text {
