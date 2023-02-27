@@ -178,6 +178,14 @@ input[disabled] , input[disabled]:hover , input[disabled]:active, select[disable
     fill:#606060 !important;
 }
 
+input:checked + .toggle {
+    background-color: {$hl};
+}
+
+input:focus + .toggle {
+    box-shadow: 0 0 1px {$hl};
+}
+
 .ui-widget-header a .ui-icon {
     background-image: url(../smoothness/images/ui-icons_ffffff_256x240.png);
 }

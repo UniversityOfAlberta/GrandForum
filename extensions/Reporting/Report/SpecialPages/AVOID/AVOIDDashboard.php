@@ -49,11 +49,12 @@ class AVOIDDashboard extends SpecialPage {
     
     static function executeFitBitAPI($url){
         global $wgMessage;
+        $me = Person::newFromWgUser();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            "Authorization: Bearer {$_COOKIE['fitbit']}"
+            "Authorization: Bearer {$me->getExtra('fitbit')}"
         ));
         
         //execute post
@@ -68,12 +69,13 @@ class AVOIDDashboard extends SpecialPage {
     
     static function importFitBit(){
 	    global $wgMessage, $config, $wgServer, $wgScriptPath, $wgUser;
-	    $actionPlans = ActionPlan::newFromUserId($wgUser->getId());
+	    $me = Person::newFromWgUser();
+	    $actionPlans = ActionPlan::newFromUserId($me->getId());
 	    $actionPlan = @$actionPlans[0];
         if($actionPlan != null && 
            $actionPlan->getType() == "Fitbit Monitoring" &&
            !$actionPlan->getSubmitted() && 
-           isset($_COOKIE['fitbit']) &&
+           $me->getExtra('fitbit') != "" &&
            !isset($_COOKIE['lastfitbit'])){
             // Steps
             $startDate = $actionPlan->getStartDate();
@@ -198,21 +200,33 @@ class AVOIDDashboard extends SpecialPage {
     function execute($par){
         global $wgOut, $wgServer, $wgScriptPath;
         if(isset($_GET['fitbitApi'])){
-            $wgOut->addHTML("<script type='text/javascript'>
-                var search = new URLSearchParams(document.location.hash.replace('#', ''));
-                var scope = search.get('scope');
-                if(typeof scope == 'undefined'){
-                    scope = '';
-                }
-                if(search.get('access_token') != null && scope.indexOf('heartrate') !== -1 &&
-                                                         scope.indexOf('nutrition') !== -1 &&
-                                                         scope.indexOf('sleep') !== -1 &&
-                                                         scope.indexOf('activity') !== -1){
-                    $.cookie('fitbit', search.get('access_token'), { expires: 365 });
-                }
+            $me = Person::newFromWgUser();
+            if(isset($_GET['disable']) || isset($_GET['token'])){
+                $extra = $me->getExtra();
+                $extra['fitbit'] = @"{$_GET['token']}";
+                $extra['fitbit_expires'] = time() + intval($_GET['expires_in']);
+                $me->extra = $extra;
+                $me->update();
+            }
+            else{
+                echo "<html><script type='text/javascript'>
+                    var search = new URLSearchParams(document.location.hash.replace('#', ''));
+                    var scope = search.get('scope');
+                    if(typeof scope == 'undefined'){
+                        scope = '';
+                    }
+                    if(search.get('access_token') != null && scope.indexOf('heartrate') !== -1 &&
+                                                             scope.indexOf('nutrition') !== -1 &&
+                                                             scope.indexOf('sleep') !== -1 &&
+                                                             scope.indexOf('activity') !== -1){
+                        document.location = '{$wgServer}{$wgScriptPath}/index.php/Special:AVOIDDashboard?fitbitApi&token=' + search.get('access_token') + '&expires_in=' + search.get('expires_in');
+                    }
+                </script></html>";
+            }
+            echo "<html><script type='text/javascript'>
                 window.close();
-            </script>");
-            return;
+            </script></html>";
+            exit;
         }
         if(isset($_GET['generateReport'])){
             $this->generateReport();
@@ -316,9 +330,17 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Progress
+        $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires')) ? "checked" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
+                            <div id='fitbitMessages'></div>
+                            Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;
+                            Off <label class='switch'>
+                                <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
+                                <span class='toggle round' style='border: none !important;'></span>
+                            </label> On
+                            
                             <div id='pastActionPlans'></div>
                             <h3 style='margin-bottom: 0;margin-top:0;'>Education Module Progress</h3>
                             <div class='modules'>
@@ -492,6 +514,38 @@ class AVOIDDashboard extends SpecialPage {
                     $('#viewActionPlan').click();
                 }
             }
+            
+            function authorizeFitBit(){
+                var toggle = $('[name=fitbitToggle]').is(':checked');
+                if(toggle){
+                    // Enable
+                    var url = 'https://www.fitbit.com/oauth2/authorize?response_type=token' +
+                              '&client_id=' + fitbitId +
+                              '&redirect_uri=' + document.location.origin + document.location.pathname + '?fitbitApi' +
+                              '&scope=activity%20nutrition%20sleep%20heartrate&expires_in=31536000';
+                    var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
+                    var popupInterval = setInterval(function(){
+                        if(popup == null || popup.closed){
+                            clearInterval(popupInterval);
+                            clearError();
+                            me.fetch(function(){
+                                if(me.get('extra').fitbit == undefined || me.get('extra').fitbit == '' || new Date().getTime()/1000 >= me.get('extra').fitbit_expires){
+                                    // Failed
+                                    addError('There was an error connecting to your Fitbit account.  Make sure that you checked \"Allow All\" when authorizing AVOID to access your Fitbit data.', false, '#fitbitMessages');
+                                }
+                            });
+                        }
+                    }.bind(this), 500);
+                }
+                else {
+                    // Disable
+                    $.get(wgServer + wgScriptPath + '/index.php/Special:AVOIDDashboard?fitbitApi&disable', function(){
+                        me.fetch();
+                    });
+                }
+            }
+            
+            $('[name=fitbitToggle]').change(authorizeFitBit);
             
             var viewFullScreen = false;
             var viewProgressFullScreen = false;

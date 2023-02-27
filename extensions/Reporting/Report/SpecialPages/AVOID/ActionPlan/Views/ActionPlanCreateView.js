@@ -13,11 +13,11 @@ ActionPlanCreateView = Backbone.View.extend({
     validations: function(){
         if(this.model.getComponents().length > 0){
             $("#saveActionPlanButton").prop("disabled", false);
-            $(".actionPlanWarning", this.$el.parent()).hide();
+            $(".actionPlanWarning", this.$el.parent()).slideUp();
         }
         else{
             $("#saveActionPlanButton").prop("disabled", true);
-            $(".actionPlanWarning", this.$el.parent()).show();
+            $(".actionPlanWarning", this.$el.parent()).slideDown();
             $(".actionPlanWarning", this.$el.parent()).text("You must select at least one AVOID component");
         }
     },
@@ -39,31 +39,19 @@ ActionPlanCreateView = Backbone.View.extend({
                 this.$(".manual").hide().parent().addClass("skip");
                 this.$(".fitbit").show().parent().removeClass("skip");
                 this.changeFitbit();
-                if($.cookie('fitbit') == undefined){
-                    this.authorizeFitBit();
-                }
             }
         }.bind(this));
     },
-
-    authorizeFitBit: function(){
-        var url = "https://www.fitbit.com/oauth2/authorize?response_type=token" +
-                  "&client_id=" + fitbitId +
-                  "&redirect_uri=" + document.location.origin + document.location.pathname + "?fitbitApi" +
-                  "&scope=activity%20nutrition%20sleep%20heartrate&expires_in=31536000";
-        var popup = window.open(url,'popUpWindow','height=600,width=500,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
-        var popupInterval = setInterval(function(){
-            if(popup == null || popup.closed){
-                clearInterval(popupInterval);
-                clearError('#fitbitMessages');
-                if($.cookie('fitbit') == undefined){
-                    // Failed
-                    this.model.set('type', ActionPlan.MANUAL);
-                    this.render();
-                    addError('There was an error connecting to your Fitbit account.  Make sure that you checked "Allow All" when authorizing AVOID to access your Fitbit data.', false, '#fitbitMessages');
-                }
+    
+    changeConfidence: function(){
+        _.defer(function(){
+            if(this.model.get('confidence') < 7){
+                this.$(".confidenceWarning").slideDown();
             }
-        }.bind(this), 500);
+            else{
+                this.$(".confidenceWarning").slideUp();
+            }
+        }.bind(this));
     },
     
     changeFitbit: function(){
@@ -93,6 +81,7 @@ ActionPlanCreateView = Backbone.View.extend({
     
     events: {
         "change [name=type]": "changeType",
+        "change [name=confidence]": "changeConfidence",
         "change .fitbitFields input": "changeFitbit",
     },
 
@@ -191,6 +180,7 @@ ActionPlanCreateView = Backbone.View.extend({
                                         .show().addClass("open");
         }
         this.changeType();
+        this.changeConfidence();
         this.validations();
         return this.$el;
     }

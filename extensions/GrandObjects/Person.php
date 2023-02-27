@@ -907,6 +907,9 @@ class Person extends BackboneModel {
             $this->publicProfile = @$data[0]['user_public_profile'];
             $this->privateProfile = @$data[0]['user_private_profile'];
             $this->extra = @json_decode($data[0]['user_extra'], true);
+            if($this->extra == null){
+                $this->extra = array();
+            }
             $this->hqps = null;
             $this->historyHqps = null;
             $this->candidate = @$data[0]['candidate'];
