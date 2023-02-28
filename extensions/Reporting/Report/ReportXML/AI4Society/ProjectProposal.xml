@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="Project Proposal 2022-23" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2022" disabled="false" ajax="true">
+<Report name="Project Proposal 2022-23" reportType="RP_PROJECT_PROPOSAL" pdfType="RP_PROJECT_PROPOSAL" pdfFiles="ProjectProposalPDF" year="2022" disabled="true" ajax="true">
     <Permissions>
         <Role role="INACTIVE+"></Role>
         <Role role="INACTIVE-Candidate+"></Role>
