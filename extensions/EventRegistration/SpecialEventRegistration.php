@@ -16,9 +16,32 @@ class SpecialEventRegistration extends SpecialPage{
         parent::__construct("SpecialEventRegistration", '', true);
     }
     
+    function validateCaptcha(){
+        global $config;
+        
+        $post_data = array(
+            'secret' => $config->getValue('reCaptchaSecretKey'),
+            'response' => @$_POST['g-recaptcha-response']
+        );
+        
+        // Prepare new cURL resource
+        $crl = curl_init('https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($crl, CURLINFO_HEADER_OUT, true);
+        curl_setopt($crl, CURLOPT_POST, true);
+        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
+            
+        // Submit the POST request
+        $response = json_decode(curl_exec($crl));
+        return ($response->success);
+    }
+    
     function handleEdit(){
         global $wgServer, $wgScriptPath, $wgMessage, $config;
-        if(!isset($_POST['event']) || trim($_POST['event']) == ""){
+        if(!$this->validateCaptcha()){
+            $wgMessage->addError("The robot test failed");
+        }
+        else if(!isset($_POST['event']) || trim($_POST['event']) == ""){
             $wgMessage->addError("You must select and Event");
         }
         else if(!isset($_POST['email']) || trim($_POST['email']) == ""){
@@ -342,6 +365,7 @@ class SpecialEventRegistration extends SpecialPage{
                             </tr>
                         </table>
                     </div></div>
+                    <div class='g-recaptcha' data-sitekey='{$config->getValue('reCaptchaSiteKey')}'></div>
                     <input type='submit' name='submit' value='Submit' style='margin-top: 1em;' />
                     {$appendix}
                 </div>
