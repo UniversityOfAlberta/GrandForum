@@ -330,7 +330,7 @@ class CavendishTemplate extends QuickTemplate {
 		    relationTypes = <?php echo json_encode($config->getValue('relationTypes')); ?>;
 		    boardMods = <?php echo json_encode($config->getValue('boardMods')); ?>;
 		    
-		    var today = new Date().toLocaleDateString('en-CA');
+		    var today = new Date().toISOString().split('T')[0];
 		
 		    function isExtensionEnabled(ext){
 		        return (extensions.indexOf(ext) != -1);
