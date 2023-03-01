@@ -2182,7 +2182,12 @@
         </ReportItem>
 
     </ReportSection>
-    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="ReportSection" renderpdf="false">
-            <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" />
+    <ReportSection id="submit" tooltip="PDF generation and submission" name="Submit" blobSection="SEC_NONE" type="EditableReportSection" renderpdf="false">
+        <ReportItem id="review" type="SimpleReviewSubmitReportItem" emails="{$my_email}" text="" />
+        <ReportItem id="display" type="Checkbox" blobType="BLOB_ARRAY" blobSection="InPersonAssessment" blobItem="DISPLAY" labels="Send to participants profile page" options="1">
+            <![CDATA[
+                {$item}
+            ]]>
+        </ReportItem>
     </ReportSection>
 </Report>

@@ -21,6 +21,7 @@
 
     <% if(me.get('extra').fitbit != undefined && me.get('extra').fitbit != '' && new Date().getTime()/1000 < me.get('extra').fitbit_expires){ %>
         <h4>Type of Plan</h4>
+        <p>If you are using your fitbit to monitor, choose fitbit monitoring. If you are tracking your daily goal yourself by logging into the AVOID program, choose manual monitoring</p>
         <%= HTML.Select(this, 'type', {options: [ActionPlan.MANUAL, ActionPlan.FITBIT]}) %>
     <% } %>
 </div>

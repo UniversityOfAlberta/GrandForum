@@ -278,8 +278,16 @@ class AVOIDDashboard extends SpecialPage {
             $frailty = "Based on your answers in the assessment, you have a <span style='color: white; background: #CC0000; padding: 0 5px; border-radius: 4px; display: inline-block;'>{$label}</span> for frailty.";
         }
 
+        
         $progressReport = (AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_THREEMO") ||
                            AVOIDDashboard::hasSubmittedSurvey($me->getId(), "RP_AVOID_SIXMO")) ? " | <a id='viewProgressReport' href='#'>Progress Report</a>" : "";
+        $assessmentReport = "";
+        if(AVOIDDashboard::isPersonAssessmentDone($me->getId())){
+            // This might be a bit slow, but unlikely to be noticable.  If it becomes a problem, it should be moved to an ajax/api request
+            $content = InPersonFollowup::getContent($me); 
+            $wgOut->addHTML("<form action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$me->getNameForForms()} In-Person Assessment Download'><input id='downloadWord' type='submit' style='display:none;' value='Download Word'></form>");
+            $assessmentReport = " | <a id='viewAssessmentReport' onClick='$(\"#downloadWord\").click();' href='#'>In-Person Frailty Report</a>";
+        }
         
         $wgOut->addHTML("<div class='modules module-2cols-outer'>
                             <h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Frailty Status</h1>
@@ -287,7 +295,7 @@ class AVOIDDashboard extends SpecialPage {
                                 <p>
                                     {$frailty}<br />
                                     <a href='https://healthyagingcentres.ca/wp-content/uploads/2022/03/What-is-frailty.pdf' target='_blank'>What is Frailty?</a><br />
-                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$progressReport}
+                                    <a id='viewReport' href='#'>My Personal Report and Recommendations</a>{$assessmentReport}{$progressReport}
                                 </p>
                                 <p>
                                     <b>How do I use this program?</b><br />
@@ -311,13 +319,19 @@ class AVOIDDashboard extends SpecialPage {
                          </div>");
         
         // Weekly Action Plan
+        $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires')) ? "checked" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My Weekly Action Plan</h1>");
         $wgOut->addHTML("<div class='program-body $membersOnly' style='width: 100%;'>
                             <div id='actionPlanMessages'></div>
                             <p>Action plans are small steps towards larger health goals.  Before jumping in, read the action plan <a id='viewActionPlanOverview' href='#'>Overview</a> and review the <a href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=EducationModules/IngredientsForChange'>Ingredients for Change Module</a> to increase your chance of success.</p>
-                            <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.</p>
-                        
+                            <p>Use the action plan template provided to develop weekly plans, track your daily progress and review your achievements in your action plans log.  If you have a fitbit watch, you can allow this program to connect to it so that it will track your daily goals automatically.</p>
+                            <div id='fitbitMessages'></div>
+                            Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;
+                            Off <label class='switch'>
+                                <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
+                                <span class='toggle round' style='border: none !important;'></span>
+                            </label> On
                             <p>
                                 <div id='newPlan' style='display: none;'><a id='createActionPlan' href='#'>Create NEW Action Plan</a></div>
                                 <div id='currentPlan' style='display: none;'>Current Action Plan (<a id='viewActionPlan' href='#'>View</a> / <a id='submitActionPlan' href='#'>Submit and Log Accomplishment</a> / <a id='repeatActionPlan' href='#'>Repeat for another week</a>)</div>
@@ -330,17 +344,9 @@ class AVOIDDashboard extends SpecialPage {
         $wgOut->addHTML("</div>");
         
         // Progress
-        $fitbitEnabled = ($me->getExtra('fitbit') != "" && time() < $me->getExtra('fitbit_expires')) ? "checked" : "";
         $wgOut->addHTML("<div class='modules module-2cols-outer'>");
         $wgOut->addHTML("<h1 class='program-header' style='width: 100%; border-radius: 0.5em; padding: 0.5em;'>My AVOID Progress</h1>");
         $wgOut->addHTML("<div class='program-body' style='width: 100%;'>
-                            <div id='fitbitMessages'></div>
-                            Connect with your <b>Fitbit</b> for easy monitoring&nbsp;&nbsp;&nbsp;
-                            Off <label class='switch'>
-                                <input type='checkbox' name='fitbitToggle' $fitbitEnabled />
-                                <span class='toggle round' style='border: none !important;'></span>
-                            </label> On
-                            
                             <div id='pastActionPlans'></div>
                             <h3 style='margin-bottom: 0;margin-top:0;'>Education Module Progress</h3>
                             <div class='modules'>
@@ -666,6 +672,21 @@ class AVOIDDashboard extends SpecialPage {
             }
         }
         return "";
+    }
+    
+    static function isPersonAssessmentDone($userId=null){
+        if($userId != null){
+            $me = Person::newFromId($userId);
+        }
+        else{
+            $me = Person::newFromWgUser();
+        }
+        $blob = new ReportBlob(BLOB_ARRAY, YEAR, $me->getId(), 0);
+        $blob_address = ReportBlob::create_address("RP_AVOID_INPERSON", "InPersonAssessment", "DISPLAY", 0);
+        $blob->load($blob_address);
+        $blob_data = $blob->getData();
+        $submitted = @($blob_data['display'][1] == "1");
+        return $submitted;
     }
     
     static function hasSubmittedSurvey($userId=null, $report="RP_AVOID"){

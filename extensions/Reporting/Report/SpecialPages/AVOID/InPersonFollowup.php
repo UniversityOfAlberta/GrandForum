@@ -349,6 +349,15 @@
             }
             return $html;
         }
+        
+        static function getContent($person){
+            $report = new DummyReport(static::$reportName, $person, null, YEAR);
+            $content = "<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()} In-Person Assessment Form</div><br />Date: ".date("Y/m/d")."<br />";
+            $content .= "<div class='assess_results'>" .
+                InPersonFollowup::getRow($person, $report, false, true) . "</div>";
+            $content = htmlspecialchars(urlencode($content));
+            return $content;
+        }
 
         function execute($par){
             global $wgServer, $wgScriptPath, $wgOut;
@@ -418,17 +427,12 @@
                 $person = Person::newFromId($personid);
                 $wgOut->setPageTitle("{$person->getNameForForms()} In-Person Assessment Summary");
                 $wgOut->setPageTitle(static::$pageTitle);
-                $report = new DummyReport(static::$reportName, $me, null, YEAR);
+                $report = new DummyReport(static::$reportName, $person, null, YEAR);
                 $wgOut->setPageTitle("Assessor");
                 $wgOut->addHTML("<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()}</span><br /><br /><a class='program-button' href='{$wgServer}{$wgScriptPath}/index.php/Special:Report?report=InPersonAssessment&person={$person->getId()}'>In-Person Assessment Form</a></div>");
-                $report->person = $person;
-                $content = "<div id='personHeader'><span style='font-size: 200%'>{$person->getNameForForms()} In-Person Assessment Form</div><br />Date: ".date("Y/m/d")."<br />";
-                $content .= "<div class='assess_results'>" .
-                    InPersonFollowup::getRow($person, $report, false, true) . "</div>";
-                $content = htmlspecialchars(urlencode($content));
+                $content = self::getContent($person);
                 $wgOut->addHTML("
     <form action='{$wgServer}{$wgScriptPath}/index.php?action=api.DownloadWordHtmlApi' enctype='multipart/form-data' id='downloadword' method='post' target='_blank'><input type='hidden' name='content' value='{$content}'><input type='hidden' name='filename' value='{$person->getNameForForms()} In-Person Assessment Download'><input type='submit' value='Download Word'></form>");
-
 
                 $wgOut->addHTML("<div class='assess_results'>" .
                     InPersonFollowup::getRow($person, $report, false, true) . "</div>");
