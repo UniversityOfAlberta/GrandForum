@@ -182,6 +182,17 @@ class CreateUserAPI extends API{
                         APIRequest::doAction('AddHQPMovedOn', true);
                     }
                     
+                    if($_POST['relation'] != ""){
+                        $relation = explode(":", $_POST['relation']);
+                        $user1 = Person::newFromName($relation[0]);
+                        DBFunctions::insert('grand_relations',
+                                            array('user1' => $user1->getId(),
+                                                  'user2' => $person->getId(),
+                                                  'type' => $relation[1],
+                                                  'start_date' => $earliestStartDate,
+                                                  'end_date' => $latestEndDate));
+                    }
+                    
                     if($_POST['recruitment'] != ""){
                         DBFunctions::insert('grand_alumni',
                                             array('user_id' => $person->getId(),
