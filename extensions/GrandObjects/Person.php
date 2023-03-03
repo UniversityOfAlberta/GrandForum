@@ -1301,10 +1301,15 @@ class Person extends BackboneModel {
     
     /**
      * Returns when the User registered
+     * @param boolean $format Whether to format to yyyy-mm-dd
      * @return string The string representing the date that this user Registered
      */
-    function getRegistration(){
-        return $this->getUser()->getRegistration();
+    function getRegistration($format=false){
+        $registration = $this->getUser()->getRegistration();
+        if($format){
+            return substr($registration, 0, 4)."-".substr($registration, 4, 2)."-".substr($registration, 6, 2);
+        }
+        return $registration;
     }
     
     /**

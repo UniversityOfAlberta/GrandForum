@@ -59,42 +59,59 @@ class UsageVisualizations extends SpecialPage {
             $logins[$date] = ['x' => $date, 
                               'y' => 0,
                               'group' => 0];
-            $registrations[] = ['x' => $date, 
-                                'y' => rand(0,10), 
-                                'group' => 1];
+            $registrations[$date] = ['x' => $date, 
+                                     'y' => 0, 
+                                     'group' => 0];
         }
         foreach($loggedinDC as $dc){
             foreach($dc->getData()['log'] as $date){
-                $logins[$date]['y']++;
+                if(isset($logins[$date])){
+                    $logins[$date]['y']++;
+                }
             }
         }
+        foreach($people as $person){
+            if(isset($registrations[$person->getRegistration(true)])){
+                $registrations[$person->getRegistration(true)]['y']++;
+            }
+        }
+        
         $logins = array_values($logins);
+        $registrations = array_values($registrations);
         
         $wgOut->addHTML("<h2 style='text-align: center;'>Unique Logins per Day</h2>
                          <div id='logins'></div>
+                         
+                         <h2 style='text-align: center;'>Registrations per Day</h2>
+                         <div id='registrations'></div>
         <script type='text/javascript'>
             // create a dataSet with groups
-            var items = ".json_encode($logins).";
+            var logins = ".json_encode($logins).";
+            var registrations = ".json_encode($registrations).";
 
-            var dataset = new vis.DataSet(items);
-            var options = {
-                style:'bar',
-                drawPoints: false,
-                dataAxis: {
-                    showMinorLabels: false,
-                    left: {
-                        title: {
-                            text: 'Logins'
+            function barChart(id, title, items){
+                var dataset = new vis.DataSet(items);
+                var options = {
+                    style:'bar',
+                    drawPoints: false,
+                    dataAxis: {
+                        showMinorLabels: false,
+                        left: {
+                            title: {
+                                text: title
+                            }
                         }
-                    }
-                },
-                start: '{$rangeStart}',
-                end: '{$endDate}',
-                min: '{$startDate}',
-                max: '{$endDate}'
-            };
-            var graph2d = new vis.Graph2d(document.getElementById('logins'), items, options);
-
+                    },
+                    start: '{$rangeStart}',
+                    end: '{$endDate}',
+                    min: '{$startDate}',
+                    max: '{$endDate}'
+                };
+                return graph2d = new vis.Graph2d(document.getElementById(id), items, options);
+            }
+            
+            barChart('logins', 'Logins', logins);
+            barChart('registrations', 'Registrations', registrations);
         </script>");
     }
 
