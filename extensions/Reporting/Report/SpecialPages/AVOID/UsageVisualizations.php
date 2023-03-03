@@ -79,10 +79,10 @@ class UsageVisualizations extends SpecialPage {
         $logins = array_values($logins);
         $registrations = array_values($registrations);
         
-        $wgOut->addHTML("<h2 style='text-align: center;'>Unique Logins per Day</h2>
+        $wgOut->addHTML("<h1 style='text-align: center;'>Unique Logins per Day</h1>
                          <div id='logins'></div>
                          
-                         <h2 style='text-align: center;'>Registrations per Day</h2>
+                         <h1 style='text-align: center;'>Registrations per Day</h1>
                          <div id='registrations'></div>
         <script type='text/javascript'>
             // create a dataSet with groups
