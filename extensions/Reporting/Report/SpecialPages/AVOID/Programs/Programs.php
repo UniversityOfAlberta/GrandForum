@@ -70,6 +70,11 @@ class Programs extends SpecialPage {
             $wgOut->addHTML("</div>");
         }
         $wgOut->addHTML("</div>");
+        $wgOut->addHTML("<script type='text/javascript'>
+            var pageDC = new DataCollection();
+            pageDC.init(me.get('id'), 'Programs-Hit');
+            pageDC.append('log', new Date().toISOString().slice(0, 10), false);
+        </script>");
     }
 
     static function createTab(&$tabs){

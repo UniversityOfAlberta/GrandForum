@@ -134,6 +134,10 @@ class EducationResources extends SpecialPage {
                 dc.init(me.get('id'), 'Topic-' + $(this).attr('data-id'));
                 dc.increment('count');
             });
+            
+            var pageDC = new DataCollection();
+            pageDC.init(me.get('id'), 'EducationResources-Hit');
+            pageDC.append('log', new Date().toISOString().slice(0, 10), false);
         </script>");
     }
 
