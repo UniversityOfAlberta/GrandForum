@@ -98,7 +98,7 @@ class PeopleTableTab extends AbstractTab {
             $contactHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Phone</th>";
         }
         else if($me->isLoggedIn()){
-            $emailHeader = "<th style='white-space: nowrap;'>Email</th>";
+            $emailHeader = "<th style='white-space: nowrap;'>Email</th><th style='white-space: nowrap;'>Website</th>";
         }
         if($this->table == HQP){
             $subRoleHeader = "<th style='white-space: nowrap;'>".Inflect::pluralize($config->getValue('subRoleTerm'))."</th>";
@@ -330,21 +330,11 @@ class PeopleTableTab extends AbstractTab {
                 $html .= "<td align='center'><span style='font-size:2em;'>{$doc3}</span></td>";
             }
             if($contactHeader != ''){
-                if($person->getEmail() == ""){
-                    $html .= "<td></td>";
-                }
-                else {
-                    $html .= "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                }
                 $html .= "<td align='left'>{$person->getPhoneNumber()}</td>";
             }
             if($emailHeader != ''){
-                if($person->getEmail() == ""){
-                    $html .= "<td></td>";
-                }
-                else {
-                    $html .= "<td><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>";
-                }
+                $html .= ($person->getEmail() != "") ? "<td align='left'><a href='mailto:{$person->getEmail()}'>{$person->getEmail()}</a></td>" : "<td></td>";
+                $html .= ($person->getWebsite() != "http://" && $person->getWebsite() != "https://") ? "<td align='left'><a href='{$person->getWebsite()}'>{$person->getWebsite()}</a></td>" : "<td></td>";
             }
             if($idHeader != ''){
                 $html .= "<td>{$person->getId()}</td>";
