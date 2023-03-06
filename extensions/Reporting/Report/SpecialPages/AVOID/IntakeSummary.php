@@ -148,9 +148,9 @@ class IntakeSummary extends SpecialPage {
             $html = "<thead>
                         <tr>
                             <th>User Id</th>";
-            if($type != false){
-                $html .= "<th>Type</th>";
-            }
+        }
+        if($type != false){
+            $html .= "<th>Type</th>";
         }
         if(static::$rpType != "RP_AVOID_THREEMO"){
             $html .= "<th>Frailty Score</th>";
@@ -182,9 +182,9 @@ class IntakeSummary extends SpecialPage {
         if(!$simple){
             $html = "<tr>
                         <td>{$userLink}</td>";
-            if($type != false){
-                $html .= "<td>{$type}</td>";
-            }
+        }
+        if($type != false){
+            $html .= "<td>{$type}</td>";
         }
         if(static::$rpType != "RP_AVOID_THREEMO"){
             $api = new UserFrailtyIndexAPI();
