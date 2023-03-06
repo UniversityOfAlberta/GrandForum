@@ -1169,6 +1169,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Recommendations" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1300,6 +1331,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1431,6 +1493,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Dean Decision" userId="{$user_id}">
                     <![CDATA[
                         {$item}
@@ -1562,6 +1655,37 @@
                         <script type='text/javascript' src='{$wgServer}{$wgScriptPath}/extensions/Reporting/Report/scripts/recommendations.js'></script>
                     ]]>
                 </ReportItem>
+                <ReportItem id="file1" type="Upload" blobItem="FILE1" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file1'>{$item}</div>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file2" type="Upload" blobItem="FILE2" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file2'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file2').show(); } else { $('#file2').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <ReportItem id="file3" type="Upload" blobItem="FILE3" blobSubItem="{$user_id}" blobType="BLOB_RAW" mimeType="application/pdf" fileSize="5">
+                    <![CDATA[
+                        <div class='files' id='file3'>{$item}</div>
+                        <script type='text/javascript'> if('{getBlobMD5()}' != ''){ $('#file3').show(); } else { $('#file3').hide(); } </script>
+                    ]]>
+                </ReportItem>
+                <Static>
+                    <![CDATA[
+                        <button id='addFile' type='button' class='pdfnodisplay'>Add another file</button>
+                        <script type='text/javascript'>
+                            $('#addFile').click(function(){
+                                $('.files:not(:visible)').first().show();
+                                $('iframe', $('.files:visible').last())[0].src = $('iframe', $('.files:visible').last())[0].src;
+                                if($('.files:not(:visible)').length == 0){
+                                    $('#addFile').prop('disabled', true);
+                                }
+                            });
+                        </script>
+                    ]]>
+                </Static>
                 <ReportItem id="submit" type="SimpleReviewSubmit" section="Chair Advice" userId="{$user_id}">
                     <![CDATA[
                         {$item}
