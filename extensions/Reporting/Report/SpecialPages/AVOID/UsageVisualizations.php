@@ -37,8 +37,6 @@ class UsageVisualizations extends SpecialPage {
             $people[] = $person;
         }
         
-        
-        
         $startDate = substr($config->getValue('projectPhaseDates')[1], 0, 10);
         $endDate = date('Y-m-d', time() + 24*3600);
         $rangeStart = date('Y-m-d', strtotime($endDate) - 365*24*3600);
