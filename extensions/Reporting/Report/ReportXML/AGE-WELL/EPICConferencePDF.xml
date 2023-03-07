@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Report name="The EPIC Conference (2022)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2022">
+<Report name="The EPIC Conference (2023)" reportType="RP_EPIC_CONFERENCE" pdfType="RPTP_EPIC_CONFERENCE" pdfFiles="EPICConferencePDF" ajax="true" disabled="false" year="2023">
     <ReportSection id="status" name="Header" type="HeaderReportSection" pagebreak="false" renderpdf="true">
         <Static>
             <![CDATA[
-                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2022)</h4></div>
+                <div style="float:left;"><h4 style='font-size:1.5em;'>The EPIC Conference (2023)</h4></div>
                 <img class='logo' style="float:right;margin-top:0;position:static;" src='{$wgServer}{$wgScriptPath}/skins/{$networkName}_Logo.png' />
                 <br />
                 <br />
@@ -65,10 +65,16 @@
                 {$item}<br />
             ]]>
         </ReportItem>
+        <ReportItem id="copresenting2" type="Textarea" blobType="BLOB_TEXT" blobItem="COPRESENTING2" rich="true" limit="100" optional="true">
+            <![CDATA[
+                <p>If yes, please include the stakeholder’s name, organizational affiliation, and their relationship to your project:</p>
+                {$item}
+            ]]>
+        </ReportItem>
         <ReportItem id="consent" type="Radio" blobType="BLOB_TEXT" blobItem="CONSENT" options="Yes|No">
             <![CDATA[
                 <h3>Consent Information</h3>
-                <p>Do you consent to your session being recorded by AGE-WELL? (Recordings may be distributed and used for educational or promotional purposes and uploaded to the AGE-WELL YouTube channel, external website, and intranet)</p>
+                <p>Do you consent to your session being recorded by AGE-WELL?</p>
                 {$item}
             ]]>
         </ReportItem>
